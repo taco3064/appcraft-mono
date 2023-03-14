@@ -10,11 +10,12 @@
     "@emotion/react": "11.10.6",
     "@emotion/server": "11.10.0",
     "@emotion/styled": "11.10.6",
-    "@nrwl/next": "15.8.6",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.12",
     "next": "13.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tslib": "^2.3.0"
+    "tss-react": "^4.7.5"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.14.5",
@@ -24,6 +25,7 @@
     "@nrwl/jest": "15.8.6",
     "@nrwl/js": "15.8.6",
     "@nrwl/linter": "15.8.6",
+    "@nrwl/next": "15.8.6",
     "@nrwl/nx-cloud": "latest",
     "@nrwl/react": "15.8.6",
     "@nrwl/workspace": "15.8.6",
@@ -52,6 +54,7 @@
     "react-test-renderer": "18.2.0",
     "ts-jest": "^29.0.5",
     "ts-node": "10.9.1",
+    "tslib": "^2.3.0",
     "typescript": "~4.9.5"
   },
   "config": {

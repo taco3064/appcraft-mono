@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@core/themes": ["libs/themes/src/index.ts"],
+      "~demo/*": ["apps/demo/src/*"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

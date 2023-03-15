@@ -2,19 +2,29 @@
   "root": true,
   "ignorePatterns": ["**/*"],
   "plugins": ["@nrwl/nx"],
+  "extends": ["plugin:prettier/recommended"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
+        "prettier/prettier": [2, { "endOfLine": "auto" }],
+        "import/no-webpack-loader-syntax": 0,
         "@nrwl/nx/enforce-module-boundaries": [
-          "error",
+          2,
           {
             "enforceBuildableLibDependency": true,
+            "allowCircularSelfDependency": true,
             "allow": [],
             "depConstraints": [
               {
                 "sourceTag": "*",
                 "onlyDependOnLibsWithTags": ["*"]
+              },
+              {
+                // *來源 project
+                "sourceTag": "scope:demo",
+                // *允許 import 的 project
+                "onlyDependOnLibsWithTags": ["scope:demo"]
               }
             ]
           }

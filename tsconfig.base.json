@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@core/themes": ["libs/themes/src/index.ts"],
-      "~demo/*": ["apps/demo/src/*"]
+      "~demo/*": ["apps/demo/src/*"],
+      "~parser/*": ["apps/parser/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

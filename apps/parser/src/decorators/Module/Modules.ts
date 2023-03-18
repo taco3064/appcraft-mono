@@ -20,7 +20,7 @@ export default function Module({ base: baseURL }: Types.DecoratorOptions) {
               try {
                 await this[method]?.(req, res);
               } catch (err) {
-                console.error(`${Implement.name} Exception:`, err.toString());
+                console.error(`${Implement.name} Exception:`, err);
 
                 res.status(400).json({
                   implement: Implement.name,

@@ -14,16 +14,51 @@ const generators: Types.Generators = [
   (type, options) => type.isNumber() && { ...options, type: 'number' },
   (type, options) => type.isString() && { ...options, type: 'string' },
 
-  (type, options) =>
-    type.getCallSignatures().length > 0 && { ...options, type: 'func' },
+  (type, options, source) => {
+    const [callSignature] = type.getCallSignatures().reverse();
+
+    if (callSignature) {
+      const returnProptype = getProptype(
+        callSignature.getReturnType(),
+        { name: 'return', required: true },
+        source
+      );
+
+      return {
+        ...options,
+        type: 'func',
+        options: {
+          ...(returnProptype && { return: returnProptype }),
+          params: callSignature.getParameters().reduce((result, param, i) => {
+            const proptype = getProptype(
+              param.getTypeAtLocation(source),
+              {
+                name: `[${i}]`,
+                required: !param.isOptional(),
+              },
+              source
+            );
+
+            return !proptype ? result : result.concat(proptype);
+          }, []),
+        },
+      };
+    }
+
+    return false;
+  },
 
   //* Examples: string[], (string | number)[], ('a' | 'b' | 'c')[]
-  (type, options) => {
+  (type, options, source) => {
     if (type.isArray()) {
-      const proptype = getProptype(type.getArrayElementType(), {
-        name: '[*]',
-        required: true,
-      });
+      const proptype = getProptype(
+        type.getArrayElementType(),
+        {
+          name: '[*]',
+          required: true,
+        },
+        source
+      );
 
       return proptype && { ...options, type: 'arrayOf', options: proptype };
     }
@@ -32,15 +67,19 @@ const generators: Types.Generators = [
   },
 
   //* Examples: [boolean, string]
-  (type, options) => {
+  (type, options, source) => {
     if (type.isTuple()) {
       const proptypes = type
         .getTupleElements()
         .reduce<Types.PropTypesDef[]>((result, tuple) => {
-          const proptype = getProptype(tuple, {
-            name: '[*]',
-            required: true,
-          });
+          const proptype = getProptype(
+            tuple,
+            {
+              name: '[*]',
+              required: true,
+            },
+            source
+          );
 
           return !proptype ? result : result.concat(proptype);
         }, []);
@@ -61,15 +100,20 @@ const generators: Types.Generators = [
     return false;
   },
 
-  (type, options) => {
+  (type, options, source) => {
     if (type.isObject()) {
       const properties = type
         .getProperties()
         .reduce<Record<string, Types.PropTypesDef>>((result, property) => {
-          const proptype = getProptype(property.getDeclaredType(), {
-            name: property.getName(),
-            required: !property.isOptional(),
-          });
+          console.log(property.getName());
+          const proptype = getProptype(
+            property.getTypeAtLocation(source),
+            {
+              name: property.getName(),
+              required: !property.isOptional(),
+            },
+            source
+          );
 
           return {
             ...result,
@@ -91,7 +135,7 @@ const generators: Types.Generators = [
     return false;
   },
 
-  (type, options) => {
+  (type, options, source) => {
     if (type.isUnion()) {
       const [oneOf, oneOfType] = type
         .getUnionTypes()
@@ -100,7 +144,7 @@ const generators: Types.Generators = [
             if (union.isLiteral()) {
               literals.push(JSON.parse(union.getText()));
             } else {
-              const proptype = getProptype(union, options);
+              const proptype = getProptype(union, options, source);
 
               proptype && types.push(proptype);
             }
@@ -184,10 +228,14 @@ const resolveInterface: Types.PrivateResolveInterface = (
   );
 
   return properties.reduce<Types.PropTypesDef[]>((result, property) => {
-    const proptype = getProptype(property.getTypeAtLocation(source), {
-      name: property.getName(),
-      required: !property.isOptional(),
-    });
+    const proptype = getProptype(
+      property.getTypeAtLocation(source),
+      {
+        name: property.getName(),
+        required: !property.isOptional(),
+      },
+      source
+    );
 
     return !proptype ? result : result.concat(proptype);
   }, []);

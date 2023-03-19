@@ -40,12 +40,15 @@ type AnyProp = BaseProptype<'any'>;
 type ArrayOfProp = BaseProptype<'arrayOf', PropTypesDef>;
 type BoolProp = BaseProptype<'bool'>;
 type ExactProp = BaseProptype<'exact', Record<string, PropTypesDef>>;
-type FuncProp = BaseProptype<'func'>;
 type NodeProp = BaseProptype<'node'>;
 type NumberProp = BaseProptype<'number'>;
 type OneOfProp = BaseProptype<'oneOf', (boolean | number | string)[]>;
 type OneOfTypeProp = Omit<BaseProptype<'oneOfType', PropTypesDef[]>, 'name'>;
 type StringProp = BaseProptype<'string'>;
+type FuncProp = BaseProptype<
+  'func',
+  { params: PropTypesDef[]; return?: PropTypesDef }
+>;
 
 export type PropTypesDef =
   | AnyProp
@@ -62,7 +65,8 @@ export type PropTypesDef =
 //* Methods
 export type BaseGenerator<R = PropTypesDef> = (
   type: TsMorph.Type,
-  options: GeneratorOptions
+  options: GeneratorOptions,
+  source: TsMorph.SourceFile
 ) => R | false;
 
 export type Generators = [
@@ -78,20 +82,15 @@ export type Generators = [
   BaseGenerator<OneOfProp | OneOfTypeProp>
 ];
 
-export type PrivateConverToProptype = (
-  type: TsMorph.Type,
-  options: { name: string; required: boolean }
-) => PropTypesDef | false;
-
-export type PrivateResolveInterface = (
-  source: TsMorph.SourceFile,
-  declaration: TsMorph.InterfaceDeclaration
-) => PropTypesDef[];
-
 export type PrivateGetVirtualSource = (
   project: TsMorph.Project,
   filePath: string,
   name: string
 ) => [string, TsMorph.SourceFile];
+
+export type PrivateResolveInterface = (
+  source: TsMorph.SourceFile,
+  declaration: TsMorph.InterfaceDeclaration
+) => PropTypesDef[];
 
 export type Resolve = (options: ResolveOptions) => PropTypesDef[];

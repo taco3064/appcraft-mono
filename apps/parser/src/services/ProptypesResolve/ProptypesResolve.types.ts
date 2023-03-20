@@ -24,7 +24,7 @@ enum PropType {
 }
 
 interface GeneratorInfo {
-  name?: string;
+  propName?: string;
   required: boolean;
 }
 
@@ -65,43 +65,44 @@ export type Generators = [
   PrivateGetProptype<StringProp>,
   PrivateGetProptype<FuncProp>,
   PrivateGetProptype<ArrayOfProp>,
-  PrivateGetProptype<ArrayOfProp>,
   PrivateGetProptype<ExactProp>,
   PrivateGetProptype<OneOfProp | OneOfTypeProp>
 ];
 
+export type TypeResult = [TsMorph.Type, GeneratorInfo] | null;
+
 export interface ParseOptions {
   tsconfigDir: string;
-  tsFile: string;
-  propsType: string;
-  superior?: string;
-}
-
-export interface ParseResult {
-  superiorType: 'array' | 'object';
-  superior: string;
-  proptypes: PropTypesDef;
+  typeFile: string;
+  typeName: string;
+  propPath?: string;
 }
 
 //* Methods
-export type PrivateGetProptype<R = PropTypesDef> = (
-  type: TsMorph.Type,
-  options: GeneratorInfo
-) => R | void;
-
 export type PrivateGetVirtualSource = (
   options: Omit<ParseOptions, 'superior'>
 ) => [TsMorph.SourceFile, TsMorph.InterfaceDeclaration];
 
-export type PrivateResolveByPaths = (
-  properties: TsMorph.Symbol[],
+export type PrivateGetObjectProperty = (
+  type: TsMorph.Type,
+  propName: string,
+  extendTypes?: TsMorph.Type[]
+) => TsMorph.Symbol | null;
+
+export type PrivateGetTypeByPath = (
+  type: TsMorph.Type,
   options: {
-    readonly required: boolean;
-    readonly superior: string;
+    readonly info: GeneratorInfo;
+    extendTypes?: TsMorph.Type[];
     paths: string[];
     source: TsMorph.SourceFile;
-    superiorType: ParseResult['superiorType'];
   }
-) => ParseResult | null;
+) => TypeResult;
 
-export type Parse = (options: ParseOptions) => ParseResult | null;
+export type PrivateGetProptype<R = PropTypesDef> = (
+  type: TsMorph.Type,
+  info: GeneratorInfo,
+  source?: TsMorph.SourceFile
+) => R | false;
+
+export type Parse = (options: ParseOptions) => PropTypesDef | null;

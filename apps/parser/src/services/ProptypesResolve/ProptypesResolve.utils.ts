@@ -1,13 +1,38 @@
+import { SyntaxKind } from 'ts-morph';
 import type * as Types from './ProptypesResolve.types';
 
 //* 定義 PropTypes 的檢查方式及回傳的 Config 內容 (要注意先後順序)
 const generators: Types.Generators = [
-  (type, info) =>
-    type.getText() === 'React.ReactNode' && { ...info, type: 'node' },
-
   (type, info) => type.isBoolean() && { ...info, type: 'bool' },
   (type, info) => type.isNumber() && { ...info, type: 'number' },
   (type, info) => type.isString() && { ...info, type: 'string' },
+
+  //* ReactNode / ReactElement
+  (type, info) => {
+    if (type.getText() === 'React.ReactNode') {
+      return { ...info, type: 'node' };
+    }
+
+    if (type.getText().startsWith('React.ReactElement<')) {
+      return { ...info, type: 'element' };
+    }
+
+    return false;
+  },
+
+  //* Class
+  (type, info, source) => {
+    if (
+      source &&
+      type.getSymbol().getTypeAtLocation(source).getConstructSignatures()
+        .length &&
+      type.getText() in global
+    ) {
+      return { ...info, type: 'instanceOf', options: type.getText() };
+    }
+
+    return false;
+  },
 
   //* Function
   (type, info, source) => {
@@ -88,33 +113,50 @@ const generators: Types.Generators = [
   (type, info, source) => {
     if (type.isObject() || type.isInterface()) {
       if (source) {
-        const properties = type
-          .getProperties()
-          .reduce<[string, Types.PropTypesDef][]>((result, property) => {
-            const propName = property.getName();
+        const args = type.getAliasTypeArguments();
+        const properties = type.getProperties();
 
-            const proptype = getProptype(property.getTypeAtLocation(source), {
-              propName,
-              required: !property.isOptional(),
-            });
+        if (type.getText().startsWith('Record<') && args.length > 0) {
+          const options = getProptype(args[1], {
+            propName: '*',
+            required: true,
+          });
 
-            if (proptype) {
-              result.push([propName, proptype]);
+          return options && { ...info, type: 'objectOf', options };
+        }
+
+        if (properties.length > 0) {
+          const options = properties.reduce<[string, Types.PropTypesDef][]>(
+            (result, property) => {
+              const propName = property.getName();
+
+              const proptype = getProptype(property.getTypeAtLocation(source), {
+                propName,
+                required: !property.isOptional(),
+              });
+
+              if (proptype) {
+                result.push([propName, proptype]);
+              }
+
+              return result;
+            },
+            []
+          );
+
+          return (
+            options.length > 0 && {
+              ...info,
+              type: 'exact',
+              options: Object.fromEntries(options),
             }
+          );
+        }
 
-            return result;
-          }, []);
-
-        return (
-          properties.length > 0 && {
-            ...info,
-            type: 'exact',
-            options: Object.fromEntries(properties),
-          }
-        );
+        return false;
       }
 
-      return { ...info, type: 'exact' };
+      return { ...info, type: 'object' };
     }
 
     return false;

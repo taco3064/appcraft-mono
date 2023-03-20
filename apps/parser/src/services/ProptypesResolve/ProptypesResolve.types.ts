@@ -3,21 +3,21 @@ import type TsMorph from 'ts-morph';
 enum PropType {
   //! 不需要
   // any,
+  // array,
+  // elementType,
   // symbol,
-
-  //? 尚未研究怎麼判斷
-  element,
-  elementType,
-  instanceOf,
-  objectOf,
 
   //* 已確認
   arrayOf,
   bool,
+  element,
   exact,
   func,
+  instanceOf,
   node,
   number,
+  object,
+  objectOf,
   oneOf,
   oneOfType,
   string,
@@ -36,9 +36,13 @@ export interface BaseProptype<T extends keyof typeof PropType, O = undefined>
 
 type ArrayOfProp = BaseProptype<'arrayOf', PropTypesDef>;
 type BoolProp = BaseProptype<'bool'>;
+type ElementProp = BaseProptype<'element'>;
 type ExactProp = BaseProptype<'exact', Record<string, PropTypesDef>>;
+type InstanceOfProp = BaseProptype<'instanceOf', string>;
 type NodeProp = BaseProptype<'node'>;
 type NumberProp = BaseProptype<'number'>;
+type ObjectProp = BaseProptype<'object'>;
+type ObjectOfProp = BaseProptype<'objectOf', PropTypesDef>;
 type OneOfProp = BaseProptype<'oneOf', (boolean | number | string)[]>;
 type OneOfTypeProp = Omit<BaseProptype<'oneOfType', PropTypesDef[]>, 'name'>;
 type StringProp = BaseProptype<'string'>;
@@ -50,22 +54,27 @@ type FuncProp = BaseProptype<
 export type PropTypesDef =
   | ArrayOfProp
   | BoolProp
+  | ElementProp
   | ExactProp
   | FuncProp
+  | InstanceOfProp
   | NodeProp
   | NumberProp
+  | ObjectProp
+  | ObjectOfProp
   | OneOfProp
   | OneOfTypeProp
   | StringProp;
 
 export type Generators = [
-  PrivateGetProptype<NodeProp>,
   PrivateGetProptype<BoolProp>,
   PrivateGetProptype<NumberProp>,
   PrivateGetProptype<StringProp>,
+  PrivateGetProptype<ElementProp | NodeProp>,
+  PrivateGetProptype<InstanceOfProp>,
   PrivateGetProptype<FuncProp>,
   PrivateGetProptype<ArrayOfProp>,
-  PrivateGetProptype<ExactProp>,
+  PrivateGetProptype<ExactProp | ObjectProp | ObjectOfProp>,
   PrivateGetProptype<OneOfProp | OneOfTypeProp>
 ];
 

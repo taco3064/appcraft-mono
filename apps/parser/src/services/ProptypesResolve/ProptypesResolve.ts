@@ -135,23 +135,46 @@ const getTypeByPath: Types.PrivateGetTypeByPath = (
           );
     }
 
-    if (type?.getProperties().length && !type.isArray() && !type.isTuple()) {
-      const symbol = getObjectProperty(type, target, extendTypes);
-      const subinfo = { propName: target, required: !symbol.isOptional() };
-      const element = symbol?.getTypeAtLocation(source);
+    if (!type?.isArray() && !type?.isTuple()) {
+      const args = type?.getAliasTypeArguments() || [];
+      const properties = type?.getProperties() || [];
 
-      return !element?.isUnion()
-        ? getTypeByPath(element, { info: subinfo, paths, source })
-        : element.getUnionTypes().reduce<Types.TypeResult>(
-            (result, union) =>
-              result ||
-              getTypeByPath(union, {
-                info: subinfo,
-                paths: [...paths],
-                source,
-              }),
-            null
-          );
+      if (properties.length) {
+        const symbol = getObjectProperty(type, target, extendTypes);
+        const subinfo = { propName: target, required: !symbol.isOptional() };
+        const element = symbol?.getTypeAtLocation(source);
+
+        return element.getText() === 'React.ReactNode' || !element?.isUnion()
+          ? getTypeByPath(element, { info: subinfo, paths, source })
+          : element.getUnionTypes().reduce<Types.TypeResult>(
+              (result, union) =>
+                result ||
+                getTypeByPath(union, {
+                  info: subinfo,
+                  paths: [...paths],
+                  source,
+                }),
+              null
+            );
+      }
+
+      if (args.length && type.getText().startsWith('Record<')) {
+        const subinfo = { propName: target, required: true };
+        const [, element] = args;
+
+        return element.getText() === 'React.ReactNode' || !element?.isUnion()
+          ? getTypeByPath(element, { info: subinfo, paths, source })
+          : element.getUnionTypes().reduce<Types.TypeResult>(
+              (result, union) =>
+                result ||
+                getTypeByPath(union, {
+                  info: subinfo,
+                  paths: [...paths],
+                  source,
+                }),
+              null
+            );
+      }
     }
 
     return null;

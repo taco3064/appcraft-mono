@@ -2,9 +2,18 @@ import path from 'path';
 import toPath from 'lodash.topath';
 import type * as TsMorph from 'ts-morph';
 import { Project } from 'ts-morph';
+import { debounce } from 'throttle-debounce';
 
 import { getProptype } from './ProptypesResolve.utils';
 import type * as Types from './ProptypesResolve.types';
+
+const queues = new Map<
+  string,
+  {
+    virtual: Types.VirtualSource;
+    destroy: () => void;
+  }
+>();
 
 //* 建立虛擬的 Props 及 SourceFile
 const getVirtualSource: Types.PrivateGetVirtualSource = ({
@@ -12,32 +21,45 @@ const getVirtualSource: Types.PrivateGetVirtualSource = ({
   typeFile,
   typeName,
 }) => {
-  const virtualType = `Virtual${(Math.random() * 10000).toFixed()}Props`;
   const filePath = path.resolve(process.cwd(), typeFile);
+  const basename = path.basename(filePath);
+  const extname = path.extname(filePath);
+  const importPath = basename.replace(new RegExp(`(.d)?${extname}$`), '');
+  const sourceId = JSON.stringify({ importPath, typeName });
 
-  const importPath = path
-    .basename(filePath)
-    .replace(path.extname(filePath), '')
-    .replace(/\.d$/, '');
+  const { virtual, destroy } =
+    queues.get(sourceId) ||
+    (() => {
+      const virtualType = `Virtual${(Math.random() * 10000).toFixed()}Props`;
 
-  const project = new Project({
-    tsConfigFilePath: path.resolve(
-      process.cwd(),
-      tsconfigDir,
-      './tsconfig.json'
-    ),
-  });
+      const project = new Project({
+        tsConfigFilePath: path.resolve(
+          process.cwd(),
+          tsconfigDir,
+          './tsconfig.json'
+        ),
+      });
 
-  const source = project.createSourceFile(
-    path.resolve(filePath, '../', `./${virtualType}.d.ts`),
-    `
-      import * as Ref from './${importPath}';
+      const source = project.createSourceFile(
+        path.resolve(filePath, '../', `./${virtualType}.d.ts`),
+        `
+        import * as Ref from './${importPath}';
 
-      export interface ${virtualType} extends Ref.${typeName} {}
-    `
-  );
+        export interface ${virtualType} extends Ref.${typeName} {}
+      `
+      );
 
-  return [source, source.getInterface(virtualType)];
+      queues.set(sourceId, {
+        virtual: [source, source.getInterface(virtualType)],
+        destroy: debounce(1000 * 60 * 20, () => queues.delete(sourceId)),
+      });
+
+      return queues.get(sourceId);
+    })();
+
+  destroy();
+
+  return virtual;
 };
 
 //* 取得目標 Object 的所有 Properties

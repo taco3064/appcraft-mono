@@ -75,6 +75,7 @@ export type Generators = [
 ];
 
 export type TypeResult = [TsMorph.Type, GeneratorInfo] | null;
+export type VirtualSource = [TsMorph.SourceFile, TsMorph.InterfaceDeclaration];
 
 export interface ParseOptions {
   tsconfigDir: string;
@@ -86,7 +87,7 @@ export interface ParseOptions {
 //* Methods
 export type PrivateGetVirtualSource = (
   options: Omit<ParseOptions, 'superior'>
-) => [TsMorph.SourceFile, TsMorph.InterfaceDeclaration];
+) => VirtualSource;
 
 export type PrivateGetObjectProperty = (
   type: TsMorph.Type,

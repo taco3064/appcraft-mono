@@ -1,11 +1,7 @@
 import type TsMorph from 'ts-morph';
 
 enum PropType {
-  //! 不需要
-  // any,
-  // array,
-  // elementType,
-  // symbol,
+  //! 不需要 any, array, elementType, symbol,
 
   //* 已確認
   arrayOf,

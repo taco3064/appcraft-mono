@@ -4,7 +4,7 @@ import NoSsr from '@mui/material/NoSsr';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
 
-import * as THEMES from '@core/themes';
+import * as THEMES from '@appcraft/themes';
 import { MainContainer } from '~demo/styles';
 
 export default function App({ Component, pageProps }: AppProps) {

@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@core/themes": ["libs/themes/src/index.ts"],
+      "@appcraft/themes": ["libs/themes/src/index.ts"],
       "~demo/*": ["apps/demo/src/*"],
       "~parser/*": ["apps/parser/src/*"]
     }

@@ -6,7 +6,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
 
 import * as THEMES from '@appcraft/themes';
-import { AppHeader } from '~demo/components';
+import { AppHeader, MenuDrawer } from '~demo/components';
 import { MainContainer } from '~demo/styles';
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -26,6 +26,8 @@ export default function App({ Component, pageProps }: AppProps) {
             oauth2={{ google: '/api/oauth2/google/login' }}
             onMenuToggle={() => setOpen(true)}
           />
+
+          <MenuDrawer open={open} onClose={() => setOpen(false)} />
 
           <MainContainer maxWidth="lg" className="app" component="main">
             <Component {...pageProps} />

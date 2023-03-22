@@ -1,5 +1,6 @@
-const { withNx } = require('@nrwl/next/plugins/with-nx');
 const { merge } = require('webpack-merge');
+const { withNx } = require('@nrwl/next/plugins/with-nx');
+
 const webpackGenerator = require('../../tools/generators/webpack.base');
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -16,8 +17,12 @@ const nextConfig = {
   },
   rewrites: async () => [
     {
+      source: '/api/oauth2/:path*',
+      destination: `http://localhost:${process.env.OAUTH2_SERVICE_PORT}/:path*`,
+    },
+    {
       source: '/api/parser/:path*',
-      destination: 'http://localhost:3068/:path*',
+      destination: `http://localhost:${process.env.PARSER_SERVICE_PORT}/:path*`,
     },
   ],
   webpack: (config, context) =>

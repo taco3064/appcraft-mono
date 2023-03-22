@@ -10,8 +10,6 @@ module.exports = (dirname, context) => {
     .readdirSync(path.resolve(dirname, './src/assets/locales'))
     .filter((fileName) => !/^index\.(t|j)s$/.test(fileName));
 
-  console.log(process.cwd());
-
   //* 取得現有 Libs
   const libAlias = fs.readdirSync(path.resolve(process.cwd(), './libs')).reduce(
     (result, libDir) => ({

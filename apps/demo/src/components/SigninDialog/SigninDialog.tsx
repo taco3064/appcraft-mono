@@ -3,6 +3,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import Divider from '@mui/material/Divider';
 import GoogleIcon from '@mui/icons-material/Google';
 
 import { useFixedT } from '~demo/hooks';
@@ -17,9 +18,17 @@ export default function SigninDialog({
 
   return (
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
-      <DialogTitle>{at('ttl-signin')}</DialogTitle>
+      <DialogTitle align="center" variant="h5">
+        {at('ttl-signin')}
+      </DialogTitle>
 
-      <DialogContent>
+      <DialogContent
+        sx={(theme) => ({
+          display: 'flex',
+          flexDirection: 'column',
+          gap: theme.spacing(2),
+        })}
+      >
         <ButtonGroup
           fullWidth
           size="large"
@@ -30,6 +39,18 @@ export default function SigninDialog({
             Google
           </Button>
         </ButtonGroup>
+
+        <Divider />
+
+        <Button
+          fullWidth
+          size="large"
+          color="inherit"
+          variant="outlined"
+          onClick={(e) => onClose(e, 'escapeKeyDown')}
+        >
+          {at('btn-cancel')}
+        </Button>
       </DialogContent>
     </Dialog>
   );

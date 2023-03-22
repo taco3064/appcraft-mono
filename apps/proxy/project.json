@@ -1,7 +1,7 @@
 {
-  "name": "oauth2",
+  "name": "proxy",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/oauth2/src",
+  "sourceRoot": "apps/proxy/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -11,12 +11,12 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/oauth2",
-        "main": "apps/oauth2/src/main.ts",
-        "tsConfig": "apps/oauth2/tsconfig.app.json",
-        "assets": ["apps/oauth2/src/assets"],
+        "outputPath": "dist/apps/proxy",
+        "main": "apps/proxy/src/main.ts",
+        "tsConfig": "apps/proxy/tsconfig.app.json",
+        "assets": ["apps/proxy/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "apps/oauth2/webpack.config.js"
+        "webpackConfig": "apps/proxy/webpack.config.js"
       },
       "configurations": {
         "development": {},
@@ -27,14 +27,14 @@
       "executor": "@nrwl/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "oauth2:build"
+        "buildTarget": "proxy:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "oauth2:build:development"
+          "buildTarget": "proxy:build:development"
         },
         "production": {
-          "buildTarget": "oauth2:build:production"
+          "buildTarget": "proxy:build:production"
         }
       }
     },
@@ -42,14 +42,14 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/oauth2/**/*.ts"]
+        "lintFilePatterns": ["apps/proxy/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/oauth2/jest.config.ts",
+        "jestConfig": "apps/proxy/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {

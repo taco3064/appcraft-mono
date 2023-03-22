@@ -3,12 +3,12 @@ import { OAuth2Client } from 'google-auth-library';
 import { Request, Response } from 'express';
 
 const client = new OAuth2Client(
-  process.env.OAUTH_CLIENT_ID,
-  process.env.OAUTH_CLIENT_SECRET,
-  process.env.OAUTH_REDIRECT_URI
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_REDIRECT_URI
 );
 
-@Module({ base: 'google' })
+@Module({ base: 'oauth2/google' })
 export default class OAuth {
   @Endpoint({
     method: 'get',
@@ -38,12 +38,5 @@ export default class OAuth {
         expires: new Date(tokens.expiry_date),
       })
       .redirect('/');
-  }
-
-  @Endpoint({ method: 'get', description: '' })
-  async test(req: Request, res: Response) {
-    console.log(req.cookies.token);
-
-    res.end();
   }
 }

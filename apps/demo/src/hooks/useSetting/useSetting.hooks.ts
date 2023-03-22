@@ -23,6 +23,10 @@ i18n.init({
 
 //* Zustand Store
 const useSettingStore = create<Types.SettingState>((set, get) => ({
+  token:
+    global.document?.cookie.match('(^|;)\\s*token\\s*=\\s*([^;]+)')?.pop() ||
+    null,
+
   //* Locales
   lng: initialLng,
   getFixedT: (namespace) => i18n.getFixedT(null, namespace),

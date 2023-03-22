@@ -1,11 +1,11 @@
 /* eslint-disable */
 export default {
-  displayName: 'oauth2',
+  displayName: 'proxy',
   preset: '../../jest.preset.js',
   testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.spec.json' }],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/apps/oauth2',
+  coverageDirectory: '../../coverage/apps/proxy',
 };

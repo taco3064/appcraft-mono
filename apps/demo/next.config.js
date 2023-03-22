@@ -17,12 +17,8 @@ const nextConfig = {
   },
   rewrites: async () => [
     {
-      source: '/api/oauth2/:path*',
-      destination: `http://localhost:${process.env.OAUTH2_SERVICE_PORT}/:path*`,
-    },
-    {
-      source: '/api/parser/:path*',
-      destination: `http://localhost:${process.env.PARSER_SERVICE_PORT}/:path*`,
+      source: '/api/:path*',
+      destination: `http://localhost:${process.env.PROXY_SERVER_PORT}/:path*`,
     },
   ],
   webpack: (config, context) =>

@@ -1,6 +1,6 @@
 import { MouseEvent } from 'react';
-import type { SigninDialogProps } from '../SigninDialog';
+import type { SigninProps } from '../Signin';
 
-export interface AppHeaderProps extends Pick<SigninDialogProps, 'oauth2'> {
+export interface AppHeaderProps extends Pick<SigninProps, 'oauth2'> {
   onMenuToggle?: (e: MouseEvent<HTMLButtonElement>) => void;
 }

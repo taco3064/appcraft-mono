@@ -16,3 +16,5 @@ export type UserAccountHook = () => {
   authorized: boolean;
   token: string;
 };
+
+export type SettingModifiedHook = () => Pick<SettingState, 'lng' | 'setLng'>;

@@ -24,3 +24,9 @@ export const useUserAccount: Types.UserAccountHook = () => {
     token,
   };
 };
+
+export const useSettingModified: Types.SettingModifiedHook = () =>
+  useSettingStore(({ lng, setLng }) => ({
+    lng,
+    setLng,
+  }));

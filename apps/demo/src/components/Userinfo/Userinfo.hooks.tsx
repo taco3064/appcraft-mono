@@ -1,4 +1,5 @@
 import Avatar from '@mui/material/Avatar';
+import Tooltip from '@mui/material/Tooltip';
 import axios, { AxiosRequestHeaders } from 'axios';
 import { lazy, useMemo } from 'react';
 
@@ -24,7 +25,11 @@ export const useLazyAvatar: Types.LazyAvatarHook = (token) =>
           };
 
           return {
-            default: () => <Avatar alt="" src={data.picture} />,
+            default: () => (
+              <Tooltip title={data.username}>
+                <Avatar alt="" src={data.picture} />
+              </Tooltip>
+            ),
           };
         }
 

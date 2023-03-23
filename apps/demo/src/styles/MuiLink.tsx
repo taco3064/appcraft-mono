@@ -6,15 +6,16 @@ import { withStyles } from 'tss-react/mui';
 type BaseLinkProps = NextLinkProps & Omit<MuiLinkProps, 'component' | 'href'>;
 
 interface LinkProps extends BaseLinkProps {
+  disableGap?: boolean;
   icon?: ReactNode;
 }
 
 export const Link = withStyles(
-  ({ icon, children, ...props }: LinkProps) => (
+  ({ icon, children, href, disableGap: _disableGap, ...props }: LinkProps) => (
     <MuiLink
       {...props}
+      href={href as string}
       component={NextLink}
-      href="/"
       sx={(theme) => ({
         display: 'flex',
         justifyContent: 'center',
@@ -26,12 +27,12 @@ export const Link = withStyles(
       {children}
     </MuiLink>
   ),
-  (theme) => ({
+  (theme, { disableGap = false }) => ({
     root: {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      gap: theme.spacing(1),
+      gap: theme.spacing(disableGap ? 0 : 1),
     },
   }),
   { name: 'Link' }

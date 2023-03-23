@@ -28,14 +28,12 @@ export default function MenuDrawer({
               variant="h5"
               color="secondary"
               icon={<AutoAwesomeMosaicIcon />}
+              style={{ marginRight: 'auto' }}
             >
               Appcraft
             </IconTypograph>
 
-            <IconButton
-              onClick={(e) => onClose(e, 'escapeKeyDown')}
-              style={{ marginLeft: 'auto' }}
-            >
+            <IconButton onClick={(e) => onClose(e, 'escapeKeyDown')}>
               <ChevronLeftIcon />
             </IconButton>
           </ListSubheader>

@@ -1,13 +1,15 @@
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Menu from '@mui/material/Menu';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Skeleton from '@mui/material/Skeleton';
 import { Suspense, useState } from 'react';
 
 import type * as Types from './Userinfo.types';
+import { Link, SizedListItemIcon } from '~demo/styles';
 import { useLazyAvatar } from './Userinfo.hooks';
 import { useFixedT, useUserAccount } from '~demo/hooks';
 
@@ -25,15 +27,27 @@ export default function Userinfo({}: Types.UserinfoProps) {
 
       <Menu
         anchorEl={anchorEl}
+        elevation={1}
         open={Boolean(anchorEl)}
-        onClose={() => setAnchorEl(null)}
+        onClick={() => setAnchorEl(null)}
       >
+        <ListItemButton dense disableGap href="/settings" component={Link}>
+          <SizedListItemIcon size="small">
+            <SettingsOutlinedIcon />
+          </SizedListItemIcon>
+
+          <ListItemText primary={at('btn-settings')} />
+        </ListItemButton>
+
+        <Divider />
+
         <ListItemButton
+          dense
           href={`/api/userinfo/signout?token=${encodeURIComponent(token)}`}
         >
-          <ListItemIcon sx={(theme) => ({ minWidth: theme.spacing(5) })}>
+          <SizedListItemIcon size="small">
             <LogoutIcon />
-          </ListItemIcon>
+          </SizedListItemIcon>
 
           <ListItemText primary={at('btn-signout')} />
         </ListItemButton>

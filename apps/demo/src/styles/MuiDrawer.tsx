@@ -15,6 +15,7 @@ export const SizedDrawer = withStyles(
         {
           component: Container,
           disableGutters: true,
+          elevation: 1,
           maxWidth: 'xs',
         } as PaperProps
       }

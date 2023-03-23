@@ -17,7 +17,7 @@ export default function AppHeader({
   const { authorized } = useUserAccount();
 
   return (
-    <AppBar position="sticky" color="default" elevation={0.1}>
+    <AppBar position="sticky" color="default" elevation={0}>
       <GapToolbar variant="regular">
         {authorized && onMenuToggle && (
           <IconButton onClick={onMenuToggle}>
@@ -36,7 +36,7 @@ export default function AppHeader({
         </Link>
 
         <Signin oauth2={oauth2} />
-        <Userinfo />
+        <Userinfo menuTransform="translate(12px, 10px)" />
       </GapToolbar>
 
       <Divider />

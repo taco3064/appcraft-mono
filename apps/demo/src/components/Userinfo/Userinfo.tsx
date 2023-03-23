@@ -13,7 +13,7 @@ import { Link, SizedListItemIcon } from '~demo/styles';
 import { useLazyAvatar } from './Userinfo.hooks';
 import { useFixedT, useUserAccount } from '~demo/hooks';
 
-export default function Userinfo({}: Types.UserinfoProps) {
+export default function Userinfo({ menuTransform }: Types.UserinfoProps) {
   const [at] = useFixedT('app');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
   const { authorized, token } = useUserAccount();
@@ -30,6 +30,7 @@ export default function Userinfo({}: Types.UserinfoProps) {
         elevation={1}
         open={Boolean(anchorEl)}
         onClick={() => setAnchorEl(null)}
+        style={{ transform: menuTransform }}
       >
         <ListItemButton dense disableGap href="/settings" component={Link}>
           <SizedListItemIcon size="small">

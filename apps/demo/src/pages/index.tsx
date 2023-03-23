@@ -7,7 +7,7 @@ export default function Index() {
   const [at] = useFixedT('app');
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md">
       <Typography paragraph variant="h4" color="secondary">
         Welcome to Appcraft
       </Typography>

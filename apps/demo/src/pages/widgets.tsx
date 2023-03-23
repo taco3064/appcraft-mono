@@ -1,3 +1,4 @@
+import { NewWidgetGroup } from '~demo/components';
 import { PageContainer } from '~demo/styles';
 import { useFixedT } from '~demo/hooks';
 
@@ -6,9 +7,10 @@ export default function Widgets() {
 
   return (
     <PageContainer
+      ContentProps={{ disableGutters: true }}
       maxWidth="lg"
       title={nt('ttl-widgets')}
-      ContentProps={{ disableGutters: true, sx: { background: 'transparent' } }}
+      action={<NewWidgetGroup />}
     >
       Widgets
     </PageContainer>

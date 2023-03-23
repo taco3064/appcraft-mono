@@ -1,4 +1,5 @@
 import Container, { ContainerProps } from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -17,7 +18,7 @@ export const MainContainer = withStyles(
 );
 
 interface PageContainerProps extends Omit<ContainerProps, 'disableGutters'> {
-  ContentProps?: Omit<ContainerProps, 'role'>;
+  ContentProps?: Omit<ContainerProps, 'role' | 'children' | 'component'>;
   action?: ReactNode;
   title: string;
 }
@@ -27,9 +28,8 @@ export const PageContainer = withStyles(
     <Container {...props} disableGutters>
       <Toolbar disableGutters variant="dense">
         <Typography
-          role="heading"
-          paragraph
-          variant="h4"
+          fontWeight="bolder"
+          variant="h5"
           color="secondary"
           style={{ marginRight: 'auto' }}
         >
@@ -38,6 +38,8 @@ export const PageContainer = withStyles(
 
         {action}
       </Toolbar>
+
+      <Divider sx={(theme) => ({ marginBottom: theme.spacing(2) })} />
 
       <Paper
         role="contentinfo"
@@ -51,13 +53,11 @@ export const PageContainer = withStyles(
   ),
   (theme, { ContentProps }) => ({
     root: {
-      '& > [role=heading]': {
-        fontWeight: 'bolder',
-      },
       '& > [role=contentinfo]': {
+        background: ContentProps?.disableGutters ? 'transparent' : null,
         borderRadius: theme.spacing(1),
-        paddingTop: theme.spacing(ContentProps?.disableGutters ? 0 : 1.5),
-        paddingBottom: theme.spacing(ContentProps?.disableGutters ? 0 : 3),
+        paddingTop: theme.spacing(ContentProps?.disableGutters ? 0 : 2),
+        paddingBottom: theme.spacing(ContentProps?.disableGutters ? 0 : 2),
       },
     },
   }),

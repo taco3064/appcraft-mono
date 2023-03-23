@@ -25,9 +25,6 @@ export default function Settings() {
       <TextField
         fullWidth
         select
-        variant="outlined"
-        size="small"
-        margin="normal"
         label={at('lbl-lng')}
         value={modified.lng}
         onChange={(e) => modified.setLng(e.target.value)}
@@ -41,13 +38,7 @@ export default function Settings() {
 
       <Divider />
 
-      <Button
-        fullWidth
-        size="large"
-        color="secondary"
-        variant="outlined"
-        onClick={back}
-      >
+      <Button fullWidth size="large" color="secondary" onClick={back}>
         {at('btn-back')}
       </Button>
     </PageContainer>

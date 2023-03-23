@@ -59,10 +59,19 @@ export const DEFAULT_DARK = createTheme({
   components: {
     MuiButton: {
       styleOverrides: {
+        containedInherit: {
+          color: '#2D232E',
+        },
         containedSecondary: {
           color: '#474448',
-          fontWeight: 'bolder',
         },
+      },
+    },
+    MuiTextField: {
+      defaultProps: {
+        fullWidth: true,
+        margin: 'none',
+        variant: 'filled',
       },
     },
     MuiCssBaseline: {

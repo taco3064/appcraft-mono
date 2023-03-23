@@ -13,14 +13,16 @@ export const getAuthURL: Types.GetAuthURL = () =>
     scope: 'https://www.googleapis.com/auth/userinfo.profile',
   });
 
-export const initialCredentials: Types.InitialCredentials = async (
-  code: string
-) => {
+export const initialCredentials: Types.InitialCredentials = async (code) => {
   const { tokens } = await client.getToken(code);
 
   client.setCredentials(tokens);
 
   return tokens;
+};
+
+export const revokeCredentials: Types.RevokeCredentials = async () => {
+  await client.revokeCredentials();
 };
 
 export const verifyToken: Types.VerifyToken = async (token) => {

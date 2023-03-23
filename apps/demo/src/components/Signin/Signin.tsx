@@ -10,9 +10,9 @@ import LoginIcon from '@mui/icons-material/Login';
 import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 
+import type * as Types from './Signin.types';
 import { IconTypograph } from '~demo/styles';
 import { useFixedT, useUserAccount } from '~demo/hooks';
-import type * as Types from './Signin.types';
 
 export default function Signin({ oauth2 }: Types.SigninProps) {
   const [at] = useFixedT('app');
@@ -22,10 +22,7 @@ export default function Signin({ oauth2 }: Types.SigninProps) {
   return authorized ? null : (
     <>
       <Tooltip title={at('btn-signin')}>
-        <IconButton
-          onClick={() => setOpen(true)}
-          style={{ marginLeft: 'auto' }}
-        >
+        <IconButton onClick={() => setOpen(true)}>
           <LoginIcon />
         </IconButton>
       </Tooltip>

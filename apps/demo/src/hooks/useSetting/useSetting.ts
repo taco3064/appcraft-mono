@@ -21,5 +21,6 @@ export const useUserAccount: Types.UserAccountHook = () => {
 
   return {
     authorized: Boolean(token),
+    token,
   };
 };

@@ -14,4 +14,5 @@ export type FixedTHook = <O extends object>(
 
 export type UserAccountHook = () => {
   authorized: boolean;
+  token: string;
 };

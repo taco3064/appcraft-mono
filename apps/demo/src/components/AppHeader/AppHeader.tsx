@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import type * as Types from './AppHeader.types';
 import { GapToolbar, Link } from '~demo/styles';
 import { Signin } from '../Signin';
+import { Userinfo } from '../Userinfo';
 
 export default function AppHeader({
   oauth2,
@@ -27,11 +28,13 @@ export default function AppHeader({
             variant="h5"
             href="/"
             icon={<AutoAwesomeMosaicIcon />}
+            style={{ marginRight: 'auto' }}
           >
             Appcraft
           </Link>
 
           <Signin oauth2={oauth2} />
+          <Userinfo />
         </GapToolbar>
       </AppBar>
 

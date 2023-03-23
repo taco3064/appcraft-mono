@@ -1,20 +1,27 @@
 import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Divider from '@mui/material/Divider';
+import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 
-import { GapToolbar, IconTypograph, SizedDrawer } from '~demo/styles';
+import * as Styles from '~demo/styles';
+import NAVS from '~demo/assets/json/navs.json';
 import type * as Types from './MenuDrawer.types';
+import { useFixedT } from '~demo/hooks';
 
 export default function MenuDrawer({
   open,
   onClose,
   ...props
 }: Types.MenuDrawerProps) {
+  const [nt] = useFixedT('nav');
+
   return (
-    <SizedDrawer
+    <Styles.SizedDrawer
       {...props}
       maxWidth="xs"
       anchor="left"
@@ -23,15 +30,15 @@ export default function MenuDrawer({
     >
       <List
         subheader={
-          <ListSubheader component={GapToolbar}>
-            <IconTypograph
+          <ListSubheader component={Styles.GapToolbar}>
+            <Styles.IconTypograph
               variant="h5"
               color="secondary"
               icon={<AutoAwesomeMosaicIcon />}
               style={{ marginRight: 'auto' }}
             >
               Appcraft
-            </IconTypograph>
+            </Styles.IconTypograph>
 
             <IconButton onClick={(e) => onClose(e, 'escapeKeyDown')}>
               <ChevronLeftIcon />
@@ -40,7 +47,32 @@ export default function MenuDrawer({
         }
       >
         <Divider />
+
+        {NAVS.map(({ title, description, icon, url }) => (
+          <ListItemButton
+            key={url}
+            disableGap
+            href={url}
+            component={Styles.Link}
+          >
+            <Styles.SizedListItemIcon>
+              <Icon
+                color="info"
+                fontSize="large"
+                baseClassName="material-icons-outlined"
+              >
+                {icon}
+              </Icon>
+            </Styles.SizedListItemIcon>
+
+            <ListItemText
+              primaryTypographyProps={{ variant: 'subtitle1' }}
+              primary={nt(title)}
+              secondary={nt(description)}
+            />
+          </ListItemButton>
+        ))}
       </List>
-    </SizedDrawer>
+    </Styles.SizedDrawer>
   );
 }

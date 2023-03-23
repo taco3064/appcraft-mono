@@ -34,7 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
           <MenuDrawer open={open} onClose={() => setOpen(false)} />
 
-          <MainContainer maxWidth="lg" className="app" component="main">
+          <MainContainer maxWidth={false} className="app" component="main">
             <Component {...pageProps} />
           </MainContainer>
         </ThemeProvider>

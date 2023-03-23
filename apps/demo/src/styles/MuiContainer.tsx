@@ -14,14 +14,14 @@ export const MainContainer = withStyles(
   { name: 'MainContainer' }
 );
 
-interface PageContainerProps extends ContainerProps {
+interface PageContainerProps extends Omit<ContainerProps, 'disableGutters'> {
   ContentProps?: Omit<ContainerProps, 'role'>;
   title: string;
 }
 
 export const PageContainer = withStyles(
   ({ ContentProps, title, children, ...props }: PageContainerProps) => (
-    <Container {...props}>
+    <Container {...props} disableGutters>
       <Typography role="heading" paragraph variant="h4" color="secondary">
         {title}
       </Typography>

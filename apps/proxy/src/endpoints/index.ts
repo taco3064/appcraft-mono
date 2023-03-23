@@ -1,1 +1,1 @@
-export * from './Google';
+export * from './OAuth2';

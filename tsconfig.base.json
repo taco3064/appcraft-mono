@@ -18,7 +18,8 @@
       "@appcraft/server": ["libs/server/src/index.ts"],
       "@appcraft/themes": ["libs/themes/src/index.ts"],
       "~demo/*": ["apps/demo/src/*"],
-      "~parser/*": ["apps/parser/src/*"]
+      "~parser/*": ["apps/parser/src/*"],
+      "~proxy/*": ["apps/proxy/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

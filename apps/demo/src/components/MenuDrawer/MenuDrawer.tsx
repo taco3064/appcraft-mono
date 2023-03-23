@@ -54,6 +54,7 @@ export default function MenuDrawer({
             disableGap
             href={url}
             component={Styles.Link}
+            onClick={(e) => onClose(e, 'escapeKeyDown')}
           >
             <Styles.SizedListItemIcon>
               <Icon

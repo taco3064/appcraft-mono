@@ -8,15 +8,18 @@ import type * as Types from './AppHeader.types';
 import { GapToolbar, Link } from '~demo/styles';
 import { Signin } from '../Signin';
 import { Userinfo } from '../Userinfo';
+import { useUserAccount } from '~demo/hooks';
 
 export default function AppHeader({
   oauth2,
   onMenuToggle,
 }: Types.AppHeaderProps) {
+  const { authorized } = useUserAccount();
+
   return (
     <AppBar position="sticky" color="default" elevation={0.1}>
       <GapToolbar variant="regular">
-        {onMenuToggle && (
+        {authorized && onMenuToggle && (
           <IconButton onClick={onMenuToggle}>
             <ChevronRightIcon />
           </IconButton>

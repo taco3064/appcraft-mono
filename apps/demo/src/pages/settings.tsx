@@ -1,15 +1,27 @@
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
+import { useRouter } from 'next/router';
 
 import { PageContainer } from '~demo/styles';
 import { useFixedT, useSettingModified } from '~demo/hooks';
 
 export default function Settings() {
+  const { back } = useRouter();
   const [at, nt] = useFixedT('app', 'nav');
   const modified = useSettingModified();
 
   return (
-    <PageContainer maxWidth="xs" title={nt('ttl-settings')}>
+    <PageContainer
+      maxWidth="xs"
+      title={nt('ttl-settings')}
+      ContentProps={{
+        sx: (theme) => ({
+          '& > * + *': { marginTop: `${theme.spacing(2)} !important` },
+        }),
+      }}
+    >
       <TextField
         fullWidth
         select
@@ -26,6 +38,18 @@ export default function Settings() {
           </MenuItem>
         ))}
       </TextField>
+
+      <Divider />
+
+      <Button
+        fullWidth
+        size="large"
+        color="secondary"
+        variant="outlined"
+        onClick={back}
+      >
+        {at('btn-back')}
+      </Button>
     </PageContainer>
   );
 }

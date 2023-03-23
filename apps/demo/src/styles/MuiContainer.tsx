@@ -15,17 +15,18 @@ export const MainContainer = withStyles(
 );
 
 interface PageContainerProps extends ContainerProps {
+  ContentProps?: Omit<ContainerProps, 'role'>;
   title: string;
 }
 
 export const PageContainer = withStyles(
-  ({ title, children, ...props }: PageContainerProps) => (
+  ({ ContentProps, title, children, ...props }: PageContainerProps) => (
     <Container {...props}>
       <Typography role="heading" paragraph variant="h4" color="secondary">
         {title}
       </Typography>
 
-      <Paper role="contentinfo" elevation={0.1}>
+      <Paper role="contentinfo" elevation={0.1} {...ContentProps}>
         {children}
       </Paper>
     </Container>

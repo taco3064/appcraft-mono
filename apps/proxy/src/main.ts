@@ -4,7 +4,7 @@ import * as endpoints from './endpoints';
 import { verifyToken } from './services/GoogleOAuth2';
 
 const [app] = generate(
-  process.env.PROXY_SERVER_PORT,
+  process.env.SVC_PORT_PROXY,
   __dirname,
   Object.values(endpoints)
 );

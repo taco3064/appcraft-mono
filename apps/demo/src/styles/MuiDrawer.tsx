@@ -21,8 +21,21 @@ export const SizedDrawer = withStyles(
       }
     />
   ),
-  (theme) => ({
+  (theme, { anchor }) => ({
     paper: {
+      ...(anchor === 'top' && {
+        borderRadius: theme.spacing(0, 0, 3, 3),
+      }),
+      ...(anchor === 'bottom' && {
+        borderRadius: theme.spacing(3, 3, 0, 0),
+      }),
+      ...(anchor === 'left' && {
+        borderRadius: theme.spacing(0, 3, 3, 0),
+      }),
+      ...(anchor === 'right' && {
+        borderRadius: theme.spacing(3, 0, 0, 3),
+      }),
+
       '& > *': {
         height: '100%',
       },

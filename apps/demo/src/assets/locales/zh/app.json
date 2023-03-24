@@ -1,9 +1,13 @@
 {
+  "btn-add-group": "新增資料夾",
   "btn-back": "返回",
   "btn-cancel": "取消",
+  "btn-confirm": "確定",
   "btn-settings": "設定",
   "btn-signin": "登入",
   "btn-signout": "登出",
+  "lbl-group-description": "詳細說明",
+  "lbl-group-name": "資料夾名稱",
   "lbl-lng": "語言",
   "opt-lng-en": "English",
   "opt-lng-zh": "繁體中文",

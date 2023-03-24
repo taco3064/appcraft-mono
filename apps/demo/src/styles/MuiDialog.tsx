@@ -29,6 +29,8 @@ export const FlexDialog = withStyles(
       {(title || icon) && (
         <DialogTitle
           align="center"
+          color="primary"
+          fontWeight="bolder"
           variant="h5"
           {...(icon && {
             component: IconTypograph,
@@ -43,10 +45,11 @@ export const FlexDialog = withStyles(
 
       {action && (
         <ButtonGroup
-          role="toolbar"
           fullWidth
-          variant="contained"
+          color="inherit"
+          role="toolbar"
           size="large"
+          variant="contained"
           component={DialogActions}
         >
           {action}
@@ -67,6 +70,7 @@ export const FlexDialog = withStyles(
         '& > *': {
           borderTopLeftRadius: 0,
           borderTopRightRadius: 0,
+          margin: '0 !important',
         },
       },
     },

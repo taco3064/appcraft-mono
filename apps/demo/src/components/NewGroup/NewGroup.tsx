@@ -10,12 +10,12 @@ import { FlexDialog } from '~demo/styles';
 import { useFixedT } from '~demo/hooks';
 
 export default function NewGroup({}: Types.NewGroupProps) {
-  const [at, wt] = useFixedT('app', 'widgets');
+  const [at] = useFixedT('app');
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <Tooltip title={wt('btn-add-group')}>
+      <Tooltip title={at('btn-add-group')}>
         <IconButton onClick={() => setOpen(true)}>
           <BookmarkAddIcon fontSize="large" />
         </IconButton>
@@ -25,21 +25,27 @@ export default function NewGroup({}: Types.NewGroupProps) {
         fullWidth
         direction="column"
         maxWidth="xs"
-        title={wt('btn-add-group')}
+        title={at('btn-add-group')}
         open={open}
         action={
-          <Button color="inherit" onClick={() => setOpen(false)}>
-            {at('btn-cancel')}
-          </Button>
+          <>
+            <Button color="inherit" onClick={() => setOpen(false)}>
+              {at('btn-cancel')}
+            </Button>
+
+            <Button color="primary" onClick={() => setOpen(false)}>
+              {at('btn-confirm')}
+            </Button>
+          </>
         }
       >
-        <TextField label={wt('lbl-group-name')} />
+        <TextField label={at('lbl-group-name')} />
 
         <TextField
           multiline
           rows={3}
           maxRows={3}
-          label={wt('lbl-group-description')}
+          label={at('lbl-group-description')}
         />
       </FlexDialog>
     </>

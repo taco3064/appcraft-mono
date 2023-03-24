@@ -1,9 +1,13 @@
 {
+  "btn-add-group": "Add Group",
   "btn-back": "Back",
   "btn-cancel": "Cancel",
+  "btn-confirm": "Confirm",
   "btn-settings": "Settings",
   "btn-signin": "Sign in",
   "btn-signout": "Sign out",
+  "lbl-group-description": "Description",
+  "lbl-group-name": "Group Name",
   "lbl-lng": "Language",
   "opt-lng-en": "English",
   "opt-lng-zh": "繁體中文",

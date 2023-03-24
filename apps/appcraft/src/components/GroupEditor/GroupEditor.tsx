@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
+import axios from 'axios';
 import type { PaperProps } from '@mui/material/Paper';
 import { FormEventHandler, useState } from 'react';
 
@@ -14,22 +15,28 @@ export default function GroupEditor({
   mode,
   type,
   data,
+  onConfirm,
 }: Types.GroupEditorProps) {
   const [at] = useFixedT('app');
   const [open, setOpen] = useState(false);
 
-  const handleSubmit: FormEventHandler<HTMLDivElement> = (e) => {
+  const handleSubmit: FormEventHandler<HTMLDivElement> = async (e) => {
+    e.preventDefault();
+
     const formdata = new FormData(e.target as HTMLFormElement);
 
-    const modified: Partial<Types.GroupData> = {
-      name: formdata.get('name').toString(),
-      description: formdata.get('description').toString(),
-    };
+    const { data: modified } = (await axios.post(
+      '/api/data-forge/data-group/create',
+      {
+        ...data,
+        mode,
+        type,
+        name: formdata.get('name').toString(),
+        description: formdata.get('description').toString(),
+      }
+    )) as { data: Types.GroupData };
 
-    e.preventDefault();
-    setOpen(false);
-
-    console.log(modified);
+    onConfirm?.(modified);
   };
 
   return (

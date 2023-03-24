@@ -6,15 +6,16 @@ import { DefaultImplement } from '../decorators';
 
 export default function generate(
   port,
-  dirname: string,
-  endpoints: DefaultImplement[]
+  endpoints: DefaultImplement[],
+  dirname?: string
 ) {
   const app = express()
     .use(express.json())
-    .use(express.urlencoded({ extended: true }))
-    .use('/assets', express.static(path.join(dirname, 'assets')));
+    .use(express.urlencoded({ extended: true }));
 
-  app.route('/').all();
+  if (dirname) {
+    app.use('/assets', express.static(path.join(dirname, 'assets')));
+  }
 
   Object.values(endpoints).forEach((EndPoint: DefaultImplement) => {
     new EndPoint(app);

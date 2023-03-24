@@ -15,6 +15,7 @@ interface BaseProps<T extends keyof typeof EditorMode, D = undefined> {
   mode: T;
   type: string;
   data: D;
+  onConfirm?: (data: GroupData) => void;
 }
 
 export type GroupEditorProps =

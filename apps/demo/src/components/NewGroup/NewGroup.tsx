@@ -5,11 +5,11 @@ import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 
-import type * as Types from './NewWidgetGroup.types';
+import type * as Types from './NewGroup.types';
 import { FlexDialog } from '~demo/styles';
 import { useFixedT } from '~demo/hooks';
 
-export default function NewWidgetGroup({}: Types.NewWidgetGroupProps) {
+export default function NewGroup({}: Types.NewGroupProps) {
   const [at, wt] = useFixedT('app', 'widgets');
   const [open, setOpen] = useState(false);
 

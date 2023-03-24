@@ -33,7 +33,7 @@ export default function MenuDrawer({
           <ListSubheader component={Styles.GapToolbar}>
             <Styles.IconTypograph
               variant="h5"
-              color="secondary"
+              color="primary"
               icon={<AutoAwesomeMosaicIcon />}
               style={{ marginRight: 'auto' }}
             >

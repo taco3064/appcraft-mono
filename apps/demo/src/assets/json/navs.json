@@ -3,7 +3,7 @@
     "title": "ttl-datasources",
     "description": "dsc-datasources",
     "icon": "storage",
-    "url": "/datasources"
+    "url": "/data-sources"
   },
   {
     "title": "ttl-themes",
@@ -24,9 +24,9 @@
     "url": "/pages"
   },
   {
-    "title": "ttl-navs",
-    "description": "dsc-navs",
-    "icon": "menu_book",
-    "url": "/navs"
+    "title": "ttl-websites",
+    "description": "dsc-websites",
+    "icon": "language",
+    "url": "/websites"
   }
 ]

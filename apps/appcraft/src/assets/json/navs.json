@@ -1,0 +1,32 @@
+[
+  {
+    "title": "ttl-datasources",
+    "description": "dsc-datasources",
+    "icon": "storage",
+    "url": "/data-sources"
+  },
+  {
+    "title": "ttl-themes",
+    "description": "dsc-themes",
+    "icon": "palette",
+    "url": "/themes"
+  },
+  {
+    "title": "ttl-widgets",
+    "description": "dsc-widgets",
+    "icon": "extension",
+    "url": "/widgets"
+  },
+  {
+    "title": "ttl-pages",
+    "description": "dsc-pages",
+    "icon": "dashboard",
+    "url": "/pages"
+  },
+  {
+    "title": "ttl-websites",
+    "description": "dsc-websites",
+    "icon": "language",
+    "url": "/websites"
+  }
+]

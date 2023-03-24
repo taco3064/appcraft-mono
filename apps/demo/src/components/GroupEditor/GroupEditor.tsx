@@ -3,15 +3,34 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
-import { useState } from 'react';
+import type { PaperProps } from '@mui/material/Paper';
+import { FormEventHandler, useState } from 'react';
 
-import type * as Types from './NewGroup.types';
+import type * as Types from './GroupEditor.types';
 import { FlexDialog } from '~demo/styles';
 import { useFixedT } from '~demo/hooks';
 
-export default function NewGroup({}: Types.NewGroupProps) {
+export default function GroupEditor({
+  mode,
+  type,
+  data,
+}: Types.GroupEditorProps) {
   const [at] = useFixedT('app');
   const [open, setOpen] = useState(false);
+
+  const handleSubmit: FormEventHandler<HTMLDivElement> = (e) => {
+    const formdata = new FormData(e.target as HTMLFormElement);
+
+    const modified: Partial<Types.GroupData> = {
+      name: formdata.get('name').toString(),
+      description: formdata.get('description').toString(),
+    };
+
+    e.preventDefault();
+    setOpen(false);
+
+    console.log(modified);
+  };
 
   return (
     <>
@@ -22,6 +41,7 @@ export default function NewGroup({}: Types.NewGroupProps) {
       </Tooltip>
 
       <FlexDialog
+        PaperProps={{ component: 'form', onSubmit: handleSubmit } as PaperProps}
         fullWidth
         direction="column"
         maxWidth="xs"
@@ -33,19 +53,27 @@ export default function NewGroup({}: Types.NewGroupProps) {
               {at('btn-cancel')}
             </Button>
 
-            <Button color="primary" onClick={() => setOpen(false)}>
+            <Button type="submit" color="primary">
               {at('btn-confirm')}
             </Button>
           </>
         }
       >
-        <TextField label={at('lbl-group-name')} />
+        <TextField
+          autoFocus
+          required
+          name="name"
+          label={at('lbl-group-name')}
+          defaultValue={data?.name}
+        />
 
         <TextField
           multiline
           rows={3}
           maxRows={3}
+          name="description"
           label={at('lbl-group-description')}
+          defaultValue={data?.description}
         />
       </FlexDialog>
     </>

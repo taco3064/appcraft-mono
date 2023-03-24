@@ -8,7 +8,7 @@ import { withStyles } from 'tss-react/mui';
 
 import { IconTypograph } from './MuiTypograph';
 
-interface FlexDialogProps extends Omit<DialogProps, 'PaperProps'> {
+interface FlexDialogProps extends DialogProps {
   icon?: ReactNode;
   title?: string;
   action?: ReactNode;
@@ -18,6 +18,7 @@ interface FlexDialogProps extends Omit<DialogProps, 'PaperProps'> {
 
 export const FlexDialog = withStyles(
   ({
+    PaperProps,
     icon,
     title,
     action,
@@ -25,7 +26,7 @@ export const FlexDialog = withStyles(
     direction: _direction,
     ...props
   }: FlexDialogProps) => (
-    <Dialog {...props} PaperProps={{ elevation: 0 }}>
+    <Dialog {...props} PaperProps={{ elevation: 0, ...PaperProps }}>
       {(title || icon) && (
         <DialogTitle
           align="center"

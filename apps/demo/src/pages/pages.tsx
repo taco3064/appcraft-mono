@@ -1,4 +1,4 @@
-import { NewGroup } from '~demo/components';
+import { GroupEditor } from '~demo/components';
 import { PageContainer } from '~demo/styles';
 import { useFixedT } from '~demo/hooks';
 
@@ -10,7 +10,7 @@ export default function Pages() {
       ContentProps={{ disableGutters: true }}
       maxWidth="lg"
       title={nt('ttl-pages')}
-      action={<NewGroup />}
+      action={<GroupEditor mode="add" type="pages" />}
     >
       Pages
     </PageContainer>

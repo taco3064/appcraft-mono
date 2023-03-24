@@ -2,13 +2,9 @@ import express, { Express } from 'express';
 import path from 'path';
 import type { Server } from 'http';
 
-import { DefaultImplement } from '../decorators';
+import type * as Types from './generate.types';
 
-export default function generate(
-  port,
-  endpoints: DefaultImplement[],
-  dirname?: string
-) {
+export default function generate({ port, endpoints, dirname }: Types.Options) {
   const app = express()
     .use(express.json())
     .use(express.urlencoded({ extended: true }));
@@ -17,9 +13,7 @@ export default function generate(
     app.use('/assets', express.static(path.join(dirname, 'assets')));
   }
 
-  Object.values(endpoints).forEach((EndPoint: DefaultImplement) => {
-    new EndPoint(app);
-  });
+  endpoints.forEach((EndPoint) => new EndPoint(app));
 
   return [
     app,

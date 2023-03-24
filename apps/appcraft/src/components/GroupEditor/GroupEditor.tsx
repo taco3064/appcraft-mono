@@ -25,14 +25,16 @@ export default function GroupEditor({
 
     const formdata = new FormData(e.target as HTMLFormElement);
 
-    const { data: modified } = (await axios.post(
-      '/api/data-forge/data-group/create',
+    const { data: modified } = (await axios(
+      `/api/data-forge/data-group/${mode}`,
       {
-        ...data,
-        mode,
-        type,
-        name: formdata.get('name').toString(),
-        description: formdata.get('description').toString(),
+        method: mode === 'add' ? 'post' : 'put',
+        data: {
+          ...data,
+          type,
+          name: formdata.get('name').toString(),
+          description: formdata.get('description').toString(),
+        },
       }
     )) as { data: Types.GroupData };
 

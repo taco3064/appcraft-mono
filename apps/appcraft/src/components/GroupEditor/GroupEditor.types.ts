@@ -1,15 +1,12 @@
+import type { GroupData } from '~data-forge/services/DataGroup';
+
 enum EditorMode {
   add,
   update,
 }
 
 export type Mode = keyof typeof EditorMode;
-
-export interface GroupData {
-  uid: string;
-  name: string;
-  description?: string;
-}
+export type { GroupData };
 
 interface BaseProps<T extends keyof typeof EditorMode, D = undefined> {
   mode: T;

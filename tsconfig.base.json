@@ -18,8 +18,9 @@
       "@appcraft/server": ["libs/server/src/index.ts"],
       "@appcraft/themes": ["libs/themes/src/index.ts"],
       "~appcraft/*": ["apps/appcraft/src/*"],
-      "~parser/*": ["apps/parser/src/*"],
-      "~proxy/*": ["apps/proxy/src/*"]
+      "~data-forge/*": ["apps/data-forge/src/*"],
+      "~proxy/*": ["apps/proxy/src/*"],
+      "~ts2-props-conv/*": ["apps/ts2-props-conv/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -4,7 +4,10 @@ import { generate } from '@appcraft/server';
 import * as endpoints from './endpoints';
 import { verifyToken } from './services/GoogleOAuth2';
 
-const [app] = generate(process.env.SVC_PORT_PROXY, Object.values(endpoints));
+const [app] = generate({
+  port: process.env.SVC_PORT_PROXY,
+  endpoints: Object.values(endpoints),
+});
 
 app
   .use(async (req, res, next) => {
@@ -21,22 +24,25 @@ app
 
     next();
   })
-  .use((req, res, next) => {
-    try {
-      const [, service] = req.url.split('/');
-      const upper = service.toUpperCase().replace(/\-/g, '_');
-
-      const middleware = createProxyMiddleware({
-        target: `http://127.0.0.1:${process.env[`SVC_PORT_${upper}`]}`,
-        changeOrigin: true,
-        onProxyReq: fixRequestBody,
-        pathRewrite: {
-          [`^/${service}`]: '',
-        },
-      });
-
-      middleware(req, res, next);
-    } catch (e) {
-      return res.status(502).json({ error: 'Bad Gateway' });
-    }
-  });
+  .use(
+    '/data-forge',
+    createProxyMiddleware({
+      target: `http://127.0.0.1:${process.env.SVC_PORT_DATA_FORGE}`,
+      changeOrigin: true,
+      onProxyReq: fixRequestBody,
+      pathRewrite: {
+        '^/data-forge': '',
+      },
+    })
+  )
+  .use(
+    '/ts2-props-conv',
+    createProxyMiddleware({
+      target: `http://127.0.0.1:${process.env.SVC_PORT_TS2_PROPS_CONV}`,
+      changeOrigin: true,
+      onProxyReq: fixRequestBody,
+      pathRewrite: {
+        '^/ts2-props-conv': '',
+      },
+    })
+  );

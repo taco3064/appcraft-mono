@@ -1,7 +1,7 @@
 import { Module, Endpoint } from '@appcraft/server';
 import { Request, Response } from 'express';
-import { ServerApiVersion } from 'mongodb';
-import mongoose from 'mongoose';
+
+import * as DataGroupService from '~data-forge/services/DataGroup';
 
 @Module({ base: 'data-group' })
 export default class DataGroup {
@@ -9,13 +9,9 @@ export default class DataGroup {
     method: 'post',
     description: '建立新的 Data Group',
   })
-  async create(req: Request, res: Response) {
-    const conn = await mongoose.connect(process.env.MONGODB_CONN, {
-      serverApi: ServerApiVersion.v1,
-    });
-
-    console.log(conn);
-
-    res.end();
+  async add(req: Request, res: Response) {
+    res.json(
+      await DataGroupService.add(req.body as DataGroupService.GroupData)
+    );
   }
 }

@@ -1,7 +1,7 @@
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { useFixedT } from '~demo/hooks';
+import { useFixedT } from '~appcraft-cms/hooks';
 
 export default function Index() {
   const [at] = useFixedT('app');

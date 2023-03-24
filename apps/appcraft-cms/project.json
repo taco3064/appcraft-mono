@@ -1,7 +1,7 @@
 {
-  "name": "demo",
+  "name": "appcraft-cms",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/demo",
+  "sourceRoot": "apps/appcraft-cms",
   "projectType": "application",
   "targets": {
     "build": {
@@ -11,12 +11,12 @@
       ],
       "defaultConfiguration": "production",
       "options": {
-        "root": "apps/demo",
-        "outputPath": "dist/apps/demo"
+        "root": "apps/appcraft-cms",
+        "outputPath": "dist/apps/appcraft-cms"
       },
       "configurations": {
         "development": {
-          "outputPath": "apps/demo"
+          "outputPath": "apps/appcraft-cms"
         },
         "production": {}
       }
@@ -25,17 +25,17 @@
       "executor": "@nrwl/next:server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "demo:build",
-        "dev": true,
-        "port": 3000
+        "buildTarget": "appcraft-cms:build",
+        "dev": true
       },
       "configurations": {
         "development": {
-          "buildTarget": "demo:build:development",
-          "dev": true
+          "buildTarget": "appcraft-cms:build:development",
+          "dev": true,
+          "port": 3000
         },
         "production": {
-          "buildTarget": "demo:build:production",
+          "buildTarget": "appcraft-cms:build:production",
           "dev": false
         }
       }
@@ -43,7 +43,7 @@
     "export": {
       "executor": "@nrwl/next:export",
       "options": {
-        "buildTarget": "demo:build:production"
+        "buildTarget": "appcraft-cms:build:production"
       }
     },
     "test": {
@@ -52,7 +52,7 @@
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "options": {
-        "jestConfig": "apps/demo/jest.config.ts",
+        "jestConfig": "apps/appcraft-cms/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -69,7 +69,7 @@
       ],
       "options": {
         "lintFilePatterns": [
-          "apps/demo/**/*.{ts,tsx,js,jsx}"
+          "apps/appcraft-cms/**/*.{ts,tsx,js,jsx}"
         ]
       }
     }

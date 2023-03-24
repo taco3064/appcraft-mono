@@ -1,6 +1,6 @@
-import { GroupEditor } from '~demo/components';
-import { PageContainer } from '~demo/styles';
-import { useFixedT } from '~demo/hooks';
+import { GroupEditor } from '~appcraft-cms/components';
+import { PageContainer } from '~appcraft-cms/styles';
+import { useFixedT } from '~appcraft-cms/hooks';
 
 export default function DataSources() {
   const [nt] = useFixedT('nav');

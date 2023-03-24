@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import { create } from 'zustand';
 
-import resources from '@alienfast/i18next-loader?relativePathAsNamespace=true!~demo/assets/locales';
+import resources from '@alienfast/i18next-loader?relativePathAsNamespace=true!~appcraft-cms/assets/locales';
 import type * as Types from './useSetting.types';
 
 //* i18next

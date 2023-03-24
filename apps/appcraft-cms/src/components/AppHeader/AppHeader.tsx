@@ -5,10 +5,10 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 
 import type * as Types from './AppHeader.types';
-import { GapToolbar, Link } from '~demo/styles';
+import { GapToolbar, Link } from '~appcraft-cms/styles';
 import { Signin } from '../Signin';
 import { Userinfo } from '../Userinfo';
-import { useUserAccount } from '~demo/hooks';
+import { useUserAccount } from '~appcraft-cms/hooks';
 
 export default function AppHeader({
   oauth2,

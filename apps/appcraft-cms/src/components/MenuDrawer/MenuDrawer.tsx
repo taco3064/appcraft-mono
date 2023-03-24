@@ -8,10 +8,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 
-import * as Styles from '~demo/styles';
-import NAVS from '~demo/assets/json/navs.json';
+import * as Styles from '~appcraft-cms/styles';
+import NAVS from '~appcraft-cms/assets/json/navs.json';
 import type * as Types from './MenuDrawer.types';
-import { useFixedT } from '~demo/hooks';
+import { useFixedT } from '~appcraft-cms/hooks';
 
 export default function MenuDrawer({
   open,

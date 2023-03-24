@@ -7,8 +7,8 @@ import type { PaperProps } from '@mui/material/Paper';
 import { FormEventHandler, useState } from 'react';
 
 import type * as Types from './GroupEditor.types';
-import { FlexDialog } from '~demo/styles';
-import { useFixedT } from '~demo/hooks';
+import { FlexDialog } from '~appcraft-cms/styles';
+import { useFixedT } from '~appcraft-cms/hooks';
 
 export default function GroupEditor({
   mode,

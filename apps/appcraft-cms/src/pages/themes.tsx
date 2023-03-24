@@ -1,5 +1,5 @@
-import { PageContainer } from '~demo/styles';
-import { useFixedT } from '~demo/hooks';
+import { PageContainer } from '~appcraft-cms/styles';
+import { useFixedT } from '~appcraft-cms/hooks';
 
 export default function Themes() {
   const [nt] = useFixedT('nav');

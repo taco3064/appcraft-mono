@@ -17,7 +17,7 @@
     "paths": {
       "@appcraft/server": ["libs/server/src/index.ts"],
       "@appcraft/themes": ["libs/themes/src/index.ts"],
-      "~demo/*": ["apps/demo/src/*"],
+      "~appcraft-cms/*": ["apps/appcraft-cms/src/*"],
       "~parser/*": ["apps/parser/src/*"],
       "~proxy/*": ["apps/proxy/src/*"]
     }

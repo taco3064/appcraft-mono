@@ -9,9 +9,9 @@ import Skeleton from '@mui/material/Skeleton';
 import { Suspense, useState } from 'react';
 
 import type * as Types from './Userinfo.types';
-import { Link, SizedListItemIcon } from '~demo/styles';
+import { Link, SizedListItemIcon } from '~appcraft-cms/styles';
 import { useLazyAvatar } from './Userinfo.hooks';
-import { useFixedT, useUserAccount } from '~demo/hooks';
+import { useFixedT, useUserAccount } from '~appcraft-cms/hooks';
 
 export default function Userinfo({ menuTransform }: Types.UserinfoProps) {
   const [at] = useFixedT('app');

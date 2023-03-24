@@ -4,8 +4,8 @@ import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import { useRouter } from 'next/router';
 
-import { PageContainer } from '~demo/styles';
-import { useFixedT, useSettingModified } from '~demo/hooks';
+import { PageContainer } from '~appcraft-cms/styles';
+import { useFixedT, useSettingModified } from '~appcraft-cms/hooks';
 
 export default function Settings() {
   const { back } = useRouter();

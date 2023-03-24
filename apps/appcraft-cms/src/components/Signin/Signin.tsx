@@ -8,8 +8,8 @@ import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 
 import type * as Types from './Signin.types';
-import { FlexDialog } from '~demo/styles';
-import { useFixedT, useUserAccount } from '~demo/hooks';
+import { FlexDialog } from '~appcraft-cms/styles';
+import { useFixedT, useUserAccount } from '~appcraft-cms/hooks';
 
 export default function Signin({ oauth2 }: Types.SigninProps) {
   const [at] = useFixedT('app');

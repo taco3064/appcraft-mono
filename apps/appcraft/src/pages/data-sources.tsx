@@ -1,7 +1,7 @@
 import LinearProgress from '@mui/material/LinearProgress';
 import { ReactNode, Suspense, useState } from 'react';
 
-import type { HierarchyListActionName } from '~appcraft/components';
+import type { HierarchyListAction } from '~appcraft/components';
 import { HierarchyList } from '~appcraft/components';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT } from '~appcraft/hooks';
@@ -10,9 +10,7 @@ const category = 'datasources';
 
 export default function DataSources() {
   const [nt] = useFixedT('nav');
-
-  const [action, setAction] =
-    useState<Record<HierarchyListActionName, ReactNode>>(null);
+  const [action, setAction] = useState<Partial<HierarchyListAction>>(null);
 
   return (
     <Suspense fallback={<LinearProgress />}>
@@ -24,14 +22,10 @@ export default function DataSources() {
       >
         <HierarchyList
           category={category}
-          onActionNodeSplit={async (name, node) => {
-            if (name === 'addGroup') {
-              setAction({ ...action, [name]: node });
+          onActionNodeSplit={({ addGroup, ...nodes }) => {
+            setAction({ addGroup });
 
-              return null;
-            }
-
-            return node;
+            return nodes;
           }}
         />
       </PageContainer>

@@ -7,6 +7,7 @@ export interface SearchParams {
 
 export interface HierarchyData<U = undefined> {
   _id: U;
+  userid: string;
   category: string;
   description?: string;
   name: string;
@@ -15,10 +16,12 @@ export interface HierarchyData<U = undefined> {
 }
 
 export type SearchService = (
+  userid: string,
   category: string,
   parasm: SearchParams
 ) => Promise<HierarchyData<ObjectId>[]>;
 
 export type AddService = (
+  userid: string,
   data: HierarchyData
 ) => Promise<HierarchyData<ObjectId>>;

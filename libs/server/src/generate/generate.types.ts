@@ -4,4 +4,5 @@ export interface Options {
   port: string;
   endpoints: DefaultImplement[];
   dirname?: string;
+  ignoreAuth?: RegExp[];
 }

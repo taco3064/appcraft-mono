@@ -12,16 +12,11 @@ export default class Userinfo {
   })
   async profile(req: Request, res: Response) {
     //! 目前只有使用 Google OAuth2, 若未來支援其他登入方式, 此處必須調整
-    const payload = await GoogleOAuth2Service.verifyToken(
-      req.headers.authorization.split('Bearer ')[1]
+    res.json(
+      await GoogleOAuth2Service.verifyToken(
+        req.headers.authorization.split('Bearer ')[1]
+      )
     );
-
-    res.json({
-      userid: payload.sub,
-      username: payload.name,
-      email: payload.email,
-      picture: payload.picture,
-    } as Types.Profile);
   }
 
   @Endpoint({

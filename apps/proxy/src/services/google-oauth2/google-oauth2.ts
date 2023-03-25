@@ -33,5 +33,12 @@ export const verifyToken: Types.VerifyTokenService = async (token) => {
     audience: process.env.GOOGLE_CLIENT_ID,
   });
 
-  return ticket.getPayload();
+  const payload = ticket.getPayload();
+
+  return {
+    id: payload.sub,
+    username: payload.name,
+    email: payload.email,
+    picture: payload.picture,
+  };
 };

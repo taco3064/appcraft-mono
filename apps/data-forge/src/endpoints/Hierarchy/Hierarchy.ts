@@ -12,8 +12,13 @@ export default class Hierarchy {
     description: '查詢 Hierarchy Data',
   })
   async search(req: Request, res: Response) {
+    const token = req.headers.authorization.split('Bearer ')[1];
+
+    console.log(req.user);
+
     res.json(
       await hierarchy.search(
+        req.user.id,
         req.params.category,
         req.body as HierarchyTypes.SearchParams
       )
@@ -25,6 +30,8 @@ export default class Hierarchy {
     description: '建立新的 Hierarchy Group / Item',
   })
   async add(req: Request, res: Response) {
-    res.json(await hierarchy.add(req.body as HierarchyTypes.HierarchyData));
+    res.json(
+      await hierarchy.add(req.user.id, req.body as HierarchyTypes.HierarchyData)
+    );
   }
 }

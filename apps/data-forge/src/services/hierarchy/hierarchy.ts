@@ -4,6 +4,7 @@ import { getMongoCollection } from '@appcraft/server';
 import type * as Types from './hierarchy.types';
 
 export const search: Types.SearchService = async (
+  userid,
   category,
   { keyword, superior }
 ) => {
@@ -13,6 +14,7 @@ export const search: Types.SearchService = async (
   });
 
   const cursor = await collection.find({
+    userid: { $eq: userid },
     category: { $eq: category },
     ...(superior && {
       superior: { $eq: superior },
@@ -33,7 +35,7 @@ export const search: Types.SearchService = async (
     .toArray();
 };
 
-export const add: Types.AddService = async (newData) => {
+export const add: Types.AddService = async (userid, newData) => {
   const collection = await getMongoCollection<Types.HierarchyData<ObjectId>>({
     db: 'data-forge',
     collection: 'hierarchy',
@@ -41,6 +43,7 @@ export const add: Types.AddService = async (newData) => {
 
   const result = await collection.insertOne({
     ...newData,
+    userid,
     _id: new ObjectId(),
   });
 

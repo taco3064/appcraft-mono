@@ -6,16 +6,12 @@ enum ActionType {
 }
 
 export type HierarchyListActionName = keyof typeof ActionType;
-export type HierarchyListAction = Map<
-  HierarchyListActionName,
-  ReactNode | null
->;
+export type HierarchyListAction = Record<HierarchyListActionName, ReactNode>;
 
 export interface HierarchyListProps {
   category: string;
 
   onActionNodeSplit?: (
-    name: HierarchyListActionName,
-    node: ReactNode
-  ) => Promise<ReactNode | null>;
+    nodes: HierarchyListAction
+  ) => Partial<HierarchyListAction>;
 }

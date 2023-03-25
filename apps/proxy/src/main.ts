@@ -2,7 +2,7 @@ import { createProxyMiddleware, fixRequestBody } from 'http-proxy-middleware';
 import { generate } from '@appcraft/server';
 
 import * as endpoints from './endpoints';
-import { verifyToken } from './services/GoogleOAuth2';
+import { verifyToken } from './services/google-oauth2';
 
 const [app] = generate({
   port: process.env.SVC_PORT_PROXY,

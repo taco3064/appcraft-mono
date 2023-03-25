@@ -2,10 +2,7 @@ import { Module, Endpoint } from '@appcraft/server';
 import { Request, Response } from 'express';
 
 import * as hierarchy from '~data-forge/services/hierarchy';
-import type {
-  HierarchyData,
-  SearchParams,
-} from '~data-forge/services/hierarchy';
+import type * as HierarchyTypes from '~data-forge/services/hierarchy';
 
 @Module({ base: 'hierarchy' })
 export default class Hierarchy {
@@ -16,7 +13,10 @@ export default class Hierarchy {
   })
   async search(req: Request, res: Response) {
     res.json(
-      await hierarchy.search(req.params.category, req.body as SearchParams)
+      await hierarchy.search(
+        req.params.category,
+        req.body as HierarchyTypes.SearchParams
+      )
     );
   }
 
@@ -25,6 +25,6 @@ export default class Hierarchy {
     description: '建立新的 Hierarchy Group / Item',
   })
   async add(req: Request, res: Response) {
-    res.json(await hierarchy.add(req.body as HierarchyData));
+    res.json(await hierarchy.add(req.body as HierarchyTypes.HierarchyData));
   }
 }

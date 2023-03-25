@@ -1,7 +1,7 @@
 import { Module, Endpoint } from '@appcraft/server';
 import { Request, Response } from 'express';
 
-import * as GoogleOAuth2Service from '~proxy/services/GoogleOAuth2';
+import * as GoogleOAuth2Service from '~proxy/services/google-oauth2';
 import type * as Types from './Userinfo.types';
 
 @Module({ base: 'userinfo' })

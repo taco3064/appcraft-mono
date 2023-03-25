@@ -1,7 +1,8 @@
 import { Module, Endpoint } from '@appcraft/server';
 import { Request, Response } from 'express';
 
-import * as ProptypesResolveService from '~parser/services/ProptypesResolve';
+import * as proptypesResolve from '~ts2-props-conv/services/proptypes-resolve';
+import type * as ProptypesResolveTypes from '~ts2-props-conv/services/proptypes-resolve';
 
 @Module({ base: 'proptypes' })
 export default class Proptypes {
@@ -10,8 +11,8 @@ export default class Proptypes {
     description: '解析指定的 Typescript Interface',
   })
   parse(req: Request, res: Response) {
-    const body = req.body as ProptypesResolveService.ParseOptions;
+    const body = req.body as ProptypesResolveTypes.ParseOptions;
 
-    res.json(ProptypesResolveService.parse(body));
+    res.json(proptypesResolve.parse(body));
   }
 }

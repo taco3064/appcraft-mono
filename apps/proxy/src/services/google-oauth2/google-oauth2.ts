@@ -1,5 +1,5 @@
 import { OAuth2Client } from 'google-auth-library';
-import type * as Types from './GoogleOAuth2.types';
+import type * as Types from './google-oauth2.types';
 
 const client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,

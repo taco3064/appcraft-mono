@@ -1,4 +1,4 @@
-import type * as Types from './ProptypesResolve.types';
+import type * as Types from './proptypes-resolve.types';
 
 //* 定義 PropTypes 的檢查方式及回傳的 Config 內容 (要注意先後順序)
 const generators: Types.Generators = [

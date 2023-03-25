@@ -12,6 +12,7 @@
     "@emotion/styled": "11.10.6",
     "@mui/icons-material": "^5.11.11",
     "@mui/material": "^5.11.12",
+    "@tanstack/react-query": "^4.28.0",
     "axios": "^1.3.4",
     "express": "^4.18.1",
     "google-auth-library": "^8.7.0",

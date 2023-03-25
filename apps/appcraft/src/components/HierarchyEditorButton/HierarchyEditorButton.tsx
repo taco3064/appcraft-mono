@@ -5,10 +5,11 @@ import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import type { PaperProps } from '@mui/material/Paper';
 import { FormEventHandler, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 
 import type * as Types from './HierarchyEditorButton.types';
 import { FlexDialog } from '~appcraft/styles';
-import { addHierarchy } from '~appcraft/services';
+import { addHierarchy, updateHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 
 export default function HierarchyEditorButton({
@@ -19,20 +20,24 @@ export default function HierarchyEditorButton({
   const [at] = useFixedT('app');
   const [open, setOpen] = useState(false);
 
+  const mutation = useMutation({
+    mutationFn: mode === 'add' ? addHierarchy : updateHierarchy,
+    onSuccess: (modified) => {
+      onConfirm?.(modified);
+      setOpen(false);
+    },
+  });
+
   const handleSubmit: FormEventHandler<HTMLDivElement> = async (e) => {
+    const formdata = new FormData(e.target as HTMLFormElement);
+
     e.preventDefault();
 
-    const formdata = new FormData(e.target as HTMLFormElement);
-    const modified = await (mode === 'add'
-      ? addHierarchy({
-          ...data,
-          name: formdata.get('name').toString(),
-          description: formdata.get('description').toString(),
-        })
-      : null);
-
-    setOpen(false);
-    onConfirm?.(modified);
+    mutation.mutate({
+      ...data,
+      name: formdata.get('name').toString(),
+      description: formdata.get('description').toString(),
+    });
   };
 
   return (

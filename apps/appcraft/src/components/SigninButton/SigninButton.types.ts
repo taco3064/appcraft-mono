@@ -1,4 +1,4 @@
-export interface SigninProps {
+export interface SigninButtonProps {
   oauth2: {
     google: string;
   };

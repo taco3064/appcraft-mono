@@ -3,20 +3,19 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
-import axios from 'axios';
 import type { PaperProps } from '@mui/material/Paper';
 import { FormEventHandler, useState } from 'react';
 
-import type * as Types from './GroupEditor.types';
+import type * as Types from './HierarchyEditorButton.types';
 import { FlexDialog } from '~appcraft/styles';
+import { addHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 
-export default function GroupEditor({
+export default function HierarchyEditorButton({
   mode,
-  type,
   data,
   onConfirm,
-}: Types.GroupEditorProps) {
+}: Types.HierarchyEditorButtonProps) {
   const [at] = useFixedT('app');
   const [open, setOpen] = useState(false);
 
@@ -24,20 +23,15 @@ export default function GroupEditor({
     e.preventDefault();
 
     const formdata = new FormData(e.target as HTMLFormElement);
-
-    const { data: modified } = (await axios(
-      `/api/data-forge/data-group/${mode}`,
-      {
-        method: mode === 'add' ? 'post' : 'put',
-        data: {
+    const modified = await (mode === 'add'
+      ? addHierarchy({
           ...data,
-          type,
           name: formdata.get('name').toString(),
           description: formdata.get('description').toString(),
-        },
-      }
-    )) as { data: Types.GroupData };
+        })
+      : null);
 
+    setOpen(false);
     onConfirm?.(modified);
   };
 

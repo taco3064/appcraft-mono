@@ -8,12 +8,14 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Skeleton from '@mui/material/Skeleton';
 import { Suspense, useState } from 'react';
 
-import type * as Types from './Userinfo.types';
+import type * as Types from './UserinfoMenuToggle.types';
 import { Link, SizedListItemIcon } from '~appcraft/styles';
-import { useLazyAvatar } from './Userinfo.hooks';
+import { useLazyAvatar } from './UserinfoMenuToggle.hooks';
 import { useFixedT, useUserAccount } from '~appcraft/hooks';
 
-export default function Userinfo({ menuTransform }: Types.UserinfoProps) {
+export default function UserinfoMenuToggle({
+  menuTransform,
+}: Types.UserinfoMenuToggleProps) {
   const [at] = useFixedT('app');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
   const { authorized, token } = useUserAccount();

@@ -7,16 +7,15 @@ import LoginIcon from '@mui/icons-material/Login';
 import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 
-import type * as Types from './Signin.types';
+import type * as Types from './SigninButton.types';
 import { FlexDialog } from '~appcraft/styles';
-import { useFixedT, useUserAccount } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/hooks';
 
-export default function Signin({ oauth2 }: Types.SigninProps) {
+export default function SigninButton({ oauth2 }: Types.SigninButtonProps) {
   const [at] = useFixedT('app');
-  const { authorized } = useUserAccount();
   const [open, setOpen] = useState(false);
 
-  return authorized ? null : (
+  return (
     <>
       <Tooltip title={at('btn-signin')}>
         <IconButton onClick={() => setOpen(true)}>

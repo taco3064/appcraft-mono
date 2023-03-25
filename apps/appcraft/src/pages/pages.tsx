@@ -1,4 +1,4 @@
-import { GroupEditor } from '~appcraft/components';
+import { HierarchyEditorButton } from '~appcraft/components';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT } from '~appcraft/hooks';
 
@@ -10,7 +10,12 @@ export default function Pages() {
       ContentProps={{ disableGutters: true }}
       maxWidth="lg"
       title={nt('ttl-pages')}
-      action={<GroupEditor mode="add" type="pages" />}
+      action={
+        <HierarchyEditorButton
+          mode="add"
+          data={{ category: 'pages', type: 'group' }}
+        />
+      }
     >
       Pages
     </PageContainer>

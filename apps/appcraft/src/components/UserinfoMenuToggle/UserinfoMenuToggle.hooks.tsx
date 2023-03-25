@@ -3,7 +3,7 @@ import Tooltip from '@mui/material/Tooltip';
 import axios, { AxiosRequestHeaders } from 'axios';
 import { lazy, useMemo } from 'react';
 
-import type * as Types from './Userinfo.types';
+import type * as Types from './UserinfoMenuToggle.types';
 import type { Profile } from '~proxy/endpoints';
 
 export const useLazyAvatar: Types.LazyAvatarHook = (token) =>

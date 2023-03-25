@@ -206,7 +206,7 @@ const getTypeByPath: Types.PrivateGetTypeByPath = (
 };
 
 //* Service Methods
-export const parse: Types.Parse = ({ propPath = '', ...options }) => {
+export const parse: Types.ParseService = ({ propPath = '', ...options }) => {
   const [source, declaration] = getVirtualSource(options);
 
   const types = getTypeByPath(declaration.getType(), {

@@ -111,4 +111,4 @@ export type PrivateGetProptype<R = PropTypesDef> = (
   source?: TsMorph.SourceFile
 ) => R | false;
 
-export type Parse = (options: ParseOptions) => PropTypesDef | null;
+export type ParseService = (options: ParseOptions) => PropTypesDef | null;

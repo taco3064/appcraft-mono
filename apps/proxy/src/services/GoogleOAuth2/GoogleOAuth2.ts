@@ -7,13 +7,15 @@ const client = new OAuth2Client(
   process.env.GOOGLE_REDIRECT_URI
 );
 
-export const getAuthURL: Types.GetAuthURL = () =>
+export const getAuthURL: Types.GetAuthURLService = () =>
   client.generateAuthUrl({
     access_type: 'offline',
     scope: 'https://www.googleapis.com/auth/userinfo.profile',
   });
 
-export const initialCredentials: Types.InitialCredentials = async (code) => {
+export const initialCredentials: Types.InitialCredentialsService = async (
+  code
+) => {
   const { tokens } = await client.getToken(code);
 
   client.setCredentials(tokens);
@@ -21,11 +23,11 @@ export const initialCredentials: Types.InitialCredentials = async (code) => {
   return tokens;
 };
 
-export const revokeCredentials: Types.RevokeCredentials = async () => {
+export const revokeCredentials: Types.RevokeCredentialsService = async () => {
   await client.revokeCredentials();
 };
 
-export const verifyToken: Types.VerifyToken = async (token) => {
+export const verifyToken: Types.VerifyTokenService = async (token) => {
   const ticket = await client.verifyIdToken({
     idToken: token,
     audience: process.env.GOOGLE_CLIENT_ID,

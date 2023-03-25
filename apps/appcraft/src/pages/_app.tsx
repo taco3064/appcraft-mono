@@ -31,6 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <CssBaseline />
 
           <AppHeader
+            authorized={authorized}
             oauth2={{ google: '/api/oauth2/google' }}
             onMenuToggle={() => setOpen(true)}
           />

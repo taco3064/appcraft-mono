@@ -1,4 +1,4 @@
-import { GroupEditor } from '~appcraft/components';
+import { HierarchyEditorButton } from '~appcraft/components';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT } from '~appcraft/hooks';
 
@@ -10,7 +10,12 @@ export default function DataSources() {
       ContentProps={{ disableGutters: true }}
       maxWidth="lg"
       title={nt('ttl-datasources')}
-      action={<GroupEditor mode="add" type="datasources" />}
+      action={
+        <HierarchyEditorButton
+          mode="add"
+          data={{ category: 'datasources', type: 'group' }}
+        />
+      }
     >
       Data Sources
     </PageContainer>

@@ -6,16 +6,14 @@ import IconButton from '@mui/material/IconButton';
 
 import type * as Types from './AppHeader.types';
 import { GapToolbar, Link } from '~appcraft/styles';
-import { Signin } from '../Signin';
-import { Userinfo } from '../Userinfo';
-import { useUserAccount } from '~appcraft/hooks';
+import { SigninButton } from '../SigninButton';
+import { UserinfoMenuToggle } from '../UserinfoMenuToggle';
 
 export default function AppHeader({
+  authorized,
   oauth2,
   onMenuToggle,
 }: Types.AppHeaderProps) {
-  const { authorized } = useUserAccount();
-
   return (
     <AppBar position="sticky" color="default" elevation={0}>
       <GapToolbar variant="regular">
@@ -35,8 +33,11 @@ export default function AppHeader({
           Appcraft
         </Link>
 
-        <Signin oauth2={oauth2} />
-        <Userinfo menuTransform="translate(12px, 10px)" />
+        {authorized ? (
+          <UserinfoMenuToggle menuTransform="translate(12px, 10px)" />
+        ) : (
+          <SigninButton oauth2={oauth2} />
+        )}
       </GapToolbar>
 
       <Divider />

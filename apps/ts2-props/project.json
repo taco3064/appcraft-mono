@@ -1,7 +1,7 @@
 {
-  "name": "ts2-props-conv",
+  "name": "ts2-props",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/ts2-props-conv/src",
+  "sourceRoot": "apps/ts2-props/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -11,12 +11,12 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/ts2-props-conv",
-        "main": "apps/ts2-props-conv/src/main.ts",
-        "tsConfig": "apps/ts2-props-conv/tsconfig.app.json",
-        "assets": ["apps/ts2-props-conv/src/assets"],
+        "outputPath": "dist/apps/ts2-props",
+        "main": "apps/ts2-props/src/main.ts",
+        "tsConfig": "apps/ts2-props/tsconfig.app.json",
+        "assets": ["apps/ts2-props/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "apps/ts2-props-conv/webpack.config.js"
+        "webpackConfig": "apps/ts2-props/webpack.config.js"
       },
       "configurations": {
         "development": {},
@@ -27,14 +27,14 @@
       "executor": "@nrwl/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "ts2-props-conv:build"
+        "buildTarget": "ts2-props:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "ts2-props-conv:build:development"
+          "buildTarget": "ts2-props:build:development"
         },
         "production": {
-          "buildTarget": "ts2-props-conv:build:production"
+          "buildTarget": "ts2-props:build:production"
         }
       }
     },
@@ -42,14 +42,14 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/ts2-props-conv/**/*.ts"]
+        "lintFilePatterns": ["apps/ts2-props/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/ts2-props-conv/jest.config.ts",
+        "jestConfig": "apps/ts2-props/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {

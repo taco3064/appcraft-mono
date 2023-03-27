@@ -18,7 +18,7 @@ const nextConfig = {
   rewrites: async () => [
     {
       source: '/api/:path*',
-      destination: `http://localhost:${process.env.SVC_PORT_PROXY}/:path*`,
+      destination: `http://localhost:${process.env.PORT_PROXY}/:path*`,
     },
   ],
   webpack: (config, context) =>

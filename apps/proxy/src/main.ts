@@ -5,7 +5,7 @@ import type { Options } from 'http-proxy-middleware';
 import * as endpoints from './endpoints';
 
 const [app] = generate({
-  port: process.env.SVC_PORT_PROXY,
+  port: process.env.PORT_PROXY,
   endpoints: Object.values(endpoints),
   ignoreAuth: [/^\/oauth2\//],
 });
@@ -21,7 +21,7 @@ app
   .use(
     '/data-forge',
     createProxyMiddleware({
-      target: `http://127.0.0.1:${process.env.SVC_PORT_DATA_FORGE}`,
+      target: `http://127.0.0.1:${process.env.PORT_DATA_FORGE}`,
       changeOrigin: true,
       onProxyReq: handleProxyReq,
       pathRewrite: {
@@ -32,7 +32,7 @@ app
   .use(
     '/ts2-props-conv',
     createProxyMiddleware({
-      target: `http://127.0.0.1:${process.env.SVC_PORT_TS2_PROPS_CONV}`,
+      target: `http://127.0.0.1:${process.env.PORT_TS2_PROPS}`,
       changeOrigin: true,
       onProxyReq: handleProxyReq,
       pathRewrite: {

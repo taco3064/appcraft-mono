@@ -7,9 +7,22 @@
   "targets": {
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["libs/themes/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "libs/themes/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "tsc": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p libs/themes/tsconfig.json",
+          "tsc --noEmit -p libs/themes/tsconfig.lib.json"
+        ]
       }
     }
   }

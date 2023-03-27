@@ -6,7 +6,9 @@
   "targets": {
     "build": {
       "executor": "@nrwl/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "defaultConfiguration": "production",
       "options": {
         "target": "node",
@@ -14,7 +16,9 @@
         "outputPath": "dist/apps/data-forge",
         "main": "apps/data-forge/src/main.ts",
         "tsConfig": "apps/data-forge/tsconfig.app.json",
-        "assets": ["apps/data-forge/src/assets"],
+        "assets": [
+          "apps/data-forge/src/assets"
+        ],
         "isolatedConfig": true,
         "webpackConfig": "apps/data-forge/webpack.config.js"
       },
@@ -40,9 +44,22 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/data-forge/**/*.ts"]
+        "lintFilePatterns": [
+          "apps/data-forge/**/*.ts"
+        ]
+      }
+    },
+    "tsc": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p apps/data-forge/tsconfig.json",
+          "tsc --noEmit -p apps/data-forge/tsconfig.app.json"
+        ]
       }
     }
   },

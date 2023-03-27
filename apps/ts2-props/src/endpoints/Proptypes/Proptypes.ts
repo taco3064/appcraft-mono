@@ -1,8 +1,8 @@
 import { Module, Endpoint } from '@appcraft/server';
 import { Request, Response } from 'express';
 
-import * as proptypesResolve from '~ts2-props-conv/services/proptypes-resolve';
-import type * as ProptypesResolveTypes from '~ts2-props-conv/services/proptypes-resolve';
+import * as proptypesResolve from '~ts2-props/services/proptypes-resolve';
+import type * as ProptypesResolveTypes from '~ts2-props/services/proptypes-resolve';
 
 @Module({ base: 'proptypes' })
 export default class Proptypes {

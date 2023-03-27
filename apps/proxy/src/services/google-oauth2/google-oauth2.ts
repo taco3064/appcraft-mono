@@ -20,7 +20,7 @@ export const getAuthURL: Types.GetAuthURLService = async () => {
 
   return client.generateAuthUrl({
     access_type: 'offline',
-    scope: 'https://www.googleapis.com/auth/userinfo.profile',
+    scope: ['profile', 'email'],
   });
 };
 
@@ -56,5 +56,6 @@ export const verifyToken: Types.VerifyTokenService = async (token) => {
     username: payload.name,
     email: payload.email,
     picture: payload.picture,
+    expires: payload.exp,
   };
 };

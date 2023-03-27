@@ -1,32 +1,15 @@
+import cookieParser from 'cookie-parser';
 import express, { Express } from 'express';
 import path from 'path';
 import type { Server } from 'http';
 
 import type * as Types from './generate.types';
-import { verifyToken } from '~proxy/services/google-oauth2';
 
-export default function generate({
-  port,
-  endpoints,
-  dirname,
-  ignoreAuth = [],
-}: Types.Options) {
+export default function generate({ port, endpoints, dirname }: Types.Options) {
   const app = express()
+    .use(cookieParser())
     .use(express.json())
-    .use(express.urlencoded({ extended: true }))
-    .use(async (req, res, next) => {
-      if (ignoreAuth.every((ignored) => !ignored.test(req.url))) {
-        try {
-          const token = req.headers.authorization.split('Bearer ')[1];
-
-          req.user = await verifyToken(token);
-        } catch (e) {
-          return res.status(401).json({ error: 'Unauthorized' });
-        }
-      }
-
-      next();
-    });
+    .use(express.urlencoded({ extended: true }));
 
   if (dirname) {
     app.use('/assets', express.static(path.join(dirname, 'assets')));

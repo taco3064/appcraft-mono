@@ -1,5 +1,7 @@
+import jwt from 'jsonwebtoken';
 import { Module, Endpoint } from '@appcraft/server';
 import { Request, Response } from 'express';
+import type { Userinfo } from '@appcraft/server';
 
 import * as hierarchy from '~data-forge/services/hierarchy';
 import type * as HierarchyTypes from '~data-forge/services/hierarchy';
@@ -12,13 +14,12 @@ export default class Hierarchy {
     description: '查詢 Hierarchy Data',
   })
   async search(req: Request, res: Response) {
-    const token = req.headers.authorization.split('Bearer ')[1];
-
-    console.log(req.user);
+    const { jwt: token, secret } = req.cookies;
+    const { id } = jwt.verify(token, secret) as Userinfo;
 
     res.json(
       await hierarchy.search(
-        req.user.id,
+        id,
         req.params.category,
         req.body as HierarchyTypes.SearchParams
       )
@@ -30,8 +31,9 @@ export default class Hierarchy {
     description: '建立新的 Hierarchy Group / Item',
   })
   async add(req: Request, res: Response) {
-    res.json(
-      await hierarchy.add(req.user.id, req.body as HierarchyTypes.HierarchyData)
-    );
+    const { jwt: token, secret } = req.cookies;
+    const { id } = jwt.verify(token, secret) as Userinfo;
+
+    res.json(await hierarchy.add(id, req.body as HierarchyTypes.HierarchyData));
   }
 }

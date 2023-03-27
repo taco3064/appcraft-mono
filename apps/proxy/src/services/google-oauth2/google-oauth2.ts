@@ -1,21 +1,30 @@
 import { OAuth2Client } from 'google-auth-library';
+
+import { secretEnv } from '@appcraft/server';
 import type * as Types from './google-oauth2.types';
 
-const client = new OAuth2Client(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_REDIRECT_URI
+const clientSync = secretEnv.then(
+  ({ GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET }) =>
+    new OAuth2Client(
+      GOOGLE_CLIENT_ID,
+      GOOGLE_CLIENT_SECRET,
+      process.env.GOOGLE_REDIRECT_URI
+    )
 );
 
-export const getAuthURL: Types.GetAuthURLService = () =>
-  client.generateAuthUrl({
+export const getAuthURL: Types.GetAuthURLService = async () => {
+  const client = await clientSync;
+
+  return client.generateAuthUrl({
     access_type: 'offline',
     scope: 'https://www.googleapis.com/auth/userinfo.profile',
   });
+};
 
 export const initialCredentials: Types.InitialCredentialsService = async (
   code
 ) => {
+  const client = await clientSync;
   const { tokens } = await client.getToken(code);
 
   client.setCredentials(tokens);
@@ -24,10 +33,14 @@ export const initialCredentials: Types.InitialCredentialsService = async (
 };
 
 export const revokeCredentials: Types.RevokeCredentialsService = async () => {
+  const client = await clientSync;
+
   await client.revokeCredentials();
 };
 
 export const verifyToken: Types.VerifyTokenService = async (token) => {
+  const client = await clientSync;
+
   const ticket = await client.verifyIdToken({
     idToken: token,
     audience: process.env.GOOGLE_CLIENT_ID,

@@ -9,8 +9,8 @@ export default class OAuth2 {
     method: 'get',
     description: '跳轉至 Google 登入畫面',
   })
-  google(_req: Request, res: Response) {
-    res.redirect(googleOauth2.getAuthURL());
+  async google(_req: Request, res: Response) {
+    res.redirect(await googleOauth2.getAuthURL());
   }
 
   @Endpoint({

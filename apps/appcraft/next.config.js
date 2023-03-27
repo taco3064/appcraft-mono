@@ -1,7 +1,7 @@
 const { merge } = require('webpack-merge');
 const { withNx } = require('@nrwl/next/plugins/with-nx');
 
-const webpackGenerator = require('../../tools/generators/webpack.base');
+const webpackGenerator = require('../../tools/generators/webpack.frontend.base');
 const isProduction = process.env.NODE_ENV === 'production';
 
 /**

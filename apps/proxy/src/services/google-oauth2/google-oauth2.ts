@@ -1,9 +1,12 @@
 import { OAuth2Client } from 'google-auth-library';
+import { getSecretEnvironments } from '@appcraft/server';
 
-import { secretEnv } from '@appcraft/server';
 import type * as Types from './google-oauth2.types';
 
-const clientSync = secretEnv.then(
+const clientSync = getSecretEnvironments(
+  'GOOGLE_CLIENT_ID',
+  'GOOGLE_CLIENT_SECRET'
+).then(
   ({ GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET }) =>
     new OAuth2Client(
       GOOGLE_CLIENT_ID,

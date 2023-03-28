@@ -18,12 +18,17 @@ export default function DataSources() {
         ContentProps={{ disableGutters: true }}
         maxWidth="lg"
         title={nt('ttl-datasources')}
-        action={action?.addGroup}
+        action={
+          <>
+            {action?.keywordSearch}
+            {action?.addGroup}
+          </>
+        }
       >
         <HierarchyList
           category={category}
-          onActionNodeSplit={({ addGroup, ...nodes }) => {
-            setAction({ addGroup });
+          onActionNodeSplit={({ addGroup, keywordSearch, ...nodes }) => {
+            setAction({ addGroup, keywordSearch });
 
             return nodes;
           }}

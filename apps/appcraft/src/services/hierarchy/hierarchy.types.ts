@@ -5,17 +5,19 @@ import type {
   SearchParams,
 } from '~data-forge/services/hierarchy';
 
-export type { HierarchyData, SearchParams };
+type SimpleData<U = undefined> = Omit<HierarchyData<U>, 'userid'>;
+
+export type { SimpleData as HierarchyData, SearchParams };
 
 export type SearchHierarchyService = QueryFunction<
-  HierarchyData<string>[],
-  readonly [string, string, string]
+  SimpleData<string>[],
+  readonly [string, SearchParams]
 >;
 
 export type AddHierarchyService = (
-  data: Omit<HierarchyData, '_id'>
-) => Promise<HierarchyData<string>>;
+  data: Omit<SimpleData, '_id'>
+) => Promise<SimpleData<string>>;
 
 export type UpdateHierarchyService = (
-  data: HierarchyData<string>
-) => Promise<HierarchyData<string>>;
+  data: SimpleData<string>
+) => Promise<SimpleData<string>>;

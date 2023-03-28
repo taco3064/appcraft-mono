@@ -26,7 +26,7 @@ interface PageContainerProps extends Omit<ContainerProps, 'disableGutters'> {
 export const PageContainer = withStyles(
   ({ ContentProps, title, action, children, ...props }: PageContainerProps) => (
     <Container {...props} disableGutters>
-      <Toolbar disableGutters variant="dense">
+      <Toolbar role="toolbar" disableGutters variant="dense">
         <Typography
           fontWeight="bolder"
           variant="h5"
@@ -53,6 +53,9 @@ export const PageContainer = withStyles(
   ),
   (theme, { ContentProps }) => ({
     root: {
+      '& > [role=toolbar]': {
+        gap: theme.spacing(0.5),
+      },
       '& > [role=contentinfo]': {
         background: ContentProps?.disableGutters ? 'transparent' : null,
         borderRadius: theme.spacing(1),

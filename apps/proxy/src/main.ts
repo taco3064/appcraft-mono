@@ -40,7 +40,7 @@ const app = express()
   .use(
     '/data-forge',
     createProxyMiddleware({
-      target: `http://127.0.0.1:${process.env.PORT_DATA_FORGE}`,
+      target: 'https://data-forge.herokuapp.com/',
       changeOrigin: true,
       onProxyReq: fixRequestBody,
       pathRewrite: {

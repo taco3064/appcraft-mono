@@ -1,1 +1,0 @@
-web: nx run data-forge:serve:development

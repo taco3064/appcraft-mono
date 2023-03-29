@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
+const { DefinePlugin } = require('webpack');
 
-module.exports = (dirname, context) => {
+module.exports = (environment, dirname) => {
   const basename = path.basename(dirname);
 
   //* 取得現有 Libs
@@ -26,6 +27,11 @@ module.exports = (dirname, context) => {
   );
 
   return {
+    plugins: [
+      new DefinePlugin({
+        '__WEBPACK_DEFINE__.ENV': JSON.stringify(environment),
+      }),
+    ],
     resolve: {
       alias: {
         ...libAlias,

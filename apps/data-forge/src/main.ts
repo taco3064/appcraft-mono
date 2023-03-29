@@ -6,6 +6,8 @@ import * as endpoints from './endpoints';
 
 const port = process.env.PORT_DATA_FORGE;
 
+console.log(__WEBPACK_DEFINE__.ENV);
+
 const app = express()
   .use(cookieParser())
   .use(express.json())

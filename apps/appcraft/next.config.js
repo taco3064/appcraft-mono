@@ -24,9 +24,7 @@ const nextConfig = {
     },
   ],
   webpack: ({ plugins, resolve, ...config }, context) => {
-    const {
-      resolve: { alias },
-    } = webpackBase(__dirname, context);
+    const base = webpackBase(context.buildId, __dirname);
 
     //* 取得 App 支援的 Languages
     const languages = fs
@@ -39,11 +37,12 @@ const nextConfig = {
         ...resolve,
         alias: {
           ...resolve.alias,
-          ...alias,
+          ...base.resolve.alias,
         },
       },
       plugins: [
         ...plugins,
+        ...base.plugins,
         new DefinePlugin({
           '__WEBPACK_DEFINE__.LANGUAGES': JSON.stringify(languages),
         }),

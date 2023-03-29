@@ -5,5 +5,6 @@ declare module '@alienfast/i18next-loader?relativePathAsNamespace=true!*' {
 }
 
 declare const __WEBPACK_DEFINE__: {
+  ENV: 'development' | 'production';
   LANGUAGES: string[];
 };

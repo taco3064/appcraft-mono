@@ -1,17 +1,21 @@
+import cookieParser from 'cookie-parser';
 import crypto from 'crypto';
+import express from 'express';
 import jwt from 'jsonwebtoken';
+import path from 'path';
 import { createProxyMiddleware, fixRequestBody } from 'http-proxy-middleware';
-import { generate } from '@appcraft/server';
+import type { DefaultImplement } from '@appcraft/server';
 
 import { verifyToken } from '~proxy/services/google-oauth2';
 import * as endpoints from './endpoints';
 
-const [app] = generate({
-  port: process.env.PORT_PROXY,
-  endpoints: Object.values(endpoints),
-});
+const port = process.env.PORT_PROXY;
 
-app
+const app = express()
+  .use(cookieParser())
+  .use(express.json())
+  .use(express.urlencoded({ extended: true }))
+  .use('/assets', express.static(path.join(__dirname, 'assets')))
   .use(async (req, res, next) => {
     if (!/^\/oauth2\//.test(req.url)) {
       try {
@@ -21,11 +25,11 @@ app
         const secretKey = crypto.randomBytes(32).toString();
 
         res
+          .setHeader('x-secret-key', secretKey)
           .cookie('jwt', jwt.sign(user, secretKey, { expiresIn }), {
             expires,
             httpOnly: true,
-          })
-          .cookie('secret', secretKey, { expires, httpOnly: true });
+          });
       } catch (e) {
         return res.status(401).json({ error: 'Unauthorized' });
       }
@@ -55,3 +59,12 @@ app
       },
     })
   );
+
+Object.values(endpoints).forEach(
+  (EndPoint: DefaultImplement) => new EndPoint(app)
+);
+
+app
+  .listen(process.env.PORT_PROXY)
+  .on('error', console.error)
+  .on('listening', () => console.log(`Listening at ${port}`));

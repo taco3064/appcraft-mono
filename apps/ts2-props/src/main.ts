@@ -1,8 +1,21 @@
-import { generate } from '@appcraft/server';
+import cookieParser from 'cookie-parser';
+import express from 'express';
+import type { DefaultImplement } from '@appcraft/server';
+
 import * as endpoints from './endpoints';
 
-generate({
-  port: process.env.PORT_TS2_PROPS,
-  endpoints: Object.values(endpoints),
-  dirname: __dirname,
-});
+const port = process.env.PORT_DATA_FORGE;
+
+const app = express()
+  .use(cookieParser())
+  .use(express.json())
+  .use(express.urlencoded({ extended: true }));
+
+Object.values(endpoints).forEach(
+  (EndPoint: DefaultImplement) => new EndPoint(app)
+);
+
+app
+  .listen(port)
+  .on('error', console.error)
+  .on('listening', () => console.log(`Listening at ${port}`));

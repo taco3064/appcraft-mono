@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 
-import { getMongoCollection } from '@appcraft/server';
+import { getCollection } from '../common';
 import type * as Types from './hierarchy.types';
 
 export const search: Types.SearchService = async (
@@ -8,7 +8,7 @@ export const search: Types.SearchService = async (
   category,
   { keyword, superior }
 ) => {
-  const collection = await getMongoCollection<Types.HierarchyData<ObjectId>>({
+  const collection = await getCollection<Types.HierarchyData<ObjectId>>({
     db: 'data-forge',
     collection: 'hierarchy',
   });
@@ -36,7 +36,7 @@ export const search: Types.SearchService = async (
 };
 
 export const add: Types.AddService = async (userid, newData) => {
-  const collection = await getMongoCollection<Types.HierarchyData<ObjectId>>({
+  const collection = await getCollection<Types.HierarchyData<ObjectId>>({
     db: 'data-forge',
     collection: 'hierarchy',
   });

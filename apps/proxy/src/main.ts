@@ -9,7 +9,7 @@ import type { DefaultImplement } from '@appcraft/server';
 import { verifyToken } from '~proxy/services/google-oauth2';
 import * as endpoints from './endpoints';
 
-const port = process.env.PORT_PROXY;
+const port = process.env.SERVICE_PROXY.replace(/^.+\:/, '');
 
 const app = express()
   .use(cookieParser())
@@ -40,7 +40,7 @@ const app = express()
   .use(
     '/data-forge',
     createProxyMiddleware({
-      target: 'https://data-forge.herokuapp.com/',
+      target: process.env.SERVICE_DATA_FORGE,
       changeOrigin: true,
       onProxyReq: fixRequestBody,
       pathRewrite: {
@@ -51,7 +51,7 @@ const app = express()
   .use(
     '/ts2-props',
     createProxyMiddleware({
-      target: `http://127.0.0.1:${process.env.PORT_TS2_PROPS}`,
+      target: process.env.SERVICE_TS2_PROPS,
       changeOrigin: true,
       onProxyReq: fixRequestBody,
       pathRewrite: {
@@ -65,6 +65,6 @@ Object.values(endpoints).forEach(
 );
 
 app
-  .listen(process.env.PORT_PROXY)
+  .listen(port)
   .on('error', console.error)
   .on('listening', () => console.log(`Listening at ${port}`));

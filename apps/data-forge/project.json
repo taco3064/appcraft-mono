@@ -19,6 +19,7 @@
         "assets": [
           "apps/data-forge/src/assets"
         ],
+        "generatePackageJson": true,
         "isolatedConfig": true,
         "webpackConfig": "apps/data-forge/webpack.config.js"
       },

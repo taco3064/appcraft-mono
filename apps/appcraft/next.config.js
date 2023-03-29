@@ -20,7 +20,7 @@ const nextConfig = {
   rewrites: async () => [
     {
       source: '/api/:path*',
-      destination: `http://localhost:${process.env.PORT_PROXY}/:path*`,
+      destination: `${SERVICE_PROXY}/:path*`,
     },
   ],
   webpack: ({ plugins, resolve, ...config }, context) => {

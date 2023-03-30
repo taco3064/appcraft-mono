@@ -11,15 +11,15 @@ import { Suspense, useState } from 'react';
 import type * as Types from './UserinfoMenuToggle.types';
 import { Link, SizedListItemIcon } from '~appcraft/styles';
 import { useLazyAvatar } from './UserinfoMenuToggle.hooks';
-import { useFixedT, useUserAccount } from '~appcraft/hooks';
+import { useFixedT, useAuthTokens } from '~appcraft/hooks';
 
 export default function UserinfoMenuToggle({
   menuTransform,
 }: Types.UserinfoMenuToggleProps) {
   const [at] = useFixedT('app');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
-  const { authorized, token } = useUserAccount();
-  const LazyAvatar = useLazyAvatar(token);
+  const { authorized, tokens } = useAuthTokens();
+  const LazyAvatar = useLazyAvatar(tokens.id);
 
   return !authorized ? null : (
     <Suspense fallback={<Skeleton variant="circular" width={40} height={40} />}>
@@ -46,7 +46,9 @@ export default function UserinfoMenuToggle({
 
         <ListItemButton
           dense
-          href={`/api/userinfo/signout?token=${encodeURIComponent(token)}`}
+          href={`/api/oauth2/signout?access=${encodeURIComponent(
+            tokens.access
+          )}`}
         >
           <SizedListItemIcon size="small">
             <LogoutIcon />

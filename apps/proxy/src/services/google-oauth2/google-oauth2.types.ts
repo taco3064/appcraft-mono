@@ -3,5 +3,5 @@ import type { Userinfo } from '@appcraft/server';
 
 export type GetAuthURLService = () => Promise<string>;
 export type InitialCredentialsService = (code: string) => Promise<Credentials>;
-export type RevokeCredentialsService = () => Promise<void>;
-export type VerifyTokenService = (token: string) => Promise<Userinfo>;
+export type RevokeTokenService = (accessToken: string) => Promise<void>;
+export type VerifyTokenService = (idToken: string) => Promise<Userinfo>;

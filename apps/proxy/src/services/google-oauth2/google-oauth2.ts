@@ -24,13 +24,13 @@ export const initialCredentials: Types.InitialCredentialsService = async (
   return tokens;
 };
 
-export const revokeCredentials: Types.RevokeCredentialsService = async () => {
-  await client.revokeCredentials();
+export const revokeToken: Types.RevokeTokenService = async (accessToken) => {
+  await client.revokeToken(accessToken);
 };
 
-export const verifyToken: Types.VerifyTokenService = async (token) => {
+export const verifyToken: Types.VerifyTokenService = async (idToken) => {
   const ticket = await client.verifyIdToken({
-    idToken: token,
+    idToken,
     audience: process.env.GOOGLE_CLIENT_ID,
   });
 

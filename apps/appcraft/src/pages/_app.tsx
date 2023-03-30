@@ -10,7 +10,7 @@ import * as THEMES from '@appcraft/themes';
 import IndexPage from './index';
 import { AppHeader, MenuDrawer } from '~appcraft/components';
 import { MainContainer } from '~appcraft/styles';
-import { useUserAccount } from '~appcraft/hooks';
+import { useAuthTokens } from '~appcraft/hooks';
 
 const client = new QueryClient({
   defaultOptions: {
@@ -21,7 +21,7 @@ const client = new QueryClient({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { authorized } = useUserAccount();
+  const { authorized } = useAuthTokens();
   const [open, setOpen] = useState(false);
 
   return (

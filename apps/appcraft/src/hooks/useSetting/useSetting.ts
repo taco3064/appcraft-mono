@@ -13,15 +13,15 @@ export const useFixedT: Types.FixedTHook = (...namespaces) => {
   return namespaces.map((namespace) => getFixedT(namespace));
 };
 
-export const useUserAccount: Types.UserAccountHook = () => {
-  const token = useSettingStore(
-    ({ token }) => token,
+export const useAuthTokens: Types.UserAutTokensHook = () => {
+  const tokens = useSettingStore(
+    ({ tokens }) => tokens,
     (t1, t2) => t1 === t2
   );
 
   return {
-    authorized: Boolean(token),
-    token,
+    authorized: Object.values(tokens).every((token) => token),
+    tokens,
   };
 };
 

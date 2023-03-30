@@ -1,5 +1,4 @@
 import cookieParser from 'cookie-parser';
-import crypto from 'crypto';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import path from 'path';
@@ -19,8 +18,12 @@ const app = express()
   .use(async (req, res, next) => {
     if (!/^\/oauth2\//.test(req.url)) {
       try {
-        const token = req.headers.authorization.split('Bearer ')[1];
-        const { expires: expiresIn, ...user } = await verifyToken(token);
+        const idToken = jwt.verify(
+          req.cookies.id,
+          __WEBPACK_DEFINE__.JWT_SECRET
+        ) as string;
+
+        const { expires: expiresIn, ...user } = await verifyToken(idToken);
         const expires = new Date(new Date().valueOf() + expiresIn);
 
         res.cookie(

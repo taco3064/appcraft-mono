@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import { Module, Endpoint } from '@appcraft/server';
 import { Request, Response } from 'express';
 
@@ -21,11 +22,35 @@ export default class OAuth2 {
   async callback4Google(req: Request, res: Response) {
     const { code } = req.query as { code: string };
     const credentials = await googleOauth2.initialCredentials(code);
+    const cookieOpts = { expires: new Date(credentials.expiry_date) };
 
     res
-      .cookie('token', credentials.id_token, {
-        expires: new Date(credentials.expiry_date),
-      })
+      .cookie(
+        'id',
+        jwt.sign(credentials.id_token, __WEBPACK_DEFINE__.JWT_SECRET),
+        cookieOpts
+      )
+      .cookie(
+        'access',
+        jwt.sign(credentials.access_token, __WEBPACK_DEFINE__.JWT_SECRET),
+        cookieOpts
+      )
       .redirect('/');
+  }
+
+  @Endpoint({
+    method: 'get',
+    description: '登出',
+  })
+  async signout(req: Request, res: Response) {
+    const accessToken = jwt.verify(
+      req.query.access as string,
+      __WEBPACK_DEFINE__.JWT_SECRET
+    ) as string;
+
+    //! 目前只有使用 Google OAuth2, 若未來支援其他登入方式, 此處必須調整
+    await googleOauth2.revokeToken(accessToken);
+
+    res.clearCookie('access').clearCookie('id').redirect('/');
   }
 }

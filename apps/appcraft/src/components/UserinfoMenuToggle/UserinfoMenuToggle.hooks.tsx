@@ -24,10 +24,12 @@ export const useLazyAvatar: Types.LazyAvatarHook = (token) =>
             data: Profile;
           };
 
+          console.log(data);
+
           return {
             default: () => (
               <Tooltip title={data.username}>
-                <Avatar alt="" src={data.picture} />
+                <Avatar alt={data.username} src={data.picture} />
               </Tooltip>
             ),
           };

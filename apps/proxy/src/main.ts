@@ -22,15 +22,17 @@ const app = express()
         const token = req.headers.authorization.split('Bearer ')[1];
         const { expires: expiresIn, ...user } = await verifyToken(token);
         const expires = new Date(new Date().valueOf() + expiresIn);
-        const secretKey = crypto.randomBytes(32).toString();
 
-        res
-          .setHeader('x-secret-key', secretKey)
-          .cookie('jwt', jwt.sign(user, secretKey, { expiresIn }), {
+        res.cookie(
+          'jwt',
+          jwt.sign(user, __WEBPACK_DEFINE__.JWT_SECRET, { expiresIn }),
+          {
             expires,
             httpOnly: true,
-          });
+          }
+        );
       } catch (e) {
+        console.error(e);
         return res.status(401).json({ error: 'Unauthorized' });
       }
     }

@@ -16,7 +16,7 @@ export default class Hierarchy {
   async search(req: Request, res: Response) {
     const { id } = jwt.verify(
       req.cookies.jwt,
-      req.headers['x-secret-key'] as string
+      __WEBPACK_DEFINE__.JWT_SECRET
     ) as Userinfo;
 
     res.json(
@@ -33,8 +33,10 @@ export default class Hierarchy {
     description: '建立新的 Hierarchy Group / Item',
   })
   async add(req: Request, res: Response) {
-    const { jwt: token, secret } = req.cookies;
-    const { id } = jwt.verify(token, secret) as Userinfo;
+    const { id } = jwt.verify(
+      req.cookies.jwt,
+      __WEBPACK_DEFINE__.JWT_SECRET
+    ) as Userinfo;
 
     res.json(await hierarchy.add(id, req.body as HierarchyTypes.HierarchyData));
   }

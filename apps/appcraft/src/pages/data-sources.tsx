@@ -1,4 +1,5 @@
 import LinearProgress from '@mui/material/LinearProgress';
+import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import { Suspense, useState } from 'react';
 
 import { HierarchyList } from '~appcraft/containers';
@@ -28,6 +29,7 @@ export default function DataSources() {
       >
         <HierarchyList
           category={category}
+          icon={StorageRoundedIcon}
           onActionNodeSplit={({ addGroup, addItem, search, ...nodes }) => {
             setAction({ addGroup, addItem, search });
 

@@ -1,30 +1,27 @@
 import FilterListIcon from '@mui/icons-material/FilterList';
 import IconButton from '@mui/material/IconButton';
+import Masonry from '@mui/lab/Masonry';
+import Paper from '@mui/material/Paper';
+import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import { useQuery } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { CollapseKeyword } from '~appcraft/components/CollapseKeyword';
+import { CollapseKeyword, HierarchyCard } from '~appcraft/components';
 import { HierarchyEditorButton } from '../HierarchyEditorButton';
 import { searchHierarchy } from '~appcraft/services';
-import { useFixedT, useWidth } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './HierarchyList.types';
 import type { SearchParams } from '~appcraft/services';
 
 const DEFAULT_ACTION_NODE_SPLIT: Types.HierarchyListProps['onActionNodeSplit'] =
   (e) => e;
 
-const SEARCH_WIDTH: Record<'xs' | 'sm', string> = {
-  xs: '100%',
-  sm: '80%',
-};
-
 export default function HierarchyList({
   category,
+  icon,
   onActionNodeSplit = DEFAULT_ACTION_NODE_SPLIT,
 }: Types.HierarchyListProps) {
-  const width = useWidth();
-  const keywordRef = useRef<HTMLInputElement>(null);
   const [at] = useFixedT('app');
   const [collapsed, setCollapsed] = useState(true);
 
@@ -69,6 +66,18 @@ export default function HierarchyList({
 
   return (
     <>
+      {Object.keys(action || {}).length > 0 && (
+        <Toolbar
+          disableGutters
+          variant="dense"
+          style={{ justifyContent: 'flex-end' }}
+        >
+          {action.search}
+          {action.addGroup}
+          {action.addItem}
+        </Toolbar>
+      )}
+
       <CollapseKeyword
         in={!collapsed}
         defaultValue={params.keyword}
@@ -76,7 +85,13 @@ export default function HierarchyList({
         onConfirm={(keyword) => setParams({ ...params, keyword })}
       />
 
-      {params.keyword}
+      <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={2}>
+        {hierarchies.map((data, i) => (
+          <Paper key={data._id} elevation={0}>
+            <HierarchyCard data={data} icon={icon} />
+          </Paper>
+        ))}
+      </Masonry>
     </>
   );
 }

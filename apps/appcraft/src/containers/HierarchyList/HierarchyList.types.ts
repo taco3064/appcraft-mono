@@ -1,4 +1,5 @@
-import { ReactNode } from 'react';
+import SvgIcon from '@mui/material/SvgIcon';
+import type { ReactNode } from 'react';
 
 enum ActionType {
   addGroup,
@@ -11,6 +12,7 @@ export type HierarchyListAction = Record<HierarchyListActionName, ReactNode>;
 
 export interface HierarchyListProps {
   category: string;
+  icon: typeof SvgIcon;
 
   onActionNodeSplit?: (
     nodes: HierarchyListAction

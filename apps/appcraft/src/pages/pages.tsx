@@ -1,4 +1,4 @@
-import { HierarchyEditorButton } from '~appcraft/components';
+import { HierarchyEditorButton } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT } from '~appcraft/hooks';
 

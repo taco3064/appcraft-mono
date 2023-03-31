@@ -1,10 +1,10 @@
 import LinearProgress from '@mui/material/LinearProgress';
-import { ReactNode, Suspense, useState } from 'react';
+import { Suspense, useState } from 'react';
 
-import type { HierarchyListAction } from '~appcraft/components';
-import { HierarchyList } from '~appcraft/components';
+import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT } from '~appcraft/hooks';
+import type { HierarchyListAction } from '~appcraft/containers';
 
 const category = 'datasources';
 
@@ -20,15 +20,16 @@ export default function DataSources() {
         title={nt('ttl-datasources')}
         action={
           <>
-            {action?.keywordSearch}
+            {action?.search}
             {action?.addGroup}
+            {action?.addItem}
           </>
         }
       >
         <HierarchyList
           category={category}
-          onActionNodeSplit={({ addGroup, keywordSearch, ...nodes }) => {
-            setAction({ addGroup, keywordSearch });
+          onActionNodeSplit={({ addGroup, addItem, search, ...nodes }) => {
+            setAction({ addGroup, addItem, search });
 
             return nodes;
           }}

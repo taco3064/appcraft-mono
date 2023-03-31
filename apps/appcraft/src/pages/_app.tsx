@@ -1,3 +1,4 @@
+import * as THEMES from '@appcraft/themes';
 import CssBaseline from '@mui/material/CssBaseline';
 import Head from 'next/head';
 import NoSsr from '@mui/material/NoSsr';
@@ -6,9 +7,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
 
-import * as THEMES from '@appcraft/themes';
 import IndexPage from './index';
-import { AppHeader, MenuDrawer } from '~appcraft/components';
+import { AppHeader, MenuDrawer } from '~appcraft/containers';
 import { MainContainer } from '~appcraft/styles';
 import { useAuthTokens } from '~appcraft/hooks';
 

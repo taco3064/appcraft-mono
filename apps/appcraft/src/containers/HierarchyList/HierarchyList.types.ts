@@ -2,7 +2,8 @@ import { ReactNode } from 'react';
 
 enum ActionType {
   addGroup,
-  keywordSearch,
+  addItem,
+  search,
 }
 
 export type HierarchyListActionName = keyof typeof ActionType;

@@ -10,8 +10,8 @@ import ListSubheader from '@mui/material/ListSubheader';
 
 import * as Styles from '~appcraft/styles';
 import NAVS from '~appcraft/assets/json/navs.json';
-import type * as Types from './MenuDrawer.types';
 import { useFixedT } from '~appcraft/hooks';
+import type * as Types from './MenuDrawer.types';
 
 export default function MenuDrawer({
   open,

@@ -1,16 +1,17 @@
+import AddIcon from '@mui/icons-material/Add';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
-import type { PaperProps } from '@mui/material/Paper';
 import { FormEventHandler, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import type { PaperProps } from '@mui/material/Paper';
 
-import type * as Types from './HierarchyEditorButton.types';
 import { FlexDialog } from '~appcraft/styles';
 import { addHierarchy, updateHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
+import type * as Types from './HierarchyEditorButton.types';
 
 export default function HierarchyEditorButton({
   mode,
@@ -42,9 +43,13 @@ export default function HierarchyEditorButton({
 
   return (
     <>
-      <Tooltip title={at('btn-add-group')}>
-        <IconButton onClick={() => setOpen(true)}>
-          <BookmarkAddIcon fontSize="large" />
+      <Tooltip title={at(`btn-add-${data.type}`)}>
+        <IconButton size="small" onClick={() => setOpen(true)}>
+          {data.type === 'item' ? (
+            <AddIcon fontSize="large" />
+          ) : (
+            <BookmarkAddIcon fontSize="large" />
+          )}
         </IconButton>
       </Tooltip>
 
@@ -53,7 +58,7 @@ export default function HierarchyEditorButton({
         fullWidth
         direction="column"
         maxWidth="xs"
-        title={at('btn-add-group')}
+        title={at(`btn-add-${data.type}`)}
         open={open}
         action={
           <>
@@ -71,8 +76,8 @@ export default function HierarchyEditorButton({
           autoFocus
           required
           name="name"
-          label={at('lbl-group-name')}
-          defaultValue={data?.name}
+          label={at(`lbl-${data.type}-name`)}
+          defaultValue={data.name}
         />
 
         <TextField
@@ -80,8 +85,8 @@ export default function HierarchyEditorButton({
           rows={3}
           maxRows={3}
           name="description"
-          label={at('lbl-group-description')}
-          defaultValue={data?.description}
+          label={at('lbl-description')}
+          defaultValue={data.description}
         />
       </FlexDialog>
     </>

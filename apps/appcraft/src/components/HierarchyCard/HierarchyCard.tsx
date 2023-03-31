@@ -1,9 +1,13 @@
-import ListItemButton from '@mui/material/ListItemButton';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import FolderRoundedIcon from '@mui/icons-material/FolderRounded';
+import IconButton from '@mui/material/IconButton';
+import ListItemButton from '@mui/material/ListItemButton';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
 import type * as Types from './HierarchyCard.types';
 
@@ -35,7 +39,24 @@ export default function HierarchyCard({
 
       <CardContent>{description}</CardContent>
 
-      <CardActions>sd</CardActions>
+      <CardActions
+        onClick={(e) => e.stopPropagation()}
+        style={{ justifyContent: 'flex-end' }}
+      >
+        <IconButton color="error">
+          <DeleteForeverOutlinedIcon />
+        </IconButton>
+
+        <IconButton color="success">
+          <EditOutlinedIcon />
+        </IconButton>
+
+        {type === 'item' && (
+          <IconButton color="default">
+            <VisibilityOutlinedIcon />
+          </IconButton>
+        )}
+      </CardActions>
     </Card>
   );
 }

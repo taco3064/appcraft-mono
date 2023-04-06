@@ -32,8 +32,11 @@ export default function HierarchyCard({
       sx={{ display: 'block', paddingBottom: 0 }}
     >
       <CardHeader
-        titleTypographyProps={{ variant: 'h6' }}
         title={name}
+        titleTypographyProps={{
+          variant: 'h6',
+          color: `${type === 'item' ? 'info' : 'warning'}.main`,
+        }}
         avatar={
           type === 'item' ? (
             <MuiIcon color="info" style={{ fontSize: 48 }} />

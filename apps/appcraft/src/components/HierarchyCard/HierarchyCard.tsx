@@ -4,13 +4,11 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import FolderRoundedIcon from '@mui/icons-material/FolderRounded';
-import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
-import Tooltip from '@mui/material/Tooltip';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
+import { CommonButton, RemoveButton } from '../common';
 import { HierarchyEditorButton } from '../HierarchyEditorButton';
-import { RemoveButton } from '../common';
 import { removeHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './HierarchyCard.types';
@@ -45,11 +43,15 @@ export default function HierarchyCard({
         }
         action={
           type === 'item' && (
-            <Tooltip title={at('btn-preview')}>
-              <IconButton color="default">
-                <VisibilityOutlinedIcon />
-              </IconButton>
-            </Tooltip>
+            <CommonButton
+              btnVariant="icon"
+              color="default"
+              icon={VisibilityOutlinedIcon}
+              text={at('btn-preview')}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            />
           )
         }
       />

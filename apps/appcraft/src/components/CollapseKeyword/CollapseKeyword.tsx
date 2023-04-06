@@ -1,12 +1,11 @@
 import CloseIcon from '@mui/icons-material/Close';
 import Collapse from '@mui/material/Collapse';
 import FilterListOffIcon from '@mui/icons-material/FilterListOff';
-import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
-import Tooltip from '@mui/material/Tooltip';
 import { useRef } from 'react';
 
+import { CommonButton } from '../common';
 import { useFixedT, useWidth } from '~appcraft/hooks';
 import type * as Types from './CollapseKeyword.types';
 
@@ -68,26 +67,28 @@ export default function CollapseKeyword({
           }),
           endAdornment: (
             <InputAdornment position="end">
-              <Tooltip title={at('btn-filter-clear')}>
-                <IconButton
-                  color="info"
-                  size="small"
-                  onClick={() => {
-                    keywordRef.current.value = '';
-                    keywordRef.current.focus();
-                    onConfirm('');
-                  }}
-                >
-                  <FilterListOffIcon />
-                </IconButton>
-              </Tooltip>
+              <CommonButton
+                btnVariant="icon"
+                color="info"
+                size="small"
+                icon={FilterListOffIcon}
+                text={at('btn-filter-clear')}
+                onClick={() => {
+                  keywordRef.current.value = '';
+                  keywordRef.current.focus();
+                  onConfirm('');
+                }}
+              />
 
               {onCollapse && (
-                <Tooltip title={at('btn-close')}>
-                  <IconButton color="info" size="small" onClick={onCollapse}>
-                    <CloseIcon />
-                  </IconButton>
-                </Tooltip>
+                <CommonButton
+                  btnVariant="icon"
+                  color="info"
+                  size="small"
+                  onClick={onCollapse}
+                  icon={CloseIcon}
+                  text={at('btn-close')}
+                />
               )}
             </InputAdornment>
           ),

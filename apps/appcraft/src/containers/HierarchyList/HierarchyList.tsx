@@ -1,13 +1,12 @@
 import FilterListIcon from '@mui/icons-material/FilterList';
-import IconButton from '@mui/material/IconButton';
 import Masonry from '@mui/lab/Masonry';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import * as Component from '~appcraft/components';
+import { CommonButton } from '~appcraft/components/common';
 import { searchHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './HierarchyList.types';
@@ -50,17 +49,20 @@ export default function HierarchyList({
         ),
         addItem: (
           <Component.HierarchyEditorButton
+            IconProps={{ fontSize: 'large' }}
             mode="add"
             data={{ category, type: 'item' }}
             onConfirm={() => refetch()}
           />
         ),
         search: !collapsed ? null : (
-          <Tooltip title={at('btn-filter')}>
-            <IconButton onClick={() => setCollapsed(false)}>
-              <FilterListIcon fontSize="large" />
-            </IconButton>
-          </Tooltip>
+          <CommonButton
+            IconProps={{ fontSize: 'large' }}
+            btnVariant="icon"
+            icon={FilterListIcon}
+            text={at('btn-filter')}
+            onClick={() => setCollapsed(false)}
+          />
         ),
       }),
   });

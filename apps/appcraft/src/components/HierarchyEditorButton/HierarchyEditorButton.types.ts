@@ -10,6 +10,11 @@ export type Mode = keyof typeof EditorMode;
 
 interface BaseProps<T extends keyof typeof EditorMode, D>
   extends Partial<Pick<CommonButtonProps, 'IconProps' | 'btnVariant'>> {
+  CommonButtonProps?: Omit<
+    CommonButtonProps,
+    'IconProps' | 'btnVariant' | 'icon' | 'text' | 'onClick'
+  >;
+
   mode: T;
   data: D;
   onConfirm?: (data: HierarchyData<string>) => void;

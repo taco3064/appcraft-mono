@@ -32,6 +32,7 @@ export default function HierarchyList({
   const { data: hierarchies, refetch } = useQuery({
     queryKey: [category, params],
     queryFn: searchHierarchy,
+    refetchOnWindowFocus: false,
   });
 
   const { data: action } = useQuery({
@@ -88,7 +89,11 @@ export default function HierarchyList({
       <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={2}>
         {hierarchies.map((data, i) => (
           <Paper key={data._id} elevation={0}>
-            <Component.HierarchyCard data={data} icon={icon} />
+            <Component.HierarchyCard
+              data={data}
+              icon={icon}
+              onDataModify={() => refetch()}
+            />
           </Paper>
         ))}
       </Masonry>

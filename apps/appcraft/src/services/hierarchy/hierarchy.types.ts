@@ -21,3 +21,7 @@ export type AddHierarchyService = (
 export type UpdateHierarchyService = (
   data: SimpleData<string>
 ) => Promise<SimpleData<string>>;
+
+export type RemoveHierarchyService = (
+  data: SimpleData<string>
+) => Promise<void>;

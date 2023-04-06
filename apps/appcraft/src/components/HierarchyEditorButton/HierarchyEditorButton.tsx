@@ -7,14 +7,16 @@ import { FormEventHandler, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import type { PaperProps } from '@mui/material/Paper';
 
-import { CommonButton } from '../common';
+import { CommonButton, CommonButtonProps } from '../common';
 import { FlexDialog } from '~appcraft/styles';
 import { addHierarchy, updateHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './HierarchyEditorButton.types';
 
 export default function HierarchyEditorButton({
+  CommonButtonProps,
   IconProps,
+
   btnVariant = 'icon',
   mode,
   data,
@@ -46,8 +48,11 @@ export default function HierarchyEditorButton({
   return (
     <>
       <CommonButton
-        IconProps={IconProps}
-        btnVariant={btnVariant}
+        {...({
+          ...CommonButtonProps,
+          IconProps,
+          btnVariant,
+        } as CommonButtonProps)}
         text={at(`btn-${mode}-${data.type}`)}
         onClick={() => setOpen(true)}
         icon={

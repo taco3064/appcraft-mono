@@ -11,12 +11,14 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
 import { HierarchyEditorButton } from '../HierarchyEditorButton';
 import { RemoveButton } from '../common';
+import { removeHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './HierarchyCard.types';
 
 export default function HierarchyCard({
   data,
   icon: MuiIcon,
+  onDataModify,
 }: Types.HierarchyCardProps) {
   const [at] = useFixedT('app');
   const { type, name, description } = data;
@@ -50,7 +52,7 @@ export default function HierarchyCard({
         }
       />
 
-      <CardContent>{description}</CardContent>
+      {description && <CardContent>{description}</CardContent>}
 
       <ButtonGroup
         fullWidth
@@ -68,11 +70,22 @@ export default function HierarchyCard({
       >
         <RemoveButton
           btnVariant="text"
-          color="error"
-          onConfirm={() => Promise.resolve()}
+          sx={(theme) => ({
+            color: theme.palette.text.secondary,
+          })}
+          onConfirm={async () => {
+            await removeHierarchy(data);
+            onDataModify('remove', data);
+          }}
         />
 
-        <HierarchyEditorButton btnVariant="text" mode="update" data={data} />
+        <HierarchyEditorButton
+          CommonButtonProps={{ color: type === 'item' ? 'info' : 'warning' }}
+          btnVariant="text"
+          mode="update"
+          data={data}
+          onConfirm={(modified) => onDataModify('update', modified)}
+        />
       </ButtonGroup>
     </Card>
   );

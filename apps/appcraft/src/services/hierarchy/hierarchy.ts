@@ -23,3 +23,7 @@ export const updateHierarchy: Types.UpdateHierarchyService = async (
 ) => {
   return hierarchy;
 };
+
+export const removeHierarchy: Types.RemoveHierarchyService = async (
+  hierarchy
+) => {};

@@ -92,6 +92,7 @@ export default function HierarchyList({
             <Component.HierarchyCard
               data={data}
               icon={icon}
+              onClick={console.log}
               onDataModify={() => refetch()}
             />
           </Paper>

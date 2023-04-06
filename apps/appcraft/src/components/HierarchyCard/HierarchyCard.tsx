@@ -18,6 +18,7 @@ import type * as Types from './HierarchyCard.types';
 export default function HierarchyCard({
   data,
   icon: MuiIcon,
+  onClick,
   onDataModify,
 }: Types.HierarchyCardProps) {
   const [at] = useFixedT('app');
@@ -29,6 +30,7 @@ export default function HierarchyCard({
       elevation={0}
       component={ListItemButton}
       disableGutters
+      onClick={() => onClick(data)}
       sx={{ display: 'block', paddingBottom: 0 }}
     >
       <CardHeader

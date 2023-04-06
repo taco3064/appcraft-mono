@@ -2,14 +2,13 @@ import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Divider from '@mui/material/Divider';
 import GoogleIcon from '@mui/icons-material/Google';
-import IconButton from '@mui/material/IconButton';
 import LoginIcon from '@mui/icons-material/Login';
-import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 
-import type * as Types from './SigninButton.types';
+import { CommonButton } from '../common';
 import { FlexDialog } from '~appcraft/styles';
 import { useFixedT } from '~appcraft/hooks';
+import type * as Types from './SigninButton.types';
 
 export default function SigninButton({ oauth2 }: Types.SigninButtonProps) {
   const [at] = useFixedT('app');
@@ -17,11 +16,12 @@ export default function SigninButton({ oauth2 }: Types.SigninButtonProps) {
 
   return (
     <>
-      <Tooltip title={at('btn-signin')}>
-        <IconButton onClick={() => setOpen(true)}>
-          <LoginIcon />
-        </IconButton>
-      </Tooltip>
+      <CommonButton
+        btnVariant="icon"
+        icon={LoginIcon}
+        text={at('btn-signin')}
+        onClick={() => setOpen(true)}
+      />
 
       <FlexDialog
         fullWidth

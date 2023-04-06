@@ -1,4 +1,5 @@
 import type { HierarchyData } from '~appcraft/services';
+import type { CommonButtonProps } from '../common';
 
 enum EditorMode {
   add,
@@ -7,7 +8,8 @@ enum EditorMode {
 
 export type Mode = keyof typeof EditorMode;
 
-interface BaseProps<T extends keyof typeof EditorMode, D> {
+interface BaseProps<T extends keyof typeof EditorMode, D>
+  extends Partial<Pick<CommonButtonProps, 'IconProps' | 'btnVariant'>> {
   mode: T;
   data: D;
   onConfirm?: (data: HierarchyData<string>) => void;

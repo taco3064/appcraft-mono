@@ -1,19 +1,21 @@
 import AddIcon from '@mui/icons-material/Add';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import TextField from '@mui/material/TextField';
-import Tooltip from '@mui/material/Tooltip';
 import { FormEventHandler, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import type { PaperProps } from '@mui/material/Paper';
 
+import { CommonButton } from '../common';
 import { FlexDialog } from '~appcraft/styles';
 import { addHierarchy, updateHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './HierarchyEditorButton.types';
 
 export default function HierarchyEditorButton({
+  IconProps,
+  btnVariant = 'icon',
   mode,
   data,
   onConfirm,
@@ -43,22 +45,26 @@ export default function HierarchyEditorButton({
 
   return (
     <>
-      <Tooltip title={at(`btn-add-${data.type}`)}>
-        <IconButton size="small" onClick={() => setOpen(true)}>
-          {data.type === 'item' ? (
-            <AddIcon fontSize="large" />
-          ) : (
-            <BookmarkAddIcon fontSize="large" />
-          )}
-        </IconButton>
-      </Tooltip>
+      <CommonButton
+        IconProps={IconProps}
+        btnVariant={btnVariant}
+        text={at(`btn-${mode}-${data.type}`)}
+        onClick={() => setOpen(true)}
+        icon={
+          mode === 'update'
+            ? EditOutlinedIcon
+            : data.type === 'item'
+            ? AddIcon
+            : BookmarkAddIcon
+        }
+      />
 
       <FlexDialog
         PaperProps={{ component: 'form', onSubmit: handleSubmit } as PaperProps}
         fullWidth
         direction="column"
         maxWidth="xs"
-        title={at(`btn-add-${data.type}`)}
+        title={at(`btn-${mode}-${data.type}`)}
         open={open}
         action={
           <>

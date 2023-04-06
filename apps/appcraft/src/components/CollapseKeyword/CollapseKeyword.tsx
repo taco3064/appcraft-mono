@@ -32,14 +32,15 @@ export default function CollapseKeyword({
       in={open}
       addEndListener={() => keywordRef.current?.focus()}
       component="form"
-      sx={{
+      sx={(theme) => ({
         display: 'flex',
         justifyContent: 'center',
 
         '& > .MuiCollapse-wrapper': {
           width: SEARCH_WIDTH[width] || '50%',
+          paddingBottom: theme.spacing(3),
         },
-      }}
+      })}
       onSubmit={(e) => {
         const formdata = new FormData(e.currentTarget as HTMLFormElement);
 

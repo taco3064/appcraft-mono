@@ -7,8 +7,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { CollapseKeyword, HierarchyCard } from '~appcraft/components';
-import { HierarchyEditorButton } from '../HierarchyEditorButton';
+import * as Component from '~appcraft/components';
 import { searchHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './HierarchyList.types';
@@ -41,14 +40,15 @@ export default function HierarchyList({
     queryFn: ({ queryKey: [collapsed] }) =>
       onActionNodeSplit({
         addGroup: (
-          <HierarchyEditorButton
+          <Component.HierarchyEditorButton
+            IconProps={{ fontSize: 'large' }}
             mode="add"
             data={{ category, type: 'group' }}
             onConfirm={() => refetch()}
           />
         ),
         addItem: (
-          <HierarchyEditorButton
+          <Component.HierarchyEditorButton
             mode="add"
             data={{ category, type: 'item' }}
             onConfirm={() => refetch()}
@@ -78,7 +78,7 @@ export default function HierarchyList({
         </Toolbar>
       )}
 
-      <CollapseKeyword
+      <Component.CollapseKeyword
         in={!collapsed}
         defaultValue={params.keyword}
         onCollapse={() => setCollapsed(true)}
@@ -88,7 +88,7 @@ export default function HierarchyList({
       <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={2}>
         {hierarchies.map((data, i) => (
           <Paper key={data._id} elevation={0}>
-            <HierarchyCard data={data} icon={icon} />
+            <Component.HierarchyCard data={data} icon={icon} />
           </Paper>
         ))}
       </Masonry>

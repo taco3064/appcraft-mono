@@ -12,6 +12,7 @@ import type * as Types from './AppHeader.types';
 export default function AppHeader({
   authorized,
   oauth2,
+  signoutURL,
   onMenuToggle,
 }: Types.AppHeaderProps) {
   return (
@@ -34,7 +35,10 @@ export default function AppHeader({
         </Link>
 
         {authorized ? (
-          <UserinfoMenuToggle menuTransform="translate(12px, 10px)" />
+          <UserinfoMenuToggle
+            signoutURL={signoutURL}
+            menuTransform="translate(12px, 10px)"
+          />
         ) : (
           <SigninButton oauth2={oauth2} />
         )}

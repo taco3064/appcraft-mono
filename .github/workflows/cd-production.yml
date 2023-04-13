@@ -1,10 +1,9 @@
 name: CD Production
 
 on:
-  push:
+  pull_request:
     branches:
       - production
-  pull_request:
     types:
       - closed
 

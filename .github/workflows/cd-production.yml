@@ -65,5 +65,5 @@ jobs:
 
       - name: Release Tag
         run: |
-          git tag -f "v${{ steps.version.outputs.current-version }}:${{ steps.init.outputs.affecteds }}"
+          git tag -f "v${{ steps.version.outputs.current-version }}-${{ steps.init.outputs.affecteds }}"
           git push --tags origin HEAD:main

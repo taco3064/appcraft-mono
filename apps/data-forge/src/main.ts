@@ -16,6 +16,11 @@ Object.values(endpoints).forEach(
 );
 
 app
+  .get('/', (_req, res) =>
+    res
+      .setHeader('Content-type', 'text/html')
+      .send('<h1>@appcraft/data-forge</h1>')
+  )
   .listen(port)
   .on('error', console.error)
   .on('listening', () => console.log(`Listening at ${port}`));

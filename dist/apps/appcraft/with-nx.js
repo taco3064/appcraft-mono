@@ -16,7 +16,7 @@ function regexEqual(x, y) {
  */
 function getWithNxContext() {
 return {
-workspaceRoot: '/home/runner/work/appcraft-mono/appcraft-mono',
+workspaceRoot: 'C:\Users\taco.chang\Tabaco\SourceTree\appcraft-mono',
 libsDir: 'libs'
 }
 }

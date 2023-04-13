@@ -1,0 +1,62 @@
+name: CD Production
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  affected-build:
+    name: Affected Build
+    runs-on: ubuntu-latest
+    environment: production
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GIT_TOKEN }}
+
+      # Set up the Node.js environment
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      # Set Nx Environment Variables
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        id: 'setSHAs'
+        uses: nrwl/nx-set-shas@v3
+
+      - name: Initialization
+        id: init
+        run: |
+          git config --global user.email "${{ secrets.USEWR_EMAIL }}"
+          git config --global user.name "Taco Chang"
+          npm ci
+          affecteds=$(npx nx print-affected --select=projects --type=app)
+          echo "::set-output name=affecteds::$affecteds"
+
+      - name: Build
+        run: |
+          npx nx affected --target=build
+          git add --force -- dist
+          git commit -m "BUILD BY ACTION" --no-verify
+          git push origin HEAD:production
+
+      - name: Update Version
+        run: npx standard-version
+
+      - name: Get Package Version
+        id: version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+
+      - name: Release Tag
+        run: |
+          git tag -f "v${{ steps.version.outputs.current-version }} - ${{ steps.init.outputs.affecteds }}"
+          git push --tags origin HEAD:main

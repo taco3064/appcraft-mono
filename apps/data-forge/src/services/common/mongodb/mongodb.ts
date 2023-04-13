@@ -13,7 +13,5 @@ export const getCollection: Types.GetCollection = async <T>({
 }) => {
   const client = await getClient();
 
-  console.log(__WEBPACK_DEFINE__.MONGODB_CONNECTION);
-
   return client.db(db).collection<T>(collection);
 };

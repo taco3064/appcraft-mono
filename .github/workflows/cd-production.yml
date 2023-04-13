@@ -4,12 +4,16 @@ on:
   push:
     branches:
       - production
+  pull_request:
+    types:
+      - closed
 
 jobs:
   affected-build:
     name: Affected Build
     runs-on: ubuntu-latest
     environment: production
+    if: github.event.pull_request.merged == true
     strategy:
       matrix:
         node-version: [16.x]
@@ -51,7 +55,11 @@ jobs:
 
       - name: Build
         run: |
-          npx nx affected --target=build --base=origin/production~1 --head=HEAD
+          npx nx affected \
+          --target=build \
+          --type=app \
+          --base=${{ steps.setSHAs.outputs.base }} \
+          --head=${{ steps.setSHAs.outputs.head }}
           git add --force -- dist
           git commit -m "BUILD BY ACTION" --no-verify
           git push origin HEAD:production

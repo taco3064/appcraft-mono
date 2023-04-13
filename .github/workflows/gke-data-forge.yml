@@ -11,6 +11,8 @@ on:
       - cd-production
     types:
       - completed
+    branches:
+      - production
 
 jobs:
   deploy-to-gke:

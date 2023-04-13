@@ -28,6 +28,13 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
+      # Alternative option - authentication via credentials json
+      - name: Authenticate to Google Cloud
+        id: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
       # Set Nx Environment Variables
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: 'setSHAs'

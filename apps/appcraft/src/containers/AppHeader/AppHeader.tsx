@@ -35,10 +35,7 @@ export default function AppHeader({
         </Link>
 
         {authorized ? (
-          <UserinfoMenuToggle
-            signoutURL={signoutURL}
-            menuTransform="translate(12px, 10px)"
-          />
+          <UserinfoMenuToggle menuTransform="translate(12px, 10px)" />
         ) : (
           <SigninButton oauth2={oauth2} />
         )}

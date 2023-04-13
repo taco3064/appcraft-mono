@@ -1,9 +1,11 @@
 name: CD Production
 
 on:
-  push:
+  pull_request_target:
     branches:
       - production
+    types:
+      - closed
 
 jobs:
   affected-build:

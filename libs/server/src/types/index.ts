@@ -1,1 +1,1 @@
-export { Userinfo } from './Userinfo';
+export type { Userinfo } from './Userinfo';

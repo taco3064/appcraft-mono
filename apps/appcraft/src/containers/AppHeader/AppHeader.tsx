@@ -12,7 +12,6 @@ import type * as Types from './AppHeader.types';
 export default function AppHeader({
   authorized,
   oauth2,
-  signoutURL,
   onMenuToggle,
 }: Types.AppHeaderProps) {
   return (

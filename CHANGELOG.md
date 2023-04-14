@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/taco3064/appcraft-mono/compare/v0.0.3...v0.0.5) (2023-04-14)
+
+
+### Bug Fixes
+
+* **cd-production:** reorder the step of get version ([98c7ca0](https://github.com/taco3064/appcraft-mono/commit/98c7ca078813b45bf592f1c4eb72683c01205cb5))
+* **gke-data-forge:** remove unused variables ([5481277](https://github.com/taco3064/appcraft-mono/commit/548127769f72ad071a58b405991362ee10467092))
+
 ### [0.0.4](https://github.com/taco3064/appcraft-mono/compare/v0.0.2...v0.0.4) (2023-04-14)
 
 

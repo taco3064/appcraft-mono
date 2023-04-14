@@ -382,7 +382,7 @@ Object.values(endpoints).forEach((EndPoint) => new EndPoint(app));
 app
     .get('/', (_req, res) => res
     .setHeader('Content-type', 'text/html')
-    .send(`<h1>@appcraft/data-forge:${port}<br/>v${"0.0.2"}</h1>`))
+    .send(`<h1>@appcraft/data-forge:${port}<br/>version: ${"0.0.1"}</h1>`))
     .listen(port)
     .on('error', console.error)
     .on('listening', () => console.log(`Listening at ${port}`));

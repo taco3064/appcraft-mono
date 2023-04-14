@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  pull_request:
+    branches:
+      - production
+    types:
+      - closed
+
+jobs:
+  update-version:
+    if: github.event.pull_request.merged == true
+    name: Update Version
+    runs-on: ubuntu-latest
+    environment: production
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GIT_TOKEN }}
+
+      # Set up the Node.js environment
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Initialization
+        id: init
+        run: |
+          git config --global user.email "${{ secrets.USEWR_EMAIL }}"
+          git config --global user.name "Taco Chang"
+
+      - name: Update Version
+        run: |
+          npx standard-version --skip.tag
+          git commit -m "RELEASE BY ACTION(release.yml)" --no-verify
+          git push origin HEAD:main HEAD:production -f

@@ -6,13 +6,20 @@ on:
       - production
     types:
       - closed
+  workflow_run:
+    workflows:
+      - release
+    types:
+      - completed
+    branches:
+      - main
 
 jobs:
   affected-build:
+    if: github.event.pull_request.merged == true
     name: Affected Build
     runs-on: ubuntu-latest
     environment: production
-    if: github.event.pull_request.merged == true
     strategy:
       matrix:
         node-version: [16.x]
@@ -43,6 +50,10 @@ jobs:
         id: 'setSHAs'
         uses: nrwl/nx-set-shas@v3
 
+      - name: Get Package Version
+        id: version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+
       - name: Initialization
         id: init
         run: |
@@ -52,13 +63,6 @@ jobs:
           affecteds=$(npx nx print-affected --select=projects --type=app)
           echo "::set-output name=affecteds::$affecteds"
 
-      - name: Update Version
-        run: npx standard-version --skip.tag
-
-      - name: Get Package Version
-        id: version
-        uses: martinbeentjes/npm-get-version-action@v1.3.1
-
       - name: Build
         run: |
           npx nx affected \
@@ -67,7 +71,7 @@ jobs:
           --base=${{ steps.setSHAs.outputs.base }} \
           --head=${{ steps.setSHAs.outputs.head }}
           git add --force -- dist
-          git commit -m "BUILD BY ACTION" --no-verify
+          git commit -m "BUILD BY ACTION(cd-production.yml)" --no-verify
           git push origin HEAD:production
 
       - name: Release Tag

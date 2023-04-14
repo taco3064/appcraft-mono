@@ -50,7 +50,7 @@ jobs:
           git config --global user.name "Taco Chang"
           npm ci
           affecteds=$(npx nx print-affected --select=projects --type=app)
-          echo "::set-output name=affecteds::$(echo $affecteds | sed -e 's/ //g')"
+          echo "::set-output name=affecteds::$affecteds"
 
       - name: Build
         run: |
@@ -64,7 +64,7 @@ jobs:
           git push origin HEAD:production
 
       - name: Update Version
-        run: npx standard-version
+        run: npx standard-version --skip.tag
 
       - name: Get Package Version
         id: version
@@ -72,5 +72,5 @@ jobs:
 
       - name: Release Tag
         run: |
-          git tag -f "v${{ steps.version.outputs.current-version }}-${{ steps.init.outputs.affecteds }}"
+          git tag -f -a "v${{ steps.version.outputs.current-version }}" -m "${{ steps.init.outputs.affecteds }}"
           git push --tags origin HEAD:production

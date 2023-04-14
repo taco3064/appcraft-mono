@@ -20,7 +20,7 @@ app
   .get('/', (_req, res) =>
     res
       .setHeader('Content-type', 'text/html')
-      .send(`<h1>@appcraft/data-forge:${port}@${version}</h1>`)
+      .send(`<h1>@appcraft/data-forge:${port}@v${version}</h1>`)
   )
   .listen(port)
   .on('error', console.error)

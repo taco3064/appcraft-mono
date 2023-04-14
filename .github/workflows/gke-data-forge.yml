@@ -65,9 +65,7 @@ jobs:
         run: |
           docker build \
           -f ./apps/data-forge/Dockerfile . \
-          -t gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ steps.version.outputs.current-version }} \
-          --build-arg SERVICE_DATA_FORGE=http://127.0.0.1:80 \
-          --build-arg VERSION=${{ steps.version.outputs.current-version }}
+          -t gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ steps.version.outputs.current-version }}
 
       # Push the Docker Image to GCR
       - name: Push the Docker Image to GCR

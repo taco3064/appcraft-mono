@@ -20,6 +20,8 @@ export default function HierarchyEditorButton({
   btnVariant = 'icon',
   mode,
   data,
+
+  onCancel,
   onConfirm,
 }: Types.HierarchyEditorButtonProps) {
   const [at] = useFixedT('app');
@@ -73,7 +75,13 @@ export default function HierarchyEditorButton({
         open={open}
         action={
           <>
-            <Button color="inherit" onClick={() => setOpen(false)}>
+            <Button
+              color="inherit"
+              onClick={() => {
+                setOpen(false);
+                onCancel?.();
+              }}
+            >
               {at('btn-cancel')}
             </Button>
 
@@ -87,6 +95,7 @@ export default function HierarchyEditorButton({
           autoFocus
           required
           name="name"
+          inputProps={{ maxLength: 50 }}
           label={at(`lbl-${data.type}-name`)}
           defaultValue={data.name}
         />

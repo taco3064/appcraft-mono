@@ -1,10 +1,11 @@
 import jwt from 'jsonwebtoken';
 import { Module, Endpoint } from '@appcraft/server';
+import { ObjectId } from 'mongodb';
 import { Request, Response } from 'express';
 import type { Userinfo } from '@appcraft/server';
 
 import * as hierarchy from '~data-forge/services/hierarchy';
-import type { HierarchyData, SearchParams } from '~types/hierarchy';
+import type * as HierarchyTypes from '~data-forge/services/hierarchy';
 
 @Module({ base: 'hierarchy' })
 export default class Hierarchy {
@@ -20,7 +21,11 @@ export default class Hierarchy {
     ) as Userinfo;
 
     res.json(
-      await hierarchy.search(id, req.params.category, req.body as SearchParams)
+      await hierarchy.search(
+        id,
+        req.params.category,
+        req.body as HierarchyTypes.SearchParams
+      )
     );
   }
 
@@ -34,6 +39,35 @@ export default class Hierarchy {
       __WEBPACK_DEFINE__.JWT_SECRET
     ) as Userinfo;
 
-    res.json(await hierarchy.add(id, req.body as HierarchyData));
+    res.json(await hierarchy.add(id, req.body as HierarchyTypes.HierarchyData));
+  }
+
+  @Endpoint({
+    method: 'put',
+    description: '編輯 Hierarchy Group / Item',
+  })
+  async update(req: Request, res: Response) {
+    const { id } = jwt.verify(
+      req.cookies.jwt,
+      __WEBPACK_DEFINE__.JWT_SECRET
+    ) as Userinfo;
+
+    res.json(
+      await hierarchy.update(id, req.body as HierarchyTypes.HierarchyData)
+    );
+  }
+
+  @Endpoint({
+    method: 'delete',
+    description: '刪除 Hierarchy Group / Item',
+  })
+  async remove(req: Request, res: Response) {
+    const { id } = jwt.verify(
+      req.cookies.jwt,
+      __WEBPACK_DEFINE__.JWT_SECRET
+    ) as Userinfo;
+
+    await hierarchy.remove(id, new ObjectId(req.query.id as string));
+    res.end();
   }
 }

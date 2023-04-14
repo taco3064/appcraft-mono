@@ -4,7 +4,7 @@ declare module '@alienfast/i18next-loader?relativePathAsNamespace=true!*' {
   export default contents;
 }
 
-declare const __WEBPACK_DEFINE__: Record<string, string> & {
+declare const __WEBPACK_DEFINE__: {
   ENV: 'development' | 'production';
   LANGUAGES: string[];
 };

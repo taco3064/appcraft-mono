@@ -15,6 +15,7 @@ import { useFixedT, useAuthTokens } from '~appcraft/hooks';
 
 export default function UserinfoMenuToggle({
   menuTransform,
+  signoutURL,
 }: Types.UserinfoMenuToggleProps) {
   const [at] = useFixedT('app');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
@@ -44,12 +45,7 @@ export default function UserinfoMenuToggle({
 
         <Divider />
 
-        <ListItemButton
-          dense
-          href={`/api/oauth2/signout?access=${encodeURIComponent(
-            tokens.access
-          )}`}
-        >
+        <ListItemButton dense href={signoutURL}>
           <SizedListItemIcon size="small">
             <LogoutIcon />
           </SizedListItemIcon>

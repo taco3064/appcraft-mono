@@ -17,6 +17,7 @@ interface BaseProps<T extends keyof typeof EditorMode, D>
 
   mode: T;
   data: D;
+  onCancel?: () => void;
   onConfirm?: (data: HierarchyData<string>) => void;
 }
 

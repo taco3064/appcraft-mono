@@ -21,11 +21,16 @@ export const addHierarchy: Types.AddHierarchyService = async (hierarchy) => {
 export const updateHierarchy: Types.UpdateHierarchyService = async (
   hierarchy
 ) => {
-  return hierarchy;
+  const { data } = await axios.put(
+    '/api/data-forge/hierarchy/update',
+    hierarchy
+  );
+
+  return data;
 };
 
 export const removeHierarchy: Types.RemoveHierarchyService = async (
   hierarchy
 ) => {
-  return;
+  await axios.delete(`/api/data-forge/hierarchy/remove?id=${hierarchy._id}`);
 };

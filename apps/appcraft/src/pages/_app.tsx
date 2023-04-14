@@ -21,7 +21,7 @@ const client = new QueryClient({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { authorized } = useAuthTokens();
+  const { authorized, tokens } = useAuthTokens();
   const [open, setOpen] = useState(false);
 
   return (
@@ -43,6 +43,9 @@ export default function App({ Component, pageProps }: AppProps) {
             <AppHeader
               authorized={authorized}
               oauth2={{ google: '/api/oauth2/google' }}
+              signoutURL={`/api/oauth2/signout?access=${encodeURIComponent(
+                tokens.access
+              )}`}
               onMenuToggle={() => setOpen(true)}
             />
 

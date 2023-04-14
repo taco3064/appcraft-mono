@@ -1,6 +1,5 @@
 import FilterListIcon from '@mui/icons-material/FilterList';
-import Masonry from '@mui/lab/Masonry';
-import Paper from '@mui/material/Paper';
+import ImageList from '@mui/material/ImageList';
 import Toolbar from '@mui/material/Toolbar';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -8,7 +7,7 @@ import { useState } from 'react';
 import * as Component from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
 import { searchHierarchy } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT, useWidth } from '~appcraft/hooks';
 import type * as Types from './HierarchyList.types';
 import type { SearchParams } from '~appcraft/services';
 
@@ -20,6 +19,7 @@ export default function HierarchyList({
   icon,
   onActionNodeSplit = DEFAULT_ACTION_NODE_SPLIT,
 }: Types.HierarchyListProps) {
+  const width = useWidth();
   const [at] = useFixedT('app');
   const [collapsed, setCollapsed] = useState(true);
 
@@ -57,7 +57,7 @@ export default function HierarchyList({
         ),
         search: !collapsed ? null : (
           <CommonButton
-            IconProps={{ fontSize: 'large' }}
+            IconProps={{ color: 'info', fontSize: 'large' }}
             btnVariant="icon"
             icon={FilterListIcon}
             text={at('btn-filter')}
@@ -88,18 +88,17 @@ export default function HierarchyList({
         onConfirm={(keyword) => setParams({ ...params, keyword })}
       />
 
-      <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={2}>
-        {hierarchies.map((data, i) => (
-          <Paper key={data._id} elevation={0}>
-            <Component.HierarchyCard
-              data={data}
-              icon={icon}
-              onClick={console.log}
-              onDataModify={() => refetch()}
-            />
-          </Paper>
+      <ImageList gap={24} cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}>
+        {hierarchies.map((data) => (
+          <Component.HierarchyItem
+            key={data._id}
+            data={data}
+            icon={icon}
+            onClick={console.log}
+            onDataModify={() => refetch()}
+          />
         ))}
-      </Masonry>
+      </ImageList>
     </>
   );
 }

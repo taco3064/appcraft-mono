@@ -1,5 +1,19 @@
 import type { ObjectId } from 'mongodb';
-import type { HierarchyData, SearchParams } from '~types/hierarchy';
+
+export interface SearchParams {
+  keyword?: string;
+  superior?: string;
+}
+
+export interface HierarchyData<U = undefined> {
+  _id: U;
+  userid: string;
+  category: string;
+  description?: string;
+  name: string;
+  superior?: string;
+  type: 'group' | 'item';
+}
 
 export type SearchService = (
   userid: string,
@@ -11,3 +25,10 @@ export type AddService = (
   userid: string,
   data: HierarchyData
 ) => Promise<HierarchyData<ObjectId>>;
+
+export type UpdateService = (
+  userid: string,
+  data: HierarchyData<string>
+) => Promise<HierarchyData<ObjectId>>;
+
+export type RemoveService = (userid: string, dataid: ObjectId) => Promise<void>;

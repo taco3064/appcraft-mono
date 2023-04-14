@@ -11,6 +11,7 @@ import type * as Types from './RemoveButton.types';
 export default function RemoveButton({
   icon,
   text,
+  onCancel,
   onConfirm,
   ...props
 }: Types.RemoveButtonProps) {
@@ -30,7 +31,10 @@ export default function RemoveButton({
         fullWidth
         maxWidth="xs"
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          onCancel?.();
+        }}
       >
         <Alert
           variant="filled"

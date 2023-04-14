@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 
 import { getCollection } from '../common';
+import type { HierarchyData } from '~types/hierarchy';
 import type * as Types from './hierarchy.types';
 
 export const search: Types.SearchService = async (
@@ -8,7 +9,7 @@ export const search: Types.SearchService = async (
   category,
   { keyword, superior }
 ) => {
-  const collection = await getCollection<Types.HierarchyData<ObjectId>>({
+  const collection = await getCollection<HierarchyData<ObjectId>>({
     db: 'data-forge',
     collection: 'hierarchy',
   });
@@ -36,7 +37,7 @@ export const search: Types.SearchService = async (
 };
 
 export const add: Types.AddService = async (userid, newData) => {
-  const collection = await getCollection<Types.HierarchyData<ObjectId>>({
+  const collection = await getCollection<HierarchyData<ObjectId>>({
     db: 'data-forge',
     collection: 'hierarchy',
   });

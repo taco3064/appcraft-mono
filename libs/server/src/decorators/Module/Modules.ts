@@ -15,7 +15,7 @@ export default function Module({ base: baseURL }: Types.DecoratorOptions) {
               url: endpointURL,
               method: requestMethod,
               params = [],
-            } = this[method]?.endpoint;
+            } = this[method]?.endpoint || {};
 
             const router: IRouterMatcher<any> = app[requestMethod]?.bind(app);
 

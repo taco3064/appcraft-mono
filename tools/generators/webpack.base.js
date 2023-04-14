@@ -36,6 +36,7 @@ module.exports = (environment, dirname) => {
     ],
     resolve: {
       alias: {
+        '~types': path.resolve(process.cwd(), './tools/types'),
         ...libAlias,
         ...dirAlias,
       },

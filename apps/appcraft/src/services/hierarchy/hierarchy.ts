@@ -26,4 +26,6 @@ export const updateHierarchy: Types.UpdateHierarchyService = async (
 
 export const removeHierarchy: Types.RemoveHierarchyService = async (
   hierarchy
-) => {};
+) => {
+  return;
+};

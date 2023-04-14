@@ -1,19 +1,5 @@
 import type { ObjectId } from 'mongodb';
-
-export interface SearchParams {
-  keyword?: string;
-  superior?: string;
-}
-
-export interface HierarchyData<U = undefined> {
-  _id: U;
-  userid: string;
-  category: string;
-  description?: string;
-  name: string;
-  superior?: string;
-  type: 'group' | 'item';
-}
+import type { HierarchyData, SearchParams } from '~types/hierarchy';
 
 export type SearchService = (
   userid: string,

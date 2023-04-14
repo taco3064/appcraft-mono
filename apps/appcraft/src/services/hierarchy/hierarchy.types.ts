@@ -1,9 +1,5 @@
 import type { QueryFunction } from '@tanstack/react-query';
-
-import type {
-  HierarchyData,
-  SearchParams,
-} from '~data-forge/services/hierarchy';
+import type { HierarchyData, SearchParams } from '~types/hierarchy';
 
 type SimpleData<U = undefined> = Omit<HierarchyData<U>, 'userid'>;
 

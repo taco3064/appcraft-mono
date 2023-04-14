@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import type { Userinfo } from '@appcraft/server';
 
 import * as hierarchy from '~data-forge/services/hierarchy';
-import type * as HierarchyTypes from '~data-forge/services/hierarchy';
+import type { HierarchyData, SearchParams } from '~types/hierarchy';
 
 @Module({ base: 'hierarchy' })
 export default class Hierarchy {
@@ -20,11 +20,7 @@ export default class Hierarchy {
     ) as Userinfo;
 
     res.json(
-      await hierarchy.search(
-        id,
-        req.params.category,
-        req.body as HierarchyTypes.SearchParams
-      )
+      await hierarchy.search(id, req.params.category, req.body as SearchParams)
     );
   }
 
@@ -38,6 +34,6 @@ export default class Hierarchy {
       __WEBPACK_DEFINE__.JWT_SECRET
     ) as Userinfo;
 
-    res.json(await hierarchy.add(id, req.body as HierarchyTypes.HierarchyData));
+    res.json(await hierarchy.add(id, req.body as HierarchyData));
   }
 }

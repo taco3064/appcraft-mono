@@ -5,7 +5,11 @@ export default function Endpoint({
   method = 'get',
   params,
 }: Types.DecoratorOptions) {
-  return (_target: any, propertyKey: string, descriptor: Types.Descriptor) => {
+  return (
+    _target: unknown,
+    propertyKey: string,
+    descriptor: Types.Descriptor
+  ) => {
     Object.defineProperty(descriptor.value, 'endpoint', {
       get: () => ({
         url: url || propertyKey || '',

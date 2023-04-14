@@ -21,7 +21,7 @@ const client = new QueryClient({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { authorized, tokens } = useAuthTokens();
+  const { authorized } = useAuthTokens();
   const [open, setOpen] = useState(false);
 
   return (

@@ -60,16 +60,22 @@ jobs:
           git config --global user.email "${{ secrets.USEWR_EMAIL }}"
           git config --global user.name "Taco Chang"
           npm ci
-          affecteds=$(npx nx print-affected --select=projects --type=app)
+          affecteds=$( \
+            npx nx print-affected \
+            --select=projects \
+            --type=app \
+            --base=${{ steps.setSHAs.outputs.base }} \
+            --head=${{ steps.setSHAs.outputs.head }} \
+          )
           echo "::set-output name=affecteds::$affecteds"
 
       - name: Build
         run: |
           npx nx affected \
-          --target=build \
-          --type=app \
-          --base=${{ steps.setSHAs.outputs.base }} \
-          --head=${{ steps.setSHAs.outputs.head }}
+            --target=build \
+            --type=app \
+            --base=${{ steps.setSHAs.outputs.base }} \
+            --head=${{ steps.setSHAs.outputs.head }}
           git add --force -- dist
           git commit -m "BUILD BY ACTION(cd-production.yml)" --no-verify
           git push origin HEAD:production

@@ -83,4 +83,8 @@ jobs:
           location: asia-east1-a
 
       - name: Update Image
-        run: kubectl set image deployment/dev-data-forge data-forge-1=gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ steps.version.outputs.current-version }} -n dev
+        run: |
+          kubectl set image \
+            deployment/dev-data-forge \
+            data-forge-1=gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ steps.version.outputs.current-version }} \
+            -n dev

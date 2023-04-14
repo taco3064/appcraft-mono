@@ -80,10 +80,6 @@ jobs:
         with:
           main-branch-name: production
 
-      - name: Get Package Version
-        id: version
-        uses: martinbeentjes/npm-get-version-action@v1.3.1
-
       - name: Initialization
         id: init
         run: |
@@ -99,6 +95,10 @@ jobs:
             --head=${{ steps.setSHAs.outputs.head }} \
           )
           echo "::set-output name=affecteds::$affecteds"
+
+      - name: Get Package Version
+        id: version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
 
       - name: Build
         run: |

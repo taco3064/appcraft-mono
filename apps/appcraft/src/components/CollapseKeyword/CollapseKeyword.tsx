@@ -62,6 +62,9 @@ export default function CollapseKeyword({
             borderRadius: `${theme.spacing(2.5)} / 50%`,
 
             '& > input': {
+              borderRadius: `${theme.spacing(2.5)} / 50%`,
+              borderTopRightRadius: '0 !important',
+              borderBottomRightRadius: '0 !important',
               padding: theme.spacing(1.5, 2.5),
             },
           }),

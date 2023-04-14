@@ -2,6 +2,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import ImageList from '@mui/material/ImageList';
 import Toolbar from '@mui/material/Toolbar';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import * as Component from '~appcraft/components';
@@ -19,24 +20,25 @@ export default function HierarchyList({
   icon,
   onActionNodeSplit = DEFAULT_ACTION_NODE_SPLIT,
 }: Types.HierarchyListProps) {
+  const { pathname, push, query } = useRouter();
+  const superiors = (query.superiors as string)?.split('-') || [];
   const width = useWidth();
   const [at] = useFixedT('app');
   const [collapsed, setCollapsed] = useState(true);
-
-  const [params, setParams] = useState<SearchParams>({
-    keyword: '',
-    superior: '',
-  });
+  const [keyword, setKeyword] = useState<string>('');
 
   const { data: hierarchies, refetch } = useQuery({
-    queryKey: [category, params],
+    queryKey: [
+      category,
+      { keyword, superior: superiors[superiors.length - 1] || '' },
+    ],
     queryFn: searchHierarchy,
     refetchOnWindowFocus: false,
   });
 
   const { data: action } = useQuery({
     suspense: false,
-    queryKey: [collapsed, params.superior],
+    queryKey: [collapsed, superiors[superiors.length - 1] || ''],
     queryFn: ({ queryKey: [collapsed, superior] }) =>
       onActionNodeSplit({
         addGroup: (
@@ -91,9 +93,9 @@ export default function HierarchyList({
 
       <Component.CollapseKeyword
         in={!collapsed}
-        defaultValue={params.keyword}
+        defaultValue={keyword}
         onCollapse={() => setCollapsed(true)}
-        onConfirm={(keyword) => setParams({ ...params, keyword })}
+        onConfirm={setKeyword}
       />
 
       <ImageList gap={24} cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}>
@@ -103,12 +105,13 @@ export default function HierarchyList({
             data={data}
             icon={icon}
             onClick={({ type, _id: superior }) => {
-              switch (type) {
-                case 'group': {
-                  setParams({ ...params, superior });
-                  break;
-                }
-                default:
+              if (type === 'group') {
+                push({
+                  pathname,
+                  query: {
+                    superiors: [...superiors, superior].join('-'),
+                  },
+                });
               }
             }}
             onDataModify={() => refetch()}

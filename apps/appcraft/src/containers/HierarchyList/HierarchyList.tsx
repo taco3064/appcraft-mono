@@ -36,14 +36,18 @@ export default function HierarchyList({
 
   const { data: action } = useQuery({
     suspense: false,
-    queryKey: [collapsed],
-    queryFn: ({ queryKey: [collapsed] }) =>
+    queryKey: [collapsed, params.superior],
+    queryFn: ({ queryKey: [collapsed, superior] }) =>
       onActionNodeSplit({
         addGroup: (
           <Component.HierarchyEditorButton
             IconProps={{ color: 'warning', fontSize: 'large' }}
             mode="add"
-            data={{ category, type: 'group' }}
+            data={{
+              category,
+              type: 'group',
+              ...(typeof superior === 'string' && { superior }),
+            }}
             onConfirm={() => refetch()}
           />
         ),
@@ -51,7 +55,11 @@ export default function HierarchyList({
           <Component.HierarchyEditorButton
             IconProps={{ color: 'info', fontSize: 'large' }}
             mode="add"
-            data={{ category, type: 'item' }}
+            data={{
+              category,
+              type: 'item',
+              ...(typeof superior === 'string' && { superior }),
+            }}
             onConfirm={() => refetch()}
           />
         ),
@@ -94,7 +102,15 @@ export default function HierarchyList({
             key={data._id}
             data={data}
             icon={icon}
-            onClick={console.log}
+            onClick={({ type, _id: superior }) => {
+              switch (type) {
+                case 'group': {
+                  setParams({ ...params, superior });
+                  break;
+                }
+                default:
+              }
+            }}
             onDataModify={() => refetch()}
           />
         ))}

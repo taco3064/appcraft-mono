@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/taco3064/appcraft-mono/compare/v0.0.6...v0.0.7) (2023-04-14)
+
+
+### Features
+
+* **appcraft:** add snackbar message ([d4ff271](https://github.com/taco3064/appcraft-mono/commit/d4ff27184f5fc097460e97afdf2f9011f2c03e4a))
+
+
+### Bug Fixes
+
+* **collapse-keyword(appcraft):** fixed the style of input ([19d179b](https://github.com/taco3064/appcraft-mono/commit/19d179bc7104b0e44dad7acb61194f77faa99156))
+* **hierarchy-list(appcraft):** add superior when add group/item ([6219c85](https://github.com/taco3064/appcraft-mono/commit/6219c85a1300975b012c1c5faee7d3485405851d))
+
 ### 0.0.6 (2023-04-14)
 
 

@@ -20,7 +20,8 @@
       "~appcraft/*": ["apps/appcraft/src/*"],
       "~data-forge/*": ["apps/data-forge/src/*"],
       "~proxy/*": ["apps/proxy/src/*"],
-      "~ts2-props/*": ["apps/ts2-props/src/*"]
+      "~ts2-props/*": ["apps/ts2-props/src/*"],
+      "~types/*": ["tools/types/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

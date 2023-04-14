@@ -40,7 +40,6 @@ jobs:
       - name: Update Version
         run: |
           npx standard-version --skip.tag
-          git commit -m "RELEASE BY ACTION(release.yml)" --no-verify
           git push origin HEAD:main HEAD:production -f
 
   affected-build:

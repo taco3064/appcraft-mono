@@ -106,6 +106,7 @@ jobs:
             --type=app \
             --base=${{ steps.setSHAs.outputs.base }} \
             --head=${{ steps.setSHAs.outputs.head }}
+          git pull
           git add --force -- dist
           git commit -m "BUILD BY ACTION(cd-production.yml)" --no-verify
           git push origin HEAD:production

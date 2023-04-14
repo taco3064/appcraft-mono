@@ -44,6 +44,7 @@ jobs:
           git push origin HEAD:main HEAD:production -f
 
   affected-build:
+    needs: release
     if: github.event.pull_request.merged == true
     name: Affected Build
     runs-on: ubuntu-latest

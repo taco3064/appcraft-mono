@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { DefinePlugin } = require('webpack');
+const { version } = require('../../package.json');
 
 module.exports = (environment, dirname) => {
   const basename = path.basename(dirname);
@@ -30,6 +31,7 @@ module.exports = (environment, dirname) => {
     plugins: [
       new DefinePlugin({
         '__WEBPACK_DEFINE__.ENV': JSON.stringify(environment),
+        '__WEBPACK_DEFINE__.VERSION': JSON.stringify(version),
       }),
     ],
     resolve: {

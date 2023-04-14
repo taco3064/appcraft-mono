@@ -52,6 +52,13 @@ jobs:
           affecteds=$(npx nx print-affected --select=projects --type=app)
           echo "::set-output name=affecteds::$affecteds"
 
+      - name: Update Version
+        run: npx standard-version --skip.tag
+
+      - name: Get Package Version
+        id: version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+
       - name: Build
         run: |
           npx nx affected \
@@ -62,13 +69,6 @@ jobs:
           git add --force -- dist
           git commit -m "BUILD BY ACTION" --no-verify
           git push origin HEAD:production
-
-      - name: Update Version
-        run: npx standard-version --skip.tag
-
-      - name: Get Package Version
-        id: version
-        uses: martinbeentjes/npm-get-version-action@v1.3.1
 
       - name: Release Tag
         run: |

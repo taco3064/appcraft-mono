@@ -5,7 +5,6 @@ import type { DefaultImplement } from '@appcraft/server';
 import * as endpoints from './endpoints';
 
 const port = process.env.SERVICE_DATA_FORGE.replace(/^.+\:/, '');
-const version = process.env.VERSION;
 
 const app = express()
   .use(cookieParser())
@@ -20,7 +19,9 @@ app
   .get('/', (_req, res) =>
     res
       .setHeader('Content-type', 'text/html')
-      .send(`<h1>@appcraft/data-forge:${port}@v${version}</h1>`)
+      .send(
+        `<h1>@appcraft/data-forge:${port}<br/>v${__WEBPACK_DEFINE__.VERSION}</h1>`
+      )
   )
   .listen(port)
   .on('error', console.error)

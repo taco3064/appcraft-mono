@@ -62,6 +62,9 @@ export default function CollapseKeyword({
             borderRadius: `${theme.spacing(2.5)} / 50%`,
 
             '& > input': {
+              borderRadius: `${theme.spacing(2.5)} / 50%`,
+              borderTopRightRadius: '0 !important',
+              borderBottomRightRadius: '0 !important',
               padding: theme.spacing(1.5, 2.5),
             },
           }),
@@ -69,7 +72,6 @@ export default function CollapseKeyword({
             <InputAdornment position="end">
               <CommonButton
                 btnVariant="icon"
-                color="info"
                 size="small"
                 icon={FilterListOffIcon}
                 text={at('btn-filter-clear')}
@@ -83,7 +85,6 @@ export default function CollapseKeyword({
               {onCollapse && (
                 <CommonButton
                   btnVariant="icon"
-                  color="info"
                   size="small"
                   onClick={onCollapse}
                   icon={CloseIcon}

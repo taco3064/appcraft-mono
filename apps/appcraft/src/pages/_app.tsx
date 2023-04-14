@@ -4,6 +4,7 @@ import Head from 'next/head';
 import NoSsr from '@mui/material/NoSsr';
 import { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { SnackbarProvider, SnackbarOrigin } from 'notistack';
 import { ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
 
@@ -19,6 +20,11 @@ const client = new QueryClient({
     },
   },
 });
+
+const origin: SnackbarOrigin = {
+  horizontal: 'center',
+  vertical: 'bottom',
+};
 
 export default function App({ Component, pageProps }: AppProps) {
   const { authorized, tokens } = useAuthTokens();
@@ -40,22 +46,24 @@ export default function App({ Component, pageProps }: AppProps) {
           <ThemeProvider theme={THEMES.DEFAULT_DARK}>
             <CssBaseline />
 
-            <AppHeader
-              authorized={authorized}
-              oauth2={{ google: '/api/oauth2/google' }}
-              signoutURL={`/api/oauth2/signout?access=${encodeURIComponent(
-                tokens.access
-              )}`}
-              onMenuToggle={() => setOpen(true)}
-            />
+            <SnackbarProvider anchorOrigin={origin}>
+              <AppHeader
+                authorized={authorized}
+                oauth2={{ google: '/api/oauth2/google' }}
+                signoutURL={`/api/oauth2/signout?access=${encodeURIComponent(
+                  tokens.access
+                )}`}
+                onMenuToggle={() => setOpen(true)}
+              />
 
-            {authorized && (
-              <MenuDrawer open={open} onClose={() => setOpen(false)} />
-            )}
+              {authorized && (
+                <MenuDrawer open={open} onClose={() => setOpen(false)} />
+              )}
 
-            <MainContainer maxWidth={false} className="app" component="main">
-              {authorized ? <Component {...pageProps} /> : <IndexPage />}
-            </MainContainer>
+              <MainContainer maxWidth={false} className="app" component="main">
+                {authorized ? <Component {...pageProps} /> : <IndexPage />}
+              </MainContainer>
+            </SnackbarProvider>
           </ThemeProvider>
         </QueryClientProvider>
       </NoSsr>

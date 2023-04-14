@@ -5,6 +5,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import TextField from '@mui/material/TextField';
 import { FormEventHandler, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 import type { PaperProps } from '@mui/material/Paper';
 
 import { CommonButton, CommonButtonProps } from '../common';
@@ -24,6 +25,7 @@ export default function HierarchyEditorButton({
   onCancel,
   onConfirm,
 }: Types.HierarchyEditorButtonProps) {
+  const { enqueueSnackbar } = useSnackbar();
   const [at] = useFixedT('app');
   const [open, setOpen] = useState(false);
 
@@ -32,6 +34,7 @@ export default function HierarchyEditorButton({
     onSuccess: (modified) => {
       onConfirm?.(modified);
       setOpen(false);
+      enqueueSnackbar(at(`txt-succeed-${mode}`), { variant: 'success' });
     },
   });
 

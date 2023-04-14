@@ -41,7 +41,7 @@ export default function HierarchyList({
       onActionNodeSplit({
         addGroup: (
           <Component.HierarchyEditorButton
-            IconProps={{ fontSize: 'large' }}
+            IconProps={{ color: 'warning', fontSize: 'large' }}
             mode="add"
             data={{ category, type: 'group' }}
             onConfirm={() => refetch()}
@@ -49,7 +49,7 @@ export default function HierarchyList({
         ),
         addItem: (
           <Component.HierarchyEditorButton
-            IconProps={{ fontSize: 'large' }}
+            IconProps={{ color: 'info', fontSize: 'large' }}
             mode="add"
             data={{ category, type: 'item' }}
             onConfirm={() => refetch()}
@@ -57,7 +57,7 @@ export default function HierarchyList({
         ),
         search: !collapsed ? null : (
           <CommonButton
-            IconProps={{ color: 'info', fontSize: 'large' }}
+            IconProps={{ fontSize: 'large' }}
             btnVariant="icon"
             icon={FilterListIcon}
             text={at('btn-filter')}

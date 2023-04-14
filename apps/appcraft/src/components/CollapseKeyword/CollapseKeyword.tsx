@@ -72,7 +72,6 @@ export default function CollapseKeyword({
             <InputAdornment position="end">
               <CommonButton
                 btnVariant="icon"
-                color="info"
                 size="small"
                 icon={FilterListOffIcon}
                 text={at('btn-filter-clear')}
@@ -86,7 +85,6 @@ export default function CollapseKeyword({
               {onCollapse && (
                 <CommonButton
                   btnVariant="icon"
-                  color="info"
                   size="small"
                   onClick={onCollapse}
                   icon={CloseIcon}

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/taco3064/appcraft-mono/compare/v0.0.2...v0.0.4) (2023-04-14)
+
+
+### Bug Fixes
+
+* **cd-production:** update git pull before nx build ([8141f4a](https://github.com/taco3064/appcraft-mono/commit/8141f4aed57460b51d730f19a1e315e705e8e64d))
+
 ### 0.0.3 (2023-04-14)
 
 

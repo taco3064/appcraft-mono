@@ -91,8 +91,15 @@ export default function HierarchyItem({
 
       <Menu
         anchorEl={anchorEl}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
+        PaperProps={{
+          sx: (theme) => ({
+            marginTop: theme.spacing(1),
+          }),
+        }}
       >
         <HierarchyEditorButton
           btnVariant="menu"

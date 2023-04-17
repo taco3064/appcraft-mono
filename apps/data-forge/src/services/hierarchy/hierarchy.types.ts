@@ -17,8 +17,7 @@ export interface HierarchyData<U = undefined> {
 
 export type SearchService = (
   userid: string,
-  category: string,
-  parasm: SearchParams
+  parasm: SearchParams & { category?: string }
 ) => Promise<HierarchyData<ObjectId>[]>;
 
 export type GetNamesService = (
@@ -37,4 +36,4 @@ export type UpdateService = (
   data: HierarchyData<string>
 ) => Promise<HierarchyData<ObjectId>>;
 
-export type RemoveService = (userid: string, dataid: ObjectId) => Promise<void>;
+export type RemoveService = (userid: string, dataid: string) => Promise<void>;

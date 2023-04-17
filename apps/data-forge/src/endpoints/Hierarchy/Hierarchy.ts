@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import { Module, Endpoint } from '@appcraft/server';
-import { ObjectId } from 'mongodb';
 import { Request, Response } from 'express';
 import type { Userinfo } from '@appcraft/server';
 
@@ -21,11 +20,10 @@ export default class Hierarchy {
     ) as Userinfo;
 
     res.json(
-      await hierarchy.search(
-        id,
-        req.params.category,
-        req.body as HierarchyTypes.SearchParams
-      )
+      await hierarchy.search(id, {
+        ...(req.body as HierarchyTypes.SearchParams),
+        category: req.params.category,
+      })
     );
   }
 
@@ -83,7 +81,7 @@ export default class Hierarchy {
       __WEBPACK_DEFINE__.JWT_SECRET
     ) as Userinfo;
 
-    await hierarchy.remove(id, new ObjectId(req.query.id as string));
+    await hierarchy.remove(id, req.query.id as string);
     res.end();
   }
 }

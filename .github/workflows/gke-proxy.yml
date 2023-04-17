@@ -1,0 +1,88 @@
+name: GKE of proxy
+
+on:
+  push:
+    branches:
+      - production
+    paths:
+      - dist/apps/proxy/**
+  workflow_run:
+    workflows:
+      - cd-production
+    types:
+      - completed
+    branches:
+      - production
+
+jobs:
+  deploy-to-gke:
+    name: Deploy proxy to GKE
+    runs-on: ubuntu-latest
+    environment: production
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GIT_TOKEN }}
+
+      # Set up the Node.js environment
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      # Alternative option - authentication via credentials json
+      - name: Authenticate to Google Cloud
+        id: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      # Setup gcloud CLI
+      - name: Set up GCloud
+        uses: google-github-actions/setup-gcloud@v1
+
+      # Get the GKE credentials
+      - name: Get the GKE credentials
+        uses: google-github-actions/get-gke-credentials@v1
+        with:
+          cluster_name: dev-proxy-cluster
+          location: asia-east1-a
+
+      # Get Package Version
+      - name: Get Package Version
+        id: version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+
+      # Build Docker image
+      - name: Build Docker Image
+        run: |
+          docker build \
+          -f ./apps/proxy/Dockerfile . \
+          -t gcr.io/${{ vars.GCP_PROJECT }}/proxy:v${{ steps.version.outputs.current-version }}
+
+      # Push the Docker Image to GCR
+      - name: Push the Docker Image to GCR
+        run: |
+          gcloud --quiet auth configure-docker
+          docker push gcr.io/${{ vars.GCP_PROJECT }}/proxy:v${{ steps.version.outputs.current-version }}
+
+      # Connect GKE
+      - name: Connect GKE
+        uses: google-github-actions/get-gke-credentials@v1
+        with:
+          cluster_name: dev-proxy-cluster
+          location: asia-east1-a
+
+      - name: Update Image
+        run: |
+          kubectl set image \
+            deployment/dev-proxy \
+            proxy-1=gcr.io/${{ vars.GCP_PROJECT }}/proxy:v${{ steps.version.outputs.current-version }} \
+            -n dev

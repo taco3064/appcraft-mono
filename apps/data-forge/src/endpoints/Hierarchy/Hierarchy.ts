@@ -31,6 +31,21 @@ export default class Hierarchy {
 
   @Endpoint({
     method: 'post',
+    description: '查詢目標名稱',
+  })
+  async getNames(req: Request, res: Response) {
+    const { id } = jwt.verify(
+      req.cookies.jwt,
+      __WEBPACK_DEFINE__.JWT_SECRET
+    ) as Userinfo;
+
+    res.json(
+      await hierarchy.getNames(id, req.params.category, req.body as string[])
+    );
+  }
+
+  @Endpoint({
+    method: 'post',
     description: '建立新的 Hierarchy Group / Item',
   })
   async add(req: Request, res: Response) {

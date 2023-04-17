@@ -30,6 +30,31 @@ export const search: Types.SearchService = async (
   return cursor.sort(['category', 'type', 'name']).toArray();
 };
 
+export const getNames: Types.GetNamesService = async (
+  userid,
+  category,
+  ids
+) => {
+  const collection = await getCollection<Types.HierarchyData<ObjectId>>({
+    db: 'data-forge',
+    collection: 'hierarchy',
+  });
+
+  const cursor = await collection.find({
+    userid: { $eq: userid },
+    category: { $eq: category },
+    _id: { $in: ids.map((id) => new ObjectId(id)) },
+  });
+
+  return (await cursor.toArray()).reduce(
+    (result, { _id, name }) => ({
+      ...result,
+      [_id.toString()]: name,
+    }),
+    {}
+  );
+};
+
 export const add: Types.AddService = async (userid, newData) => {
   const collection = await getCollection<Types.HierarchyData<ObjectId>>({
     db: 'data-forge',

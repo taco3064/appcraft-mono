@@ -19,6 +19,7 @@
         "assets": [
           "apps/proxy/src/assets"
         ],
+        "generatePackageJson": true,
         "isolatedConfig": true,
         "webpackConfig": "apps/proxy/webpack.config.js"
       },

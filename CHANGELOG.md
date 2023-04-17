@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/taco3064/appcraft-mono/compare/v0.0.3...v0.0.4) (2023-04-17)
+
+
+### Bug Fixes
+
+* **data-forge:** fixed the url of endpoint ([1429a36](https://github.com/taco3064/appcraft-mono/commit/1429a368df0aef43b8dd8e79ffe4b68303a2498d))
+
 ### [0.0.3](https://github.com/taco3064/appcraft-mono/compare/v0.0.2...v0.0.3) (2023-04-17)
 
 

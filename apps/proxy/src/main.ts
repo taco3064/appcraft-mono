@@ -16,7 +16,7 @@ const app = express()
   .use(express.urlencoded({ extended: true }))
   .use('/assets', express.static(path.join(__dirname, 'assets')))
   .use(async (req, res, next) => {
-    if (!/^\/oauth2\//.test(req.url)) {
+    if (!/^\/oauth2\//.test(req.url) && '/' !== req.url) {
       try {
         const idToken = jwt.verify(
           req.cookies.id,

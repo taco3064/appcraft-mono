@@ -16,9 +16,7 @@ export const search: Types.SearchService = async (
   const cursor = await collection.find({
     userid: { $eq: userid },
     category: { $eq: category },
-    ...(superior && {
-      superior: { $eq: superior },
-    }),
+    superior: superior ? { $eq: superior } : null,
     ...(keyword && {
       $or: [
         { name: { $regex: keyword, $options: 'i' } },

@@ -1,8 +1,6 @@
 import SvgIcon from '@mui/material/SvgIcon';
 import type { ReactNode } from 'react';
 
-import type { HierarchyData } from '~appcraft/services';
-
 enum ActionType {
   addGroup,
   addItem,

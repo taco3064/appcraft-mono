@@ -12,6 +12,7 @@ export type HierarchyListAction = Record<HierarchyListActionName, ReactNode>;
 
 export interface HierarchyListProps {
   category: string;
+  disableBreadcrumb?: boolean;
   icon: typeof SvgIcon;
 
   onActionNodeSplit?: (

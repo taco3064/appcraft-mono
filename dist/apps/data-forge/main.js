@@ -59,6 +59,7 @@ tslib_1.__decorate([
 ], Hierarchy.prototype, "search", null);
 tslib_1.__decorate([
     (0, server_1.Endpoint)({
+        url: 'getNames/:category',
         method: 'post',
         description: '查詢目標名稱',
     }),
@@ -463,7 +464,7 @@ Object.values(endpoints).forEach((EndPoint) => new EndPoint(app));
 app
     .get('/', (_req, res) => res
     .setHeader('Content-type', 'text/html')
-    .send(`<h1>@appcraft/data-forge:${port}<br/>v${"0.0.3"}</h1>`))
+    .send(`<h1>@appcraft/data-forge:${port}<br/>v${"0.0.4"}</h1>`))
     .listen(port)
     .on('error', console.error)
     .on('listening', () => console.log(`Listening at ${port}`));

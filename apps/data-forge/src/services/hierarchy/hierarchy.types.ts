@@ -21,6 +21,12 @@ export type SearchService = (
   parasm: SearchParams
 ) => Promise<HierarchyData<ObjectId>[]>;
 
+export type GetNamesService = (
+  userid: string,
+  category: string,
+  ids: string[]
+) => Promise<Record<string, string>>;
+
 export type AddService = (
   userid: string,
   data: HierarchyData

@@ -1,0 +1,13 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/data-sources": "pages/data-sources.html",
+  "/": "pages/index.html",
+  "/pages": "pages/pages.html",
+  "/settings": "pages/settings.html",
+  "/themes": "pages/themes.html",
+  "/websites": "pages/websites.html",
+  "/widgets": "pages/widgets.html",
+  "/_document": "pages/_document.js",
+  "/404": "pages/404.html"
+}

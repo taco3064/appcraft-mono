@@ -6,7 +6,7 @@
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
-var _a, _b, _c, _d, _e, _f, _g, _h;
+var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const tslib_1 = __webpack_require__("tslib");
 const jsonwebtoken_1 = tslib_1.__importDefault(__webpack_require__("jsonwebtoken"));
@@ -19,6 +19,12 @@ let Hierarchy = class Hierarchy {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const { id } = jsonwebtoken_1.default.verify(req.cookies.jwt, "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY4MDE1OTgzNywiaWF0IjoxNjgwMTU5ODM3fQ.2fqT5Q89AdyiyXqlMr4fJ5avNadvYQJTH1VdRWP2aeM");
             res.json(yield hierarchy.search(id, req.params.category, req.body));
+        });
+    }
+    getNames(req, res) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            const { id } = jsonwebtoken_1.default.verify(req.cookies.jwt, "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTY4MDE1OTgzNywiaWF0IjoxNjgwMTU5ODM3fQ.2fqT5Q89AdyiyXqlMr4fJ5avNadvYQJTH1VdRWP2aeM");
+            res.json(yield hierarchy.getNames(id, req.params.category, req.body));
         });
     }
     add(req, res) {
@@ -54,10 +60,19 @@ tslib_1.__decorate([
 tslib_1.__decorate([
     (0, server_1.Endpoint)({
         method: 'post',
-        description: '建立新的 Hierarchy Group / Item',
+        description: '查詢目標名稱',
     }),
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", [typeof (_c = typeof express_1.Request !== "undefined" && express_1.Request) === "function" ? _c : Object, typeof (_d = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _d : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], Hierarchy.prototype, "getNames", null);
+tslib_1.__decorate([
+    (0, server_1.Endpoint)({
+        method: 'post',
+        description: '建立新的 Hierarchy Group / Item',
+    }),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [typeof (_e = typeof express_1.Request !== "undefined" && express_1.Request) === "function" ? _e : Object, typeof (_f = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _f : Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], Hierarchy.prototype, "add", null);
 tslib_1.__decorate([
@@ -66,7 +81,7 @@ tslib_1.__decorate([
         description: '編輯 Hierarchy Group / Item',
     }),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [typeof (_e = typeof express_1.Request !== "undefined" && express_1.Request) === "function" ? _e : Object, typeof (_f = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _f : Object]),
+    tslib_1.__metadata("design:paramtypes", [typeof (_g = typeof express_1.Request !== "undefined" && express_1.Request) === "function" ? _g : Object, typeof (_h = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _h : Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], Hierarchy.prototype, "update", null);
 tslib_1.__decorate([
@@ -75,7 +90,7 @@ tslib_1.__decorate([
         description: '刪除 Hierarchy Group / Item',
     }),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", [typeof (_g = typeof express_1.Request !== "undefined" && express_1.Request) === "function" ? _g : Object, typeof (_h = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _h : Object]),
+    tslib_1.__metadata("design:paramtypes", [typeof (_j = typeof express_1.Request !== "undefined" && express_1.Request) === "function" ? _j : Object, typeof (_k = typeof express_1.Response !== "undefined" && express_1.Response) === "function" ? _k : Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], Hierarchy.prototype, "remove", null);
 Hierarchy = tslib_1.__decorate([
@@ -161,7 +176,7 @@ exports.getCollection = getCollection;
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.remove = exports.update = exports.add = exports.search = void 0;
+exports.remove = exports.update = exports.add = exports.getNames = exports.search = void 0;
 const tslib_1 = __webpack_require__("tslib");
 const mongodb_1 = __webpack_require__("mongodb");
 const common_1 = __webpack_require__("./src/services/common/index.ts");
@@ -181,6 +196,19 @@ const search = (userid, category, { keyword, superior }) => tslib_1.__awaiter(vo
     return cursor.sort(['category', 'type', 'name']).toArray();
 });
 exports.search = search;
+const getNames = (userid, category, ids) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    const collection = yield (0, common_1.getCollection)({
+        db: 'data-forge',
+        collection: 'hierarchy',
+    });
+    const cursor = yield collection.find({
+        userid: { $eq: userid },
+        category: { $eq: category },
+        _id: { $in: ids.map((id) => new mongodb_1.ObjectId(id)) },
+    });
+    return (yield cursor.toArray()).reduce((result, { _id, name }) => (Object.assign(Object.assign({}, result), { [_id.toString()]: name })), {});
+});
+exports.getNames = getNames;
 const add = (userid, newData) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const collection = yield (0, common_1.getCollection)({
         db: 'data-forge',
@@ -435,7 +463,7 @@ Object.values(endpoints).forEach((EndPoint) => new EndPoint(app));
 app
     .get('/', (_req, res) => res
     .setHeader('Content-type', 'text/html')
-    .send(`<h1>@appcraft/data-forge:${port}<br/>v${"0.0.1"}</h1>`))
+    .send(`<h1>@appcraft/data-forge:${port}<br/>v${"0.0.3"}</h1>`))
     .listen(port)
     .on('error', console.error)
     .on('listening', () => console.log(`Listening at ${port}`));

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.2](https://github.com/taco3064/appcraft-mono/compare/v0.0.1...v0.0.2) (2023-04-17)
+
+
+### Bug Fixes
+
+* **main(apps/proxy):** generate package.json after build, and make "/" is an authless url ([36c1d24](https://github.com/taco3064/appcraft-mono/commit/36c1d245321adc26b0a15a7bf72749627882cdaa))
+
 ### 0.0.1 (2023-04-14)
 
 

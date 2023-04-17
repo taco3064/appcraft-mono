@@ -1,3 +1,4 @@
+import Fade from '@mui/material/Fade';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ImageList from '@mui/material/ImageList';
 import Toolbar from '@mui/material/Toolbar';
@@ -38,7 +39,10 @@ export default function HierarchyList({
 
   const { data: action } = useQuery({
     suspense: false,
-    queryKey: [collapsed, superiors[superiors.length - 1] || ''],
+    queryKey: [collapsed, superiors[superiors.length - 1] || ''] as [
+      boolean,
+      string
+    ],
     queryFn: ({ queryKey: [collapsed, superior] }) =>
       onActionNodeSplit({
         addGroup: (
@@ -65,14 +69,18 @@ export default function HierarchyList({
             onConfirm={() => refetch()}
           />
         ),
-        search: !collapsed ? null : (
-          <CommonButton
-            IconProps={{ fontSize: 'large' }}
-            btnVariant="icon"
-            icon={FilterListIcon}
-            text={at('btn-filter')}
-            onClick={() => setCollapsed(false)}
-          />
+        search: (
+          <Fade in={collapsed}>
+            <div>
+              <CommonButton
+                IconProps={{ fontSize: 'large' }}
+                btnVariant="icon"
+                icon={FilterListIcon}
+                text={at('btn-filter')}
+                onClick={() => setCollapsed(false)}
+              />
+            </div>
+          </Fade>
         ),
       }),
   });

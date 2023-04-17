@@ -12,6 +12,17 @@ export const searchHierarchy: Types.SearchHierarchyService = async ({
   return data;
 };
 
+export const getHierarchyNames: Types.GetHierarchyNamesService = async ({
+  queryKey: [category, ids],
+}) => {
+  const { data } = await axios.post(
+    `/api/data-forge/hierarchy/getNames/${category}`,
+    ids
+  );
+
+  return data;
+};
+
 export const addHierarchy: Types.AddHierarchyService = async (hierarchy) => {
   const { data } = await axios.post('/api/data-forge/hierarchy/add', hierarchy);
 

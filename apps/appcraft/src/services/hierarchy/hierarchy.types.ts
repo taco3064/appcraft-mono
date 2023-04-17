@@ -10,6 +10,11 @@ export type SearchHierarchyService = QueryFunction<
   readonly [string, SearchParams]
 >;
 
+export type GetHierarchyNamesService = QueryFunction<
+  Record<string, string>,
+  [string, string[]]
+>;
+
 export type AddHierarchyService = (
   data: Omit<SimpleData, '_id'>
 ) => Promise<SimpleData<string>>;

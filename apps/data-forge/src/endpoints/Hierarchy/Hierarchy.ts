@@ -30,6 +30,7 @@ export default class Hierarchy {
   }
 
   @Endpoint({
+    url: 'getNames/:category',
     method: 'post',
     description: '查詢目標名稱',
   })

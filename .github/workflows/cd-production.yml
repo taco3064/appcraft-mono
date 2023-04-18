@@ -8,9 +8,9 @@ on:
       - closed
 
 jobs:
-  release:
+  standard-version:
     if: github.event.pull_request.merged == true
-    name: Release
+    name: Run standard-version
     runs-on: ubuntu-latest
     environment: production
     strategy:
@@ -42,10 +42,10 @@ jobs:
           npx standard-version --skip.tag
           git push origin HEAD:main HEAD:production -f
 
-  affected-build:
-    needs: release
+  release-tag:
+    needs: standard-version
     if: github.event.pull_request.merged == true
-    name: Affected Build
+    name: Release Tag
     runs-on: ubuntu-latest
     environment: production
     strategy:
@@ -87,31 +87,78 @@ jobs:
           git config --global user.name "Taco Chang"
           git pull
           npm ci
-          affecteds=$( \
-            npx nx print-affected \
-            --select=projects \
-            --type=app \
-            --base=${{ steps.setSHAs.outputs.base }} \
-            --head=${{ steps.setSHAs.outputs.head }} \
-          )
-          echo "::set-output name=affecteds::$affecteds"
 
       - name: Get Package Version
         id: version
         uses: martinbeentjes/npm-get-version-action@v1.3.1
 
-      - name: Build
-        run: |
-          npx nx affected \
-            --target=build \
-            --type=app \
-            --base=${{ steps.setSHAs.outputs.base }} \
-            --head=${{ steps.setSHAs.outputs.head }}
-          git add --force -- dist
-          git commit -m "BUILD BY ACTION(cd-production.yml)" --no-verify
-          git push origin HEAD:production
-
       - name: Release Tag
         run: |
-          git tag -f -a "v${{ steps.version.outputs.current-version }}" -m "${{ steps.init.outputs.affecteds }}"
+          git tag \
+            -f \
+            -a "v${{ steps.version.outputs.current-version }}" \
+            -m "$( \
+              npx nx print-affected \
+                --select=projects \
+                --target=build \
+                --base=${{ steps.setSHAs.outputs.base }} \
+                --head=${{ steps.setSHAs.outputs.head }} \
+            )"
+
           git push --tags origin HEAD:production
+
+      - name: Trigger Affected Actions(Libs)
+        run: |
+          IFS=', ' read -r -a affecteds <<< "$( \
+            npx nx print-affected \
+              --select=projects \
+              --target=build \
+              --type=lib \
+              --base=${{ steps.setSHAs.outputs.base }} \
+              --head=${{ steps.setSHAs.outputs.head }} \
+          )"
+
+          for lib in "${affecteds[@]}"; do
+            curl -L \
+              -X POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{ secrets.GIT_TOKEN }}" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              https://api.github.com/repos/taco3064/appcraft-mono/actions/workflows/npm-$lib.yml/dispatches \
+              -d '{ \
+                "ref":"production", \
+                "inputs":{ \
+                  "base":"${{ steps.setSHAs.outputs.base }}", \
+                  "head":"${{steps.setSHAs.outputs.head}}", \
+                  "version":"${{ steps.version.outputs.current-version }}" \
+                } \
+              }'
+          done
+
+      - name: Trigger Affected Actions(Apps)
+        run: |
+          IFS=', ' read -r -a affecteds <<< "$( \
+            npx nx print-affected \
+              --select=projects \
+              --target=build \
+              --type=app \
+              --base=${{ steps.setSHAs.outputs.base }} \
+              --head=${{ steps.setSHAs.outputs.head }} \
+          )"
+
+          for app in "${affecteds[@]}"; do
+            curl -L \
+              -X POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{ secrets.GIT_TOKEN }}" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              https://api.github.com/repos/taco3064/appcraft-mono/actions/workflows/gke-$app.yml/dispatches \
+              -d '{ \
+                "ref":"production", \
+                "inputs":{ \
+                  "base":"${{ steps.setSHAs.outputs.base }}", \
+                  "head":"${{steps.setSHAs.outputs.head}}", \
+                  "version":"${{ steps.version.outputs.current-version }}" \
+                } \
+              }'
+          done

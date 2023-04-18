@@ -1,18 +1,17 @@
 name: GKE of data-forge
 
 on:
-  push:
-    branches:
-      - production
-    paths:
-      - dist/apps/data-forge/**
-  workflow_run:
-    workflows:
-      - cd-production
-    types:
-      - completed
-    branches:
-      - production
+  workflow_dispatch:
+    inputs:
+      base:
+        required: true
+        type: string
+      head:
+        required: true
+        type: string
+      version:
+        required: true
+        type: string
 
 jobs:
   deploy-to-gke:
@@ -55,23 +54,20 @@ jobs:
           cluster_name: dev-data-forge-cluster
           location: asia-east1-a
 
-      # Get Package Version
-      - name: Get Package Version
-        id: version
-        uses: martinbeentjes/npm-get-version-action@v1.3.1
-
       # Build Docker image
       - name: Build Docker Image
         run: |
+          npm ci
+          npx nx build data-forge --configuration=production
           docker build \
           -f ./apps/data-forge/Dockerfile . \
-          -t gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ steps.version.outputs.current-version }}
+          -t gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ inputs.version }}
 
       # Push the Docker Image to GCR
       - name: Push the Docker Image to GCR
         run: |
           gcloud --quiet auth configure-docker
-          docker push gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ steps.version.outputs.current-version }}
+          docker push gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ inputs.version }}
 
       # Connect GKE
       - name: Connect GKE
@@ -84,5 +80,5 @@ jobs:
         run: |
           kubectl set image \
             deployment/dev-data-forge \
-            data-forge-1=gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ steps.version.outputs.current-version }} \
+            data-forge-1=gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ inputs.version }} \
             -n dev

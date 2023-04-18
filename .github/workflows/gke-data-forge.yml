@@ -60,8 +60,8 @@ jobs:
           npm ci
           npx nx build data-forge --configuration=production
           docker build \
-          -f ./apps/data-forge/Dockerfile . \
-          -t gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ inputs.version }}
+            -f ./apps/data-forge/Dockerfile . \
+            -t gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ inputs.version }}
 
       # Push the Docker Image to GCR
       - name: Push the Docker Image to GCR

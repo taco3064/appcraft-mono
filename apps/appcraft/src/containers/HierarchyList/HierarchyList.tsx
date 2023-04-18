@@ -2,6 +2,7 @@ import Fade from '@mui/material/Fade';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ImageList from '@mui/material/ImageList';
 import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -124,26 +125,40 @@ export default function HierarchyList({
         onConfirm={setKeyword}
       />
 
-      <ImageList gap={24} cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}>
-        {hierarchies.map((data) => (
-          <Component.HierarchyItem
-            key={data._id}
-            data={data}
-            icon={icon}
-            onClick={(data) => {
-              if (data.type === 'group') {
-                push({
-                  pathname,
-                  query: {
-                    superiors: [...superiors, data._id].join('-'),
-                  },
-                });
-              }
-            }}
-            onDataModify={() => refetch()}
-          />
-        ))}
-      </ImageList>
+      {hierarchies.length === 0 ? (
+        <Typography
+          variant="h5"
+          color="text.secondary"
+          align="center"
+          sx={(theme) => ({
+            opacity: theme.palette.action.disabledOpacity,
+            margin: theme.spacing(6, 0),
+          })}
+        >
+          {at('txt-no-data')}
+        </Typography>
+      ) : (
+        <ImageList gap={24} cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}>
+          {hierarchies.map((data) => (
+            <Component.HierarchyItem
+              key={data._id}
+              data={data}
+              icon={icon}
+              onClick={(data) => {
+                if (data.type === 'group') {
+                  push({
+                    pathname,
+                    query: {
+                      superiors: [...superiors, data._id].join('-'),
+                    },
+                  });
+                }
+              }}
+              onDataModify={() => refetch()}
+            />
+          ))}
+        </ImageList>
+      )}
     </>
   );
 }

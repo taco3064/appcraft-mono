@@ -10,8 +10,8 @@ import { useState } from 'react';
 import * as Component from '~appcraft/components';
 import { Breadcrumbs } from '../Breadcrumbs';
 import { CommonButton } from '~appcraft/components/common';
-import { getHierarchyNames, searchHierarchy } from '~appcraft/services';
-import { useFixedT, useWidth } from '~appcraft/hooks';
+import { searchHierarchy } from '~appcraft/services';
+import { useFixedT, useSuperiors, useWidth } from '~appcraft/hooks';
 import type * as Types from './HierarchyList.types';
 
 const DEFAULT_ACTION_NODE_SPLIT: Types.HierarchyListProps['onActionNodeSplit'] =
@@ -23,8 +23,8 @@ export default function HierarchyList({
   icon,
   onActionNodeSplit = DEFAULT_ACTION_NODE_SPLIT,
 }: Types.HierarchyListProps) {
-  const { pathname, push, query } = useRouter();
-  const superiors = (query.superiors as string)?.split('-') || [];
+  const { pathname, push } = useRouter();
+  const [{ data: names }, superiors] = useSuperiors(category);
   const superior = superiors[superiors.length - 1];
   const width = useWidth();
 
@@ -36,12 +36,6 @@ export default function HierarchyList({
     refetchOnWindowFocus: false,
     queryFn: searchHierarchy,
     queryKey: [category, { keyword, superior }],
-  });
-
-  const { data: names } = useQuery({
-    refetchOnWindowFocus: false,
-    queryFn: getHierarchyNames,
-    queryKey: [category, superiors],
   });
 
   const { data: action } = useQuery({
@@ -94,15 +88,18 @@ export default function HierarchyList({
       {!disableBreadcrumb && (
         <Breadcrumbs
           ToolbarProps={{ disableGutters: true }}
-          stretches={superiors.map((id, i) => ({
-            text: names[id],
-            url: {
-              pathname,
-              query: {
-                superiors: superiors.slice(0, i + 1),
+          onCustomize={(breadcrumbs) => [
+            ...breadcrumbs,
+            ...superiors.map((id, i) => ({
+              text: names[id],
+              url: {
+                pathname,
+                query: {
+                  superiors: superiors.slice(0, i + 1),
+                },
               },
-            },
-          }))}
+            })),
+          ]}
         />
       )}
 
@@ -144,16 +141,26 @@ export default function HierarchyList({
               key={data._id}
               data={data}
               icon={icon}
-              onClick={(data) => {
-                if (data.type === 'group') {
-                  push({
-                    pathname,
-                    query: {
-                      superiors: [...superiors, data._id].join('-'),
-                    },
-                  });
-                }
-              }}
+              onClick={(data) =>
+                push(
+                  data.type === 'group'
+                    ? {
+                        pathname,
+                        query: {
+                          superiors: [...superiors, data._id].join('-'),
+                        },
+                      }
+                    : {
+                        pathname: `${pathname}/detail`,
+                        query: {
+                          id: data._id,
+                          ...(superiors.length && {
+                            superiors: superiors.join('-'),
+                          }),
+                        },
+                      }
+                )
+              }
               onDataModify={() => refetch()}
             />
           ))}

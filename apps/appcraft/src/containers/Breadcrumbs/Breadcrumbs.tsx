@@ -10,20 +10,18 @@ import type * as Types from './Breadcrumbs.types';
 
 export default function Breadcrumbs({
   ToolbarProps,
-  breadcrumbs = {},
-  stretches = [],
+  onCustomize = (e) => e,
 }: Types.BreadcrumbsProps) {
   const { back, pathname } = useRouter();
   const [at, bt] = useFixedT('app', 'breadcrumb');
 
-  const [, ...list]: Types.Breadcrumb[] = pathname.split('/').map((url) => {
-    const { [url]: breadcrumb } = breadcrumbs;
-
-    return {
-      text: breadcrumb?.text || bt(url),
-      url: breadcrumb?.url || `/${url}`,
-    };
-  });
+  const list: Types.Breadcrumb[] = pathname
+    .split('/')
+    .slice(1)
+    .map((url, i, arr) => ({
+      text: bt(url),
+      url: `/${arr.slice(0, i + 1).join('/')}`,
+    }));
 
   return (
     <GapToolbar variant="dense" {...ToolbarProps}>
@@ -36,7 +34,7 @@ export default function Breadcrumbs({
       />
 
       <MuiBreadcrumbs separator="›" aria-label="breadcrumb">
-        {list.concat(stretches).map(({ text, url }, i, arr) => {
+        {onCustomize(list).map(({ text, url }, i, arr) => {
           const isLast = i === arr.length - 1;
           const isTypography = !url || i === arr.length - 1;
 

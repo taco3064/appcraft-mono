@@ -8,6 +8,5 @@ export interface Breadcrumb {
 
 export interface BreadcrumbsProps {
   ToolbarProps?: ToolbarProps;
-  breadcrumbs?: Record<string, Breadcrumb>;
-  stretches?: Breadcrumb[];
+  onCustomize?: (breadcrumbs: Breadcrumb[]) => Breadcrumb[];
 }

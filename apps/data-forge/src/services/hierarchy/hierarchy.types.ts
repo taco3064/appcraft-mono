@@ -1,12 +1,12 @@
 import type { ObjectId } from 'mongodb';
 import type * as Types from '@appcraft/types';
 
-export type SearchParams = Types.SearchParams;
+export type HierarchyParams = Types.HierarchyParams;
 export type HierarchyData<U = undefined> = Types.HierarchyData<U>;
 
 export type SearchService = (
   userid: string,
-  parasm: SearchParams & { category?: string }
+  parasm: HierarchyParams & { category?: string }
 ) => Promise<HierarchyData<ObjectId>[]>;
 
 export type GetNamesService = (

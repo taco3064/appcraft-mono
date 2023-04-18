@@ -2,6 +2,7 @@ import Fade from '@mui/material/Fade';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ImageList from '@mui/material/ImageList';
 import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -9,8 +10,8 @@ import { useState } from 'react';
 import * as Component from '~appcraft/components';
 import { Breadcrumbs } from '../Breadcrumbs';
 import { CommonButton } from '~appcraft/components/common';
-import { getHierarchyNames, searchHierarchy } from '~appcraft/services';
-import { useFixedT, useWidth } from '~appcraft/hooks';
+import { searchHierarchy } from '~appcraft/services';
+import { useFixedT, useSuperiors, useWidth } from '~appcraft/hooks';
 import type * as Types from './HierarchyList.types';
 
 const DEFAULT_ACTION_NODE_SPLIT: Types.HierarchyListProps['onActionNodeSplit'] =
@@ -22,8 +23,8 @@ export default function HierarchyList({
   icon,
   onActionNodeSplit = DEFAULT_ACTION_NODE_SPLIT,
 }: Types.HierarchyListProps) {
-  const { pathname, push, query } = useRouter();
-  const superiors = (query.superiors as string)?.split('-') || [];
+  const { pathname, push } = useRouter();
+  const [{ data: names }, superiors] = useSuperiors(category);
   const superior = superiors[superiors.length - 1];
   const width = useWidth();
 
@@ -35,12 +36,6 @@ export default function HierarchyList({
     refetchOnWindowFocus: false,
     queryFn: searchHierarchy,
     queryKey: [category, { keyword, superior }],
-  });
-
-  const { data: names } = useQuery({
-    refetchOnWindowFocus: false,
-    queryFn: getHierarchyNames,
-    queryKey: [category, superiors],
   });
 
   const { data: action } = useQuery({
@@ -93,15 +88,18 @@ export default function HierarchyList({
       {!disableBreadcrumb && (
         <Breadcrumbs
           ToolbarProps={{ disableGutters: true }}
-          stretches={superiors.map((id, i) => ({
-            text: names[id],
-            url: {
-              pathname,
-              query: {
-                superiors: superiors.slice(0, i + 1),
+          onCustomize={(breadcrumbs) => [
+            ...breadcrumbs,
+            ...superiors.map((id, i) => ({
+              text: names[id],
+              url: {
+                pathname,
+                query: {
+                  superiors: superiors.slice(0, i + 1),
+                },
               },
-            },
-          }))}
+            })),
+          ]}
         />
       )}
 
@@ -124,26 +122,50 @@ export default function HierarchyList({
         onConfirm={setKeyword}
       />
 
-      <ImageList gap={24} cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}>
-        {hierarchies.map((data) => (
-          <Component.HierarchyItem
-            key={data._id}
-            data={data}
-            icon={icon}
-            onClick={(data) => {
-              if (data.type === 'group') {
-                push({
-                  pathname,
-                  query: {
-                    superiors: [...superiors, data._id].join('-'),
-                  },
-                });
+      {hierarchies.length === 0 ? (
+        <Typography
+          variant="h5"
+          color="text.secondary"
+          align="center"
+          sx={(theme) => ({
+            opacity: theme.palette.action.disabledOpacity,
+            margin: theme.spacing(6, 0),
+          })}
+        >
+          {at('txt-no-data')}
+        </Typography>
+      ) : (
+        <ImageList gap={24} cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}>
+          {hierarchies.map((data) => (
+            <Component.HierarchyItem
+              key={data._id}
+              data={data}
+              icon={icon}
+              onClick={(data) =>
+                push(
+                  data.type === 'group'
+                    ? {
+                        pathname,
+                        query: {
+                          superiors: [...superiors, data._id].join('-'),
+                        },
+                      }
+                    : {
+                        pathname: `${pathname}/detail`,
+                        query: {
+                          id: data._id,
+                          ...(superiors.length && {
+                            superiors: superiors.join('-'),
+                          }),
+                        },
+                      }
+                )
               }
-            }}
-            onDataModify={() => refetch()}
-          />
-        ))}
-      </ImageList>
+              onDataModify={() => refetch()}
+            />
+          ))}
+        </ImageList>
+      )}
     </>
   );
 }

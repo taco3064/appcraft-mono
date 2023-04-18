@@ -25,6 +25,7 @@
   "ttl-remove-alert": "Confirm",
   "ttl-signin": "Sign in",
   "txt-introduction": "Appcraft is a web application editor based on React components. Its user-friendly interface allows you to quickly assemble and create your own web content.\n\nIn Appcraft, there are a large number of Material UI components that you can freely use. Each component has its own different settings, making it easy to carry out clear and detailed configurations. In addition to being able to configure the interface, you can also define events to achieve interactive effects between interface components.\n\nIn short, Appcraft enables anyone to quickly build their own web application without needing to have a lot of development knowledge, allowing for easy enjoyment of the fun of building web applications.",
+  "txt-no-data": "No Data Available",
   "txt-remove-content": "Are you sure to remove?",
   "txt-succeed-add": "Add Successfully.",
   "txt-succeed-remove": "Remove Done.",

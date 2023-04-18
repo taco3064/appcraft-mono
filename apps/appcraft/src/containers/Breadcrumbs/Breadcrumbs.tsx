@@ -1,33 +1,40 @@
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
 
-import { Link } from '~appcraft/styles';
+import { CommonButton } from '~appcraft/components/common';
+import { Link, GapToolbar } from '~appcraft/styles';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './Breadcrumbs.types';
 
 export default function Breadcrumbs({
   ToolbarProps,
-  breadcrumbs = {},
-  stretches = [],
+  onCustomize = (e) => e,
 }: Types.BreadcrumbsProps) {
-  const { pathname } = useRouter();
-  const [bt] = useFixedT('breadcrumb');
+  const { back, pathname } = useRouter();
+  const [at, bt] = useFixedT('app', 'breadcrumb');
 
-  const [, ...list]: Types.Breadcrumb[] = pathname.split('/').map((url) => {
-    const { [url]: breadcrumb } = breadcrumbs;
-
-    return {
-      text: breadcrumb?.text || bt(url),
-      url: breadcrumb?.url || `/${url}`,
-    };
-  });
+  const list: Types.Breadcrumb[] = pathname
+    .split('/')
+    .slice(1)
+    .map((url, i, arr) => ({
+      text: bt(url),
+      url: `/${arr.slice(0, i + 1).join('/')}`,
+    }));
 
   return (
-    <Toolbar variant="dense" {...ToolbarProps}>
+    <GapToolbar variant="dense" {...ToolbarProps}>
+      <CommonButton
+        btnVariant="icon"
+        color="secondary"
+        text={at('btn-back')}
+        icon={ArrowBackIcon}
+        onClick={() => back()}
+      />
+
       <MuiBreadcrumbs separator="›" aria-label="breadcrumb">
-        {list.concat(stretches).map(({ text, url }, i, arr) => {
+        {onCustomize(list).map(({ text, url }, i, arr) => {
           const isLast = i === arr.length - 1;
           const isTypography = !url || i === arr.length - 1;
 
@@ -46,6 +53,6 @@ export default function Breadcrumbs({
           );
         })}
       </MuiBreadcrumbs>
-    </Toolbar>
+    </GapToolbar>
   );
 }

@@ -6,16 +6,16 @@ export type HierarchyData<U = undefined> = Omit<
   'userid'
 >;
 
-export type SearchParams = Types.SearchParams;
+export type HierarchyParams = Types.HierarchyParams;
 
 export type SearchHierarchyService = QueryFunction<
   HierarchyData<string>[],
-  readonly [string, Types.SearchParams]
+  readonly [string, Types.HierarchyParams]
 >;
 
 export type GetHierarchyNamesService = QueryFunction<
   Record<string, string>,
-  [string, string[]]
+  readonly [string, string[]]
 >;
 
 export type AddHierarchyService = (

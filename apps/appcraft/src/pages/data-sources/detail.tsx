@@ -7,14 +7,16 @@ import { useFixedT, useSuperiors } from '~appcraft/hooks';
 export default function Detail() {
   const { pathname, query } = useRouter();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
+  const id = query.id as string;
+
   const [dst] = useFixedT('data-sources');
-  const [{ data: names }, superiors] = useSuperiors(category);
+  const [{ data: names }, superiors] = useSuperiors(category, id);
 
   return (
     <PageContainer
       ContentProps={{ disableGutters: true }}
       maxWidth="sm"
-      title={dst('ttl-detail', { name: 'test' })}
+      title={dst('ttl-detail', { name: names[id] })}
     >
       <Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
@@ -22,8 +24,8 @@ export default function Detail() {
           breadcrumbs.splice(
             1,
             1,
-            ...superiors.map((id, i) => ({
-              text: names[id],
+            ...superiors.map((superior, i) => ({
+              text: names[superior],
               url: {
                 pathname: `/${category}`,
                 query: {
@@ -33,7 +35,7 @@ export default function Detail() {
             }))
           );
 
-          return [...breadcrumbs, { text: query.id as string }];
+          return [...breadcrumbs, { text: names[id] }];
         }}
       />
     </PageContainer>

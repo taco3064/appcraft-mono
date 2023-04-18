@@ -21,7 +21,7 @@ export default class Hierarchy {
 
     res.json(
       await hierarchy.search(id, {
-        ...(req.body as HierarchyTypes.SearchParams),
+        ...(req.body as HierarchyTypes.HierarchyParams),
         category: req.params.category,
       })
     );

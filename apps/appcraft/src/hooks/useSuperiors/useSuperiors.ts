@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { getHierarchyNames } from '~appcraft/services';
 import type * as Types from './useSuperiors.types';
 
-const useSuperiors: Types.SuperiorsHook = (category) => {
+const useSuperiors: Types.SuperiorsHook = (category, itemId) => {
   const { query } = useRouter();
   const superiors = (query.superiors as string)?.split('-') || [];
 
@@ -12,7 +12,7 @@ const useSuperiors: Types.SuperiorsHook = (category) => {
     useQuery({
       refetchOnWindowFocus: false,
       queryFn: getHierarchyNames,
-      queryKey: [category, superiors],
+      queryKey: [category, itemId ? superiors.concat(itemId) : superiors],
     }),
 
     superiors,

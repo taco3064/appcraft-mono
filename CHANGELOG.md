@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/taco3064/appcraft-mono/compare/v0.0.8...v0.0.9) (2023-04-18)
+
+
+### Features
+
+* **breadcrumbs(apps/appcraft):** add back button ([689a2cc](https://github.com/taco3064/appcraft-mono/commit/689a2cc40f19583b2ab7706e65471396241dc3e5))
+* **detail(apps/appcraft):** add detail page of data-sources ([becc5a7](https://github.com/taco3064/appcraft-mono/commit/becc5a7c69420d5ce4d3a1a1347e2fec95e0454c))
+
+
+### Bug Fixes
+
+* **detail(apps/appcraft):** fixed query error ([518650e](https://github.com/taco3064/appcraft-mono/commit/518650eb902233787032979047b88a7267cd409b))
+* **hierarchy-list(apps/appcraft):** add no-data message ([29757dd](https://github.com/taco3064/appcraft-mono/commit/29757dd9e2af17cd9bf5467e96e34a403ed80411))
+
 ### [0.0.8](https://github.com/taco3064/appcraft-mono/compare/v0.0.7...v0.0.8) (2023-04-18)
 
 ### [0.0.7](https://github.com/taco3064/appcraft-mono/compare/v0.0.6...v0.0.7) (2023-04-18)

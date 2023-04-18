@@ -17,6 +17,7 @@
     "paths": {
       "@appcraft/server": ["libs/server/src/index.ts"],
       "@appcraft/themes": ["libs/themes/src/index.ts"],
+      "@appcraft/types": ["libs/types/src/index.ts"],
       "~appcraft/*": ["apps/appcraft/src/*"],
       "~data-forge/*": ["apps/data-forge/src/*"],
       "~proxy/*": ["apps/proxy/src/*"],

@@ -1,13 +1,16 @@
 import type { QueryFunction } from '@tanstack/react-query';
-import type { HierarchyData, SearchParams } from '~types/hierarchy';
+import type * as Types from '@appcraft/types';
 
-type SimpleData<U = undefined> = Omit<HierarchyData<U>, 'userid'>;
+export type HierarchyData<U = undefined> = Omit<
+  Types.HierarchyData<U>,
+  'userid'
+>;
 
-export type { SimpleData as HierarchyData, SearchParams };
+export type SearchParams = Types.SearchParams;
 
 export type SearchHierarchyService = QueryFunction<
-  SimpleData<string>[],
-  readonly [string, SearchParams]
+  HierarchyData<string>[],
+  readonly [string, Types.SearchParams]
 >;
 
 export type GetHierarchyNamesService = QueryFunction<
@@ -16,13 +19,13 @@ export type GetHierarchyNamesService = QueryFunction<
 >;
 
 export type AddHierarchyService = (
-  data: Omit<SimpleData, '_id'>
-) => Promise<SimpleData<string>>;
+  data: Omit<HierarchyData, '_id'>
+) => Promise<HierarchyData<string>>;
 
 export type UpdateHierarchyService = (
-  data: SimpleData<string>
-) => Promise<SimpleData<string>>;
+  data: HierarchyData<string>
+) => Promise<HierarchyData<string>>;
 
 export type RemoveHierarchyService = (
-  data: SimpleData<string>
+  data: HierarchyData<string>
 ) => Promise<void>;

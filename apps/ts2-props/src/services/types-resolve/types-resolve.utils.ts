@@ -184,20 +184,22 @@ const generators: Types.Generators = [
         return { ...info, type: 'oneOf', options: oneOf };
       }
 
-      if (!oneOf.length && oneOfType.length) {
-        return {
-          required: info.required,
-          type: 'oneOfType',
-          options: oneOfType,
-        };
-      }
-
       if (oneOf.length && oneOfType.length) {
         return {
-          required: info.required,
+          ...info,
           type: 'oneOfType',
           options: [...oneOfType, { ...info, type: 'oneOf', options: oneOf }],
         };
+      }
+
+      if (!oneOf.length && oneOfType.length) {
+        return oneOfType.length === 1
+          ? oneOfType[0]
+          : {
+              ...info,
+              type: 'oneOfType',
+              options: oneOfType,
+            };
       }
     }
 

@@ -35,15 +35,11 @@ export type ExactProp = BaseProptype<'exact', Record<string, PropTypesDef>>;
 export type InstanceOfProp = BaseProptype<'instanceOf', string>;
 export type NodeProp = BaseProptype<'node'>;
 export type NumberProp = BaseProptype<'number'>;
-export type ObjectProp = BaseProptype<'object'>;
 export type ObjectOfProp = BaseProptype<'objectOf', PropTypesDef>;
+export type ObjectProp = BaseProptype<'object'>;
 export type OneOfProp = BaseProptype<'oneOf', (boolean | number | string)[]>;
+export type OneOfTypeProp = BaseProptype<'oneOfType', PropTypesDef[]>;
 export type StringProp = BaseProptype<'string'>;
-
-export type OneOfTypeProp = Omit<
-  BaseProptype<'oneOfType', PropTypesDef[]>,
-  'name'
->;
 
 export type FuncProp = BaseProptype<
   'func',

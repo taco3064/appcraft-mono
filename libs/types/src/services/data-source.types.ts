@@ -1,10 +1,10 @@
-import type { AxiosRequestConfig, Method } from 'axios';
+import type { AxiosRequestConfig } from 'axios';
 
 export interface DataSource
   extends Pick<
     AxiosRequestConfig,
     'url' | 'method' | 'headers' | 'data' | 'params'
   > {
-  method?: Method;
+  method?: 'GET' | 'DELETE' | 'POST' | 'PUT' | 'PATCH';
   resExtract?: Record<string, string>;
 }

@@ -12,7 +12,7 @@ export type Generators = [
   PrivateGetProptype<
     Appcraft.ExactProp | Appcraft.ObjectProp | Appcraft.ObjectOfProp
   >,
-  PrivateGetProptype<Appcraft.OneOfProp | Appcraft.OneOfTypeProp>
+  PrivateGetProptype<Appcraft.PropTypesDef>
 ];
 
 export type TypeResult = [TsMorph.Type, Appcraft.GeneratorInfo] | null;

@@ -1,4 +1,5 @@
 import LinearProgress from '@mui/material/LinearProgress';
+import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 
 import { useLazyTypesDef } from './TypesEditor.hooks';
@@ -20,11 +21,13 @@ export default function TypesEditor({
     typeName,
   });
 
-  console.log(typesDef);
-
   return (
     <Suspense fallback={<LinearProgress />}>
-      <LazyPaper elevation={0}>tets</LazyPaper>
+      <LazyPaper elevation={0}>
+        <Typography variant="caption" whiteSpace="pre-wrap">
+          {JSON.stringify(typesDef, null, 2)}
+        </Typography>
+      </LazyPaper>
     </Suspense>
   );
 }

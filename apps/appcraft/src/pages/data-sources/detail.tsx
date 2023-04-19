@@ -1,4 +1,5 @@
 import Container from '@mui/material/Container';
+import Head from 'next/head';
 import { TypesEditor } from '@appcraft/mui';
 import { useRouter } from 'next/router';
 
@@ -25,6 +26,10 @@ export default function Detail() {
       maxWidth="lg"
       title={dst('ttl-detail', { name: names[id] })}
     >
+      <Head>
+        <title>Appcraft | {dst('ttl-detail', { name: names[id] })}</title>
+      </Head>
+
       <Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
         onCustomize={(breadcrumbs) => {

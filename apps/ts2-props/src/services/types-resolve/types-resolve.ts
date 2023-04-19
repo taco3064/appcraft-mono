@@ -1,8 +1,8 @@
 import path from 'path';
 import toPath from 'lodash.topath';
-import type * as TsMorph from 'ts-morph';
 import { Project } from 'ts-morph';
 import { debounce } from 'throttle-debounce';
+import type * as TsMorph from 'ts-morph';
 
 import { getProptype } from './types-resolve.utils';
 import type * as Types from './types-resolve.types';
@@ -33,11 +33,13 @@ const getVirtualSource: Types.PrivateGetVirtualSource = ({
       const virtualType = `Virtual${(Math.random() * 10000).toFixed()}Props`;
 
       const project = new Project({
-        tsConfigFilePath: path.resolve(
-          process.cwd(),
-          tsconfigDir,
-          './tsconfig.json'
-        ),
+        ...(tsconfigDir && {
+          tsConfigFilePath: path.resolve(
+            process.cwd(),
+            tsconfigDir,
+            './tsconfig.json'
+          ),
+        }),
       });
 
       const source = project.createSourceFile(

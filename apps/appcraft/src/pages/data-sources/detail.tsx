@@ -6,6 +6,11 @@ import { Breadcrumbs } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT, useSuperiors } from '~appcraft/hooks';
 
+const parser = {
+  url: '/api/ts2-props/types-resolve/parse',
+  method: 'POST' as const,
+};
+
 export default function Detail() {
   const { pathname, query } = useRouter();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
@@ -42,7 +47,15 @@ export default function Detail() {
       />
 
       <Container maxWidth="sm">
-        <TypesEditor />
+        <TypesEditor
+          parser={parser}
+          typeName="DataSource"
+          typeFile={
+            __WEBPACK_DEFINE__.ENV === 'development'
+              ? './libs/types/src/services/data-source.types.ts'
+              : './node_modules/@appcraft/types/src/services/data-source.types.d.ts'
+          }
+        />
       </Container>
     </PageContainer>
   );

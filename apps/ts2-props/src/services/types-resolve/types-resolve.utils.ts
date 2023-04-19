@@ -1,3 +1,4 @@
+import type { PropTypesDef } from '@appcraft/types';
 import type * as Types from './types-resolve.types';
 
 //* 定義 PropTypes 的檢查方式及回傳的 Config 內容 (要注意先後順序)
@@ -81,16 +82,14 @@ const generators: Types.Generators = [
     if (type.isTuple()) {
       const proptypes =
         type.isTuple() &&
-        type
-          .getTupleElements()
-          .reduce<Types.PropTypesDef[]>((result, tuple, i) => {
-            const proptype = getProptype(tuple, {
-              propName: `[${i}]`,
-              required: true,
-            });
+        type.getTupleElements().reduce<PropTypesDef[]>((result, tuple, i) => {
+          const proptype = getProptype(tuple, {
+            propName: `[${i}]`,
+            required: true,
+          });
 
-            return !proptype ? result : result.concat(proptype);
-          }, []);
+          return !proptype ? result : result.concat(proptype);
+        }, []);
 
       return (
         proptypes.length > 0 && {
@@ -125,7 +124,7 @@ const generators: Types.Generators = [
         }
 
         if (properties.length > 0) {
-          const options = properties.reduce<[string, Types.PropTypesDef][]>(
+          const options = properties.reduce<[string, PropTypesDef][]>(
             (result, property) => {
               const propName = property.getName();
 
@@ -166,7 +165,7 @@ const generators: Types.Generators = [
     if (type.isUnion()) {
       const [oneOf, oneOfType] = type
         .getUnionTypes()
-        .reduce<[any[], Types.PropTypesDef[]]>(
+        .reduce<[any[], PropTypesDef[]]>(
           ([literals, types], union) => {
             if (union.isLiteral()) {
               literals.push(JSON.parse(union.getText()));

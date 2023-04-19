@@ -4,8 +4,8 @@ import type * as TsMorph from 'ts-morph';
 import { Project } from 'ts-morph';
 import { debounce } from 'throttle-debounce';
 
-import { getProptype } from './proptypes-resolve.utils';
-import type * as Types from './proptypes-resolve.types';
+import { getProptype } from './types-resolve.utils';
+import type * as Types from './types-resolve.types';
 
 const queues = new Map<
   string,

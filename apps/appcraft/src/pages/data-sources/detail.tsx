@@ -1,3 +1,5 @@
+import Container from '@mui/material/Container';
+import { TypesEditor } from '@appcraft/mui';
 import { useRouter } from 'next/router';
 
 import { Breadcrumbs } from '~appcraft/containers';
@@ -15,7 +17,7 @@ export default function Detail() {
   return (
     <PageContainer
       ContentProps={{ disableGutters: true }}
-      maxWidth="sm"
+      maxWidth="lg"
       title={dst('ttl-detail', { name: names[id] })}
     >
       <Breadcrumbs
@@ -38,6 +40,10 @@ export default function Detail() {
           return [...breadcrumbs, { text: names[id] }];
         }}
       />
+
+      <Container maxWidth="sm">
+        <TypesEditor />
+      </Container>
     </PageContainer>
   );
 }

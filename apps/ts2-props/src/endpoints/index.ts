@@ -1,1 +1,1 @@
-export * from './Proptypes';
+export * from './TypesResolve';

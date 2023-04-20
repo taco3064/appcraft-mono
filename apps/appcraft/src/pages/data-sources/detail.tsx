@@ -2,6 +2,8 @@ import Container from '@mui/material/Container';
 import Head from 'next/head';
 import { TypesEditor } from '@appcraft/mui';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import type { DataSource } from '@appcraft/types';
 
 import { Breadcrumbs } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
@@ -18,7 +20,10 @@ export default function Detail() {
   const id = query.id as string;
 
   const [dst] = useFixedT('data-sources');
+  const [values, setValues] = useState<Partial<DataSource>>({});
   const [{ data: names }, superiors] = useSuperiors(category, id);
+
+  console.log('<Detail /> - values: ', values);
 
   return (
     <PageContainer
@@ -55,13 +60,14 @@ export default function Detail() {
         <TypesEditor
           InputStyles={{ size: 'small', variant: 'outlined' }}
           parser={parser}
-          values={{ method: 'GET' }}
+          values={values}
           typeName="DataSource"
           typeFile={
             __WEBPACK_DEFINE__.ENV === 'development'
               ? './libs/types/src/services/data-source.types.ts'
               : './node_modules/@appcraft/types/src/services/data-source.types.d.ts'
           }
+          onChange={setValues}
         />
       </Container>
     </PageContainer>

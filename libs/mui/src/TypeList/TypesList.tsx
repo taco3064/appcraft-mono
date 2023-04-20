@@ -1,9 +1,12 @@
 import List from '@mui/material/List';
 
 import { TypeItem } from '../TypeItem';
+import { usePropPath } from '../InteractivedContext';
 import type { TypeListProps } from './TypeList.types';
 
 export default function TypeList({ superior }: TypeListProps) {
+  const [propPath, setPropPath] = usePropPath();
+
   return (
     <List>
       {superior?.type === 'exact' &&
@@ -18,8 +21,12 @@ export default function TypeList({ superior }: TypeListProps) {
             <TypeItem
               key={options.propName}
               options={options}
-              onDisplayItemClick={({ type }) => {
-                // setPropPath
+              onDisplayItemClick={({ type, propName }) => {
+                if (type === 'arrayOf') {
+                  setPropPath(`${propPath}[${propName}]`);
+                } else {
+                  setPropPath([propPath, propName].filter((v) => v).join('.'));
+                }
               }}
             />
           ))}

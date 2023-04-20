@@ -2,7 +2,7 @@ import axios from 'axios';
 import { lazy, useMemo } from 'react';
 
 import { TypeList } from '../TypeList';
-import { usePropValue } from '../InteractivedContext';
+import { usePropPath } from '../InteractivedContext';
 import type { LazyTypeListHook } from './TypesEditor.types';
 
 export const useLazyTypeList: LazyTypeListHook = ({
@@ -10,7 +10,9 @@ export const useLazyTypeList: LazyTypeListHook = ({
   typeFile,
   typeName,
 }) => {
-  const [propPath] = usePropValue();
+  const [propPath] = usePropPath();
+
+  console.log(propPath);
 
   return useMemo(
     () =>

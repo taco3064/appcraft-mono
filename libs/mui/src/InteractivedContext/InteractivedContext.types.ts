@@ -13,18 +13,22 @@ export interface InteractivedProviderProps<V extends object = object> {
   InputStyles?: Partial<InputStyles>;
   children: ReactNode;
   values: V;
+  onChange: (values: V) => void;
 }
 
 export interface InteractivedValue<V extends object = object>
   extends Pick<InteractivedProviderProps<V>, 'InputStyles'> {
   propPathState: [string, Dispatch<string>];
-  valuesRef?: RefObject<V>;
+  valuesRef?: RefObject<[V, (values: V) => void]>;
 }
 
 export type ContextHook = () => CompleteValue;
 
 export type ProviderValueHook = <V extends object = object>(
-  props: Pick<InteractivedProviderProps<V>, 'InputStyles' | 'values'>
+  props: Pick<
+    InteractivedProviderProps<V>,
+    'InputStyles' | 'values' | 'onChange'
+  >
 ) => CompleteValue<V>;
 
 export type InputStylesHook = () => CompleteValue['InputStyles'];

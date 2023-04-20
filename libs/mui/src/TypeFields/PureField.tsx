@@ -27,7 +27,7 @@ const NumberInput = forwardRef<HTMLInputElement, NumericFormatProps>(
 
 export default function PureField({ options }: Types.PureFieldProps) {
   const styles = useInputStyles();
-  const [value] = usePropValue<unknown>(options.propName);
+  const [value, onChange] = usePropValue<unknown>(options.propName);
 
   switch (options.type) {
     case 'bool':
@@ -75,7 +75,8 @@ export default function PureField({ options }: Types.PureFieldProps) {
           select
           required={options.required}
           label={options.propName}
-          defaultValue={value}
+          value={value || ''}
+          onChange={(e) => onChange(e.target.value)}
           SelectProps={{ displayEmpty: options.required }}
         >
           {!options.required && <MenuItem value="">&nbsp;</MenuItem>}
@@ -95,7 +96,8 @@ export default function PureField({ options }: Types.PureFieldProps) {
           {...styles}
           required={options.required}
           label={options.propName}
-          defaultValue={value}
+          defaultValue={value || ''}
+          onChange={(e) => onChange(e.target.value)}
         />
       );
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import _get from 'lodash.get';
+import _set from 'lodash.set';
 import _toPath from 'lodash.topath';
 import type * as Types from './InteractivedContext.types';
 
@@ -10,13 +11,22 @@ export const InteractivedContext = React.createContext<Types.InteractivedValue>(
 );
 
 export const useProviderValue: Types.ProviderValueHook = ({
-  values,
   InputStyles: { color = 'primary', size = 'small', variant = 'outlined' } = {},
+  values,
+  onChange,
 }) => {
   const propPathState = React.useState<string>('');
-  const valuesRef = React.useRef<typeof values>(values);
 
-  React.useImperativeHandle(valuesRef, () => values, [values]);
+  const valuesRef = React.useRef<[typeof values, (e: typeof values) => void]>([
+    values,
+    onChange,
+  ]);
+
+  React.useImperativeHandle(
+    valuesRef,
+    (): [typeof values, (e: typeof values) => void] => [values, onChange],
+    [values, onChange]
+  );
 
   return React.useMemo(
     () => ({
@@ -49,14 +59,23 @@ export const usePropValue: Types.PropValueHook = (propName) => {
     valuesRef,
   } = useContext();
 
-  console.log(valuesRef);
-
   return [
     (propName &&
-      _get(valuesRef, ['current', ..._toPath(propPath), propName])) ||
+      _get(valuesRef, ['current', 0, ..._toPath(propPath), propName])) ||
       null,
-    React.useCallback((value) => {
-      console.log(value);
-    }, []),
+
+    React.useCallback(
+      (value) => {
+        const [values, onChange] = valuesRef.current || [];
+        const paths = [..._toPath(propPath), propName] as string[];
+
+        if (Array.isArray(values)) {
+          onChange?.([..._set(values, paths, value)] as object);
+        } else {
+          onChange?.({ ..._set(values as object, paths, value) });
+        }
+      },
+      [propPath, propName, valuesRef]
+    ),
   ];
 };

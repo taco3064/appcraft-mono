@@ -5,13 +5,14 @@ import { InteractivedProvider } from '../InteractivedContext';
 import { useLazyTypeList } from './TypesEditor.hooks';
 import type * as Types from './TypesEditor.types';
 
-export default function TypesEditor<V extends object>({
+export default function TypesEditor({
   InputStyles,
   parser,
   typeFile,
   typeName,
   values,
-}: Types.TypesEditorProps<V>) {
+  onChange,
+}: Types.TypesEditorProps) {
   const LazyTypeList = useLazyTypeList({
     parser,
     typeFile,
@@ -20,7 +21,7 @@ export default function TypesEditor<V extends object>({
 
   return (
     <Suspense fallback={<LinearProgress />}>
-      <InteractivedProvider InputStyles={InputStyles} values={values}>
+      <InteractivedProvider {...{ InputStyles, values, onChange }}>
         <LazyTypeList />
       </InteractivedProvider>
     </Suspense>

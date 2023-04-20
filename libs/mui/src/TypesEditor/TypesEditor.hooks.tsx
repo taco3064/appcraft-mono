@@ -2,19 +2,15 @@ import axios from 'axios';
 import { lazy, useMemo } from 'react';
 
 import { TypeList } from '../TypeList';
-import { usePropPath } from '../InteractivedContext';
 import type { LazyTypeListHook } from './TypesEditor.types';
 
 export const useLazyTypeList: LazyTypeListHook = ({
   parser,
+  propPath,
   typeFile,
   typeName,
-}) => {
-  const [propPath] = usePropPath();
-
-  console.log(propPath);
-
-  return useMemo(
+}) =>
+  useMemo(
     () =>
       lazy(async () => {
         const { data } = await axios({
@@ -27,9 +23,8 @@ export const useLazyTypeList: LazyTypeListHook = ({
         });
 
         return {
-          default: () => <TypeList superior={data} />,
+          default: (props) => <TypeList {...props} superior={data} />,
         };
       }),
     [parser, typeFile, typeName, propPath]
   );
-};

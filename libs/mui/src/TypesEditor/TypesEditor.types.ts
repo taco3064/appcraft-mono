@@ -6,10 +6,12 @@ import type { TypeListProps } from '../TypeList';
 
 export interface TypesEditorProps<V extends object = object>
   extends Omit<Appcraft.TypesParseOptions, 'propPath'>,
-    Omit<InteractivedProviderProps<V>, 'children'> {
+    Omit<InteractivedProviderProps<V>, 'children' | 'propPath'> {
   parser: Pick<Appcraft.DataSource, 'url' | 'method' | 'headers'>;
 }
 
 export type LazyTypeListHook = (
-  options: Pick<TypesEditorProps, 'parser' | 'typeFile' | 'typeName'>
+  options: Pick<TypesEditorProps, 'parser' | 'typeFile' | 'typeName'> & {
+    propPath: string;
+  }
 ) => LazyExoticComponent<ComponentType<Omit<TypeListProps, 'superior'>>>;

@@ -4,7 +4,10 @@ import { TypeItem } from '../TypeItem';
 import { usePropPath } from '../InteractivedContext';
 import type { TypeListProps } from './TypeList.types';
 
-export default function TypeList({ superior }: TypeListProps) {
+export default function TypeList({
+  superior,
+  onPropPathChange,
+}: TypeListProps) {
   const [propPath, setPropPath] = usePropPath();
 
   return (
@@ -23,9 +26,11 @@ export default function TypeList({ superior }: TypeListProps) {
               options={options}
               onDisplayItemClick={({ type, propName }) => {
                 if (type === 'arrayOf') {
-                  setPropPath(`${propPath}[${propName}]`);
+                  onPropPathChange(`${propPath}[${propName}]`);
                 } else {
-                  setPropPath([propPath, propName].filter((v) => v).join('.'));
+                  onPropPathChange(
+                    [propPath, propName].filter((v) => v).join('.')
+                  );
                 }
               }}
             />

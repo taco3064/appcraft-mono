@@ -6,17 +6,16 @@ import type * as Types from './InteractivedContext.types';
 
 export const InteractivedContext = React.createContext<Types.InteractivedValue>(
   {
-    propPathState: ['', () => null],
+    propPath: '',
   }
 );
 
 export const useProviderValue: Types.ProviderValueHook = ({
   InputStyles: { color = 'primary', size = 'small', variant = 'outlined' } = {},
+  propPath,
   values,
   onChange,
 }) => {
-  const propPathState = React.useState<string>('');
-
   const valuesRef = React.useRef<[typeof values, (e: typeof values) => void]>([
     values,
     onChange,
@@ -31,10 +30,10 @@ export const useProviderValue: Types.ProviderValueHook = ({
   return React.useMemo(
     () => ({
       InputStyles: { color, size, variant },
-      propPathState,
+      propPath,
       valuesRef,
     }),
-    [color, size, variant, propPathState, valuesRef]
+    [color, size, variant, propPath, valuesRef]
   );
 };
 
@@ -48,16 +47,13 @@ export const useInputStyles: Types.InputStylesHook = () => {
 };
 
 export const usePropPath = () => {
-  const { propPathState } = useContext();
+  const { propPath } = useContext();
 
-  return propPathState;
+  return propPath;
 };
 
 export const usePropValue: Types.PropValueHook = (propName) => {
-  const {
-    propPathState: [propPath],
-    valuesRef,
-  } = useContext();
+  const { propPath, valuesRef } = useContext();
 
   return [
     (propName &&

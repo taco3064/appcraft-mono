@@ -12,13 +12,13 @@ export type CompleteValue<V extends object = object> = Required<
 export interface InteractivedProviderProps<V extends object = object> {
   InputStyles?: Partial<InputStyles>;
   children: ReactNode;
+  propPath: string;
   values: V;
   onChange: (values: V) => void;
 }
 
 export interface InteractivedValue<V extends object = object>
-  extends Pick<InteractivedProviderProps<V>, 'InputStyles'> {
-  propPathState: [string, Dispatch<string>];
+  extends Pick<InteractivedProviderProps<V>, 'InputStyles' | 'propPath'> {
   valuesRef?: RefObject<[V, (values: V) => void]>;
 }
 
@@ -27,10 +27,10 @@ export type ContextHook = () => CompleteValue;
 export type ProviderValueHook = <V extends object = object>(
   props: Pick<
     InteractivedProviderProps<V>,
-    'InputStyles' | 'values' | 'onChange'
+    'InputStyles' | 'propPath' | 'values' | 'onChange'
   >
 ) => CompleteValue<V>;
 
 export type InputStylesHook = () => CompleteValue['InputStyles'];
-export type PropPathHook = () => CompleteValue['propPathState'];
+export type PropPathHook = () => CompleteValue['propPath'];
 export type PropValueHook = <V>(propName?: string) => [V, (value: V) => void];

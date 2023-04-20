@@ -14,7 +14,7 @@ export const useProviderValue: Types.ProviderValueHook = ({
   InputStyles: { color = 'primary', size = 'small', variant = 'outlined' } = {},
 }) => {
   const propPathState = React.useState<string>('');
-  const valuesRef = React.useRef<typeof values>(null);
+  const valuesRef = React.useRef<typeof values>(values);
 
   React.useImperativeHandle(valuesRef, () => values, [values]);
 
@@ -37,14 +37,24 @@ export const useInputStyles: Types.InputStylesHook = () => {
   return styles;
 };
 
+export const usePropPath = () => {
+  const { propPathState } = useContext();
+
+  return propPathState;
+};
+
 export const usePropValue: Types.PropValueHook = (propName) => {
   const {
     propPathState: [propPath],
-    valuesRef: { current },
+    valuesRef,
   } = useContext();
 
+  console.log(valuesRef);
+
   return [
-    !propName ? null : _get(current, [..._toPath(propPath), propName]),
+    (propName &&
+      _get(valuesRef, ['current', ..._toPath(propPath), propName])) ||
+      null,
     React.useCallback((value) => {
       console.log(value);
     }, []),

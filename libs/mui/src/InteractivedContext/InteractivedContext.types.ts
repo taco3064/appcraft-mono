@@ -28,5 +28,5 @@ export type ProviderValueHook = <V extends object = object>(
 ) => CompleteValue<V>;
 
 export type InputStylesHook = () => CompleteValue['InputStyles'];
-
+export type PropPathHook = () => CompleteValue['propPathState'];
 export type PropValueHook = <V>(propName?: string) => [V, (value: V) => void];

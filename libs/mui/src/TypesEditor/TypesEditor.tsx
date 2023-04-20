@@ -1,5 +1,5 @@
 import LinearProgress from '@mui/material/LinearProgress';
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
 
 import { InteractivedProvider } from '../InteractivedContext';
 import { useLazyTypeList } from './TypesEditor.hooks';
@@ -12,11 +12,8 @@ export default function TypesEditor<V extends object>({
   typeName,
   values,
 }: Types.TypesEditorProps<V>) {
-  const [propPath, setPropPath] = useState<string>('');
-
   const LazyTypeList = useLazyTypeList({
     parser,
-    propPath,
     typeFile,
     typeName,
   });

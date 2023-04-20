@@ -55,7 +55,7 @@ export default function Detail() {
         <TypesEditor
           InputStyles={{ size: 'small', variant: 'outlined' }}
           parser={parser}
-          values={{}}
+          values={{ method: 'GET' }}
           typeName="DataSource"
           typeFile={
             __WEBPACK_DEFINE__.ENV === 'development'

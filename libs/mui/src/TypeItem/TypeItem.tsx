@@ -7,7 +7,6 @@ import { useTypeField } from './TypeItem.hooks';
 import type * as Types from './TypeItem.types';
 
 export default function TypeItem({
-  InputStyles,
   options,
   onDisplayItemClick,
 }: Types.TypeItemProps) {
@@ -19,7 +18,7 @@ export default function TypeItem({
 
       <ListItemText
         disableTypography
-        primary={<TypeField {...{ InputStyles, options }} />}
+        primary={<TypeField options={options} />}
       />
     </>
   );

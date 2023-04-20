@@ -17,7 +17,6 @@ const queues = new Map<
 
 //* 建立虛擬的 Props 及 SourceFile
 const getVirtualSource: Types.PrivateGetVirtualSource = ({
-  tsconfigDir,
   typeFile,
   typeName,
 }) => {
@@ -31,16 +30,7 @@ const getVirtualSource: Types.PrivateGetVirtualSource = ({
     queues.get(sourceId) ||
     (() => {
       const virtualType = `Virtual${(Math.random() * 10000).toFixed()}Props`;
-
-      const project = new Project({
-        ...(tsconfigDir && {
-          tsConfigFilePath: path.resolve(
-            process.cwd(),
-            tsconfigDir,
-            './tsconfig.json'
-          ),
-        }),
-      });
+      const project = new Project();
 
       const source = project.createSourceFile(
         path.resolve(filePath, '../', `./${virtualType}.d.ts`),

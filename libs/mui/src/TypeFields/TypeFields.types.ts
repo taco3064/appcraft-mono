@@ -1,12 +1,9 @@
 import type * as Appcraft from '@appcraft/types';
-import type { TextFieldProps } from '@mui/material/TextField';
+import type { SwitchProps } from '@mui/material/Switch';
 
-export type InputStyles = Partial<
-  Pick<TextFieldProps, 'color' | 'size' | 'variant'>
->;
+export type BoolInputProps = SwitchProps & { label: string };
 
 export interface BaseFieldProps<P extends Appcraft.PropTypesDef> {
-  InputStyles?: InputStyles;
   options: P;
 }
 

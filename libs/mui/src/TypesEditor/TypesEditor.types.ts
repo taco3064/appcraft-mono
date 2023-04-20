@@ -1,17 +1,17 @@
-import List from '@mui/material/List';
-import { LazyExoticComponent } from 'react';
+import { ComponentType, LazyExoticComponent } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import type { InputStyles } from '../TypeFields';
+import type { InteractivedProviderProps } from '../InteractivedContext';
+import type { TypeListProps } from '../TypeList';
 
-export interface TypesEditorProps
-  extends Omit<Appcraft.TypesParseOptions, 'propPath'> {
-  InputStyles?: InputStyles;
+export interface TypesEditorProps<V extends object = object>
+  extends Omit<Appcraft.TypesParseOptions, 'propPath'>,
+    Omit<InteractivedProviderProps<V>, 'children'> {
   parser: Pick<Appcraft.DataSource, 'url' | 'method' | 'headers'>;
 }
 
-export type LazyTypesDefHook = (
+export type LazyTypeListHook = (
   options: Pick<TypesEditorProps, 'parser' | 'typeFile' | 'typeName'> & {
     propPath: string;
   }
-) => [LazyExoticComponent<typeof List>, Appcraft.PropTypesDef | null];
+) => LazyExoticComponent<ComponentType<Omit<TypeListProps, 'superior'>>>;

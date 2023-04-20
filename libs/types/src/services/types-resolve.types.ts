@@ -62,7 +62,6 @@ export type PropTypesDef =
   | StringProp;
 
 export interface TypesParseOptions {
-  tsconfigDir?: string;
   typeFile: string;
   typeName: string;
   propPath?: string;

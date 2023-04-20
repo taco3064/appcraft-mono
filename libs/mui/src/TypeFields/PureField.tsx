@@ -1,40 +1,42 @@
 import FormControlLabel from '@mui/material/FormControlLabel';
 import MenuItem from '@mui/material/MenuItem';
-import Switch, { SwitchProps } from '@mui/material/Switch';
+import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import { ForwardRefExoticComponent, forwardRef } from 'react';
 import { NumericFormat, NumericFormatProps } from 'react-number-format';
-import type { InputBaseComponentProps } from '@mui/material/InputBase';
+import { forwardRef } from 'react';
 
-import type { PureFieldProps } from './TypeFields.types';
+import { useInputStyles, usePropValue } from '../InteractivedContext';
+import type * as Types from './TypeFields.types';
 
-const BoolInput = forwardRef<
-  HTMLInputElement,
-  SwitchProps & {
-    label: string;
-  }
->(({ disabled, label, ...props }, ref) => (
-  <FormControlLabel
-    disabled={disabled}
-    label={label}
-    labelPlacement="start"
-    control={<Switch {...props} inputRef={ref} />}
-  />
-));
+const BoolInput = forwardRef<HTMLInputElement, Types.BoolInputProps>(
+  ({ disabled, label, ...props }, ref) => (
+    <FormControlLabel
+      disabled={disabled}
+      label={label}
+      labelPlacement="start"
+      control={<Switch {...props} inputRef={ref} />}
+    />
+  )
+);
 
 const NumberInput = forwardRef<HTMLInputElement, NumericFormatProps>(
-  ({ ...props }, ref) => (
+  (props, ref) => (
     <NumericFormat {...props} thousandSeparator getInputRef={ref} />
   )
 );
 
-export default function PureField({ InputStyles, options }: PureFieldProps) {
+export default function PureField({ options }: Types.PureFieldProps) {
+  const styles = useInputStyles();
+  const [value] = usePropValue<string>(options.propName);
+
+  console.log(value);
+
   switch (options.type) {
     case 'bool':
       return (
         <TextField
-          // {...InputStyles}
           fullWidth
+          {...styles}
           required={options.required}
           InputProps={
             {
@@ -52,8 +54,8 @@ export default function PureField({ InputStyles, options }: PureFieldProps) {
     case 'number':
       return (
         <TextField
-          // {...InputStyles}
           fullWidth
+          {...styles}
           required={options.required}
           label={options.propName}
           InputProps={
@@ -68,8 +70,8 @@ export default function PureField({ InputStyles, options }: PureFieldProps) {
     case 'oneOf':
       return (
         <TextField
-          // {...InputStyles}
           fullWidth
+          {...styles}
           select
           required={options.required}
           label={options.propName}
@@ -88,8 +90,8 @@ export default function PureField({ InputStyles, options }: PureFieldProps) {
     case 'string':
       return (
         <TextField
-          // {...InputStyles}
           fullWidth
+          {...styles}
           required={options.required}
           label={options.propName}
         />

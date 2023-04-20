@@ -1,6 +1,6 @@
 import MuiLink, { LinkProps as MuiLinkProps } from '@mui/material/Link';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
-import { ReactNode } from 'react';
+import { ReactNode, forwardRef } from 'react';
 import { withStyles } from 'tss-react/mui';
 
 type BaseLinkProps = NextLinkProps & Omit<MuiLinkProps, 'component' | 'href'>;
@@ -11,22 +11,28 @@ interface LinkProps extends BaseLinkProps {
 }
 
 export const Link = withStyles(
-  ({ icon, children, href, disableGap: _disableGap, ...props }: LinkProps) => (
-    <MuiLink
-      {...props}
-      href={href as string}
-      component={NextLink}
-      sx={(theme) => ({
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: theme.spacing(1.5),
-      })}
-    >
-      {icon}
-      {children}
-    </MuiLink>
-  ),
+  forwardRef<HTMLAnchorElement, LinkProps>(function Link(
+    { icon, children, href, disableGap: _disableGap, ...props },
+    ref
+  ) {
+    return (
+      <MuiLink
+        ref={ref}
+        {...props}
+        href={href as string}
+        component={NextLink}
+        sx={(theme) => ({
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: theme.spacing(1.5),
+        })}
+      >
+        {icon}
+        {children}
+      </MuiLink>
+    );
+  }),
   (theme, { disableGap = false }) => ({
     root: {
       display: 'flex',

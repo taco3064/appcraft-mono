@@ -1,6 +1,6 @@
-import Paper, { PaperProps } from '@mui/material/Paper';
+import List, { ListProps } from '@mui/material/List';
 import axios from 'axios';
-import { lazy, useEffect, useMemo, useState } from 'react';
+import { lazy, useEffect, useMemo, useState, useTransition } from 'react';
 import type { PropTypesDef } from '@appcraft/types';
 
 import type { LazyTypesDefHook } from './TypesEditor.types';
@@ -11,6 +11,7 @@ export const useLazyTypesDef: LazyTypesDefHook = ({
   typeName,
   propPath,
 }) => {
+  const [, startTransition] = useTransition();
   const [typesDef, setTypesDef] = useState<PropTypesDef | null>(null);
 
   return [
@@ -26,16 +27,12 @@ export const useLazyTypesDef: LazyTypesDefHook = ({
             },
           });
 
-          // setTypesDef(data);
-
           return {
-            default: (props: PaperProps) => {
+            default: (props: ListProps) => {
               // eslint-disable-next-line react-hooks/rules-of-hooks
-              useEffect(() => {
-                setTypesDef(data);
-              }, []);
+              useEffect(() => startTransition(() => setTypesDef(data)), []);
 
-              return <Paper {...props} />;
+              return <List {...props} />;
             },
           };
         }),

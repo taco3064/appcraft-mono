@@ -53,6 +53,7 @@ export default function Detail() {
 
       <Container maxWidth="sm">
         <TypesEditor
+          InputStyles={{ size: 'small', variant: 'outlined' }}
           parser={parser}
           typeName="DataSource"
           typeFile={

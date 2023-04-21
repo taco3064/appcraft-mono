@@ -1,5 +1,4 @@
 import { createTheme } from '@mui/material/styles';
-import * as colors from '@mui/material/colors';
 
 export const DEFAULT_DARK = createTheme({
   palette: {

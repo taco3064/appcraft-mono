@@ -81,7 +81,7 @@ export default function HierarchyCard({
             color: theme.palette.text.secondary,
           })}
           onConfirm={async () => {
-            await removeHierarchy(data);
+            await removeHierarchy(data._id);
             onDataModify('remove', data);
           }}
         />

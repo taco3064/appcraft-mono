@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -25,6 +26,10 @@ export default function DataSources() {
         </>
       }
     >
+      <Head>
+        <title>Appcraft | {nt('ttl-data-sources')}</title>
+      </Head>
+
       <HierarchyList
         category={pathname.replace(/^\//, '')}
         icon={StorageRoundedIcon}

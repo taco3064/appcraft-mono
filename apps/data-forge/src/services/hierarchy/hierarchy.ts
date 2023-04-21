@@ -1,5 +1,6 @@
 import { ObjectId } from 'mongodb';
 
+import * as config from '../config';
 import { getCollection } from '../common';
 import type * as Types from './hierarchy.types';
 
@@ -105,5 +106,6 @@ export const remove: Types.RemoveService = async (userid, dataid) => {
     _id: { $eq: new ObjectId(dataid) },
   });
 
+  await config.remove(dataid);
   await Promise.all(children.map(({ _id }) => remove(userid, _id.toString())));
 };

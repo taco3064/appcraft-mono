@@ -47,7 +47,12 @@ export default function Breadcrumbs({
               {text}
             </Typography>
           ) : (
-            <Link variant="subtitle2" color="text.secondary" href={url}>
+            <Link
+              key={`${text}-${i}`}
+              variant="subtitle2"
+              color="text.secondary"
+              href={url}
+            >
               {text}
             </Link>
           );

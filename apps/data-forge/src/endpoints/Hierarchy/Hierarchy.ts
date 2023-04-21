@@ -72,6 +72,7 @@ export default class Hierarchy {
   }
 
   @Endpoint({
+    url: '/remove/:id',
     method: 'delete',
     description: '刪除 Hierarchy Group / Item',
   })
@@ -81,7 +82,7 @@ export default class Hierarchy {
       __WEBPACK_DEFINE__.JWT_SECRET
     ) as Userinfo;
 
-    await hierarchy.remove(id, req.query.id as string);
+    await hierarchy.remove(id, req.params.id as string);
     res.end();
   }
 }

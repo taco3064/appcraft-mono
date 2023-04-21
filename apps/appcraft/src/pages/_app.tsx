@@ -34,7 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>Appcraft Demo</title>
+        <title>Appcraft</title>
 
         <link
           rel="stylesheet"

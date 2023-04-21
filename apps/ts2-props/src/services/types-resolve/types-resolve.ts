@@ -1,11 +1,11 @@
 import path from 'path';
 import toPath from 'lodash.topath';
-import type * as TsMorph from 'ts-morph';
 import { Project } from 'ts-morph';
 import { debounce } from 'throttle-debounce';
+import type * as TsMorph from 'ts-morph';
 
-import { getProptype } from './proptypes-resolve.utils';
-import type * as Types from './proptypes-resolve.types';
+import { getProptype } from './types-resolve.utils';
+import type * as Types from './types-resolve.types';
 
 const queues = new Map<
   string,
@@ -17,7 +17,6 @@ const queues = new Map<
 
 //* 建立虛擬的 Props 及 SourceFile
 const getVirtualSource: Types.PrivateGetVirtualSource = ({
-  tsconfigDir,
   typeFile,
   typeName,
 }) => {
@@ -31,14 +30,7 @@ const getVirtualSource: Types.PrivateGetVirtualSource = ({
     queues.get(sourceId) ||
     (() => {
       const virtualType = `Virtual${(Math.random() * 10000).toFixed()}Props`;
-
-      const project = new Project({
-        tsConfigFilePath: path.resolve(
-          process.cwd(),
-          tsconfigDir,
-          './tsconfig.json'
-        ),
-      });
+      const project = new Project();
 
       const source = project.createSourceFile(
         path.resolve(filePath, '../', `./${virtualType}.d.ts`),
@@ -163,21 +155,28 @@ const getTypeByPath: Types.PrivateGetTypeByPath = (
 
       if (properties.length) {
         const symbol = getObjectProperty(type, target, extendTypes);
-        const subinfo = { propName: target, required: !symbol.isOptional() };
-        const element = symbol?.getTypeAtLocation(source);
 
-        return element.getText() === 'React.ReactNode' || !element?.isUnion()
-          ? getTypeByPath(element, { info: subinfo, paths, source })
-          : element.getUnionTypes().reduce<Types.TypeResult>(
-              (result, union) =>
-                result ||
-                getTypeByPath(union, {
-                  info: subinfo,
-                  paths: [...paths],
-                  source,
-                }),
-              null
-            );
+        if (symbol) {
+          const element = symbol.getTypeAtLocation(source);
+
+          const subinfo = {
+            propName: target,
+            required: !symbol.isOptional() || false,
+          };
+
+          return element.getText() === 'React.ReactNode' || !element?.isUnion()
+            ? getTypeByPath(element, { info: subinfo, paths, source })
+            : element.getUnionTypes().reduce<Types.TypeResult>(
+                (result, union) =>
+                  result ||
+                  getTypeByPath(union, {
+                    info: subinfo,
+                    paths: [...paths],
+                    source,
+                  }),
+                null
+              );
+        }
       }
 
       if (args.length && type.getText().startsWith('Record<')) {

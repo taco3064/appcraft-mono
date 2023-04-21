@@ -20,7 +20,7 @@ app
     res
       .setHeader('Content-type', 'text/html')
       .send(
-        `<h1>@appcraft/ts2-props:${port}<br/>version: ${__WEBPACK_DEFINE__.VERSION}</h1>`
+        `<h1>@appcraft/ts2-props:${port}<br/>v${__WEBPACK_DEFINE__.VERSION}</h1>`
       )
   )
   .listen(port)

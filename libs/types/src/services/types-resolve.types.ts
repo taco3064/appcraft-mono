@@ -1,5 +1,4 @@
 enum PropType {
-  //* 已確認
   arrayOf,
   bool,
   element,

@@ -72,7 +72,7 @@ export default class Hierarchy {
   }
 
   @Endpoint({
-    url: '/remove/:id',
+    url: 'remove/:id',
     method: 'delete',
     description: '刪除 Hierarchy Group / Item',
   })

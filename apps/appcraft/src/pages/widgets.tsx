@@ -30,7 +30,7 @@ export default function Widgets() {
         <HierarchyList
           category={category}
           icon={ExtensionRoundedIcon}
-          onActionNodeSplit={({ addGroup, addItem, search, ...nodes }) => {
+          onActionNodePick={({ addGroup, addItem, search, ...nodes }) => {
             setAction({ addGroup, addItem, search });
 
             return nodes;

@@ -3,10 +3,9 @@ import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { HierarchyList } from '~appcraft/containers';
+import { HierarchyList, HierarchyListAction } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT } from '~appcraft/hooks';
-import type { HierarchyListAction } from '~appcraft/containers';
 
 export default function DataSources() {
   const { pathname } = useRouter();
@@ -33,7 +32,7 @@ export default function DataSources() {
       <HierarchyList
         category={pathname.replace(/^\//, '')}
         icon={StorageRoundedIcon}
-        onActionNodeSplit={({ addGroup, addItem, search, ...nodes }) => {
+        onActionNodePick={({ addGroup, addItem, search, ...nodes }) => {
           setAction({ addGroup, addItem, search });
 
           return nodes;

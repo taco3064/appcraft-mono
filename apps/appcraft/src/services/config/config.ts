@@ -3,10 +3,11 @@ import type * as Types from './config.types';
 
 export function findConfig<C extends object>({
   queryKey: [id],
-}: Types.FindConfigQueryKey) {
+}: Types.FindConfigContext) {
   return axios
     .get<Types.ConfigData<C, string>>(`/api/data-forge/config/find/${id}`)
-    .then(({ data }) => data);
+    .then(({ data }) => data)
+    .catch(() => ({}));
 }
 
 export function upsertConfig<C extends object>(

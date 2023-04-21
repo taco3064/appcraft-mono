@@ -155,21 +155,28 @@ const getTypeByPath: Types.PrivateGetTypeByPath = (
 
       if (properties.length) {
         const symbol = getObjectProperty(type, target, extendTypes);
-        const subinfo = { propName: target, required: !symbol.isOptional() };
-        const element = symbol?.getTypeAtLocation(source);
 
-        return element.getText() === 'React.ReactNode' || !element?.isUnion()
-          ? getTypeByPath(element, { info: subinfo, paths, source })
-          : element.getUnionTypes().reduce<Types.TypeResult>(
-              (result, union) =>
-                result ||
-                getTypeByPath(union, {
-                  info: subinfo,
-                  paths: [...paths],
-                  source,
-                }),
-              null
-            );
+        if (symbol) {
+          const element = symbol.getTypeAtLocation(source);
+
+          const subinfo = {
+            propName: target,
+            required: !symbol.isOptional() || false,
+          };
+
+          return element.getText() === 'React.ReactNode' || !element?.isUnion()
+            ? getTypeByPath(element, { info: subinfo, paths, source })
+            : element.getUnionTypes().reduce<Types.TypeResult>(
+                (result, union) =>
+                  result ||
+                  getTypeByPath(union, {
+                    info: subinfo,
+                    paths: [...paths],
+                    source,
+                  }),
+                null
+              );
+        }
       }
 
       if (args.length && type.getText().startsWith('Record<')) {

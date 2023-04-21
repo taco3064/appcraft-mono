@@ -8,7 +8,7 @@ export default function TypeList({
   superior,
   onPropPathChange,
 }: TypeListProps) {
-  const [propPath, setPropPath] = usePropPath();
+  const propPath = usePropPath();
 
   return (
     <List>

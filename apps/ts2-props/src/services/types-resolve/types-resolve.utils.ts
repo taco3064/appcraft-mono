@@ -115,12 +115,36 @@ const generators: Types.Generators = [
         const properties = type.getProperties();
 
         if (type.getText().startsWith('Record<') && args.length > 0) {
-          const options = getProptype(args[1], {
+          const keys = getProptype(args[0], {
             propName: '*',
-            required: true,
+            required: false,
           });
 
-          return options && { ...info, type: 'objectOf', options };
+          const options = getProptype(args[1], {
+            propName: '*',
+            required: false,
+          });
+
+          if (options && keys) {
+            return keys.type !== 'oneOf'
+              ? { ...info, type: 'objectOf', options }
+              : {
+                  ...info,
+                  type: 'exact',
+                  options: keys.options?.reduce(
+                    (result, key) => ({
+                      ...result,
+                      [key as string]: {
+                        ...options,
+                        propName: key,
+                      },
+                    }),
+                    {}
+                  ),
+                };
+          }
+
+          return false;
         }
 
         if (properties.length > 0) {

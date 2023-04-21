@@ -1,6 +1,4 @@
 enum PropType {
-  //! 不需要 any, array, elementType, symbol,
-
   //* 已確認
   arrayOf,
   bool,

@@ -7,7 +7,7 @@ import type * as ConfigTypes from '~data-forge/services/config';
 @Module({ base: 'config' })
 export default class Config {
   @Endpoint({
-    url: '/find/:id',
+    url: 'find/:id',
     method: 'get',
     description: '查詢 Config Data',
   })
@@ -26,7 +26,7 @@ export default class Config {
   }
 
   @Endpoint({
-    url: '/remove/:id',
+    url: 'remove/:id',
     method: 'delete',
     description: '刪除 Hierarchy Group / Item',
   })

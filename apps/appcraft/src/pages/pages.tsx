@@ -30,7 +30,7 @@ export default function Pages() {
         <HierarchyList
           category={category}
           icon={DashboardRoundedIcon}
-          onActionNodeSplit={({ addGroup, addItem, search, ...nodes }) => {
+          onActionNodePick={({ addGroup, addItem, search, ...nodes }) => {
             setAction({ addGroup, addItem, search });
 
             return nodes;

@@ -1,32 +1,28 @@
-import Container from '@mui/material/Container';
 import Head from 'next/head';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { TypesEditor } from '@appcraft/mui';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import type { DataSource } from '@appcraft/types';
 
-import { Breadcrumbs } from '~appcraft/containers';
-import { CommonButton } from '~appcraft/components/common';
+import { ConfigDetail, ConfigDetailAction } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
+import { findConfig } from '~appcraft/services';
 import { useFixedT, useSuperiors } from '~appcraft/hooks';
-
-const parser = {
-  url: '/api/ts2-props/types-resolve/parse',
-  method: 'POST' as const,
-};
 
 export default function Detail() {
   const { pathname, query } = useRouter();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
 
-  const [at, dst] = useFixedT('app', 'data-sources');
-  const [values, setValues] = useState<Partial<DataSource>>({});
+  const [dst] = useFixedT('data-sources');
+  const [action, setAction] = useState<Partial<ConfigDetailAction>>(null);
   const [{ data: names }, superiors] = useSuperiors(category, id);
 
-  console.log('<Detail /> - values: ', values);
+  const { data: datasource } = useQuery({
+    queryKey: [id],
+    queryFn: findConfig<DataSource>,
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <PageContainer
@@ -35,21 +31,8 @@ export default function Detail() {
       title={dst('ttl-detail', { name: names[id] })}
       action={
         <>
-          <CommonButton
-            IconProps={{ fontSize: 'large' }}
-            btnVariant="icon"
-            color="error"
-            icon={RestartAltIcon}
-            text={at('btn-reset')}
-          />
-
-          <CommonButton
-            IconProps={{ fontSize: 'large' }}
-            btnVariant="icon"
-            color="info"
-            icon={SaveAltIcon}
-            text={at('btn-save')}
-          />
+          {action?.reset}
+          {action?.save}
         </>
       }
     >
@@ -57,37 +40,20 @@ export default function Detail() {
         <title>Appcraft | {dst('ttl-detail', { name: names[id] })}</title>
       </Head>
 
-      <Breadcrumbs
-        ToolbarProps={{ disableGutters: true }}
-        onCustomize={(breadcrumbs) => {
-          breadcrumbs.splice(
-            1,
-            1,
-            ...superiors.map((superior, i) => ({
-              text: names[superior],
-              url: {
-                pathname: `/${category}`,
-                query: {
-                  superiors: superiors.slice(0, i + 1),
-                },
-              },
-            }))
-          );
+      <ConfigDetail
+        key={id}
+        typeName="DataSource"
+        typeFile="./node_modules/@appcraft/types/src/services/data-source.types.d.ts"
+        _id={id}
+        category={category}
+        content={datasource}
+        superiors={{ names, paths: superiors }}
+        onActionNodePick={({ reset, save, ...nodes }) => {
+          setAction({ reset, save });
 
-          return [...breadcrumbs, { text: names[id] }];
+          return nodes;
         }}
       />
-
-      <Container maxWidth="sm">
-        <TypesEditor
-          InputStyles={{ size: 'small', variant: 'outlined' }}
-          parser={parser}
-          values={values}
-          typeName="DataSource"
-          typeFile="./node_modules/@appcraft/types/src/services/data-source.types.d.ts"
-          onChange={setValues}
-        />
-      </Container>
     </PageContainer>
   );
 }

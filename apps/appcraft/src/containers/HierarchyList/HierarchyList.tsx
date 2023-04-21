@@ -14,14 +14,11 @@ import { searchHierarchy } from '~appcraft/services';
 import { useFixedT, useSuperiors, useWidth } from '~appcraft/hooks';
 import type * as Types from './HierarchyList.types';
 
-const DEFAULT_ACTION_NODE_SPLIT: Types.HierarchyListProps['onActionNodeSplit'] =
-  (e) => e;
-
 export default function HierarchyList({
   category,
   disableBreadcrumb = false,
   icon,
-  onActionNodeSplit = DEFAULT_ACTION_NODE_SPLIT,
+  onActionNodePick = (e) => e,
 }: Types.HierarchyListProps) {
   const { pathname, push } = useRouter();
   const [{ data: names }, superiors] = useSuperiors(category);
@@ -42,7 +39,7 @@ export default function HierarchyList({
     suspense: false,
     queryKey: [collapsed, superior] as [boolean, string],
     queryFn: ({ queryKey: [collapsed, superior] }) =>
-      onActionNodeSplit({
+      onActionNodePick({
         addGroup: (
           <Component.HierarchyEditorButton
             IconProps={{ color: 'warning', fontSize: 'large' }}

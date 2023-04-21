@@ -51,7 +51,7 @@ jobs:
       - name: Get the GKE credentials
         uses: google-github-actions/get-gke-credentials@v1
         with:
-          cluster_name: dev-proxy-cluster
+          cluster_name: appcraft-cluster
           location: asia-east1-a
 
       # Build Docker image
@@ -73,12 +73,12 @@ jobs:
       - name: Connect GKE
         uses: google-github-actions/get-gke-credentials@v1
         with:
-          cluster_name: dev-proxy-cluster
+          cluster_name: appcraft-cluster
           location: asia-east1-a
 
       - name: Update Image
         run: |
           kubectl set image \
-            deployment/dev-proxy \
-            proxy-1=gcr.io/${{ vars.GCP_PROJECT }}/proxy:v${{ inputs.version }} \
+            deployment/appcraft \
+            proxy-sha256-3=gcr.io/${{ vars.GCP_PROJECT }}/proxy:v${{ inputs.version }} \
             -n dev

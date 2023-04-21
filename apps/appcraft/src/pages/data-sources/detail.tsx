@@ -84,11 +84,7 @@ export default function Detail() {
           parser={parser}
           values={values}
           typeName="DataSource"
-          typeFile={
-            __WEBPACK_DEFINE__.ENV === 'development'
-              ? './libs/types/src/services/data-source.types.ts'
-              : './node_modules/@appcraft/types/src/services/data-source.types.d.ts'
-          }
+          typeFile="./app/node_modules/@appcraft/types/src/services/data-source.d.ts"
           onChange={setValues}
         />
       </Container>

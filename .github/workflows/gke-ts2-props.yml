@@ -51,7 +51,7 @@ jobs:
       - name: Get the GKE credentials
         uses: google-github-actions/get-gke-credentials@v1
         with:
-          cluster_name: dev-ts2-props-cluster
+          cluster_name: appcraft-cluster
           location: asia-east1-a
 
       # Build Docker image
@@ -73,12 +73,12 @@ jobs:
       - name: Connect GKE
         uses: google-github-actions/get-gke-credentials@v1
         with:
-          cluster_name: dev-ts2-props-cluster
+          cluster_name: appcraft-cluster
           location: asia-east1-a
 
       - name: Update Image
         run: |
           kubectl set image \
-            deployment/dev-ts2-props \
-            ts2-props-1=gcr.io/${{ vars.GCP_PROJECT }}/ts2-props:v${{ inputs.version }} \
+            deployment/appcraft \
+            ts2-props-sha256-2=gcr.io/${{ vars.GCP_PROJECT }}/ts2-props:v${{ inputs.version }} \
             -n dev

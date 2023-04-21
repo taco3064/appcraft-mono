@@ -1,16 +1,16 @@
 import type { QueryFunction } from '@tanstack/react-query';
-import type * as Types from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 
 export type HierarchyData<U = undefined> = Omit<
-  Types.HierarchyData<U>,
+  Appcraft.HierarchyData<U>,
   'userid'
 >;
 
-export type HierarchyParams = Types.HierarchyParams;
+export type HierarchyParams = Appcraft.HierarchyParams;
 
 export type SearchHierarchyService = QueryFunction<
   HierarchyData<string>[],
-  readonly [string, Types.HierarchyParams]
+  readonly [string, Appcraft.HierarchyParams]
 >;
 
 export type GetHierarchyNamesService = QueryFunction<

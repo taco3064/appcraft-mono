@@ -1,8 +1,8 @@
 import type { ObjectId } from 'mongodb';
-import type * as Types from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 
-export type HierarchyParams = Types.HierarchyParams;
-export type HierarchyData<U = undefined> = Types.HierarchyData<U>;
+export type HierarchyParams = Appcraft.HierarchyParams;
+export type HierarchyData<U = undefined> = Appcraft.HierarchyData<U>;
 
 export type SearchService = (
   userid: string,

@@ -84,7 +84,7 @@ export default function Detail() {
           parser={parser}
           values={values}
           typeName="DataSource"
-          typeFile="./app/node_modules/@appcraft/types/src/services/data-source.d.ts"
+          typeFile="./node_modules/@appcraft/types/src/services/data-source.types.d.ts"
           onChange={setValues}
         />
       </Container>

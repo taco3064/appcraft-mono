@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.10](https://github.com/taco3064/appcraft-mono/compare/v0.0.9...v0.0.10) (2023-04-21)
+
+
+### Features
+
+* **@appcraft/mui:** add new lib @appcraft/mui ([8e4bf18](https://github.com/taco3064/appcraft-mono/commit/8e4bf18ca2fe69cbd89f5aaa79e1e6e8855a4a9c))
+* **@appcraft/mui:** add onChange event ([ede1a4e](https://github.com/taco3064/appcraft-mono/commit/ede1a4eea4a79e8e1a08ecf73d2a852a99585f6c))
+* **@appcraft/mui:** add TypeItem, TypeField ([5688754](https://github.com/taco3064/appcraft-mono/commit/568875427bf8fcd0540a5f86ddf8ac5b572f9414))
+* **@appcraft/mui:** initail default structure ([f51201a](https://github.com/taco3064/appcraft-mono/commit/f51201a85970d28fcc88ef617aba912670a8483c))
+* **data-forge:** add config endpoint ([a331c5e](https://github.com/taco3064/appcraft-mono/commit/a331c5e88b8823485aa27f98315744be526a8aa4))
+* **detail(apps/appcraft):** add reset/save buttons ([b792057](https://github.com/taco3064/appcraft-mono/commit/b792057514223a6bbd7c4ced5d802d0f802a2b9e))
+* **services/config(apps/appcraft):** add config methods ([5edef7f](https://github.com/taco3064/appcraft-mono/commit/5edef7ff3982ce423809e9785a3336852c60e2e7))
+* **types-editor(libs/mui):** make sure the component could fetch types def by ts2-props ([8b1839d](https://github.com/taco3064/appcraft-mono/commit/8b1839d8a5c50546b5a546796fcec3255e11f185))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** fixed the bugs of propPath ([a3cf35e](https://github.com/taco3064/appcraft-mono/commit/a3cf35edafb0d5624505d2016c8eed3553d06a17))
+* **@appcraft/mui:** fixed the error to get value by propName ([f91790e](https://github.com/taco3064/appcraft-mono/commit/f91790e1d48855c02faf1a23df6856e581408424))
+* **appcraft/pages/**:** add title in pages ([f746da5](https://github.com/taco3064/appcraft-mono/commit/f746da50341939bdc6070797adc55cd9d9f5d844))
+* **mui-link(apps/appcraft):** add forwardRef to link to fixed react warning ([6f29d83](https://github.com/taco3064/appcraft-mono/commit/6f29d83ab239d83a0864f0fedb9fe3fec99723c9))
+* **ts2-props:** fixed rename error ([8f68ccd](https://github.com/taco3064/appcraft-mono/commit/8f68ccd5e2ebfae2f8edb04c650e0ef2e9b34291))
+* **ts2-props:** fixed the bugs of parse ([54513be](https://github.com/taco3064/appcraft-mono/commit/54513befcc22c3b295ce3a8c058596b4d8f41459))
+* **ts2-props:** fixed the config of oneOfType ([0b73746](https://github.com/taco3064/appcraft-mono/commit/0b7374614c7515d73d980f1fcb69e0d77ae267f1))
+* **ts2-props:** rename endpoint/service ([4e2e466](https://github.com/taco3064/appcraft-mono/commit/4e2e46620043c561100e21c4be8f7df2a42bd0e4))
+
 ### [0.0.9](https://github.com/taco3064/appcraft-mono/compare/v0.0.8...v0.0.9) (2023-04-18)
 
 

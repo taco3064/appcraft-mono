@@ -1,11 +1,14 @@
 import Container from '@mui/material/Container';
 import Head from 'next/head';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { TypesEditor } from '@appcraft/mui';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import type { DataSource } from '@appcraft/types';
 
 import { Breadcrumbs } from '~appcraft/containers';
+import { CommonButton } from '~appcraft/components/common';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT, useSuperiors } from '~appcraft/hooks';
 
@@ -19,7 +22,7 @@ export default function Detail() {
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
 
-  const [dst] = useFixedT('data-sources');
+  const [at, dst] = useFixedT('app', 'data-sources');
   const [values, setValues] = useState<Partial<DataSource>>({});
   const [{ data: names }, superiors] = useSuperiors(category, id);
 
@@ -30,6 +33,25 @@ export default function Detail() {
       ContentProps={{ disableGutters: true }}
       maxWidth="lg"
       title={dst('ttl-detail', { name: names[id] })}
+      action={
+        <>
+          <CommonButton
+            IconProps={{ fontSize: 'large' }}
+            btnVariant="icon"
+            color="error"
+            icon={RestartAltIcon}
+            text={at('btn-reset')}
+          />
+
+          <CommonButton
+            IconProps={{ fontSize: 'large' }}
+            btnVariant="icon"
+            color="info"
+            icon={SaveAltIcon}
+            text={at('btn-save')}
+          />
+        </>
+      }
     >
       <Head>
         <title>Appcraft | {dst('ttl-detail', { name: names[id] })}</title>

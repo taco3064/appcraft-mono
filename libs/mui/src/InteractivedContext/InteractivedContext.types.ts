@@ -1,4 +1,4 @@
-import type { Dispatch, RefObject, ReactNode } from 'react';
+import type { RefObject, ReactNode } from 'react';
 import type { TextFieldProps } from '@mui/material/TextField';
 
 export type InputStyles = Pick<TextFieldProps, 'color' | 'size' | 'variant'>;

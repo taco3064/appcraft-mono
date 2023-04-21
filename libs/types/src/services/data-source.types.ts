@@ -12,5 +12,4 @@ export interface DataSource
   >;
 
   method?: 'GET' | 'DELETE' | 'POST' | 'PUT' | 'PATCH';
-  resExtract?: Record<string, string>;
 }

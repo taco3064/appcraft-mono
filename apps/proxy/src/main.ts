@@ -74,7 +74,7 @@ app
     res
       .setHeader('Content-type', 'text/html')
       .send(
-        `<h1>@appcraft/proxy:${port}<br/>v${__WEBPACK_DEFINE__.VERSION}</h1>`
+        `<h1>@appcraft/proxy:${port}<br/>version: ${__WEBPACK_DEFINE__.VERSION}</h1>`
       )
   )
   .listen(port)

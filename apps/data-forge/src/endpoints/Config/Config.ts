@@ -26,11 +26,12 @@ export default class Config {
   }
 
   @Endpoint({
+    url: '/remove/:id',
     method: 'delete',
     description: '刪除 Hierarchy Group / Item',
   })
   async remove(req: Request, res: Response) {
-    await config.remove(req.query.id as string);
+    await config.remove(req.params.id);
     res.end();
   }
 }

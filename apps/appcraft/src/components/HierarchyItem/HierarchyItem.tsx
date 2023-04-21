@@ -118,7 +118,7 @@ export default function HierarchyItem({
           btnVariant="menu"
           onCancel={() => setAnchorEl(null)}
           onConfirm={async () => {
-            await removeHierarchy(data);
+            await removeHierarchy(data._id);
             onDataModify('remove', data);
             setAnchorEl(null);
             enqueueSnackbar(at('txt-succeed-remove'), { variant: 'success' });

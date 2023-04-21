@@ -40,8 +40,6 @@ export const updateHierarchy: Types.UpdateHierarchyService = async (
   return data;
 };
 
-export const removeHierarchy: Types.RemoveHierarchyService = async (
-  hierarchy
-) => {
-  await axios.delete(`/api/data-forge/hierarchy/remove?id=${hierarchy._id}`);
+export const removeHierarchy: Types.RemoveHierarchyService = async (id) => {
+  await axios.delete(`/api/data-forge/hierarchy/remove/${id}`);
 };

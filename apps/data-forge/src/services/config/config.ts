@@ -29,7 +29,7 @@ export const upsert: Types.UpsertService = async <C extends object = object>(
 
   const result = await collection.updateOne(
     { _id: { $eq: new ObjectId(id) } },
-    { $set: { content } },
+    { $set: { _id: new ObjectId(id), content } },
     { upsert: true }
   );
 

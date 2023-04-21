@@ -19,6 +19,7 @@
         "assets": [
           "apps/ts2-props/src/assets"
         ],
+        "generatePackageJson": true,
         "isolatedConfig": true,
         "webpackConfig": "apps/ts2-props/webpack.config.js"
       },

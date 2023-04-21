@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.14](https://github.com/taco3064/appcraft-mono/compare/v0.0.13...v0.0.14) (2023-04-21)
+
+
+### Features
+
+* **data-sources/detail:** add reset/save event ([2277ef7](https://github.com/taco3064/appcraft-mono/commit/2277ef7e8f01c125a3703e6dca5b5ff2c709d6b1))
+
+
+### Bug Fixes
+
+* **config(apps/data-forge):** fixed the bugs of upsert ([093e9a7](https://github.com/taco3064/appcraft-mono/commit/093e9a74d3deb795f5dcca87ddefe938d18838c2))
+* **data-sources/detail(apps/appcraft):** update typeFile ([fee1979](https://github.com/taco3064/appcraft-mono/commit/fee1979d7beb4dade694b46b3a2cb5aa1e4c22f9))
+
 ### [0.0.13](https://github.com/taco3064/appcraft-mono/compare/v0.0.9...v0.0.13) (2023-04-21)
 
 

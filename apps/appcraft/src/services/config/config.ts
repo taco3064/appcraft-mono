@@ -7,7 +7,7 @@ export function findConfig<C extends object>({
   return axios
     .get<Types.ConfigData<C, string>>(`/api/data-forge/config/find/${id}`)
     .then(({ data }) => data)
-    .catch(() => ({}));
+    .catch(() => ({ _id: id, content: {} }));
 }
 
 export function upsertConfig<C extends object>(

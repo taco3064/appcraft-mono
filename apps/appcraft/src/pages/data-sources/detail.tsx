@@ -44,9 +44,8 @@ export default function Detail() {
         key={id}
         typeName="DataSource"
         typeFile="./node_modules/@appcraft/types/src/services/data-source.types.d.ts"
-        _id={id}
         category={category}
-        content={datasource}
+        data={datasource}
         superiors={{ names, paths: superiors }}
         onActionNodePick={({ reset, save, ...nodes }) => {
           setAction({ reset, save });

@@ -19,9 +19,8 @@ const parser = {
 };
 
 export default function ConfigDetail<C extends object = object>({
-  _id,
   category,
-  content,
+  data,
   superiors: { names, paths },
   onActionNodePick = (e) => e,
 }: Types.ConfigDetailProps<C>) {
@@ -29,7 +28,7 @@ export default function ConfigDetail<C extends object = object>({
   const [at] = useFixedT('app');
 
   const [values, setValues] = useState(() =>
-    JSON.parse(JSON.stringify(content))
+    JSON.parse(JSON.stringify(data?.content || {}))
   );
 
   const mutation = useMutation({
@@ -50,7 +49,7 @@ export default function ConfigDetail<C extends object = object>({
             btnVariant="icon"
             icon={RestartAltIcon}
             text={at('btn-reset')}
-            onClick={() => setValues(content)}
+            onClick={() => setValues(data.content)}
           />
         ),
         save: (
@@ -60,7 +59,7 @@ export default function ConfigDetail<C extends object = object>({
             color="primary"
             icon={SaveAltIcon}
             text={at('btn-save')}
-            onClick={() => mutation.mutate({ _id, content: values })}
+            onClick={() => mutation.mutate({ ...data, content: values })}
           />
         ),
       }),
@@ -85,7 +84,7 @@ export default function ConfigDetail<C extends object = object>({
             }))
           );
 
-          return [...breadcrumbs, { text: names[_id] }];
+          return [...breadcrumbs, { text: names[data._id] }];
         }}
       />
 

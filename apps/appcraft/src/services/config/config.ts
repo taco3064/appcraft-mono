@@ -1,13 +1,17 @@
 import axios from 'axios';
 import type * as Types from './config.types';
 
-export function findConfig<C extends object>({
+export async function findConfig<C extends object>({
   queryKey: [id],
 }: Types.FindConfigContext) {
-  return axios
-    .get<Types.ConfigData<C, string>>(`/api/data-forge/config/find/${id}`)
-    .then(({ data }) => data)
-    .catch(() => ({ _id: id, content: {} }));
+  const { data } =
+    !id || typeof id !== 'string'
+      ? { data: null }
+      : await axios.get<Types.ConfigData<C, string>>(
+          `/api/data-forge/config/find/${id}`
+        );
+
+  return data || { _id: id, content: {} };
 }
 
 export function upsertConfig<C extends object>(

@@ -1,23 +1,28 @@
-import * as Hooks from './InteractivedContext.hooks';
+import { useMemo } from 'react';
+
+import { InteractivedContext } from './InteractivedContext.hooks';
 import type * as Types from './InteractivedContext.types';
 
 export default function InteractivedProvider({
-  InputStyles,
+  InputStyles: { color = 'primary', size = 'small', variant = 'outlined' } = {},
   children,
   propPath,
   values,
   onChange,
 }: Types.InteractivedProviderProps) {
-  const value = Hooks.useProviderValue({
-    InputStyles,
-    propPath,
-    values,
-    onChange,
-  });
+  const value = useMemo(
+    () => ({
+      InputStyles: { color, size, variant },
+      propPath,
+      values,
+      onChange,
+    }),
+    [color, size, variant, propPath, values, onChange]
+  );
 
   return (
-    <Hooks.InteractivedContext.Provider value={value}>
+    <InteractivedContext.Provider value={value}>
       {children}
-    </Hooks.InteractivedContext.Provider>
+    </InteractivedContext.Provider>
   );
 }

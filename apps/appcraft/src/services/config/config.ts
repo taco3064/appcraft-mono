@@ -11,11 +11,15 @@ export async function findConfig<C extends object>({
           `/api/data-forge/config/find/${id}`
         );
 
-  return data || { _id: id, content: {} };
+  return (data || {
+    _id: id,
+    content: {},
+    timestamp: new Date().toISOString(),
+  }) as Types.ConfigData<C, string>;
 }
 
 export function upsertConfig<C extends object>(
-  data: Types.ConfigData<C, string>
+  data: Omit<Types.ConfigData<C, string>, 'timestamp'>
 ) {
   return axios
     .post<Types.ConfigData<C, string>>('/api/data-forge/config/upsert', data)

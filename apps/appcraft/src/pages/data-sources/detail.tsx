@@ -41,7 +41,7 @@ export default function Detail() {
       </Head>
 
       <ConfigDetail
-        key={id}
+        key={`${id}:${datasource.timestamp}`}
         typeName="DataSource"
         typeFile="./node_modules/@appcraft/types/src/services/data-source.types.d.ts"
         category={category}

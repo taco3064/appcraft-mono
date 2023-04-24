@@ -33,9 +33,8 @@ export default function ConfigDetail<C extends object = object>({
 
   const mutation = useMutation({
     mutationFn: upsertConfig<C>,
-    onSuccess: () => {
-      enqueueSnackbar(at('txt-succeed-update'), { variant: 'success' });
-    },
+    onSuccess: () =>
+      enqueueSnackbar(at('txt-succeed-update'), { variant: 'success' }),
   });
 
   const { data: action } = useQuery({

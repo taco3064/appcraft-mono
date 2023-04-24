@@ -8,8 +8,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 import { TypeItem } from '../TypeItem';
+import { useOptionsSorting, usePropPathChange } from './TypeList.hooks';
 import { usePropPath } from '../InteractivedContext';
-import { usePropPathChange } from './TypeList.hooks';
 import type { TypeListProps } from './TypeList.types';
 
 export default function TypeList({
@@ -19,6 +19,7 @@ export default function TypeList({
   onPropPathChange,
 }: TypeListProps) {
   const propPath = usePropPath();
+  const options = useOptionsSorting(superior);
 
   const [breadcrumbs, { back: handleBack, to: handleTo }] = usePropPathChange(
     { values, onPropPathChange },
@@ -67,21 +68,14 @@ export default function TypeList({
       }
     >
       {superior?.type === 'exact' &&
-        Object.values(superior.options || {})
-          .sort(({ type: t1, propName: p1 }, { type: t2, propName: p2 }) => {
-            const s1 = `${t1}:${p1}`;
-            const s2 = `${t2}:${p2}`;
-
-            return s1 < s2 ? -1 : s1 > s2 ? 1 : 0;
-          })
-          .map((options) => (
-            <TypeItem
-              key={options.propName}
-              disableSelection={disableSelection}
-              options={options}
-              onDisplayItemClick={handleTo}
-            />
-          ))}
+        options.map((options) => (
+          <TypeItem
+            key={options.propName}
+            disableSelection={disableSelection}
+            options={options}
+            onDisplayItemClick={handleTo}
+          />
+        ))}
     </List>
   );
 }

@@ -5,3 +5,5 @@ export interface TypeItemProps {
   options: PropTypesDef;
   onDisplayItemClick: (options: PropTypesDef) => void;
 }
+
+export type GetTypeSeqFn = (type: PropTypesDef['type']) => number;

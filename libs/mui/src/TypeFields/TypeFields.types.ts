@@ -1,7 +1,7 @@
 import type * as Appcraft from '@appcraft/types';
-import type { SwitchProps } from '@mui/material/Switch';
+import type { FormControlLabelProps } from '@mui/material/FormControlLabel';
 
-export type BoolInputProps = SwitchProps & { label: string };
+export type BoolInputProps = FormControlLabelProps;
 
 export interface BaseFieldProps<P extends Appcraft.PropTypesDef> {
   options: P;

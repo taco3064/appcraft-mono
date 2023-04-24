@@ -9,12 +9,20 @@ import { useInputStyles, usePropValue } from '../InteractivedContext';
 import type * as Types from './TypeFields.types';
 
 const BoolInput = forwardRef<HTMLInputElement, Types.BoolInputProps>(
-  ({ disabled, label, ...props }, ref) => (
+  ({ className: _cn, ...props }, ref) => (
     <FormControlLabel
-      disabled={disabled}
-      label={label}
+      {...props}
+      inputRef={ref}
       labelPlacement="start"
-      control={<Switch {...props} inputRef={ref} />}
+      control={<Switch color="primary" />}
+      sx={(theme) => ({
+        width: '100%',
+        margin: theme.spacing(0, 2),
+
+        '& > .MuiFormControlLabel-label': {
+          width: '100%',
+        },
+      })}
     />
   )
 );
@@ -41,8 +49,9 @@ export default function PureField({ options }: Types.PureFieldProps) {
               inputComponent: BoolInput,
               inputProps: {
                 label: options.propName,
-                defaultCheck: Boolean(value),
-                size: 'small',
+                checked: Boolean(value),
+                onChange: (e: { target: { checked: boolean } }) =>
+                  onChange(e.target.checked),
               },
             } as object
           }

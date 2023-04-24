@@ -22,6 +22,8 @@ export default function ConfigDetail<C extends object = object>({
   category,
   data,
   superiors: { names, paths },
+  typeFile,
+  typeName,
   onActionNodePick = (e) => e,
 }: Types.ConfigDetailProps<C>) {
   const { enqueueSnackbar } = useSnackbar();
@@ -100,12 +102,9 @@ export default function ConfigDetail<C extends object = object>({
 
       <Container maxWidth="sm">
         <TypesEditor
+          {...{ parser, values, typeFile, typeName }}
           InputStyles={{ size: 'small', variant: 'outlined' }}
           disableSelection
-          parser={parser}
-          values={values}
-          typeName="DataSource"
-          typeFile="./node_modules/@appcraft/types/src/services/data-source.types.d.ts"
           onChange={setValues}
         />
       </Container>

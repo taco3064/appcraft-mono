@@ -6,6 +6,7 @@ export interface HierarchyItemProps {
   icon: typeof SvgIcon;
 
   onClick: (data: HierarchyData<string>) => void;
+  onPreview?: (data: HierarchyData<string>) => void;
 
   onDataModify: (
     mode: 'update' | 'remove',

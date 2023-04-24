@@ -23,6 +23,7 @@ export default function HierarchyItem({
   icon: MuiIcon,
   onClick,
   onDataModify,
+  onPreview,
 }: Types.HierarchyItemProps) {
   const [at] = useFixedT('app');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
@@ -46,7 +47,7 @@ export default function HierarchyItem({
           <FolderRoundedIcon color="warning" style={{ fontSize: 160 }} />
         )}
 
-        {(description || type === 'item') && (
+        {(description || (type === 'item' && onPreview)) && (
           <ImageListItemBar
             subtitle={
               <Typography
@@ -59,7 +60,8 @@ export default function HierarchyItem({
             }
             actionPosition="right"
             actionIcon={
-              type === 'item' && (
+              type === 'item' &&
+              onPreview && (
                 <CommonButton
                   btnVariant="icon"
                   color="default"

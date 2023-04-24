@@ -1,4 +1,4 @@
-import type { RefObject, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { TextFieldProps } from '@mui/material/TextField';
 
 export type InputStyles = Pick<TextFieldProps, 'color' | 'size' | 'variant'>;
@@ -17,19 +17,12 @@ export interface InteractivedProviderProps<V extends object = object> {
   onChange: (values: V) => void;
 }
 
-export interface InteractivedValue<V extends object = object>
-  extends Pick<InteractivedProviderProps<V>, 'InputStyles' | 'propPath'> {
-  valuesRef?: RefObject<[V, (values: V) => void]>;
-}
+export type InteractivedValue<V extends object = object> = Pick<
+  InteractivedProviderProps<V>,
+  'InputStyles' | 'propPath' | 'values' | 'onChange'
+>;
 
 export type ContextHook = () => CompleteValue;
-
-export type ProviderValueHook = <V extends object = object>(
-  props: Pick<
-    InteractivedProviderProps<V>,
-    'InputStyles' | 'propPath' | 'values' | 'onChange'
-  >
-) => CompleteValue<V>;
 
 export type InputStylesHook = () => CompleteValue['InputStyles'];
 export type PropPathHook = () => CompleteValue['propPath'];

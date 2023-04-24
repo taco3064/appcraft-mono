@@ -22,6 +22,8 @@ export const upsert: Types.UpsertService = async <C extends object = object>(
   id,
   content
 ) => {
+  const timestamp = new Date().toISOString();
+
   const collection = await getCollection<Types.ConfigData<C, ObjectId>>({
     db: 'data-forge',
     collection: 'config',
@@ -29,13 +31,14 @@ export const upsert: Types.UpsertService = async <C extends object = object>(
 
   const result = await collection.updateOne(
     { _id: { $eq: new ObjectId(id) } },
-    { $set: { _id: new ObjectId(id), content } },
+    { $set: { _id: new ObjectId(id), content, timestamp } },
     { upsert: true }
   );
 
   return {
     _id: result.upsertedId,
     content,
+    timestamp,
   };
 };
 

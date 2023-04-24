@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.16](https://github.com/taco3064/appcraft-mono/compare/v0.0.15...v0.0.16) (2023-04-24)
+
+
+### Features
+
+* **data-forge/config:** add timestamp to config data ([fb7c53a](https://github.com/taco3064/appcraft-mono/commit/fb7c53aa57cee3d93837b2ab76d720ee47889eac))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** fixed the issue of get error vlaue ([1b3a22c](https://github.com/taco3064/appcraft-mono/commit/1b3a22cc71a5ae2c4ea1360814e4c3a5b4af162c))
+* **data-sources/detail(apps/appcraft):** fixed values format ([eeb8453](https://github.com/taco3064/appcraft-mono/commit/eeb8453e0fda7dc00485c664ad7adcdc16ee254a))
+
 ### [0.0.15](https://github.com/taco3064/appcraft-mono/compare/v0.0.14...v0.0.15) (2023-04-21)
 
 

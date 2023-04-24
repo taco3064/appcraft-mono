@@ -7,5 +7,6 @@ export interface TypeListProps {
     | Appcraft.ObjectOfProp
     | Appcraft.ObjectProp;
 
+  values: object;
   onPropPathChange: (propPath: string) => void;
 }

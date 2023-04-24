@@ -25,7 +25,7 @@ export default function TypesEditor({
   return (
     <Suspense fallback={<LinearProgress />}>
       <InteractivedProvider {...{ InputStyles, propPath, values, onChange }}>
-        <LazyTypeList onPropPathChange={setPropPath} />
+        <LazyTypeList values={values} onPropPathChange={setPropPath} />
       </InteractivedProvider>
     </Suspense>
   );

@@ -7,6 +7,7 @@ import type * as Types from './TypesEditor.types';
 
 export default function TypesEditor({
   InputStyles,
+  disableSelection,
   parser,
   typeFile,
   typeName,
@@ -25,7 +26,11 @@ export default function TypesEditor({
   return (
     <Suspense fallback={<LinearProgress />}>
       <InteractivedProvider {...{ InputStyles, propPath, values, onChange }}>
-        <LazyTypeList values={values} onPropPathChange={setPropPath} />
+        <LazyTypeList
+          disableSelection={disableSelection}
+          values={values}
+          onPropPathChange={setPropPath}
+        />
       </InteractivedProvider>
     </Suspense>
   );

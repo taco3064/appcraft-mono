@@ -101,6 +101,7 @@ export default function ConfigDetail<C extends object = object>({
       <Container maxWidth="sm">
         <TypesEditor
           InputStyles={{ size: 'small', variant: 'outlined' }}
+          disableSelection
           parser={parser}
           values={values}
           typeName="DataSource"

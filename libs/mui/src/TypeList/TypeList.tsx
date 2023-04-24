@@ -1,22 +1,29 @@
 import Breadcrumbs from '@mui/material/Breadcrumbs';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListSubheader from '@mui/material/ListSubheader';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import _get from 'lodash.get';
-import _toPath from 'lodash.topath';
 
 import { TypeItem } from '../TypeItem';
 import { usePropPath } from '../InteractivedContext';
+import { usePropPathChange } from './TypeList.hooks';
 import type { TypeListProps } from './TypeList.types';
 
 export default function TypeList({
+  disableSelection,
   superior,
   values,
   onPropPathChange,
 }: TypeListProps) {
   const propPath = usePropPath();
+
+  const [breadcrumbs, { back: handleBack, to: handleTo }] = usePropPathChange(
+    { values, onPropPathChange },
+    propPath
+  );
 
   return (
     <List
@@ -25,48 +32,35 @@ export default function TypeList({
           <ListSubheader
             component={Toolbar}
             variant="dense"
-            sx={{ background: 'inherit' }}
+            sx={{ background: 'inherit', gap: 1 }}
           >
-            <Breadcrumbs separator=".">
-              {_toPath(propPath).map((path, i, arr) => {
-                const isArrayEl = Array.isArray(_get(values, arr.slice(0, i)));
-                const isLast = i === arr.length - 1;
+            <IconButton size="small" onClick={() => handleBack()}>
+              <ChevronLeftIcon fontSize="large" />
+            </IconButton>
 
-                return isLast ? (
+            <Breadcrumbs separator=".">
+              {breadcrumbs.map(({ name, isArrayElement, isLast }, i) =>
+                isLast ? (
                   <Typography
-                    key={`${path}_${i}`}
+                    key={`${name}_${i}`}
                     variant="subtitle1"
-                    color="primary"
+                    color="secondary"
                   >
-                    {isArrayEl ? `[${path}]` : path}
+                    {isArrayElement ? `[${name}]` : name}
                   </Typography>
                 ) : (
                   <Link
-                    key={`${path}_${i}`}
+                    key={`${name}_${i}`}
                     component="button"
                     underline="hover"
                     variant="subtitle1"
                     color="text.primary"
-                    onClick={() =>
-                      onPropPathChange(
-                        arr
-                          .slice(0, i + 1)
-                          .reduce<string>((result, propName, index) => {
-                            const isArrayEl = Array.isArray(
-                              _get(values, arr.slice(0, index))
-                            );
-
-                            return isArrayEl
-                              ? `${result}[${propName}]`
-                              : `${result ? `${result}.` : ''}${propName}`;
-                          }, '')
-                      )
-                    }
+                    onClick={() => handleBack(i)}
                   >
-                    {isArrayEl ? `[${path}]` : path}
+                    {isArrayElement ? `[${name}]` : name}
                   </Link>
-                );
-              })}
+                )
+              )}
             </Breadcrumbs>
           </ListSubheader>
         )
@@ -83,16 +77,9 @@ export default function TypeList({
           .map((options) => (
             <TypeItem
               key={options.propName}
+              disableSelection={disableSelection}
               options={options}
-              onDisplayItemClick={({ type, propName }) => {
-                if (type === 'arrayOf') {
-                  onPropPathChange(`${propPath}[${propName}]`);
-                } else {
-                  onPropPathChange(
-                    [propPath, propName].filter((v) => v).join('.')
-                  );
-                }
-              }}
+              onDisplayItemClick={handleTo}
             />
           ))}
     </List>

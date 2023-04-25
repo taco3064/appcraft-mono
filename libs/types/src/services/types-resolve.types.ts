@@ -35,8 +35,12 @@ export type NumberProp = BaseProptype<'number'>;
 export type ObjectOfProp = BaseProptype<'objectOf', PropTypesDef>;
 export type ObjectProp = BaseProptype<'object'>;
 export type OneOfProp = BaseProptype<'oneOf', (boolean | number | string)[]>;
-export type OneOfTypeProp = BaseProptype<'oneOfType', PropTypesDef[]>;
 export type StringProp = BaseProptype<'string'>;
+
+export type OneOfTypeProp = BaseProptype<
+  'oneOfType',
+  (PropTypesDef & { text: string })[]
+>;
 
 export type FuncProp = BaseProptype<
   'func',

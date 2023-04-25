@@ -1,4 +1,4 @@
-import type { PropTypesDef } from '@appcraft/types';
+import type { OneOfProp, OneOfTypeProp, PropTypesDef } from '@appcraft/types';
 import type * as Types from './types-resolve.types';
 
 //* 定義 PropTypes 的檢查方式及回傳的 Config 內容 (要注意先後順序)
@@ -80,16 +80,20 @@ const generators: Types.Generators = [
     }
 
     if (type.isTuple()) {
-      const proptypes =
+      const proptypes: OneOfTypeProp['options'] =
         type.isTuple() &&
-        type.getTupleElements().reduce<PropTypesDef[]>((result, tuple, i) => {
-          const proptype = getProptype(tuple, {
-            propName: `[${i}]`,
-            required: true,
-          });
+        type
+          .getTupleElements()
+          .reduce<OneOfTypeProp['options']>((result, tuple, i) => {
+            const proptype = getProptype(tuple, {
+              propName: `[${i}]`,
+              required: true,
+            });
 
-          return !proptype ? result : result.concat(proptype);
-        }, []);
+            return !proptype
+              ? result
+              : result.concat({ ...proptype, text: tuple.getText() });
+          }, []);
 
       return (
         proptypes.length > 0 && {
@@ -189,14 +193,14 @@ const generators: Types.Generators = [
     if (type.isUnion()) {
       const [oneOf, oneOfType] = type
         .getUnionTypes()
-        .reduce<[any[], PropTypesDef[]]>(
+        .reduce<[OneOfProp['options'], OneOfTypeProp['options']]>(
           ([literals, types], union) => {
             if (union.isLiteral()) {
               literals.push(JSON.parse(union.getText()));
             } else {
               const proptype = getProptype(union, info, source);
 
-              proptype && types.push(proptype);
+              proptype && types.push({ ...proptype, text: union.getText() });
             }
 
             return [literals, types];
@@ -212,7 +216,10 @@ const generators: Types.Generators = [
         return {
           ...info,
           type: 'oneOfType',
-          options: [...oneOfType, { ...info, type: 'oneOf', options: oneOf }],
+          options: [
+            ...oneOfType,
+            { ...info, type: 'oneOf', text: 'union', options: oneOf },
+          ],
         };
       }
 

@@ -17,8 +17,10 @@ import type * as Types from './HierarchyList.types';
 export default function HierarchyList({
   category,
   disableBreadcrumb = false,
+  disableGroup = false,
   icon,
   onActionNodePick = (e) => e,
+  onItemActionRender,
 }: Types.HierarchyListProps) {
   const { pathname, push } = useRouter();
   const [{ data: names }, superiors] = useSuperiors(category);
@@ -37,10 +39,10 @@ export default function HierarchyList({
 
   const { data: action } = useQuery({
     suspense: false,
-    queryKey: [collapsed, superior] as [boolean, string],
-    queryFn: ({ queryKey: [collapsed, superior] }) =>
+    queryKey: [collapsed, disableGroup, superior] as [boolean, boolean, string],
+    queryFn: ({ queryKey: [collapsed, disableGroup, superior] }) =>
       onActionNodePick({
-        addGroup: (
+        addGroup: !disableGroup && (
           <Component.HierarchyEditorButton
             IconProps={{ color: 'warning', fontSize: 'large' }}
             mode="add"
@@ -100,7 +102,7 @@ export default function HierarchyList({
         />
       )}
 
-      {Object.keys(action || {}).length > 0 && (
+      {Object.values(action || {}).some((node) => node) && (
         <Toolbar
           disableGutters
           variant="dense"
@@ -138,6 +140,8 @@ export default function HierarchyList({
               key={data._id}
               data={data}
               icon={icon}
+              onActionRender={onItemActionRender}
+              onDataModify={() => refetch()}
               onClick={(data) =>
                 push(
                   data.type === 'group'
@@ -158,7 +162,6 @@ export default function HierarchyList({
                       }
                 )
               }
-              onDataModify={() => refetch()}
             />
           ))}
         </ImageList>

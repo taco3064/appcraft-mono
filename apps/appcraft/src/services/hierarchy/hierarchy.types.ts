@@ -10,7 +10,7 @@ export type HierarchyParams = Appcraft.HierarchyParams;
 
 export type SearchHierarchyService = QueryFunction<
   HierarchyData<string>[],
-  readonly [string, Appcraft.HierarchyParams]
+  readonly [string] | readonly [string, Appcraft.HierarchyParams]
 >;
 
 export type GetHierarchyNamesService = QueryFunction<

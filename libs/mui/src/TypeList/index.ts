@@ -1,2 +1,2 @@
-export { default as TypeList } from './TypesList';
+export { default as TypeList } from './TypeList';
 export type { TypeListProps } from './TypeList.types';

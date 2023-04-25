@@ -23,6 +23,7 @@ i18n.init({
 
 //* Zustand Store
 const useSettingStore = create<Types.SettingState>((set, get) => ({
+  //* Authorization
   tokens: {
     access:
       global.document?.cookie.match('(^|;)\\s*access\\s*=\\s*([^;]+)')?.pop() ||
@@ -48,6 +49,13 @@ const useSettingStore = create<Types.SettingState>((set, get) => ({
         lng: newLng,
       };
     }),
+
+  //* Theme
+  theme: global.localStorage?.getItem('theme') || 'DEFAULT_DARK',
+  setTheme: (theme, timestamp) => {
+    global.localStorage?.setItem('theme', theme);
+    set({ theme, timestamp });
+  },
 }));
 
 export default useSettingStore;

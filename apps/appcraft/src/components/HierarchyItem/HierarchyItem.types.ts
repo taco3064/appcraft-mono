@@ -5,6 +5,7 @@ export interface HierarchyItemProps {
   data: HierarchyData<string>;
   icon: typeof SvgIcon;
 
+  onActionRender?: (data: HierarchyData<string>) => JSX.Element;
   onClick: (data: HierarchyData<string>) => void;
 
   onDataModify: (

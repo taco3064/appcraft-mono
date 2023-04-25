@@ -6,20 +6,37 @@
   "targets": {
     "build": {
       "executor": "@nrwl/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/libs/types",
         "tsConfig": "libs/types/tsconfig.lib.json",
         "packageJson": "libs/types/package.json",
         "main": "libs/types/src/index.ts",
-        "assets": ["libs/types/*.md"]
+        "assets": [
+          "libs/types/*.md"
+        ]
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["libs/types/**/*.ts"]
+        "lintFilePatterns": [
+          "libs/types/**/*.ts"
+        ]
+      }
+    },
+    "tsc": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "tsc --noEmit -p libs/types/tsconfig.json",
+          "tsc --noEmit -p libs/types/tsconfig.lib.json"
+        ]
       }
     }
   },

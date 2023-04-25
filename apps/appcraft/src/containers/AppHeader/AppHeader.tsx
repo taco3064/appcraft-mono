@@ -16,7 +16,7 @@ export default function AppHeader({
   onMenuToggle,
 }: Types.AppHeaderProps) {
   return (
-    <AppBar position="sticky" color="default" elevation={0}>
+    <AppBar position="sticky" color="inherit" elevation={0}>
       <GapToolbar variant="regular">
         {authorized && onMenuToggle && (
           <IconButton onClick={onMenuToggle}>

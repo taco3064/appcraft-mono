@@ -1,6 +1,8 @@
 import SvgIcon from '@mui/material/SvgIcon';
 import type { ReactNode } from 'react';
 
+import type { HierarchyItemProps } from '~appcraft/components';
+
 enum ActionType {
   addGroup,
   addItem,
@@ -18,4 +20,6 @@ export interface HierarchyListProps {
   onActionNodePick?: (
     nodes: HierarchyListAction
   ) => Partial<HierarchyListAction>;
+
+  onItemActionRender?: HierarchyItemProps['onActionRender'];
 }

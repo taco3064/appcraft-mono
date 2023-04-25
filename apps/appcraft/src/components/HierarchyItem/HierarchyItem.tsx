@@ -8,11 +8,10 @@ import Menu from '@mui/material/Menu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 
-import { CommonButton, RemoveButton } from '../common';
+import { RemoveButton } from '../common';
 import { HierarchyEditorButton } from '../HierarchyEditorButton';
 import { removeHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
@@ -21,14 +20,16 @@ import type * as Types from './HierarchyItem.types';
 export default function HierarchyItem({
   data,
   icon: MuiIcon,
+  onActionRender,
   onClick,
   onDataModify,
-  onPreview,
 }: Types.HierarchyItemProps) {
   const [at] = useFixedT('app');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
   const { enqueueSnackbar } = useSnackbar();
   const { type, name, description } = data;
+
+  const action = (type === 'item' && onActionRender?.(data)) || null;
 
   return (
     <ImageListItem component={Paper} elevation={4}>
@@ -47,7 +48,7 @@ export default function HierarchyItem({
           <FolderRoundedIcon color="warning" style={{ fontSize: 160 }} />
         )}
 
-        {(description || (type === 'item' && onPreview)) && (
+        {(description || action) && (
           <ImageListItemBar
             subtitle={
               <Typography
@@ -59,20 +60,8 @@ export default function HierarchyItem({
               </Typography>
             }
             actionPosition="right"
-            actionIcon={
-              type === 'item' &&
-              onPreview && (
-                <CommonButton
-                  btnVariant="icon"
-                  color="default"
-                  icon={VisibilityOutlinedIcon}
-                  text={at('btn-preview')}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                />
-              )
-            }
+            actionIcon={action}
+            onClick={(e) => e.stopPropagation()}
           />
         )}
       </ListItemButton>

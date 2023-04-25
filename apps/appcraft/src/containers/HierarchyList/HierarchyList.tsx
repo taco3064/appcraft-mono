@@ -20,6 +20,7 @@ export default function HierarchyList({
   disableGroup = false,
   icon,
   onActionNodePick = (e) => e,
+  onItemActionRender,
 }: Types.HierarchyListProps) {
   const { pathname, push } = useRouter();
   const [{ data: names }, superiors] = useSuperiors(category);
@@ -139,6 +140,8 @@ export default function HierarchyList({
               key={data._id}
               data={data}
               icon={icon}
+              onActionRender={onItemActionRender}
+              onDataModify={() => refetch()}
               onClick={(data) =>
                 push(
                   data.type === 'group'
@@ -159,7 +162,6 @@ export default function HierarchyList({
                       }
                 )
               }
-              onDataModify={() => refetch()}
             />
           ))}
         </ImageList>

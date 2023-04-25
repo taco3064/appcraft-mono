@@ -1,15 +1,17 @@
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import Head from 'next/head';
-import PaletteRoundedIcon from '@mui/icons-material/PaletteRounded';
+import PaletteTwoToneIcon from '@mui/icons-material/PaletteTwoTone';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { CommonButton } from '~appcraft/components/common';
 import { HierarchyList, HierarchyListAction } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT } from '~appcraft/hooks';
 
 export default function Themes() {
   const { pathname } = useRouter();
-  const [nt] = useFixedT('nav');
+  const [at, nt] = useFixedT('app', 'nav');
   const [action, setAction] = useState<Partial<HierarchyListAction>>(null);
 
   return (
@@ -31,12 +33,23 @@ export default function Themes() {
       <HierarchyList
         disableGroup
         category={pathname.replace(/^\//, '')}
-        icon={PaletteRoundedIcon}
+        icon={PaletteTwoToneIcon}
         onActionNodePick={({ addItem, search, ...nodes }) => {
           setAction({ addItem, search });
 
           return nodes;
         }}
+        onItemActionRender={(theme) => (
+          <CommonButton
+            btnVariant="icon"
+            color="default"
+            icon={AutoAwesomeIcon}
+            text={at('btn-apply')}
+            onClick={(e) => {
+              console.log(theme);
+            }}
+          />
+        )}
       />
     </PageContainer>
   );

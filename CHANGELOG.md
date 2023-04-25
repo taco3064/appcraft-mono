@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.17](https://github.com/taco3064/appcraft-mono/compare/v0.0.16...v0.0.17) (2023-04-25)
+
+
+### Features
+
+* **@appcraft/mui:** add breadcrumbs to types-list ([69bf6d6](https://github.com/taco3064/appcraft-mono/commit/69bf6d6de3e6526fa4a91921adee85c7b9afe243))
+* **themes/detail:** add new page component and fixed bugs of @appcraft/mui ([cc31226](https://github.com/taco3064/appcraft-mono/commit/cc3122644055627509c3fd56a6694b5110683f90))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** add hook to manage the prop path change events ([b09e39d](https://github.com/taco3064/appcraft-mono/commit/b09e39dca2ba600c3c3f4ac7ffdc36cf4101c00e))
+* **apps/appcraft:** fixed the error of dynamic apply theme style ([cb458e6](https://github.com/taco3064/appcraft-mono/commit/cb458e619ceca1dfb83629cc412fd2f151593b74))
+* **hierarchy-item(apps/appcraft):** add onPreview event ([9915dc1](https://github.com/taco3064/appcraft-mono/commit/9915dc1068a0683d0b6e0a35a1cd9dbe37c04b96))
+* **hierarchy-item:** add onActionRender event ([fe2459b](https://github.com/taco3064/appcraft-mono/commit/fe2459b6c4810af0679ed41e9f62d1ee9f8fe6aa))
+* **ts2-props:** add source text to OneOfTypes options ([e8703d1](https://github.com/taco3064/appcraft-mono/commit/e8703d14563f150e36c1ebe61339757770f63c8f))
+
 ### [0.0.16](https://github.com/taco3064/appcraft-mono/compare/v0.0.15...v0.0.16) (2023-04-24)
 
 

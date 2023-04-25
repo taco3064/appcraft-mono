@@ -7,10 +7,11 @@ import { useState } from 'react';
 import { CommonButton } from '~appcraft/components/common';
 import { HierarchyList, HierarchyListAction } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT, useSettingModified } from '~appcraft/hooks';
 
 export default function Themes() {
   const { pathname } = useRouter();
+  const { setTheme } = useSettingModified();
   const [at, nt] = useFixedT('app', 'nav');
   const [action, setAction] = useState<Partial<HierarchyListAction>>(null);
 
@@ -45,9 +46,7 @@ export default function Themes() {
             color="default"
             icon={AutoAwesomeIcon}
             text={at('btn-apply')}
-            onClick={(e) => {
-              console.log(theme);
-            }}
+            onClick={() => setTheme(theme._id)}
           />
         )}
       />

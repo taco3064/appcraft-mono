@@ -2,7 +2,7 @@ import axios from 'axios';
 import type * as Types from './hierarchy.types';
 
 export const searchHierarchy: Types.SearchHierarchyService = async ({
-  queryKey: [category, params],
+  queryKey: [category, params = {}],
 }) => {
   const { data } = await axios.post(
     `/api/data-forge/hierarchy/search/${category}`,

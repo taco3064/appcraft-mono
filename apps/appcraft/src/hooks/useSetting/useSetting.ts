@@ -1,5 +1,11 @@
+import * as THEMES from '@appcraft/themes';
+import { useMemo } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { ThemeOptions, createTheme } from '@mui/material/styles';
+
 import useSettingStore from './useSetting.hooks';
-import * as Types from './useSetting.types';
+import { FindConfigContext, findConfig } from '~appcraft/services';
+import type * as Types from './useSetting.types';
 
 export const useFixedT: Types.FixedTHook = (...namespaces) => {
   const { getFixedT } = useSettingStore(
@@ -26,7 +32,39 @@ export const useAuthTokens: Types.UserAutTokensHook = () => {
 };
 
 export const useSettingModified: Types.SettingModifiedHook = () =>
-  useSettingStore(({ lng, setLng }) => ({
+  useSettingStore(({ lng, setLng, theme, setTheme }) => ({
     lng,
     setLng,
+    theme,
+    setTheme,
   }));
+
+export const useThemeStyle: Types.ThemeStyleHook = () => {
+  const [id, timestamp] = useSettingStore(({ theme, timestamp }) => [
+    theme,
+    timestamp,
+  ]);
+
+  const { data: theme } = useQuery({
+    refetchOnWindowFocus: false,
+    suspense: false,
+    queryKey: [id, timestamp],
+    queryFn: async (ctx: FindConfigContext) => {
+      const isDefaultOption = ctx.queryKey[0] in THEMES;
+
+      if (!isDefaultOption) {
+        try {
+          const { content } = await findConfig<ThemeOptions>(ctx);
+
+          return content;
+        } catch (e) {
+          console.warn(e);
+        }
+      }
+
+      return THEMES[ctx.queryKey[0]];
+    },
+  });
+
+  return useMemo(() => createTheme(theme), [theme]);
+};

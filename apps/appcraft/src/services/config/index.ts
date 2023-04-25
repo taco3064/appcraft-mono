@@ -1,2 +1,2 @@
 export * from './config';
-export type { ConfigData } from './config.types';
+export type { ConfigData, FindConfigContext } from './config.types';

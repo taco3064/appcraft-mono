@@ -1,5 +1,5 @@
-import * as THEMES from '@appcraft/themes';
-import CssBaseline from '@mui/material/CssBaseline';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 import Head from 'next/head';
 import LinearProgress from '@mui/material/LinearProgress';
 import NoSsr from '@mui/material/NoSsr';
@@ -7,10 +7,9 @@ import { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SnackbarProvider, SnackbarOrigin } from 'notistack';
 import { Suspense, useState } from 'react';
-import { ThemeProvider } from '@mui/material/styles';
 
 import IndexPage from './index';
-import { AppHeader, MenuDrawer } from '~appcraft/containers';
+import { AppHeader, MenuDrawer, ThemeProvider } from '~appcraft/containers';
 import { MainContainer } from '~appcraft/styles';
 import { useAuthTokens } from '~appcraft/hooks';
 
@@ -44,9 +43,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
       <NoSsr>
         <QueryClientProvider client={client}>
-          <ThemeProvider theme={THEMES.DEFAULT_DARK}>
-            <CssBaseline />
-
+          <ThemeProvider>
             <SnackbarProvider anchorOrigin={origin}>
               <AppHeader
                 authorized={authorized}
@@ -61,7 +58,13 @@ export default function App({ Component, pageProps }: AppProps) {
                 <MenuDrawer open={open} onClose={() => setOpen(false)} />
               )}
 
-              <Suspense fallback={<LinearProgress />}>
+              <Suspense
+                fallback={
+                  <Backdrop open>
+                    <CircularProgress />
+                  </Backdrop>
+                }
+              >
                 <MainContainer
                   maxWidth={false}
                   className="app"

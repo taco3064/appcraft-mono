@@ -61,8 +61,6 @@ export default function TypeItem({
     case 'Mixed': {
       const opts = options as Fields.MixedFieldProps['options'];
 
-      console.log(opts.options);
-
       return (
         <>
           <ListItemButton onClick={(e) => setAnchorEl(e.currentTarget)}>
@@ -75,6 +73,7 @@ export default function TypeItem({
           </ListItemButton>
 
           <Menu
+            PaperProps={{ elevation: 0 }}
             open={Boolean(anchorEl)}
             anchorEl={anchorEl}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}

@@ -1,7 +1,7 @@
-import LinearProgress from '@mui/material/LinearProgress';
 import { Suspense, useState } from 'react';
 
 import { InteractivedProvider } from '../InteractivedContext';
+import { TypeListSkeleton } from '../TypeListSkeleton';
 import { useLazyTypeList } from './TypesEditor.hooks';
 import type * as Types from './TypesEditor.types';
 
@@ -24,7 +24,7 @@ export default function TypesEditor({
   });
 
   return (
-    <Suspense fallback={<LinearProgress />}>
+    <Suspense fallback={<TypeListSkeleton />}>
       <InteractivedProvider {...{ InputStyles, propPath, values, onChange }}>
         <LazyTypeList
           disableSelection={disableSelection}

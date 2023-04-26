@@ -53,7 +53,7 @@ export default function Detail() {
       </Head>
 
       <ConfigDetail
-        key={`${id}:${theme.timestamp}`}
+        key={id}
         typeName="ThemeOptions"
         typeFile="./node_modules/@mui/material/styles/createTheme.d.ts"
         category={category}

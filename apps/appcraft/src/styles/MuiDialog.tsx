@@ -40,10 +40,8 @@ export const FlexDialog = withStyles(
           color="primary"
           fontWeight="bolder"
           variant="h5"
-          {...(icon && {
-            component: IconTypograph,
-            icon,
-          })}
+          style={{ position: 'relative' }}
+          {...(icon && { component: IconTypograph, icon })}
         >
           {title}
 
@@ -51,7 +49,12 @@ export const FlexDialog = withStyles(
             <IconButton
               size="small"
               onClick={(e) => onClose(e, 'escapeKeyDown')}
-              style={{ float: 'right' }}
+              sx={(theme) => ({
+                position: 'absolute',
+                right: theme.spacing(2),
+                top: '50%',
+                transform: 'translate(0, -50%)',
+              })}
             >
               <CloseIcon />
             </IconButton>

@@ -4,7 +4,6 @@ import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -83,7 +82,18 @@ export default function TypeItem({
 
       return (
         <>
-          {mixedOptions ? (
+          {!mixedOptions ? (
+            <ListItemButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+              {selection}
+
+              <ListItemText
+                disableTypography
+                primary={<Fields.MixedField options={opts} />}
+              />
+
+              {actions}
+            </ListItemButton>
+          ) : (
             <TypeItem
               {...{ disableSelection, onDisplayItemClick }}
               options={mixedOptions}
@@ -102,17 +112,6 @@ export default function TypeItem({
                 </>
               }
             />
-          ) : (
-            <ListItemButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-              {selection}
-
-              <ListItemText
-                disableTypography
-                primary={<Fields.MixedField options={opts} />}
-              />
-
-              {actions}
-            </ListItemButton>
           )}
 
           <Menu

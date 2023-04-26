@@ -18,6 +18,7 @@ export const usePropPathChange: Types.PropPathChangeHook = (
       isArrayElement: Array.isArray(_get(values, paths.slice(0, i))),
       isLast: i === paths.length - 1,
     })),
+
     {
       back: (index) =>
         onPropPathChange(

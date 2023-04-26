@@ -2,6 +2,8 @@ import React from 'react';
 import _get from 'lodash.get';
 import _set from 'lodash.set';
 import _toPath from 'lodash.topath';
+
+import { getPropPathString } from './InteractivedContext.utils';
 import type * as Types from './InteractivedContext.types';
 
 export const InteractivedContext = React.createContext<Types.InteractivedValue>(
@@ -9,6 +11,7 @@ export const InteractivedContext = React.createContext<Types.InteractivedValue>(
     propPath: '',
     values: {},
     onChange: (v) => null,
+    onMixedTypeMapping: () => null,
   }
 );
 
@@ -44,6 +47,32 @@ export const usePropValue: Types.PropValueHook = (propName) => {
         }
       },
       [propPath, propName, values, onChange]
+    ),
+  ];
+};
+
+export const useMixedTypeMapping: Types.MixedTypeMapping = (propName) => {
+  const { propPath, mixedTypes, values, onMixedTypeMapping } = useContext();
+
+  const path = React.useMemo(
+    () =>
+      getPropPathString(values, [..._toPath(propPath), propName] as string[]),
+    [values, propPath, propName]
+  );
+
+  return [
+    mixedTypes?.[path] || null,
+
+    React.useCallback(
+      (mixedText) => {
+        if (mixedText) {
+          onMixedTypeMapping({ ...mixedTypes, [path]: mixedText });
+        } else {
+          delete mixedTypes[path];
+          onMixedTypeMapping({ ...mixedTypes });
+        }
+      },
+      [mixedTypes, path, onMixedTypeMapping]
     ),
   ];
 };

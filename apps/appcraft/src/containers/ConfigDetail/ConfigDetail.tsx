@@ -33,6 +33,8 @@ export default function ConfigDetail<C extends object = object>({
     JSON.parse(JSON.stringify(data?.content || {}))
   );
 
+  const [mixedTypes, setMixedTypes] = useState(data?.mapping);
+
   const mutation = useMutation({
     mutationFn: upsertConfig<C>,
     onSuccess: () =>
@@ -102,10 +104,11 @@ export default function ConfigDetail<C extends object = object>({
 
       <Container maxWidth="sm">
         <TypesEditor
-          {...{ parser, values, typeFile, typeName }}
+          {...{ typeFile, typeName, parser, mixedTypes, values }}
           InputStyles={{ size: 'small', variant: 'outlined' }}
           disableSelection
           onChange={setValues}
+          onMixedTypeMapping={setMixedTypes}
         />
       </Container>
     </>

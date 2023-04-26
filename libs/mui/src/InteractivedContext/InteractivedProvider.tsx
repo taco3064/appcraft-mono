@@ -7,17 +7,30 @@ export default function InteractivedProvider({
   InputStyles: { color = 'primary', size = 'small', variant = 'outlined' } = {},
   children,
   propPath,
+  mixedTypes,
   values,
   onChange,
+  onMixedTypeMapping,
 }: Types.InteractivedProviderProps) {
   const value = useMemo(
     () => ({
       InputStyles: { color, size, variant },
       propPath,
+      mixedTypes,
       values,
       onChange,
+      onMixedTypeMapping,
     }),
-    [color, size, variant, propPath, values, onChange]
+    [
+      color,
+      size,
+      variant,
+      propPath,
+      mixedTypes,
+      values,
+      onChange,
+      onMixedTypeMapping,
+    ]
   );
 
   return (

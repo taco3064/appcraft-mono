@@ -2,17 +2,9 @@ import _get from 'lodash.get';
 import _toPath from 'lodash.topath';
 import { useCallback, useMemo } from 'react';
 
+import { getPropPathString } from '../InteractivedContext';
 import { getTypeSeq } from '../TypeItem';
 import type * as Types from './TypeList.types';
-
-const getPropPathString: Types.GetPropPathString = (values, paths) =>
-  paths.reduce<string>((result, propName, i) => {
-    const isArrayEl = Array.isArray(_get(values, paths.slice(0, i)));
-
-    return isArrayEl
-      ? `${result}[${propName}]`
-      : `${result ? `${result}.` : ''}${propName}`;
-  }, '');
 
 export const usePropPathChange: Types.PropPathChangeHook = (
   { values, onPropPathChange },

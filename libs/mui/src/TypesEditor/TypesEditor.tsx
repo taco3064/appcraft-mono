@@ -11,8 +11,10 @@ export default function TypesEditor({
   parser,
   typeFile,
   typeName,
+  mixedTypes,
   values,
   onChange,
+  onMixedTypeMapping,
 }: Types.TypesEditorProps) {
   const [propPath, setPropPath] = useState<string>('');
 
@@ -25,7 +27,16 @@ export default function TypesEditor({
 
   return (
     <Suspense fallback={<TypeListSkeleton />}>
-      <InteractivedProvider {...{ InputStyles, propPath, values, onChange }}>
+      <InteractivedProvider
+        {...{
+          InputStyles,
+          propPath,
+          mixedTypes,
+          values,
+          onChange,
+          onMixedTypeMapping,
+        }}
+      >
         <LazyTypeList
           disableSelection={disableSelection}
           values={values}

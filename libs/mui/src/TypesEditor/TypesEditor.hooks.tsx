@@ -9,6 +9,7 @@ export const useLazyTypeList: LazyTypeListHook = ({
   propPath,
   typeFile,
   typeName,
+  mixedTypes,
 }) =>
   useMemo(
     () =>
@@ -19,6 +20,7 @@ export const useLazyTypeList: LazyTypeListHook = ({
             typeFile,
             typeName,
             propPath,
+            mixedTypes,
           },
         });
 
@@ -26,5 +28,5 @@ export const useLazyTypeList: LazyTypeListHook = ({
           default: (props) => <TypeList {...props} superior={data} />,
         };
       }),
-    [parser, typeFile, typeName, propPath]
+    [parser, typeFile, typeName, propPath, mixedTypes]
   );

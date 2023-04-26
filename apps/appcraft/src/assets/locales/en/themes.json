@@ -1,4 +1,6 @@
 {
   "opt-theme-default-dark": "Default Dark Mode",
+  "opt-theme-macarons": "Macarons",
+  "opt-theme-punk": "Punk",
   "ttl-detail": "Theme Styles - {{ name }}"
 }

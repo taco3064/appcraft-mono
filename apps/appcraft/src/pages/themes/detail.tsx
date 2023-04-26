@@ -21,7 +21,7 @@ export default function Detail() {
   const [action, setAction] = useState<Partial<ConfigDetailAction>>(null);
   const [{ data: names }, superiors] = useSuperiors(category, id);
 
-  const { data: theme } = useQuery({
+  const { data: theme, refetch } = useQuery({
     queryKey: [id],
     queryFn: findConfig<ThemeOptions>,
     refetchOnWindowFocus: false,
@@ -37,7 +37,6 @@ export default function Detail() {
           {theme && (
             <CommonButton
               btnVariant="icon"
-              color="secondary"
               icon={AutoAwesomeIcon}
               text={at('btn-apply')}
               onClick={() => setTheme(theme._id, theme.timestamp)}
@@ -60,6 +59,7 @@ export default function Detail() {
         category={category}
         data={theme}
         superiors={{ names, paths: superiors }}
+        onSave={refetch}
         onActionNodePick={({ reset, save, ...nodes }) => {
           setAction({ reset, save });
 

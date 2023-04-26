@@ -38,6 +38,11 @@ export default function HierarchyEditorButton({
     },
   });
 
+  const handleClose = () => {
+    setOpen(false);
+    onCancel?.();
+  };
+
   const handleSubmit: FormEventHandler<HTMLDivElement> = async (e) => {
     const formdata = new FormData(e.target as HTMLFormElement);
 
@@ -78,13 +83,7 @@ export default function HierarchyEditorButton({
         open={open}
         action={
           <>
-            <Button
-              color="inherit"
-              onClick={() => {
-                setOpen(false);
-                onCancel?.();
-              }}
-            >
+            <Button color="inherit" onClick={handleClose}>
               {at('btn-cancel')}
             </Button>
 
@@ -93,6 +92,7 @@ export default function HierarchyEditorButton({
             </Button>
           </>
         }
+        onClose={handleClose}
       >
         <TextField
           autoFocus

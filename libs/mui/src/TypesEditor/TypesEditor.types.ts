@@ -12,7 +12,10 @@ export interface TypesEditorProps<V extends object = object>
 }
 
 export type LazyTypeListHook = (
-  options: Pick<TypesEditorProps, 'parser' | 'typeFile' | 'typeName'> & {
+  options: Pick<
+    TypesEditorProps,
+    'parser' | 'typeFile' | 'typeName' | 'mixedTypes'
+  > & {
     propPath: string;
   }
 ) => LazyExoticComponent<ComponentType<Omit<TypeListProps, 'superior'>>>;

@@ -1,8 +1,10 @@
 import ButtonGroup from '@mui/material/ButtonGroup';
+import CloseIcon from '@mui/icons-material/Close';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
 import { ReactNode } from 'react';
 import { withStyles } from 'tss-react/mui';
 
@@ -23,22 +25,40 @@ export const FlexDialog = withStyles(
     title,
     action,
     children,
+    onClose,
     direction: _direction,
     ...props
   }: FlexDialogProps) => (
-    <Dialog {...props} PaperProps={{ elevation: 0, ...PaperProps }}>
+    <Dialog
+      {...props}
+      onClose={onClose}
+      PaperProps={{ elevation: 0, ...PaperProps }}
+    >
       {(title || icon) && (
         <DialogTitle
           align="center"
           color="primary"
           fontWeight="bolder"
           variant="h5"
-          {...(icon && {
-            component: IconTypograph,
-            icon,
-          })}
+          style={{ position: 'relative' }}
+          {...(icon && { component: IconTypograph, icon })}
         >
           {title}
+
+          {onClose && (
+            <IconButton
+              size="small"
+              onClick={(e) => onClose(e, 'escapeKeyDown')}
+              sx={(theme) => ({
+                position: 'absolute',
+                right: theme.spacing(2),
+                top: '50%',
+                transform: 'translate(0, -50%)',
+              })}
+            >
+              <CloseIcon />
+            </IconButton>
+          )}
         </DialogTitle>
       )}
 

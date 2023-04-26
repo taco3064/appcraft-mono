@@ -36,23 +36,22 @@ export const usePropValue: Types.PropValueHook = (propName) => {
   return [
     (propName && _get(values, [..._toPath(propPath), propName])) || null,
 
-    React.useCallback(
-      (value) => {
-        const paths = [..._toPath(propPath), propName] as string[];
+    (value) => {
+      const paths = [..._toPath(propPath), propName] as string[];
 
-        if (Array.isArray(values)) {
-          onChange?.([..._set(values, paths, value)] as object);
-        } else {
-          onChange?.({ ..._set(values as object, paths, value) });
-        }
-      },
-      [propPath, propName, values, onChange]
-    ),
+      if (Array.isArray(values)) {
+        onChange?.([..._set(values, paths, value)] as object);
+      } else {
+        onChange?.({ ..._set(values as object, paths, value) });
+      }
+    },
   ];
 };
 
 export const useMixedTypeMapping: Types.MixedTypeMapping = (propName) => {
-  const { propPath, mixedTypes, values, onMixedTypeMapping } = useContext();
+  const [, setTransition] = React.useTransition();
+  const { propPath, mixedTypes, values, onMixedTypeMapping, onChange } =
+    useContext();
 
   const path = React.useMemo(
     () =>
@@ -63,16 +62,22 @@ export const useMixedTypeMapping: Types.MixedTypeMapping = (propName) => {
   return [
     mixedTypes?.[path] || null,
 
-    React.useCallback(
-      (mixedText) => {
-        if (mixedText) {
-          onMixedTypeMapping({ ...mixedTypes, [path]: mixedText });
-        } else {
-          delete mixedTypes[path];
+    (mixedText) => {
+      if (mixedText) {
+        onMixedTypeMapping({ ...mixedTypes, [path]: mixedText });
+      } else {
+        delete mixedTypes[path];
+
+        setTransition(() => {
           onMixedTypeMapping({ ...mixedTypes });
-        }
-      },
-      [mixedTypes, path, onMixedTypeMapping]
-    ),
+
+          if (Array.isArray(values)) {
+            onChange?.([..._set(values, path, undefined)] as object);
+          } else {
+            onChange?.({ ..._set(values as object, path, undefined) });
+          }
+        });
+      }
+    },
   ];
 };

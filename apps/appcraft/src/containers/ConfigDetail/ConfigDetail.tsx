@@ -62,7 +62,9 @@ export default function ConfigDetail<C extends object = object>({
             color="primary"
             icon={SaveAltIcon}
             text={at('btn-save')}
-            onClick={() => mutation.mutate({ ...data, content: values })}
+            onClick={() =>
+              mutation.mutate({ ...data, content: values, mapping: mixedTypes })
+            }
           />
         ),
       }),

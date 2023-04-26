@@ -1,47 +1,47 @@
 import { createTheme } from '@mui/material/styles';
 
-export const DEFAULT_DARK = createTheme({
+export const MACARONS = createTheme({
   palette: {
     mode: 'dark',
     divider: 'rgba(245,241,227,0.12)',
     background: {
-      paper: '#474448',
-      default: '#2D232E',
+      paper: '#212121',
+      default: '#121212',
     },
     primary: {
-      light: '#F18C7E',
-      main: '#ED6A5A',
-      dark: '#E94A35',
+      light: '#E57373',
+      main: '#F06292',
+      dark: '#F48FB1',
       contrastText: '#fff',
     },
     secondary: {
-      light: '#B4D0CC',
-      main: '#9BC1BC',
-      dark: '#82B0AA',
+      light: '#64B5F6',
+      main: '#90CAF9',
+      dark: '#BBDEFB',
       contrastText: '#fff',
     },
     info: {
-      light: '#8093C6',
-      main: '#6279B8',
-      dark: '#4C65A9',
+      light: '#4DD0E1',
+      main: '#26C6DA',
+      dark: '#00ACC1',
       contrastText: '#fff',
     },
     success: {
-      light: '#DCFF5C',
-      main: '#D2FF28',
-      dark: '#CAFF0A',
+      light: '#81C784',
+      main: '#4CAF50',
+      dark: '#388E3C',
       contrastText: '#fff',
     },
     warning: {
-      light: '#F6E879',
-      main: '#F4E04D',
-      dark: '#F2DA2C',
+      light: '#FFD54F',
+      main: '#FFCA28',
+      dark: '#FFB300',
       contrastText: '#fff',
     },
     error: {
-      light: '#C43173',
-      main: '#9A275A',
-      dark: '#83214D',
+      light: '#E57373',
+      main: '#F44336',
+      dark: '#D32F2F',
       contrastText: '#fff',
     },
     text: {
@@ -59,10 +59,10 @@ export const DEFAULT_DARK = createTheme({
     MuiButton: {
       styleOverrides: {
         containedInherit: {
-          color: '#2D232E',
+          color: '#121212',
         },
         containedSecondary: {
-          color: '#474448',
+          color: '#212121',
         },
       },
     },

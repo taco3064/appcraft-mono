@@ -130,6 +130,8 @@ jobs:
 
       - name: Trigger Affected Actions(Apps)
         run: |
+          npx nx build types
+
           IFS=', ' read -r -a affecteds <<< "$( \
             npx nx print-affected \
               --select=projects \

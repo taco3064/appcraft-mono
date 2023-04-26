@@ -15,6 +15,7 @@ export interface ConfigDetailProps<C extends object>
   category: string;
   data: ConfigData<Partial<C>, string>;
   onActionNodePick?: (nodes: ConfigDetailAction) => Partial<ConfigDetailAction>;
+  onSave?: () => void;
 
   superiors: {
     names: Record<string, string>;

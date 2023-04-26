@@ -2,14 +2,14 @@ import Container from '@mui/material/Container';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import Toolbar from '@mui/material/Toolbar';
-import { Dispatch, useState } from 'react';
 import { TypesEditor } from '@appcraft/mui';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
+import { useState, useTransition } from 'react';
 
 import { Breadcrumbs } from '~appcraft/containers';
 import { CommonButton } from '~appcraft/components/common';
-import { upsertConfig } from '~appcraft/services';
+import { ConfigData, upsertConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './ConfigDetail.types';
 
@@ -25,25 +25,31 @@ export default function ConfigDetail<C extends object = object>({
   typeFile,
   typeName,
   onActionNodePick = (e) => e,
+  onSave,
 }: Types.ConfigDetailProps<C>) {
   const { enqueueSnackbar } = useSnackbar();
+  const [, setTransition] = useTransition();
   const [at] = useFixedT('app');
 
   const [values, setValues] = useState(() =>
     JSON.parse(JSON.stringify(data?.content || {}))
   );
 
-  const [mixedTypes, setMixedTypes] = useState(data?.mapping);
+  const [mixedTypes, setMixedTypes] = useState(() =>
+    JSON.parse(JSON.stringify(data?.mapping || {}))
+  );
 
   const mutation = useMutation({
     mutationFn: upsertConfig<C>,
-    onSuccess: () =>
-      enqueueSnackbar(at('txt-succeed-update'), { variant: 'success' }),
+    onSuccess: () => {
+      enqueueSnackbar(at('txt-succeed-update'), { variant: 'success' });
+      onSave?.();
+    },
   });
 
   const { data: action } = useQuery({
     suspense: false,
-    queryKey: [values, setValues] as [Partial<C>, Dispatch<Partial<C>>],
+    queryKey: [values, mixedTypes] as [Partial<C>, ConfigData<C>['mapping']],
     queryFn: () =>
       onActionNodePick({
         reset: (
@@ -52,7 +58,12 @@ export default function ConfigDetail<C extends object = object>({
             btnVariant="icon"
             icon={RestartAltIcon}
             text={at('btn-reset')}
-            onClick={() => setValues(data.content)}
+            onClick={() =>
+              setTransition(() => {
+                setValues(JSON.parse(JSON.stringify(data?.content || {})));
+                setMixedTypes(JSON.parse(JSON.stringify(data?.mapping || {})));
+              })
+            }
           />
         ),
         save: (

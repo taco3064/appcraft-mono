@@ -1,71 +1,62 @@
 import { createTheme } from '@mui/material/styles';
 
-export const PUNK = createTheme({
+export const SPARKLING_CHAMPAGNE = createTheme({
   palette: {
     mode: 'dark',
-    divider: 'rgba(255,255,255,0.12)',
+    divider: 'rgba(255, 255, 255, 0.12)',
     background: {
-      paper: '#1B1B1B',
-      default: '#000000',
+      paper: '#232021',
+      default: '#181616',
     },
     primary: {
-      light: '#FF5252',
-      main: '#FF1744',
-      dark: '#D50000',
-      contrastText: '#ffffff',
+      light: '#FFF5E1',
+      main: '#FFE3A2',
+      dark: '#FFD082',
+      contrastText: '#2A2A2A',
     },
     secondary: {
-      light: '#E0E0E0',
-      main: '#BDBDBD',
-      dark: '#9E9E9E',
-      contrastText: '#ffffff',
+      light: '#E3F6EA',
+      main: '#BEE3D3',
+      dark: '#A0D8C8',
+      contrastText: '#2A2A2A',
     },
     info: {
-      light: '#90CAF9',
-      main: '#2196F3',
-      dark: '#1976D2',
-      contrastText: '#ffffff',
+      light: '#C9E6FF',
+      main: '#92BDEA',
+      dark: '#6F97C2',
+      contrastText: '#2A2A2A',
     },
     success: {
-      light: '#C5E1A5',
-      main: '#8BC34A',
-      dark: '#689F38',
-      contrastText: '#ffffff',
+      light: '#FFF3E3',
+      main: '#FFD3A3',
+      dark: '#FFBE80',
+      contrastText: '#2A2A2A',
     },
     warning: {
-      light: '#FFE082',
-      main: '#FFC107',
-      dark: '#FFA000',
-      contrastText: '#ffffff',
+      light: '#FEE7CC',
+      main: '#F7B485',
+      dark: '#EE9F68',
+      contrastText: '#2A2A2A',
     },
     error: {
-      light: '#E57373',
-      main: '#F44336',
-      dark: '#D32F2F',
-      contrastText: '#ffffff',
+      light: '#FFC3D6',
+      main: '#FF94A3',
+      dark: '#FF6C83',
+      contrastText: '#2A2A2A',
     },
     text: {
-      primary: '#ffffff',
-      secondary: 'rgba(255,255,255,0.7)',
-      disabled: 'rgba(255,255,255,0.5)',
+      primary: '#FFF5E1',
+      secondary: 'rgba(255, 255, 255, 0.7)',
+      disabled: 'rgba(255, 255, 255, 0.5)',
     },
   },
+
   unstable_sxConfig: {
     borderColor: {
       themeKey: 'palette',
     },
   },
   components: {
-    MuiButton: {
-      styleOverrides: {
-        containedInherit: {
-          color: '#000000',
-        },
-        containedSecondary: {
-          color: '#1B1B1B',
-        },
-      },
-    },
     MuiTextField: {
       defaultProps: {
         fullWidth: true,

@@ -60,6 +60,12 @@ export const PageContainer = withStyles(
         top: theme.spacing(9),
         gap: theme.spacing(0.5),
         zIndex: theme.zIndex.appBar,
+
+        '& + hr': {
+          position: 'sticky',
+          top: theme.spacing(15),
+          zIndex: theme.zIndex.appBar,
+        },
       },
       '& > [role=contentinfo]': {
         background: ContentProps?.disableGutters ? 'transparent' : null,

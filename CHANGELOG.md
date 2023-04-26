@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.18](https://github.com/taco3064/appcraft-mono/compare/v0.0.17...v0.0.18) (2023-04-26)
+
+
+### Features
+
+* **@appcraft/mui:** add mixed options slection ([a4edec4](https://github.com/taco3064/appcraft-mono/commit/a4edec473274133271d3f8c2aae44b6dadc2e2cd))
+* **@appcraft/mui:** add mixed type selection to TypeItem ([aa43f60](https://github.com/taco3064/appcraft-mono/commit/aa43f60773830d5130114c9706b0374d19bfc8b9))
+* **@appcraft/mui:** add skeleton list ([6dc38dd](https://github.com/taco3064/appcraft-mono/commit/6dc38dd57bfa3d7eb33947b4b7ff2428d5117e31))
+* **data-forge:** add process of types mapping ([f0cd595](https://github.com/taco3064/appcraft-mono/commit/f0cd595bfcaa795606b3cb53143e1cce1a14c3da))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** update the selection menu styles of mixed ([f410a5d](https://github.com/taco3064/appcraft-mono/commit/f410a5d4ee4b415df8d81b84e2a1c0899fb19884))
+
 ### [0.0.17](https://github.com/taco3064/appcraft-mono/compare/v0.0.16...v0.0.17) (2023-04-25)
 
 

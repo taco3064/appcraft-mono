@@ -1,12 +1,16 @@
-import { FC, useMemo } from 'react';
+import { useMemo } from 'react';
 import type { PropTypesDef } from '@appcraft/types';
 
-import * as Fields from '../TypeFields';
+import type { Category } from '../TypeFields';
 import type { GetTypeSeqFn } from './TypeItem.types';
 
 export const getTypeSeq: GetTypeSeqFn = (type) => {
   if (/^(arrayOf|exact|func|object|objectOf)$/.test(type)) {
     return 0;
+  }
+
+  if (/^(oneOfType)$/.test(type)) {
+    return 1;
   }
 
   if (/^(bool|instanceOf|number|oneOf|string)$/.test(type)) {
@@ -17,15 +21,18 @@ export const getTypeSeq: GetTypeSeqFn = (type) => {
 };
 
 export const useTypeField = <P extends PropTypesDef>({ type }: P) =>
-  useMemo<[FC<Fields.BaseFieldProps<P>> | null, boolean]>(() => {
+  useMemo<Category | null>(() => {
     switch (getTypeSeq(type)) {
       case 0:
-        return [Fields.DisplayField as FC<Fields.BaseFieldProps<P>>, true];
+        return 'Display';
+
+      case 1:
+        return 'Mixed';
 
       case 4:
-        return [Fields.PureField as FC<Fields.BaseFieldProps<P>>, false];
+        return 'Pure';
 
       default:
-        return [null, false];
+        return null;
     }
   }, [type]);

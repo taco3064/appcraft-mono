@@ -1,7 +1,7 @@
-import LinearProgress from '@mui/material/LinearProgress';
 import { Suspense, useState } from 'react';
 
 import { InteractivedProvider } from '../InteractivedContext';
+import { TypeListSkeleton } from '../TypeListSkeleton';
 import { useLazyTypeList } from './TypesEditor.hooks';
 import type * as Types from './TypesEditor.types';
 
@@ -11,8 +11,10 @@ export default function TypesEditor({
   parser,
   typeFile,
   typeName,
+  mixedTypes,
   values,
   onChange,
+  onMixedTypeMapping,
 }: Types.TypesEditorProps) {
   const [propPath, setPropPath] = useState<string>('');
 
@@ -24,8 +26,17 @@ export default function TypesEditor({
   });
 
   return (
-    <Suspense fallback={<LinearProgress />}>
-      <InteractivedProvider {...{ InputStyles, propPath, values, onChange }}>
+    <Suspense fallback={<TypeListSkeleton />}>
+      <InteractivedProvider
+        {...{
+          InputStyles,
+          propPath,
+          mixedTypes,
+          values,
+          onChange,
+          onMixedTypeMapping,
+        }}
+      >
         <LazyTypeList
           disableSelection={disableSelection}
           values={values}

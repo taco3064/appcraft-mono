@@ -20,9 +20,9 @@ export default class Config {
     description: '建立新的 Config Data',
   })
   async upsert(req: Request, res: Response) {
-    const { _id, content } = req.body as ConfigTypes.ConfigData<object, string>;
-
-    res.json(await config.upsert(_id, content));
+    res.json(
+      await config.upsert(req.body as ConfigTypes.ConfigData<object, string>)
+    );
   }
 
   @Endpoint({

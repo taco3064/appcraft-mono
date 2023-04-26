@@ -3,9 +3,7 @@ import { ObjectId } from 'mongodb';
 import { getCollection } from '../common';
 import type * as Types from './config.types';
 
-export const find: Types.FindService = async <C extends object = object>(
-  id
-) => {
+export const find = async <C extends object = object>(id: string) => {
   const collection = await getCollection<Types.ConfigData<C, ObjectId>>({
     db: 'data-forge',
     collection: 'config',
@@ -18,10 +16,11 @@ export const find: Types.FindService = async <C extends object = object>(
   return data;
 };
 
-export const upsert: Types.UpsertService = async <C extends object = object>(
-  id,
-  content
-) => {
+export const upsert = async <C extends object = object>({
+  _id: id,
+  content,
+  mapping,
+}: Types.ConfigData<C, string>) => {
   const timestamp = new Date().toISOString();
 
   const collection = await getCollection<Types.ConfigData<C, ObjectId>>({
@@ -31,15 +30,16 @@ export const upsert: Types.UpsertService = async <C extends object = object>(
 
   const result = await collection.updateOne(
     { _id: { $eq: new ObjectId(id) } },
-    { $set: { _id: new ObjectId(id), content, timestamp } },
+    { $set: { _id: new ObjectId(id), content, mapping, timestamp } },
     { upsert: true }
   );
 
   return {
     _id: result.upsertedId,
     content,
+    mapping,
     timestamp,
-  };
+  } as Types.ConfigData<C, ObjectId>;
 };
 
 export const remove: Types.RemoveService = async (id) => {

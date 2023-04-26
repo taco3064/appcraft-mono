@@ -41,8 +41,8 @@ export default function PureField({ options }: Types.PureFieldProps) {
     case 'bool':
       return (
         <TextField
-          fullWidth
           {...styles}
+          fullWidth
           required={options.required}
           InputProps={
             {
@@ -61,15 +61,21 @@ export default function PureField({ options }: Types.PureFieldProps) {
     case 'number':
       return (
         <TextField
-          fullWidth
           {...styles}
+          fullWidth
           required={options.required}
           label={options.propName}
           InputProps={
             {
               inputComponent: NumberInput,
               inputProps: {
-                defaultValue: value,
+                defaultValue: value as number,
+                onChange: (e: { target: { value: string } }) =>
+                  onChange(
+                    !e.target.value
+                      ? undefined
+                      : Number.parseFloat(e.target.value.replace(/,/g, ''))
+                  ),
               },
             } as object
           }
@@ -79,8 +85,8 @@ export default function PureField({ options }: Types.PureFieldProps) {
     case 'oneOf':
       return (
         <TextField
-          fullWidth
           {...styles}
+          fullWidth
           select
           required={options.required}
           label={options.propName}
@@ -101,8 +107,8 @@ export default function PureField({ options }: Types.PureFieldProps) {
     case 'string':
       return (
         <TextField
-          fullWidth
           {...styles}
+          fullWidth
           required={options.required}
           label={options.propName}
           defaultValue={value || ''}

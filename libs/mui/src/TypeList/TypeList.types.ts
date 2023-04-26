@@ -27,8 +27,6 @@ export type PropPathChangeHook = (
   }
 ];
 
-export type GetPropPathString = (values: object, paths: string[]) => string;
-
 export type OptionsSortingHook = (
   superior: TypeListProps['superior']
 ) => Appcraft.PropTypesDef[];

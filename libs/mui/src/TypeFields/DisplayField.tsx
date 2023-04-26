@@ -2,21 +2,21 @@ import DataArrayIcon from '@mui/icons-material/DataArray';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import DeviceHubIcon from '@mui/icons-material/DeviceHub';
 
-import { Typography } from './TypeFields.styles';
+import { GapTypography } from './TypeFields.styles';
 import type { DisplayFieldProps } from './TypeFields.types';
 
 export default function DisplayField({ options }: DisplayFieldProps) {
   return (
-    <Typography variant="subtitle1" color="text.primary">
+    <GapTypography variant="subtitle1" color="text.primary">
       {options.type === 'func' ? (
-        <DeviceHubIcon />
+        <DeviceHubIcon color="success" />
       ) : options.type === 'arrayOf' ? (
-        <DataArrayIcon />
+        <DataArrayIcon color="info" />
       ) : (
-        <DataObjectIcon />
+        <DataObjectIcon color="info" />
       )}
 
       {options.propName}
-    </Typography>
+    </GapTypography>
   );
 }

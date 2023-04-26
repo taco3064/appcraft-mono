@@ -1,8 +1,8 @@
-import MuiTypography from '@mui/material/Typography';
+import Typography from '@mui/material/Typography';
 import { withStyles } from 'tss-react/mui';
 
-export const Typography = withStyles(
-  MuiTypography,
+export const GapTypography = withStyles(
+  Typography,
   (theme) => ({
     root: {
       display: 'flex',
@@ -10,5 +10,5 @@ export const Typography = withStyles(
       gap: theme.spacing(1),
     },
   }),
-  { name: 'Typography' }
+  { name: 'GapTypography' }
 );

@@ -30,7 +30,7 @@ export const PageContainer = withStyles(
         <Typography
           fontWeight="bolder"
           variant="h5"
-          color="primary"
+          color="secondary"
           style={{ marginRight: 'auto' }}
         >
           {title}

@@ -44,7 +44,6 @@ export default function HierarchyList({
       onActionNodePick({
         addGroup: !disableGroup && (
           <Component.HierarchyEditorButton
-            IconProps={{ color: 'secondary', fontSize: 'large' }}
             mode="add"
             data={{
               category,
@@ -56,7 +55,6 @@ export default function HierarchyList({
         ),
         addItem: (
           <Component.HierarchyEditorButton
-            IconProps={{ color: 'secondary', fontSize: 'large' }}
             mode="add"
             data={{
               category,
@@ -70,7 +68,6 @@ export default function HierarchyList({
           <Fade in={collapsed}>
             <div>
               <CommonButton
-                IconProps={{ color: 'secondary', fontSize: 'large' }}
                 btnVariant="icon"
                 icon={FilterListIcon}
                 text={at('btn-filter')}

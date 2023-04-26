@@ -37,7 +37,6 @@ export default function Detail() {
           {theme && (
             <CommonButton
               btnVariant="icon"
-              color="secondary"
               icon={AutoAwesomeIcon}
               text={at('btn-apply')}
               onClick={() => setTheme(theme._id, theme.timestamp)}

@@ -54,7 +54,6 @@ export default function ConfigDetail<C extends object = object>({
       onActionNodePick({
         reset: (
           <CommonButton
-            IconProps={{ fontSize: 'large' }}
             btnVariant="icon"
             icon={RestartAltIcon}
             text={at('btn-reset')}
@@ -68,9 +67,7 @@ export default function ConfigDetail<C extends object = object>({
         ),
         save: (
           <CommonButton
-            IconProps={{ fontSize: 'large' }}
             btnVariant="icon"
-            color="primary"
             icon={SaveAltIcon}
             text={at('btn-save')}
             onClick={() =>

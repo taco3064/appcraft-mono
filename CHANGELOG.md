@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.19](https://github.com/taco3064/appcraft-mono/compare/v0.0.18...v0.0.19) (2023-04-26)
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** complete the content to be executed for setMixedType ([5f6bce5](https://github.com/taco3064/appcraft-mono/commit/5f6bce5f89c3ebf43ffb5ac82873ebb97d76c09a))
+* **apps/appcraft:** reset theme styles ([ca0b4c0](https://github.com/taco3064/appcraft-mono/commit/ca0b4c013426728881dd1e13abf6b0e0b9133a1b))
+* **config-detail(apps/appcraft):** add onSave for reload data ([02475d8](https://github.com/taco3064/appcraft-mono/commit/02475d82f808eb2fbb6d3b8d22218b370b43fabb))
+* **flexdialog(apps/appcraft):** add close button when onClose is set ([c707c28](https://github.com/taco3064/appcraft-mono/commit/c707c285a2294830b12acb672ad5d7f0541c6465))
+* **themes:** add more theme styles ([2bb63ff](https://github.com/taco3064/appcraft-mono/commit/2bb63ff86051e46b0f49a43fab37702d0cd3c19b))
+* **ts2-props:** fix type parsing errors ([6da9df0](https://github.com/taco3064/appcraft-mono/commit/6da9df00f34b9838d96549ef64063932a6a4955f))
+
 ### [0.0.18](https://github.com/taco3064/appcraft-mono/compare/v0.0.17...v0.0.18) (2023-04-26)
 
 

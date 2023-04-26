@@ -1,5 +1,5 @@
 import path from 'path';
-import toPath from 'lodash.topath';
+import _toPath from 'lodash.topath';
 import { Project } from 'ts-morph';
 import { debounce } from 'throttle-debounce';
 import type * as TsMorph from 'ts-morph';
@@ -75,20 +75,36 @@ const getObjectProperty: Types.PrivateGetObjectProperty = (
   return properties.get(propName) || null;
 };
 
+//* 依照指定路徑取得配對的 Type Text
+const getMixedTypeByPath: Types.PrivateGetMixedTypeByPath = (
+  mixedTypes,
+  paths
+) => {
+  const target = JSON.stringify(paths);
+
+  const path = Object.keys(mixedTypes).find(
+    (path) => JSON.stringify(_toPath(path)) === target
+  );
+
+  return mixedTypes[path];
+};
+
 //* 依照指定路徑取得目標 Type
 const getTypeByPath: Types.PrivateGetTypeByPath = (
   type,
-  { extendTypes, info, paths, source }
+  { extendTypes, info, paths, mixedTypes, source, superior = [] }
 ) => {
   if (paths.length) {
     const [callSignature] = type?.getCallSignatures().reverse() || [];
     const target = paths.shift();
+    const currentPath = [...superior, target];
 
     if (callSignature) {
       switch (target) {
         case 'return':
           return getTypeByPath(callSignature.getReturnType(), {
             info: { propName: target, required: true },
+            mixedTypes,
             paths,
             source,
           });
@@ -100,6 +116,7 @@ const getTypeByPath: Types.PrivateGetTypeByPath = (
 
           return getTypeByPath(param.getTypeAtLocation(source), {
             info: { propName: index, required: !param.isOptional() },
+            mixedTypes,
             paths,
             source,
           });
@@ -116,16 +133,20 @@ const getTypeByPath: Types.PrivateGetTypeByPath = (
       return !element.isUnion()
         ? getTypeByPath(element, {
             info: subinfo,
+            mixedTypes,
             paths,
             source,
+            superior: currentPath,
           })
         : element.getUnionTypes().reduce<Types.TypeResult>(
             (result, union) =>
               result ||
               getTypeByPath(union, {
                 info: subinfo,
+                mixedTypes,
                 paths: [...paths],
                 source,
+                superior: currentPath,
               }),
             null
           );
@@ -136,14 +157,22 @@ const getTypeByPath: Types.PrivateGetTypeByPath = (
       const subinfo = { propName: target, required: true };
 
       return !element.isUnion()
-        ? getTypeByPath(element, { info: subinfo, paths, source })
+        ? getTypeByPath(element, {
+            info: subinfo,
+            mixedTypes,
+            paths,
+            source,
+            superior: currentPath,
+          })
         : element.getUnionTypes().reduce<Types.TypeResult>(
             (result, union) =>
               result ||
               getTypeByPath(union, {
                 info: subinfo,
+                mixedTypes,
                 paths: [...paths],
                 source,
+                superior: currentPath,
               }),
             null
           );
@@ -164,18 +193,32 @@ const getTypeByPath: Types.PrivateGetTypeByPath = (
             required: !symbol.isOptional() || false,
           };
 
-          return element.getText() === 'React.ReactNode' || !element?.isUnion()
-            ? getTypeByPath(element, { info: subinfo, paths, source })
-            : element.getUnionTypes().reduce<Types.TypeResult>(
-                (result, union) =>
-                  result ||
-                  getTypeByPath(union, {
-                    info: subinfo,
-                    paths: [...paths],
-                    source,
-                  }),
-                null
-              );
+          if (element.getText() !== 'React.ReactNode' && element?.isUnion()) {
+            const mixed = getMixedTypeByPath(mixedTypes, currentPath);
+
+            const union = element
+              .getUnionTypes()
+              .find((union) => union.getText() === mixed);
+
+            return (
+              union &&
+              getTypeByPath(union, {
+                info: subinfo,
+                mixedTypes,
+                paths: [...paths],
+                source,
+                superior: currentPath,
+              })
+            );
+          }
+
+          return getTypeByPath(element, {
+            info: subinfo,
+            mixedTypes,
+            paths,
+            source,
+            superior: currentPath,
+          });
         }
       }
 
@@ -184,14 +227,22 @@ const getTypeByPath: Types.PrivateGetTypeByPath = (
         const [, element] = args;
 
         return element.getText() === 'React.ReactNode' || !element?.isUnion()
-          ? getTypeByPath(element, { info: subinfo, paths, source })
+          ? getTypeByPath(element, {
+              info: subinfo,
+              mixedTypes,
+              paths,
+              source,
+              superior: currentPath,
+            })
           : element.getUnionTypes().reduce<Types.TypeResult>(
               (result, union) =>
                 result ||
                 getTypeByPath(union, {
                   info: subinfo,
+                  mixedTypes,
                   paths: [...paths],
                   source,
+                  superior: currentPath,
                 }),
               null
             );
@@ -205,13 +256,18 @@ const getTypeByPath: Types.PrivateGetTypeByPath = (
 };
 
 //* Service Methods
-export const parse: Types.ParseService = ({ propPath = '', ...options }) => {
+export const parse: Types.ParseService = ({
+  propPath = '',
+  mixedTypes = {},
+  ...options
+}) => {
   const [source, declaration] = getVirtualSource(options);
 
   const types = getTypeByPath(declaration.getType(), {
     extendTypes: declaration.getExtends().map((extend) => extend.getType()),
     info: { required: true },
-    paths: toPath(propPath),
+    paths: _toPath(propPath),
+    mixedTypes,
     source,
   });
 

@@ -66,4 +66,5 @@ export interface TypesParseOptions {
   typeFile: string;
   typeName: string;
   propPath?: string;
+  mixedTypes?: Record<string, string>;
 }

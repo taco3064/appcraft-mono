@@ -29,13 +29,20 @@ export type PrivateGetObjectProperty = (
   extendTypes?: TsMorph.Type[]
 ) => TsMorph.Symbol | null;
 
+export type PrivateGetMixedTypeByPath = (
+  mixedTypes: Appcraft.TypesParseOptions['mixedTypes'],
+  paths: string[]
+) => string | null;
+
 export type PrivateGetTypeByPath = (
   type: TsMorph.Type,
   options: {
     readonly info: Appcraft.GeneratorInfo;
     extendTypes?: TsMorph.Type[];
     paths: string[];
+    mixedTypes: Appcraft.TypesParseOptions['mixedTypes'];
     source: TsMorph.SourceFile;
+    superior?: string[];
   }
 ) => TypeResult;
 

@@ -36,7 +36,7 @@ export default function TypeList({
             sx={{ background: 'inherit', gap: 1 }}
           >
             <IconButton size="small" onClick={() => handleBack()}>
-              <ChevronLeftIcon fontSize="large" />
+              <ChevronLeftIcon />
             </IconButton>
 
             <Breadcrumbs separator=".">

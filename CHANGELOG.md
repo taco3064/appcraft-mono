@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.20](https://github.com/taco3064/appcraft-mono/compare/v0.0.19...v0.0.20) (2023-04-27)
+
+
+### Bug Fixes
+
+* **apps/appcraft:** fixed the warning of eslint ([759d2a9](https://github.com/taco3064/appcraft-mono/commit/759d2a9e040a8b8b234a8163f8efa5d2af83fb03))
+* **apps/appcraft:** the default theme styles only retain two types ([5867326](https://github.com/taco3064/appcraft-mono/commit/586732615cd8bfb7e43fb123f6c8d507e31d9def))
+* fixed the warning of eslint ([ac3a2d0](https://github.com/taco3064/appcraft-mono/commit/ac3a2d0878b6f1209cc0716a9f94c18681d05679))
+* re-design theme styles ([f509a89](https://github.com/taco3064/appcraft-mono/commit/f509a895882f4918bbf9c44b74e8ed5cd6dc3d6c))
+* **themes/detail(apps/appcraft):** update the ConfigDetail key as config id only ([5617101](https://github.com/taco3064/appcraft-mono/commit/56171012711545c980d78b922a9d9dc69576347c))
+* **ts2-props:** fix type reading error ([ac3f1cb](https://github.com/taco3064/appcraft-mono/commit/ac3f1cb0c1f6b81f8e5c33eaa927d1679e1a0d73))
+
 ### [0.0.19](https://github.com/taco3064/appcraft-mono/compare/v0.0.18...v0.0.19) (2023-04-26)
 
 

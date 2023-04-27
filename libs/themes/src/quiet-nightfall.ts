@@ -1,53 +1,53 @@
 import { createTheme } from '@mui/material/styles';
 
-export const MACARONS = createTheme({
+export const QUIET_NIGHTFALL = createTheme({
   palette: {
     mode: 'dark',
-    divider: 'rgba(245,241,227,0.12)',
+    divider: 'rgba(255, 255, 255, 0.12)',
     background: {
-      paper: '#212121',
-      default: '#121212',
+      paper: '#474448',
+      default: '#2D232E',
     },
     primary: {
-      light: '#E57373',
-      main: '#F06292',
-      dark: '#F48FB1',
+      light: '#F6D1CC',
+      main: '#F3725B',
+      dark: '#D93B3B',
       contrastText: '#fff',
     },
     secondary: {
-      light: '#64B5F6',
-      main: '#90CAF9',
-      dark: '#BBDEFB',
+      light: '#E9F6FC',
+      main: '#51C7E8',
+      dark: '#27A0B5',
       contrastText: '#fff',
     },
     info: {
-      light: '#4DD0E1',
-      main: '#26C6DA',
-      dark: '#00ACC1',
+      light: '#B5E3F5',
+      main: '#5CB5E5',
+      dark: '#3C8AB2',
       contrastText: '#fff',
     },
     success: {
-      light: '#81C784',
-      main: '#4CAF50',
-      dark: '#388E3C',
+      light: '#C0F4CB',
+      main: '#6FDB7F',
+      dark: '#4C8F58',
       contrastText: '#fff',
     },
     warning: {
-      light: '#FFD54F',
-      main: '#FFCA28',
-      dark: '#FFB300',
+      light: '#F9ECC7',
+      main: '#F2C94C',
+      dark: '#B8860B',
       contrastText: '#fff',
     },
     error: {
-      light: '#E57373',
-      main: '#F44336',
-      dark: '#D32F2F',
+      light: '#F2B5C2',
+      main: '#E92D4F',
+      dark: '#AD1E3F',
       contrastText: '#fff',
     },
     text: {
-      primary: 'rgb(245,241,227)',
-      secondary: 'rgba(245,241,227,0.7)',
-      disabled: 'rgba(245,241,227,0.5)',
+      primary: '#FFFFFF',
+      secondary: 'rgba(255, 255, 255, 0.7)',
+      disabled: 'rgba(255, 255, 255, 0.5)',
     },
   },
   unstable_sxConfig: {
@@ -56,16 +56,6 @@ export const MACARONS = createTheme({
     },
   },
   components: {
-    MuiButton: {
-      styleOverrides: {
-        containedInherit: {
-          color: '#121212',
-        },
-        containedSecondary: {
-          color: '#212121',
-        },
-      },
-    },
     MuiTextField: {
       defaultProps: {
         fullWidth: true,

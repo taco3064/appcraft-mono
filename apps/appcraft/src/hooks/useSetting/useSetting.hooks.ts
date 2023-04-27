@@ -51,7 +51,7 @@ const useSettingStore = create<Types.SettingState>((set, get) => ({
     }),
 
   //* Theme
-  theme: global.localStorage?.getItem('theme') || 'DEFAULT_DARK',
+  theme: global.localStorage?.getItem('theme') || 'SPARKLING_CHAMPAGNE',
   setTheme: (theme, timestamp) => {
     global.localStorage?.setItem('theme', theme);
     set({ theme, timestamp });

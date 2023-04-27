@@ -1,3 +1,2 @@
-export * from './default-dark';
-export * from './macarons';
+export * from './quiet-nightfall';
 export * from './sparkling-champagne';

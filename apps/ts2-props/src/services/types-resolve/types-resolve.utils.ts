@@ -1,8 +1,25 @@
 import type { OneOfProp, OneOfTypeProp, PropTypesDef } from '@appcraft/types';
 import type * as Types from './types-resolve.types';
+import { types } from 'util';
 
 //* 定義 PropTypes 的檢查方式及回傳的 Config 內容 (要注意先後順序)
 const generators: Types.Generators = [
+  (type, info) => {
+    if (
+      type.isBooleanLiteral() ||
+      type.isNumberLiteral() ||
+      type.isStringLiteral()
+    ) {
+      return {
+        ...info,
+        type: 'oneOf',
+        options: [JSON.parse(type.getText())],
+      };
+    }
+
+    return false;
+  },
+
   (type, info) => type.isBoolean() && { ...info, type: 'bool' },
   (type, info) => type.isNumber() && { ...info, type: 'number' },
   (type, info) => type.isString() && { ...info, type: 'string' },
@@ -24,7 +41,7 @@ const generators: Types.Generators = [
   (type, info, source) => {
     if (
       source &&
-      type.getSymbol().getTypeAtLocation(source).getConstructSignatures()
+      type.getSymbol()?.getTypeAtLocation(source).getConstructSignatures()
         .length &&
       type.getText() in global
     ) {
@@ -80,30 +97,22 @@ const generators: Types.Generators = [
     }
 
     if (type.isTuple()) {
-      const proptypes: OneOfTypeProp['options'] =
+      const proptypes: PropTypesDef[] =
         type.isTuple() &&
-        type
-          .getTupleElements()
-          .reduce<OneOfTypeProp['options']>((result, tuple, i) => {
-            const proptype = getProptype(tuple, {
-              propName: `[${i}]`,
-              required: true,
-            });
+        type.getTupleElements().reduce<PropTypesDef[]>((result, tuple, i) => {
+          const proptype = getProptype(tuple, {
+            propName: `[${i}]`,
+            required: true,
+          });
 
-            return !proptype
-              ? result
-              : result.concat({ ...proptype, text: tuple.getText() });
-          }, []);
+          return !proptype ? result : result.concat(proptype);
+        }, []);
 
       return (
         proptypes.length > 0 && {
           ...info,
           type: 'arrayOf',
-          options: {
-            required: info.required,
-            type: 'oneOfType',
-            options: proptypes,
-          },
+          options: proptypes,
         }
       );
     }

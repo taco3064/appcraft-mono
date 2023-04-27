@@ -1,5 +1,3 @@
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
 import Head from 'next/head';
 import LinearProgress from '@mui/material/LinearProgress';
 import NoSsr from '@mui/material/NoSsr';
@@ -58,13 +56,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 <MenuDrawer open={open} onClose={() => setOpen(false)} />
               )}
 
-              <Suspense
-                fallback={
-                  <Backdrop open>
-                    <CircularProgress />
-                  </Backdrop>
-                }
-              >
+              <Suspense fallback={<LinearProgress />}>
                 <MainContainer
                   maxWidth={false}
                   className="app"

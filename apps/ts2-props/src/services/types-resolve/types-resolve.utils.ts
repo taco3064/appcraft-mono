@@ -1,6 +1,5 @@
 import type { OneOfProp, OneOfTypeProp, PropTypesDef } from '@appcraft/types';
 import type * as Types from './types-resolve.types';
-import { types } from 'util';
 
 //* 定義 PropTypes 的檢查方式及回傳的 Config 內容 (要注意先後順序)
 const generators: Types.Generators = [

@@ -32,12 +32,17 @@ export default function HierarchyItem({
   const action = (type === 'item' && onActionRender?.(data)) || null;
 
   return (
-    <ImageListItem component={Paper} elevation={4}>
+    <ImageListItem
+      component={Paper}
+      elevation={4}
+      sx={(theme) => ({ borderRadius: theme.spacing(2) })}
+    >
       <ListItemButton
         disableGutters
         color="info"
         onClick={() => onClick(data)}
         sx={(theme) => ({
+          borderRadius: theme.spacing(2),
           justifyContent: 'center',
           padding: theme.spacing(6, 0, 2, 0),
         })}
@@ -62,6 +67,9 @@ export default function HierarchyItem({
             actionPosition="right"
             actionIcon={action}
             onClick={(e) => e.stopPropagation()}
+            sx={(theme) => ({
+              borderRadius: theme.spacing(0, 0, 2, 2),
+            })}
           />
         )}
       </ListItemButton>
@@ -78,6 +86,9 @@ export default function HierarchyItem({
             <MoreVertIcon />
           </IconButton>
         }
+        sx={(theme) => ({
+          borderRadius: theme.spacing(2, 2, 0, 0),
+        })}
       />
 
       <Menu

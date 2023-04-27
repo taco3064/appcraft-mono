@@ -2,6 +2,7 @@ import type TsMorph from 'ts-morph';
 import type * as Appcraft from '@appcraft/types';
 
 export type Generators = [
+  PrivateGetProptype<Appcraft.OneOfProp>,
   PrivateGetProptype<Appcraft.BoolProp>,
   PrivateGetProptype<Appcraft.NumberProp>,
   PrivateGetProptype<Appcraft.StringProp>,

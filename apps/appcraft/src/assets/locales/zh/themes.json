@@ -1,6 +1,5 @@
 {
-  "opt-theme-default-dark": "預設深色模式",
-  "opt-theme-macarons": "馬卡龍",
-  "opt-theme-punk": "龐克",
+  "opt-theme-quiet-nightfall": "靜謐黑夜",
+  "opt-theme-sparkling-champagne": "璀璨香檳",
   "ttl-detail": "主題風格 - {{ name }}"
 }

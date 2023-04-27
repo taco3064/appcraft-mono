@@ -60,6 +60,8 @@ export default function Settings() {
           </MenuItem>
         ))}
 
+        {themes.length && <Divider />}
+
         {themes.map(({ _id: value, name }) => (
           <MenuItem key={value} value={value}>
             {name}

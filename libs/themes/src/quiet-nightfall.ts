@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 
-export const DEFAULT_DARK = createTheme({
+export const QUIET_NIGHTFALL = createTheme({
   palette: {
     mode: 'dark',
     divider: 'rgba(255, 255, 255, 0.12)',
@@ -56,16 +56,6 @@ export const DEFAULT_DARK = createTheme({
     },
   },
   components: {
-    MuiButton: {
-      styleOverrides: {
-        containedInherit: {
-          color: '#2D232E',
-        },
-        containedSecondary: {
-          color: '#474448',
-        },
-      },
-    },
     MuiTextField: {
       defaultProps: {
         fullWidth: true,

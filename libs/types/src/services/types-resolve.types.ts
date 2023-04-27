@@ -25,7 +25,6 @@ export interface BaseProptype<T extends keyof typeof PropType, O = undefined>
   options?: O;
 }
 
-export type ArrayOfProp = BaseProptype<'arrayOf', PropTypesDef>;
 export type BoolProp = BaseProptype<'bool'>;
 export type ElementProp = BaseProptype<'element'>;
 export type ExactProp = BaseProptype<'exact', Record<string, PropTypesDef>>;
@@ -36,6 +35,11 @@ export type ObjectOfProp = BaseProptype<'objectOf', PropTypesDef>;
 export type ObjectProp = BaseProptype<'object'>;
 export type OneOfProp = BaseProptype<'oneOf', (boolean | number | string)[]>;
 export type StringProp = BaseProptype<'string'>;
+
+export type ArrayOfProp = BaseProptype<
+  'arrayOf',
+  PropTypesDef | PropTypesDef[]
+>;
 
 export type OneOfTypeProp = BaseProptype<
   'oneOfType',

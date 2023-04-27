@@ -1,6 +1,5 @@
 {
-  "opt-theme-default-dark": "Default Dark Mode",
-  "opt-theme-macarons": "Macarons",
-  "opt-theme-punk": "Punk",
+  "opt-theme-quiet-nightfall": "Quiet Nightfall",
+  "opt-theme-sparkling-champagne": "Sparkling Champagne",
   "ttl-detail": "Theme Styles - {{ name }}"
 }

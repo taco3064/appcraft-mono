@@ -8,7 +8,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import type { ArrayOfProp, PropTypesDef } from '@appcraft/types';
+import type { PropTypesDef } from '@appcraft/types';
 
 import { TypeItem } from '../TypeItem';
 import { useOptionsSorting, usePropPathChange } from './TypeList.hooks';

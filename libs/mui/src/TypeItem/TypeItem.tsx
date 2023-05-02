@@ -1,5 +1,6 @@
 import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
 import Checkbox from '@mui/material/Checkbox';
+import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -21,6 +22,7 @@ export default function TypeItem({
   disableSelection = false,
   options,
   onDisplayItemClick,
+  onItemRemove,
 }: Types.TypeItemProps) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [mixedType, setMixedType] = useMixedTypeMapping(options.propName);
@@ -32,11 +34,18 @@ export default function TypeItem({
     </ListItemIcon>
   );
 
-  const actions = !action ? null : (
-    <TypeItemAction onClick={(e) => e.stopPropagation()}>
-      {action}
-    </TypeItemAction>
-  );
+  const actions =
+    !action && !onItemRemove ? null : (
+      <TypeItemAction onClick={(e) => e.stopPropagation()}>
+        {action}
+
+        {onItemRemove && (
+          <IconButton onClick={() => onItemRemove(options)}>
+            <CloseIcon />
+          </IconButton>
+        )}
+      </TypeItemAction>
+    );
 
   switch (category) {
     case 'Display':
@@ -95,7 +104,7 @@ export default function TypeItem({
             </ListItemButton>
           ) : (
             <TypeItem
-              {...{ disableSelection, onDisplayItemClick }}
+              {...{ disableSelection, onDisplayItemClick, onItemRemove }}
               options={mixedOptions}
               action={
                 <>

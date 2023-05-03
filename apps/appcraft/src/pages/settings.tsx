@@ -1,8 +1,8 @@
-import * as THEMES from '@appcraft/themes';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
+import { THEMES } from '@appcraft/themes';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 

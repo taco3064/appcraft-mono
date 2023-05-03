@@ -1,7 +1,7 @@
-import * as THEMES from '@appcraft/themes';
+import { THEMES, MuiCssBaseline } from '@appcraft/themes';
+import { ThemeOptions, createTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { ThemeOptions, createTheme } from '@mui/material/styles';
 
 import useSettingStore from './useSetting.hooks';
 import { FindConfigContext, findConfig } from '~appcraft/services';
@@ -66,5 +66,13 @@ export const useThemeStyle: Types.ThemeStyleHook = () => {
     },
   });
 
-  return useMemo(() => createTheme(theme), [theme]);
+  return useMemo(
+    () =>
+      createTheme(theme, {
+        components: {
+          MuiCssBaseline,
+        },
+      }),
+    [theme]
+  );
 };

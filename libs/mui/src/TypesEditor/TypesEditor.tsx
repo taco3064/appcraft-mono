@@ -6,7 +6,6 @@ import { useLazyTypeList } from './TypesEditor.hooks';
 import type * as Types from './TypesEditor.types';
 
 export default function TypesEditor({
-  InputStyles,
   disableSelection,
   parser,
   typeFile,
@@ -30,7 +29,6 @@ export default function TypesEditor({
     <Suspense fallback={<TypeListSkeleton />}>
       <InteractivedProvider
         {...{
-          InputStyles,
           propPath,
           mixedTypes,
           values,

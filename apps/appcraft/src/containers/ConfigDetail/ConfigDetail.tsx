@@ -115,7 +115,6 @@ export default function ConfigDetail<C extends object = object>({
       <Container maxWidth="sm">
         <TypesEditor
           {...{ typeFile, typeName, parser, mixedTypes, values }}
-          InputStyles={{ size: 'small', variant: 'outlined' }}
           disableSelection
           onChange={setValues}
           onMixedTypeMapping={setMixedTypes}

@@ -18,12 +18,6 @@ export const InteractivedContext = React.createContext<Types.InteractivedValue>(
 const useContext: Types.ContextHook = () =>
   React.useContext(InteractivedContext) as Types.CompleteValue;
 
-export const useInputStyles: Types.InputStylesHook = () => {
-  const { InputStyles: styles } = useContext();
-
-  return styles;
-};
-
 export const usePropPath = () => {
   const { propPath } = useContext();
 

@@ -4,7 +4,6 @@ import { InteractivedContext } from './InteractivedContext.hooks';
 import type * as Types from './InteractivedContext.types';
 
 export default function InteractivedProvider({
-  InputStyles: { color = 'primary', size = 'small', variant = 'outlined' } = {},
   children,
   propPath,
   mixedTypes,
@@ -14,23 +13,13 @@ export default function InteractivedProvider({
 }: Types.InteractivedProviderProps) {
   const value = useMemo(
     () => ({
-      InputStyles: { color, size, variant },
       propPath,
       mixedTypes,
       values,
       onChange,
       onMixedTypeMapping,
     }),
-    [
-      color,
-      size,
-      variant,
-      propPath,
-      mixedTypes,
-      values,
-      onChange,
-      onMixedTypeMapping,
-    ]
+    [propPath, mixedTypes, values, onChange, onMixedTypeMapping]
   );
 
   return (

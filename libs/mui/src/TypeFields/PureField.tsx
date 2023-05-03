@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import { NumericFormat, NumericFormatProps } from 'react-number-format';
 import { forwardRef } from 'react';
 
-import { useInputStyles, usePropValue } from '../InteractivedContext';
+import { usePropValue } from '../InteractivedContext';
 import type * as Types from './TypeFields.types';
 
 const BoolInput = forwardRef<HTMLInputElement, Types.BoolInputProps>(
@@ -17,6 +17,7 @@ const BoolInput = forwardRef<HTMLInputElement, Types.BoolInputProps>(
       control={<Switch color="primary" />}
       sx={(theme) => ({
         width: '100%',
+        height: theme.spacing(5),
         margin: theme.spacing(0, 2),
 
         '& > .MuiFormControlLabel-label': {
@@ -34,15 +35,15 @@ const NumberInput = forwardRef<HTMLInputElement, NumericFormatProps>(
 );
 
 export default function PureField({ options }: Types.PureFieldProps) {
-  const styles = useInputStyles();
   const [value, onChange] = usePropValue<unknown>(options.propName);
 
   switch (options.type) {
     case 'bool':
       return (
         <TextField
-          {...styles}
           fullWidth
+          size="small"
+          variant="outlined"
           required={options.required}
           InputProps={
             {
@@ -61,8 +62,9 @@ export default function PureField({ options }: Types.PureFieldProps) {
     case 'number':
       return (
         <TextField
-          {...styles}
           fullWidth
+          size="small"
+          variant="outlined"
           required={options.required}
           label={options.propName}
           InputProps={
@@ -85,9 +87,10 @@ export default function PureField({ options }: Types.PureFieldProps) {
     case 'oneOf':
       return (
         <TextField
-          {...styles}
-          fullWidth
           select
+          fullWidth
+          size="small"
+          variant="outlined"
           required={options.required}
           label={options.propName}
           value={value || ''}
@@ -107,8 +110,9 @@ export default function PureField({ options }: Types.PureFieldProps) {
     case 'string':
       return (
         <TextField
-          {...styles}
           fullWidth
+          size="small"
+          variant="outlined"
           required={options.required}
           label={options.propName}
           defaultValue={value || ''}

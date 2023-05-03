@@ -28,5 +28,5 @@ export type PropPathChangeHook = (
 ];
 
 export type OptionsSortingHook = (
-  superior: TypeListProps['superior']
+  superior?: TypeListProps['superior']
 ) => Appcraft.PropTypesDef[];

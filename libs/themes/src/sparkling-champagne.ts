@@ -59,6 +59,14 @@ export const SPARKLING_CHAMPAGNE = createTheme({
   },
   components: {
     MuiCssBaseline,
+    MuiButton: {
+      styleOverrides: {
+        containedInherit: {
+          background: 'rgba(255, 255, 255, 0.7)',
+          color: '#2A2A2A',
+        },
+      },
+    },
     MuiTextField: {
       defaultProps: {
         fullWidth: true,

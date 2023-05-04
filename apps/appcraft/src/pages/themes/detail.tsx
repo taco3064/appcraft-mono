@@ -54,8 +54,8 @@ export default function Detail() {
 
       <ConfigDetail
         key={id}
-        typeName="ThemeOptions"
-        typeFile="./node_modules/@mui/material/styles/createTheme.d.ts"
+        typeName="PaletteOptions"
+        typeFile="./node_modules/@mui/material/styles/createPalette.d.ts"
         category={category}
         data={theme}
         superiors={{ names, paths: superiors }}

@@ -58,6 +58,13 @@ export const QUIET_NIGHTFALL = createTheme({
   },
   components: {
     MuiCssBaseline,
+    MuiButton: {
+      styleOverrides: {
+        colorInherit: {
+          background: '#9e9e9e',
+        },
+      },
+    },
     MuiTextField: {
       defaultProps: {
         fullWidth: true,

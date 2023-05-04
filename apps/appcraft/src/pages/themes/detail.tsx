@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import type { ThemeOptions } from '@mui/material/styles';
+import type { PaletteOptions } from '@mui/material/styles';
 
 import { CommonButton } from '~appcraft/components/common';
 import { ConfigDetail, ConfigDetailAction } from '~appcraft/containers';
@@ -23,7 +23,7 @@ export default function Detail() {
 
   const { data: theme, refetch } = useQuery({
     queryKey: [id],
-    queryFn: findConfig<ThemeOptions>,
+    queryFn: findConfig<PaletteOptions>,
     refetchOnWindowFocus: false,
   });
 
@@ -55,7 +55,7 @@ export default function Detail() {
       <ConfigDetail
         key={id}
         typeName="PaletteOptions"
-        typeFile="./node_modules/@mui/material/styles/createPalette.d.ts"
+        typeFile="./node_modules/@mui/material/styles/index.d.ts"
         category={category}
         data={theme}
         superiors={{ names, paths: superiors }}

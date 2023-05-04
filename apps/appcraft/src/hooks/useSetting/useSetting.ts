@@ -1,5 +1,5 @@
-import { THEMES, MuiCssBaseline } from '@appcraft/themes';
-import { ThemeOptions, createTheme } from '@mui/material/styles';
+import { DEFAULT_THEME, PALETTES } from '@appcraft/themes';
+import { PaletteOptions, createTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
@@ -45,16 +45,16 @@ export const useThemeStyle: Types.ThemeStyleHook = () => {
     timestamp,
   ]);
 
-  const { data: theme } = useQuery({
+  const { data: palette } = useQuery<PaletteOptions>({
     refetchOnWindowFocus: false,
     suspense: false,
     queryKey: [id, timestamp],
     queryFn: async (ctx: FindConfigContext) => {
-      const isDefaultOption = ctx.queryKey[0] in THEMES;
+      const isDefaultOption = ctx.queryKey[0] in PALETTES;
 
       if (!isDefaultOption) {
         try {
-          const { content } = await findConfig<ThemeOptions>(ctx);
+          const { content } = await findConfig<PaletteOptions>(ctx);
 
           return content;
         } catch (e) {
@@ -62,17 +62,19 @@ export const useThemeStyle: Types.ThemeStyleHook = () => {
         }
       }
 
-      return THEMES[ctx.queryKey[0]];
+      return PALETTES[ctx.queryKey[0]];
     },
   });
 
   return useMemo(
     () =>
-      createTheme(theme, {
+      createTheme({
+        ...DEFAULT_THEME,
+        palette,
         components: {
-          MuiCssBaseline,
+          ...DEFAULT_THEME.components,
         },
       }),
-    [theme]
+    [palette]
   );
 };

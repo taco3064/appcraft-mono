@@ -4,19 +4,25 @@ import type { PaperProps } from '@mui/material/Paper';
 import { withStyles } from 'tss-react/mui';
 
 interface SizedDrawerProps extends Omit<DrawerProps, 'PaperProps'> {
+  PaperProps?: Omit<
+    DrawerProps['PaperProps'],
+    'component' | 'disableGutters' | 'elevation' | 'maxWidth'
+  >;
+
   maxWidth: ContainerProps['maxWidth'];
 }
 
 export const SizedDrawer = withStyles(
-  ({ maxWidth, ...props }: SizedDrawerProps) => (
+  ({ PaperProps, maxWidth, ...props }: SizedDrawerProps) => (
     <Drawer
       {...props}
       PaperProps={
         {
+          ...PaperProps,
           component: Container,
           disableGutters: true,
           elevation: 0,
-          maxWidth: 'xs',
+          maxWidth,
         } as PaperProps
       }
     />

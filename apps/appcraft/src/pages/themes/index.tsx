@@ -1,4 +1,4 @@
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import Head from 'next/head';
 import PaletteTwoToneIcon from '@mui/icons-material/PaletteTwoTone';
 import { useRouter } from 'next/router';
@@ -44,7 +44,7 @@ export default function Themes() {
           <CommonButton
             btnVariant="icon"
             color="default"
-            icon={AutoAwesomeIcon}
+            icon={AutoAwesomeOutlinedIcon}
             text={at('btn-apply')}
             onClick={() => setTheme(theme._id)}
           />

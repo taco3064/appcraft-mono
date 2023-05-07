@@ -1,4 +1,4 @@
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import Head from 'next/head';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -37,7 +37,7 @@ export default function Detail() {
           {theme && (
             <CommonButton
               btnVariant="icon"
-              icon={AutoAwesomeIcon}
+              icon={AutoAwesomeOutlinedIcon}
               text={at('btn-apply')}
               onClick={() => setTheme(theme._id, theme.timestamp)}
             />

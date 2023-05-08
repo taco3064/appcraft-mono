@@ -111,6 +111,7 @@ export default function WidgetEditor({
         {...PersistentDrawerContentProps}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={open}
+        content="Content"
         drawer={
           <>
             <Component.WidgetEditorBar
@@ -181,9 +182,7 @@ export default function WidgetEditor({
             </Grow>
           </>
         }
-      >
-        Content
-      </Component.PersistentDrawerContent>
+      />
     </>
   );
 }

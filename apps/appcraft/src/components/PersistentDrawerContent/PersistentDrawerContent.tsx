@@ -7,7 +7,7 @@ import type { PersistentDrawerContentProps } from './PersistentDrawerContent.typ
 export default function PersistentDrawerContent({
   ContentProps,
   DrawerProps,
-  children,
+  content,
   disablePadding = false,
   drawer,
   height,
@@ -64,7 +64,7 @@ export default function PersistentDrawerContent({
         {...ContentProps}
         maxWidth={false}
       >
-        {children}
+        {content}
       </Container>
 
       {open && !disablePadding && (

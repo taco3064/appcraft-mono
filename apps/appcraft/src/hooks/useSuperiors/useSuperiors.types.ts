@@ -1,6 +1,15 @@
-import type { UseQueryResult } from '@tanstack/react-query';
+import type { UrlObject } from 'url';
+
+export interface Breadcrumb {
+  text: string;
+  url?: string | UrlObject;
+}
 
 export type SuperiorsHook = (
   category: string,
   itemId?: string
-) => [UseQueryResult<Record<string, string>>, string[]];
+) => {
+  breadcrumbs: Breadcrumb[];
+  names: Record<string, string>;
+  superiors: string[];
+};

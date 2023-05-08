@@ -10,6 +10,7 @@ import type * as Types from './Breadcrumbs.types';
 
 export default function Breadcrumbs({
   ToolbarProps,
+  action,
   onCustomize = (e) => e,
 }: Types.BreadcrumbsProps) {
   const { back, pathname } = useRouter();
@@ -58,6 +59,12 @@ export default function Breadcrumbs({
           );
         })}
       </MuiBreadcrumbs>
+
+      {action && (
+        <GapToolbar disableGutters style={{ marginLeft: 'auto' }}>
+          {action}
+        </GapToolbar>
+      )}
     </GapToolbar>
   );
 }

@@ -40,6 +40,9 @@ export default function PersistentDrawerContent({
         PaperProps={{
           sx: (theme) => ({
             position: 'absolute',
+            height: '100%',
+            border: `1px solid ${theme.palette.divider}`,
+            borderRadius: `${theme.spacing(3, 3, 3, 3)} !important`,
             transition: theme.transitions.create('width', {
               easing: theme.transitions.easing.sharp,
               duration:

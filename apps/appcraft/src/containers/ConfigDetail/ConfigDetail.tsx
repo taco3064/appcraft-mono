@@ -1,7 +1,6 @@
 import Container from '@mui/material/Container';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import Toolbar from '@mui/material/Toolbar';
 import { TypesEditor } from '@appcraft/mui';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
@@ -19,9 +18,8 @@ const parser = {
 };
 
 export default function ConfigDetail<C extends object = object>({
-  category,
   data,
-  superiors: { names, paths },
+  superiors: { names, breadcrumbs },
   typeFile,
   typeName,
   onActionNodePick = (e) => e,
@@ -82,35 +80,20 @@ export default function ConfigDetail<C extends object = object>({
     <>
       <Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
-        onCustomize={(breadcrumbs) => {
-          breadcrumbs.splice(
-            1,
-            1,
-            ...paths.map((superior, i) => ({
-              text: names[superior],
-              url: {
-                pathname: `/${category}`,
-                query: {
-                  superiors: paths.slice(0, i + 1),
-                },
-              },
-            }))
-          );
+        action={
+          Object.values(action || {}).some((node) => node) && (
+            <>
+              {action.reset}
+              {action.save}
+            </>
+          )
+        }
+        onCustomize={($breadcrumbs) => {
+          $breadcrumbs.splice(1, 1, ...breadcrumbs);
 
           return [...breadcrumbs, { text: names[data._id] }];
         }}
       />
-
-      {Object.keys(action || {}).length > 0 && (
-        <Toolbar
-          disableGutters
-          variant="dense"
-          style={{ justifyContent: 'flex-end' }}
-        >
-          {action.reset}
-          {action.save}
-        </Toolbar>
-      )}
 
       <Container maxWidth="sm">
         <TypesEditor

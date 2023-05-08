@@ -19,7 +19,7 @@ export default function Detail() {
 
   const [at, tt] = useFixedT('app', 'themes');
   const [action, setAction] = useState<Partial<ConfigDetailAction>>(null);
-  const [{ data: names }, superiors] = useSuperiors(category, id);
+  const { names, breadcrumbs } = useSuperiors(category, id);
 
   const { data: theme, refetch } = useQuery({
     queryKey: [id],
@@ -56,9 +56,8 @@ export default function Detail() {
         key={id}
         typeName="PaletteOptions"
         typeFile="./node_modules/@mui/material/styles/index.d.ts"
-        category={category}
         data={theme}
-        superiors={{ names, paths: superiors }}
+        superiors={{ names, breadcrumbs }}
         onSave={refetch}
         onActionNodePick={({ reset, save, ...nodes }) => {
           setAction({ reset, save });

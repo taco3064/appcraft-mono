@@ -1,3 +1,5 @@
 {
+  "btn-expand-off": "Close Editor",
+  "btn-expand-on": "Open Editor",
   "ttl-detail": "Widget Storage - {{ name }}"
 }

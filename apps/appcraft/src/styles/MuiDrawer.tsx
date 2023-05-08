@@ -41,10 +41,6 @@ export const SizedDrawer = withStyles(
       ...(anchor === 'right' && {
         borderRadius: theme.spacing(3, 0, 0, 3),
       }),
-
-      '& > *': {
-        height: '100%',
-      },
     },
   }),
   { name: 'SizedDrawer' }

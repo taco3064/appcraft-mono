@@ -16,7 +16,7 @@ export default function Detail() {
 
   const [dst] = useFixedT('data-sources');
   const [action, setAction] = useState<Partial<ConfigDetailAction>>(null);
-  const [{ data: names }, superiors] = useSuperiors(category, id);
+  const { names, breadcrumbs } = useSuperiors(category, id);
 
   const { data: datasource } = useQuery({
     queryKey: [id],
@@ -44,9 +44,8 @@ export default function Detail() {
         key={`${id}:${datasource.timestamp}`}
         typeName="DataSource"
         typeFile="./node_modules/@appcraft/types/src/services/data-source.types.d.ts"
-        category={category}
         data={datasource}
-        superiors={{ names, paths: superiors }}
+        superiors={{ names, breadcrumbs }}
         onActionNodePick={({ reset, save, ...nodes }) => {
           setAction({ reset, save });
 

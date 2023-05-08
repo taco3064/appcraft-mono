@@ -1,7 +1,6 @@
 import Fade from '@mui/material/Fade';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ImageList from '@mui/material/ImageList';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -23,7 +22,7 @@ export default function HierarchyList({
   onItemActionRender,
 }: Types.HierarchyListProps) {
   const { pathname, push } = useRouter();
-  const [{ data: names }, superiors] = useSuperiors(category);
+  const { breadcrumbs, superiors } = useSuperiors(category);
   const superior = superiors[superiors.length - 1];
   const width = useWidth();
 
@@ -79,36 +78,24 @@ export default function HierarchyList({
       }),
   });
 
+  console.log(pathname);
+
   return (
     <>
       {!disableBreadcrumb && (
         <Breadcrumbs
           ToolbarProps={{ disableGutters: true }}
-          onCustomize={(breadcrumbs) => [
-            ...breadcrumbs,
-            ...superiors.map((id, i) => ({
-              text: names[id],
-              url: {
-                pathname,
-                query: {
-                  superiors: superiors.slice(0, i + 1),
-                },
-              },
-            })),
-          ]}
+          onCustomize={($breadcrumbs) => [...$breadcrumbs, ...breadcrumbs]}
+          action={
+            Object.values(action || {}).some((node) => node) && (
+              <>
+                {action.search}
+                {action.addGroup}
+                {action.addItem}
+              </>
+            )
+          }
         />
-      )}
-
-      {Object.values(action || {}).some((node) => node) && (
-        <Toolbar
-          disableGutters
-          variant="dense"
-          style={{ justifyContent: 'flex-end' }}
-        >
-          {action.search}
-          {action.addGroup}
-          {action.addItem}
-        </Toolbar>
       )}
 
       <Component.CollapseKeyword

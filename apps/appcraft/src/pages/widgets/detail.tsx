@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import { WidgetEditor, WidgetEditorAction } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
+import { findConfig } from '~appcraft/services';
 import { useFixedT, useSuperiors } from '~appcraft/hooks';
 
 export default function Detail() {
@@ -14,7 +15,13 @@ export default function Detail() {
 
   const [wt] = useFixedT('widgets');
   const [action, setAction] = useState<Partial<WidgetEditorAction>>(null);
-  const [{ data: names }, superiors] = useSuperiors(category, id);
+  const { names, breadcrumbs } = useSuperiors(category, id);
+
+  const { data: widget, refetch } = useQuery({
+    queryKey: [id],
+    queryFn: findConfig<object>,
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <PageContainer
@@ -35,11 +42,19 @@ export default function Detail() {
       </Head>
 
       <WidgetEditor
+        data={widget}
+        superiors={{ names, breadcrumbs }}
+        onActionNodePick={({ expand, reset, save, ...nodes }) => {
+          setAction({ expand, reset, save });
+
+          return nodes;
+        }}
         PersistentDrawerContentProps={{
           disableGutters: true,
+          maxWidth: false,
           height: (theme) =>
             `calc(${global.window?.innerHeight || 0}px - ${theme.spacing(
-              22.25
+              28.25
             )})`,
         }}
       />

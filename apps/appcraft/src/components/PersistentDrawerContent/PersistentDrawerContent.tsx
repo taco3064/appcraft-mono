@@ -34,9 +34,11 @@ export default function PersistentDrawerContent({
     >
       <SizedDrawer
         {...DrawerProps}
+        {...(global.document && {
+          container: () => global.document.getElementById(id),
+        })}
         variant="persistent"
         open={open}
-        container={() => global.document?.getElementById(id)}
         PaperProps={{
           sx: (theme) => ({
             position: 'absolute',

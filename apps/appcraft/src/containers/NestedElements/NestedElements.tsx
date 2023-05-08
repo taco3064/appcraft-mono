@@ -14,9 +14,9 @@ export default function NestedElements({
 
   return (
     <List>
-      {items.map(({ id, description }) => (
-        <ListItemButton key={id} onClick={() => onWidgetClick(id)}>
-          <ListItemText primary={description || id} />
+      {items.map((widget) => (
+        <ListItemButton key={widget.id} onClick={() => onWidgetClick(widget)}>
+          <ListItemText primary={widget.description || widget.id} />
         </ListItemButton>
       ))}
     </List>

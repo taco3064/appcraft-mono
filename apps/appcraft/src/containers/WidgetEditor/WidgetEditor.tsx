@@ -1,16 +1,15 @@
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import Grow from '@mui/material/Grow';
-import ListItemText from '@mui/material/ListItemText';
-import MenuItem from '@mui/material/MenuItem';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import TextField from '@mui/material/TextField';
+import _set from 'lodash.set';
 import { useQuery } from '@tanstack/react-query';
 import { useState, useTransition } from 'react';
+import type { WidgetOptions } from '@appcraft/types';
 
 import * as Component from '~appcraft/components';
-import * as MuiProxy from '~appcraft/proxy';
 import { CommonButton } from '~appcraft/components/common';
 import { NestedElements } from '../NestedElements';
 import { useFixedT } from '~appcraft/hooks';
@@ -25,7 +24,7 @@ export default function WidgetEditor({
   const [, setTransition] = useTransition();
   const [at, wt] = useFixedT('app', 'widgets');
   const [open, setOpen] = useState(true);
-  const [widget, setWidget] = useState<string | null>(null);
+  const [widget, setWidget] = useState<WidgetOptions | null>(null);
 
   const [values, setValues] = useState<Types.WidgetConfig>(() =>
     JSON.parse(JSON.stringify(data?.content || {}))
@@ -99,70 +98,43 @@ export default function WidgetEditor({
               onElementAdd={(id) =>
                 setValues({
                   ...values,
-                  widgets: [...(values.widgets || []), { id }],
+                  widgets: [
+                    ...(values.widgets || []),
+                    { id, type: '', description: '' },
+                  ],
                 })
               }
               onVariantChange={(variant) =>
                 setWidget(variant === 'elements' ? null : widget)
               }
             >
-              <TextField
-                SelectProps={{ displayEmpty: true }}
-                fullWidth
-                select
-                size="small"
-                margin="dense"
-                variant="outlined"
-                label={wt('lbl-widget-type')}
-                value={''}
-              >
-                <MenuItem value="">&nbsp;</MenuItem>
+              {widget && (
+                <>
+                  <Component.WidgetSelect
+                    fullWidth
+                    size="small"
+                    margin="dense"
+                    variant="outlined"
+                    label={wt('lbl-widget-type')}
+                    defaultValue={widget.type}
+                    onChange={(e) =>
+                      setWidget(_set(widget, 'type', e.target.value))
+                    }
+                  />
 
-                {Object.entries(MuiProxy).reduce(
-                  (result, [category, components]) => {
-                    result.push(
-                      <MenuItem key={category} disabled>
-                        <ListItemText
-                          primaryTypographyProps={{
-                            variant: 'caption',
-                            color: 'primary',
-                          }}
-                          primary={category}
-                        />
-                      </MenuItem>,
-
-                      ...Object.keys(components).map((name) => (
-                        <MenuItem
-                          key={name}
-                          value={`${category}.${name}`}
-                          sx={(theme) => ({ paddingLeft: theme.spacing(2) })}
-                        >
-                          <ListItemText
-                            primaryTypographyProps={{
-                              variant: 'subtitle1',
-                              color: 'text.primary',
-                              lineHeight: 1.5,
-                              style: { margin: 0 },
-                            }}
-                            primary={name}
-                          />
-                        </MenuItem>
-                      ))
-                    );
-
-                    return result;
-                  },
-                  []
-                )}
-              </TextField>
-
-              <TextField
-                fullWidth
-                size="small"
-                margin="dense"
-                variant="outlined"
-                label={wt('lbl-description')}
-              />
+                  <TextField
+                    fullWidth
+                    size="small"
+                    margin="dense"
+                    variant="outlined"
+                    label={wt('lbl-description')}
+                    defaultValue={widget.description}
+                    onChange={(e) =>
+                      setWidget(_set(widget, 'description', e.target.value))
+                    }
+                  />
+                </>
+              )}
             </Component.WidgetEditorBar>
 
             <Grow in={Boolean(!widget)}>

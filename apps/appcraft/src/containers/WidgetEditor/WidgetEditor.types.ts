@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { WidgetOptions } from '@appcraft/types';
 
 import type { Breadcrumb } from '~appcraft/hooks';
 import type { ConfigData } from '~appcraft/services';
@@ -10,8 +11,12 @@ export type WidgetEditorAction = {
   save: ReactNode;
 };
 
-export interface WidgetEditorProps<C extends object> {
-  data: ConfigData<Partial<C>, string>;
+export interface WidgetConfig {
+  widgets: WidgetOptions[];
+}
+
+export interface WidgetEditorProps {
+  data: ConfigData<Partial<WidgetConfig>, string>;
   onActionNodePick?: (nodes: WidgetEditorAction) => Partial<WidgetEditorAction>;
 
   PersistentDrawerContentProps?: Omit<

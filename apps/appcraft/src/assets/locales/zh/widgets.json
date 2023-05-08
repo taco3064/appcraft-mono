@@ -1,4 +1,5 @@
 {
+  "btn-add-element": "新增組件",
   "btn-expand-off": "關閉編輯模式",
   "btn-expand-on": "開啟編輯模式",
   "ttl-detail": "組件管理 - {{ name }}"

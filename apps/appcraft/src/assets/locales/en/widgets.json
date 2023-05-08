@@ -2,5 +2,11 @@
   "btn-add-element": "Add Element",
   "btn-expand-off": "Close Editor",
   "btn-expand-on": "Open Editor",
-  "ttl-detail": "Widget Storage - {{ name }}"
+  "lbl-description": "Description",
+  "lbl-widget-type": "Widget Type",
+  "ttl-detail": "Widget Storage - {{ name }}",
+  "ttl-elements": "Elements",
+  "ttl-props": "Properties",
+  "txt-component-setting-off": "Close Options",
+  "txt-component-setting-on": "Open Options"
 }

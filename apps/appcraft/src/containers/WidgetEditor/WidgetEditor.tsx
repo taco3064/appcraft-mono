@@ -1,16 +1,12 @@
-import AddIcon from '@mui/icons-material/Add';
-import AppBar from '@mui/material/AppBar';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
-import Divider from '@mui/material/Divider';
+import Grow from '@mui/material/Grow';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
 import { useState, useTransition } from 'react';
 
-import { Breadcrumbs, PersistentDrawerContent } from '~appcraft/components';
+import * as Component from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
 import { NestedElements } from '../NestedElements';
 import { useFixedT } from '~appcraft/hooks';
@@ -25,6 +21,7 @@ export default function WidgetEditor({
   const [, setTransition] = useTransition();
   const [at, wt] = useFixedT('app', 'widgets');
   const [open, setOpen] = useState(true);
+  const [widget, setWidget] = useState<string | null>(null);
 
   const [values, setValues] = useState<Types.WidgetConfig>(() =>
     JSON.parse(JSON.stringify(data?.content || {}))
@@ -69,7 +66,7 @@ export default function WidgetEditor({
 
   return (
     <>
-      <Breadcrumbs
+      <Component.Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
         action={
           Object.values(action || {}).some((node) => node) && (
@@ -87,57 +84,38 @@ export default function WidgetEditor({
         }}
       />
 
-      <PersistentDrawerContent
+      <Component.PersistentDrawerContent
         {...PersistentDrawerContentProps}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={open}
         drawer={
           <>
-            <AppBar color="default" position="sticky">
-              <Toolbar variant="regular">
-                <Typography
-                  variant="subtitle1"
-                  fontWeight="bolder"
-                  color="primary"
-                >
-                  Elements
-                </Typography>
+            <Component.WidgetEditorBar
+              variant={widget ? 'props' : 'elements'}
+              onElementAdd={(id) =>
+                setValues({
+                  ...values,
+                  widgets: [...(values.widgets || []), { id }],
+                })
+              }
+              onVariantChange={(variant) =>
+                setWidget(variant === 'elements' ? null : widget)
+              }
+            />
 
-                <Toolbar
-                  disableGutters
-                  variant="dense"
-                  style={{ marginLeft: 'auto' }}
-                >
-                  <CommonButton
-                    btnVariant="icon"
-                    icon={AddIcon}
-                    text={wt('btn-add-element')}
-                    onClick={() =>
-                      setValues({
-                        ...values,
-                        widgets: [
-                          ...(values.widgets || []),
-                          {
-                            id: `widget-${Math.random()
-                              .toFixed(5)
-                              .replace('.', '')}`,
-                          },
-                        ],
-                      })
-                    }
-                  />
-                </Toolbar>
-              </Toolbar>
-            </AppBar>
-
-            <Divider />
-
-            <NestedElements widgets={values.widgets} />
+            <Grow in={Boolean(!widget)}>
+              <div>
+                <NestedElements
+                  widgets={values.widgets}
+                  onWidgetClick={setWidget}
+                />
+              </div>
+            </Grow>
           </>
         }
       >
         Content
-      </PersistentDrawerContent>
+      </Component.PersistentDrawerContent>
     </>
   );
 }

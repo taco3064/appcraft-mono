@@ -2,5 +2,11 @@
   "btn-add-element": "新增組件",
   "btn-expand-off": "關閉編輯模式",
   "btn-expand-on": "開啟編輯模式",
-  "ttl-detail": "組件管理 - {{ name }}"
+  "lbl-description": "說明",
+  "lbl-widget-type": "類型",
+  "ttl-detail": "組件管理 - {{ name }}",
+  "ttl-elements": "組件結構",
+  "ttl-props": "組件設置",
+  "txt-component-setting-off": "關閉組件基礎設定",
+  "txt-component-setting-on": "開啟組件基礎設定"
 }

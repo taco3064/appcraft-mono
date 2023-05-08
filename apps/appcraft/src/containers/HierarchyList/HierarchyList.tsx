@@ -7,7 +7,6 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import * as Component from '~appcraft/components';
-import { Breadcrumbs } from '../Breadcrumbs';
 import { CommonButton } from '~appcraft/components/common';
 import { searchHierarchy } from '~appcraft/services';
 import { useFixedT, useSuperiors, useWidth } from '~appcraft/hooks';
@@ -83,7 +82,7 @@ export default function HierarchyList({
   return (
     <>
       {!disableBreadcrumb && (
-        <Breadcrumbs
+        <Component.Breadcrumbs
           ToolbarProps={{ disableGutters: true }}
           onCustomize={($breadcrumbs) => [...$breadcrumbs, ...breadcrumbs]}
           action={

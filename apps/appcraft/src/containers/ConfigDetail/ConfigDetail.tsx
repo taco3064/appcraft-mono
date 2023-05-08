@@ -6,7 +6,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useState, useTransition } from 'react';
 
-import { Breadcrumbs } from '~appcraft/containers';
+import { Breadcrumbs } from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
 import { ConfigData, upsertConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';

@@ -1,10 +1,10 @@
 import type { WidgetOptions } from '@appcraft/types';
 
-export interface WidgetElementsProps {
+export interface NestedElementsProps {
   superior?: string;
   widgets?: WidgetOptions[];
 }
 
-export type WidgetItemsHook = (
-  props: Pick<WidgetElementsProps, 'superior' | 'widgets'>
+export type NestedItemsHook = (
+  props: Pick<NestedElementsProps, 'superior' | 'widgets'>
 ) => WidgetOptions[];

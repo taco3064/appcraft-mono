@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import type { WidgetItemsHook } from './WidgetElements.types';
+import type { NestedItemsHook } from './NestedElements.types';
 
-export const useWidgetItems: WidgetItemsHook = ({ superior, widgets }) =>
+export const useNestedItems: NestedItemsHook = ({ superior, widgets }) =>
   useMemo(
     () =>
       widgets.filter(({ superior: $superior }) =>

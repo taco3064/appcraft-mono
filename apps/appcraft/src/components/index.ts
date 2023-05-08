@@ -1,3 +1,4 @@
+export * from './Breadcrumbs';
 export * from './CollapseKeyword';
 export * from './HierarchyEditorButton';
 export * from './HierarchyItem';

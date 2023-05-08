@@ -1,4 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
+import AppBar from '@mui/material/AppBar';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import Divider from '@mui/material/Divider';
@@ -9,10 +10,9 @@ import Typography from '@mui/material/Typography';
 import { useQuery } from '@tanstack/react-query';
 import { useState, useTransition } from 'react';
 
-import { Breadcrumbs } from '~appcraft/containers';
+import { Breadcrumbs, PersistentDrawerContent } from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
-import { PersistentDrawerContent } from '~appcraft/components';
-import { WidgetElements } from '../WidgetElements';
+import { NestedElements } from '../NestedElements';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './WidgetEditor.types';
 
@@ -93,44 +93,46 @@ export default function WidgetEditor({
         open={open}
         drawer={
           <>
-            <Toolbar variant="regular">
-              <Typography
-                variant="subtitle1"
-                fontWeight="bolder"
-                color="primary"
-              >
-                Elements
-              </Typography>
+            <AppBar color="default" position="sticky">
+              <Toolbar variant="regular">
+                <Typography
+                  variant="subtitle1"
+                  fontWeight="bolder"
+                  color="primary"
+                >
+                  Elements
+                </Typography>
 
-              <Toolbar
-                disableGutters
-                variant="dense"
-                style={{ marginLeft: 'auto' }}
-              >
-                <CommonButton
-                  btnVariant="icon"
-                  icon={AddIcon}
-                  text={wt('btn-add-element')}
-                  onClick={() =>
-                    setValues({
-                      ...values,
-                      widgets: [
-                        ...(values.widgets || []),
-                        {
-                          id: `widget-${Math.random()
-                            .toFixed(5)
-                            .replace('.', '')}`,
-                        },
-                      ],
-                    })
-                  }
-                />
+                <Toolbar
+                  disableGutters
+                  variant="dense"
+                  style={{ marginLeft: 'auto' }}
+                >
+                  <CommonButton
+                    btnVariant="icon"
+                    icon={AddIcon}
+                    text={wt('btn-add-element')}
+                    onClick={() =>
+                      setValues({
+                        ...values,
+                        widgets: [
+                          ...(values.widgets || []),
+                          {
+                            id: `widget-${Math.random()
+                              .toFixed(5)
+                              .replace('.', '')}`,
+                          },
+                        ],
+                      })
+                    }
+                  />
+                </Toolbar>
               </Toolbar>
-            </Toolbar>
+            </AppBar>
 
             <Divider />
 
-            <WidgetElements widgets={values.widgets} />
+            <NestedElements widgets={values.widgets} />
           </>
         }
       >

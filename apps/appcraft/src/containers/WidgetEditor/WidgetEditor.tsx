@@ -5,15 +5,26 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import TextField from '@mui/material/TextField';
 import _set from 'lodash.set';
+import { TypesEditor, TypesEditorProps } from '@appcraft/mui';
 import { useQuery } from '@tanstack/react-query';
 import { useState, useTransition } from 'react';
 import type { WidgetOptions } from '@appcraft/types';
 
 import * as Component from '~appcraft/components';
+import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
+import WIDGETS from '~appcraft/assets/json/widgets.json';
 import { CommonButton } from '~appcraft/components/common';
 import { NestedElements } from '../NestedElements';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './WidgetEditor.types';
+
+const widgets = WIDGETS.reduce<Types.WidgetMap>((result, { components }) => {
+  components.forEach(({ id, typeFile, typeName }) =>
+    result.set(id, { typeFile, typeName })
+  );
+
+  return result;
+}, new Map());
 
 export default function WidgetEditor({
   PersistentDrawerContentProps,
@@ -67,6 +78,15 @@ export default function WidgetEditor({
       }),
   });
 
+  const handleElementAdd = (id) =>
+    setValues({
+      ...values,
+      widgets: [
+        ...(values.widgets || []),
+        { id, type: '', description: '', content: {} },
+      ],
+    });
+
   return (
     <>
       <Component.Breadcrumbs
@@ -95,15 +115,7 @@ export default function WidgetEditor({
           <>
             <Component.WidgetEditorBar
               variant={widget ? 'props' : 'elements'}
-              onElementAdd={(id) =>
-                setValues({
-                  ...values,
-                  widgets: [
-                    ...(values.widgets || []),
-                    { id, type: '', description: '' },
-                  ],
-                })
-              }
+              onElementAdd={handleElementAdd}
               onVariantChange={(variant) =>
                 setWidget(variant === 'elements' ? null : widget)
               }
@@ -118,7 +130,7 @@ export default function WidgetEditor({
                     label={wt('lbl-widget-type')}
                     defaultValue={widget.type}
                     onChange={(e) =>
-                      setWidget(_set(widget, 'type', e.target.value))
+                      setWidget({ ..._set(widget, 'type', e.target.value) })
                     }
                   />
 
@@ -130,7 +142,9 @@ export default function WidgetEditor({
                     label={wt('lbl-description')}
                     defaultValue={widget.description}
                     onChange={(e) =>
-                      setWidget(_set(widget, 'description', e.target.value))
+                      setWidget({
+                        ..._set(widget, 'description', e.target.value),
+                      })
                     }
                   />
                 </>
@@ -143,6 +157,26 @@ export default function WidgetEditor({
                   widgets={values.widgets}
                   onWidgetClick={setWidget}
                 />
+              </div>
+            </Grow>
+
+            <Grow in={Boolean(widget)}>
+              <div>
+                {widget?.type && (
+                  <TypesEditor
+                    {...widgets.get(widget.type)}
+                    disableSelection
+                    parser={TYPES_PARSER as TypesEditorProps['parser']}
+                    mixedTypes={widget.mapping || {}}
+                    values={widget.content}
+                    onChange={(content) =>
+                      setWidget({ ..._set(widget, 'content', content) })
+                    }
+                    onMixedTypeMapping={(mapping) =>
+                      setWidget({ ..._set(widget, 'mapping', mapping) })
+                    }
+                  />
+                )}
               </div>
             </Grow>
           </>

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { TypesEditorProps } from '@appcraft/mui';
 import type { WidgetOptions } from '@appcraft/types';
 
 import type { Breadcrumb } from '~appcraft/hooks';
@@ -10,6 +11,11 @@ export type WidgetEditorAction = {
   reset: ReactNode;
   save: ReactNode;
 };
+
+export type WidgetMap = Map<
+  string,
+  Pick<TypesEditorProps, 'typeFile' | 'typeName'>
+>;
 
 export interface WidgetConfig {
   widgets: WidgetOptions[];

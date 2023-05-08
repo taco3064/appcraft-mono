@@ -1,21 +1,17 @@
 import Container from '@mui/material/Container';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { TypesEditor } from '@appcraft/mui';
+import { TypesEditor, TypesEditorProps } from '@appcraft/mui';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useState, useTransition } from 'react';
 
+import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
 import { Breadcrumbs } from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
 import { ConfigData, upsertConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './ConfigDetail.types';
-
-const parser = {
-  url: '/api/ts2-props/types-resolve/parse',
-  method: 'POST' as const,
-};
 
 export default function ConfigDetail<C extends object = object>({
   data,
@@ -97,8 +93,9 @@ export default function ConfigDetail<C extends object = object>({
 
       <Container maxWidth="sm">
         <TypesEditor
-          {...{ typeFile, typeName, parser, mixedTypes, values }}
+          {...{ typeFile, typeName, mixedTypes, values }}
           disableSelection
+          parser={TYPES_PARSER as TypesEditorProps['parser']}
           onChange={setValues}
           onMixedTypeMapping={setMixedTypes}
         />

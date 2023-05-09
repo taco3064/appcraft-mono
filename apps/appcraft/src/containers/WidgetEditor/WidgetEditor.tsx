@@ -1,6 +1,6 @@
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
-import Grow from '@mui/material/Grow';
+import Collapse from '@mui/material/Collapse';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import TextField from '@mui/material/TextField';
@@ -116,70 +116,67 @@ export default function WidgetEditor({
           <>
             <Component.WidgetEditorBar
               variant={widget ? 'props' : 'elements'}
+              accordion={
+                widget && (
+                  <>
+                    <Component.WidgetSelect
+                      fullWidth
+                      size="small"
+                      margin="dense"
+                      variant="outlined"
+                      label={wt('lbl-widget-type')}
+                      defaultValue={widget.type}
+                      onChange={(e) =>
+                        setWidget({ ..._set(widget, 'type', e.target.value) })
+                      }
+                    />
+
+                    <TextField
+                      fullWidth
+                      size="small"
+                      margin="dense"
+                      variant="outlined"
+                      label={wt('lbl-description')}
+                      defaultValue={widget.description}
+                      onChange={(e) =>
+                        setWidget({
+                          ..._set(widget, 'description', e.target.value),
+                        })
+                      }
+                    />
+                  </>
+                )
+              }
               onElementAdd={handleElementAdd}
               onVariantChange={(variant) =>
                 setWidget(variant === 'elements' ? null : widget)
               }
-            >
-              {widget && (
-                <>
-                  <Component.WidgetSelect
-                    fullWidth
-                    size="small"
-                    margin="dense"
-                    variant="outlined"
-                    label={wt('lbl-widget-type')}
-                    defaultValue={widget.type}
-                    onChange={(e) =>
-                      setWidget({ ..._set(widget, 'type', e.target.value) })
-                    }
-                  />
+            />
 
-                  <TextField
-                    fullWidth
-                    size="small"
-                    margin="dense"
-                    variant="outlined"
-                    label={wt('lbl-description')}
-                    defaultValue={widget.description}
-                    onChange={(e) =>
-                      setWidget({
-                        ..._set(widget, 'description', e.target.value),
-                      })
-                    }
-                  />
-                </>
-              )}
-            </Component.WidgetEditorBar>
+            <Collapse in={Boolean(!widget)}>
+              <NestedElements
+                widgets={values.widgets}
+                onWidgetClick={setWidget}
+              />
+            </Collapse>
 
-            <Grow in={Boolean(!widget)}>
-              <div>
-                <NestedElements
-                  widgets={values.widgets}
-                  onWidgetClick={setWidget}
+            <Collapse in={Boolean(widget)}>
+              {widget?.type && (
+                <TypesEditor
+                  {...widgets.get(widget.type)}
+                  disableSelection
+                  parser={TYPES_PARSER as TypesEditorProps['parser']}
+                  mixedTypes={widget.mapping || {}}
+                  values={widget.content}
+                  onChange={(content) =>
+                    setWidget({ ..._set(widget, 'content', content) })
+                  }
+                  onMixedTypeMapping={(mapping) =>
+                    setWidget({ ..._set(widget, 'mapping', mapping) })
+                  }
                 />
-              </div>
-            </Grow>
-
-            <Grow in={Boolean(widget)}>
-              <div>
-                {widget?.type && (
-                  <TypesEditor
-                    {...widgets.get(widget.type)}
-                    disableSelection
-                    parser={TYPES_PARSER as TypesEditorProps['parser']}
-                    mixedTypes={widget.mapping || {}}
-                    values={widget.content}
-                    onChange={(content) =>
-                      setWidget({ ..._set(widget, 'content', content) })
-                    }
-                    onMixedTypeMapping={(mapping) =>
-                      setWidget({ ..._set(widget, 'mapping', mapping) })
-                    }
-                  />
-                )}
-              </div>
-            </Grow>
+              )}
+            </Collapse>
           </>
         }
       />

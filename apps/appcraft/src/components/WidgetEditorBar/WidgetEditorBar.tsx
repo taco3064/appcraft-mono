@@ -14,7 +14,7 @@ import { useFixedT } from '~appcraft/hooks';
 import type { WidgetEditorBarProps } from './WidgetEditorBar.types';
 
 export default function WidgetEditorBar({
-  children,
+  accordion,
   variant,
   onElementAdd,
   onVariantChange,
@@ -58,7 +58,7 @@ export default function WidgetEditorBar({
               />
             )}
 
-            {variant === 'props' && (
+            {accordion && (
               <CommonButton
                 btnVariant="icon"
                 color="secondary"
@@ -70,7 +70,7 @@ export default function WidgetEditorBar({
           </GapToolbar>
         </GapToolbar>
 
-        <Collapse in={variant === 'props' && open}>
+        <Collapse in={accordion && open}>
           <Divider />
 
           <GapToolbar
@@ -81,7 +81,7 @@ export default function WidgetEditorBar({
               flexWrap: 'wrap',
             })}
           >
-            {children}
+            {accordion}
           </GapToolbar>
         </Collapse>
       </AppBar>

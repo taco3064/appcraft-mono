@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
 export interface WidgetEditorBarProps {
-  children: ReactNode;
+  accordion: ReactNode;
   variant: 'elements' | 'props';
   onElementAdd: (id: string) => void;
   onVariantChange: (variant: WidgetEditorBarProps['variant']) => void;

@@ -68,7 +68,11 @@ export default function PersistentDrawerContent({
       </Container>
 
       {open && !disablePadding && (
-        <Container disableGutters maxWidth={DrawerProps.maxWidth} />
+        <Container
+          disableGutters
+          maxWidth={DrawerProps.maxWidth}
+          style={{ visibility: 'hidden' }}
+        />
       )}
     </Container>
   );

@@ -6,9 +6,9 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import _set from 'lodash.set';
-import { Suspense, useState, useTransition } from 'react';
 import { TypesEditor, TypesEditorProps } from '@appcraft/mui';
 import { useNodePicker, useNodePickHandle } from '@appcraft/mui';
+import { useState, useTransition } from 'react';
 import type { WidgetOptions } from '@appcraft/types';
 
 import * as Component from '~appcraft/components';

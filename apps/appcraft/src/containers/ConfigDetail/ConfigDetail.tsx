@@ -1,11 +1,11 @@
 import Container from '@mui/material/Container';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { Suspense, useState, useTransition } from 'react';
 import { TypesEditor, TypesEditorProps } from '@appcraft/mui';
 import { useMutation } from '@tanstack/react-query';
 import { useNodePicker } from '@appcraft/mui';
 import { useSnackbar } from 'notistack';
+import { useState, useTransition } from 'react';
 
 import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
 import { Breadcrumbs } from '~appcraft/components';

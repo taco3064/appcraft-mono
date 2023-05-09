@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Module, Endpoint } from '@appcraft/server';
 import { Request, Response } from 'express';
-import type { Userinfo } from '@appcraft/server';
+import type { Userinfo } from '@appcraft/types';
 
 import * as hierarchy from '~data-forge/services/hierarchy';
 import type * as HierarchyTypes from '~data-forge/services/hierarchy';

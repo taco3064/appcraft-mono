@@ -4,6 +4,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
@@ -20,6 +21,7 @@ export default function WidgetEditorBar({
   onVariantChange,
 }: WidgetEditorBarProps) {
   const [at, wt] = useFixedT('app', 'widgets');
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
   const [open, setOpen] = useState(true);
 
   return (
@@ -55,6 +57,16 @@ export default function WidgetEditorBar({
                     `Widget_${Math.random().toFixed(5).replace('.', '')}`
                   )
                 }
+              />
+            )}
+
+            {variant === 'props' && (
+              <CommonButton
+                btnVariant="icon"
+                color="secondary"
+                icon={FilterAltOutlinedIcon}
+                text={wt('btn-props-filter')}
+                onClick={(e) => setAnchorEl(e.currentTarget)}
               />
             )}
 

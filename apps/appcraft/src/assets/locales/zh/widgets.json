@@ -2,6 +2,7 @@
   "btn-add-element": "新增組件",
   "btn-expand-off": "關閉編輯模式",
   "btn-expand-on": "開啟編輯模式",
+  "btn-props-filter": "過濾設置項目",
   "lbl-description": "說明",
   "lbl-widget-type": "類型",
   "ttl-category-data-display": "資料數據展示",

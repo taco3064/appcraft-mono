@@ -2,6 +2,7 @@
   "btn-add-element": "Add Element",
   "btn-expand-off": "Close Editor",
   "btn-expand-on": "Open Editor",
+  "btn-props-filter": "Filter Properties",
   "lbl-description": "Description",
   "lbl-widget-type": "Widget Type",
   "ttl-category-data-display": "Data Display",

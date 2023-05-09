@@ -1,6 +1,6 @@
-import Popover from '@mui/material/Popover';
 import { Suspense, useState } from 'react';
 
+import { FilterPopover } from '../FilterPopover';
 import { InteractivedProvider } from '../InteractivedContext';
 import { TypeListSkeleton } from '../TypeListSkeleton';
 import { useLazyTypeList } from './TypesEditor.hooks';
@@ -47,15 +47,15 @@ export default function TypesEditor({
         />
       </InteractivedProvider>
 
-      <Popover
+      <FilterPopover
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         onClose={() => setAnchorEl(null)}
-      >
-        TEST
-      </Popover>
+        onConfirm={(newFilters) => console.log(newFilters)}
+        onReset={() => console.log('reset')}
+      />
     </Suspense>
   );
 }

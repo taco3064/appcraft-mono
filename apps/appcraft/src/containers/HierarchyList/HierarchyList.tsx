@@ -98,7 +98,7 @@ export default function HierarchyList({
         onConfirm={setKeyword}
       />
 
-      {hierarchies.length === 0 ? (
+      {!hierarchies?.length ? (
         <Typography
           variant="h5"
           color="text.secondary"

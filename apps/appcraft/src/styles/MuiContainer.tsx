@@ -59,7 +59,6 @@ export const PageContainer = withStyles(
         background: theme.palette.background.default,
         borderRadius: theme.shape.borderRadius,
         top: theme.spacing(9),
-        gap: theme.spacing(0.5),
         zIndex: theme.zIndex.appBar,
 
         '& + hr': {

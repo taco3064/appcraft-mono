@@ -1,10 +1,11 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
+import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
 
 import { CommonButton } from '../common';
-import { Link, GapToolbar } from '~appcraft/styles';
+import { Link } from '~appcraft/styles';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './Breadcrumbs.types';
 
@@ -25,7 +26,7 @@ export default function Breadcrumbs({
     }));
 
   return (
-    <GapToolbar variant="dense" {...ToolbarProps}>
+    <Toolbar variant="dense" {...ToolbarProps}>
       <CommonButton
         btnVariant="icon"
         color="secondary"
@@ -61,10 +62,10 @@ export default function Breadcrumbs({
       </MuiBreadcrumbs>
 
       {action && (
-        <GapToolbar disableGutters style={{ marginLeft: 'auto' }}>
+        <Toolbar disableGutters style={{ marginLeft: 'auto' }}>
           {action}
-        </GapToolbar>
+        </Toolbar>
       )}
-    </GapToolbar>
+    </Toolbar>
   );
 }

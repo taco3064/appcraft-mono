@@ -1,14 +1,13 @@
 import Fade from '@mui/material/Fade';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ImageList from '@mui/material/ImageList';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { Suspense, useState } from 'react';
+import { useNodePicker } from '@appcraft/mui';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import * as Component from '~appcraft/components';
-import { Breadcrumbs } from '../Breadcrumbs';
 import { CommonButton } from '~appcraft/components/common';
 import { searchHierarchy } from '~appcraft/services';
 import { useFixedT, useSuperiors, useWidth } from '~appcraft/hooks';
@@ -23,7 +22,7 @@ export default function HierarchyList({
   onItemActionRender,
 }: Types.HierarchyListProps) {
   const { pathname, push } = useRouter();
-  const [{ data: names }, superiors] = useSuperiors(category);
+  const { breadcrumbs, superiors } = useSuperiors(category);
   const superior = superiors[superiors.length - 1];
   const width = useWidth();
 
@@ -37,78 +36,59 @@ export default function HierarchyList({
     queryKey: [category, { keyword, superior }],
   });
 
-  const { data: action } = useQuery({
-    suspense: false,
-    queryKey: [collapsed, disableGroup, superior] as [boolean, boolean, string],
-    queryFn: ({ queryKey: [collapsed, disableGroup, superior] }) =>
-      onActionNodePick({
-        addGroup: !disableGroup && (
-          <Component.HierarchyEditorButton
-            mode="add"
-            data={{
-              category,
-              type: 'group',
-              ...(typeof superior === 'string' && { superior }),
-            }}
-            onConfirm={() => refetch()}
-          />
-        ),
-        addItem: (
-          <Component.HierarchyEditorButton
-            mode="add"
-            data={{
-              category,
-              type: 'item',
-              ...(typeof superior === 'string' && { superior }),
-            }}
-            onConfirm={() => refetch()}
-          />
-        ),
-        search: (
-          <Fade in={collapsed}>
-            <div>
-              <CommonButton
-                btnVariant="icon"
-                icon={FilterListIcon}
-                text={at('btn-filter')}
-                onClick={() => setCollapsed(false)}
-              />
-            </div>
-          </Fade>
-        ),
-      }),
-  });
+  const LazyAction = useNodePicker(
+    onActionNodePick,
+    {
+      addGroup: !disableGroup && (
+        <Component.HierarchyEditorButton
+          mode="add"
+          data={{
+            category,
+            type: 'group',
+            ...(typeof superior === 'string' && { superior }),
+          }}
+          onConfirm={() => refetch()}
+        />
+      ),
+      addItem: (
+        <Component.HierarchyEditorButton
+          mode="add"
+          data={{
+            category,
+            type: 'item',
+            ...(typeof superior === 'string' && { superior }),
+          }}
+          onConfirm={() => refetch()}
+        />
+      ),
+      search: (
+        <Fade in={collapsed}>
+          <div>
+            <CommonButton
+              btnVariant="icon"
+              icon={FilterListIcon}
+              text={at('btn-filter')}
+              onClick={() => setCollapsed(false)}
+            />
+          </div>
+        </Fade>
+      ),
+    },
+    [collapsed, disableGroup, superior]
+  );
 
   return (
     <>
       {!disableBreadcrumb && (
-        <Breadcrumbs
+        <Component.Breadcrumbs
           ToolbarProps={{ disableGutters: true }}
-          onCustomize={(breadcrumbs) => [
-            ...breadcrumbs,
-            ...superiors.map((id, i) => ({
-              text: names[id],
-              url: {
-                pathname,
-                query: {
-                  superiors: superiors.slice(0, i + 1),
-                },
-              },
-            })),
-          ]}
+          onCustomize={($breadcrumbs) => [...$breadcrumbs, ...breadcrumbs]}
+          action={
+            <Suspense fallback={null}>
+              <LazyAction />
+            </Suspense>
+          }
         />
-      )}
-
-      {Object.values(action || {}).some((node) => node) && (
-        <Toolbar
-          disableGutters
-          variant="dense"
-          style={{ justifyContent: 'flex-end' }}
-        >
-          {action.search}
-          {action.addGroup}
-          {action.addItem}
-        </Toolbar>
       )}
 
       <Component.CollapseKeyword

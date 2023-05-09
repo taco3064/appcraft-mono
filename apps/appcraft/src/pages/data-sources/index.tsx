@@ -1,16 +1,21 @@
 import Head from 'next/head';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
+import { useNodePickHandle } from '@appcraft/mui';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
-import { HierarchyList, HierarchyListAction } from '~appcraft/containers';
+import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT } from '~appcraft/hooks';
 
 export default function DataSources() {
   const { pathname } = useRouter();
   const [nt] = useFixedT('nav');
-  const [action, setAction] = useState<Partial<HierarchyListAction>>(null);
+
+  const [action, handleActionNodePick] = useNodePickHandle([
+    'search',
+    'addGroup',
+    'addItem',
+  ]);
 
   return (
     <PageContainer
@@ -32,11 +37,7 @@ export default function DataSources() {
       <HierarchyList
         category={pathname.replace(/^\//, '')}
         icon={StorageRoundedIcon}
-        onActionNodePick={({ addGroup, addItem, search, ...nodes }) => {
-          setAction({ addGroup, addItem, search });
-
-          return nodes;
-        }}
+        onActionNodePick={handleActionNodePick}
       />
     </PageContainer>
   );

@@ -1,7 +1,7 @@
-import * as THEMES from '@appcraft/themes';
+import { DEFAULT_THEME, PALETTES } from '@appcraft/themes';
+import { PaletteOptions, createTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { ThemeOptions, createTheme } from '@mui/material/styles';
 
 import useSettingStore from './useSetting.hooks';
 import { FindConfigContext, findConfig } from '~appcraft/services';
@@ -45,16 +45,16 @@ export const useThemeStyle: Types.ThemeStyleHook = () => {
     timestamp,
   ]);
 
-  const { data: theme } = useQuery({
+  const { data: palette } = useQuery<PaletteOptions>({
     refetchOnWindowFocus: false,
     suspense: false,
     queryKey: [id, timestamp],
     queryFn: async (ctx: FindConfigContext) => {
-      const isDefaultOption = ctx.queryKey[0] in THEMES;
+      const isDefaultOption = ctx.queryKey[0] in PALETTES;
 
       if (!isDefaultOption) {
         try {
-          const { content } = await findConfig<ThemeOptions>(ctx);
+          const { content } = await findConfig<PaletteOptions>(ctx);
 
           return content;
         } catch (e) {
@@ -62,9 +62,29 @@ export const useThemeStyle: Types.ThemeStyleHook = () => {
         }
       }
 
-      return THEMES[ctx.queryKey[0]];
+      return PALETTES[ctx.queryKey[0]];
     },
   });
 
-  return useMemo(() => createTheme(theme), [theme]);
+  return useMemo(
+    () =>
+      createTheme({
+        ...DEFAULT_THEME,
+        palette,
+        components: {
+          ...DEFAULT_THEME.components,
+          MuiButton: {
+            styleOverrides: {
+              containedInherit: ({ theme }) => ({
+                background: theme.palette.common.white,
+                color: theme.palette.getContrastText(
+                  theme.palette.common.white
+                ),
+              }),
+            },
+          },
+        },
+      }),
+    [palette]
+  );
 };

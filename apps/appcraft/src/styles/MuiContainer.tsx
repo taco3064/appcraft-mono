@@ -45,6 +45,7 @@ export const PageContainer = withStyles(
         role="contentinfo"
         elevation={0}
         component={Container}
+        maxWidth={false}
         {...ContentProps}
       >
         {children}

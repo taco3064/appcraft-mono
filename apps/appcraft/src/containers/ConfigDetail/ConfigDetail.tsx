@@ -1,27 +1,22 @@
 import Container from '@mui/material/Container';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import Toolbar from '@mui/material/Toolbar';
-import { TypesEditor } from '@appcraft/mui';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { Suspense, useState, useTransition } from 'react';
+import { TypesEditor, TypesEditorProps } from '@appcraft/mui';
+import { useMutation } from '@tanstack/react-query';
+import { useNodePicker } from '@appcraft/mui';
 import { useSnackbar } from 'notistack';
-import { useState, useTransition } from 'react';
 
-import { Breadcrumbs } from '~appcraft/containers';
+import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
+import { Breadcrumbs } from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
-import { ConfigData, upsertConfig } from '~appcraft/services';
+import { upsertConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './ConfigDetail.types';
 
-const parser = {
-  url: '/api/ts2-props/types-resolve/parse',
-  method: 'POST' as const,
-};
-
 export default function ConfigDetail<C extends object = object>({
-  category,
   data,
-  superiors: { names, paths },
+  superiors: { names, breadcrumbs },
   typeFile,
   typeName,
   onActionNodePick = (e) => e,
@@ -47,76 +42,57 @@ export default function ConfigDetail<C extends object = object>({
     },
   });
 
-  const { data: action } = useQuery({
-    suspense: false,
-    queryKey: [values, mixedTypes] as [Partial<C>, ConfigData<C>['mapping']],
-    queryFn: () =>
-      onActionNodePick({
-        reset: (
-          <CommonButton
-            btnVariant="icon"
-            icon={RestartAltIcon}
-            text={at('btn-reset')}
-            onClick={() =>
-              setTransition(() => {
-                setValues(JSON.parse(JSON.stringify(data?.content || {})));
-                setMixedTypes(JSON.parse(JSON.stringify(data?.mapping || {})));
-              })
-            }
-          />
-        ),
-        save: (
-          <CommonButton
-            btnVariant="icon"
-            icon={SaveAltIcon}
-            text={at('btn-save')}
-            onClick={() =>
-              mutation.mutate({ ...data, content: values, mapping: mixedTypes })
-            }
-          />
-        ),
-      }),
-  });
+  const LazyAction = useNodePicker(
+    onActionNodePick,
+    {
+      reset: (
+        <CommonButton
+          btnVariant="icon"
+          icon={RestartAltIcon}
+          text={at('btn-reset')}
+          onClick={() =>
+            setTransition(() => {
+              setValues(JSON.parse(JSON.stringify(data?.content || {})));
+              setMixedTypes(JSON.parse(JSON.stringify(data?.mapping || {})));
+            })
+          }
+        />
+      ),
+      save: (
+        <CommonButton
+          btnVariant="icon"
+          icon={SaveAltIcon}
+          text={at('btn-save')}
+          onClick={() =>
+            mutation.mutate({ ...data, content: values, mapping: mixedTypes })
+          }
+        />
+      ),
+    },
+    [values, mixedTypes]
+  );
 
   return (
     <>
       <Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
-        onCustomize={(breadcrumbs) => {
-          breadcrumbs.splice(
-            1,
-            1,
-            ...paths.map((superior, i) => ({
-              text: names[superior],
-              url: {
-                pathname: `/${category}`,
-                query: {
-                  superiors: paths.slice(0, i + 1),
-                },
-              },
-            }))
-          );
+        action={
+          <Suspense fallback={null}>
+            <LazyAction />
+          </Suspense>
+        }
+        onCustomize={($breadcrumbs) => {
+          $breadcrumbs.splice(1, 1, ...breadcrumbs);
 
           return [...breadcrumbs, { text: names[data._id] }];
         }}
       />
 
-      {Object.keys(action || {}).length > 0 && (
-        <Toolbar
-          disableGutters
-          variant="dense"
-          style={{ justifyContent: 'flex-end' }}
-        >
-          {action.reset}
-          {action.save}
-        </Toolbar>
-      )}
-
       <Container maxWidth="sm">
         <TypesEditor
-          {...{ typeFile, typeName, parser, mixedTypes, values }}
-          InputStyles={{ size: 'small', variant: 'outlined' }}
+          {...{ typeFile, typeName, mixedTypes, values }}
           disableSelection
+          parser={TYPES_PARSER as TypesEditorProps['parser']}
           onChange={setValues}
           onMixedTypeMapping={setMixedTypes}
         />

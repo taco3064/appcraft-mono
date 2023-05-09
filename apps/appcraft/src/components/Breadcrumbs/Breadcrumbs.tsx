@@ -3,13 +3,14 @@ import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
 
-import { CommonButton } from '~appcraft/components/common';
+import { CommonButton } from '../common';
 import { Link, GapToolbar } from '~appcraft/styles';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './Breadcrumbs.types';
 
 export default function Breadcrumbs({
   ToolbarProps,
+  action,
   onCustomize = (e) => e,
 }: Types.BreadcrumbsProps) {
   const { back, pathname } = useRouter();
@@ -58,6 +59,12 @@ export default function Breadcrumbs({
           );
         })}
       </MuiBreadcrumbs>
+
+      {action && (
+        <GapToolbar disableGutters style={{ marginLeft: 'auto' }}>
+          {action}
+        </GapToolbar>
+      )}
     </GapToolbar>
   );
 }

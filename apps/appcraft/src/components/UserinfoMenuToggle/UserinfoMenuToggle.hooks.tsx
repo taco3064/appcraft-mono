@@ -2,7 +2,7 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import axios from 'axios';
 import { lazy, useMemo } from 'react';
-import type { Userinfo } from '@appcraft/server';
+import type { Userinfo } from '@appcraft/types';
 
 import type * as Types from './UserinfoMenuToggle.types';
 

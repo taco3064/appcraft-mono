@@ -1,11 +1,11 @@
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import Head from 'next/head';
 import PaletteTwoToneIcon from '@mui/icons-material/PaletteTwoTone';
+import { useNodePickHandle } from '@appcraft/mui';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import { CommonButton } from '~appcraft/components/common';
-import { HierarchyList, HierarchyListAction } from '~appcraft/containers';
+import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT, useSettingModified } from '~appcraft/hooks';
 
@@ -13,7 +13,11 @@ export default function Themes() {
   const { pathname } = useRouter();
   const { setTheme } = useSettingModified();
   const [at, nt] = useFixedT('app', 'nav');
-  const [action, setAction] = useState<Partial<HierarchyListAction>>(null);
+
+  const [action, handleActionNodePick] = useNodePickHandle([
+    'search',
+    'addItem',
+  ]);
 
   return (
     <PageContainer
@@ -35,16 +39,12 @@ export default function Themes() {
         disableGroup
         category={pathname.replace(/^\//, '')}
         icon={PaletteTwoToneIcon}
-        onActionNodePick={({ addItem, search, ...nodes }) => {
-          setAction({ addItem, search });
-
-          return nodes;
-        }}
+        onActionNodePick={handleActionNodePick}
         onItemActionRender={(theme) => (
           <CommonButton
             btnVariant="icon"
             color="default"
-            icon={AutoAwesomeIcon}
+            icon={AutoAwesomeOutlinedIcon}
             text={at('btn-apply')}
             onClick={() => setTheme(theme._id)}
           />

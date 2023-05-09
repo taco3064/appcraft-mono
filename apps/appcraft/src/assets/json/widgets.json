@@ -1,0 +1,387 @@
+[
+  {
+    "category": "data-display",
+    "components": [
+      {
+        "id": "Avatar",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Avatar/Avatar.d.ts",
+        "typeName": "AvatarProps"
+      },
+      {
+        "id": "AvatarGroup",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/AvatarGroup/AvatarGroup.d.ts",
+        "typeName": "AvatarGroupProps"
+      },
+      {
+        "id": "ImageList",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/ImageList/ImageList.d.ts",
+        "typeName": "ImageListProps"
+      },
+      {
+        "id": "ImageListItem",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/ImageListItem/ImageListItem.d.ts",
+        "typeName": "ImageListItemProps"
+      },
+      {
+        "id": "ImageListItemBar",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/ImageListItemBar/ImageListItemBar.d.ts",
+        "typeName": "ImageListItemBarProps"
+      },
+      {
+        "id": "List",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/List/List.d.ts",
+        "typeName": "ListProps"
+      },
+      {
+        "id": "ListItem",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/ListItem/ListItem.d.ts",
+        "typeName": "ListItemProps"
+      },
+      {
+        "id": "ListItemButton",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/ListItemButton/ListItemButton.d.ts",
+        "typeName": "ListItemButtonProps"
+      },
+      {
+        "id": "ListItemIcon",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/ListItemIcon/ListItemIcon.d.ts",
+        "typeName": "ListItemIconProps"
+      },
+      {
+        "id": "ListItemSecondaryAction",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/ListItemSecondaryAction/ListItemSecondaryAction.d.ts",
+        "typeName": "ListItemSecondaryActionProps"
+      },
+      {
+        "id": "ListItemText",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/ListItemText/ListItemText.d.ts",
+        "typeName": "ListItemTextProps"
+      },
+      {
+        "id": "ListSubheader",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/ListSubheader/ListSubheader.d.ts",
+        "typeName": "ListSubheaderProps"
+      }
+    ]
+  },
+  {
+    "category": "input",
+    "components": [
+      {
+        "id": "Checkbox",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Checkbox/Checkbox.d.ts",
+        "typeName": "CheckboxProps"
+      },
+      {
+        "id": "FormControlLabel",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/FormControlLabel/FormControlLabel.d.ts",
+        "typeName": "FormControlLabelProps"
+      },
+      {
+        "id": "FormGroup",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/FormGroup/FormGroup.d.ts",
+        "typeName": "FormGroupProps"
+      },
+      {
+        "id": "InputAdornment",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/InputAdornment/InputAdornment.d.ts",
+        "typeName": "InputAdornmentProps"
+      },
+      {
+        "id": "Radio",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Radio/Radio.d.ts",
+        "typeName": "RadioProps"
+      },
+      {
+        "id": "RadioGroup",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/RadioGroup/RadioGroup.d.ts",
+        "typeName": "RadioGroupProps"
+      },
+      {
+        "id": "Slider",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Slider/Slider.d.ts",
+        "typeName": "SliderProps"
+      },
+      {
+        "id": "Switch",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Switch/Switch.d.ts",
+        "typeName": "SwitchProps"
+      },
+      {
+        "id": "TextField",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/TextField/TextField.d.ts",
+        "typeName": "TextFieldProps"
+      },
+      {
+        "id": "ToggleButton",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/ToggleButton/ToggleButton.d.ts",
+        "typeName": "ToggleButtonProps"
+      },
+      {
+        "id": "ToggleButtonGroup",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/ToggleButtonGroup/ToggleButtonGroup.d.ts",
+        "typeName": "ToggleButtonGroupProps"
+      }
+    ]
+  },
+  {
+    "category": "layout",
+    "components": [
+      {
+        "id": "Accordion",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Accordion/Accordion.d.ts",
+        "typeName": "AccordionProps"
+      },
+      {
+        "id": "AccordionActions",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/AccordionActions/AccordionActions.d.ts",
+        "typeName": "AccordionActionsProps"
+      },
+      {
+        "id": "AccordionDetails",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/AccordionDetails/AccordionDetails.d.ts",
+        "typeName": "AccordionDetailsProps"
+      },
+      {
+        "id": "AccordionSummary",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/AccordionSummary/AccordionSummary.d.ts",
+        "typeName": "AccordionSummaryProps"
+      },
+      {
+        "id": "Card",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Card/Card.d.ts",
+        "typeName": "CardProps"
+      },
+      {
+        "id": "CardActions",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/CardActions/CardActions.d.ts",
+        "typeName": "CardActionsProps"
+      },
+      {
+        "id": "CardContent",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/CardContent/CardContent.d.ts",
+        "typeName": "CardContentProps"
+      },
+      {
+        "id": "CardHeader",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/CardHeader/CardHeader.d.ts",
+        "typeName": "CardHeaderProps"
+      },
+      {
+        "id": "CardMedia",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/CardMedia/CardMedia.d.ts",
+        "typeName": "CardMediaProps"
+      },
+      {
+        "id": "Collapse",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Collapse/Collapse.d.ts",
+        "typeName": "CollapseProps"
+      },
+      {
+        "id": "Container",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Container/Container.d.ts",
+        "typeName": "ContainerProps"
+      },
+      {
+        "id": "Grid",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Grid/Grid.d.ts",
+        "typeName": "GridProps"
+      },
+      {
+        "id": "Paper",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Paper/Paper.d.ts",
+        "typeName": "PaperProps"
+      }
+    ]
+  },
+  {
+    "category": "navigation",
+    "components": [
+      {
+        "id": "Pagination",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Pagination/Pagination.d.ts",
+        "typeName": "PaginationProps"
+      },
+      {
+        "id": "PaginationItem",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/PaginationItem/PaginationItem.d.ts",
+        "typeName": "PaginationItemProps"
+      },
+      {
+        "id": "Step",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Step/Step.d.ts",
+        "typeName": "StepProps"
+      },
+      {
+        "id": "StepButton",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/StepButton/StepButton.d.ts",
+        "typeName": "StepButtonProps"
+      },
+      {
+        "id": "StepConnector",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/StepConnector/StepConnector.d.ts",
+        "typeName": "StepConnectorProps"
+      },
+      {
+        "id": "StepContent",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/StepContent/StepContent.d.ts",
+        "typeName": "StepContentProps"
+      },
+      {
+        "id": "StepIcon",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/StepIcon/StepIcon.d.ts",
+        "typeName": "StepIconProps"
+      },
+      {
+        "id": "StepLabel",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/StepLabel/StepLabel.d.ts",
+        "typeName": "StepLabelProps"
+      },
+      {
+        "id": "Stepper",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Stepper/Stepper.d.ts",
+        "typeName": "StepperProps"
+      },
+      {
+        "id": "Tabs",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Tabs/Tabs.d.ts",
+        "typeName": "TabsProps"
+      },
+      {
+        "id": "Tab",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Tab/Tab.d.ts",
+        "typeName": "TabProps"
+      },
+      {
+        "id": "TabScrollButton",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/TabScrollButton/TabScrollButton.d.ts",
+        "typeName": "TabScrollButtonProps"
+      }
+    ]
+  },
+  {
+    "category": "tool",
+    "components": [
+      {
+        "id": "AppBar",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/AppBar/AppBar.d.ts",
+        "typeName": "AppBarProps"
+      },
+      {
+        "id": "Badge",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Badge/Badge.d.ts",
+        "typeName": "BadgeProps"
+      },
+      {
+        "id": "Button",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Button/Button.d.ts",
+        "typeName": "ButtonProps"
+      },
+      {
+        "id": "ButtonGroup",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/ButtonGroup/ButtonGroup.d.ts",
+        "typeName": "ButtonGroupProps"
+      },
+      {
+        "id": "Chip",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Chip/Chip.d.ts",
+        "typeName": "ChipProps"
+      },
+      {
+        "id": "Divider",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Divider/Divider.d.ts",
+        "typeName": "DividerProps"
+      },
+      {
+        "id": "Fab",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Fab/Fab.d.ts",
+        "typeName": "FabProps"
+      },
+      {
+        "id": "Icon",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Icon/Icon.d.ts",
+        "typeName": "IconProps"
+      },
+      {
+        "id": "IconButton",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/IconButton/IconButton.d.ts",
+        "typeName": "IconButtonProps"
+      },
+      {
+        "id": "Toolbar",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Toolbar/Toolbar.d.ts",
+        "typeName": "ToolbarProps"
+      },
+      {
+        "id": "Tooltip",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Tooltip/Tooltip.d.ts",
+        "typeName": "TooltipProps"
+      },
+      {
+        "id": "Typography",
+        "importType": "mui",
+        "typeFile": "./node_modules/@mui/material/Typography/Typography.d.ts",
+        "typeName": "TypographyProps"
+      }
+    ]
+  }
+]

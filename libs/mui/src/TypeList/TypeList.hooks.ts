@@ -39,10 +39,10 @@ export const usePropPathChange: Types.PropPathChangeHook = (
   ];
 };
 
-export const useOptionsSorting: Types.OptionsSortingHook = ({ options }) =>
+export const useOptionsSorting: Types.OptionsSortingHook = (superior) =>
   useMemo(
     () =>
-      Object.values(options || {}).sort(
+      Object.values(superior?.options || {}).sort(
         ({ type: t1, propName: p1 }, { type: t2, propName: p2 }) => {
           const s1 = `${getTypeSeq(t1)}:${t1}:${p1}`;
           const s2 = `${getTypeSeq(t2)}:${t2}:${p2}`;
@@ -50,5 +50,5 @@ export const useOptionsSorting: Types.OptionsSortingHook = ({ options }) =>
           return s1 < s2 ? -1 : s1 > s2 ? 1 : 0;
         }
       ),
-    [options]
+    [superior?.options]
   );

@@ -1,12 +1,12 @@
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import Head from 'next/head';
+import { useNodePickHandle } from '@appcraft/mui';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import type { ThemeOptions } from '@mui/material/styles';
+import type { PaletteOptions } from '@mui/material/styles';
 
 import { CommonButton } from '~appcraft/components/common';
-import { ConfigDetail, ConfigDetailAction } from '~appcraft/containers';
+import { ConfigDetail } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
 import { useFixedT, useSettingModified, useSuperiors } from '~appcraft/hooks';
@@ -18,12 +18,12 @@ export default function Detail() {
   const id = query.id as string;
 
   const [at, tt] = useFixedT('app', 'themes');
-  const [action, setAction] = useState<Partial<ConfigDetailAction>>(null);
-  const [{ data: names }, superiors] = useSuperiors(category, id);
+  const [action, handleActionNodePick] = useNodePickHandle(['reset', 'save']);
+  const { names, breadcrumbs } = useSuperiors(category, id);
 
   const { data: theme, refetch } = useQuery({
     queryKey: [id],
-    queryFn: findConfig<ThemeOptions>,
+    queryFn: findConfig<PaletteOptions>,
     refetchOnWindowFocus: false,
   });
 
@@ -37,7 +37,7 @@ export default function Detail() {
           {theme && (
             <CommonButton
               btnVariant="icon"
-              icon={AutoAwesomeIcon}
+              icon={AutoAwesomeOutlinedIcon}
               text={at('btn-apply')}
               onClick={() => setTheme(theme._id, theme.timestamp)}
             />
@@ -54,17 +54,12 @@ export default function Detail() {
 
       <ConfigDetail
         key={id}
-        typeName="ThemeOptions"
-        typeFile="./node_modules/@mui/material/styles/createTheme.d.ts"
-        category={category}
+        typeName="PaletteOptions"
+        typeFile="./node_modules/@mui/material/styles/index.d.ts"
         data={theme}
-        superiors={{ names, paths: superiors }}
+        superiors={{ names, breadcrumbs }}
         onSave={refetch}
-        onActionNodePick={({ reset, save, ...nodes }) => {
-          setAction({ reset, save });
-
-          return nodes;
-        }}
+        onActionNodePick={handleActionNodePick}
       />
     </PageContainer>
   );

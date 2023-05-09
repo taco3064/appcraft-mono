@@ -8,6 +8,7 @@ export const GapTypography = withStyles(
       display: 'flex',
       alignItems: 'center',
       gap: theme.spacing(1),
+      height: theme.spacing(5),
     },
   }),
   { name: 'GapTypography' }

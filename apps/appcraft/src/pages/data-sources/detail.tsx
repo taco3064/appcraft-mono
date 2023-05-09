@@ -1,10 +1,10 @@
 import Head from 'next/head';
+import { useNodePickHandle } from '@appcraft/mui';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import type { DataSource } from '@appcraft/types';
 
-import { ConfigDetail, ConfigDetailAction } from '~appcraft/containers';
+import { ConfigDetail } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
 import { useFixedT, useSuperiors } from '~appcraft/hooks';
@@ -15,8 +15,8 @@ export default function Detail() {
   const id = query.id as string;
 
   const [dst] = useFixedT('data-sources');
-  const [action, setAction] = useState<Partial<ConfigDetailAction>>(null);
-  const [{ data: names }, superiors] = useSuperiors(category, id);
+  const [action, handleActionNodePick] = useNodePickHandle(['reset', 'save']);
+  const { names, breadcrumbs } = useSuperiors(category, id);
 
   const { data: datasource } = useQuery({
     queryKey: [id],
@@ -44,14 +44,9 @@ export default function Detail() {
         key={`${id}:${datasource.timestamp}`}
         typeName="DataSource"
         typeFile="./node_modules/@appcraft/types/src/services/data-source.types.d.ts"
-        category={category}
         data={datasource}
-        superiors={{ names, paths: superiors }}
-        onActionNodePick={({ reset, save, ...nodes }) => {
-          setAction({ reset, save });
-
-          return nodes;
-        }}
+        superiors={{ names, breadcrumbs }}
+        onActionNodePick={handleActionNodePick}
       />
     </PageContainer>
   );

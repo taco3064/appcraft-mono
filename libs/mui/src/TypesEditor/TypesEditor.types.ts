@@ -7,7 +7,10 @@ import type { TypeListProps } from '../TypeList';
 export interface TypesEditorProps<V extends object = object>
   extends Omit<Appcraft.TypesParseOptions, 'propPath'>,
     Omit<InteractivedProviderProps<V>, 'children' | 'propPath'>,
-    Pick<TypeListProps, 'disableSelection'> {
+    Pick<
+      TypeListProps,
+      'ActionButtonProps' | 'disableSelection' | 'onActionNodePick'
+    > {
   parser: Pick<Appcraft.DataSource, 'url' | 'method' | 'headers'>;
 }
 

@@ -1,3 +1,4 @@
+import Popover from '@mui/material/Popover';
 import { Suspense, useState } from 'react';
 
 import { InteractivedProvider } from '../InteractivedContext';
@@ -6,16 +7,18 @@ import { useLazyTypeList } from './TypesEditor.hooks';
 import type * as Types from './TypesEditor.types';
 
 export default function TypesEditor({
-  InputStyles,
+  ActionButtonProps,
   disableSelection,
   parser,
   typeFile,
   typeName,
   mixedTypes,
   values,
+  onActionNodePick,
   onChange,
   onMixedTypeMapping,
 }: Types.TypesEditorProps) {
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [propPath, setPropPath] = useState<string>('');
 
   const LazyTypeList = useLazyTypeList({
@@ -30,7 +33,6 @@ export default function TypesEditor({
     <Suspense fallback={<TypeListSkeleton />}>
       <InteractivedProvider
         {...{
-          InputStyles,
           propPath,
           mixedTypes,
           values,
@@ -39,11 +41,21 @@ export default function TypesEditor({
         }}
       >
         <LazyTypeList
-          disableSelection={disableSelection}
-          values={values}
+          {...{ ActionButtonProps, disableSelection, values, onActionNodePick }}
+          onFilterToggle={setAnchorEl}
           onPropPathChange={setPropPath}
         />
       </InteractivedProvider>
+
+      <Popover
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        onClose={() => setAnchorEl(null)}
+      >
+        TEST
+      </Popover>
     </Suspense>
   );
 }

@@ -38,6 +38,13 @@ export const DEFAULT_THEME: ThemeOptions = {
         },
       },
     },
+    MuiMenu: {
+      styleOverrides: {
+        paper: {
+          borderRadius: 16,
+        },
+      },
+    },
     MuiTextField: {
       defaultProps: {
         InputProps: { disableUnderline: true },

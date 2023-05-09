@@ -1,10 +1,11 @@
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import CheckIcon from '@mui/icons-material/Check';
-import CleaningServicesOutlinedIcon from '@mui/icons-material/CleaningServicesOutlined';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
 import Popover from '@mui/material/Popover';
+import ReplayIcon from '@mui/icons-material/Replay';
 import TextField from '@mui/material/TextField';
 import type { PaperProps } from '@mui/material/Paper';
 
@@ -39,15 +40,30 @@ export default function FilterPopover({
 
       <Divider />
 
-      <DialogActions>
-        <IconButton>
-          <CleaningServicesOutlinedIcon />
-        </IconButton>
+      <ButtonGroup
+        fullWidth
+        color="inherit"
+        role="toolbar"
+        variant="contained"
+        component={DialogActions}
+        sx={{
+          padding: 0,
 
-        <IconButton type="submit" color="primary">
+          '& > *': {
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            margin: '0 !important',
+          },
+        }}
+      >
+        <Button>
+          <ReplayIcon />
+        </Button>
+
+        <Button type="submit" color="primary">
           <CheckIcon />
-        </IconButton>
-      </DialogActions>
+        </Button>
+      </ButtonGroup>
     </Popover>
   );
 }

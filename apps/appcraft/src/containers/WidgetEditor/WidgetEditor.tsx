@@ -5,9 +5,9 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import TextField from '@mui/material/TextField';
 import _set from 'lodash.set';
+import { Suspense, useState, useTransition } from 'react';
 import { TypesEditor, TypesEditorProps } from '@appcraft/mui';
-import { useQuery } from '@tanstack/react-query';
-import { useState, useTransition } from 'react';
+import { useNodePicker } from '@appcraft/mui';
 import type { WidgetOptions } from '@appcraft/types';
 
 import * as Component from '~appcraft/components';
@@ -30,7 +30,7 @@ export default function WidgetEditor({
   PersistentDrawerContentProps,
   data,
   superiors: { names, breadcrumbs },
-  onActionNodePick,
+  onActionNodePick = (e) => e,
 }: Types.WidgetEditorProps) {
   const [, setTransition] = useTransition();
   const [at, wt] = useFixedT('app', 'widgets');
@@ -41,42 +41,41 @@ export default function WidgetEditor({
     JSON.parse(JSON.stringify(data?.content || {}))
   );
 
-  const { data: action } = useQuery({
-    suspense: false,
-    queryKey: [open],
-    queryFn: () =>
-      onActionNodePick({
-        expand: (
-          <CommonButton
-            btnVariant="icon"
-            icon={open ? AutoFixOffIcon : AutoFixHighIcon}
-            text={wt(`btn-expand-${open ? 'off' : 'on'}`)}
-            onClick={() => setOpen(!open)}
-          />
-        ),
-        reset: (
-          <CommonButton
-            btnVariant="icon"
-            icon={RestartAltIcon}
-            text={at('btn-reset')}
-            onClick={() =>
-              setTransition(() => {
-                // setValues(JSON.parse(JSON.stringify(data?.content || {})));
-                // setMixedTypes(JSON.parse(JSON.stringify(data?.mapping || {})));
-              })
-            }
-          />
-        ),
-        save: (
-          <CommonButton
-            btnVariant="icon"
-            icon={SaveAltIcon}
-            text={at('btn-save')}
-            onClick={() => null}
-          />
-        ),
-      }),
-  });
+  const LazyAction = useNodePicker(
+    onActionNodePick,
+    {
+      expand: (
+        <CommonButton
+          btnVariant="icon"
+          icon={open ? AutoFixOffIcon : AutoFixHighIcon}
+          text={wt(`btn-expand-${open ? 'off' : 'on'}`)}
+          onClick={() => setOpen(!open)}
+        />
+      ),
+      reset: (
+        <CommonButton
+          btnVariant="icon"
+          icon={RestartAltIcon}
+          text={at('btn-reset')}
+          onClick={() =>
+            setTransition(() => {
+              // setValues(JSON.parse(JSON.stringify(data?.content || {})));
+              // setMixedTypes(JSON.parse(JSON.stringify(data?.mapping || {})));
+            })
+          }
+        />
+      ),
+      save: (
+        <CommonButton
+          btnVariant="icon"
+          icon={SaveAltIcon}
+          text={at('btn-save')}
+          onClick={() => null}
+        />
+      ),
+    },
+    [open]
+  );
 
   const handleElementAdd = (id) =>
     setValues({
@@ -92,13 +91,9 @@ export default function WidgetEditor({
       <Component.Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
         action={
-          Object.values(action || {}).some((node) => node) && (
-            <>
-              {action.expand}
-              {action.reset}
-              {action.save}
-            </>
-          )
+          <Suspense fallback={null}>
+            <LazyAction />
+          </Suspense>
         }
         onCustomize={($breadcrumbs) => {
           $breadcrumbs.splice(1, 1, ...breadcrumbs);

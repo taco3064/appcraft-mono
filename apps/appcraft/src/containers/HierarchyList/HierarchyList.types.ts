@@ -1,15 +1,7 @@
 import SvgIcon from '@mui/material/SvgIcon';
-import type { ReactNode } from 'react';
+import type { NodePickerFn } from '@appcraft/mui';
 
 import type { HierarchyItemProps } from '~appcraft/components';
-
-enum ActionType {
-  addGroup,
-  addItem,
-  search,
-}
-
-export type HierarchyListAction = Record<keyof typeof ActionType, ReactNode>;
 
 export interface HierarchyListProps {
   category: string;
@@ -17,9 +9,6 @@ export interface HierarchyListProps {
   disableGroup?: boolean;
   icon: typeof SvgIcon;
 
-  onActionNodePick?: (
-    nodes: HierarchyListAction
-  ) => Partial<HierarchyListAction>;
-
+  onActionNodePick?: NodePickerFn<'addGroup' | 'addItem' | 'search'>;
   onItemActionRender?: HierarchyItemProps['onActionRender'];
 }

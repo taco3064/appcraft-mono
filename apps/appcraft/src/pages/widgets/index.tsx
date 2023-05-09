@@ -1,19 +1,23 @@
 import ExtensionTwoToneIcon from '@mui/icons-material/ExtensionTwoTone';
 import Head from 'next/head';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { useNodePickHandle } from '@appcraft/mui';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import { CommonButton } from '~appcraft/components/common';
 import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT } from '~appcraft/hooks';
-import type { HierarchyListAction } from '~appcraft/containers';
 
 export default function Widgets() {
   const { pathname } = useRouter();
   const [at, nt] = useFixedT('app', 'nav');
-  const [action, setAction] = useState<Partial<HierarchyListAction>>(null);
+
+  const [action, handleActionNodePick] = useNodePickHandle([
+    'search',
+    'addGroup',
+    'addItem',
+  ]);
 
   return (
     <PageContainer
@@ -35,11 +39,7 @@ export default function Widgets() {
       <HierarchyList
         category={pathname.replace(/^\//, '')}
         icon={ExtensionTwoToneIcon}
-        onActionNodePick={({ addGroup, addItem, search, ...nodes }) => {
-          setAction({ addGroup, addItem, search });
-
-          return nodes;
-        }}
+        onActionNodePick={handleActionNodePick}
         onItemActionRender={(theme) => (
           <CommonButton
             btnVariant="icon"

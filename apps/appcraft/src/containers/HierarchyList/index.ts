@@ -1,6 +1,2 @@
 export { default as HierarchyList } from './HierarchyList';
-
-export type {
-  HierarchyListAction,
-  HierarchyListProps,
-} from './HierarchyList.types';
+export type { HierarchyListProps } from './HierarchyList.types';

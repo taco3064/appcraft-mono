@@ -1,16 +1,9 @@
-import type { ReactNode } from 'react';
-import type { TypesEditorProps } from '@appcraft/mui';
+import type { NodePickerFn, TypesEditorProps } from '@appcraft/mui';
 import type { WidgetOptions } from '@appcraft/types';
 
 import type { Breadcrumb } from '~appcraft/hooks';
 import type { ConfigData } from '~appcraft/services';
 import type { PersistentDrawerContentProps } from '~appcraft/components';
-
-export type WidgetEditorAction = {
-  expand: ReactNode;
-  reset: ReactNode;
-  save: ReactNode;
-};
 
 export type WidgetMap = Map<
   string,
@@ -23,7 +16,7 @@ export interface WidgetConfig {
 
 export interface WidgetEditorProps {
   data: ConfigData<Partial<WidgetConfig>, string>;
-  onActionNodePick?: (nodes: WidgetEditorAction) => Partial<WidgetEditorAction>;
+  onActionNodePick?: NodePickerFn<'expand' | 'reset' | 'save'>;
 
   PersistentDrawerContentProps?: Omit<
     PersistentDrawerContentProps,

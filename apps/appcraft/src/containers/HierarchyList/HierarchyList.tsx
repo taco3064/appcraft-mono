@@ -2,9 +2,10 @@ import Fade from '@mui/material/Fade';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ImageList from '@mui/material/ImageList';
 import Typography from '@mui/material/Typography';
+import { Suspense, useState } from 'react';
+import { useNodePicker } from '@appcraft/mui';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import * as Component from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
@@ -35,49 +36,46 @@ export default function HierarchyList({
     queryKey: [category, { keyword, superior }],
   });
 
-  const { data: action } = useQuery({
-    suspense: false,
-    queryKey: [collapsed, disableGroup, superior] as [boolean, boolean, string],
-    queryFn: ({ queryKey: [collapsed, disableGroup, superior] }) =>
-      onActionNodePick({
-        addGroup: !disableGroup && (
-          <Component.HierarchyEditorButton
-            mode="add"
-            data={{
-              category,
-              type: 'group',
-              ...(typeof superior === 'string' && { superior }),
-            }}
-            onConfirm={() => refetch()}
-          />
-        ),
-        addItem: (
-          <Component.HierarchyEditorButton
-            mode="add"
-            data={{
-              category,
-              type: 'item',
-              ...(typeof superior === 'string' && { superior }),
-            }}
-            onConfirm={() => refetch()}
-          />
-        ),
-        search: (
-          <Fade in={collapsed}>
-            <div>
-              <CommonButton
-                btnVariant="icon"
-                icon={FilterListIcon}
-                text={at('btn-filter')}
-                onClick={() => setCollapsed(false)}
-              />
-            </div>
-          </Fade>
-        ),
-      }),
-  });
-
-  console.log(pathname);
+  const LazyAction = useNodePicker(
+    onActionNodePick,
+    {
+      addGroup: !disableGroup && (
+        <Component.HierarchyEditorButton
+          mode="add"
+          data={{
+            category,
+            type: 'group',
+            ...(typeof superior === 'string' && { superior }),
+          }}
+          onConfirm={() => refetch()}
+        />
+      ),
+      addItem: (
+        <Component.HierarchyEditorButton
+          mode="add"
+          data={{
+            category,
+            type: 'item',
+            ...(typeof superior === 'string' && { superior }),
+          }}
+          onConfirm={() => refetch()}
+        />
+      ),
+      search: (
+        <Fade in={collapsed}>
+          <div>
+            <CommonButton
+              btnVariant="icon"
+              icon={FilterListIcon}
+              text={at('btn-filter')}
+              onClick={() => setCollapsed(false)}
+            />
+          </div>
+        </Fade>
+      ),
+    },
+    [collapsed, disableGroup, superior]
+  );
 
   return (
     <>
@@ -86,13 +84,9 @@ export default function HierarchyList({
           ToolbarProps={{ disableGutters: true }}
           onCustomize={($breadcrumbs) => [...$breadcrumbs, ...breadcrumbs]}
           action={
-            Object.values(action || {}).some((node) => node) && (
-              <>
-                {action.search}
-                {action.addGroup}
-                {action.addItem}
-              </>
-            )
+            <Suspense fallback={null}>
+              <LazyAction />
+            </Suspense>
           }
         />
       )}

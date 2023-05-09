@@ -1,12 +1,13 @@
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import Head from 'next/head';
+import { useNodePickHandle } from '@appcraft/mui';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import type { PaletteOptions } from '@mui/material/styles';
 
 import { CommonButton } from '~appcraft/components/common';
-import { ConfigDetail, ConfigDetailAction } from '~appcraft/containers';
+import { ConfigDetail } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
 import { useFixedT, useSettingModified, useSuperiors } from '~appcraft/hooks';
@@ -18,7 +19,7 @@ export default function Detail() {
   const id = query.id as string;
 
   const [at, tt] = useFixedT('app', 'themes');
-  const [action, setAction] = useState<Partial<ConfigDetailAction>>(null);
+  const [action, handleActionNodePick] = useNodePickHandle(['reset', 'save']);
   const { names, breadcrumbs } = useSuperiors(category, id);
 
   const { data: theme, refetch } = useQuery({
@@ -59,11 +60,7 @@ export default function Detail() {
         data={theme}
         superiors={{ names, breadcrumbs }}
         onSave={refetch}
-        onActionNodePick={({ reset, save, ...nodes }) => {
-          setAction({ reset, save });
-
-          return nodes;
-        }}
+        onActionNodePick={handleActionNodePick}
       />
     </PageContainer>
   );

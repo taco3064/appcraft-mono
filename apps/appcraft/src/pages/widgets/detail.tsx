@@ -1,10 +1,10 @@
 import Head from 'next/head';
+import { useNodePickHandle } from '@appcraft/mui';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
-import { WidgetEditor, WidgetEditorAction } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
+import { WidgetEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 import { useFixedT, useSuperiors } from '~appcraft/hooks';
 
@@ -14,8 +14,13 @@ export default function Detail() {
   const id = query.id as string;
 
   const [wt] = useFixedT('widgets');
-  const [action, setAction] = useState<Partial<WidgetEditorAction>>(null);
   const { names, breadcrumbs } = useSuperiors(category, id);
+
+  const [action, handleActionNodePick] = useNodePickHandle([
+    'expand',
+    'reset',
+    'save',
+  ]);
 
   const { data: widget, refetch } = useQuery({
     queryKey: [id],
@@ -44,17 +49,13 @@ export default function Detail() {
       <WidgetEditor
         data={widget}
         superiors={{ names, breadcrumbs }}
-        onActionNodePick={({ expand, reset, save, ...nodes }) => {
-          setAction({ expand, reset, save });
-
-          return nodes;
-        }}
+        onActionNodePick={handleActionNodePick}
         PersistentDrawerContentProps={{
           disableGutters: true,
           maxWidth: false,
           height: (theme) =>
             `calc(${global.window?.innerHeight || 0}px - ${theme.spacing(
-              28.25
+              30.25
             )})`,
         }}
       />

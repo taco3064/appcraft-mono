@@ -1,6 +1,2 @@
 export { default as ConfigDetail } from './ConfigDetail';
-
-export type {
-  ConfigDetailAction,
-  ConfigDetailProps,
-} from './ConfigDetail.types';
+export type { ConfigDetailProps } from './ConfigDetail.types';

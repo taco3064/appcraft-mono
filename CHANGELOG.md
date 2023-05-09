@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.22](https://github.com/taco3064/appcraft-mono/compare/v0.0.21...v0.0.22) (2023-05-09)
+
+
+### Bug Fixes
+
+* fixed the eslint issue ([426cd7f](https://github.com/taco3064/appcraft-mono/commit/426cd7f219e8f4590c115295c80b2246e26b1a7f))
+* **proxy:** change verification mechanism ([de07ad6](https://github.com/taco3064/appcraft-mono/commit/de07ad62d8f00384a33686b8860d45d2be3e0a6a))
+* **use-node-picker(@appcraft/mui):** fixed the bugs of useNodePicker ([50ff4e4](https://github.com/taco3064/appcraft-mono/commit/50ff4e481cf10fe018b73861587fe1a8c71b19c5))
+
 ### [0.0.21](https://github.com/taco3064/appcraft-mono/compare/v0.0.20...v0.0.21) (2023-05-09)
 
 

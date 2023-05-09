@@ -3,7 +3,6 @@ import Head from 'next/head';
 import { useNodePickHandle } from '@appcraft/mui';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import type { PaletteOptions } from '@mui/material/styles';
 
 import { CommonButton } from '~appcraft/components/common';

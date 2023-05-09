@@ -4,7 +4,6 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';

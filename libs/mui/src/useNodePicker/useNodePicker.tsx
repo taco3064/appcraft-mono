@@ -39,6 +39,7 @@ export const useNodePickHandle = <K extends string>(
 
         return result || {};
       },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       [targets]
     ),
   ];
@@ -64,5 +65,6 @@ export const useNodePicker = <K extends string>(
           ),
         });
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     deps
   );

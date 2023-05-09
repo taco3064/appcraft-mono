@@ -41,7 +41,7 @@ export const DEFAULT_THEME: ThemeOptions = {
     MuiMenu: {
       styleOverrides: {
         paper: {
-          borderRadius: 16,
+          borderRadius: 8,
         },
       },
     },

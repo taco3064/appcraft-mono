@@ -2,8 +2,6 @@ import type { TFunction } from 'i18next';
 import type { ThemeOptions } from '@mui/material/styles';
 
 export interface SettingState {
-  tokens: Record<'id' | 'access', string | null>;
-
   lng: string;
   getFixedT: (namespace: string) => TFunction<string, string>;
   setLng: (lng: string) => void;
@@ -19,7 +17,7 @@ export type FixedTHook = <O extends object>(
 
 export type UserAutTokensHook = () => {
   authorized: boolean;
-  tokens: SettingState['tokens'];
+  tokens: Record<'id' | 'access', string | null>;
 };
 
 export type SettingModifiedHook = () => Pick<

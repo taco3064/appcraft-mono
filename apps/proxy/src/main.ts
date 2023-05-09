@@ -23,7 +23,7 @@ const app = express()
           __WEBPACK_DEFINE__.JWT_SECRET
         ) as string;
 
-        const { expires: expiresIn, ...user } = await verifyToken(idToken);
+        const { expires: expiresIn, ...user } = await verifyToken(idToken, res);
         const expires = new Date(new Date().valueOf() + expiresIn);
 
         res.cookie(

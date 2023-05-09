@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { Module, Endpoint } from '@appcraft/server';
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 
 import * as googleOauth2 from '~proxy/services/google-oauth2';
 

@@ -1,4 +1,6 @@
+import jwt from 'jsonwebtoken';
 import { OAuth2Client } from 'google-auth-library';
+
 import type * as Types from './google-oauth2.types';
 
 const client = new OAuth2Client(
@@ -28,19 +30,40 @@ export const revokeToken: Types.RevokeTokenService = async (accessToken) => {
   await client.revokeToken(accessToken);
 };
 
-export const verifyToken: Types.VerifyTokenService = async (idToken) => {
-  const ticket = await client.verifyIdToken({
-    idToken,
-    audience: process.env.GOOGLE_CLIENT_ID,
-  });
+export const verifyToken: Types.VerifyTokenService = async (idToken, res) => {
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
 
-  const payload = ticket.getPayload();
+    const payload = ticket.getPayload();
 
-  return {
-    id: payload.sub,
-    username: payload.name,
-    email: payload.email,
-    picture: payload.picture,
-    expires: payload.exp,
-  };
+    return {
+      id: payload.sub,
+      username: payload.name,
+      email: payload.email,
+      picture: payload.picture,
+      expires: payload.exp,
+    };
+  } catch (e) {
+    const { credentials } = await client.refreshAccessToken();
+    const cookieOpts = { expires: new Date(credentials.expiry_date) };
+
+    client.setCredentials(credentials);
+
+    res
+      ?.cookie(
+        'id',
+        jwt.sign(credentials.id_token, __WEBPACK_DEFINE__.JWT_SECRET),
+        cookieOpts
+      )
+      .cookie(
+        'access',
+        jwt.sign(credentials.access_token, __WEBPACK_DEFINE__.JWT_SECRET),
+        cookieOpts
+      );
+
+    return await verifyToken(credentials.id_token);
+  }
 };

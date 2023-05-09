@@ -4,6 +4,7 @@ import Collapse from '@mui/material/Collapse';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import _set from 'lodash.set';
 import { Suspense, useState, useTransition } from 'react';
 import { TypesEditor, TypesEditorProps } from '@appcraft/mui';
@@ -159,7 +160,16 @@ export default function WidgetEditor({
             </Collapse>
 
             <Collapse in={Boolean(widget)}>
-              {widget?.type && (
+              {!widget?.type ? (
+                <Typography
+                  variant="h6"
+                  color="text.secondary"
+                  align="center"
+                  sx={{ marginTop: (theme) => theme.spacing(2) }}
+                >
+                  {wt('msg-select-widget-type-first')}
+                </Typography>
+              ) : (
                 <TypesEditor
                   {...widgets.get(widget.type)}
                   ActionButtonProps={{ color: 'secondary' }}

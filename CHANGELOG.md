@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.21](https://github.com/taco3064/appcraft-mono/compare/v0.0.20...v0.0.21) (2023-05-09)
+
+
+### Features
+
+* **@appcraft/mui:** could add/remove element in array of object ([06a6fa4](https://github.com/taco3064/appcraft-mono/commit/06a6fa40d1ddbab5203ed6402be34276d220962e))
+* **apps/appcraft:** add mui-widgets proxy ([048444b](https://github.com/taco3064/appcraft-mono/commit/048444b50d0e631106657493082c6177ae239597))
+* **apps/appcraft:** add TypesEditor to widget eidtor ([844f46a](https://github.com/taco3064/appcraft-mono/commit/844f46a5e0abcb2564c2e91ddf170ee2929fc387))
+* **apps/appcraft:** add widget eidtor ([8f7cde0](https://github.com/taco3064/appcraft-mono/commit/8f7cde0e3f176efa1911063995014d0eec96170d))
+* **apps/appcraft:** add widget type select & description input ([9c75ffe](https://github.com/taco3064/appcraft-mono/commit/9c75ffe6004bf7f2b8c74f95ff3cdc95db94e6c8))
+* **apps/appcraft:** refactor ([eb3030b](https://github.com/taco3064/appcraft-mono/commit/eb3030bbdcf338ec7c73275aa17969ef6b4b00ad))
+* **persistent-drawer-content:** add new component ([cd36e30](https://github.com/taco3064/appcraft-mono/commit/cd36e303bf9abee16931986cde2a2ac47476bf4e))
+* **widget-editor(apps/appcraft):** add widget type select ([b253bda](https://github.com/taco3064/appcraft-mono/commit/b253bda9bba2a27ff99780839cf27f3e4a1b7cf0))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** add filter toggle to TypesEditor ([11ff7f0](https://github.com/taco3064/appcraft-mono/commit/11ff7f0fbb9e8094a58cd371ecc525b47b92d4b2))
+* **@appcraft/mui:** fixed the warnning of eslint ([07be668](https://github.com/taco3064/appcraft-mono/commit/07be66809be46fba547c093a057166a76237b215))
+* **@appcraft/mui:** remove InputStyles ([011a9af](https://github.com/taco3064/appcraft-mono/commit/011a9af5afba5698a5c9a2bb21823c6c1f696da2))
+* **@appcraft/themes:** define MuiCssBaseline overrideds ([d198724](https://github.com/taco3064/appcraft-mono/commit/d198724058bd17e1ca73999bb384bdee9e8aaa22))
+* **@appcraft/themes:** update theme styles ([67ed6b6](https://github.com/taco3064/appcraft-mono/commit/67ed6b61d110c1a36de50c7760d7bad3eb0adb54))
+* **apps/appcraft:** simplify source code ([96d28b2](https://github.com/taco3064/appcraft-mono/commit/96d28b23457dd67bdc319cec9eeeef08b8d1a7c1))
+* **apps/appcraft:** update the structure of component props ([f00853f](https://github.com/taco3064/appcraft-mono/commit/f00853f0dd21af75ba2af447389f04cd2523ab6c))
+* **breadcrumbs(apps/appcraft):** move breadcrumbs to components ([8ff5a3f](https://github.com/taco3064/appcraft-mono/commit/8ff5a3f8eae26a45347e8d7da65de48e53d0116f))
+* **persistent-drawer-content:** rename children as content ([8fc0e2c](https://github.com/taco3064/appcraft-mono/commit/8fc0e2c00a2a0ce1393ff05c2954cab2a555eb66))
+* **proxy:** add refresh token ([e9b106d](https://github.com/taco3064/appcraft-mono/commit/e9b106daa33ff69c583f7e13b0e78c3b12938295))
+* simplify the setup content of Theme Style ([e9522be](https://github.com/taco3064/appcraft-mono/commit/e9522be4cf96c4190d7e10c4bf5a15956c20db0c))
+* **userinfo.types:** move userinfo.types to @appcraft/types ([db5a691](https://github.com/taco3064/appcraft-mono/commit/db5a691e94b9d86eadeda95c6150718cdb2e1028))
+* **widget-editor(apps/appcraft):** add no-data message to component ([f6ef858](https://github.com/taco3064/appcraft-mono/commit/f6ef85889eeb071f8fd2d30b632899f02d0a259d))
+* **widgets(apps/appcraft):** update the page structure of widgets ([2f1915b](https://github.com/taco3064/appcraft-mono/commit/2f1915b3b12351b1701cc89f81859b1a4697664f))
+
 ### [0.0.20](https://github.com/taco3064/appcraft-mono/compare/v0.0.19...v0.0.20) (2023-04-27)
 
 

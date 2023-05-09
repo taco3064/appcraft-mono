@@ -20,10 +20,14 @@ export const useFixedT: Types.FixedTHook = (...namespaces) => {
 };
 
 export const useAuthTokens: Types.UserAutTokensHook = () => {
-  const tokens = useSettingStore(
-    ({ tokens }) => tokens,
-    (t1, t2) => t1 === t2
-  );
+  const tokens = {
+    access:
+      global.document?.cookie.match('(^|;)\\s*access\\s*=\\s*([^;]+)')?.pop() ||
+      null,
+    id:
+      global.document?.cookie.match('(^|;)\\s*id\\s*=\\s*([^;]+)')?.pop() ||
+      null,
+  };
 
   return {
     authorized: Object.values(tokens).every((token) => token),

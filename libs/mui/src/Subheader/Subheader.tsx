@@ -21,7 +21,7 @@ export default function Subheader({
       variant="dense"
       sx={{
         background: 'inherit',
-        gap: 1,
+        gap: (theme) => theme.spacing(1),
         minHeight: 0,
       }}
     >

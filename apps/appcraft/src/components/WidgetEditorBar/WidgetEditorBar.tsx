@@ -5,11 +5,11 @@ import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined';
+import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 
 import { CommonButton } from '../common';
-import { GapToolbar } from '~appcraft/styles';
 import { useFixedT } from '~appcraft/hooks';
 import type { WidgetEditorBarProps } from './WidgetEditorBar.types';
 
@@ -26,7 +26,7 @@ export default function WidgetEditorBar({
   return (
     <>
       <AppBar color="default" position="sticky">
-        <GapToolbar variant="regular">
+        <Toolbar variant="regular">
           {variant === 'props' && (
             <CommonButton
               btnVariant="icon"
@@ -40,7 +40,7 @@ export default function WidgetEditorBar({
             {wt(`ttl-${variant}`)}
           </Typography>
 
-          <GapToolbar
+          <Toolbar
             disableGutters
             variant="dense"
             style={{ marginLeft: 'auto' }}
@@ -70,13 +70,13 @@ export default function WidgetEditorBar({
                 onClick={() => setOpen(!open)}
               />
             )}
-          </GapToolbar>
-        </GapToolbar>
+          </Toolbar>
+        </Toolbar>
 
         <Collapse in={accordion && open}>
           <Divider />
 
-          <GapToolbar
+          <Toolbar
             variant="regular"
             sx={(theme) => ({
               paddingTop: theme.spacing(2),
@@ -85,7 +85,7 @@ export default function WidgetEditorBar({
             })}
           >
             {accordion}
-          </GapToolbar>
+          </Toolbar>
         </Collapse>
       </AppBar>
 

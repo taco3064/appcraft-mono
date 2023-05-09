@@ -80,10 +80,14 @@ export const FlexDialog = withStyles(
   ),
   (theme, { direction = 'row' }) => ({
     paper: {
+      borderRadius: theme.spacing(2),
+
       '& > [role=contentinfo]': {
         display: 'flex',
         flexDirection: direction,
         gap: theme.spacing(2),
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(3),
       },
       '& > [role=toolbar]': {
         padding: 0,

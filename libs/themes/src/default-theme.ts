@@ -31,11 +31,26 @@ export const DEFAULT_THEME: ThemeOptions = {
         },
       }),
     },
+    MuiFilledInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+        },
+      },
+    },
     MuiTextField: {
       defaultProps: {
+        InputProps: { disableUnderline: true },
         fullWidth: true,
         margin: 'none',
         variant: 'filled',
+      },
+    },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          gap: 8,
+        },
       },
     },
   },

@@ -33,18 +33,18 @@ export default function TypeList({
     propPath
   );
 
-  const LazyAction = useNodePicker(
-    onActionNodePick,
-    {
-      filter: (
-        <IconButton
-          {...ActionButtonProps}
-          onClick={(e) => onFilterToggle(e.currentTarget)}
-        >
-          <FilterAltOutlinedIcon />
-        </IconButton>
-      ),
-    },
+  const actionNode = useNodePicker(
+    () =>
+      onActionNodePick({
+        filter: (
+          <IconButton
+            {...ActionButtonProps}
+            onClick={(e) => onFilterToggle(e.currentTarget)}
+          >
+            <FilterAltOutlinedIcon />
+          </IconButton>
+        ),
+      }),
     []
   );
 
@@ -53,11 +53,7 @@ export default function TypeList({
       subheader={
         <Subheader
           breadcrumbs={breadcrumbs}
-          action={
-            <Suspense fallback={null}>
-              <LazyAction />
-            </Suspense>
-          }
+          action={actionNode}
           onBack={handleBack}
           onAddElement={
             !isSubElAllowed

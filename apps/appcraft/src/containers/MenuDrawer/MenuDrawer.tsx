@@ -7,6 +7,7 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
+import Toolbar from '@mui/material/Toolbar';
 
 import * as Styles from '~appcraft/styles';
 import NAVS from '~appcraft/assets/json/navs.json';
@@ -30,7 +31,7 @@ export default function MenuDrawer({
     >
       <List
         subheader={
-          <ListSubheader component={Styles.GapToolbar}>
+          <ListSubheader component={Toolbar}>
             <Styles.IconTypograph
               variant="h5"
               color="primary"

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
 
 import type { NodePickerFn, PartialNodes } from './useNodePicker.types';
@@ -39,32 +40,26 @@ export const useNodePickHandle = <K extends string>(
 
         return result || {};
       },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [targets]
+      [action, targets]
     ),
   ];
 };
 
-export const useNodePicker = <K extends string>(
-  pickerFn: NodePickerFn<K>,
-  nodes: Record<K, ReactNode>,
-  deps: Array<unknown> = []
-) =>
-  React.useMemo(
-    () =>
-      React.lazy(async () => {
-        const result = Object.entries<ReactNode>(pickerFn(nodes) || {});
+export const useNodePicker = <K extends string, D extends React.DependencyList>(
+  pickerFn: () => Partial<Record<K, ReactNode>>,
+  deps: D
+) => {
+  const { data: action } = useQuery({
+    suspense: false,
+    queryKey: deps,
+    queryFn: () => pickerFn(),
+  });
 
-        return await Promise.resolve({
-          default: () => (
-            <>
-              {result.map(([key, node]) => (
-                <React.Fragment key={key}>{node}</React.Fragment>
-              ))}
-            </>
-          ),
-        });
-      }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    deps
+  return (
+    <>
+      {Object.entries<ReactNode>(action || {}).map(([key, node]) => (
+        <React.Fragment key={key}>{node}</React.Fragment>
+      ))}
+    </>
   );
+};

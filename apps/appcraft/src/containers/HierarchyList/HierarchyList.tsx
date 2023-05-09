@@ -2,10 +2,10 @@ import Fade from '@mui/material/Fade';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ImageList from '@mui/material/ImageList';
 import Typography from '@mui/material/Typography';
-import { Suspense, useState } from 'react';
 import { useNodePicker } from '@appcraft/mui';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 import * as Component from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
@@ -23,7 +23,7 @@ export default function HierarchyList({
 }: Types.HierarchyListProps) {
   const { pathname, push } = useRouter();
   const { breadcrumbs, superiors } = useSuperiors(category);
-  const superior = superiors[superiors.length - 1];
+  const superior = superiors[superiors.length - 1] || null;
   const width = useWidth();
 
   const [at] = useFixedT('app');
@@ -36,60 +36,54 @@ export default function HierarchyList({
     queryKey: [category, { keyword, superior }],
   });
 
-  const LazyAction = useNodePicker(
-    onActionNodePick,
-    {
-      addGroup: !disableGroup && (
-        <Component.HierarchyEditorButton
-          mode="add"
-          data={{
-            category,
-            type: 'group',
-            ...(typeof superior === 'string' && { superior }),
-          }}
-          onConfirm={() => refetch()}
-        />
-      ),
-      addItem: (
-        <Component.HierarchyEditorButton
-          mode="add"
-          data={{
-            category,
-            type: 'item',
-            ...(typeof superior === 'string' && { superior }),
-          }}
-          onConfirm={() => refetch()}
-        />
-      ),
-      search: (
-        <Fade in={collapsed}>
-          <div>
-            <CommonButton
-              btnVariant="icon"
-              icon={FilterListIcon}
-              text={at('btn-filter')}
-              onClick={() => setCollapsed(false)}
-            />
-          </div>
-        </Fade>
-      ),
-    },
+  const actionNode = useNodePicker(
+    () =>
+      onActionNodePick({
+        addGroup: !disableGroup && (
+          <Component.HierarchyEditorButton
+            mode="add"
+            data={{
+              category,
+              type: 'group',
+              ...(typeof superior === 'string' && { superior }),
+            }}
+            onConfirm={() => refetch()}
+          />
+        ),
+        addItem: (
+          <Component.HierarchyEditorButton
+            mode="add"
+            data={{
+              category,
+              type: 'item',
+              ...(typeof superior === 'string' && { superior }),
+            }}
+            onConfirm={() => refetch()}
+          />
+        ),
+        search: (
+          <Fade in={collapsed}>
+            <div>
+              <CommonButton
+                btnVariant="icon"
+                icon={FilterListIcon}
+                text={at('btn-filter')}
+                onClick={() => setCollapsed(false)}
+              />
+            </div>
+          </Fade>
+        ),
+      }),
     [collapsed, disableGroup, superior]
   );
 
   return (
     <>
-      {!disableBreadcrumb && (
-        <Component.Breadcrumbs
-          ToolbarProps={{ disableGutters: true }}
-          onCustomize={($breadcrumbs) => [...$breadcrumbs, ...breadcrumbs]}
-          action={
-            <Suspense fallback={null}>
-              <LazyAction />
-            </Suspense>
-          }
-        />
-      )}
+      <Component.Breadcrumbs
+        ToolbarProps={{ disableGutters: true }}
+        onCustomize={($breadcrumbs) => [...$breadcrumbs, ...breadcrumbs]}
+        action={actionNode}
+      />
 
       <Component.CollapseKeyword
         in={!collapsed}
@@ -98,7 +92,7 @@ export default function HierarchyList({
         onConfirm={setKeyword}
       />
 
-      {hierarchies.length === 0 ? (
+      {!hierarchies?.length ? (
         <Typography
           variant="h5"
           color="text.secondary"

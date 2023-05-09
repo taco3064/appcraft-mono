@@ -6,10 +6,11 @@ import { useRouter } from 'next/router';
 import { PageContainer } from '~appcraft/styles';
 import { WidgetEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
-import { useFixedT, useSuperiors } from '~appcraft/hooks';
+import { useFixedT, useHeight, useSuperiors } from '~appcraft/hooks';
 
 export default function Detail() {
   const { pathname, query } = useRouter();
+  const height = useHeight();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
 
@@ -53,10 +54,7 @@ export default function Detail() {
         PersistentDrawerContentProps={{
           disableGutters: true,
           maxWidth: false,
-          height: (theme) =>
-            `calc(${global.window?.innerHeight || 0}px - ${theme.spacing(
-              30.25
-            )})`,
+          height: (theme) => `calc(${height} - ${theme.spacing(30.25)})`,
         }}
       />
     </PageContainer>

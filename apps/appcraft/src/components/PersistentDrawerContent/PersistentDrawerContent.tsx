@@ -20,17 +20,17 @@ export default function PersistentDrawerContent({
     <Container
       {...props}
       id={id}
-      sx={{
+      sx={(theme) => ({
         position: 'relative',
         display: 'flex',
         flexDirection: DrawerProps.anchor === 'right' ? 'row' : 'row-reverse',
-        height: height || '100%',
+        height: height?.(theme) || '100%',
 
         '& > [role=contentinfo]': {
           display: 'flex',
           flexDirection: 'column',
         },
-      }}
+      })}
     >
       <SizedDrawer
         {...DrawerProps}

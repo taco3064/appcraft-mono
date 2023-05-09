@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import _set from 'lodash.set';
 import { Suspense, useState, useTransition } from 'react';
 import { TypesEditor, TypesEditorProps } from '@appcraft/mui';
-import { useNodePicker } from '@appcraft/mui';
+import { useNodePicker, useNodePickHandle } from '@appcraft/mui';
 import type { WidgetOptions } from '@appcraft/types';
 
 import * as Component from '~appcraft/components';
@@ -36,6 +36,8 @@ export default function WidgetEditor({
   const [at, wt] = useFixedT('app', 'widgets');
   const [open, setOpen] = useState(true);
   const [widget, setWidget] = useState<WidgetOptions | null>(null);
+  const [action, handleActionNodePick] = useNodePickHandle(['filter']);
+  const barVariant = widget ? 'props' : 'elements';
 
   const [values, setValues] = useState<Types.WidgetConfig>(() =>
     JSON.parse(JSON.stringify(data?.content || {}))
@@ -82,7 +84,7 @@ export default function WidgetEditor({
       ...values,
       widgets: [
         ...(values.widgets || []),
-        { id, type: '', description: '', content: {} },
+        { id, type: '', description: '', content: {}, mapping: {} },
       ],
     });
 
@@ -110,7 +112,8 @@ export default function WidgetEditor({
         drawer={
           <>
             <Component.WidgetEditorBar
-              variant={widget ? 'props' : 'elements'}
+              variant={barVariant}
+              action={barVariant !== 'props' ? null : action?.filter}
               accordion={
                 widget && (
                   <>
@@ -159,10 +162,12 @@ export default function WidgetEditor({
               {widget?.type && (
                 <TypesEditor
                   {...widgets.get(widget.type)}
+                  ActionButtonProps={{ color: 'secondary' }}
                   disableSelection
                   parser={TYPES_PARSER as TypesEditorProps['parser']}
-                  mixedTypes={widget.mapping || {}}
+                  mixedTypes={widget.mapping}
                   values={widget.content}
+                  onActionNodePick={handleActionNodePick}
                   onChange={(content) =>
                     setWidget({ ..._set(widget, 'content', content) })
                   }

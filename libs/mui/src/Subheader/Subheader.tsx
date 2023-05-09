@@ -1,6 +1,5 @@
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import ListSubheader from '@mui/material/ListSubheader';
@@ -11,20 +10,26 @@ import Typography from '@mui/material/Typography';
 import type { SubheaderProps } from './Subheader.types';
 
 export default function Subheader({
+  action,
   breadcrumbs,
-  open,
   onAddElement,
   onBack,
 }: SubheaderProps) {
-  return !open ? null : (
+  return (
     <ListSubheader
       component={Toolbar}
       variant="dense"
-      sx={{ background: 'inherit', gap: 1 }}
+      sx={{
+        background: 'inherit',
+        gap: 1,
+        minHeight: 0,
+      }}
     >
-      <IconButton size="small" onClick={() => onBack()}>
-        <ChevronLeftIcon />
-      </IconButton>
+      {breadcrumbs.length > 0 && (
+        <IconButton size="small" onClick={() => onBack()}>
+          <ChevronLeftIcon />
+        </IconButton>
+      )}
 
       <Breadcrumbs separator="." style={{ marginRight: 'auto' }}>
         {breadcrumbs.map(({ name, isArrayElement, isLast }, i) =>
@@ -51,14 +56,12 @@ export default function Subheader({
         )}
       </Breadcrumbs>
 
-      {onAddElement && (
-        <>
-          <Divider flexItem orientation="vertical" />
+      {action}
 
-          <IconButton size="small" onClick={() => onAddElement()}>
-            <PlaylistAddIcon />
-          </IconButton>
-        </>
+      {breadcrumbs.length > 0 && onAddElement && (
+        <IconButton size="small" onClick={() => onAddElement()}>
+          <PlaylistAddIcon />
+        </IconButton>
       )}
     </ListSubheader>
   );

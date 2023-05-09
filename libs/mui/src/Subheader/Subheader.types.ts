@@ -1,6 +1,7 @@
-export interface SubheaderProps {
-  open: boolean;
+import type { ReactNode } from 'react';
 
+export interface SubheaderProps {
+  action?: ReactNode;
   onAddElement?: () => void;
   onBack: (index?: number) => void;
 

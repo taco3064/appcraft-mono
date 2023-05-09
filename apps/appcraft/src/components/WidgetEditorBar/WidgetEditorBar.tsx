@@ -16,12 +16,12 @@ import type { WidgetEditorBarProps } from './WidgetEditorBar.types';
 
 export default function WidgetEditorBar({
   accordion,
+  action,
   variant,
   onElementAdd,
   onVariantChange,
 }: WidgetEditorBarProps) {
   const [at, wt] = useFixedT('app', 'widgets');
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
   const [open, setOpen] = useState(true);
 
   return (
@@ -46,6 +46,8 @@ export default function WidgetEditorBar({
             variant="dense"
             style={{ marginLeft: 'auto' }}
           >
+            {action}
+
             {variant === 'elements' && (
               <CommonButton
                 btnVariant="icon"
@@ -57,16 +59,6 @@ export default function WidgetEditorBar({
                     `Widget_${Math.random().toFixed(5).replace('.', '')}`
                   )
                 }
-              />
-            )}
-
-            {variant === 'props' && (
-              <CommonButton
-                btnVariant="icon"
-                color="secondary"
-                icon={FilterAltOutlinedIcon}
-                text={wt('btn-props-filter')}
-                onClick={(e) => setAnchorEl(e.currentTarget)}
               />
             )}
 

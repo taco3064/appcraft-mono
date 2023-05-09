@@ -61,11 +61,9 @@ export default function Breadcrumbs({
         })}
       </MuiBreadcrumbs>
 
-      {action && (
-        <Toolbar disableGutters style={{ marginLeft: 'auto' }}>
-          {action}
-        </Toolbar>
-      )}
+      <Toolbar disableGutters style={{ marginLeft: 'auto' }}>
+        {action}
+      </Toolbar>
     </Toolbar>
   );
 }

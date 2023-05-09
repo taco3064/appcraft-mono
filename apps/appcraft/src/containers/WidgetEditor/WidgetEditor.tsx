@@ -44,39 +44,39 @@ export default function WidgetEditor({
     JSON.parse(JSON.stringify(data?.content || {}))
   );
 
-  const LazyAction = useNodePicker(
-    onActionNodePick,
-    {
-      expand: (
-        <CommonButton
-          btnVariant="icon"
-          icon={open ? AutoFixOffIcon : AutoFixHighIcon}
-          text={wt(`btn-expand-${open ? 'off' : 'on'}`)}
-          onClick={() => setOpen(!open)}
-        />
-      ),
-      reset: (
-        <CommonButton
-          btnVariant="icon"
-          icon={RestartAltIcon}
-          text={at('btn-reset')}
-          onClick={() =>
-            setTransition(() => {
-              // setValues(JSON.parse(JSON.stringify(data?.content || {})));
-              // setMixedTypes(JSON.parse(JSON.stringify(data?.mapping || {})));
-            })
-          }
-        />
-      ),
-      save: (
-        <CommonButton
-          btnVariant="icon"
-          icon={SaveAltIcon}
-          text={at('btn-save')}
-          onClick={() => null}
-        />
-      ),
-    },
+  const actionNode = useNodePicker(
+    () =>
+      onActionNodePick({
+        expand: (
+          <CommonButton
+            btnVariant="icon"
+            icon={open ? AutoFixOffIcon : AutoFixHighIcon}
+            text={wt(`btn-expand-${open ? 'off' : 'on'}`)}
+            onClick={() => setOpen(!open)}
+          />
+        ),
+        reset: (
+          <CommonButton
+            btnVariant="icon"
+            icon={RestartAltIcon}
+            text={at('btn-reset')}
+            onClick={() =>
+              setTransition(() => {
+                // setValues(JSON.parse(JSON.stringify(data?.content || {})));
+                // setMixedTypes(JSON.parse(JSON.stringify(data?.mapping || {})));
+              })
+            }
+          />
+        ),
+        save: (
+          <CommonButton
+            btnVariant="icon"
+            icon={SaveAltIcon}
+            text={at('btn-save')}
+            onClick={() => null}
+          />
+        ),
+      }),
     [open]
   );
 
@@ -93,11 +93,7 @@ export default function WidgetEditor({
     <>
       <Component.Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
-        action={
-          <Suspense fallback={null}>
-            <LazyAction />
-          </Suspense>
-        }
+        action={actionNode}
         onCustomize={($breadcrumbs) => {
           $breadcrumbs.splice(1, 1, ...breadcrumbs);
 

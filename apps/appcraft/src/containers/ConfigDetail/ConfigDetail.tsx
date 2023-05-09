@@ -42,33 +42,33 @@ export default function ConfigDetail<C extends object = object>({
     },
   });
 
-  const LazyAction = useNodePicker(
-    onActionNodePick,
-    {
-      reset: (
-        <CommonButton
-          btnVariant="icon"
-          icon={RestartAltIcon}
-          text={at('btn-reset')}
-          onClick={() =>
-            setTransition(() => {
-              setValues(JSON.parse(JSON.stringify(data?.content || {})));
-              setMixedTypes(JSON.parse(JSON.stringify(data?.mapping || {})));
-            })
-          }
-        />
-      ),
-      save: (
-        <CommonButton
-          btnVariant="icon"
-          icon={SaveAltIcon}
-          text={at('btn-save')}
-          onClick={() =>
-            mutation.mutate({ ...data, content: values, mapping: mixedTypes })
-          }
-        />
-      ),
-    },
+  const actionNode = useNodePicker(
+    () =>
+      onActionNodePick({
+        reset: (
+          <CommonButton
+            btnVariant="icon"
+            icon={RestartAltIcon}
+            text={at('btn-reset')}
+            onClick={() =>
+              setTransition(() => {
+                setValues(JSON.parse(JSON.stringify(data?.content || {})));
+                setMixedTypes(JSON.parse(JSON.stringify(data?.mapping || {})));
+              })
+            }
+          />
+        ),
+        save: (
+          <CommonButton
+            btnVariant="icon"
+            icon={SaveAltIcon}
+            text={at('btn-save')}
+            onClick={() =>
+              mutation.mutate({ ...data, content: values, mapping: mixedTypes })
+            }
+          />
+        ),
+      }),
     [values, mixedTypes]
   );
 
@@ -76,11 +76,7 @@ export default function ConfigDetail<C extends object = object>({
     <>
       <Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
-        action={
-          <Suspense fallback={null}>
-            <LazyAction />
-          </Suspense>
-        }
+        action={actionNode}
         onCustomize={($breadcrumbs) => {
           $breadcrumbs.splice(1, 1, ...breadcrumbs);
 

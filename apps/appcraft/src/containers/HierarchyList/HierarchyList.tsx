@@ -23,7 +23,7 @@ export default function HierarchyList({
 }: Types.HierarchyListProps) {
   const { pathname, push } = useRouter();
   const { breadcrumbs, superiors } = useSuperiors(category);
-  const superior = superiors[superiors.length - 1];
+  const superior = superiors[superiors.length - 1] || null;
   const width = useWidth();
 
   const [at] = useFixedT('app');
@@ -36,60 +36,54 @@ export default function HierarchyList({
     queryKey: [category, { keyword, superior }],
   });
 
-  const LazyAction = useNodePicker(
-    onActionNodePick,
-    {
-      addGroup: !disableGroup && (
-        <Component.HierarchyEditorButton
-          mode="add"
-          data={{
-            category,
-            type: 'group',
-            ...(typeof superior === 'string' && { superior }),
-          }}
-          onConfirm={() => refetch()}
-        />
-      ),
-      addItem: (
-        <Component.HierarchyEditorButton
-          mode="add"
-          data={{
-            category,
-            type: 'item',
-            ...(typeof superior === 'string' && { superior }),
-          }}
-          onConfirm={() => refetch()}
-        />
-      ),
-      search: (
-        <Fade in={collapsed}>
-          <div>
-            <CommonButton
-              btnVariant="icon"
-              icon={FilterListIcon}
-              text={at('btn-filter')}
-              onClick={() => setCollapsed(false)}
-            />
-          </div>
-        </Fade>
-      ),
-    },
+  const actionNode = useNodePicker(
+    () =>
+      onActionNodePick({
+        addGroup: !disableGroup && (
+          <Component.HierarchyEditorButton
+            mode="add"
+            data={{
+              category,
+              type: 'group',
+              ...(typeof superior === 'string' && { superior }),
+            }}
+            onConfirm={() => refetch()}
+          />
+        ),
+        addItem: (
+          <Component.HierarchyEditorButton
+            mode="add"
+            data={{
+              category,
+              type: 'item',
+              ...(typeof superior === 'string' && { superior }),
+            }}
+            onConfirm={() => refetch()}
+          />
+        ),
+        search: (
+          <Fade in={collapsed}>
+            <div>
+              <CommonButton
+                btnVariant="icon"
+                icon={FilterListIcon}
+                text={at('btn-filter')}
+                onClick={() => setCollapsed(false)}
+              />
+            </div>
+          </Fade>
+        ),
+      }),
     [collapsed, disableGroup, superior]
   );
 
   return (
     <>
-      {!disableBreadcrumb && (
-        <Component.Breadcrumbs
-          ToolbarProps={{ disableGutters: true }}
-          onCustomize={($breadcrumbs) => [...$breadcrumbs, ...breadcrumbs]}
-          action={
-            <Suspense fallback={null}>
-              <LazyAction />
-            </Suspense>
-          }
-        />
-      )}
+      <Component.Breadcrumbs
+        ToolbarProps={{ disableGutters: true }}
+        onCustomize={($breadcrumbs) => [...$breadcrumbs, ...breadcrumbs]}
+        action={actionNode}
+      />
 
       <Component.CollapseKeyword
         in={!collapsed}

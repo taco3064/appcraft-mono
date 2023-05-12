@@ -79,7 +79,7 @@ export default function FilterDialog({
       <ButtonGroup
         fullWidth
         color="inherit"
-        role="toolbar"
+        size="large"
         variant="contained"
         component={DialogActions}
         sx={{

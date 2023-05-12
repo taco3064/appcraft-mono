@@ -58,6 +58,19 @@ export const DEFAULT_THEME: ThemeOptions = {
         },
       },
     },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+
+          '& > *': {
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            margin: '0 !important',
+          },
+        },
+      },
+    },
     MuiDialogContent: {
       styleOverrides: {
         root: {
@@ -95,6 +108,16 @@ export const DEFAULT_THEME: ThemeOptions = {
     MuiToolbar: {
       styleOverrides: {
         root: {
+          gap: 8,
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
           gap: 8,
         },
       },

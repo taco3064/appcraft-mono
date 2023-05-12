@@ -8,6 +8,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 import * as Styles from '~appcraft/styles';
 import NAVS from '~appcraft/assets/json/navs.json';
@@ -32,14 +33,14 @@ export default function MenuDrawer({
       <List
         subheader={
           <ListSubheader component={Toolbar}>
-            <Styles.IconTypograph
+            <Typography
               variant="h5"
               color="primary"
-              icon={<AutoAwesomeMosaicIcon />}
               style={{ marginRight: 'auto' }}
             >
+              <AutoAwesomeMosaicIcon />
               Appcraft
-            </Styles.IconTypograph>
+            </Typography>
 
             <IconButton onClick={(e) => onClose(e, 'escapeKeyDown')}>
               <ChevronLeftIcon />

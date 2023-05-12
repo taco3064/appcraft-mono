@@ -57,7 +57,6 @@ export default function CollapseKeyword({
         placeholder={at('plh-keyword')}
         defaultValue={defaultValue}
         InputProps={{
-          disableUnderline: true,
           sx: (theme) => ({
             borderRadius: `${theme.spacing(2.5)} / 50%`,
 

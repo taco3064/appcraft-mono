@@ -1,4 +1,18 @@
+import Slide from '@mui/material/Slide';
+import { ReactElement, forwardRef } from 'react';
 import type { ThemeOptions } from '@mui/material/styles';
+import type { TransitionProps } from '@mui/material/transitions';
+
+const Transition = forwardRef(
+  (
+    props: TransitionProps & {
+      children: ReactElement;
+    },
+    ref: React.Ref<unknown>
+  ) => <Slide direction="up" ref={ref} {...props} />
+);
+
+Transition.displayName = 'Transition';
 
 export const DEFAULT_THEME: ThemeOptions = {
   components: {
@@ -31,7 +45,33 @@ export const DEFAULT_THEME: ThemeOptions = {
         },
       }),
     },
+    MuiDialog: {
+      defaultProps: {
+        TransitionComponent: Transition,
+      },
+      styleOverrides: {
+        paper: {
+          borderRadius: 16,
+        },
+        paperFullScreen: {
+          borderRadius: 0,
+        },
+      },
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          display: 'flex',
+          gap: 16,
+          paddingTop: 16,
+          paddingBottom: 16,
+        },
+      },
+    },
     MuiFilledInput: {
+      defaultProps: {
+        disableUnderline: true,
+      },
       styleOverrides: {
         root: {
           borderRadius: 8,
@@ -47,7 +87,6 @@ export const DEFAULT_THEME: ThemeOptions = {
     },
     MuiTextField: {
       defaultProps: {
-        InputProps: { disableUnderline: true },
         fullWidth: true,
         margin: 'none',
         variant: 'filled',

@@ -1,10 +1,18 @@
 import { Suspense, useState } from 'react';
+import type { FilterOptions } from '@appcraft/types';
 
 import { FilterDialog } from '../FilterDialog';
 import { InteractivedProvider } from '../InteractivedContext';
 import { TypeListSkeleton } from '../TypeListSkeleton';
 import { useLazyTypeList } from './TypesEditor.hooks';
 import type * as Types from './TypesEditor.types';
+
+const defaultFilters = () =>
+  ({
+    logic: 'and',
+    names: [],
+    types: [],
+  } as FilterOptions);
 
 export default function TypesEditor({
   ActionButtonProps,
@@ -19,6 +27,7 @@ export default function TypesEditor({
   onMixedTypeMapping,
 }: Types.TypesEditorProps) {
   const [filtering, setFiltering] = useState(false);
+  const [filters, setFilters] = useState(defaultFilters);
   const [propPath, setPropPath] = useState('');
 
   const LazyTypeList = useLazyTypeList({
@@ -27,6 +36,7 @@ export default function TypesEditor({
     typeFile,
     typeName,
     mixedTypes,
+    filters,
   });
 
   return (
@@ -49,9 +59,10 @@ export default function TypesEditor({
 
       <FilterDialog
         open={filtering}
+        values={filters}
         onClose={() => setFiltering(false)}
-        onConfirm={(newFilters) => console.log(newFilters)}
-        onReset={() => console.log('reset')}
+        onConfirm={setFilters}
+        onReset={() => setFilters(defaultFilters)}
       />
     </Suspense>
   );

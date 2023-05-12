@@ -1,4 +1,4 @@
-enum PropType {
+export enum PropType {
   arrayOf,
   bool,
   element,

@@ -91,6 +91,23 @@ export const DEFAULT_THEME: ThemeOptions = {
         },
       },
     },
+    MuiImageListItem: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+        },
+      },
+    },
+    MuiImageListItemBar: {
+      styleOverrides: {
+        positionTop: {
+          borderRadius: '16px 16px 0 0',
+        },
+        positionBottom: {
+          borderRadius: '0 0 16px 16px',
+        },
+      },
+    },
     MuiMenu: {
       styleOverrides: {
         paper: {
@@ -116,7 +133,6 @@ export const DEFAULT_THEME: ThemeOptions = {
       styleOverrides: {
         root: {
           display: 'flex',
-          justifyContent: 'center',
           alignItems: 'center',
           gap: 8,
         },

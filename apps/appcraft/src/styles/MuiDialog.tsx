@@ -39,7 +39,7 @@ export const FlexDialog = withStyles(
           color="primary"
           fontWeight="bolder"
           variant="h5"
-          style={{ position: 'relative' }}
+          style={{ position: 'relative', justifyContent: 'center' }}
           {...(icon && { component: Typography })}
         >
           {icon}

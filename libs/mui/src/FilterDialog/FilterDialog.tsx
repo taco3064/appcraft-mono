@@ -34,7 +34,6 @@ export default function FilterDialog({
       maxWidth="xs"
       PaperProps={
         {
-          sx: { borderRadius: (theme) => theme.spacing(2) },
           component: 'form',
           onSubmit: (e) => {
             e.preventDefault();

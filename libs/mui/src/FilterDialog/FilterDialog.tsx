@@ -1,25 +1,27 @@
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import CheckIcon from '@mui/icons-material/Check';
+import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import Divider from '@mui/material/Divider';
-import Popover from '@mui/material/Popover';
 import ReplayIcon from '@mui/icons-material/Replay';
 import TextField from '@mui/material/TextField';
 import type { PaperProps } from '@mui/material/Paper';
 
-import type { FilterPopoverProps } from './FilterPopover.types';
+import type { FilterDialogProps } from './FilterDialog.types';
 
-export default function FilterPopover({
+export default function FilterDialog({
   values,
   onConfirm,
   onReset,
   ...props
-}: FilterPopoverProps) {
+}: FilterDialogProps) {
   return (
-    <Popover
+    <Dialog
       {...props}
+      fullWidth
+      maxWidth="xs"
       PaperProps={
         {
           sx: { borderRadius: (theme) => theme.spacing(2) },
@@ -37,8 +39,6 @@ export default function FilterPopover({
           gap: (theme) => theme.spacing(1.5),
         }}
       ></DialogContent>
-
-      <Divider />
 
       <ButtonGroup
         fullWidth
@@ -64,6 +64,6 @@ export default function FilterPopover({
           <CheckIcon />
         </Button>
       </ButtonGroup>
-    </Popover>
+    </Dialog>
   );
 }

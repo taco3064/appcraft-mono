@@ -23,7 +23,7 @@ const useSuperiors: Types.SuperiorsHook = (category, itemId) => {
       url: {
         pathname: `/${category}`,
         query: {
-          superiors: superiors.slice(0, i + 1),
+          superiors: superiors.slice(0, i + 1).join('-'),
         },
       },
     })),

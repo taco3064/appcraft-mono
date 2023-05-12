@@ -94,11 +94,11 @@ export default function WidgetEditor({
       <Component.Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
         action={actionNode}
-        onCustomize={($breadcrumbs) => {
-          $breadcrumbs.splice(1, 1, ...breadcrumbs);
-
-          return [...breadcrumbs, { text: names[data._id] }];
-        }}
+        onCustomize={([index]) => [
+          index,
+          ...breadcrumbs,
+          { text: names[data._id] },
+        ]}
       />
 
       <Component.PersistentDrawerContent

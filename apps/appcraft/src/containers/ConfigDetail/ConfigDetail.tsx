@@ -77,11 +77,11 @@ export default function ConfigDetail<C extends object = object>({
       <Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
         action={actionNode}
-        onCustomize={($breadcrumbs) => {
-          $breadcrumbs.splice(1, 1, ...breadcrumbs);
-
-          return [...breadcrumbs, { text: names[data._id] }];
-        }}
+        onCustomize={([index]) => [
+          index,
+          ...breadcrumbs,
+          { text: names[data._id] },
+        ]}
       />
 
       <Container maxWidth="sm">

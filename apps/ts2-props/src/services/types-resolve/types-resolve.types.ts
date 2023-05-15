@@ -50,7 +50,8 @@ export type PrivateGetTypeByPath = (
 export type PrivateGetProptype<R = Appcraft.PropTypesDef> = (
   type: TsMorph.Type,
   info: Appcraft.GeneratorInfo,
-  source?: TsMorph.SourceFile
+  source?: TsMorph.SourceFile,
+  filters?: Appcraft.FilterOptions
 ) => R | false;
 
 export type ParseService = (

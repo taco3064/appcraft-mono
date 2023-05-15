@@ -16,7 +16,7 @@ import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
 import WIDGETS from '~appcraft/assets/json/widgets.json';
 import { CommonButton } from '~appcraft/components/common';
 import { NestedElements } from '../NestedElements';
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT, useWidth } from '~appcraft/hooks';
 import type * as Types from './WidgetEditor.types';
 
 const widgets = WIDGETS.reduce<Types.WidgetMap>((result, { components }) => {
@@ -38,7 +38,11 @@ export default function WidgetEditor({
   const [open, setOpen] = useState(true);
   const [widget, setWidget] = useState<WidgetOptions | null>(null);
   const [action, handleActionNodePick] = useNodePickHandle(['filter']);
+
   const barVariant = widget ? 'props' : 'elements';
+  const width = useWidth();
+  const isCollapsable = /^(xs|sm)$/.test(width);
+  const isSettingOpen = !isCollapsable || open;
 
   const [values, setValues] = useState<Types.WidgetConfig>(() =>
     JSON.parse(JSON.stringify(data?.content || {}))
@@ -47,11 +51,11 @@ export default function WidgetEditor({
   const actionNode = useNodePicker(
     () =>
       onActionNodePick({
-        expand: (
+        expand: !isCollapsable ? null : (
           <CommonButton
             btnVariant="icon"
             icon={open ? AutoFixOffIcon : AutoFixHighIcon}
-            text={wt(`btn-expand-${open ? 'off' : 'on'}`)}
+            text={wt(`btn-expand-${isSettingOpen ? 'off' : 'on'}`)}
             onClick={() => setOpen(!open)}
           />
         ),
@@ -77,7 +81,7 @@ export default function WidgetEditor({
           />
         ),
       }),
-    [open]
+    [open, isCollapsable, isSettingOpen]
   );
 
   const handleElementAdd = (id) =>
@@ -94,17 +98,17 @@ export default function WidgetEditor({
       <Component.Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
         action={actionNode}
-        onCustomize={($breadcrumbs) => {
-          $breadcrumbs.splice(1, 1, ...breadcrumbs);
-
-          return [...breadcrumbs, { text: names[data._id] }];
-        }}
+        onCustomize={([index]) => [
+          index,
+          ...breadcrumbs,
+          { text: names[data._id] },
+        ]}
       />
 
       <Component.PersistentDrawerContent
         {...PersistentDrawerContentProps}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
-        open={open}
+        open={isSettingOpen}
         content="Content"
         drawer={
           <>

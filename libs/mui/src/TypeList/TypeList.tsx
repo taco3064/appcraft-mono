@@ -1,7 +1,6 @@
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
-import { Suspense, forwardRef, useState } from 'react';
 import type { PropTypesDef } from '@appcraft/types';
 
 import { Subheader } from '../Subheader';

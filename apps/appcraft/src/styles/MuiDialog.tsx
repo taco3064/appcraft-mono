@@ -5,10 +5,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import { ReactNode } from 'react';
 import { withStyles } from 'tss-react/mui';
-
-import { IconTypograph } from './MuiTypograph';
 
 interface FlexDialogProps extends DialogProps {
   icon?: ReactNode;
@@ -40,9 +39,10 @@ export const FlexDialog = withStyles(
           color="primary"
           fontWeight="bolder"
           variant="h5"
-          style={{ position: 'relative' }}
-          {...(icon && { component: IconTypograph, icon })}
+          style={{ position: 'relative', justifyContent: 'center' }}
+          {...(icon && { component: Typography })}
         >
+          {icon}
           {title}
 
           {onClose && (
@@ -68,7 +68,6 @@ export const FlexDialog = withStyles(
         <ButtonGroup
           fullWidth
           color="inherit"
-          role="toolbar"
           size="large"
           variant="contained"
           component={DialogActions}
@@ -80,23 +79,9 @@ export const FlexDialog = withStyles(
   ),
   (theme, { direction = 'row' }) => ({
     paper: {
-      borderRadius: theme.spacing(2),
-
       '& > [role=contentinfo]': {
         display: 'flex',
         flexDirection: direction,
-        gap: theme.spacing(2),
-        paddingTop: theme.spacing(2),
-        paddingBottom: theme.spacing(3),
-      },
-      '& > [role=toolbar]': {
-        padding: 0,
-
-        '& > *': {
-          borderTopLeftRadius: 0,
-          borderTopRightRadius: 0,
-          margin: '0 !important',
-        },
       },
     },
   }),

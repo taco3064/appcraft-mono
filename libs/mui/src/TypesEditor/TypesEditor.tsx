@@ -1,10 +1,24 @@
 import { Suspense, useState } from 'react';
+import type { FilterOptions } from '@appcraft/types';
 
-import { FilterPopover } from '../FilterPopover';
+import { FilterDialog } from '../FilterDialog';
 import { InteractivedProvider } from '../InteractivedContext';
 import { TypeListSkeleton } from '../TypeListSkeleton';
 import { useLazyTypeList } from './TypesEditor.hooks';
 import type * as Types from './TypesEditor.types';
+
+const defaultFilters = () =>
+  ({
+    types: [],
+    names: [
+      '^onChange$',
+      '^onClick$',
+      '^onClose$',
+      '^onDoubleClick$',
+      '^onSubmit$',
+      '^(?!aria-).*',
+    ],
+  } as FilterOptions);
 
 export default function TypesEditor({
   ActionButtonProps,
@@ -18,8 +32,9 @@ export default function TypesEditor({
   onChange,
   onMixedTypeMapping,
 }: Types.TypesEditorProps) {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [propPath, setPropPath] = useState<string>('');
+  const [filtering, setFiltering] = useState(false);
+  const [filters, setFilters] = useState(defaultFilters);
+  const [propPath, setPropPath] = useState('');
 
   const LazyTypeList = useLazyTypeList({
     parser,
@@ -27,6 +42,7 @@ export default function TypesEditor({
     typeFile,
     typeName,
     mixedTypes,
+    filters,
   });
 
   return (
@@ -42,19 +58,17 @@ export default function TypesEditor({
       >
         <LazyTypeList
           {...{ ActionButtonProps, disableSelection, values, onActionNodePick }}
-          onFilterToggle={setAnchorEl}
+          onFilterToggle={() => setFiltering(true)}
           onPropPathChange={setPropPath}
         />
       </InteractivedProvider>
 
-      <FilterPopover
-        open={Boolean(anchorEl)}
-        anchorEl={anchorEl}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        onClose={() => setAnchorEl(null)}
-        onConfirm={(newFilters) => console.log(newFilters)}
-        onReset={() => console.log('reset')}
+      <FilterDialog
+        open={filtering}
+        values={filters}
+        onClose={() => setFiltering(false)}
+        onConfirm={setFilters}
+        onReset={() => setFilters(defaultFilters)}
       />
     </Suspense>
   );

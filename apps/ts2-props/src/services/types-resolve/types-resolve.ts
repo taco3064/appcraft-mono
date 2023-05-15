@@ -259,6 +259,7 @@ const getTypeByPath: Types.PrivateGetTypeByPath = (
 export const parse: Types.ParseService = ({
   propPath = '',
   mixedTypes = {},
+  filters,
   ...options
 }) => {
   const [source, declaration] = getVirtualSource(options);
@@ -271,5 +272,5 @@ export const parse: Types.ParseService = ({
     source,
   });
 
-  return (types && getProptype(...types, source)) || null;
+  return (types && getProptype(...types, source, filters)) || null;
 };

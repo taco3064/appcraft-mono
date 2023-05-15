@@ -1,5 +1,5 @@
 import Container from '@mui/material/Container';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import ReplayIcon from '@mui/icons-material/Replay';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { TypesEditor, TypesEditorProps } from '@appcraft/mui';
 import { useMutation } from '@tanstack/react-query';
@@ -48,7 +48,7 @@ export default function ConfigDetail<C extends object = object>({
         reset: (
           <CommonButton
             btnVariant="icon"
-            icon={RestartAltIcon}
+            icon={ReplayIcon}
             text={at('btn-reset')}
             onClick={() =>
               setTransition(() => {
@@ -77,11 +77,11 @@ export default function ConfigDetail<C extends object = object>({
       <Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
         action={actionNode}
-        onCustomize={($breadcrumbs) => {
-          $breadcrumbs.splice(1, 1, ...breadcrumbs);
-
-          return [...breadcrumbs, { text: names[data._id] }];
-        }}
+        onCustomize={([index]) => [
+          index,
+          ...breadcrumbs,
+          { text: names[data._id] },
+        ]}
       />
 
       <Container maxWidth="sm">

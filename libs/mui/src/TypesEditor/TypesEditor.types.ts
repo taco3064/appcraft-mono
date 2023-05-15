@@ -19,6 +19,7 @@ export type LazyTypeListHook = (
     TypesEditorProps,
     'parser' | 'typeFile' | 'typeName' | 'mixedTypes'
   > & {
+    filters: Appcraft.FilterOptions;
     propPath: string;
   }
 ) => LazyExoticComponent<ComponentType<Omit<TypeListProps, 'superior'>>>;

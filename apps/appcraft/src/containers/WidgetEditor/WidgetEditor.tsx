@@ -165,7 +165,10 @@ export default function WidgetEditor({
                   variant="h6"
                   color="text.secondary"
                   align="center"
-                  sx={{ marginTop: (theme) => theme.spacing(2) }}
+                  sx={{
+                    justifyContent: 'center',
+                    marginTop: (theme) => theme.spacing(2),
+                  }}
                 >
                   {wt('msg-select-widget-type-first')}
                 </Typography>

@@ -16,7 +16,7 @@ const defaultFilters = () =>
       '^onClose$',
       '^onDoubleClick$',
       '^onSubmit$',
-      '^(?!aria-).*',
+      '^(?!(aria-|on[A-Z]|key$|classes$|className$|contentEditable$|ref$|role$|id$|dangerouslySetInnerHTML$)).*',
     ],
   } as FilterOptions);
 

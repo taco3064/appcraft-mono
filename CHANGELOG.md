@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.24](https://github.com/taco3064/appcraft-mono/compare/v0.0.23...v0.0.24) (2023-05-15)
+
+
+### Bug Fixes
+
+* **ts2-props:** fixed the bugs of filter ([481aead](https://github.com/taco3064/appcraft-mono/commit/481aead8c8258b00ae4e1a3d1cea7d03f730314c))
+
 ### [0.0.23](https://github.com/taco3064/appcraft-mono/compare/v0.0.22...v0.0.23) (2023-05-15)
 
 

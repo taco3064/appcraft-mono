@@ -9,9 +9,15 @@ import type * as Types from './TypesEditor.types';
 
 const defaultFilters = () =>
   ({
-    logic: 'and',
-    names: [],
     types: [],
+    names: [
+      '^onChange$',
+      '^onClick$',
+      '^onClose$',
+      '^onDoubleClick$',
+      '^onSubmit$',
+      '^(?!aria-).*',
+    ],
   } as FilterOptions);
 
 export default function TypesEditor({

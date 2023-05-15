@@ -1,4 +1,4 @@
-import Autocomplete from '@mui/material/Autocomplete';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -13,51 +13,72 @@ import { FilterOptions, PropType } from '@appcraft/types';
 import { useState } from 'react';
 import type { PaperProps } from '@mui/material/Paper';
 
-import type { FilterDialogProps } from './FilterDialog.types';
+import type * as Types from './FilterDialog.types';
 
+const filter = createFilterOptions<Types.NameOption>();
 const typeOptions = Object.keys(PropType).filter((key) => !/^\d+$/.test(key));
 
 export default function FilterDialog({
   values,
+  onClose,
   onConfirm,
   onReset,
   ...props
-}: FilterDialogProps) {
-  const [types, setTypes] = useState<FilterOptions['types']>(values.types);
-
-  console.log(types);
+}: Types.FilterDialogProps) {
+  const [types, setTypes] = useState(values.types);
+  const [names, setNames] = useState(values.names);
 
   return (
     <Dialog
       {...props}
       fullWidth
       maxWidth="xs"
+      onClose={onClose}
       PaperProps={
         {
           component: 'form',
           onSubmit: (e) => {
             e.preventDefault();
+
+            onConfirm({ types, names });
+            onClose();
           },
         } as PaperProps
       }
     >
       <DialogContent style={{ flexDirection: 'column' }}>
         <Autocomplete
+          autoHighlight
           fullWidth
           multiple
+          options={typeOptions}
           value={types}
           onChange={(_e, newValue) =>
             setTypes(newValue as FilterOptions['types'])
           }
-          options={typeOptions}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="filled"
+              label="Types"
+              InputProps={{
+                ...params.InputProps,
+                sx: (theme) => ({
+                  '& input': {
+                    marginTop: theme.spacing(1),
+                  },
+                }),
+              }}
+            />
+          )}
           renderTags={(tagValue, getTagProps) => (
             <Box
-              sx={{
+              sx={(theme) => ({
                 display: 'flex',
                 flexWrap: 'wrap',
-                gap: 0.5,
-                marginTop: (theme) => theme.spacing(1),
-              }}
+                gap: theme.spacing(0.5),
+                marginTop: theme.spacing(1),
+              })}
             >
               {tagValue.map((option, index) => (
                 <Chip
@@ -69,9 +90,69 @@ export default function FilterDialog({
               ))}
             </Box>
           )}
+        />
+
+        <Autocomplete
+          clearOnBlur
+          freeSolo
+          fullWidth
+          handleHomeEndKeys
+          multiple
+          selectOnFocus
+          options={names as Types.NameOption[]}
+          value={names}
+          getOptionLabel={(option) =>
+            typeof option === 'string' ? option : option.text
+          }
+          onChange={(_e, newValue) =>
+            setNames(
+              newValue.map((option) =>
+                typeof option === 'string' ? option : option.name
+              )
+            )
+          }
           renderInput={(params) => (
-            <TextField {...params} variant="filled" label="Types" />
+            <TextField {...params} variant="filled" label="Names" />
           )}
+          renderTags={(_tagValue, getTagProps) => (
+            <Box
+              sx={(theme) => ({
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: theme.spacing(0.5),
+                marginTop: theme.spacing(1),
+              })}
+            >
+              {names.map((name, index) => (
+                <Chip
+                  {...getTagProps({ index })}
+                  color="secondary"
+                  variant="outlined"
+                  label={name}
+                />
+              ))}
+            </Box>
+          )}
+          filterOptions={(options, params) => {
+            const inputValue = params.inputValue.trim();
+            const filtered = filter(options, params);
+
+            if (
+              inputValue &&
+              !filtered.find((option) =>
+                typeof option === 'string'
+                  ? option === inputValue
+                  : option.name === inputValue
+              )
+            ) {
+              filtered.push({
+                text: `Add "${inputValue}"`,
+                name: inputValue,
+              });
+            }
+
+            return filtered;
+          }}
         />
       </DialogContent>
 
@@ -91,12 +172,12 @@ export default function FilterDialog({
           },
         }}
       >
-        <Button onClick={onReset}>
-          <ReplayIcon />
+        <Button startIcon={<ReplayIcon />} onClick={onReset}>
+          Reset
         </Button>
 
-        <Button type="submit" color="primary">
-          <CheckIcon />
+        <Button type="submit" color="primary" startIcon={<CheckIcon />}>
+          Confirm
         </Button>
       </ButtonGroup>
     </Dialog>

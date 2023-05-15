@@ -1,3 +1,5 @@
+import type { FilterOptions } from './filter-options.types';
+
 export enum PropType {
   arrayOf,
   bool,
@@ -71,4 +73,5 @@ export interface TypesParseOptions {
   typeName: string;
   propPath?: string;
   mixedTypes?: Record<string, string>;
+  filters?: FilterOptions;
 }

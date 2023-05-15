@@ -247,5 +247,31 @@ const generators: Types.Generators = [
 ];
 
 //* 取得目標 Type 對應的 PropTypes
-export const getProptype: Types.PrivateGetProptype = (...args) =>
-  generators.reduce((result, generator) => result || generator(...args), false);
+export const getProptype: Types.PrivateGetProptype = (
+  type,
+  info,
+  source,
+  filters = { types: [], names: [] }
+) => {
+  const { types, names } = filters;
+
+  return generators.reduce((result, generator) => {
+    if (!result) {
+      const proptype = generator(type, info, source);
+
+      if (proptype) {
+        const { type, propName } = proptype;
+
+        if (
+          (!types.length || types.includes(type)) &&
+          (!names.length ||
+            names.some((source) => new RegExp(source).test(propName)))
+        ) {
+          return proptype;
+        }
+      }
+    }
+
+    return result;
+  }, false);
+};

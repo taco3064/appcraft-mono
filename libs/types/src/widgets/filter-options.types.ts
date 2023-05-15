@@ -1,7 +1,6 @@
 import type { PropTypesDef } from './prop-types-def.types';
 
-export interface FilterOptions {
+export interface FilterOptions<N extends string | RegExp = string> {
   types: PropTypesDef['type'][];
-  names: RegExp[];
-  logic: 'and' | 'or';
+  names: N[];
 }

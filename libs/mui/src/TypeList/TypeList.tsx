@@ -1,22 +1,16 @@
-import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
-import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import type { PropTypesDef } from '@appcraft/types';
 
 import { Subheader } from '../Subheader';
 import { TypeItem } from '../TypeItem';
-import { useNodePicker } from '../useNodePicker';
 import { useOptionsSorting, usePropPathChange } from './TypeList.hooks';
 import { usePropPath, usePropValue } from '../InteractivedContext';
 import type { TypeListProps } from './TypeList.types';
 
 export default function TypeList({
-  ActionButtonProps,
   disableSelection,
   superior,
   values,
-  onActionNodePick = (e) => e,
-  onFilterToggle,
   onPropPathChange,
 }: TypeListProps) {
   const propPath = usePropPath();
@@ -32,27 +26,11 @@ export default function TypeList({
     propPath
   );
 
-  const actionNode = useNodePicker(
-    () =>
-      onActionNodePick({
-        filter: (
-          <IconButton
-            {...ActionButtonProps}
-            onClick={(e) => onFilterToggle(e.currentTarget)}
-          >
-            <FilterAltOutlinedIcon />
-          </IconButton>
-        ),
-      }),
-    []
-  );
-
   return (
     <List
       subheader={
         <Subheader
           breadcrumbs={breadcrumbs}
-          action={actionNode}
           onBack={handleBack}
           onAddElement={
             !isSubElAllowed

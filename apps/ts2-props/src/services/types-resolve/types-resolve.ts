@@ -2,77 +2,55 @@ import path from 'path';
 import _toPath from 'lodash.topath';
 import { Project } from 'ts-morph';
 import { debounce } from 'throttle-debounce';
-import type * as TsMorph from 'ts-morph';
 
 import { getProptype } from './types-resolve.utils';
 import type * as Types from './types-resolve.types';
 
-const queues = new Map<
-  string,
-  {
-    virtual: Types.VirtualSource;
-    destroy: () => void;
-  }
->();
+const queues: Types.QueueMap = new Map();
 
-//* 建立虛擬的 Props 及 SourceFile
-const getVirtualSource: Types.PrivateGetVirtualSource = ({
+//* 依目標檔案位置取得 SourceFile 及 Declaration
+const getDeclarationInfo: Types.PrivateGetDeclarationInfo = ({
   typeFile,
   typeName,
 }) => {
   const filePath = path.resolve(process.cwd(), typeFile);
-  const basename = path.basename(filePath);
-  const extname = path.extname(filePath);
-  const importPath = basename.replace(new RegExp(`(.d)?${extname}$`), '');
-  const sourceId = JSON.stringify({ importPath, typeName });
 
-  const { virtual, destroy } =
-    queues.get(sourceId) ||
+  const { info, destroy } =
+    queues.get(filePath) ||
     (() => {
-      const virtualType = `Virtual${(Math.random() * 10000).toFixed()}Props`;
       const project = new Project();
 
-      const source = project.createSourceFile(
-        path.resolve(filePath, '../', `./${virtualType}.d.ts`),
-        `
-        import * as Ref from './${importPath}';
-
-        export interface ${virtualType} extends Ref.${typeName} {}
-      `
+      const reactSource = project.addSourceFileAtPath(
+        path.resolve(process.cwd(), './node_modules/@types/react/index.d.ts')
       );
 
-      queues.set(sourceId, {
-        virtual: [source, source.getInterface(virtualType)],
-        destroy: debounce(1000 * 60 * 20, () => queues.delete(sourceId)),
+      const componentPropsType = reactSource
+        .getModule('React')
+        .getTypeAlias('ComponentProps');
+
+      reactSource.replaceText(
+        [componentPropsType.getStart(), componentPropsType.getEnd()],
+        `
+          type ComponentProps<T = unknown> = {};
+        `
+      );
+
+      const source = project.addSourceFileAtPath(filePath);
+
+      queues.set(filePath, {
+        destroy: debounce(1000 * 60 * 20, () => queues.delete(filePath)),
+        info: [
+          source,
+          source.getInterface(typeName) || source.getTypeAlias(typeName),
+        ],
       });
 
-      return queues.get(sourceId);
+      return queues.get(filePath);
     })();
 
   destroy();
 
-  return virtual;
-};
-
-//* 取得目標 Object 的所有 Properties
-const getObjectProperty: Types.PrivateGetObjectProperty = (
-  type,
-  propName,
-  extendTypes = []
-) => {
-  const properties = extendTypes.reduce((result, extendType) => {
-    extendType
-      .getProperties()
-      .forEach((property) => result.set(property.getName(), property));
-
-    return result;
-  }, new Map<string, TsMorph.Symbol>());
-
-  type
-    .getProperties()
-    .forEach((property) => properties.set(property.getName(), property));
-
-  return properties.get(propName) || null;
+  return info;
 };
 
 //* 依照指定路徑取得配對的 Type Text
@@ -92,7 +70,7 @@ const getMixedTypeByPath: Types.PrivateGetMixedTypeByPath = (
 //* 依照指定路徑取得目標 Type
 const getTypeByPath: Types.PrivateGetTypeByPath = (
   type,
-  { extendTypes, info, paths, mixedTypes, source, superior = [] }
+  { info, paths, mixedTypes, source, superior = [] }
 ) => {
   if (paths.length) {
     const [callSignature] = type?.getCallSignatures().reverse() || [];
@@ -183,7 +161,7 @@ const getTypeByPath: Types.PrivateGetTypeByPath = (
       const properties = type?.getProperties() || [];
 
       if (properties.length) {
-        const symbol = getObjectProperty(type, target, extendTypes);
+        const symbol = type.getProperty(target);
 
         if (symbol) {
           const element = symbol.getTypeAtLocation(source);
@@ -259,18 +237,18 @@ const getTypeByPath: Types.PrivateGetTypeByPath = (
 export const parse: Types.ParseService = ({
   propPath = '',
   mixedTypes = {},
-  filters = { types: [], names: [] },
   ...options
 }) => {
-  const [source, declaration] = getVirtualSource(options);
+  const [source, declaration] = getDeclarationInfo(options);
 
   const types = getTypeByPath(declaration.getType(), {
-    extendTypes: declaration.getExtends().map((extend) => extend.getType()),
     info: { required: true },
     paths: _toPath(propPath),
     mixedTypes,
     source,
   });
 
-  return (types && getProptype(...types, { source, filters })) || null;
+  console.log(declaration.getType().getProperties().length);
+
+  return (types && getProptype(...types, source)) || null;
 };

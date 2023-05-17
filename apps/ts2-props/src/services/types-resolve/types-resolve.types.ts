@@ -17,18 +17,24 @@ export type Generators = [
 ];
 
 export type TypeResult = [TsMorph.Type, Appcraft.GeneratorInfo] | null;
-export type VirtualSource = [TsMorph.SourceFile, TsMorph.InterfaceDeclaration];
+
+type DeclarationInfo = [
+  TsMorph.SourceFile,
+  TsMorph.InterfaceDeclaration | TsMorph.TypeAliasDeclaration
+];
+
+export type QueueMap = Map<
+  string,
+  {
+    info: DeclarationInfo;
+    destroy: () => void;
+  }
+>;
 
 //* Methods
-export type PrivateGetVirtualSource = (
+export type PrivateGetDeclarationInfo = (
   options: Omit<Appcraft.TypesParseOptions, 'superior'>
-) => VirtualSource;
-
-export type PrivateGetObjectProperty = (
-  type: TsMorph.Type,
-  propName: string,
-  extendTypes?: TsMorph.Type[]
-) => TsMorph.Symbol | null;
+) => DeclarationInfo;
 
 export type PrivateGetMixedTypeByPath = (
   mixedTypes: Appcraft.TypesParseOptions['mixedTypes'],
@@ -39,7 +45,6 @@ export type PrivateGetTypeByPath = (
   type: TsMorph.Type,
   options: {
     readonly info: Appcraft.GeneratorInfo;
-    extendTypes?: TsMorph.Type[];
     paths: string[];
     mixedTypes: Appcraft.TypesParseOptions['mixedTypes'];
     source: TsMorph.SourceFile;
@@ -50,10 +55,7 @@ export type PrivateGetTypeByPath = (
 export type PrivateGetProptype<R = Appcraft.PropTypesDef> = (
   type: TsMorph.Type,
   info: Appcraft.GeneratorInfo,
-  options?: {
-    source?: TsMorph.SourceFile;
-    filters?: Partial<Appcraft.FilterOptions>;
-  }
+  source?: TsMorph.SourceFile
 ) => R | false;
 
 export type ParseService = (

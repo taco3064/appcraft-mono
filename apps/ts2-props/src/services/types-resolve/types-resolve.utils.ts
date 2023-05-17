@@ -1,87 +1,62 @@
-import type {
-  FilterOptions,
-  OneOfProp,
-  OneOfTypeProp,
-  PropTypesDef,
-} from '@appcraft/types';
-
+import type { OneOfProp, OneOfTypeProp, PropTypesDef } from '@appcraft/types';
 import type * as Types from './types-resolve.types';
-
-const filter = <R extends PropTypesDef>(
-  proptype: R | false,
-  { types, names }: Partial<FilterOptions> = {}
-) =>
-  proptype &&
-  (!types?.length || types.includes(proptype.type)) &&
-  (!names?.length ||
-    names.some((source) => new RegExp(source).test(proptype.propName)))
-    ? proptype
-    : false;
 
 //* 定義 PropTypes 的檢查方式及回傳的 Config 內容 (要注意先後順序)
 const generators: Types.Generators = [
-  (type, info, opts) => {
+  (type, info) => {
     if (
       type.isBooleanLiteral() ||
       type.isNumberLiteral() ||
       type.isStringLiteral()
     ) {
-      return filter(
-        {
-          ...info,
-          type: 'oneOf',
-          options: [JSON.parse(type.getText())],
-        },
-        opts?.filters
-      );
+      return {
+        ...info,
+        type: 'oneOf',
+        options: [JSON.parse(type.getText())],
+      };
     }
 
     return false;
   },
 
-  (type, info, opts) =>
-    filter(type.isBoolean() && { ...info, type: 'bool' }, opts?.filters),
-  (type, info, opts) =>
-    filter(type.isNumber() && { ...info, type: 'number' }, opts?.filters),
-  (type, info, opts) =>
-    filter(type.isString() && { ...info, type: 'string' }, opts?.filters),
+  (type, info) => type.isBoolean() && { ...info, type: 'bool' },
+  (type, info) => type.isNumber() && { ...info, type: 'number' },
+  (type, info) => type.isString() && { ...info, type: 'string' },
 
   //* ReactNode / ReactElement
-  (type, info, opts) => {
+  (type, info) => {
     if (type.getText() === 'React.ReactNode') {
-      return filter({ ...info, type: 'node' }, opts?.filters);
+      return { ...info, type: 'node' };
     }
 
     if (type.getText().startsWith('React.ReactElement<')) {
-      return filter({ ...info, type: 'element' }, opts?.filters);
+      return { ...info, type: 'element' };
     }
 
     return false;
   },
 
   //* Class
-  (type, info, opts) => {
+  (type, info, source) => {
+    const typeAtLocation =
+      source && type.getSymbol()?.getTypeAtLocation(source);
+
     if (
-      opts?.source &&
-      type.getSymbol()?.getTypeAtLocation(opts.source).getConstructSignatures()
-        .length &&
+      typeAtLocation?.getConstructSignatures().length &&
       type.getText() in global
     ) {
-      return filter(
-        { ...info, type: 'instanceOf', options: type.getText() },
-        opts?.filters
-      );
+      return { ...info, type: 'instanceOf', options: type.getText() };
     }
 
     return false;
   },
 
   //* Function
-  (type, info, opts) => {
+  (type, info, source) => {
     const [callSignature] = type.getCallSignatures().reverse();
 
     if (callSignature) {
-      if (opts?.source) {
+      if (source) {
         const returnProptype = getProptype(callSignature.getReturnType(), {
           propName: 'return',
           required: true,
@@ -93,13 +68,12 @@ const generators: Types.Generators = [
           options: {
             ...(returnProptype && { return: returnProptype }),
             params: callSignature.getParameters().reduce((result, param, i) => {
-              const proptype = getProptype(
-                param.getTypeAtLocation(opts.source),
-                {
-                  propName: `[${i}]`,
-                  required: !param.isOptional(),
-                }
-              );
+              const typeAtLocation = param.getTypeAtLocation(source);
+
+              const proptype = getProptype(typeAtLocation, {
+                propName: `[${i}]`,
+                required: !param.isOptional(),
+              });
 
               return !proptype ? result : result.concat(proptype);
             }, []),
@@ -107,56 +81,41 @@ const generators: Types.Generators = [
         };
       }
 
-      return filter({ ...info, type: 'func' }, opts?.filters);
+      return { ...info, type: 'func' };
     }
 
     return false;
   },
 
   //* Array
-  (type, info, opts) => {
+  (type, info) => {
     if (type.isArray()) {
-      const proptype = getProptype(
-        type.getArrayElementType(),
-        {
-          propName: '[*]',
-          required: true,
-        },
-        { filters: { types: opts?.filters?.types } }
-      );
+      const proptype = getProptype(type.getArrayElementType(), {
+        propName: '[*]',
+        required: true,
+      });
 
-      return (
-        proptype &&
-        filter({ ...info, type: 'arrayOf', options: proptype }, opts?.filters)
-      );
+      return proptype && { ...info, type: 'arrayOf', options: proptype };
     }
 
     if (type.isTuple()) {
       const proptypes: PropTypesDef[] =
         type.isTuple() &&
         type.getTupleElements().reduce<PropTypesDef[]>((result, tuple, i) => {
-          const proptype = getProptype(
-            tuple,
-            {
-              propName: `[${i}]`,
-              required: true,
-            },
-            { filters: { types: opts?.filters?.types } }
-          );
+          const proptype = getProptype(tuple, {
+            propName: `[${i}]`,
+            required: true,
+          });
 
           return !proptype ? result : result.concat(proptype);
         }, []);
 
       return (
-        proptypes.length > 0 &&
-        filter(
-          {
-            ...info,
-            type: 'arrayOf',
-            options: proptypes,
-          },
-          opts?.filters
-        )
+        proptypes.length > 0 && {
+          ...info,
+          type: 'arrayOf',
+          options: proptypes,
+        }
       );
     }
 
@@ -164,11 +123,12 @@ const generators: Types.Generators = [
   },
 
   //* Object
-  (type, info, opts) => {
-    if (type.isObject() || type.isInterface()) {
-      if (opts?.source) {
+  (type, info, source) => {
+    const properties = type.getProperties?.();
+
+    if (type.isObject() || type.isInterface() || properties?.length) {
+      if (source) {
         const args = type.getAliasTypeArguments();
-        const properties = type.getProperties();
 
         if (type.getText().startsWith('Record<') && args.length > 0) {
           const keys = getProptype(args[0], {
@@ -176,35 +136,28 @@ const generators: Types.Generators = [
             required: false,
           });
 
-          const options = getProptype(
-            args[1],
-            {
-              propName: '*',
-              required: false,
-            },
-            { filters: { types: opts?.filters?.types } }
-          );
+          const options = getProptype(args[1], {
+            propName: '*',
+            required: false,
+          });
 
           if (options && keys) {
-            return filter(
-              keys.type !== 'oneOf'
-                ? { ...info, type: 'objectOf', options }
-                : {
-                    ...info,
-                    type: 'exact',
-                    options: keys.options?.reduce(
-                      (result, key) => ({
-                        ...result,
-                        [key as string]: {
-                          ...options,
-                          propName: key,
-                        },
-                      }),
-                      {}
-                    ),
-                  },
-              opts?.filters
-            );
+            return keys.type !== 'oneOf'
+              ? { ...info, type: 'objectOf', options }
+              : {
+                  ...info,
+                  type: 'exact',
+                  options: keys.options?.reduce(
+                    (result, key) => ({
+                      ...result,
+                      [key as string]: {
+                        ...options,
+                        propName: key,
+                      },
+                    }),
+                    {}
+                  ),
+                };
           }
 
           return false;
@@ -214,15 +167,12 @@ const generators: Types.Generators = [
           const options = properties.reduce<[string, PropTypesDef][]>(
             (result, property) => {
               const propName = property.getName();
+              const typeAtLocation = property.getTypeAtLocation(source);
 
-              const proptype = getProptype(
-                property.getTypeAtLocation(opts.source),
-                {
-                  propName,
-                  required: !property.isOptional(),
-                },
-                { filters: opts?.filters }
-              );
+              const proptype = getProptype(typeAtLocation, {
+                propName,
+                required: !property.isOptional(),
+              });
 
               if (proptype) {
                 result.push([propName, proptype]);
@@ -233,20 +183,17 @@ const generators: Types.Generators = [
             []
           );
 
-          return filter(
+          return (
             options.length > 0 && {
               ...info,
               type: 'exact',
               options: Object.fromEntries(options),
-            },
-            opts?.filters
+            }
           );
         }
 
         return false;
       }
-
-      return filter({ ...info, type: 'object' }, opts?.filters);
     }
 
     return false;
@@ -273,37 +220,28 @@ const generators: Types.Generators = [
         );
 
       if (!oneOfType.length && oneOf.length) {
-        return filter(
-          { ...info, type: 'oneOf', options: oneOf },
-          opts?.filters
-        );
+        return { ...info, type: 'oneOf', options: oneOf };
       }
 
       if (oneOf.length && oneOfType.length) {
-        return filter(
-          {
-            ...info,
-            type: 'oneOfType',
-            options: [
-              ...oneOfType,
-              { ...info, type: 'oneOf', text: 'union', options: oneOf },
-            ],
-          },
-          opts?.filters
-        );
+        return {
+          ...info,
+          type: 'oneOfType',
+          options: [
+            ...oneOfType,
+            { ...info, type: 'oneOf', text: 'union', options: oneOf },
+          ],
+        };
       }
 
       if (!oneOf.length && oneOfType.length) {
-        return filter(
-          oneOfType.length === 1
-            ? oneOfType[0]
-            : {
-                ...info,
-                type: 'oneOfType',
-                options: oneOfType,
-              },
-          opts?.filters
-        );
+        return oneOfType.length === 1
+          ? oneOfType[0]
+          : {
+              ...info,
+              type: 'oneOfType',
+              options: oneOfType,
+            };
       }
     }
 
@@ -312,8 +250,8 @@ const generators: Types.Generators = [
 ];
 
 //* 取得目標 Type 對應的 PropTypes
-export const getProptype: Types.PrivateGetProptype = (type, info, options) =>
+export const getProptype: Types.PrivateGetProptype = (type, info, source) =>
   generators.reduce(
-    (result, generator) => result || generator(type, info, options),
+    (result, generator) => result || generator(type, info, source),
     false
   );

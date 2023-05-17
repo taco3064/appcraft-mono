@@ -7,10 +7,7 @@ import type { TypeListProps } from '../TypeList';
 export interface TypesEditorProps<V extends object = object>
   extends Omit<Appcraft.TypesParseOptions, 'propPath'>,
     Omit<InteractivedProviderProps<V>, 'children' | 'propPath'>,
-    Pick<
-      TypeListProps,
-      'ActionButtonProps' | 'disableSelection' | 'onActionNodePick'
-    > {
+    Pick<TypeListProps, 'disableSelection'> {
   parser: Pick<Appcraft.DataSource, 'url' | 'method' | 'headers'>;
 }
 
@@ -19,7 +16,6 @@ export type LazyTypeListHook = (
     TypesEditorProps,
     'parser' | 'typeFile' | 'typeName' | 'mixedTypes'
   > & {
-    filters: Appcraft.FilterOptions;
     propPath: string;
   }
 ) => LazyExoticComponent<ComponentType<Omit<TypeListProps, 'superior'>>>;

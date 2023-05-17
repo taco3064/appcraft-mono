@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import _set from 'lodash.set';
 import { TypesEditor, TypesEditorProps } from '@appcraft/mui';
-import { useNodePicker, useNodePickHandle } from '@appcraft/mui';
+import { useNodePicker } from '@appcraft/mui';
 import { useState, useTransition } from 'react';
 import type { WidgetOptions } from '@appcraft/types';
 
@@ -37,7 +37,6 @@ export default function WidgetEditor({
   const [at, wt] = useFixedT('app', 'widgets');
   const [open, setOpen] = useState(true);
   const [widget, setWidget] = useState<WidgetOptions | null>(null);
-  const [action, handleActionNodePick] = useNodePickHandle(['filter']);
 
   const barVariant = widget ? 'props' : 'elements';
   const width = useWidth();
@@ -114,7 +113,6 @@ export default function WidgetEditor({
           <>
             <Component.WidgetEditorBar
               variant={barVariant}
-              action={barVariant !== 'props' ? null : action?.filter}
               accordion={
                 widget && (
                   <>
@@ -175,12 +173,10 @@ export default function WidgetEditor({
               ) : (
                 <TypesEditor
                   {...widgets.get(widget.type)}
-                  ActionButtonProps={{ color: 'secondary' }}
                   disableSelection
                   parser={TYPES_PARSER as TypesEditorProps['parser']}
                   mixedTypes={widget.mapping}
                   values={widget.content}
-                  onActionNodePick={handleActionNodePick}
                   onChange={(content) =>
                     setWidget({ ..._set(widget, 'content', content) })
                   }

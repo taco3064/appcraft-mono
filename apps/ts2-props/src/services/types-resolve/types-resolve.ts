@@ -1,57 +1,79 @@
-import path from 'path';
+import * as TsMorph from 'ts-morph';
 import _toPath from 'lodash.topath';
-import { Project } from 'ts-morph';
-import { debounce } from 'throttle-debounce';
+import path from 'path';
+import { MUI_WIDGETS } from '@appcraft/types';
 
 import { getProptype } from './types-resolve.utils';
 import type * as Types from './types-resolve.types';
 
-const queues: Types.QueueMap = new Map();
-
 //* 依目標檔案位置取得 SourceFile 及 Declaration
-const getDeclarationInfo: Types.PrivateGetDeclarationInfo = ({
-  typeFile,
-  typeName,
-}) => {
-  const filePath = path.resolve(process.cwd(), typeFile);
+const getDeclarationInfo: Types.PrivateGetDeclarationInfo = (() => {
+  const project = new TsMorph.Project();
 
-  const { info, destroy } =
-    queues.get(filePath) ||
-    (() => {
-      const project = new Project();
+  const overrides = new Map(
+    MUI_WIDGETS.widgets
+      .map(({ components }) => components)
+      .flat()
+      .map(({ typeFile, override }) => [typeFile, override])
+  );
 
-      const reactSource = project.addSourceFileAtPath(
-        path.resolve(process.cwd(), './node_modules/@types/react/index.d.ts')
+  MUI_WIDGETS.initialize.forEach(({ typeFile, override }) => {
+    const source = project.addSourceFileAtPath(
+      path.resolve(process.cwd(), typeFile)
+    );
+
+    override.forEach(({ patternType, pattern, replacement, extractType }) => {
+      const node = extractType.reduce<TsMorph.Node>(
+        (result, { method, typeName }) => result[method](typeName),
+        source
       );
 
-      const componentPropsType = reactSource
-        .getModule('React')
-        .getTypeAlias('ComponentProps');
-
-      reactSource.replaceText(
-        [componentPropsType.getStart(), componentPropsType.getEnd()],
-        `
-          type ComponentProps<T = unknown> = {};
-        `
+      source.replaceText(
+        [node.getStart(), node.getEnd()],
+        node
+          .getText()
+          .replace(
+            patternType === 'string' ? pattern : new RegExp(pattern),
+            replacement
+          )
       );
+    });
+  });
 
-      const source = project.addSourceFileAtPath(filePath);
+  return ({ typeFile, typeName }) => {
+    const filePath = path.resolve(process.cwd(), typeFile);
 
-      queues.set(filePath, {
-        destroy: debounce(1000 * 60 * 20, () => queues.delete(filePath)),
-        info: [
-          source,
-          source.getInterface(typeName) || source.getTypeAlias(typeName),
-        ],
-      });
+    const source =
+      project.getSourceFile(filePath) ||
+      (() => {
+        const result = project.addSourceFileAtPath(filePath);
+        const override = overrides.get(typeFile);
 
-      return queues.get(filePath);
-    })();
+        override?.forEach(
+          ({ patternType, pattern, replacement, extractBy }) => {
+            const node = result[extractBy](typeName);
 
-  destroy();
+            result.replaceText(
+              [node.getStart(), node.getEnd()],
+              node
+                .getText()
+                .replace(
+                  patternType === 'string' ? pattern : new RegExp(pattern),
+                  replacement
+                )
+            );
+          }
+        );
 
-  return info;
-};
+        return result;
+      })();
+
+    return [
+      source,
+      source.getInterface(typeName) || source.getTypeAlias(typeName),
+    ];
+  };
+})();
 
 //* 依照指定路徑取得配對的 Type Text
 const getMixedTypeByPath: Types.PrivateGetMixedTypeByPath = (

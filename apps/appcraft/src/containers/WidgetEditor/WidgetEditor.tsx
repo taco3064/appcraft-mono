@@ -6,26 +6,28 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import _set from 'lodash.set';
+import { MUI_WIDGETS, WidgetOptions } from '@appcraft/types';
 import { TypesEditor, TypesEditorProps } from '@appcraft/mui';
 import { useNodePicker } from '@appcraft/mui';
 import { useState, useTransition } from 'react';
-import type { WidgetOptions } from '@appcraft/types';
 
 import * as Component from '~appcraft/components';
 import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
-import WIDGETS from '~appcraft/assets/json/widgets.json';
 import { CommonButton } from '~appcraft/components/common';
 import { NestedElements } from '../NestedElements';
 import { useFixedT, useWidth } from '~appcraft/hooks';
 import type * as Types from './WidgetEditor.types';
 
-const widgets = WIDGETS.reduce<Types.WidgetMap>((result, { components }) => {
-  components.forEach(({ id, typeFile, typeName }) =>
-    result.set(id, { typeFile, typeName })
-  );
+const widgets = MUI_WIDGETS.widgets.reduce<Types.WidgetMap>(
+  (result, { components }) => {
+    components.forEach(({ id, typeFile, typeName }) =>
+      result.set(id, { typeFile, typeName })
+    );
 
-  return result;
-}, new Map());
+    return result;
+  },
+  new Map()
+);
 
 export default function WidgetEditor({
   PersistentDrawerContentProps,

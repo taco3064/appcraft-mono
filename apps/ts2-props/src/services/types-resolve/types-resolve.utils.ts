@@ -174,6 +174,8 @@ const generators: Types.Generators = [
                 required: !property.isOptional(),
               });
 
+              console.log(propName, typeAtLocation.getText());
+
               if (proptype) {
                 result.push([propName, proptype]);
               }

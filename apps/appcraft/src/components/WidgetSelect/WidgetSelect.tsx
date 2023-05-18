@@ -2,8 +2,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
+import { MUI_WIDGETS } from '@appcraft/types';
 
-import WIDGETS from '~appcraft/assets/json/widgets.json';
 import { useFixedT } from '~appcraft/hooks';
 import type { WidgetSelectProps } from './WidgetSelect.types';
 
@@ -14,7 +14,7 @@ export default function WidgetSelect(props: WidgetSelectProps) {
     <TextField SelectProps={{ displayEmpty: true }} select {...props}>
       <MenuItem value="">&nbsp;</MenuItem>
 
-      {WIDGETS.reduce((options, { category, components }) => {
+      {MUI_WIDGETS.widgets.reduce((options, { category, components }) => {
         options.push(
           <ListItemButton key={category} disabled>
             <ListItemText

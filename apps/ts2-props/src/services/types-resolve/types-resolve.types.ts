@@ -23,14 +23,6 @@ type DeclarationInfo = [
   TsMorph.InterfaceDeclaration | TsMorph.TypeAliasDeclaration
 ];
 
-export type QueueMap = Map<
-  string,
-  {
-    info: DeclarationInfo;
-    destroy: () => void;
-  }
->;
-
 //* Methods
 export type PrivateGetDeclarationInfo = (
   options: Omit<Appcraft.TypesParseOptions, 'superior'>

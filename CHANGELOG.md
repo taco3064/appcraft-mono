@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.25](https://github.com/taco3064/appcraft-mono/compare/v0.0.24...v0.0.25) (2023-05-17)
+
+
+### Bug Fixes
+
+* add default filter ([e05224a](https://github.com/taco3064/appcraft-mono/commit/e05224a6b158272de9d1128cc885c98bff4f38fa))
+* **ts2-props:** make sure React.ComponentProps will be empty, and remove filter feature ([57b3565](https://github.com/taco3064/appcraft-mono/commit/57b3565383797efcede214cbb320f860f844b11a))
+
 ### [0.0.24](https://github.com/taco3064/appcraft-mono/compare/v0.0.23...v0.0.24) (2023-05-15)
 
 

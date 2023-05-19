@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.29](https://github.com/taco3064/appcraft-mono/compare/v0.0.28...v0.0.29) (2023-05-19)
+
+
+### Bug Fixes
+
+* **mui-widgets.json:** add onchange event to inputs ([47780ee](https://github.com/taco3064/appcraft-mono/commit/47780eec06b2b0fb0d9ced3b8b5e0f3f8ae883d4))
+
 ### [0.0.28](https://github.com/taco3064/appcraft-mono/compare/v0.0.27...v0.0.28) (2023-05-19)
 
 

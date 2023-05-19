@@ -8,16 +8,10 @@ import type * as Types from './types-resolve.types';
 
 //* 依目標檔案位置取得 SourceFile 及 Declaration
 const getDeclarationInfo: Types.PrivateGetDeclarationInfo = (() => {
+  const { initialize, widgets } = MUI_WIDGETS;
   const project = new TsMorph.Project();
 
-  const overrides = new Map(
-    MUI_WIDGETS.widgets
-      .map(({ components }) => components)
-      .flat()
-      .map(({ typeFile, override }) => [typeFile, override])
-  );
-
-  MUI_WIDGETS.initialize.forEach(({ typeFile, override }) => {
+  initialize.forEach(({ typeFile, override }) => {
     const source = project.addSourceFileAtPath(
       path.resolve(process.cwd(), typeFile)
     );
@@ -40,33 +34,32 @@ const getDeclarationInfo: Types.PrivateGetDeclarationInfo = (() => {
     });
   });
 
+  widgets.forEach(({ components }) =>
+    components.forEach(({ typeFile, typeName, override }) => {
+      const filePath = path.resolve(process.cwd(), typeFile);
+      const source = project.addSourceFileAtPath(filePath);
+
+      override?.forEach(({ patternType, pattern, replacement, extractBy }) => {
+        const node = source[extractBy](typeName);
+
+        source.replaceText(
+          [node.getStart(), node.getEnd()],
+          node
+            .getText()
+            .replace(
+              patternType === 'string' ? pattern : new RegExp(pattern),
+              replacement
+            )
+        );
+      });
+    })
+  );
+
   return ({ typeFile, typeName }) => {
     const filePath = path.resolve(process.cwd(), typeFile);
 
     const source =
-      project.getSourceFile(filePath) ||
-      (() => {
-        const result = project.addSourceFileAtPath(filePath);
-        const override = overrides.get(typeFile);
-
-        override?.forEach(
-          ({ patternType, pattern, replacement, extractBy }) => {
-            const node = result[extractBy](typeName);
-
-            result.replaceText(
-              [node.getStart(), node.getEnd()],
-              node
-                .getText()
-                .replace(
-                  patternType === 'string' ? pattern : new RegExp(pattern),
-                  replacement
-                )
-            );
-          }
-        );
-
-        return result;
-      })();
+      project.getSourceFile(filePath) || project.addSourceFileAtPath(filePath);
 
     return [
       source,
@@ -269,8 +262,6 @@ export const parse: Types.ParseService = ({
     mixedTypes,
     source,
   });
-
-  console.log(declaration.getType().getProperties().length);
 
   return (types && getProptype(...types, source)) || null;
 };

@@ -153,7 +153,15 @@
           "id": "Radio",
           "importType": "mui",
           "typeFile": "./node_modules/@mui/material/Radio/Radio.d.ts",
-          "typeName": "RadioProps"
+          "typeName": "RadioProps",
+          "override": [
+            {
+              "extractBy": "getInterface",
+              "pattern": "extends StandardProps",
+              "patternType": "string",
+              "replacement": "extends Omit"
+            }
+          ]
         },
         {
           "id": "RadioGroup",
@@ -189,9 +197,9 @@
           "override": [
             {
               "extractBy": "getTypeAlias",
-              "pattern": "(export type TextFieldProps = )(.+);",
+              "pattern": "^(export type TextFieldProps = )(.+);",
               "patternType": "RegExp",
-              "replacement": " $1($2) & { onChange?: React.ChangeEventHandler<HTMLInputElement>; };"
+              "replacement": " $1Omit<($2), 'onChange'> & { onChange?: React.ChangeEventHandler<HTMLInputElement>; };"
             }
           ]
         },

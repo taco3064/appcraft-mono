@@ -171,13 +171,29 @@
           "id": "Switch",
           "importType": "mui",
           "typeFile": "./node_modules/@mui/material/Switch/Switch.d.ts",
-          "typeName": "SwitchProps"
+          "typeName": "SwitchProps",
+          "override": [
+            {
+              "extractBy": "getInterface",
+              "pattern": "extends StandardProps",
+              "patternType": "string",
+              "replacement": "extends Omit"
+            }
+          ]
         },
         {
           "id": "TextField",
           "importType": "mui",
           "typeFile": "./node_modules/@mui/material/TextField/TextField.d.ts",
-          "typeName": "TextFieldProps"
+          "typeName": "TextFieldProps",
+          "override": [
+            {
+              "extractBy": "getTypeAlias",
+              "pattern": "(export type TextFieldProps = )(.+);",
+              "patternType": "RegExp",
+              "replacement": " $1($2) & { onChange?: React.ChangeEventHandler<HTMLInputElement>; };"
+            }
+          ]
         },
         {
           "id": "ToggleButton",
@@ -375,10 +391,10 @@
           "typeName": "ButtonProps",
           "override": [
             {
-              "patternType": "RegExp",
+              "extractBy": "getTypeAlias",
               "pattern": ";$",
-              "replacement": " & { onClick?: React.MouseEventHandler<HTMLButtonElement>; };",
-              "extractBy": "getTypeAlias"
+              "patternType": "RegExp",
+              "replacement": " & { onClick?: React.MouseEventHandler<HTMLButtonElement>; };"
             }
           ]
         },
@@ -395,10 +411,10 @@
           "typeName": "ChipProps",
           "override": [
             {
-              "patternType": "RegExp",
+              "extractBy": "getTypeAlias",
               "pattern": ";$",
-              "replacement": " & { onClick?: React.MouseEventHandler<HTMLButtonElement>; };",
-              "extractBy": "getTypeAlias"
+              "patternType": "RegExp",
+              "replacement": " & { onClick?: React.MouseEventHandler<HTMLButtonElement>; };"
             }
           ]
         },
@@ -415,10 +431,10 @@
           "typeName": "FabProps",
           "override": [
             {
-              "patternType": "RegExp",
+              "extractBy": "getTypeAlias",
               "pattern": ";$",
-              "replacement": " & { onClick?: React.MouseEventHandler<HTMLButtonElement>; };",
-              "extractBy": "getTypeAlias"
+              "patternType": "RegExp",
+              "replacement": " & { onClick?: React.MouseEventHandler<HTMLButtonElement>; };"
             }
           ]
         },
@@ -432,7 +448,15 @@
           "id": "IconButton",
           "importType": "mui",
           "typeFile": "./node_modules/@mui/material/IconButton/IconButton.d.ts",
-          "typeName": "IconButtonProps"
+          "typeName": "IconButtonProps",
+          "override": [
+            {
+              "extractBy": "getTypeAlias",
+              "pattern": ";$",
+              "patternType": "RegExp",
+              "replacement": " & { onClick?: React.MouseEventHandler<HTMLButtonElement>; };"
+            }
+          ]
         },
         {
           "id": "Toolbar",

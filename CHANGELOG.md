@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.28](https://github.com/taco3064/appcraft-mono/compare/v0.0.27...v0.0.28) (2023-05-19)
+
+
+### Bug Fixes
+
+* **mui-widgets.json:** add override settings ([c0f515f](https://github.com/taco3064/appcraft-mono/commit/c0f515fbfacee5bf7b4446f6fc85b80da81fe334))
+
 ### [0.0.27](https://github.com/taco3064/appcraft-mono/compare/v0.0.26...v0.0.27) (2023-05-18)
 
 ### [0.0.26](https://github.com/taco3064/appcraft-mono/compare/v0.0.25...v0.0.26) (2023-05-18)

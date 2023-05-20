@@ -18,15 +18,10 @@ export type Generators = [
 
 export type TypeResult = [TsMorph.Type, Appcraft.GeneratorInfo] | null;
 
-type DeclarationInfo = [
-  TsMorph.SourceFile,
-  TsMorph.InterfaceDeclaration | TsMorph.TypeAliasDeclaration
-];
-
 //* Methods
-export type PrivateGetDeclarationInfo = (
+export type PrivateGetSourceAndBasicType = (
   options: Omit<Appcraft.TypesParseOptions, 'superior'>
-) => DeclarationInfo;
+) => [TsMorph.SourceFile, TsMorph.Type];
 
 export type PrivateGetMixedTypeByPath = (
   mixedTypes: Appcraft.TypesParseOptions['mixedTypes'],

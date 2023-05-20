@@ -194,13 +194,15 @@ const generators: Types.Generators = [
 
         return false;
       }
+
+      return { ...info, type: 'object' };
     }
 
     return false;
   },
 
   //* Union
-  (type, info, opts) => {
+  (type, info, source) => {
     if (type.isUnion()) {
       const [oneOf, oneOfType] = type
         .getUnionTypes()
@@ -209,7 +211,7 @@ const generators: Types.Generators = [
             if (union.isLiteral()) {
               literals.push(JSON.parse(union.getText()));
             } else {
-              const proptype = getProptype(union, info, opts);
+              const proptype = getProptype(union, info, source);
 
               proptype && types.push({ ...proptype, text: union.getText() });
             }

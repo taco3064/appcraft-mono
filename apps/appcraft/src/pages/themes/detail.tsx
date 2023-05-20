@@ -55,7 +55,7 @@ export default function Detail() {
       <ConfigDetail
         key={id}
         typeName="PaletteOptions"
-        typeFile="./node_modules/@mui/material/styles/createPalette.d.ts"
+        typeFile="./node_modules/@mui/material/styles/index.d.ts"
         data={theme}
         superiors={{ names, breadcrumbs }}
         onSave={refetch}

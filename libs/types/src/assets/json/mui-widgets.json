@@ -64,6 +64,22 @@
       ]
     },
     {
+      "typeFile": "./node_modules/@mui/material/internal/SwitchBase.d.ts",
+      "override": [
+        {
+          "patternType": "string",
+          "pattern": "extends StandardProps",
+          "replacement": "extends Omit",
+          "extractType": [
+            {
+              "method": "getInterface",
+              "typeName": "SwitchBaseProps"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "typeFile": "./node_modules/@mui/material/TextField/TextField.d.ts",
       "override": [
         {

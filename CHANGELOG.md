@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.31](https://github.com/taco3064/appcraft-mono/compare/v0.0.30...v0.0.31) (2023-05-20)
+
+
+### Features
+
+* **ts2-props:** surport to resolve the export types ([695f4c1](https://github.com/taco3064/appcraft-mono/commit/695f4c16b2d2dc125a1322b58ea73a66eefe9abb))
+
+
+### Bug Fixes
+
+* **ts2-props:** fixed resolving bugs ([c3b18da](https://github.com/taco3064/appcraft-mono/commit/c3b18dac3e2d518a0d2ed402c48e7a3f06ff4752))
+* **ts2-props:** fixed the bug of resolving object ([3e36053](https://github.com/taco3064/appcraft-mono/commit/3e36053f849bd3c52d9f6b64fcf9b7f38ca5c31c))
+
 ### [0.0.30](https://github.com/taco3064/appcraft-mono/compare/v0.0.29...v0.0.30) (2023-05-19)
 
 ### [0.0.29](https://github.com/taco3064/appcraft-mono/compare/v0.0.28...v0.0.29) (2023-05-19)

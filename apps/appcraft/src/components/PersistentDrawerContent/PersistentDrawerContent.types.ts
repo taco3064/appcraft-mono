@@ -3,7 +3,7 @@ import type { Theme } from '@mui/material/styles';
 import type { ReactNode } from 'react';
 
 export interface PersistentDrawerContentProps
-  extends Omit<ContainerProps, 'id' | 'children'> {
+  extends Omit<ContainerProps, 'id' | 'children' | 'content'> {
   disablePadding?: boolean;
   drawer: ReactNode;
   content: ReactNode;

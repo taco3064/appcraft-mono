@@ -7,7 +7,7 @@ import { getProptype } from './types-resolve.utils';
 import type * as Types from './types-resolve.types';
 
 //* 依目標檔案位置取得 SourceFile 及 Declaration
-const getDeclarationInfo: Types.PrivateGetDeclarationInfo = (() => {
+const getSourceAndBasicType: Types.PrivateGetSourceAndBasicType = (() => {
   const { initialize, widgets } = MUI_WIDGETS;
   const project = new TsMorph.Project();
 
@@ -26,6 +26,7 @@ const getDeclarationInfo: Types.PrivateGetDeclarationInfo = (() => {
         [node.getStart(), node.getEnd()],
         node
           .getText()
+          .replace(/\r?\n/g, '')
           .replace(
             patternType === 'string' ? pattern : new RegExp(pattern),
             replacement
@@ -46,6 +47,7 @@ const getDeclarationInfo: Types.PrivateGetDeclarationInfo = (() => {
           [node.getStart(), node.getEnd()],
           node
             .getText()
+            .replace(/\r?\n/g, '')
             .replace(
               patternType === 'string' ? pattern : new RegExp(pattern),
               replacement
@@ -63,7 +65,19 @@ const getDeclarationInfo: Types.PrivateGetDeclarationInfo = (() => {
 
     return [
       source,
-      source.getInterface(typeName) || source.getTypeAlias(typeName),
+      source.getInterface(typeName)?.getType() ||
+        source.getTypeAlias(typeName)?.getType() ||
+        source
+          .getExportSymbols()
+          .find((exports) => {
+            const type = exports.getDeclaredType();
+
+            return (
+              type?.getSymbol()?.getName() === typeName ||
+              type?.getAliasSymbol()?.getName() === typeName
+            );
+          })
+          ?.getDeclaredType(),
     ];
   };
 })();
@@ -254,9 +268,9 @@ export const parse: Types.ParseService = ({
   mixedTypes = {},
   ...options
 }) => {
-  const [source, declaration] = getDeclarationInfo(options);
+  const [source, basicType] = getSourceAndBasicType(options);
 
-  const types = getTypeByPath(declaration.getType(), {
+  const types = getTypeByPath(basicType, {
     info: { required: true },
     paths: _toPath(propPath),
     mixedTypes,

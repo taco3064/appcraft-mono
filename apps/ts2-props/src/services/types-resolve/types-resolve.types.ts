@@ -6,27 +6,22 @@ export type Generators = [
   PrivateGetProptype<Appcraft.BoolProp>,
   PrivateGetProptype<Appcraft.NumberProp>,
   PrivateGetProptype<Appcraft.StringProp>,
+  PrivateGetProptype<Appcraft.PropTypesDef>,
   PrivateGetProptype<Appcraft.ElementProp | Appcraft.NodeProp>,
   PrivateGetProptype<Appcraft.InstanceOfProp>,
   PrivateGetProptype<Appcraft.FuncProp>,
   PrivateGetProptype<Appcraft.ArrayOfProp>,
   PrivateGetProptype<
     Appcraft.ExactProp | Appcraft.ObjectProp | Appcraft.ObjectOfProp
-  >,
-  PrivateGetProptype<Appcraft.PropTypesDef>
+  >
 ];
 
 export type TypeResult = [TsMorph.Type, Appcraft.GeneratorInfo] | null;
 
-type DeclarationInfo = [
-  TsMorph.SourceFile,
-  TsMorph.InterfaceDeclaration | TsMorph.TypeAliasDeclaration
-];
-
 //* Methods
-export type PrivateGetDeclarationInfo = (
+export type PrivateGetSourceAndBasicType = (
   options: Omit<Appcraft.TypesParseOptions, 'superior'>
-) => DeclarationInfo;
+) => [TsMorph.SourceFile, TsMorph.Type];
 
 export type PrivateGetMixedTypeByPath = (
   mixedTypes: Appcraft.TypesParseOptions['mixedTypes'],

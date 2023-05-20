@@ -1,5 +1,10 @@
 type ExtractType = 'extractType' | 'extractBy';
-type ExtractMethod = 'getInterface' | 'getModule' | 'getTypeAlias';
+
+type ExtractMethod =
+  | 'getInterface'
+  | 'getModule'
+  | 'getTypeAlias'
+  | 'getProperty';
 
 type Override<E extends ExtractType> = {
   patternType: 'RegExp' | 'string';

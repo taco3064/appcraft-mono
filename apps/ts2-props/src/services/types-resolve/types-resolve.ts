@@ -26,6 +26,7 @@ const getSourceAndBasicType: Types.PrivateGetSourceAndBasicType = (() => {
         [node.getStart(), node.getEnd()],
         node
           .getText()
+          .replace(/\r?\n/g, '')
           .replace(
             patternType === 'string' ? pattern : new RegExp(pattern),
             replacement
@@ -46,6 +47,7 @@ const getSourceAndBasicType: Types.PrivateGetSourceAndBasicType = (() => {
           [node.getStart(), node.getEnd()],
           node
             .getText()
+            .replace(/\r?\n/g, '')
             .replace(
               patternType === 'string' ? pattern : new RegExp(pattern),
               replacement

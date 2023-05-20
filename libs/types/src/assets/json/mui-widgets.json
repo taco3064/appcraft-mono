@@ -1,6 +1,26 @@
 {
   "initialize": [
     {
+      "typeFile": "./node_modules/@mui/material/styles/createPalette.d.ts",
+      "override": [
+        {
+          "patternType": "RegExp",
+          "pattern": "^.+$",
+          "replacement": "mode?: 'dark' | 'light';",
+          "extractType": [
+            {
+              "method": "getInterface",
+              "typeName": "PaletteOptions"
+            },
+            {
+              "method": "getProperty",
+              "typeName": "mode"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "typeFile": "./node_modules/@mui/material/index.d.ts",
       "override": [
         {
@@ -38,6 +58,56 @@
             {
               "method": "getTypeAlias",
               "typeName": "DefaultComponentProps"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "typeFile": "./node_modules/@mui/material/TextField/TextField.d.ts",
+      "override": [
+        {
+          "patternType": "RegExp",
+          "pattern": "^.+$",
+          "replacement": "onChange?: React.ChangeEventHandler<HTMLInputElement>;",
+          "extractType": [
+            {
+              "method": "getInterface",
+              "typeName": "StandardTextFieldProps"
+            },
+            {
+              "method": "getProperty",
+              "typeName": "onChange"
+            }
+          ]
+        },
+        {
+          "patternType": "RegExp",
+          "pattern": "^.+$",
+          "replacement": "onChange?: React.ChangeEventHandler<HTMLInputElement>;",
+          "extractType": [
+            {
+              "method": "getInterface",
+              "typeName": "FilledTextFieldProps"
+            },
+            {
+              "method": "getProperty",
+              "typeName": "onChange"
+            }
+          ]
+        },
+        {
+          "patternType": "RegExp",
+          "pattern": "^.+$",
+          "replacement": "onChange?: React.ChangeEventHandler<HTMLInputElement>;",
+          "extractType": [
+            {
+              "method": "getInterface",
+              "typeName": "OutlinedTextFieldProps"
+            },
+            {
+              "method": "getProperty",
+              "typeName": "onChange"
             }
           ]
         }
@@ -193,15 +263,7 @@
           "id": "TextField",
           "importType": "mui",
           "typeFile": "./node_modules/@mui/material/TextField/TextField.d.ts",
-          "typeName": "TextFieldProps",
-          "override": [
-            {
-              "extractBy": "getTypeAlias",
-              "pattern": "^(export type TextFieldProps = )(.+);",
-              "patternType": "RegExp",
-              "replacement": " $1Omit<($2), 'onChange'> & { onChange?: React.ChangeEventHandler<HTMLInputElement>; };"
-            }
-          ]
+          "typeName": "TextFieldProps"
         },
         {
           "id": "ToggleButton",

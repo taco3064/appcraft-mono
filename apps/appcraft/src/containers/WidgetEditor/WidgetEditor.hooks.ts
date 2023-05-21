@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 import _set from 'lodash.set';
 
-import type { ValuesHook, WidgetConfig } from './WidgetEditor.types';
+import type { EditedValuesHook, WidgetConfig } from './WidgetEditor.types';
 
-export const useValues: ValuesHook = (data) => {
+export const useEditedValues: EditedValuesHook = (data) => {
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const [values, setValues] = useState<WidgetConfig>(() =>
@@ -19,6 +19,7 @@ export const useValues: ValuesHook = (data) => {
     ),
 
     onEditingChange: (id) => setEditingId(id || null),
+    onReset: () => setValues(JSON.parse(JSON.stringify(data?.content || {}))),
 
     onWidgetAdd: (id) =>
       setValues({

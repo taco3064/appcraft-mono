@@ -7,14 +7,14 @@ import Typography from '@mui/material/Typography';
 import { MUI_WIDGETS } from '@appcraft/types';
 import { TypesEditor, TypesEditorProps } from '@appcraft/mui';
 import { useNodePicker } from '@appcraft/mui';
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 
 import * as Component from '~appcraft/components';
 import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
 import { CommonButton } from '~appcraft/components/common';
 import { NestedElements } from '../NestedElements';
+import { useEditedValues } from './WidgetEditor.hooks';
 import { useFixedT, useWidth } from '~appcraft/hooks';
-import { useValues } from './WidgetEditor.hooks';
 import type * as Types from './WidgetEditor.types';
 
 const widgets = MUI_WIDGETS.widgets.reduce<Types.WidgetMap>(
@@ -34,15 +34,13 @@ export default function WidgetEditor({
   superiors: { names, breadcrumbs },
   onActionNodePick = (e) => e,
 }: Types.WidgetEditorProps) {
-  const [, setTransition] = useTransition();
   const [at, wt] = useFixedT('app', 'widgets');
   const [open, setOpen] = useState(true);
+  const { values, widget, ...valuesHandle } = useEditedValues(data);
 
   const width = useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
-
-  const { values, widget, ...valuesHandle } = useValues(data);
 
   const actionNode = useNodePicker(
     () =>
@@ -60,12 +58,7 @@ export default function WidgetEditor({
             btnVariant="icon"
             icon={RestartAltIcon}
             text={at('btn-reset')}
-            onClick={() =>
-              setTransition(() => {
-                // setValues(JSON.parse(JSON.stringify(data?.content || {})));
-                // setMixedTypes(JSON.parse(JSON.stringify(data?.mapping || {})));
-              })
-            }
+            onClick={() => valuesHandle.onReset()}
           />
         ),
         save: (

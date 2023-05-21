@@ -10,10 +10,11 @@ export type WidgetMap = Map<
   Pick<TypesEditorProps, 'typeFile' | 'typeName'>
 >;
 
-export type ValuesHook = (data: WidgetEditorProps['data']) => {
+export type EditedValuesHook = (data: WidgetEditorProps['data']) => {
   values: WidgetConfig;
   widget?: WidgetOptions;
   onEditingChange: (editingId?: string) => void;
+  onReset: () => void;
   onWidgetAdd: (id: string) => void;
   onWidgetChange: (propPath: string, value: unknown) => void;
 };

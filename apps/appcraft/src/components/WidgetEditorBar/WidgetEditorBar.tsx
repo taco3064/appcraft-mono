@@ -5,20 +5,22 @@ import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined';
+import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 
 import { CommonButton } from '../common';
+import { WidgetSelect } from '../WidgetSelect';
 import { useFixedT } from '~appcraft/hooks';
 import type { WidgetEditorBarProps } from './WidgetEditorBar.types';
 
 export default function WidgetEditorBar({
-  accordion,
   action,
-  variant,
+  widget,
+  onBackToElements,
   onElementAdd,
-  onVariantChange,
+  onValueChange,
 }: WidgetEditorBarProps) {
   const [at, wt] = useFixedT('app', 'widgets');
   const [open, setOpen] = useState(true);
@@ -27,17 +29,30 @@ export default function WidgetEditorBar({
     <>
       <AppBar color="default" position="sticky">
         <Toolbar variant="regular">
-          {variant === 'props' && (
+          {widget && (
             <CommonButton
               btnVariant="icon"
               icon={ChevronLeftIcon}
               text={at('btn-back')}
-              onClick={() => onVariantChange('elements')}
+              onClick={onBackToElements}
             />
           )}
 
           <Typography variant="subtitle1" fontWeight="bolder" color="primary">
-            {wt(`ttl-${variant}`)}
+            {wt(`ttl-${widget ? 'props' : 'elements'}`)}
+
+            {widget?.type && (
+              <>
+                <Divider
+                  flexItem
+                  orientation="vertical"
+                  sx={(theme) => ({
+                    borderColor: theme.palette.primary.main,
+                  })}
+                />
+                {widget.type?.replace(/([A-Z])/g, ' $1')}
+              </>
+            )}
           </Typography>
 
           <Toolbar
@@ -47,7 +62,7 @@ export default function WidgetEditorBar({
           >
             {action}
 
-            {variant === 'elements' && (
+            {!widget ? (
               <CommonButton
                 btnVariant="icon"
                 color="secondary"
@@ -59,9 +74,7 @@ export default function WidgetEditorBar({
                   )
                 }
               />
-            )}
-
-            {accordion && (
+            ) : (
               <CommonButton
                 btnVariant="icon"
                 color="secondary"
@@ -73,20 +86,40 @@ export default function WidgetEditorBar({
           </Toolbar>
         </Toolbar>
 
-        <Collapse in={accordion && open}>
-          <Divider />
+        {widget && (
+          <Collapse in={open}>
+            <Divider />
 
-          <Toolbar
-            variant="regular"
-            sx={(theme) => ({
-              paddingTop: theme.spacing(2),
-              paddingBottom: theme.spacing(2),
-              flexWrap: 'wrap',
-            })}
-          >
-            {accordion}
-          </Toolbar>
-        </Collapse>
+            <Toolbar
+              variant="regular"
+              sx={(theme) => ({
+                paddingTop: theme.spacing(2),
+                paddingBottom: theme.spacing(2),
+                flexWrap: 'wrap',
+              })}
+            >
+              <WidgetSelect
+                fullWidth
+                size="small"
+                margin="dense"
+                variant="outlined"
+                label={wt('lbl-widget-type')}
+                defaultValue={widget.type}
+                onChange={(e) => onValueChange('type', e.target.value)}
+              />
+
+              <TextField
+                fullWidth
+                size="small"
+                margin="dense"
+                variant="outlined"
+                label={wt('lbl-description')}
+                defaultValue={widget.description}
+                onChange={(e) => onValueChange('description', e.target.value)}
+              />
+            </Toolbar>
+          </Collapse>
+        )}
       </AppBar>
 
       <Divider />

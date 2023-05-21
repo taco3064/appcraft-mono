@@ -36,3 +36,5 @@ export type PureFieldProps = BaseFieldProps<
   | Appcraft.OneOfProp
   | Appcraft.StringProp
 >;
+
+export type DisplayPropNameHook = (propName?: string) => string;

@@ -32,7 +32,10 @@ export default function NestedElements({
       )}
 
       {items.map((widget) => (
-        <ListItemButton key={widget.id} onClick={() => onWidgetClick(widget)}>
+        <ListItemButton
+          key={widget.id}
+          onClick={() => onWidgetClick(widget.id)}
+        >
           <ListItemText primary={widget.description || widget.id} />
         </ListItemButton>
       ))}

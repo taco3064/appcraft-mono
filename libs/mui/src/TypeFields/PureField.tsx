@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import { NumericFormat, NumericFormatProps } from 'react-number-format';
 import { forwardRef } from 'react';
 
+import { useDisplayPropName } from './TypeFields.hooks';
 import { usePropValue } from '../InteractivedContext';
 import type * as Types from './TypeFields.types';
 
@@ -35,6 +36,7 @@ const NumberInput = forwardRef<HTMLInputElement, NumericFormatProps>(
 );
 
 export default function PureField({ options }: Types.PureFieldProps) {
+  const displayName = useDisplayPropName(options.propName);
   const [value, onChange] = usePropValue<unknown>(options.propName);
 
   switch (options.type) {
@@ -49,7 +51,7 @@ export default function PureField({ options }: Types.PureFieldProps) {
             {
               inputComponent: BoolInput,
               inputProps: {
-                label: options.propName,
+                label: displayName,
                 checked: Boolean(value),
                 onChange: (e: { target: { checked: boolean } }) =>
                   onChange(e.target.checked),
@@ -66,7 +68,7 @@ export default function PureField({ options }: Types.PureFieldProps) {
           size="small"
           variant="outlined"
           required={options.required}
-          label={options.propName}
+          label={displayName}
           InputProps={
             {
               inputComponent: NumberInput,
@@ -92,7 +94,7 @@ export default function PureField({ options }: Types.PureFieldProps) {
           size="small"
           variant="outlined"
           required={options.required}
-          label={options.propName}
+          label={displayName}
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
           SelectProps={{ displayEmpty: options.required }}
@@ -114,7 +116,7 @@ export default function PureField({ options }: Types.PureFieldProps) {
           size="small"
           variant="outlined"
           required={options.required}
-          label={options.propName}
+          label={displayName}
           defaultValue={value || ''}
           onChange={(e) => onChange(e.target.value)}
         />

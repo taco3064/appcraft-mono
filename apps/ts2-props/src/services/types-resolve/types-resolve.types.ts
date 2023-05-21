@@ -6,10 +6,10 @@ export type Generators = [
   PrivateGetProptype<Appcraft.BoolProp>,
   PrivateGetProptype<Appcraft.NumberProp>,
   PrivateGetProptype<Appcraft.StringProp>,
-  PrivateGetProptype<Appcraft.PropTypesDef>,
   PrivateGetProptype<Appcraft.ElementProp | Appcraft.NodeProp>,
   PrivateGetProptype<Appcraft.InstanceOfProp>,
   PrivateGetProptype<Appcraft.FuncProp>,
+  PrivateGetProptype<Appcraft.PropTypesDef>,
   PrivateGetProptype<Appcraft.ArrayOfProp>,
   PrivateGetProptype<
     Appcraft.ExactProp | Appcraft.ObjectProp | Appcraft.ObjectOfProp

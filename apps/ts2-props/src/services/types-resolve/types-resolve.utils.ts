@@ -23,55 +23,6 @@ const generators: Types.Generators = [
   (type, info) => type.isNumber() && { ...info, type: 'number' },
   (type, info) => type.isString() && { ...info, type: 'string' },
 
-  //* Union
-  (type, info, source) => {
-    if (type.isUnion()) {
-      const [oneOf, oneOfType] = type
-        .getUnionTypes()
-        .reduce<[OneOfProp['options'], OneOfTypeProp['options']]>(
-          ([literals, types], union) => {
-            if (union.isLiteral()) {
-              literals.push(JSON.parse(union.getText()));
-            } else {
-              const proptype = getProptype(union, info, source);
-
-              proptype && types.push({ ...proptype, text: union.getText() });
-            }
-
-            return [literals, types];
-          },
-          [[], []]
-        );
-
-      if (!oneOfType.length && oneOf.length) {
-        return { ...info, type: 'oneOf', options: oneOf };
-      }
-
-      if (oneOf.length && oneOfType.length) {
-        return {
-          ...info,
-          type: 'oneOfType',
-          options: [
-            ...oneOfType,
-            { ...info, type: 'oneOf', text: 'union', options: oneOf },
-          ],
-        };
-      }
-
-      if (!oneOf.length && oneOfType.length) {
-        return oneOfType.length === 1
-          ? oneOfType[0]
-          : {
-              ...info,
-              type: 'oneOfType',
-              options: oneOfType,
-            };
-      }
-    }
-
-    return false;
-  },
-
   //* ReactNode / ReactElement
   (type, info) => {
     if (type.getText() === 'React.ReactNode') {
@@ -131,6 +82,55 @@ const generators: Types.Generators = [
       }
 
       return { ...info, type: 'func' };
+    }
+
+    return false;
+  },
+
+  //* Union
+  (type, info, source) => {
+    if (type.isUnion()) {
+      const [oneOf, oneOfType] = type
+        .getUnionTypes()
+        .reduce<[OneOfProp['options'], OneOfTypeProp['options']]>(
+          ([literals, types], union) => {
+            if (union.isLiteral()) {
+              literals.push(JSON.parse(union.getText()));
+            } else {
+              const proptype = getProptype(union, info, source);
+
+              proptype && types.push({ ...proptype, text: union.getText() });
+            }
+
+            return [literals, types];
+          },
+          [[], []]
+        );
+
+      if (!oneOfType.length && oneOf.length) {
+        return { ...info, type: 'oneOf', options: oneOf };
+      }
+
+      if (oneOf.length && oneOfType.length) {
+        return {
+          ...info,
+          type: 'oneOfType',
+          options: [
+            ...oneOfType,
+            { ...info, type: 'oneOf', text: 'union', options: oneOf },
+          ],
+        };
+      }
+
+      if (!oneOf.length && oneOfType.length) {
+        return oneOfType.length === 1
+          ? oneOfType[0]
+          : {
+              ...info,
+              type: 'oneOfType',
+              options: oneOfType,
+            };
+      }
     }
 
     return false;

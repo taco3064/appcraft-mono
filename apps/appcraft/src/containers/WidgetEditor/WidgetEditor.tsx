@@ -87,6 +87,7 @@ export default function WidgetEditor({
 
       <Component.PersistentDrawerContent
         {...PersistentDrawerContentProps}
+        ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
         content="Content"

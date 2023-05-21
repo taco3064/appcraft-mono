@@ -29,7 +29,7 @@ export interface WidgetEditorProps {
 
   PersistentDrawerContentProps?: Omit<
     PersistentDrawerContentProps,
-    'DrawerProps' | 'content' | 'drawer' | 'open' | 'onClose'
+    'ContentProps' | 'DrawerProps' | 'content' | 'drawer' | 'open' | 'onClose'
   >;
 
   superiors: {

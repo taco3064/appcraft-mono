@@ -25,6 +25,7 @@ export default function PersistentDrawerContent({
         display: 'flex',
         flexDirection: DrawerProps.anchor === 'right' ? 'row' : 'row-reverse',
         height: height?.(theme) || '100%',
+        overflowX: 'hidden',
 
         '& > [role=contentinfo]': {
           display: 'flex',

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.32](https://github.com/taco3064/appcraft-mono/compare/v0.0.31...v0.0.32) (2023-05-20)
+
+
+### Bug Fixes
+
+* **@appcraft/types:** update the types override setting ([430c10f](https://github.com/taco3064/appcraft-mono/commit/430c10f48da9929e4580650f406fca6dffc6eed7))
+
 ### [0.0.31](https://github.com/taco3064/appcraft-mono/compare/v0.0.30...v0.0.31) (2023-05-20)
 
 

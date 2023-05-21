@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.33](https://github.com/taco3064/appcraft-mono/compare/v0.0.32...v0.0.33) (2023-05-21)
+
+
+### Bug Fixes
+
+* **ts2-props:** resort the priorities of types ([35d8a01](https://github.com/taco3064/appcraft-mono/commit/35d8a01aaae9eb77ea26253be9460f58d05aca0e))
+
 ### [0.0.32](https://github.com/taco3064/appcraft-mono/compare/v0.0.31...v0.0.32) (2023-05-20)
 
 

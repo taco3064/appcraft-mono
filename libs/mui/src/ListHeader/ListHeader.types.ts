@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-export interface SubheaderProps {
+export interface ListHeaderProps {
   action?: ReactNode;
   onAddElement?: () => void;
   onBack: (index?: number) => void;

@@ -2,10 +2,10 @@ import { Suspense, useState } from 'react';
 
 import { InteractivedProvider } from '../InteractivedContext';
 import { TypeListSkeleton } from '../TypeListSkeleton';
-import { useLazyTypeList } from './TypesEditor.hooks';
-import type * as Types from './TypesEditor.types';
+import { useLazyTypeList } from './CraftedEditor.hooks';
+import type { CraftedEditorProps } from './CraftedEditor.types';
 
-export default function TypesEditor({
+export default function CraftedEditor({
   disableSelection,
   parser,
   typeFile,
@@ -14,7 +14,7 @@ export default function TypesEditor({
   values,
   onChange,
   onMixedTypeMapping,
-}: Types.TypesEditorProps) {
+}: CraftedEditorProps) {
   const [propPath, setPropPath] = useState('');
 
   const LazyTypeList = useLazyTypeList({

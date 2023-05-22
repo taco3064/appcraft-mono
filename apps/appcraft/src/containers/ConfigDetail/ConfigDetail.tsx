@@ -1,9 +1,8 @@
+import * as Appcraft from '@appcraft/mui';
 import Container from '@mui/material/Container';
 import ReplayIcon from '@mui/icons-material/Replay';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { TypesEditor, TypesEditorProps } from '@appcraft/mui';
 import { useMutation } from '@tanstack/react-query';
-import { useNodePicker } from '@appcraft/mui';
 import { useSnackbar } from 'notistack';
 import { useState, useTransition } from 'react';
 
@@ -12,7 +11,7 @@ import { Breadcrumbs } from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
 import { upsertConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
-import type * as Types from './ConfigDetail.types';
+import type { ConfigDetailProps } from './ConfigDetail.types';
 
 export default function ConfigDetail<C extends object = object>({
   data,
@@ -21,7 +20,7 @@ export default function ConfigDetail<C extends object = object>({
   typeName,
   onActionNodePick = (e) => e,
   onSave,
-}: Types.ConfigDetailProps<C>) {
+}: ConfigDetailProps<C>) {
   const { enqueueSnackbar } = useSnackbar();
   const [, setTransition] = useTransition();
   const [at] = useFixedT('app');
@@ -42,7 +41,7 @@ export default function ConfigDetail<C extends object = object>({
     },
   });
 
-  const actionNode = useNodePicker(
+  const actionNode = Appcraft.useNodePicker(
     () =>
       onActionNodePick({
         reset: (
@@ -85,10 +84,10 @@ export default function ConfigDetail<C extends object = object>({
       />
 
       <Container maxWidth="sm">
-        <TypesEditor
+        <Appcraft.CraftedEditor
           {...{ typeFile, typeName, mixedTypes, values }}
           disableSelection
-          parser={TYPES_PARSER as TypesEditorProps['parser']}
+          parser={TYPES_PARSER as Appcraft.CraftedEditorProps['parser']}
           onChange={setValues}
           onMixedTypeMapping={setMixedTypes}
         />

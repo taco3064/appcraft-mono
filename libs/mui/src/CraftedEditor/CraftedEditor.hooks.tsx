@@ -2,7 +2,7 @@ import axios from 'axios';
 import { lazy, useMemo } from 'react';
 
 import { TypeList } from '../TypeList';
-import type { LazyTypeListHook } from './TypesEditor.types';
+import type { LazyTypeListHook } from './CraftedEditor.types';
 
 export const useLazyTypeList: LazyTypeListHook = ({
   parser,

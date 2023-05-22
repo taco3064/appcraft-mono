@@ -7,14 +7,14 @@ import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import type { SubheaderProps } from './Subheader.types';
+import type { ListHeaderProps } from './ListHeader.types';
 
-export default function Subheader({
+export default function ListHeader({
   action,
   breadcrumbs,
   onAddElement,
   onBack,
-}: SubheaderProps) {
+}: ListHeaderProps) {
   return (
     <ListSubheader
       component={Toolbar}

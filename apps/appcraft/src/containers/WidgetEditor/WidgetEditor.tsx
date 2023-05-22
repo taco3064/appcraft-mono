@@ -1,3 +1,4 @@
+import * as Appcraft from '@appcraft/mui';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import Collapse from '@mui/material/Collapse';
@@ -5,8 +6,6 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import Typography from '@mui/material/Typography';
 import { MUI_WIDGETS } from '@appcraft/types';
-import { TypesEditor, TypesEditorProps } from '@appcraft/mui';
-import { useNodePicker } from '@appcraft/mui';
 import { useState } from 'react';
 
 import * as Component from '~appcraft/components';
@@ -42,7 +41,7 @@ export default function WidgetEditor({
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
 
-  const actionNode = useNodePicker(
+  const actionNode = Appcraft.useNodePicker(
     () =>
       onActionNodePick({
         expand: !isCollapsable ? null : (
@@ -90,7 +89,7 @@ export default function WidgetEditor({
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
-        content="Content"
+        content={<Appcraft.CraftedRenderer options={values} />}
         drawer={
           <>
             <Component.WidgetEditorBar
@@ -121,10 +120,10 @@ export default function WidgetEditor({
                   {wt('msg-select-widget-type-first')}
                 </Typography>
               ) : (
-                <TypesEditor
+                <Appcraft.CraftedEditor
                   {...widgets.get(widget.type)}
                   disableSelection
-                  parser={TYPES_PARSER as TypesEditorProps['parser']}
+                  parser={TYPES_PARSER as Appcraft.CraftedEditorProps['parser']}
                   mixedTypes={widget.mapping}
                   values={widget.content}
                   onChange={(content) =>

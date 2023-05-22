@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react';
 import _set from 'lodash.set';
+import type { CraftedRendererProps } from '@appcraft/mui';
 
-import type { EditedValuesHook, WidgetConfig } from './WidgetEditor.types';
+import type { EditedValuesHook } from './WidgetEditor.types';
 
 export const useEditedValues: EditedValuesHook = (data) => {
   const [editingId, setEditingId] = useState<string | null>(null);
 
-  const [values, setValues] = useState<WidgetConfig>(() =>
+  const [values, setValues] = useState<CraftedRendererProps['options']>(() =>
     JSON.parse(JSON.stringify(data?.content || {}))
   );
 

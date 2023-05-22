@@ -12,7 +12,7 @@ import UndoIcon from '@mui/icons-material/Undo';
 import { useState } from 'react';
 
 import { TypeItemAction } from './TypeItem.styles';
-import { useMixedTypeMapping } from '../EditorContext';
+import { useMixedTypeMapping } from '../../contexts';
 import { useTypeField } from './TypeItem.hooks';
 import * as Fields from '../TypeFields';
 import type * as Types from './TypeItem.types';

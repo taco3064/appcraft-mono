@@ -1,6 +1,6 @@
-import type { CraftedEditorProps, NodePickerFn } from '@appcraft/mui';
+import type { CraftedEditorProps } from '@appcraft/mui';
 
-import type { Breadcrumb } from '~appcraft/hooks';
+import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
 import type { ConfigData } from '~appcraft/services';
 
 export interface ConfigDetailProps<C extends object>

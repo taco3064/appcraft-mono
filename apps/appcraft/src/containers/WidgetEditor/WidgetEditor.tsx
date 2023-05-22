@@ -13,7 +13,7 @@ import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
 import { CommonButton } from '~appcraft/components/common';
 import { NestedElements } from '../NestedElements';
 import { useEditedValues } from './WidgetEditor.hooks';
-import { useFixedT, useWidth } from '~appcraft/hooks';
+import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks';
 import type * as Types from './WidgetEditor.types';
 
 const widgets = MUI_WIDGETS.widgets.reduce<Types.WidgetMap>(
@@ -41,7 +41,7 @@ export default function WidgetEditor({
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
 
-  const actionNode = Appcraft.useNodePicker(
+  const actionNode = useNodePicker(
     () =>
       onActionNodePick({
         expand: !isCollapsable ? null : (

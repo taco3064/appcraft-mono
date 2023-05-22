@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import { useNodePickHandle } from '@appcraft/mui';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type { DataSource } from '@appcraft/types';
@@ -7,7 +6,7 @@ import type { DataSource } from '@appcraft/types';
 import { ConfigDetail } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
-import { useFixedT, useSuperiors } from '~appcraft/hooks';
+import { useFixedT, useNodePickHandle, useSuperiors } from '~appcraft/hooks';
 
 export default function Detail() {
   const { pathname, query } = useRouter();

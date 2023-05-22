@@ -4,7 +4,7 @@ import type { PropTypesDef } from '@appcraft/types';
 import { TypeItem } from '../TypeItem';
 import { TypeSubheader } from '../TypeSubheader';
 import { useOptionsSorting, usePropPathChange } from './TypeList.hooks';
-import { usePropPath, usePropValue } from '../EditorContext';
+import { usePropPath, usePropValue } from '../../contexts';
 import type { TypeListProps } from './TypeList.types';
 
 export default function TypeList({

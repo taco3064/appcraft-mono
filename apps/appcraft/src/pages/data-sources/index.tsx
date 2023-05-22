@@ -1,11 +1,10 @@
 import Head from 'next/head';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
-import { useNodePickHandle } from '@appcraft/mui';
 import { useRouter } from 'next/router';
 
 import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
 
 export default function DataSources() {
   const { pathname } = useRouter();

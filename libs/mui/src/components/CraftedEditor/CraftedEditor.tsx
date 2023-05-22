@@ -1,6 +1,6 @@
 import { Suspense, useState } from 'react';
 
-import { EditorProvider } from '../EditorContext';
+import { EditorProvider } from '../../contexts';
 import { TypeListSkeleton } from '../TypeListSkeleton';
 import { useLazyTypeList } from './CraftedEditor.hooks';
 import type { CraftedEditorProps } from './CraftedEditor.types';

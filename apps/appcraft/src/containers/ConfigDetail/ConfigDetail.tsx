@@ -1,7 +1,7 @@
-import * as Appcraft from '@appcraft/mui';
 import Container from '@mui/material/Container';
 import ReplayIcon from '@mui/icons-material/Replay';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import { CraftedEditor, CraftedEditorProps } from '@appcraft/mui';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useState, useTransition } from 'react';
@@ -10,7 +10,7 @@ import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
 import { Breadcrumbs } from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
 import { upsertConfig } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT, useNodePicker } from '~appcraft/hooks';
 import type { ConfigDetailProps } from './ConfigDetail.types';
 
 export default function ConfigDetail<C extends object = object>({
@@ -41,7 +41,7 @@ export default function ConfigDetail<C extends object = object>({
     },
   });
 
-  const actionNode = Appcraft.useNodePicker(
+  const actionNode = useNodePicker(
     () =>
       onActionNodePick({
         reset: (
@@ -84,10 +84,10 @@ export default function ConfigDetail<C extends object = object>({
       />
 
       <Container maxWidth="sm">
-        <Appcraft.CraftedEditor
+        <CraftedEditor
           {...{ typeFile, typeName, mixedTypes, values }}
           disableSelection
-          parser={TYPES_PARSER as Appcraft.CraftedEditorProps['parser']}
+          parser={TYPES_PARSER as CraftedEditorProps['parser']}
           onChange={setValues}
           onMixedTypeMapping={setMixedTypes}
         />

@@ -1,23 +1,22 @@
 import Head from 'next/head';
-import { useNodePickHandle } from '@appcraft/mui';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
+import * as Hooks from '~appcraft/hooks';
 import { PageContainer } from '~appcraft/styles';
 import { WidgetEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
-import { useFixedT, useHeight, useSuperiors } from '~appcraft/hooks';
 
 export default function Detail() {
   const { pathname, query } = useRouter();
-  const height = useHeight();
+  const height = Hooks.useHeight();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
 
-  const [wt] = useFixedT('widgets');
-  const { names, breadcrumbs } = useSuperiors(category, id);
+  const [wt] = Hooks.useFixedT('widgets');
+  const { names, breadcrumbs } = Hooks.useSuperiors(category, id);
 
-  const [action, handleActionNodePick] = useNodePickHandle([
+  const [action, handleActionNodePick] = Hooks.useNodePickHandle([
     'expand',
     'reset',
     'save',

@@ -1,7 +1,7 @@
 import { ComponentType, LazyExoticComponent } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import type { EditorProviderProps } from '../EditorContext';
+import type { EditorProviderProps } from '../../contexts';
 import type { TypeListProps } from '../TypeList';
 
 export interface CraftedEditorProps<V extends object = object>

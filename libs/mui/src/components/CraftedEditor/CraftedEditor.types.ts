@@ -1,4 +1,3 @@
-import { ComponentType, LazyExoticComponent } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import type { EditorProviderProps } from '../../contexts';
@@ -10,12 +9,3 @@ export interface CraftedEditorProps<V extends object = object>
     Pick<TypeListProps, 'disableSelection'> {
   parser: Pick<Appcraft.DataSource, 'url' | 'method' | 'headers'>;
 }
-
-export type LazyTypeListHook = (
-  options: Pick<
-    CraftedEditorProps,
-    'parser' | 'typeFile' | 'typeName' | 'mixedTypes'
-  > & {
-    propPath: string;
-  }
-) => LazyExoticComponent<ComponentType<Omit<TypeListProps, 'superior'>>>;

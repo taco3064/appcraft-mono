@@ -1,8 +1,9 @@
-import { Suspense, useState } from 'react';
+import axios from 'axios';
+import { Suspense, lazy, useMemo, useState } from 'react';
 
 import { EditorProvider } from '../../contexts';
+import { TypeList } from '../TypeList';
 import { TypeListSkeleton } from '../TypeListSkeleton';
-import { useLazyTypeList } from './CraftedEditor.hooks';
 import type { CraftedEditorProps } from './CraftedEditor.types';
 
 export default function CraftedEditor({
@@ -17,13 +18,25 @@ export default function CraftedEditor({
 }: CraftedEditorProps) {
   const [propPath, setPropPath] = useState('');
 
-  const LazyTypeList = useLazyTypeList({
-    parser,
-    propPath,
-    typeFile,
-    typeName,
-    mixedTypes,
-  });
+  const LazyTypeList = useMemo(
+    () =>
+      lazy(async () => {
+        const { data } = await axios({
+          ...parser,
+          data: {
+            typeFile,
+            typeName,
+            propPath,
+            mixedTypes,
+          },
+        });
+
+        return {
+          default: (props) => <TypeList {...props} superior={data} />,
+        };
+      }),
+    [parser, typeFile, typeName, propPath, mixedTypes]
+  );
 
   return (
     <Suspense fallback={<TypeListSkeleton />}>

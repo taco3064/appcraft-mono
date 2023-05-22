@@ -1,6 +1,6 @@
 import { Suspense, useState } from 'react';
 
-import { InteractivedProvider } from '../InteractivedContext';
+import { EditorProvider } from '../EditorContext';
 import { TypeListSkeleton } from '../TypeListSkeleton';
 import { useLazyTypeList } from './CraftedEditor.hooks';
 import type { CraftedEditorProps } from './CraftedEditor.types';
@@ -27,7 +27,7 @@ export default function CraftedEditor({
 
   return (
     <Suspense fallback={<TypeListSkeleton />}>
-      <InteractivedProvider
+      <EditorProvider
         {...{
           propPath,
           mixedTypes,
@@ -40,7 +40,7 @@ export default function CraftedEditor({
           {...{ disableSelection, values }}
           onPropPathChange={setPropPath}
         />
-      </InteractivedProvider>
+      </EditorProvider>
     </Suspense>
   );
 }

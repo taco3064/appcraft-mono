@@ -2,7 +2,7 @@ import _get from 'lodash.get';
 import _toPath from 'lodash.topath';
 import { useCallback, useMemo } from 'react';
 
-import { getPropPathString } from '../InteractivedContext';
+import { getPropPathString } from '../EditorContext';
 import { getTypeSeq } from '../TypeItem';
 import type * as Types from './TypeList.types';
 

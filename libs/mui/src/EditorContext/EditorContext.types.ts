@@ -1,12 +1,9 @@
 import type { ReactNode } from 'react';
 
 export type GetPropPathString = (values: object, paths: string[]) => string;
+export type CompleteValue<V extends object = object> = Required<EditorValue<V>>;
 
-export type CompleteValue<V extends object = object> = Required<
-  InteractivedValue<V>
->;
-
-export interface InteractivedProviderProps<V extends object = object> {
+export interface EditorProviderProps<V extends object = object> {
   children: ReactNode;
   propPath: string;
   mixedTypes?: Record<string, string>;
@@ -15,8 +12,8 @@ export interface InteractivedProviderProps<V extends object = object> {
   onMixedTypeMapping: (mapping: Record<string, string>) => void;
 }
 
-export type InteractivedValue<V extends object = object> = Pick<
-  InteractivedProviderProps<V>,
+export type EditorValue<V extends object = object> = Pick<
+  EditorProviderProps<V>,
   'propPath' | 'mixedTypes' | 'values' | 'onChange' | 'onMixedTypeMapping'
 >;
 

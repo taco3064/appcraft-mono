@@ -1,5 +1,5 @@
 import _get from 'lodash.get';
-import type { GetPropPathString } from './InteractivedContext.types';
+import type { GetPropPathString } from './EditorContext.types';
 
 export const getPropPathString: GetPropPathString = (values, paths) =>
   paths.reduce<string>((result, propName, i) => {

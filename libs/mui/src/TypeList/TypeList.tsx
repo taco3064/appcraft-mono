@@ -1,10 +1,10 @@
 import List from '@mui/material/List';
 import type { PropTypesDef } from '@appcraft/types';
 
-import { ListHeader } from '../ListHeader';
 import { TypeItem } from '../TypeItem';
+import { TypeSubheader } from '../TypeSubheader';
 import { useOptionsSorting, usePropPathChange } from './TypeList.hooks';
-import { usePropPath, usePropValue } from '../InteractivedContext';
+import { usePropPath, usePropValue } from '../EditorContext';
 import type { TypeListProps } from './TypeList.types';
 
 export default function TypeList({
@@ -29,7 +29,7 @@ export default function TypeList({
   return (
     <List
       subheader={
-        <ListHeader
+        <TypeSubheader
           breadcrumbs={breadcrumbs}
           onBack={handleBack}
           onAddElement={

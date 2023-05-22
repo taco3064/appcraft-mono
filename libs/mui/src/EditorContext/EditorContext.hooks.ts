@@ -3,17 +3,15 @@ import _get from 'lodash.get';
 import _set from 'lodash.set';
 import _toPath from 'lodash.topath';
 
-import { getPropPathString } from './InteractivedContext.utils';
-import type * as Types from './InteractivedContext.types';
+import { getPropPathString } from './EditorContext.utils';
+import type * as Types from './EditorContext.types';
 
-export const InteractivedContext = React.createContext<Types.InteractivedValue>(
-  {
-    propPath: '',
-    values: {},
-    onChange: (v) => null,
-    onMixedTypeMapping: () => null,
-  }
-);
+export const InteractivedContext = React.createContext<Types.EditorValue>({
+  propPath: '',
+  values: {},
+  onChange: (v) => null,
+  onMixedTypeMapping: () => null,
+});
 
 const useContext: Types.ContextHook = () =>
   React.useContext(InteractivedContext) as Types.CompleteValue;

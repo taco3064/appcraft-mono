@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
-import { InteractivedContext } from './InteractivedContext.hooks';
-import type * as Types from './InteractivedContext.types';
+import { InteractivedContext } from './EditorContext.hooks';
+import type * as Types from './EditorContext.types';
 
 export default function InteractivedProvider({
   children,
@@ -10,7 +10,7 @@ export default function InteractivedProvider({
   values,
   onChange,
   onMixedTypeMapping,
-}: Types.InteractivedProviderProps) {
+}: Types.EditorProviderProps) {
   const value = useMemo(
     () => ({
       propPath,

@@ -6,7 +6,7 @@ import { NumericFormat, NumericFormatProps } from 'react-number-format';
 import { forwardRef } from 'react';
 
 import { useDisplayPropName } from './TypeFields.hooks';
-import { usePropValue } from '../InteractivedContext';
+import { usePropValue } from '../EditorContext';
 import type * as Types from './TypeFields.types';
 
 const BoolInput = forwardRef<HTMLInputElement, Types.BoolInputProps>(

@@ -4,8 +4,7 @@ import type { PropTypesDef } from '@appcraft/types';
 import { TypeItem } from '../TypeItem';
 import { TypeSubheader } from '../TypeSubheader';
 import { usePropPath, usePropValue } from '../../contexts';
-import { usePropPathChange } from './TypeList.hooks';
-import { usePropertiesSorting } from '../../hooks';
+import { usePropertiesSorting, usePropertyRouter } from '../../hooks';
 import type { TypeListProps } from './TypeList.types';
 
 export default function TypeList({
@@ -22,7 +21,7 @@ export default function TypeList({
     /^object/.test(superior?.type) ||
     (superior?.type === 'arrayOf' && !Array.isArray(superior.options));
 
-  const [breadcrumbs, { back: handleBack, to: handleTo }] = usePropPathChange(
+  const [breadcrumbs, { back: handleBack, to: handleTo }] = usePropertyRouter(
     { values, onPropPathChange },
     propPath
   );

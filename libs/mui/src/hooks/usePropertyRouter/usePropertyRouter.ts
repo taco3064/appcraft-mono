@@ -3,9 +3,9 @@ import _toPath from 'lodash.topath';
 import { useCallback, useMemo } from 'react';
 
 import { getPropPathString } from '../../contexts';
-import type * as Types from './TypeList.types';
+import type { PropertyRouterHook } from './usePropertyRouter.types';
 
-export const usePropPathChange: Types.PropPathChangeHook = (
+const usePropertyRouter: PropertyRouterHook = (
   { values, onPropPathChange },
   propPath
 ) => {
@@ -37,3 +37,5 @@ export const usePropPathChange: Types.PropPathChangeHook = (
     },
   ];
 };
+
+export default usePropertyRouter;

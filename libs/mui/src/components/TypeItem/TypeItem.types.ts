@@ -8,5 +8,3 @@ export interface TypeItemProps {
   onDisplayItemClick: (options: PropTypesDef) => void;
   onItemRemove?: (options: PropTypesDef) => void;
 }
-
-export type GetTypeSeqFn = (type: PropTypesDef['type']) => number;

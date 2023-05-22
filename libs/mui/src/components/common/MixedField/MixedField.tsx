@@ -1,8 +1,8 @@
 import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined';
 
-import { GapTypography } from './TypeFields.styles';
-import { useDisplayPropName } from './TypeFields.hooks';
-import type { MixedFieldProps } from './TypeFields.types';
+import { GapTypography } from '../../../styles';
+import { useDisplayPropName } from '../../../hooks';
+import type { MixedFieldProps } from './MixedField.types';
 
 export default function MixedField({ options }: MixedFieldProps) {
   const displayName = useDisplayPropName(options.propName);

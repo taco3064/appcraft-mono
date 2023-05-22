@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import type { DisplayPropNameHook } from './TypeFields.types';
+import type { DisplayPropNameHook } from './useDisplayPropName.types';
 
-export const useDisplayPropName: DisplayPropNameHook = (propName) =>
+const useDisplayPropName: DisplayPropNameHook = (propName) =>
   useMemo(
     () =>
       propName
@@ -10,3 +10,5 @@ export const useDisplayPropName: DisplayPropNameHook = (propName) =>
         .replace(/^./, (str) => str.toUpperCase()) || '',
     [propName]
   );
+
+export default useDisplayPropName;

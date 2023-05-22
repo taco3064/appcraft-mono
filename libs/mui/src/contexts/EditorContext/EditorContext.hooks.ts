@@ -6,7 +6,7 @@ import _toPath from 'lodash.topath';
 import { getPropPathString } from './EditorContext.utils';
 import type * as Types from './EditorContext.types';
 
-export const InteractivedContext = React.createContext<Types.EditorValue>({
+export const EditorContext = React.createContext<Types.EditorValue>({
   propPath: '',
   values: {},
   onChange: (v) => null,
@@ -14,7 +14,7 @@ export const InteractivedContext = React.createContext<Types.EditorValue>({
 });
 
 const useContext: Types.ContextHook = () =>
-  React.useContext(InteractivedContext) as Types.CompleteValue;
+  React.useContext(EditorContext) as Types.EditorContextValue;
 
 export const usePropPath = () => {
   const { propPath } = useContext();

@@ -1,7 +1,10 @@
 import type { ReactNode } from 'react';
 
 export type GetPropPathString = (values: object, paths: string[]) => string;
-export type CompleteValue<V extends object = object> = Required<EditorValue<V>>;
+
+export type EditorContextValue<V extends object = object> = Required<
+  EditorValue<V>
+>;
 
 export interface EditorProviderProps<V extends object = object> {
   children: ReactNode;
@@ -17,9 +20,8 @@ export type EditorValue<V extends object = object> = Pick<
   'propPath' | 'mixedTypes' | 'values' | 'onChange' | 'onMixedTypeMapping'
 >;
 
-export type ContextHook = () => CompleteValue;
-
-export type PropPathHook = () => CompleteValue['propPath'];
+export type ContextHook = () => EditorContextValue;
+export type PropPathHook = () => EditorContextValue['propPath'];
 export type PropValueHook = <V>(propName?: string) => [V, (value: V) => void];
 
 export type MixedTypeMapping = (

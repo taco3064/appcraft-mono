@@ -1,41 +1,13 @@
-import FormControlLabel from '@mui/material/FormControlLabel';
 import MenuItem from '@mui/material/MenuItem';
-import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
-import { NumericFormat, NumericFormatProps } from 'react-number-format';
-import { forwardRef } from 'react';
 
-import { useDisplayPropName } from './TypeFields.hooks';
-import { usePropValue } from '../../contexts';
-import type * as Types from './TypeFields.types';
+import { BoolInput } from '../BoolInput';
+import { NumberInput } from '../NumberInput';
+import { useDisplayPropName } from '../../../hooks';
+import { usePropValue } from '../../../contexts';
+import type { PureFieldProps } from './PureField.types';
 
-const BoolInput = forwardRef<HTMLInputElement, Types.BoolInputProps>(
-  ({ className: _cn, ...props }, ref) => (
-    <FormControlLabel
-      {...props}
-      inputRef={ref}
-      labelPlacement="start"
-      control={<Switch color="primary" />}
-      sx={(theme) => ({
-        width: '100%',
-        height: theme.spacing(5),
-        margin: theme.spacing(0, 2),
-
-        '& > .MuiFormControlLabel-label': {
-          width: '100%',
-        },
-      })}
-    />
-  )
-);
-
-const NumberInput = forwardRef<HTMLInputElement, NumericFormatProps>(
-  (props, ref) => (
-    <NumericFormat {...props} thousandSeparator getInputRef={ref} />
-  )
-);
-
-export default function PureField({ options }: Types.PureFieldProps) {
+export default function PureField({ options }: PureFieldProps) {
   const displayName = useDisplayPropName(options.propName);
   const [value, onChange] = usePropValue<unknown>(options.propName);
 

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { InteractivedContext } from './EditorContext.hooks';
+import { EditorContext } from './EditorContext.hooks';
 import type * as Types from './EditorContext.types';
 
 export default function InteractivedProvider({
@@ -23,8 +23,6 @@ export default function InteractivedProvider({
   );
 
   return (
-    <InteractivedContext.Provider value={value}>
-      {children}
-    </InteractivedContext.Provider>
+    <EditorContext.Provider value={value}>{children}</EditorContext.Provider>
   );
 }

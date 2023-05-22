@@ -1,13 +1,8 @@
-import type * as Appcraft from '@appcraft/types';
+import type { BasicType } from '../../hooks';
 import type { TypeItemProps } from '../TypeItem';
 
 export interface TypeListProps extends Pick<TypeItemProps, 'disableSelection'> {
-  superior:
-    | Appcraft.ArrayOfProp
-    | Appcraft.ExactProp
-    | Appcraft.ObjectOfProp
-    | Appcraft.ObjectProp;
-
+  superior: BasicType;
   values: object;
   onPropPathChange: (propPath: string) => void;
 }
@@ -26,7 +21,3 @@ export type PropPathChangeHook = (
     to: TypeItemProps['onDisplayItemClick'];
   }
 ];
-
-export type OptionsSortingHook = (
-  superior?: TypeListProps['superior']
-) => Appcraft.PropTypesDef[];

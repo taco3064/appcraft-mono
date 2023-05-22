@@ -2,9 +2,9 @@ import DataArrayIcon from '@mui/icons-material/DataArray';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import DeviceHubIcon from '@mui/icons-material/DeviceHub';
 
-import { GapTypography } from './TypeFields.styles';
-import { useDisplayPropName } from './TypeFields.hooks';
-import type { DisplayFieldProps } from './TypeFields.types';
+import { GapTypography } from '../../../styles';
+import { useDisplayPropName } from '../../../hooks';
+import type { DisplayFieldProps } from './DisplayField.types';
 
 export default function DisplayField({ options }: DisplayFieldProps) {
   const displayName = useDisplayPropName(options.propName);

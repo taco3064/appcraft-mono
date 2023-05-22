@@ -3,8 +3,9 @@ import type { PropTypesDef } from '@appcraft/types';
 
 import { TypeItem } from '../TypeItem';
 import { TypeSubheader } from '../TypeSubheader';
-import { useOptionsSorting, usePropPathChange } from './TypeList.hooks';
 import { usePropPath, usePropValue } from '../../contexts';
+import { usePropPathChange } from './TypeList.hooks';
+import { usePropertiesSorting } from '../../hooks';
 import type { TypeListProps } from './TypeList.types';
 
 export default function TypeList({
@@ -14,7 +15,7 @@ export default function TypeList({
   onPropPathChange,
 }: TypeListProps) {
   const propPath = usePropPath();
-  const options = useOptionsSorting(superior);
+  const properties = usePropertiesSorting(superior);
   const [value, onChange] = usePropValue<object>(superior?.propName);
 
   const isSubElAllowed =
@@ -49,7 +50,7 @@ export default function TypeList({
       }
     >
       {superior?.type === 'exact' &&
-        options.map((opts) => (
+        properties.map((opts) => (
           <TypeItem
             key={opts.propName}
             disableSelection={disableSelection}

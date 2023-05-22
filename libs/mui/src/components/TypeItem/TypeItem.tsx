@@ -11,10 +11,10 @@ import MenuItem from '@mui/material/MenuItem';
 import UndoIcon from '@mui/icons-material/Undo';
 import { useState } from 'react';
 
-import { TypeItemAction } from './TypeItem.styles';
+import { TypeItemAction } from '../../styles';
 import { useMixedTypeMapping } from '../../contexts';
-import { useTypeField } from './TypeItem.hooks';
-import * as Fields from '../TypeFields';
+import { useTypeCategory } from '../../hooks';
+import * as Common from '../common';
 import type * as Types from './TypeItem.types';
 
 export default function TypeItem({
@@ -26,7 +26,7 @@ export default function TypeItem({
 }: Types.TypeItemProps) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [mixedType, setMixedType] = useMixedTypeMapping(options.propName);
-  const category = useTypeField(options);
+  const category = useTypeCategory(options);
 
   const selection = disableSelection ? null : (
     <ListItemIcon>
@@ -56,8 +56,8 @@ export default function TypeItem({
           <ListItemText
             disableTypography
             primary={
-              <Fields.DisplayField
-                options={options as Fields.DisplayFieldProps['options']}
+              <Common.DisplayField
+                options={options as Common.DisplayFieldProps['options']}
               />
             }
           />
@@ -74,8 +74,8 @@ export default function TypeItem({
           <ListItemText
             disableTypography
             primary={
-              <Fields.PureField
-                options={options as Fields.PureFieldProps['options']}
+              <Common.PureField
+                options={options as Common.PureFieldProps['options']}
               />
             }
           />
@@ -85,7 +85,7 @@ export default function TypeItem({
       );
 
     case 'Mixed': {
-      const opts = options as Fields.MixedFieldProps['options'];
+      const opts = options as Common.MixedFieldProps['options'];
       const mixedOptions = opts.options?.find(({ text }) => text === mixedType);
       const horizontal = mixedType ? 'right' : 'center';
 
@@ -97,7 +97,7 @@ export default function TypeItem({
 
               <ListItemText
                 disableTypography
-                primary={<Fields.MixedField options={opts} />}
+                primary={<Common.MixedField options={opts} />}
               />
 
               {actions}

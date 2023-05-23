@@ -253,7 +253,10 @@ const generators: Types.Generators = [
 
 //* 取得目標 Type 對應的 PropTypes
 export const getProptype: Types.PrivateGetProptype = (type, info, source) =>
-  generators.reduce(
-    (result, generator) => result || generator(type, info, source),
-    false
-  );
+  generators.reduce((result, generator) => {
+    if (!result || type.getText().startsWith('React.Ref<')) {
+      return generator(type, info, source);
+    }
+
+    return result;
+  }, false);

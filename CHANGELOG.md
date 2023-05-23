@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.34](https://github.com/taco3064/appcraft-mono/compare/v0.0.33...v0.0.34) (2023-05-23)
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** add WidgetGenerator component ([a5afb42](https://github.com/taco3064/appcraft-mono/commit/a5afb4282e2e4c3563bcdedb3b0503d4acfbd0e9))
+* **@appcraft/mui:** move all private hooks to hooks/ folder ([f4a322c](https://github.com/taco3064/appcraft-mono/commit/f4a322c2d9c92e073f517c0d4893335bfa0e83ba))
+* **@appcraft/mui:** renamed the components of @appcraft/mui ([27a4eea](https://github.com/taco3064/appcraft-mono/commit/27a4eea19364be39356b2bf5c415b1fea3034b21))
+* **@appcraft/mui:** renamed the context of editor ([1409862](https://github.com/taco3064/appcraft-mono/commit/1409862f79370a1afde2f3cf78dd42afdc21e808))
+* **@appcraft/mui:** update folder structures ([f3b385b](https://github.com/taco3064/appcraft-mono/commit/f3b385b6ac471aff29e1a58e6304260b7998f306))
+* **@appcraft/mui:** update folder structures ([4e27034](https://github.com/taco3064/appcraft-mono/commit/4e27034e61bbc411cf952150abb9cadb6303e4f4))
+* **@appcraft/mui:** update folder structures ([ec76250](https://github.com/taco3064/appcraft-mono/commit/ec762502602e9fbe3dad664c0714ee41ed628225))
+* **widget-editor(apps/appcraft):** rename hooks ([2ce349b](https://github.com/taco3064/appcraft-mono/commit/2ce349bad8195df509d589bfee15b81400c090e8))
+
 ### [0.0.33](https://github.com/taco3064/appcraft-mono/compare/v0.0.32...v0.0.33) (2023-05-21)
 
 

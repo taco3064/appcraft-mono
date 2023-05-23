@@ -44,7 +44,7 @@ export const useEditedValues: EditedValuesHook = (data) => {
                 JSON.parse(
                   JSON.stringify(
                     theme.components[`Mui${value}` as keyof Components]
-                      .defaultProps
+                      ?.defaultProps || '{}'
                   )
                 ),
               ],

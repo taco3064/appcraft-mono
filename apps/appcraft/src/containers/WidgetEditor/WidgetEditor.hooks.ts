@@ -1,10 +1,12 @@
 import { useMemo, useState } from 'react';
+import { Components, useTheme } from '@mui/material/styles';
 import _set from 'lodash.set';
 import type { CraftedRendererProps } from '@appcraft/mui';
 
 import type { EditedValuesHook } from './WidgetEditor.types';
 
 export const useEditedValues: EditedValuesHook = (data) => {
+  const theme = useTheme();
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const [values, setValues] = useState<CraftedRendererProps['options']>(() =>
@@ -31,12 +33,35 @@ export const useEditedValues: EditedValuesHook = (data) => {
         ],
       }),
 
-    onWidgetChange: (propPath, value) =>
+    onWidgetChange: (propPath, value) => {
+      const overrides: [string, unknown][] =
+        propPath !== 'type'
+          ? [[propPath, value]]
+          : [
+              [propPath, value],
+              [
+                'content',
+                JSON.parse(
+                  JSON.stringify(
+                    theme.components[`Mui${value}` as keyof Components]
+                      .defaultProps
+                  )
+                ),
+              ],
+              ['mapping', {}],
+            ];
+
       setValues({
         ...values,
         widgets: values.widgets.map((widget) =>
-          widget.id !== editingId ? widget : _set(widget, propPath, value)
+          widget.id !== editingId
+            ? widget
+            : overrides.reduce(
+                (result, [path, newValue]) => _set(result, path, newValue),
+                widget
+              )
         ),
-      }),
+      });
+    },
   };
 };

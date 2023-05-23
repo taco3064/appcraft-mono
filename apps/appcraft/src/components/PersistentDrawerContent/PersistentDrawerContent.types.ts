@@ -10,7 +10,7 @@ export interface PersistentDrawerContentProps
   height?: (theme: Theme) => number | string;
   open: boolean;
 
-  ContentProps?: Omit<ContainerProps, 'children'>;
+  ContentProps?: Omit<ContainerProps, 'children' | 'sx'>;
   DrawerProps: {
     anchor: 'right' | 'left';
     maxWidth: ContainerProps['maxWidth'];

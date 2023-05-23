@@ -26,11 +26,6 @@ export default function PersistentDrawerContent({
         flexDirection: DrawerProps.anchor === 'right' ? 'row' : 'row-reverse',
         height: height?.(theme) || '100%',
         overflowX: 'hidden',
-
-        '& > [role=contentinfo]': {
-          display: 'flex',
-          flexDirection: 'column',
-        },
       })}
     >
       <SizedDrawer
@@ -60,10 +55,17 @@ export default function PersistentDrawerContent({
       </SizedDrawer>
 
       <Container
-        role="contentinfo"
         disableGutters
         {...ContentProps}
         maxWidth={false}
+        sx={(theme) => ({
+          display: 'flex',
+          flexDirection: 'column',
+
+          [theme.breakpoints.up('md')]: {
+            marginRight: theme.spacing(1.5),
+          },
+        })}
       >
         {content}
       </Container>
@@ -72,7 +74,14 @@ export default function PersistentDrawerContent({
         <Container
           disableGutters
           maxWidth={DrawerProps.maxWidth}
-          style={{ visibility: 'hidden' }}
+          sx={(theme) => ({
+            [theme.breakpoints.up('sm')]: {
+              visibility: 'hidden',
+            },
+            [theme.breakpoints.down('md')]: {
+              display: 'none',
+            },
+          })}
         />
       )}
     </Container>

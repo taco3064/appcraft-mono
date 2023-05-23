@@ -145,7 +145,7 @@
         {
           "patternType": "RegExp",
           "pattern": "^.+$",
-          "replacement": "InputProps?: Pick<Partial<StandardInputProps>, 'endAdornment' | 'readOnly' | 'startAdornment'>",
+          "replacement": "InputProps?: Pick<Partial<FilledInputProps>, 'endAdornment' | 'readOnly' | 'startAdornment'>",
           "extractType": [
             {
               "method": "getInterface",
@@ -160,7 +160,7 @@
         {
           "patternType": "RegExp",
           "pattern": "^.+$",
-          "replacement": "InputProps?: Pick<Partial<StandardInputProps>, 'endAdornment' | 'readOnly' | 'startAdornment'>",
+          "replacement": "InputProps?: Pick<Partial<OutlinedInputProps>, 'endAdornment' | 'readOnly' | 'startAdornment'>",
           "extractType": [
             {
               "method": "getInterface",

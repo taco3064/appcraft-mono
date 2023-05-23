@@ -126,6 +126,51 @@
               "typeName": "onChange"
             }
           ]
+        },
+        {
+          "patternType": "RegExp",
+          "pattern": "^.+$",
+          "replacement": "InputProps?: Pick<Partial<StandardInputProps>, 'endAdornment' | 'readOnly' | 'startAdornment'>",
+          "extractType": [
+            {
+              "method": "getInterface",
+              "typeName": "StandardTextFieldProps"
+            },
+            {
+              "method": "getProperty",
+              "typeName": "InputProps"
+            }
+          ]
+        },
+        {
+          "patternType": "RegExp",
+          "pattern": "^.+$",
+          "replacement": "InputProps?: Pick<Partial<StandardInputProps>, 'endAdornment' | 'readOnly' | 'startAdornment'>",
+          "extractType": [
+            {
+              "method": "getInterface",
+              "typeName": "FilledTextFieldProps"
+            },
+            {
+              "method": "getProperty",
+              "typeName": "InputProps"
+            }
+          ]
+        },
+        {
+          "patternType": "RegExp",
+          "pattern": "^.+$",
+          "replacement": "InputProps?: Pick<Partial<StandardInputProps>, 'endAdornment' | 'readOnly' | 'startAdornment'>",
+          "extractType": [
+            {
+              "method": "getInterface",
+              "typeName": "OutlinedTextFieldProps"
+            },
+            {
+              "method": "getProperty",
+              "typeName": "InputProps"
+            }
+          ]
         }
       ]
     }

@@ -1,5 +1,4 @@
 import Container, { ContainerProps } from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -39,8 +38,6 @@ export const PageContainer = withStyles(
         {action}
       </Toolbar>
 
-      <Divider sx={(theme) => ({ marginBottom: theme.spacing(2) })} />
-
       <Paper
         role="contentinfo"
         elevation={0}
@@ -60,12 +57,6 @@ export const PageContainer = withStyles(
         borderRadius: theme.shape.borderRadius,
         top: theme.spacing(9),
         zIndex: theme.zIndex.appBar,
-
-        '& + hr': {
-          position: 'sticky',
-          top: theme.spacing(15),
-          zIndex: theme.zIndex.appBar,
-        },
       },
       '& > [role=contentinfo]': {
         background: ContentProps?.disableGutters ? 'transparent' : null,

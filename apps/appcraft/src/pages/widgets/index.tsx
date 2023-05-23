@@ -1,13 +1,12 @@
 import ExtensionTwoToneIcon from '@mui/icons-material/ExtensionTwoTone';
 import Head from 'next/head';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import { useNodePickHandle } from '@appcraft/mui';
 import { useRouter } from 'next/router';
 
 import { CommonButton } from '~appcraft/components/common';
 import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
 
 export default function Widgets() {
   const { pathname } = useRouter();

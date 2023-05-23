@@ -1,21 +1,19 @@
+import * as Appcraft from '@appcraft/mui';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import Collapse from '@mui/material/Collapse';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import _set from 'lodash.set';
-import { MUI_WIDGETS, WidgetOptions } from '@appcraft/types';
-import { TypesEditor, TypesEditorProps } from '@appcraft/mui';
-import { useNodePicker } from '@appcraft/mui';
-import { useState, useTransition } from 'react';
+import { MUI_WIDGETS } from '@appcraft/types';
+import { useState } from 'react';
 
 import * as Component from '~appcraft/components';
 import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
 import { CommonButton } from '~appcraft/components/common';
 import { NestedElements } from '../NestedElements';
-import { useFixedT, useWidth } from '~appcraft/hooks';
+import { useEditedValues } from './WidgetEditor.hooks';
+import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks';
 import type * as Types from './WidgetEditor.types';
 
 const widgets = MUI_WIDGETS.widgets.reduce<Types.WidgetMap>(
@@ -35,19 +33,13 @@ export default function WidgetEditor({
   superiors: { names, breadcrumbs },
   onActionNodePick = (e) => e,
 }: Types.WidgetEditorProps) {
-  const [, setTransition] = useTransition();
   const [at, wt] = useFixedT('app', 'widgets');
   const [open, setOpen] = useState(true);
-  const [widget, setWidget] = useState<WidgetOptions | null>(null);
+  const { values, widget, ...valuesHandle } = useEditedValues(data);
 
-  const barVariant = widget ? 'props' : 'elements';
   const width = useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
-
-  const [values, setValues] = useState<Types.WidgetConfig>(() =>
-    JSON.parse(JSON.stringify(data?.content || {}))
-  );
 
   const actionNode = useNodePicker(
     () =>
@@ -65,12 +57,7 @@ export default function WidgetEditor({
             btnVariant="icon"
             icon={RestartAltIcon}
             text={at('btn-reset')}
-            onClick={() =>
-              setTransition(() => {
-                // setValues(JSON.parse(JSON.stringify(data?.content || {})));
-                // setMixedTypes(JSON.parse(JSON.stringify(data?.mapping || {})));
-              })
-            }
+            onClick={() => valuesHandle.onReset()}
           />
         ),
         save: (
@@ -84,15 +71,6 @@ export default function WidgetEditor({
       }),
     [open, isCollapsable, isSettingOpen]
   );
-
-  const handleElementAdd = (id) =>
-    setValues({
-      ...values,
-      widgets: [
-        ...(values.widgets || []),
-        { id, type: '', description: '', content: {}, mapping: {} },
-      ],
-    });
 
   return (
     <>
@@ -108,54 +86,23 @@ export default function WidgetEditor({
 
       <Component.PersistentDrawerContent
         {...PersistentDrawerContentProps}
+        ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
-        content="Content"
+        content={<Appcraft.CraftedRenderer options={values} />}
         drawer={
           <>
             <Component.WidgetEditorBar
-              variant={barVariant}
-              accordion={
-                widget && (
-                  <>
-                    <Component.WidgetSelect
-                      fullWidth
-                      size="small"
-                      margin="dense"
-                      variant="outlined"
-                      label={wt('lbl-widget-type')}
-                      defaultValue={widget.type}
-                      onChange={(e) =>
-                        setWidget({ ..._set(widget, 'type', e.target.value) })
-                      }
-                    />
-
-                    <TextField
-                      fullWidth
-                      size="small"
-                      margin="dense"
-                      variant="outlined"
-                      label={wt('lbl-description')}
-                      defaultValue={widget.description}
-                      onChange={(e) =>
-                        setWidget({
-                          ..._set(widget, 'description', e.target.value),
-                        })
-                      }
-                    />
-                  </>
-                )
-              }
-              onElementAdd={handleElementAdd}
-              onVariantChange={(variant) =>
-                setWidget(variant === 'elements' ? null : widget)
-              }
+              widget={widget}
+              onElementAdd={valuesHandle.onWidgetAdd}
+              onBackToElements={() => valuesHandle.onEditingChange(null)}
+              onValueChange={valuesHandle.onWidgetChange}
             />
 
             <Collapse in={Boolean(!widget)}>
               <NestedElements
                 widgets={values.widgets}
-                onWidgetClick={setWidget}
+                onWidgetClick={valuesHandle.onEditingChange}
               />
             </Collapse>
 
@@ -173,17 +120,17 @@ export default function WidgetEditor({
                   {wt('msg-select-widget-type-first')}
                 </Typography>
               ) : (
-                <TypesEditor
+                <Appcraft.CraftedEditor
                   {...widgets.get(widget.type)}
                   disableSelection
-                  parser={TYPES_PARSER as TypesEditorProps['parser']}
+                  parser={TYPES_PARSER as Appcraft.CraftedEditorProps['parser']}
                   mixedTypes={widget.mapping}
                   values={widget.content}
                   onChange={(content) =>
-                    setWidget({ ..._set(widget, 'content', content) })
+                    valuesHandle.onWidgetChange('content', content)
                   }
                   onMixedTypeMapping={(mapping) =>
-                    setWidget({ ..._set(widget, 'mapping', mapping) })
+                    valuesHandle.onWidgetChange('mapping', mapping)
                   }
                 />
               )}

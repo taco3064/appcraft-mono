@@ -1,9 +1,10 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, MouseEventHandler } from 'react';
+import type { WidgetOptions } from '@appcraft/types';
 
 export interface WidgetEditorBarProps {
-  accordion: ReactNode;
   action?: ReactNode;
-  variant: 'elements' | 'props';
+  widget?: WidgetOptions;
+  onBackToElements: MouseEventHandler<HTMLButtonElement>;
   onElementAdd: (id: string) => void;
-  onVariantChange: (variant: WidgetEditorBarProps['variant']) => void;
+  onValueChange: (name: 'type' | 'description', value: string) => void;
 }

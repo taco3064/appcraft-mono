@@ -1,20 +1,19 @@
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import Head from 'next/head';
 import PaletteTwoToneIcon from '@mui/icons-material/PaletteTwoTone';
-import { useNodePickHandle } from '@appcraft/mui';
 import { useRouter } from 'next/router';
 
+import * as Hooks from '~appcraft/hooks';
 import { CommonButton } from '~appcraft/components/common';
 import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
-import { useFixedT, useSettingModified } from '~appcraft/hooks';
 
 export default function Themes() {
   const { pathname } = useRouter();
-  const { setTheme } = useSettingModified();
-  const [at, nt] = useFixedT('app', 'nav');
+  const { setTheme } = Hooks.useSettingModified();
+  const [at, nt] = Hooks.useFixedT('app', 'nav');
 
-  const [action, handleActionNodePick] = useNodePickHandle([
+  const [action, handleActionNodePick] = Hooks.useNodePickHandle([
     'search',
     'addItem',
   ]);

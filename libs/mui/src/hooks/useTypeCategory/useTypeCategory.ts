@@ -8,13 +8,15 @@ const useTypeCategory = <P extends PropTypesDef>({ type }: P) =>
   useMemo<Category | null>(() => {
     switch (getOrderSeq(type)) {
       case 0:
-      case 5:
+        return 'Node';
+      case 1:
+      case 4:
         return 'Display';
 
-      case 1:
+      case 2:
         return 'Mixed';
 
-      case 4:
+      case 3:
         return 'Pure';
 
       default:

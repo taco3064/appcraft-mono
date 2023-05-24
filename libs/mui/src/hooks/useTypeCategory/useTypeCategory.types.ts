@@ -3,7 +3,7 @@ import type { PropTypesDef } from '@appcraft/types';
 enum Categories {
   Display,
   Mixed,
-  // Node,
+  Node,
   Pure,
 }
 

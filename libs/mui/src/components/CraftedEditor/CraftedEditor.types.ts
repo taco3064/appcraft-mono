@@ -1,11 +1,7 @@
-import type * as Appcraft from '@appcraft/types';
-
-import type { EditorProviderProps } from '../../contexts';
-import type { TypeListProps } from '../TypeList';
+import type { ReactElement } from 'react';
+import type { TypeEditorProps } from '../TypeEditor';
 
 export interface CraftedEditorProps<V extends object = object>
-  extends Omit<Appcraft.TypesParseOptions, 'propPath'>,
-    Omit<EditorProviderProps<V>, 'children' | 'propPath'>,
-    Pick<TypeListProps, 'disableSelection'> {
-  parser: Pick<Appcraft.DataSource, 'url' | 'method' | 'headers'>;
+  extends TypeEditorProps<V> {
+  select?: ReactElement;
 }

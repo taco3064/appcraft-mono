@@ -1,10 +1,10 @@
-import * as Appcraft from '@appcraft/mui';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import Collapse from '@mui/material/Collapse';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import Typography from '@mui/material/Typography';
+import { CraftedEditor, CraftedRenderer } from '@appcraft/mui';
 import { MUI_WIDGETS } from '@appcraft/types';
 import { useState } from 'react';
 
@@ -89,7 +89,7 @@ export default function WidgetEditor({
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
-        content={<Appcraft.CraftedRenderer options={values} />}
+        content={<CraftedRenderer options={values} />}
         drawer={
           <>
             <Component.WidgetEditorBar
@@ -120,10 +120,10 @@ export default function WidgetEditor({
                   {wt('msg-select-widget-type-first')}
                 </Typography>
               ) : (
-                <Appcraft.CraftedEditor
+                <CraftedEditor
                   {...widgets.get(widget.type)}
                   disableSelection
-                  parser={TYPES_PARSER as Appcraft.CraftedEditorProps['parser']}
+                  parser={TYPES_PARSER as object}
                   mixedTypes={widget.mapping}
                   values={widget.content}
                   onChange={(content) =>

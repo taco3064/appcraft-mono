@@ -1,7 +1,7 @@
 import Container from '@mui/material/Container';
 import ReplayIcon from '@mui/icons-material/Replay';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { CraftedEditor, CraftedEditorProps } from '@appcraft/mui';
+import { TypeEditor } from '@appcraft/mui';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useState, useTransition } from 'react';
@@ -84,10 +84,10 @@ export default function ConfigDetail<C extends object = object>({
       />
 
       <Container maxWidth="sm">
-        <CraftedEditor
+        <TypeEditor
           {...{ typeFile, typeName, mixedTypes, values }}
           disableSelection
-          parser={TYPES_PARSER as CraftedEditorProps['parser']}
+          parser={TYPES_PARSER as object}
           onChange={setValues}
           onMixedTypeMapping={setMixedTypes}
         />

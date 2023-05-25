@@ -2,6 +2,7 @@ export { default as EditorProvider } from './EditorProvider';
 export type { EditorProviderProps } from './EditorContext.types';
 
 export {
+  useFixedT,
   useMixedTypeMapping,
   usePropPath,
   usePropValue,

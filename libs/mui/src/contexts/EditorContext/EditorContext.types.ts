@@ -36,7 +36,7 @@ export type PropPathHook = () => EditorContextValue['propPath'];
 export type PropValueHook = <V>(propName?: string) => [V, (value: V) => void];
 
 export type FixedTHook = (
-  defaultFixedT: EditorProviderProps['fixedT']
+  defaultFixedT?: EditorProviderProps['fixedT']
 ) => Required<EditorProviderProps>['fixedT'];
 
 export type MixedTypeMapping = (

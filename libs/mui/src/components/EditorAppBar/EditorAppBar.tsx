@@ -4,25 +4,26 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import IconButton from '@mui/material/IconButton';
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined';
 import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 
-import { CommonButton } from '../common';
-import { WidgetSelect } from '../WidgetSelect';
-import { useFixedT } from '~appcraft/hooks';
-import type { WidgetEditorBarProps } from './WidgetEditorBar.types';
+import { useFixedT } from '../../contexts';
+import type { EditorAppBarProps } from './EditorAppBar.types';
 
-export default function WidgetEditorBar({
-  action,
+export default function EditorAppBar({
+  fixedT,
+  select,
   widget,
   onBackToElements,
+  onChange,
   onElementAdd,
-  onValueChange,
-}: WidgetEditorBarProps) {
-  const [at, wt] = useFixedT('app', 'widgets');
+}: EditorAppBarProps) {
+  const ct = useFixedT(fixedT);
   const [open, setOpen] = useState(true);
 
   return (
@@ -30,16 +31,15 @@ export default function WidgetEditorBar({
       <AppBar color="default" position="sticky">
         <Toolbar variant="regular">
           {widget && (
-            <CommonButton
-              btnVariant="icon"
-              icon={ChevronLeftIcon}
-              text={at('btn-back')}
-              onClick={onBackToElements}
-            />
+            <Tooltip title={ct('btn-back')}>
+              <IconButton onClick={onBackToElements}>
+                <ChevronLeftIcon />
+              </IconButton>
+            </Tooltip>
           )}
 
           <Typography variant="subtitle1" fontWeight="bolder" color="primary">
-            {wt(`ttl-${widget ? 'props' : 'elements'}`)}
+            {ct(`ttl-${widget ? 'props' : 'elements'}`)}
 
             {widget?.type && (
               <>
@@ -60,28 +60,27 @@ export default function WidgetEditorBar({
             variant="dense"
             style={{ marginLeft: 'auto' }}
           >
-            {action}
-
             {!widget ? (
-              <CommonButton
-                btnVariant="icon"
-                color="secondary"
-                icon={AddIcon}
-                text={wt('btn-add-element')}
-                onClick={() =>
-                  onElementAdd(
-                    `Widget_${Math.random().toFixed(5).replace('.', '')}`
-                  )
-                }
-              />
+              <Tooltip title={ct('btn-add-element')}>
+                <IconButton
+                  color="secondary"
+                  onClick={() =>
+                    onElementAdd(
+                      `Widget_${Math.random().toFixed(5).replace('.', '')}`
+                    )
+                  }
+                >
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
             ) : (
-              <CommonButton
-                btnVariant="icon"
-                color="secondary"
-                icon={open ? ExpandLessIcon : StyleOutlinedIcon}
-                text={wt(`txt-component-setting-${open ? 'off' : 'on'}`)}
-                onClick={() => setOpen(!open)}
-              />
+              <Tooltip
+                title={ct(`txt-component-setting-${open ? 'off' : 'on'}`)}
+              >
+                <IconButton color="secondary" onClick={() => setOpen(!open)}>
+                  {open ? <ExpandLessIcon /> : <StyleOutlinedIcon />}
+                </IconButton>
+              </Tooltip>
             )}
           </Toolbar>
         </Toolbar>
@@ -98,24 +97,16 @@ export default function WidgetEditorBar({
                 flexWrap: 'wrap',
               })}
             >
-              <WidgetSelect
-                fullWidth
-                size="small"
-                margin="dense"
-                variant="outlined"
-                label={wt('lbl-widget-type')}
-                defaultValue={widget.type}
-                onChange={(e) => onValueChange('type', e.target.value)}
-              />
+              {select}
 
               <TextField
                 fullWidth
                 size="small"
                 margin="dense"
                 variant="outlined"
-                label={wt('lbl-description')}
+                label={ct('lbl-description')}
                 defaultValue={widget.description}
-                onChange={(e) => onValueChange('description', e.target.value)}
+                onChange={(e) => onChange('description', e.target.value)}
               />
             </Toolbar>
           </Collapse>

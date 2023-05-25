@@ -3,16 +3,17 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT } from '../../contexts';
 import { useNestedItems } from './NestedElements.hooks';
 import type { NestedElementsProps } from './NestedElements.types';
 
 export default function NestedElements({
+  fixedT,
   superior,
   widgets = [],
-  onWidgetClick,
+  onWidgetSelect,
 }: NestedElementsProps) {
-  const [wt] = useFixedT('widgets');
+  const ct = useFixedT(fixedT);
   const items = useNestedItems({ superior, widgets });
 
   return (
@@ -26,7 +27,7 @@ export default function NestedElements({
               align: 'center',
               sx: { marginTop: (theme) => theme.spacing(2) },
             }}
-            primary={wt('msg-no-elements')}
+            primary={ct('msg-no-elements')}
           />
         </ListItem>
       )}
@@ -34,7 +35,7 @@ export default function NestedElements({
       {items.map((widget) => (
         <ListItemButton
           key={widget.id}
-          onClick={() => onWidgetClick(widget.id)}
+          onClick={() => onWidgetSelect(widget.id)}
         >
           <ListItemText primary={widget.description || widget.id} />
         </ListItemButton>

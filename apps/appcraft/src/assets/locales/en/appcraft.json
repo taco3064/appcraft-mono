@@ -1,1 +1,11 @@
-{}
+{
+  "btn-add-element": "Add Element",
+  "btn-back": "Back",
+  "lbl-description": "Description",
+  "msg-no-elements": "No elements to display.",
+  "msg-select-widget-type-first": "Select a widget type first.",
+  "ttl-elements": "Elements",
+  "ttl-props": "Properties",
+  "txt-component-setting-off": "Close Options",
+  "txt-component-setting-on": "Open Options"
+}

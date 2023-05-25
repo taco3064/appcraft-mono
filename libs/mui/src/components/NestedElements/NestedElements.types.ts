@@ -1,9 +1,11 @@
 import type { WidgetOptions } from '@appcraft/types';
+import type { EditorProviderProps } from '../../contexts';
 
 export interface NestedElementsProps {
+  fixedT?: EditorProviderProps['fixedT'];
   superior?: string;
   widgets?: WidgetOptions[];
-  onWidgetClick: (id: string) => void;
+  onWidgetSelect: (id: string) => void;
 }
 
 export type NestedItemsHook = (

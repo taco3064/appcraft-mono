@@ -7,7 +7,3 @@ export interface NestedElementsProps {
   widgets?: WidgetOptions[];
   onWidgetSelect: (id: string) => void;
 }
-
-export type NestedItemsHook = (
-  props: Pick<NestedElementsProps, 'superior' | 'widgets'>
-) => WidgetOptions[];

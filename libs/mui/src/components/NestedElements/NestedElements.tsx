@@ -2,9 +2,9 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import { useMemo } from 'react';
 
 import { useFixedT } from '../../contexts';
-import { useNestedItems } from './NestedElements.hooks';
 import type { NestedElementsProps } from './NestedElements.types';
 
 export default function NestedElements({
@@ -14,7 +14,14 @@ export default function NestedElements({
   onWidgetSelect,
 }: NestedElementsProps) {
   const ct = useFixedT(fixedT);
-  const items = useNestedItems({ superior, widgets });
+
+  const items = useMemo(
+    () =>
+      widgets.filter(({ superior: $superior }) =>
+        !superior ? !$superior : superior === $superior
+      ),
+    [superior, widgets]
+  );
 
   return (
     <List>

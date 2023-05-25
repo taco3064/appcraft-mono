@@ -50,8 +50,8 @@ export default function TypeItem({
     );
 
   switch (category) {
-    case 'Node':
-      return <>test</>;
+    // case 'Node':
+    //   return <>test</>;
     case 'Display':
       return (
         <ListItemButton onClick={() => onDisplayItemClick(options)}>

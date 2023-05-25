@@ -43,7 +43,10 @@ export default function TypeList({
         >
           {breadcrumbs.length > 0 && (
             <Tooltip title={ct('btn-back')}>
-              <IconButton size="small" onClick={() => handleBack()}>
+              <IconButton
+                onClick={() => handleBack()}
+                sx={{ margin: (theme) => theme.spacing(1, 0) }}
+              >
                 <ChevronLeftIcon />
               </IconButton>
             </Tooltip>

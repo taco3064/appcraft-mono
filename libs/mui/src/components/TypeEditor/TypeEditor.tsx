@@ -13,6 +13,7 @@ export default function TypeEditor({
   typeName,
   mixedTypes,
   values,
+  fixedT,
   onChange,
   onMixedTypeMapping,
 }: TypeEditorProps) {
@@ -41,6 +42,7 @@ export default function TypeEditor({
   return (
     <EditorProvider
       {...{
+        fixedT,
         propPath,
         mixedTypes,
         values,

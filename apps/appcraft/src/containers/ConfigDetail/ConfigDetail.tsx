@@ -23,7 +23,7 @@ export default function ConfigDetail<C extends object = object>({
 }: ConfigDetailProps<C>) {
   const { enqueueSnackbar } = useSnackbar();
   const [, setTransition] = useTransition();
-  const [at] = useFixedT('app');
+  const [at, ct] = useFixedT('app', 'appcraft');
 
   const [values, setValues] = useState(() =>
     JSON.parse(JSON.stringify(data?.content || {}))
@@ -87,6 +87,7 @@ export default function ConfigDetail<C extends object = object>({
         <TypeEditor
           {...{ typeFile, typeName, mixedTypes, values }}
           disableSelection
+          fixedT={ct}
           parser={TYPES_PARSER as object}
           onChange={setValues}
           onMixedTypeMapping={setMixedTypes}

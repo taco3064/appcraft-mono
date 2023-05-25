@@ -22,6 +22,37 @@ export const usePropPath = () => {
   return propPath;
 };
 
+export const useFixedT: Types.FixedTHook = (() => {
+  const replaces: Types.Replaces = [
+    { pattern: /^[^-]+-/, replacement: '' },
+    {
+      pattern: /-(.)/g,
+      replacement: (_match, letter) => ` ${letter.toUpperCase()}`,
+    },
+    {
+      pattern: /^./,
+      replacement: (match) => match.toUpperCase(),
+    },
+  ];
+
+  return (defaultFixedT) => {
+    const { fixedT } = useContext();
+
+    return React.useMemo(
+      () =>
+        fixedT ||
+        defaultFixedT ||
+        ((key) =>
+          replaces.reduce<string>(
+            (result, { pattern, replacement }) =>
+              result.replace(pattern, replacement as string),
+            key
+          )),
+      [defaultFixedT, fixedT]
+    );
+  };
+})();
+
 export const usePropValue: Types.PropValueHook = (propName) => {
   const { propPath, values, onChange } = useContext();
 

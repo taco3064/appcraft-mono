@@ -1,20 +1,11 @@
 {
-  "btn-add-element": "Add Element",
   "btn-expand-off": "Close Editor",
   "btn-expand-on": "Open Editor",
-  "btn-props-filter": "Filter Properties",
-  "lbl-description": "Description",
   "lbl-widget-type": "Widget Type",
-  "msg-no-elements": "No elements to display.",
-  "msg-select-widget-type-first": "Select a widget type first.",
   "ttl-category-data-display": "Data Display",
   "ttl-category-input": "Input",
   "ttl-category-layout": "Layout",
   "ttl-category-navigation": "Navigation",
   "ttl-category-tool": "Tool",
-  "ttl-detail": "Widget Storage - {{ name }}",
-  "ttl-elements": "Elements",
-  "ttl-props": "Properties",
-  "txt-component-setting-off": "Close Options",
-  "txt-component-setting-on": "Open Options"
+  "ttl-detail": "Widget Storage - {{ name }}"
 }

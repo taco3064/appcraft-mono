@@ -8,11 +8,12 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Tooltip from '@mui/material/Tooltip';
 import UndoIcon from '@mui/icons-material/Undo';
 import { useState } from 'react';
 
 import { TypeItemAction } from '../../styles';
-import { useMixedTypeMapping } from '../../contexts';
+import { useFixedT, useMixedTypeMapping } from '../../contexts';
 import { useTypeCategory } from '../../hooks';
 import * as Common from '../common';
 import type * as Types from './TypeItem.types';
@@ -26,6 +27,7 @@ export default function TypeItem({
 }: Types.TypeItemProps) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [mixedType, setMixedType] = useMixedTypeMapping(options.propName);
+  const ct = useFixedT();
   const category = useTypeCategory(options);
 
   const selection = disableSelection ? null : (
@@ -110,16 +112,20 @@ export default function TypeItem({
               options={mixedOptions}
               action={
                 <>
-                  <IconButton onClick={() => setMixedType()}>
-                    <UndoIcon />
-                  </IconButton>
+                  <Tooltip title={ct('btn-clear-type')}>
+                    <IconButton onClick={() => setMixedType()}>
+                      <UndoIcon />
+                    </IconButton>
+                  </Tooltip>
 
-                  <IconButton
-                    color="warning"
-                    onClick={(e) => setAnchorEl(e.currentTarget)}
-                  >
-                    <BookmarkAddedOutlinedIcon />
-                  </IconButton>
+                  <Tooltip title={ct('btn-reset-type')}>
+                    <IconButton
+                      color="warning"
+                      onClick={(e) => setAnchorEl(e.currentTarget)}
+                    >
+                      <BookmarkAddedOutlinedIcon />
+                    </IconButton>
+                  </Tooltip>
                 </>
               }
             />

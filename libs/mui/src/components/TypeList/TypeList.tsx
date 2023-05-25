@@ -6,10 +6,11 @@ import List from '@mui/material/List';
 import ListSubheader from '@mui/material/ListSubheader';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import { TypeItem } from '../TypeItem';
-import { usePropPath } from '../../contexts';
+import { useFixedT, usePropPath } from '../../contexts';
 import { usePropertyRouter, useTypeItems } from '../../hooks';
 import type { TypeListProps } from './TypeList.types';
 
@@ -19,6 +20,7 @@ export default function TypeList({
   values,
   onPropPathChange,
 }: TypeListProps) {
+  const ct = useFixedT();
   const propPath = usePropPath();
   const { isModifiable, items, value, onChange } = useTypeItems(superior);
 
@@ -40,9 +42,11 @@ export default function TypeList({
           }}
         >
           {breadcrumbs.length > 0 && (
-            <IconButton size="small" onClick={() => handleBack()}>
-              <ChevronLeftIcon />
-            </IconButton>
+            <Tooltip title={ct('btn-back')}>
+              <IconButton size="small" onClick={() => handleBack()}>
+                <ChevronLeftIcon />
+              </IconButton>
+            </Tooltip>
           )}
 
           <Breadcrumbs separator="." style={{ marginRight: 'auto' }}>
@@ -71,21 +75,23 @@ export default function TypeList({
           </Breadcrumbs>
 
           {breadcrumbs.length > 0 && isModifiable && (
-            <IconButton
-              size="small"
-              onClick={() =>
-                onChange(
-                  superior.type === 'arrayOf'
-                    ? [...((value as []) || []), null]
-                    : {
-                        ...value,
-                        [`key_${Object.keys(value || {}).length}`]: null,
-                      }
-                )
-              }
-            >
-              <PlaylistAddIcon />
-            </IconButton>
+            <Tooltip title={ct('btn-add-prop')}>
+              <IconButton
+                size="small"
+                onClick={() =>
+                  onChange(
+                    superior.type === 'arrayOf'
+                      ? [...((value as []) || []), null]
+                      : {
+                          ...value,
+                          [`key_${Object.keys(value || {}).length}`]: null,
+                        }
+                  )
+                }
+              >
+                <PlaylistAddIcon />
+              </IconButton>
+            </Tooltip>
           )}
         </ListSubheader>
       }

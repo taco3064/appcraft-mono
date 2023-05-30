@@ -1,5 +1,10 @@
 export { default as EditorProvider } from './EditorProvider';
-export type { EditorProviderProps } from './EditorContext.types';
+export { getPropPathString } from './EditorContext.utils';
+
+export type {
+  EditorProviderProps,
+  MixedTypeMappingResult,
+} from './EditorContext.types';
 
 export {
   useFixedT,
@@ -7,5 +12,3 @@ export {
   usePropPath,
   usePropValue,
 } from './EditorContext.hooks';
-
-export { getPropPathString } from './EditorContext.utils';

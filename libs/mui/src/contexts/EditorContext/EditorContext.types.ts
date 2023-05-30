@@ -35,10 +35,13 @@ export type ContextHook = () => EditorContextValue;
 export type PropPathHook = () => EditorContextValue['propPath'];
 export type PropValueHook = <V>(propName?: string) => [V, (value: V) => void];
 
+export type MixedTypeMappingResult = [
+  string | null,
+  (mixedText?: string) => void
+];
+
 export type FixedTHook = (
   defaultFixedT?: EditorProviderProps['fixedT']
 ) => Required<EditorProviderProps>['fixedT'];
 
-export type MixedTypeMapping = (
-  propName?: string
-) => [string | null, (mixedText?: string) => void];
+export type MixedTypeMapping = (propName?: string) => MixedTypeMappingResult;

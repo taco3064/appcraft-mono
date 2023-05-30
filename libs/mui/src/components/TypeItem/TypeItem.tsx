@@ -8,13 +8,15 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined';
 import Tooltip from '@mui/material/Tooltip';
 import UndoIcon from '@mui/icons-material/Undo';
+import WidgetsIcon from '@mui/icons-material/Widgets';
 import { useState } from 'react';
 
 import { TypeItemAction } from '../../styles';
-import { useFixedT, useMixedTypeMapping } from '../../contexts';
-import { useTypeCategory } from '../../hooks';
+import { useFixedT } from '../../contexts';
+import { useMixedOptions, useTypeCategory } from '../../hooks';
 import * as Common from '../common';
 import type * as Types from './TypeItem.types';
 
@@ -26,9 +28,9 @@ export default function TypeItem({
   onItemRemove,
 }: Types.TypeItemProps) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const [mixedType, setMixedType] = useMixedTypeMapping(options.propName);
   const ct = useFixedT();
   const category = useTypeCategory(options);
+  const mixed = useMixedOptions(category, options);
 
   const selection = disableSelection ? null : (
     <ListItemIcon>
@@ -50,8 +52,6 @@ export default function TypeItem({
     );
 
   switch (category) {
-    // case 'Node':
-    //   return <>test</>;
     case 'Display':
       return (
         <ListItemButton onClick={() => onDisplayItemClick(options)}>
@@ -88,20 +88,21 @@ export default function TypeItem({
         </ListItem>
       );
 
-    case 'Mixed': {
-      const opts = options as Common.MixedFieldProps['options'];
-      const mixedOptions = opts.options?.find(({ text }) => text === mixedType);
-      const horizontal = mixedType ? 'right' : 'center';
-
-      return (
+    default:
+      return !mixed ? null : (
         <>
-          {!mixedOptions ? (
+          {!mixed.matched ? (
             <ListItemButton onClick={(e) => setAnchorEl(e.currentTarget)}>
               {selection}
 
               <ListItemText
                 disableTypography
-                primary={<Common.MixedField options={opts} />}
+                primary={
+                  <Common.MixedField
+                    icon={category === 'Mixed' ? QuizOutlinedIcon : WidgetsIcon}
+                    options={mixed.propType}
+                  />
+                }
               />
 
               {actions}
@@ -109,11 +110,11 @@ export default function TypeItem({
           ) : (
             <TypeItem
               {...{ disableSelection, onDisplayItemClick, onItemRemove }}
-              options={mixedOptions}
+              options={mixed.matched}
               action={
                 <>
                   <Tooltip title={ct('btn-clear-type')}>
-                    <IconButton onClick={() => setMixedType()}>
+                    <IconButton onClick={() => mixed.setSelected()}>
                       <UndoIcon />
                     </IconButton>
                   </Tooltip>
@@ -135,11 +136,11 @@ export default function TypeItem({
             PaperProps={{ elevation: 0 }}
             open={Boolean(anchorEl)}
             anchorEl={anchorEl}
-            anchorOrigin={{ vertical: 'bottom', horizontal }}
-            transformOrigin={{ vertical: 'top', horizontal }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: mixed.horizontal }}
+            transformOrigin={{ vertical: 'top', horizontal: mixed.horizontal }}
             onClose={() => setAnchorEl(null)}
           >
-            {opts.options
+            {mixed.propType.options
               ?.sort(({ type: t1, text: p1 }, { type: t2, text: p2 }) => {
                 const s1 = `${t1}:${p1}`;
                 const s2 = `${t2}:${p2}`;
@@ -149,10 +150,10 @@ export default function TypeItem({
               .map(({ type, text }, i) => (
                 <MenuItem
                   key={text}
-                  selected={text === mixedType}
+                  selected={text === mixed.selected}
                   value={text}
                   onClick={() => {
-                    setMixedType(text);
+                    mixed.setSelected(text);
                     setAnchorEl(null);
                   }}
                 >
@@ -169,8 +170,5 @@ export default function TypeItem({
           </Menu>
         </>
       );
-    }
-    default:
-      return null;
   }
 }

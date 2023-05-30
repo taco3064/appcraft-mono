@@ -66,6 +66,7 @@ export const FlexDialog = withStyles(
 
       {action && (
         <ButtonGroup
+          role="toolbar"
           fullWidth
           color="inherit"
           size="large"
@@ -82,6 +83,18 @@ export const FlexDialog = withStyles(
       '& > [role=contentinfo]': {
         display: 'flex',
         flexDirection: direction,
+        gap: theme.spacing(2),
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(2),
+      },
+      '& > [role=toolbar]': {
+        padding: 0,
+
+        '& > *': {
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
+          margin: '0 !important',
+        },
       },
     },
   }),

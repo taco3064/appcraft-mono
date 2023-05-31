@@ -27,6 +27,12 @@ export default function TypeItemNode({
   const ct = useFixedT();
   const displayName = useDisplayPropName(options.propName);
 
+  const renderOptions = [
+    'plain-text',
+    'widget',
+    ...(selection ? ['array-map'] : []),
+  ];
+
   return (
     <>
       <ListItemButton onClick={() => setOpen(true)}>
@@ -72,19 +78,15 @@ export default function TypeItemNode({
       </ListItemButton>
 
       <MenuDialog
-        options={[
-          'plain-text',
-          'widgets',
-          ...(selection ? ['array-map'] : []),
-        ].map((type) => ({
-          primary: ct(`ttl-node-${type}`),
-          secondary: ct(`txt-node-${type}`),
-          value: type,
-        }))}
         value={selected}
         open={open}
         onChange={setSelected}
         onClose={() => setOpen(false)}
+        options={renderOptions.map((type) => ({
+          primary: ct(`ttl-node-${type}`),
+          secondary: ct(`txt-node-${type}`),
+          value: type,
+        }))}
       />
     </>
   );

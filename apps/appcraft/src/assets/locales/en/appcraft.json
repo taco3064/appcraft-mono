@@ -10,11 +10,11 @@
   "ttl-elements": "Elements",
   "ttl-node-array-map": "Array Map",
   "ttl-node-plain-text": "Plain Text",
-  "ttl-node-widgets": "Widgets",
+  "ttl-node-widget": "Widget",
   "ttl-props": "Properties",
   "txt-component-setting-off": "Close Options",
   "txt-component-setting-on": "Open Options",
   "txt-node-array-map": "Efficient and concise rendering of arrays with custom widget.",
   "txt-node-plain-text": "A simple and straightforward way to display text-based information.",
-  "txt-node-widgets": "To render a custom widget."
+  "txt-node-widget": "To render a custom widget."
 }

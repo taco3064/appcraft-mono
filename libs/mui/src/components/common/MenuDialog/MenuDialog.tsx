@@ -20,12 +20,20 @@ export default function MenuDialog<V extends string = string>({
 
   return (
     <FlexDialog {...{ open, onClose }} fullWidth maxWidth="xs">
-      <MenuList style={{ width: '100%' }}>
+      <MenuList
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          gap: (theme) => theme.spacing(1),
+        }}
+      >
         {options.map(({ primary, secondary, value }) => (
           <MenuItem
             key={value}
             selected={value === selected}
             onClick={(e) => handleSelect(e, value)}
+            sx={{ borderRadius: (theme) => theme.spacing(1) }}
           >
             <ListItemText
               {...{ primary, secondary }}

@@ -1,15 +1,17 @@
-import BookmarkAddedOutlinedIcon from '@mui/icons-material/BookmarkAddedOutlined';
+import Badge from '@mui/material/Badge';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined';
+import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import Tooltip from '@mui/material/Tooltip';
 import UndoIcon from '@mui/icons-material/Undo';
 import { useState } from 'react';
 
-import { GapTypography } from '../../../styles';
+import { GapTypography, TypeItemAction } from '../../../styles';
 import { useDisplayPropName } from '../../../hooks';
 import { useFixedT, useMixedTypeMapping } from '../../../contexts';
 import type { TypeItemMixedProps } from './TypeItemMixed.types';
@@ -42,10 +44,10 @@ export default function TypeItemMixed({
 
             <Tooltip title={ct('btn-reset-type')}>
               <IconButton
-                color="warning"
+                color="secondary"
                 onClick={(e) => setAnchorEl(e.currentTarget)}
               >
-                <BookmarkAddedOutlinedIcon />
+                <PlaylistAddCheckIcon />
               </IconButton>
             </Tooltip>
           </>
@@ -58,14 +60,25 @@ export default function TypeItemMixed({
             disableTypography
             primary={
               <GapTypography variant="subtitle1" color="text.primary">
-                <QuizOutlinedIcon color="warning" />
+                <Badge
+                  anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                  badgeContent={
+                    <HelpOutlineIcon fontSize="small" color="warning" />
+                  }
+                >
+                  <BookmarkBorderIcon color="secondary" />
+                </Badge>
 
                 {displayName}
               </GapTypography>
             }
           />
 
-          {action}
+          {action && (
+            <TypeItemAction onClick={(e) => e.stopPropagation()}>
+              {action}
+            </TypeItemAction>
+          )}
         </ListItemButton>
       )}
 
@@ -89,7 +102,7 @@ export default function TypeItemMixed({
               key={text}
               selected={text === selected}
               value={text}
-              onClick={(e) => {
+              onClick={() => {
                 setSelected(text);
                 setAnchorEl(null);
               }}

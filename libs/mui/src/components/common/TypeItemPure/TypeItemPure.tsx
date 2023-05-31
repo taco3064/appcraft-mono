@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 
 import { BoolInput } from '../BoolInput';
 import { NumberInput } from '../NumberInput';
+import { TypeItemAction } from '../../../styles';
 import { useDisplayPropName } from '../../../hooks';
 import { usePropValue } from '../../../contexts';
 import type { TypeItemPureProps } from './TypeItemPure.types';
@@ -108,7 +109,11 @@ export default function TypeItemPure({
         }
       />
 
-      {action}
+      {action && (
+        <TypeItemAction onClick={(e) => e.stopPropagation()}>
+          {action}
+        </TypeItemAction>
+      )}
     </ListItem>
   );
 }

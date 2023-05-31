@@ -25,7 +25,7 @@ export default function TypeItem({
 
   const actions =
     !action && !onDelete ? null : (
-      <TypeItemAction onClick={(e) => e.stopPropagation()}>
+      <>
         {action}
 
         {onDelete && (
@@ -33,7 +33,7 @@ export default function TypeItem({
             <CloseIcon />
           </IconButton>
         )}
-      </TypeItemAction>
+      </>
     );
 
   return (
@@ -52,6 +52,15 @@ export default function TypeItem({
           action={actions}
           selection={selection}
           options={options as Common.TypeItemPureProps['options']}
+        />
+      )}
+
+      {category === 'Node' && (
+        <Common.TypeItemNode
+          action={actions}
+          selection={selection}
+          options={options as Common.TypeItemNodeProps['options']}
+          onSubnodeView={() => null}
         />
       )}
 

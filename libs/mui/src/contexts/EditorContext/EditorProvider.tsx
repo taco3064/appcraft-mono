@@ -5,6 +5,7 @@ import type * as Types from './EditorContext.types';
 
 export default function InteractivedProvider({
   children,
+  fixedT,
   propPath,
   mixedTypes,
   values,
@@ -13,13 +14,14 @@ export default function InteractivedProvider({
 }: Types.EditorProviderProps) {
   const value = useMemo(
     () => ({
+      fixedT,
       propPath,
       mixedTypes,
       values,
       onChange,
       onMixedTypeMapping,
     }),
-    [propPath, mixedTypes, values, onChange, onMixedTypeMapping]
+    [fixedT, propPath, mixedTypes, values, onChange, onMixedTypeMapping]
   );
 
   return (

@@ -4,7 +4,7 @@ import DeviceHubIcon from '@mui/icons-material/DeviceHub';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
-import { GapTypography } from '../../../styles';
+import { GapTypography, TypeItemAction } from '../../../styles';
 import { useDisplayPropName } from '../../../hooks';
 import type { TypeItemDisplayProps } from './TypeItemDisplay.types';
 
@@ -37,7 +37,11 @@ export default function TypeItemDisplay({
         }
       />
 
-      {action}
+      {action && (
+        <TypeItemAction onClick={(e) => e.stopPropagation()}>
+          {action}
+        </TypeItemAction>
+      )}
     </ListItemButton>
   );
 }

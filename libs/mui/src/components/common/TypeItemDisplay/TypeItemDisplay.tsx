@@ -6,14 +6,14 @@ import ListItemText from '@mui/material/ListItemText';
 
 import { GapTypography } from '../../../styles';
 import { useDisplayPropName } from '../../../hooks';
-import type { DisplayFieldProps } from './DisplayField.types';
+import type { TypeItemDisplayProps } from './TypeItemDisplay.types';
 
-export default function DisplayField({
+export default function TypeItemDisplay({
   action,
   selection,
   options,
   onClick,
-}: DisplayFieldProps) {
+}: TypeItemDisplayProps) {
   const displayName = useDisplayPropName(options.propName);
 
   return (

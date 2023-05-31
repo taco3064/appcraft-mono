@@ -39,27 +39,27 @@ export default function TypeItem({
   return (
     <>
       {category === 'Display' && (
-        <Common.DisplayField
+        <Common.TypeItemDisplay
           action={actions}
           selection={selection}
-          options={options as Common.DisplayFieldProps['options']}
+          options={options as Common.TypeItemDisplayProps['options']}
           onClick={onSubitemView}
         />
       )}
 
       {category === 'Pure' && (
-        <Common.PureField
+        <Common.TypeItemPure
           action={actions}
           selection={selection}
-          options={options as Common.PureFieldProps['options']}
+          options={options as Common.TypeItemPureProps['options']}
         />
       )}
 
       {category === 'Mixed' && (
-        <Common.MixedField
+        <Common.TypeItemMixed
           action={actions}
           selection={selection}
-          options={options as Common.MixedFieldProps['options']}
+          options={options as Common.TypeItemMixedProps['options']}
           renderMatchedField={(matched, matchedAction) => (
             <TypeItem
               {...{ disableSelection, onDelete, onSubitemView }}

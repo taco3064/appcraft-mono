@@ -7,13 +7,13 @@ import { BoolInput } from '../BoolInput';
 import { NumberInput } from '../NumberInput';
 import { useDisplayPropName } from '../../../hooks';
 import { usePropValue } from '../../../contexts';
-import type { PureFieldProps } from './PureField.types';
+import type { TypeItemPureProps } from './TypeItemPure.types';
 
-export default function PureField({
+export default function TypeItemPure({
   action,
   selection,
   options,
-}: PureFieldProps) {
+}: TypeItemPureProps) {
   const displayName = useDisplayPropName(options.propName);
   const [value, onChange] = usePropValue<unknown>(options.propName);
 

@@ -12,14 +12,14 @@ import { useState } from 'react';
 import { GapTypography } from '../../../styles';
 import { useDisplayPropName } from '../../../hooks';
 import { useFixedT, useMixedTypeMapping } from '../../../contexts';
-import type { MixedFieldProps } from './MixedField.types';
+import type { TypeItemMixedProps } from './TypeItemMixed.types';
 
-export default function MixedField({
+export default function TypeItemMixed({
   action,
   selection,
   options,
   renderMatchedField,
-}: MixedFieldProps) {
+}: TypeItemMixedProps) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [selected, setSelected] = useMixedTypeMapping(options.propName);
 

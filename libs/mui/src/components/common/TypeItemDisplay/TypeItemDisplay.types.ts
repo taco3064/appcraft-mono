@@ -1,7 +1,7 @@
 import type * as Appcraft from '@appcraft/types';
 import type { PropPathRouterHandler } from '../../../hooks';
 
-export interface DisplayFieldProps
+export interface TypeItemDisplayProps
   extends Appcraft.BaseField<
     | Appcraft.ArrayOfProp
     | Appcraft.ExactProp

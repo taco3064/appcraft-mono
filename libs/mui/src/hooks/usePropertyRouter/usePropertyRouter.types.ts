@@ -5,7 +5,7 @@ export interface PropertyOptions {
   onPropPathChange: (propPath: string) => void;
 }
 
-export type ToPathHandler = (options: PropTypesDef) => void;
+export type PropPathRouterHandler = (options: PropTypesDef) => void;
 
 export type PropertyRouterHook = (
   options: PropertyOptions,
@@ -18,6 +18,6 @@ export type PropertyRouterHook = (
   }[],
   {
     back: (index?: number) => void;
-    to: ToPathHandler;
+    to: PropPathRouterHandler;
   }
 ];

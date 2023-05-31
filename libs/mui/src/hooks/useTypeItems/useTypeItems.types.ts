@@ -4,7 +4,7 @@ import type { BasicType } from '../usePropertiesSorting';
 export interface TypeItem {
   key: string;
   options: PropTypesDef;
-  onItemRemove?: (options: PropTypesDef) => void;
+  onDelete?: (options: PropTypesDef) => void;
 }
 
 export type TypeItemsHook = (superior: BasicType) => {

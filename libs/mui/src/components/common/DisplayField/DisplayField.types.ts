@@ -1,5 +1,5 @@
 import type * as Appcraft from '@appcraft/types';
-import type { ToPathHandler } from '../../../hooks';
+import type { PropPathRouterHandler } from '../../../hooks';
 
 export interface DisplayFieldProps
   extends Appcraft.BaseField<
@@ -9,5 +9,5 @@ export interface DisplayFieldProps
     | Appcraft.ObjectProp
     | Appcraft.ObjectOfProp
   > {
-  onClick: ToPathHandler;
+  onClick: PropPathRouterHandler;
 }

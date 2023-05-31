@@ -34,7 +34,7 @@ const useTypeItems: TypeItemsHook = (superior) => {
         return {
           key: propName,
           options,
-          onItemRemove: () => {
+          onDelete: () => {
             delete (value as Record<string, unknown>)[propName];
             onChange({ ...value });
           },
@@ -73,7 +73,7 @@ const useTypeItems: TypeItemsHook = (superior) => {
         return {
           key: `el_${i}`,
           options,
-          onItemRemove: () => {
+          onDelete: () => {
             value.splice(i, 1);
             onChange([...value]);
           },

@@ -11,9 +11,9 @@ import type * as Types from './TypeItem.types';
 export default function TypeItem({
   action,
   disableSelection = false,
+  onDelete,
+  onSubitemView,
   options,
-  onDisplayItemClick,
-  onItemRemove,
 }: Types.TypeItemProps) {
   const category = useTypeCategory(options);
 
@@ -24,12 +24,12 @@ export default function TypeItem({
   );
 
   const actions =
-    !action && !onItemRemove ? null : (
+    !action && !onDelete ? null : (
       <TypeItemAction onClick={(e) => e.stopPropagation()}>
         {action}
 
-        {onItemRemove && (
-          <IconButton onClick={() => onItemRemove(options)}>
+        {onDelete && (
+          <IconButton onClick={() => onDelete(options)}>
             <CloseIcon />
           </IconButton>
         )}
@@ -43,7 +43,7 @@ export default function TypeItem({
           action={actions}
           selection={selection}
           options={options as Common.DisplayFieldProps['options']}
-          onClick={onDisplayItemClick}
+          onClick={onSubitemView}
         />
       )}
 
@@ -62,7 +62,7 @@ export default function TypeItem({
           options={options as Common.MixedFieldProps['options']}
           renderMatchedField={(matched, matchedAction) => (
             <TypeItem
-              {...{ disableSelection, onDisplayItemClick, onItemRemove }}
+              {...{ disableSelection, onDelete, onSubitemView }}
               options={matched}
               action={matchedAction}
             />

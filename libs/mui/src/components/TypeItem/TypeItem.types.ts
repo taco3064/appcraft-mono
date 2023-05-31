@@ -1,12 +1,11 @@
 import type { PropTypesDef } from '@appcraft/types';
 import type { ReactNode } from 'react';
 
-import type { ToPathHandler, TypeItem } from '../../hooks';
+import type { PropPathRouterHandler, TypeItem } from '../../hooks';
 
-export interface TypeItemProps {
+export interface TypeItemProps extends Partial<Pick<TypeItem, 'onDelete'>> {
   action?: ReactNode;
   disableSelection?: boolean;
   options: PropTypesDef;
-  onDisplayItemClick: ToPathHandler;
-  onItemRemove?: TypeItem['onItemRemove'];
+  onSubitemView: PropPathRouterHandler;
 }

@@ -99,10 +99,10 @@ export default function TypeList({
         </ListSubheader>
       }
     >
-      {items.map(({ key, options, onItemRemove }) => (
+      {items.map(({ key, options, onDelete }) => (
         <TypeItem
-          {...{ key, disableSelection, options, onItemRemove }}
-          onDisplayItemClick={handleTo}
+          {...{ key, disableSelection, options, onDelete }}
+          onSubitemView={handleTo}
         />
       ))}
     </List>

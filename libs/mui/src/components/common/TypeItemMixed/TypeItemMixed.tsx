@@ -42,7 +42,7 @@ export default function TypeItemMixed({
             </Tooltip>
 
             <Tooltip title={ct('btn-reset-type')}>
-              <IconButton color="secondary" onClick={() => setOpen(true)}>
+              <IconButton onClick={() => setOpen(true)}>
                 <PlaylistAddCheckIcon />
               </IconButton>
             </Tooltip>

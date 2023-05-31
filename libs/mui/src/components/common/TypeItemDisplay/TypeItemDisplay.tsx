@@ -25,11 +25,11 @@ export default function TypeItemDisplay({
         primary={
           <GapTypography variant="subtitle1" color="text.primary">
             {options.type === 'func' ? (
-              <DeviceHubIcon color="success" />
+              <DeviceHubIcon color="secondary" />
             ) : options.type === 'arrayOf' ? (
-              <DataArrayIcon color="info" />
+              <DataArrayIcon color="secondary" />
             ) : (
-              <DataObjectIcon color="info" />
+              <DataObjectIcon color="secondary" />
             )}
 
             {displayName}

@@ -10,9 +10,9 @@ import type * as Types from './TypeItem.types';
 export default function TypeItem({
   action,
   disableSelection = false,
+  options,
   onDelete,
   onSubitemView,
-  options,
 }: Types.TypeItemProps) {
   const category = useTypeCategory(options);
 

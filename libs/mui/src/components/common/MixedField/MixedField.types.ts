@@ -1,7 +1,10 @@
 import type * as Appcraft from '@appcraft/types';
-import SvgIcon from '@mui/material/SvgIcon';
+import type { ReactNode } from 'react';
 
-export interface MixedFieldProps {
-  icon: typeof SvgIcon;
-  options: Appcraft.OneOfTypeProp;
+export interface MixedFieldProps
+  extends Appcraft.BaseField<Appcraft.OneOfTypeProp> {
+  renderMatchedField: (
+    matched: Appcraft.PropTypesDef,
+    action: ReactNode
+  ) => ReactNode;
 }

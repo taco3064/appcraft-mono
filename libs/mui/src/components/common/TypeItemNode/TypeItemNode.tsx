@@ -3,8 +3,6 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import Tooltip from '@mui/material/Tooltip';
 import UndoIcon from '@mui/icons-material/Undo';
@@ -12,6 +10,7 @@ import WidgetsIcon from '@mui/icons-material/Widgets';
 import { useState } from 'react';
 
 import { GapTypography, TypeItemAction } from '../../../styles';
+import { MenuDialog } from '../MenuDialog';
 import { useDisplayPropName } from '../../../hooks';
 import { useFixedT, useMixedTypeMapping } from '../../../contexts';
 import type { TypeItemNodeProps } from './TypeItemNode.types';
@@ -21,21 +20,15 @@ export default function TypeItemNode({
   selection,
   options,
 }: TypeItemNodeProps) {
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [open, setOpen] = useState(false);
   const [selected, setSelected] = useMixedTypeMapping(options.propName);
 
   const ct = useFixedT();
   const displayName = useDisplayPropName(options.propName);
-  const horizontal = selected ? 'right' : 'center';
-
-  const handleTypeSelect = (type: string) => {
-    setSelected(type);
-    setAnchorEl(null);
-  };
 
   return (
     <>
-      <ListItemButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+      <ListItemButton onClick={() => setOpen(true)}>
         {selection}
 
         <ListItemText
@@ -67,10 +60,7 @@ export default function TypeItemNode({
             </Tooltip>
 
             <Tooltip title={ct('btn-reset-type')}>
-              <IconButton
-                color="secondary"
-                onClick={(e) => setAnchorEl(e.currentTarget)}
-              >
+              <IconButton color="secondary" onClick={() => setOpen(true)}>
                 <PlaylistAddCheckIcon />
               </IconButton>
             </Tooltip>
@@ -80,32 +70,17 @@ export default function TypeItemNode({
         )}
       </ListItemButton>
 
-      <Menu
-        PaperProps={{ elevation: 0 }}
-        open={Boolean(anchorEl)}
-        anchorEl={anchorEl}
-        anchorOrigin={{ vertical: 'bottom', horizontal }}
-        transformOrigin={{ vertical: 'top', horizontal }}
-        onClose={() => setAnchorEl(null)}
-      >
-        {['plain-text', 'widgets', 'array-map'].map((type) => (
-          <MenuItem
-            key={type}
-            selected={selected === type}
-            value={type}
-            onClick={() => handleTypeSelect(type)}
-          >
-            <ListItemText
-              primaryTypographyProps={{
-                fontWeight: 'bolder',
-                textTransform: 'capitalize',
-              }}
-              primary={ct(`ttl-node-${type}`)}
-              secondary={ct(`txt-node-${type}`)}
-            />
-          </MenuItem>
-        ))}
-      </Menu>
+      <MenuDialog
+        value={selected}
+        open={open}
+        onChange={setSelected}
+        onClose={() => setOpen(false)}
+        options={['plain-text', 'widgets', 'array-map'].map((type) => ({
+          primary: ct(`ttl-node-${type}`),
+          secondary: ct(`txt-node-${type}`),
+          value: type,
+        }))}
+      />
     </>
   );
 }

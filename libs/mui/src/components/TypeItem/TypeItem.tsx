@@ -17,7 +17,7 @@ export default function TypeItem({
   const category = useTypeCategory(options);
 
   const selection = disableSelection ? null : (
-    <ListItemIcon>
+    <ListItemIcon onClick={(e) => e.stopPropagation()}>
       <Checkbox color="primary" />
     </ListItemIcon>
   );

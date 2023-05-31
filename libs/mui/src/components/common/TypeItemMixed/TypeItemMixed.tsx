@@ -3,6 +3,7 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import Tooltip from '@mui/material/Tooltip';
@@ -49,7 +50,7 @@ export default function TypeItemMixed({
         )
       ) : (
         <ListItemButton onClick={() => setOpen(true)}>
-          {selection}
+          {selection && <ListItemIcon />}
 
           <ListItemText
             disableTypography

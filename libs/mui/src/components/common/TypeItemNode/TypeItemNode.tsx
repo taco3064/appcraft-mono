@@ -2,6 +2,7 @@ import Badge from '@mui/material/Badge';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import Tooltip from '@mui/material/Tooltip';
@@ -29,7 +30,7 @@ export default function TypeItemNode({
   return (
     <>
       <ListItemButton onClick={() => setOpen(true)}>
-        {selection}
+        {selection && (selected === 'array-map' ? selection : <ListItemIcon />)}
 
         <ListItemText
           disableTypography
@@ -71,15 +72,19 @@ export default function TypeItemNode({
       </ListItemButton>
 
       <MenuDialog
-        value={selected}
-        open={open}
-        onChange={setSelected}
-        onClose={() => setOpen(false)}
-        options={['plain-text', 'widgets', 'array-map'].map((type) => ({
+        options={[
+          'plain-text',
+          'widgets',
+          ...(selection ? ['array-map'] : []),
+        ].map((type) => ({
           primary: ct(`ttl-node-${type}`),
           secondary: ct(`txt-node-${type}`),
           value: type,
         }))}
+        value={selected}
+        open={open}
+        onChange={setSelected}
+        onClose={() => setOpen(false)}
       />
     </>
   );

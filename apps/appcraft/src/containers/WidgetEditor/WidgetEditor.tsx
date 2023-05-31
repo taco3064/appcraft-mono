@@ -90,7 +90,6 @@ export default function WidgetEditor({
         drawer={
           <CraftedEditor
             {...widgets.get(widget?.type)}
-            disableSelection
             fixedT={ct}
             parser={TYPES_PARSER as object}
             widget={widget}

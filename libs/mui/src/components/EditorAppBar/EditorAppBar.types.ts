@@ -8,9 +8,10 @@ export interface EditorAppBarProps {
   select: ReactElement;
   widget?: WidgetOptions;
   onBackToElements: MouseEventHandler<HTMLButtonElement>;
-  onElementAdd: (id: string) => void;
+  onWidgetAdd: (id: string) => void;
+  onWidgetSelect: (id: string) => void;
 
-  onChange: <N extends keyof WidgetOptions>(
+  onWidgetChange: <N extends keyof WidgetOptions>(
     name: N,
     value: WidgetOptions[N]
   ) => void;

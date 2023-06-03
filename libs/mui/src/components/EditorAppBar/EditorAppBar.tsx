@@ -1,10 +1,11 @@
-import AppBar from '@mui/material/AppBar';
 import AddIcon from '@mui/icons-material/Add';
+import AppBar from '@mui/material/AppBar';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import IconButton from '@mui/material/IconButton';
+import LinearProgress from '@mui/material/LinearProgress';
 import StyleOutlinedIcon from '@mui/icons-material/StyleOutlined';
 import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
@@ -20,8 +21,9 @@ export default function EditorAppBar({
   select,
   widget,
   onBackToElements,
-  onChange,
-  onElementAdd,
+  onWidgetAdd,
+  onWidgetChange,
+  onWidgetSelect,
 }: EditorAppBarProps) {
   const ct = useFixedT(fixedT);
   const [open, setOpen] = useState(true);
@@ -50,7 +52,8 @@ export default function EditorAppBar({
                     borderColor: theme.palette.primary.main,
                   })}
                 />
-                {widget.type?.replace(/([A-Z])/g, ' $1')}
+
+                {widget.type.replace(/([A-Z])/g, ' $1')}
               </>
             )}
           </Typography>
@@ -65,7 +68,7 @@ export default function EditorAppBar({
                 <IconButton
                   color="secondary"
                   onClick={() =>
-                    onElementAdd(
+                    onWidgetAdd(
                       `Widget_${Math.random().toFixed(5).replace('.', '')}`
                     )
                   }
@@ -106,7 +109,7 @@ export default function EditorAppBar({
                 variant="outlined"
                 label={ct('lbl-description')}
                 defaultValue={widget.description}
-                onChange={(e) => onChange('description', e.target.value)}
+                onChange={(e) => onWidgetChange('description', e.target.value)}
               />
             </Toolbar>
           </Collapse>

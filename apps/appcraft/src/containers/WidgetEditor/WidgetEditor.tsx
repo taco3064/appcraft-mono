@@ -2,7 +2,7 @@ import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { CraftedEditor, CraftedRenderer } from '@appcraft/mui';
+import { CraftedWidgetEditor, CraftedRenderer } from '@appcraft/mui';
 import { MUI_WIDGETS } from '@appcraft/types';
 import { useState } from 'react';
 
@@ -88,15 +88,15 @@ export default function WidgetEditor({
         open={isSettingOpen}
         content={<CraftedRenderer options={values} />}
         drawer={
-          <CraftedEditor
+          <CraftedWidgetEditor
             {...widgets.get(widget?.type)}
             fixedT={ct}
             parser={TYPES_PARSER as object}
             widget={widget}
             widgets={values.widgets}
             onBackToElements={() => valuesHandle.onEditingChange(null)}
-            onChange={valuesHandle.onWidgetChange}
-            onElementAdd={valuesHandle.onWidgetAdd}
+            onWidgetAdd={valuesHandle.onWidgetAdd}
+            onWidgetChange={valuesHandle.onWidgetChange}
             onWidgetSelect={valuesHandle.onEditingChange}
             select={
               <Component.WidgetSelect

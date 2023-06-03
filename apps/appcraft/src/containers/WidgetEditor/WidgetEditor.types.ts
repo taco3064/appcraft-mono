@@ -7,7 +7,7 @@ import type { PersistentDrawerContentProps } from '~appcraft/components';
 
 export type WidgetMap = Map<
   string,
-  Pick<Appcraft.CraftedEditorProps, 'typeFile' | 'typeName'>
+  Pick<Appcraft.CraftedWidgetEditorProps, 'typeFile' | 'typeName'>
 >;
 
 export type EditedValuesHook = (data: WidgetEditorProps['data']) => {

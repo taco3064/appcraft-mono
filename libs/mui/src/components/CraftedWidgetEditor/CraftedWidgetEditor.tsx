@@ -5,19 +5,19 @@ import { EditorAppBar } from '../EditorAppBar';
 import { NestedElements } from '../NestedElements';
 import { TypeEditor } from '../TypeEditor';
 import { useFixedT } from '../../contexts';
-import type * as Types from './CraftedEditor.types';
+import type * as Types from './CraftedWidgetEditor.types';
 
-export default function CraftedEditor({
+export default function CraftedWidgetEditor({
   fixedT,
   select,
   widget,
   widgets,
   onBackToElements,
-  onElementAdd,
-  onChange,
+  onWidgetAdd,
+  onWidgetChange,
   onWidgetSelect,
   ...props
-}: Types.CraftedEditorProps) {
+}: Types.CraftedWidgetEditorProps) {
   const ct = useFixedT(fixedT);
 
   return (
@@ -28,8 +28,9 @@ export default function CraftedEditor({
           select,
           widget,
           onBackToElements,
-          onElementAdd,
-          onChange,
+          onWidgetAdd,
+          onWidgetChange,
+          onWidgetSelect,
         }}
       />
 
@@ -56,8 +57,8 @@ export default function CraftedEditor({
             fixedT={fixedT}
             mixedTypes={widget.mapping}
             values={widget.content}
-            onChange={(content) => onChange('content', content)}
-            onMixedTypeMapping={(mapping) => onChange('mapping', mapping)}
+            onChange={(content) => onWidgetChange('content', content)}
+            onMixedTypeMapping={(mapping) => onWidgetChange('mapping', mapping)}
           />
         )}
       </Collapse>

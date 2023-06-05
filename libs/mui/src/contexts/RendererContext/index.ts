@@ -1,2 +1,6 @@
 export { default as RendererProvider } from './RendererProvider';
-export type { RendererProviderProps } from './RendererContext.types';
+
+export type {
+  RendererProviderProps,
+  RenderType,
+} from './RendererContext.types';

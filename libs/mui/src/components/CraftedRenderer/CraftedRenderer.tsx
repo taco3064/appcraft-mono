@@ -1,15 +1,17 @@
-import { RendererProvider } from '../../contexts';
+import { RendererProvider, RenderType } from '../../contexts';
 import { WidgetGenerator } from '../WidgetGenerator';
 import type { CraftedRendererProps } from './CraftedRenderer.types';
 
-export default function CraftedRenderer({ options }: CraftedRendererProps) {
-  const { widgets } = options;
-
+export default function CraftedRenderer<T extends RenderType>({
+  options,
+}: CraftedRendererProps<T>) {
   return (
     <RendererProvider options={options}>
-      {widgets?.map((widget) => (
-        <WidgetGenerator key={widget.id} options={widget} />
-      ))}
+      {!Array.isArray(options) ? (
+        <WidgetGenerator key={options.id} options={options} />
+      ) : (
+        options.map((layout) => <>Layout</>)
+      )}
     </RendererProvider>
   );
 }

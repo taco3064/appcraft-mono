@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 
 import { RendererContext } from './RendererContext.hooks';
-import type { RendererProviderProps } from './RendererContext.types';
+import type * as Types from './RendererContext.types';
 
-export default function RendererProvider({
+export default function RendererProvider<T extends Types.RenderType>({
   children,
   options,
-}: RendererProviderProps) {
+}: Types.RendererProviderProps<T>) {
   const value = useMemo(
     () => ({
       options,

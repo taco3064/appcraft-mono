@@ -1,13 +1,17 @@
 import type { ReactNode } from 'react';
 import type { WidgetOptions } from '@appcraft/types';
 
-export interface RendererProviderProps {
-  children: ReactNode;
+export type RenderType = 'widget' | 'dashboard';
 
-  options: {
-    widgets: WidgetOptions[];
-  };
+type WidgetLayout = {
+  widget: WidgetOptions;
+};
+
+export interface RendererProviderProps<T extends RenderType> {
+  children: ReactNode;
+  options: T extends 'widget' ? WidgetOptions : WidgetLayout[];
 }
 
-export type RendererValue = Pick<RendererProviderProps, 'options'>;
-export type ContextHook = () => RendererValue;
+export type RendererValue<T extends RenderType> = Partial<
+  Pick<RendererProviderProps<T>, 'options'>
+>;

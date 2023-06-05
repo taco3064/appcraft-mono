@@ -1,3 +1,6 @@
-import type { RendererProviderProps } from '../../contexts';
+import type { RendererProviderProps, RenderType } from '../../contexts';
 
-export type CraftedRendererProps = Pick<RendererProviderProps, 'options'>;
+export type CraftedRendererProps<T extends RenderType> = Pick<
+  RendererProviderProps<T>,
+  'options'
+>;

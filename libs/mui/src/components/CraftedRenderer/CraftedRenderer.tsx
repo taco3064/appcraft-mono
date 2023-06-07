@@ -1,10 +1,8 @@
-import { RendererProvider, RenderType } from '../../contexts';
+import { RendererProvider } from '../../contexts';
 import { WidgetGenerator } from '../WidgetGenerator';
 import type { CraftedRendererProps } from './CraftedRenderer.types';
 
-export default function CraftedRenderer<T extends RenderType>({
-  options,
-}: CraftedRendererProps<T>) {
+export default function CraftedRenderer({ options }: CraftedRendererProps) {
   return (
     <RendererProvider options={options}>
       {!Array.isArray(options) ? (

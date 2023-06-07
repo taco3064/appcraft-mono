@@ -1,16 +1,15 @@
 export { default as EditorProvider } from './EditorProvider';
 
 export {
+  useCollection,
   useFixedT,
   useMixedTypeMapping,
   usePropValue,
-  useStructure,
 } from './EditorContext.hooks';
 
 export type {
   ChangeHandler,
-  EditedField,
+  Collection,
   EditorProviderProps,
   MixedTypeMappingResult,
-  Structure,
 } from './EditorContext.types';

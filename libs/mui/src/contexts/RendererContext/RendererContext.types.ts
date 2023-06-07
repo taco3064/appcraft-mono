@@ -3,7 +3,7 @@ import type { WidgetOptions } from '@appcraft/types';
 
 export type RenderType = 'widget' | 'dashboard';
 
-type WidgetLayout = {
+export type WidgetLayout = {
   widget: WidgetOptions;
 };
 

@@ -1,3 +1,5 @@
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 import axios from 'axios';
 import { Suspense, lazy, useMemo, useState } from 'react';
 
@@ -7,17 +9,18 @@ import { TypeListSkeleton } from '../TypeListSkeleton';
 import type { TypeEditorProps } from './TypeEditor.types';
 
 export default function TypeEditor({
+  action,
   disableSelection,
+  fixedT,
+  mixedTypes,
   parser,
   typeFile,
   typeName,
-  mixedTypes,
   values,
-  fixedT,
   onChange,
   onMixedTypeMapping,
 }: TypeEditorProps) {
-  const [structurePath, setStructurePath] = useState('');
+  const [collectionPath, setCollectionPath] = useState('');
 
   const LazyTypeList = useMemo(
     () =>
@@ -27,7 +30,7 @@ export default function TypeEditor({
           data: {
             typeFile,
             typeName,
-            propPath: structurePath,
+            propPath: collectionPath,
             mixedTypes,
           },
         });
@@ -36,7 +39,7 @@ export default function TypeEditor({
           default: (props) => <TypeList {...props} superior={data} />,
         };
       }),
-    [parser, typeFile, typeName, structurePath, mixedTypes]
+    [parser, typeFile, typeName, collectionPath, mixedTypes]
   );
 
   return (
@@ -44,12 +47,14 @@ export default function TypeEditor({
       {...{
         fixedT,
         mixedTypes,
-        structurePath,
+        collectionPath,
         values,
         onChange,
         onMixedTypeMapping,
       }}
     >
+      {action}
+
       <Suspense fallback={<TypeListSkeleton />}>
         <LazyTypeList
           {...{
@@ -59,7 +64,7 @@ export default function TypeEditor({
             onChange,
             onMixedTypeMapping,
           }}
-          onPropPathChange={setStructurePath}
+          onPropPathChange={setCollectionPath}
         />
       </Suspense>
     </EditorProvider>

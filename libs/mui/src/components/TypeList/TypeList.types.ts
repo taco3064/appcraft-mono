@@ -1,5 +1,3 @@
-import type { NodeWidget } from '@appcraft/types';
-
 import type { BasicType } from '../../hooks';
 import type { EditorProviderProps } from '../../contexts';
 import type { TypeItemProps } from '../TypeItem';
@@ -11,5 +9,5 @@ export interface TypeListProps
       'mixedTypes' | 'values' | 'onChange' | 'onMixedTypeMapping'
     > {
   superior: BasicType;
-  onPropPathChange: (propPath: string) => void;
+  onCollectionPathChange: (collectionPath: string) => void;
 }

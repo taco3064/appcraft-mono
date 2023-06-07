@@ -3,11 +3,11 @@ import _toPath from 'lodash.topath';
 import { useCallback, useMemo } from 'react';
 
 import { getPropPath } from './usePropertyRouter.utils';
-import { useStructure } from '../../contexts';
+import { useCollection } from '../../contexts';
 import type { PropertyRouterHook } from './usePropertyRouter.types';
 
-const usePropertyRouter: PropertyRouterHook = (onPropPathChange) => {
-  const { path, source } = useStructure();
+const usePropertyRouter: PropertyRouterHook = (onCollectionPathChange) => {
+  const { path, source } = useCollection();
   const paths = useMemo<string[]>(() => _toPath(path), [path]);
 
   return [
@@ -19,16 +19,16 @@ const usePropertyRouter: PropertyRouterHook = (onPropPathChange) => {
 
     {
       back: (index) =>
-        onPropPathChange(
+        onCollectionPathChange(
           getPropPath(source, paths.slice(0, (index || paths.length - 2) + 1))
         ),
 
       to: useCallback(
         ({ propName }) =>
-          onPropPathChange(
+          onCollectionPathChange(
             getPropPath(source, [...paths, propName] as string[])
           ),
-        [source, paths, onPropPathChange]
+        [source, paths, onCollectionPathChange]
       ),
     },
   ];

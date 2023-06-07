@@ -1,10 +1,10 @@
 import _toPath from 'lodash.topath';
 import { useState, useTransition } from 'react';
-import type { PropTypesDef } from '@appcraft/types';
+import type { PropTypesDef, WidgetField } from '@appcraft/types';
 
 import { getPropPath } from '../usePropertyRouter';
+import { useCollection } from '../../contexts';
 import { usePropertiesSorting } from '../usePropertiesSorting';
-import { EditedField, useStructure } from '../../contexts';
 import type { TypeItemsHook } from './useTypeItems.types';
 
 const useTypeItems: TypeItemsHook = (
@@ -13,7 +13,7 @@ const useTypeItems: TypeItemsHook = (
 ) => {
   const [, setTransition] = useTransition();
 
-  const { path, source, values } = useStructure(
+  const { path, source, values } = useCollection(
     superior.type.startsWith('array') ? [] : {}
   );
 
@@ -30,7 +30,7 @@ const useTypeItems: TypeItemsHook = (
 
     Object.entries(widgetValues).forEach(([field, options]) => {
       delete (options as Record<string, unknown>)?.[propPath];
-      onChange(field as EditedField, { ...options });
+      onChange(field as WidgetField, { ...options });
     });
   };
 
@@ -38,6 +38,7 @@ const useTypeItems: TypeItemsHook = (
     return {
       items: properties.map((options) => ({
         key: options.propName as string,
+        collectionType: 'object',
         options,
       })),
     };
@@ -47,6 +48,7 @@ const useTypeItems: TypeItemsHook = (
     return {
       items: superior.options.map((options) => ({
         key: options.propName as string,
+        collectionType: 'array',
         options,
       })),
     };
@@ -62,6 +64,7 @@ const useTypeItems: TypeItemsHook = (
 
         return {
           key: propName,
+          collectionType: 'object',
           options,
           onDelete: () =>
             setTransition(() =>
@@ -92,6 +95,7 @@ const useTypeItems: TypeItemsHook = (
 
         return {
           key: `el_${i}`,
+          collectionType: 'array',
           options,
           onDelete: () =>
             setTransition(() =>

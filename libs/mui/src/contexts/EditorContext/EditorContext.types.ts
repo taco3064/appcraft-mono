@@ -1,12 +1,10 @@
 import type { ReactNode } from 'react';
-import type { NodeWidget, TypesMapping } from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 
 //* Variable
-export type EditedField = 'nodes' | 'props' | 'events';
-
-export type ChangeHandler<F extends keyof NodeWidget> = (
-  fieldName: F,
-  values: NodeWidget[F] | null
+export type ChangeHandler<F extends keyof Appcraft.NodeWidget> = (
+  widgetField: F,
+  values: Appcraft.NodeWidget[F] | null
 ) => void;
 
 export type MixedTypeMappingResult = [
@@ -19,16 +17,16 @@ export type Replaces = {
   replacement: string | ((match: string, ...args: string[]) => string);
 }[];
 
-export type Structure = Array<unknown> | Record<string, unknown>;
+export type Collection = Array<unknown> | Record<string, unknown>;
 
 //* Context Value
 export interface EditorContextValue {
   fixedT?: (key: string, options?: object) => string;
-  mixedTypes?: TypesMapping;
-  structurePath: string;
-  values: Partial<Pick<NodeWidget, EditedField>>;
+  mixedTypes?: Appcraft.TypesMapping;
+  collectionPath: string;
+  values: Partial<Pick<Appcraft.NodeWidget, Appcraft.WidgetField>>;
 
-  onChange: ChangeHandler<EditedField>;
+  onChange: ChangeHandler<Appcraft.WidgetField>;
   onMixedTypeMapping: (mapping: Record<string, string>) => void;
 }
 
@@ -42,16 +40,16 @@ export type FixedTHook = (
   defaultFixedT?: EditorProviderProps['fixedT']
 ) => Required<EditorProviderProps>['fixedT'];
 
-export type StructureHook = (defaultValues?: Structure) => {
+export type CollectionHook = (defaultValues?: Collection) => {
   path: string;
   source: object;
-  values: Structure;
+  values: Collection;
 };
 
 export type PropValueHook = <V>(
-  widgetFieldName: EditedField,
-  propName: string,
-  isStructureArray: boolean
+  collectionType: Appcraft.CollectionType,
+  widgetField: Appcraft.WidgetField,
+  propName: string
 ) => {
   path: string;
   value: V;
@@ -59,7 +57,7 @@ export type PropValueHook = <V>(
 };
 
 export type MixedTypeMapping = (
-  widgetFieldName: EditedField,
-  propName: string,
-  isStructureArray: boolean
+  collectionType: Appcraft.CollectionType,
+  widgetField: Appcraft.WidgetField,
+  propName: string
 ) => MixedTypeMappingResult;

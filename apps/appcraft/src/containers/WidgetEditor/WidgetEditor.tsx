@@ -5,11 +5,13 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedWidgetEditor, CraftedRenderer } from '@appcraft/mui';
 import { MUI_WIDGETS } from '@appcraft/types';
 import { useState } from 'react';
+import { Components, useTheme } from '@mui/material/styles';
+import type { NodeWidget } from '@appcraft/types';
 
 import * as Component from '~appcraft/components';
 import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
 import { CommonButton } from '~appcraft/components/common';
-import { useEditedValues } from './WidgetEditor.hooks';
+import { useEditedWidget } from './WidgetEditor.hooks';
 import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks';
 import type * as Types from './WidgetEditor.types';
 
@@ -32,8 +34,9 @@ export default function WidgetEditor({
 }: Types.WidgetEditorProps) {
   const [at, ct, wt] = useFixedT('app', 'appcraft', 'widgets');
   const [open, setOpen] = useState(true);
-  const { values, widget, ...valuesHandle } = useEditedValues(data);
+  const { widget, onReset, onWidgetChange } = useEditedWidget(data);
 
+  const theme = useTheme();
   const width = useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
@@ -54,7 +57,7 @@ export default function WidgetEditor({
             btnVariant="icon"
             icon={RestartAltIcon}
             text={at('btn-reset')}
-            onClick={() => valuesHandle.onReset()}
+            onClick={onReset}
           />
         ),
         save: (
@@ -86,19 +89,19 @@ export default function WidgetEditor({
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
-        content={<CraftedRenderer options={values} />}
+        content={<CraftedRenderer options={widget as NodeWidget} />}
         drawer={
           <CraftedWidgetEditor
             {...widgets.get(widget?.type)}
             fixedT={ct}
             parser={TYPES_PARSER as object}
             widget={widget}
-            widgets={values.widgets}
-            onBackToElements={() => valuesHandle.onEditingChange(null)}
-            onWidgetAdd={valuesHandle.onWidgetAdd}
-            onWidgetChange={valuesHandle.onWidgetChange}
-            onWidgetSelect={valuesHandle.onEditingChange}
-            select={
+            onWidgetChange={onWidgetChange}
+            defaultValues={
+              theme.components[`Mui${widget?.type}` as keyof Components]
+                ?.defaultProps || {}
+            }
+            widgetTypeSelection={
               <Component.WidgetSelect
                 fullWidth
                 size="small"
@@ -106,9 +109,7 @@ export default function WidgetEditor({
                 variant="outlined"
                 label={wt('lbl-widget-type')}
                 defaultValue={widget?.type}
-                onChange={(e) =>
-                  valuesHandle.onWidgetChange('type', e.target.value)
-                }
+                onChange={(e) => onWidgetChange('type', e.target.value)}
               />
             }
           />

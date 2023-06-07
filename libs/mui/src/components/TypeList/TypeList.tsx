@@ -17,15 +17,16 @@ import type { TypeListProps } from './TypeList.types';
 export default function TypeList({
   disableSelection,
   superior,
-  onPropPathChange,
+  onCollectionPathChange,
   ...props
 }: TypeListProps) {
   const ct = useFixedT();
   const { items, onItemAdd } = useTypeItems(superior, props);
   const isModifiable = onItemAdd instanceof Function;
 
-  const [breadcrumbs, { back: handleBack, to: handleTo }] =
-    usePropertyRouter(onPropPathChange);
+  const [breadcrumbs, { back: handleBack, to: handleTo }] = usePropertyRouter(
+    onCollectionPathChange
+  );
 
   return (
     <List
@@ -85,9 +86,9 @@ export default function TypeList({
         </ListSubheader>
       }
     >
-      {items.map(({ key, options, onDelete }) => (
+      {items.map(({ key, collectionType, options, onDelete }) => (
         <TypeItem
-          {...{ key, disableSelection, options, onDelete }}
+          {...{ key, collectionType, disableSelection, options, onDelete }}
           onSubitemView={handleTo}
         />
       ))}

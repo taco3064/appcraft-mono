@@ -1,9 +1,10 @@
-import type { PropTypesDef } from '@appcraft/types';
+import type { CollectionType, PropTypesDef } from '@appcraft/types';
 import type { BasicType } from '../usePropertiesSorting';
 import type { EditorProviderProps } from '../../contexts';
 
 export interface TypeItem {
   key: string;
+  collectionType: CollectionType;
   options: PropTypesDef;
   onDelete?: (options: PropTypesDef) => void;
 }

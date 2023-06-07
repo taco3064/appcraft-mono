@@ -1,48 +1,44 @@
 import Collapse from '@mui/material/Collapse';
+import { useState } from 'react';
 
-import { NestedElements } from '../NestedElements';
 import { TypeEditor } from '../TypeEditor';
+import { WidgetAppBar } from '../common';
 import type * as Types from './CraftedWidgetEditor.types';
 
 export default function CraftedWidgetEditor({
+  defaultValues,
   fixedT,
   widget,
   widgetTypeSelection,
-  onBackToElements,
-  onWidgetAdd,
   onWidgetChange,
-  onWidgetSelect,
   ...props
 }: Types.CraftedWidgetEditorProps) {
+  const [actived, setActived] = useState<'structure' | 'editor'>('editor');
+
   return (
     <>
-      {/* <EditorAppBar
-        {...{
-          fixedT,
-          select,
-          widget,
-          onBackToElements,
-          onWidgetAdd,
-          onWidgetChange,
-          onWidgetSelect,
-        }}
-      /> */}
+      <Collapse in={actived === 'structure'}>Widget Structure</Collapse>
 
-      <Collapse in={Boolean(!widget)}>
-        <NestedElements {...{ fixedT, widgets, onWidgetSelect }} />
-      </Collapse>
-
-      <Collapse in={Boolean(widget)}>
-        {widget && (
-          <TypeEditor
-            {...(props as Types.EditorPartProps)}
-            fixedT={fixedT}
-            mixedTypes={widget.mapping}
-            values={widget}
-            onChange={(fieldName, value) => onWidgetChange(fieldName, value)}
-            onMixedTypeMapping={(mapping) => onWidgetChange('mapping', mapping)}
-          />
-        )}
+      <Collapse in={actived === 'editor'}>
+        <TypeEditor
+          {...(props as Types.EditorPartProps)}
+          fixedT={fixedT}
+          mixedTypes={widget.mapping}
+          values={widget}
+          onChange={(fieldName, value) => onWidgetChange(fieldName, value)}
+          onMixedTypeMapping={(mapping) => onWidgetChange('mapping', mapping)}
+          action={
+            <WidgetAppBar
+              onBackToElements={() => setActived('structure')}
+              {...{
+                fixedT,
+                widget,
+                widgetTypeSelection,
+                onWidgetChange,
+              }}
+            />
+          }
+        />
       </Collapse>
     </>
   );

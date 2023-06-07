@@ -3,7 +3,8 @@ import type { ReactNode } from 'react';
 
 import type { PropPathRouterHandler, TypeItem } from '../../hooks';
 
-export interface TypeItemProps extends Partial<Pick<TypeItem, 'onDelete'>> {
+export interface TypeItemProps
+  extends Pick<TypeItem, 'collectionType' | 'onDelete'> {
   action?: ReactNode;
   disableSelection?: boolean;
   options: PropTypesDef;

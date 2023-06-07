@@ -4,7 +4,7 @@ export type PropPathRouterHandler = (options: PropTypesDef) => void;
 export type GetPropPathFn = (source: object, paths: string[]) => string;
 
 export type PropertyRouterHook = (
-  onPropPathChange: (propPath: string) => void
+  onCollectionPathChange: (propPath: string) => void
 ) => [
   {
     name: string;

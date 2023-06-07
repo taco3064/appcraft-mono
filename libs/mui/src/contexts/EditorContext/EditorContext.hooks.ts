@@ -1,13 +1,14 @@
 import { createContext, useContext, useMemo, useTransition } from 'react';
 import _get from 'lodash.get';
 import _set from 'lodash.set';
+import type { WidgetField } from '@appcraft/types';
 
 import type * as Types from './EditorContext.types';
 
 export const EditorContext = createContext<Types.EditorContextValue>({
-  structurePath: '',
+  collectionPath: '',
   values: {},
-  onChange: (v) => null,
+  onChange: () => null,
   onMixedTypeMapping: () => null,
 });
 
@@ -42,66 +43,70 @@ export const useFixedT: Types.FixedTHook = (() => {
   };
 })();
 
-export const useStructure: Types.StructureHook = (defaultValues) => {
-  const { structurePath, values } = useContext(
-    EditorContext
-  ) as Required<Types.EditorContextValue>;
+export const useCollection: Types.CollectionHook = (defaultValues) => {
+  const {
+    collectionPath,
+    values: { events, nodes, props },
+  } = useContext(EditorContext) as Required<Types.EditorContextValue>;
 
-  const source = useMemo(() => {
-    const { events, nodes, props } = values;
+  const source = useMemo(
+    () =>
+      Object.entries({ events, nodes, props }).reduce(
+        (result, [type, options = {}]) => {
+          Object.entries(options).forEach(([path, value]) => {
+            if (path.startsWith(collectionPath)) {
+              _set(result, path, type === 'props' ? value : Symbol(type));
+            }
+          });
 
-    return Object.entries({ events, nodes, props }).reduce(
-      (result, [type, options = {}]) => {
-        Object.entries(options).forEach(([path, value]) => {
-          if (path.startsWith(structurePath)) {
-            _set(result, path, type === 'props' ? value : Symbol(type));
-          }
-        });
-
-        return result;
-      },
-      {}
-    );
-  }, [structurePath, values]);
+          return result;
+        },
+        {}
+      ),
+    [collectionPath, events, nodes, props]
+  );
 
   return {
-    path: structurePath,
+    path: collectionPath,
     source,
-    values: _get(source, structurePath) || defaultValues || null,
+    values: _get(source, collectionPath) || defaultValues || null,
   };
 };
 
 export const usePropValue: Types.PropValueHook = (
-  widgetFieldName,
-  propName,
-  isStructureArray
+  collectionType,
+  widgetField,
+  propName
 ) => {
-  const { structurePath, values, onChange } = useContext(
-    EditorContext
-  ) as Required<Types.EditorContextValue>;
+  const {
+    collectionPath,
+    values: { events, nodes, props },
+    onChange,
+  } = useContext(EditorContext) as Required<Types.EditorContextValue>;
 
-  const propPath = isStructureArray
-    ? `${structurePath}[${propName}]`
-    : `${structurePath ? `${structurePath}.` : ''}${propName}`;
+  const propPath =
+    collectionType === 'array'
+      ? `${collectionPath}[${propName}]`
+      : `${collectionPath ? `${collectionPath}.` : ''}${propName}`;
 
   return {
     path: propPath,
-    value: Object.assign({}, ...Object.values(values))[propPath] || null,
-    onChange: (value) => onChange(widgetFieldName, { [propPath]: value }),
+    value: Object.assign({}, ...[events, nodes, props])[propPath] || null,
+    onChange: (value) => onChange(widgetField, { [propPath]: value }),
   };
 };
 
 export const useMixedTypeMapping: Types.MixedTypeMapping = (
-  widgetFieldName,
-  propName,
-  isStructureArray
+  collectionType,
+  widgetField,
+  propName
 ) => {
   const [, setTransition] = useTransition();
 
   const { path: propPath } = usePropValue(
-    widgetFieldName,
-    propName,
-    isStructureArray
+    collectionType,
+    widgetField,
+    propName
   );
 
   const { mixedTypes, values, onMixedTypeMapping, onChange } = useContext(
@@ -116,25 +121,29 @@ export const useMixedTypeMapping: Types.MixedTypeMapping = (
         if (mixedText) {
           onMixedTypeMapping({ ...mixedTypes, [propPath]: mixedText });
         } else {
+          const { events, nodes, props } = values;
+
           delete mixedTypes[propPath];
           onMixedTypeMapping({ ...mixedTypes });
 
-          Object.entries(values).forEach(([key, options = {}]) => {
-            const field = key as Types.EditedField;
+          Object.entries({ events, nodes, props }).forEach(
+            ([key, options = {}]) => {
+              const widgetField = key as WidgetField;
 
-            Object.keys(options).forEach((path) => {
-              if (path.startsWith(propPath)) {
-                const { [field]: target } = values as Record<
-                  string,
-                  Record<string, object>
-                >;
+              Object.keys(options).forEach((path) => {
+                if (path.startsWith(propPath)) {
+                  const { [widgetField]: target } = values as Record<
+                    string,
+                    Record<string, object>
+                  >;
 
-                delete target[path];
-              }
-            });
+                  delete target[path];
+                }
+              });
 
-            onChange(field, { ...values[field] });
-          });
+              onChange(widgetField, { ...values[widgetField] });
+            }
+          );
         }
       }),
   ];

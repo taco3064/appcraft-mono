@@ -1,6 +1,6 @@
-import type { RendererProviderProps, RenderType } from '../../contexts';
+import type { NodeWidget } from '@appcraft/types';
+import type { WidgetLayout } from '../../contexts';
 
-export type CraftedRendererProps<T extends RenderType> = Pick<
-  RendererProviderProps<T>,
-  'options'
->;
+export interface CraftedRendererProps {
+  options: NodeWidget | WidgetLayout[];
+}

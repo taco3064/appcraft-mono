@@ -1,14 +1,16 @@
 export { default as EditorProvider } from './EditorProvider';
-export { getPropPathString } from './EditorContext.utils';
-
-export type {
-  EditorProviderProps,
-  MixedTypeMappingResult,
-} from './EditorContext.types';
 
 export {
   useFixedT,
   useMixedTypeMapping,
-  usePropPath,
   usePropValue,
+  useStructure,
 } from './EditorContext.hooks';
+
+export type {
+  ChangeHandler,
+  EditedField,
+  EditorProviderProps,
+  MixedTypeMappingResult,
+  Structure,
+} from './EditorContext.types';

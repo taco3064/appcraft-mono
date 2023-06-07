@@ -1,6 +1,3 @@
 export { default as usePropertyRouter } from './usePropertyRouter';
-
-export type {
-  PropertyOptions,
-  PropPathRouterHandler,
-} from './usePropertyRouter.types';
+export { getPropPath } from './usePropertyRouter.utils';
+export type { PropPathRouterHandler } from './usePropertyRouter.types';

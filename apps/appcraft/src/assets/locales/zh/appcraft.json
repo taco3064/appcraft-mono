@@ -6,7 +6,6 @@
   "btn-reset-type": "重設型別",
   "lbl-description": "說明",
   "msg-no-elements": "無可顯示的結構內容",
-  "msg-select-widget-type-first": "請先選擇類型",
   "ttl-elements": "組件結構",
   "ttl-node-array-map": "數組渲染",
   "ttl-node-plain-text": "純文本",

@@ -1,19 +1,14 @@
 import type { PropTypesDef } from '@appcraft/types';
 
-export interface PropertyOptions {
-  values: object;
-  onPropPathChange: (propPath: string) => void;
-}
-
 export type PropPathRouterHandler = (options: PropTypesDef) => void;
+export type GetPropPathFn = (source: object, paths: string[]) => string;
 
 export type PropertyRouterHook = (
-  options: PropertyOptions,
-  propPath: string
+  onPropPathChange: (propPath: string) => void
 ) => [
   {
     name: string;
-    isArrayElement: boolean;
+    isStructureArray: boolean;
     isLast: boolean;
   }[],
   {

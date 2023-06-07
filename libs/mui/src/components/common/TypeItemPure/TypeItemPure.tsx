@@ -16,7 +16,7 @@ export default function TypeItemPure({
   options,
 }: TypeItemPureProps) {
   const displayName = useDisplayPropName(options.propName);
-  const [value, onChange] = usePropValue<unknown>(options.propName);
+  const [value, onChange] = usePropValue('props', options.propName);
 
   return (
     <ListItem>

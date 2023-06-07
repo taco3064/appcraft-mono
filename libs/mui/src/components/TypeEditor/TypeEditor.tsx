@@ -17,7 +17,7 @@ export default function TypeEditor({
   onChange,
   onMixedTypeMapping,
 }: TypeEditorProps) {
-  const [propPath, setPropPath] = useState('');
+  const [structurePath, setStructurePath] = useState('');
 
   const LazyTypeList = useMemo(
     () =>
@@ -27,7 +27,7 @@ export default function TypeEditor({
           data: {
             typeFile,
             typeName,
-            propPath,
+            propPath: structurePath,
             mixedTypes,
           },
         });
@@ -36,15 +36,15 @@ export default function TypeEditor({
           default: (props) => <TypeList {...props} superior={data} />,
         };
       }),
-    [parser, typeFile, typeName, propPath, mixedTypes]
+    [parser, typeFile, typeName, structurePath, mixedTypes]
   );
 
   return (
     <EditorProvider
       {...{
         fixedT,
-        propPath,
         mixedTypes,
+        structurePath,
         values,
         onChange,
         onMixedTypeMapping,
@@ -52,8 +52,14 @@ export default function TypeEditor({
     >
       <Suspense fallback={<TypeListSkeleton />}>
         <LazyTypeList
-          {...{ disableSelection, values }}
-          onPropPathChange={setPropPath}
+          {...{
+            disableSelection,
+            mixedTypes,
+            values,
+            onChange,
+            onMixedTypeMapping,
+          }}
+          onPropPathChange={setStructurePath}
         />
       </Suspense>
     </EditorProvider>

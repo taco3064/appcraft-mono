@@ -1,8 +1,15 @@
+import type { NodeWidget } from '@appcraft/types';
+
 import type { BasicType } from '../../hooks';
+import type { EditorProviderProps } from '../../contexts';
 import type { TypeItemProps } from '../TypeItem';
 
-export interface TypeListProps extends Pick<TypeItemProps, 'disableSelection'> {
+export interface TypeListProps
+  extends Pick<TypeItemProps, 'disableSelection'>,
+    Pick<
+      EditorProviderProps,
+      'mixedTypes' | 'values' | 'onChange' | 'onMixedTypeMapping'
+    > {
   superior: BasicType;
-  values: object;
   onPropPathChange: (propPath: string) => void;
 }

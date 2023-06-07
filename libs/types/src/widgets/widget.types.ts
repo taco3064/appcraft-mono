@@ -5,11 +5,11 @@ interface BaseWidget {
   description?: string;
 }
 
-interface PlainTextWidget extends BaseWidget {
+export interface PlainTextWidget extends BaseWidget {
   content: string;
 }
 
-interface NodeWidget<
+export interface NodeWidget<
   E extends string[] = [],
   N extends string[] = [],
   P extends string[] = []

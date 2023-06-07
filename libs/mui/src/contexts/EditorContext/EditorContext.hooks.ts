@@ -1,26 +1,15 @@
-import React from 'react';
+import { createContext, useContext, useMemo, useTransition } from 'react';
 import _get from 'lodash.get';
 import _set from 'lodash.set';
-import _toPath from 'lodash.topath';
 
-import { getPropPathString } from './EditorContext.utils';
 import type * as Types from './EditorContext.types';
 
-export const EditorContext = React.createContext<Types.EditorValue>({
-  propPath: '',
+export const EditorContext = createContext<Types.EditorContextValue>({
+  structurePath: '',
   values: {},
   onChange: (v) => null,
   onMixedTypeMapping: () => null,
 });
-
-const useContext: Types.ContextHook = () =>
-  React.useContext(EditorContext) as Types.EditorContextValue;
-
-export const usePropPath = () => {
-  const { propPath } = useContext();
-
-  return propPath;
-};
 
 export const useFixedT: Types.FixedTHook = (() => {
   const replaces: Types.Replaces = [
@@ -36,9 +25,9 @@ export const useFixedT: Types.FixedTHook = (() => {
   ];
 
   return (defaultFixedT) => {
-    const { fixedT } = useContext();
+    const { fixedT } = useContext(EditorContext);
 
-    return React.useMemo(
+    return useMemo(
       () =>
         fixedT ||
         defaultFixedT ||
@@ -53,54 +42,100 @@ export const useFixedT: Types.FixedTHook = (() => {
   };
 })();
 
-export const usePropValue: Types.PropValueHook = (propName) => {
-  const { propPath, values, onChange } = useContext();
+export const useStructure: Types.StructureHook = (defaultValues) => {
+  const { structurePath, values } = useContext(
+    EditorContext
+  ) as Required<Types.EditorContextValue>;
 
-  return [
-    (propName && _get(values, [..._toPath(propPath), propName])) || null,
+  const source = useMemo(() => {
+    const { events, nodes, props } = values;
 
-    (value) => {
-      const paths = [..._toPath(propPath), propName] as string[];
-
-      if (Array.isArray(values)) {
-        onChange?.([..._set(values, paths, value)] as object);
-      } else {
-        onChange?.({ ..._set(values as object, paths, value) });
-      }
-    },
-  ];
-};
-
-export const useMixedTypeMapping: Types.MixedTypeMapping = (propName) => {
-  const [, setTransition] = React.useTransition();
-  const { propPath, mixedTypes, values, onMixedTypeMapping, onChange } =
-    useContext();
-
-  const path = React.useMemo(
-    () =>
-      getPropPathString(values, [..._toPath(propPath), propName] as string[]),
-    [values, propPath, propName]
-  );
-
-  return [
-    mixedTypes?.[path] || null,
-
-    (mixedText) => {
-      if (mixedText) {
-        onMixedTypeMapping({ ...mixedTypes, [path]: mixedText });
-      } else {
-        delete mixedTypes[path];
-
-        setTransition(() => {
-          onMixedTypeMapping({ ...mixedTypes });
-
-          if (Array.isArray(values)) {
-            onChange?.([..._set(values, path, undefined)] as object);
-          } else {
-            onChange?.({ ..._set(values as object, path, undefined) });
+    return Object.entries({ events, nodes, props }).reduce(
+      (result, [type, options = {}]) => {
+        Object.entries(options).forEach(([path, value]) => {
+          if (path.startsWith(structurePath)) {
+            _set(result, path, type === 'props' ? value : Symbol(type));
           }
         });
-      }
-    },
+
+        return result;
+      },
+      {}
+    );
+  }, [structurePath, values]);
+
+  return {
+    path: structurePath,
+    source,
+    values: _get(source, structurePath) || defaultValues || null,
+  };
+};
+
+export const usePropValue: Types.PropValueHook = (
+  widgetFieldName,
+  propName,
+  isStructureArray
+) => {
+  const { structurePath, values, onChange } = useContext(
+    EditorContext
+  ) as Required<Types.EditorContextValue>;
+
+  const propPath = isStructureArray
+    ? `${structurePath}[${propName}]`
+    : `${structurePath ? `${structurePath}.` : ''}${propName}`;
+
+  return {
+    path: propPath,
+    value: Object.assign({}, ...Object.values(values))[propPath] || null,
+    onChange: (value) => onChange(widgetFieldName, { [propPath]: value }),
+  };
+};
+
+export const useMixedTypeMapping: Types.MixedTypeMapping = (
+  widgetFieldName,
+  propName,
+  isStructureArray
+) => {
+  const [, setTransition] = useTransition();
+
+  const { path: propPath } = usePropValue(
+    widgetFieldName,
+    propName,
+    isStructureArray
+  );
+
+  const { mixedTypes, values, onMixedTypeMapping, onChange } = useContext(
+    EditorContext
+  ) as Required<Types.EditorContextValue>;
+
+  return [
+    mixedTypes?.[propPath] || null,
+
+    (mixedText) =>
+      setTransition(() => {
+        if (mixedText) {
+          onMixedTypeMapping({ ...mixedTypes, [propPath]: mixedText });
+        } else {
+          delete mixedTypes[propPath];
+          onMixedTypeMapping({ ...mixedTypes });
+
+          Object.entries(values).forEach(([key, options = {}]) => {
+            const field = key as Types.EditedField;
+
+            Object.keys(options).forEach((path) => {
+              if (path.startsWith(propPath)) {
+                const { [field]: target } = values as Record<
+                  string,
+                  Record<string, object>
+                >;
+
+                delete target[path];
+              }
+            });
+
+            onChange(field, { ...values[field] });
+          });
+        }
+      }),
   ];
 };

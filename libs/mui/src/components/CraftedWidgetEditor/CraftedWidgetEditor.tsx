@@ -1,28 +1,22 @@
 import Collapse from '@mui/material/Collapse';
-import Typography from '@mui/material/Typography';
 
-import { EditorAppBar } from '../EditorAppBar';
 import { NestedElements } from '../NestedElements';
 import { TypeEditor } from '../TypeEditor';
-import { useFixedT } from '../../contexts';
 import type * as Types from './CraftedWidgetEditor.types';
 
 export default function CraftedWidgetEditor({
   fixedT,
-  select,
   widget,
-  widgets,
+  widgetTypeSelection,
   onBackToElements,
   onWidgetAdd,
   onWidgetChange,
   onWidgetSelect,
   ...props
 }: Types.CraftedWidgetEditorProps) {
-  const ct = useFixedT(fixedT);
-
   return (
     <>
-      <EditorAppBar
+      {/* <EditorAppBar
         {...{
           fixedT,
           select,
@@ -32,32 +26,20 @@ export default function CraftedWidgetEditor({
           onWidgetChange,
           onWidgetSelect,
         }}
-      />
+      /> */}
 
       <Collapse in={Boolean(!widget)}>
         <NestedElements {...{ fixedT, widgets, onWidgetSelect }} />
       </Collapse>
 
       <Collapse in={Boolean(widget)}>
-        {!widget?.type ? (
-          <Typography
-            variant="h6"
-            color="text.secondary"
-            align="center"
-            sx={{
-              justifyContent: 'center',
-              marginTop: (theme) => theme.spacing(2),
-            }}
-          >
-            {ct('msg-select-widget-type-first')}
-          </Typography>
-        ) : (
+        {widget && (
           <TypeEditor
             {...(props as Types.EditorPartProps)}
             fixedT={fixedT}
             mixedTypes={widget.mapping}
-            values={widget.content}
-            onChange={(content) => onWidgetChange('content', content)}
+            values={widget}
+            onChange={(fieldName, value) => onWidgetChange(fieldName, value)}
             onMixedTypeMapping={(mapping) => onWidgetChange('mapping', mapping)}
           />
         )}

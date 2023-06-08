@@ -80,7 +80,8 @@ export const usePropValue: Types.PropValueHook = (
 ) => {
   const {
     collectionPath,
-    values: { events, nodes, props },
+    values: gg,
+    values: { events, nodes, props, [widgetField]: target },
     onChange,
   } = useContext(EditorContext) as Required<Types.EditorContextValue>;
 
@@ -92,7 +93,14 @@ export const usePropValue: Types.PropValueHook = (
   return {
     path: propPath,
     value: Object.assign({}, ...[events, nodes, props])[propPath] || null,
-    onChange: (value) => onChange(widgetField, { [propPath]: value }),
+    onChange: (value) => {
+      delete (target as Record<string, unknown>)?.[propPath];
+
+      onChange(widgetField, {
+        ...target,
+        ...((value || value === 0) && { [propPath]: value }),
+      });
+    },
   };
 };
 

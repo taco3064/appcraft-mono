@@ -1,9 +1,8 @@
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { Suspense, lazy, useMemo, useState } from 'react';
 
-import { EditorProvider } from '../../contexts';
+import { EditorProvider, useFixedT } from '../../contexts';
 import { TypeList } from '../TypeList';
 import { TypeListSkeleton } from '../TypeListSkeleton';
 import type { TypeEditorProps } from './TypeEditor.types';
@@ -20,23 +19,40 @@ export default function TypeEditor({
   onChange,
   onMixedTypeMapping,
 }: TypeEditorProps) {
+  const ct = useFixedT(fixedT);
   const [collectionPath, setCollectionPath] = useState('');
 
   const LazyTypeList = useMemo(
     () =>
       lazy(async () => {
-        const { data } = await axios({
-          ...parser,
-          data: {
-            typeFile,
-            typeName,
-            propPath: collectionPath,
-            mixedTypes,
-          },
-        });
+        const isValid = Boolean(typeFile && typeName);
+
+        const { data } = !isValid
+          ? { data: null }
+          : await axios({
+              ...parser,
+              data: {
+                typeFile,
+                typeName,
+                propPath: collectionPath,
+                mixedTypes,
+              },
+            });
 
         return {
-          default: (props) => <TypeList {...props} superior={data} />,
+          default: ({ invalidMessage, ...props }) =>
+            !data ? (
+              <Typography
+                variant="h6"
+                color="text.secondary"
+                justifyContent="center"
+                lineHeight={3}
+              >
+                {invalidMessage}
+              </Typography>
+            ) : (
+              <TypeList {...props} superior={data} />
+            ),
         };
       }),
     [parser, typeFile, typeName, collectionPath, mixedTypes]
@@ -64,7 +80,8 @@ export default function TypeEditor({
             onChange,
             onMixedTypeMapping,
           }}
-          onPropPathChange={setCollectionPath}
+          invalidMessage={ct('sdfs')}
+          onCollectionPathChange={setCollectionPath}
         />
       </Suspense>
     </EditorProvider>

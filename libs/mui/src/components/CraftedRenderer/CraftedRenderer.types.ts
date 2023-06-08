@@ -1,6 +1,10 @@
-import type { NodeWidget } from '@appcraft/types';
-import type { WidgetLayout } from '../../contexts';
+import type { WidgetOptions } from '@appcraft/types';
+import type { RendererProviderProps } from '../../contexts';
 
-export interface CraftedRendererProps {
-  options: NodeWidget | WidgetLayout[];
+type WidgetLayout = {
+  widget: WidgetOptions;
+};
+
+export interface CraftedRendererProps extends RendererProviderProps {
+  options: WidgetOptions | WidgetLayout[];
 }

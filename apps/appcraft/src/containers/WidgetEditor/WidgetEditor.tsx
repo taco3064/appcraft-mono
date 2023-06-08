@@ -108,7 +108,7 @@ export default function WidgetEditor({
                 margin="dense"
                 variant="outlined"
                 label={wt('lbl-widget-type')}
-                defaultValue={widget?.type}
+                defaultValue={widget.type || ''}
                 onChange={(e) => onWidgetChange('type', e.target.value)}
               />
             }

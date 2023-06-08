@@ -1,17 +1,11 @@
-import type { ReactNode } from 'react';
-import type { WidgetOptions } from '@appcraft/types';
+import type { ComponentType, LazyExoticComponent, ReactNode } from 'react';
 
-export type RenderType = 'widget' | 'dashboard';
-
-export type WidgetLayout = {
-  widget: WidgetOptions;
-};
-
-export interface RendererProviderProps<T extends RenderType> {
-  children: ReactNode;
-  options: T extends 'widget' ? WidgetOptions : WidgetLayout[];
+//* Context Value
+export interface RendererContextValue {
+  lazy?: (widgetType: string) => LazyExoticComponent<ComponentType>;
 }
 
-export type RendererValue<T extends RenderType> = Partial<
-  Pick<RendererProviderProps<T>, 'options'>
->;
+//* Provider Props
+export interface RendererProviderProps extends Required<RendererContextValue> {
+  children: ReactNode;
+}

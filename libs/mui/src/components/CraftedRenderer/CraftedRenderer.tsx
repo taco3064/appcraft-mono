@@ -2,9 +2,12 @@ import { RendererProvider } from '../../contexts';
 import { WidgetGenerator } from '../WidgetGenerator';
 import type { CraftedRendererProps } from './CraftedRenderer.types';
 
-export default function CraftedRenderer({ options }: CraftedRendererProps) {
+export default function CraftedRenderer({
+  lazy,
+  options,
+}: CraftedRendererProps) {
   return (
-    <RendererProvider options={options}>
+    <RendererProvider lazy={lazy}>
       {!Array.isArray(options) ? (
         <WidgetGenerator key={options.id} options={options} />
       ) : (

@@ -1,15 +1,13 @@
-import type { NodeWidget } from '@appcraft/types';
-
-import type { TypeEditorProps } from '../CraftedTypeEditor';
+import type { CraftedTypeEditorProps } from '../CraftedTypeEditor';
 import type { WidgetAppBarProps } from '../common';
 
-export type EditorPartProps = Pick<
-  TypeEditorProps,
+export type TypeParseProps = Pick<
+  CraftedTypeEditorProps,
   'typeFile' | 'typeName' | 'disableSelection' | 'parser'
 >;
 
 export interface CraftedWidgetEditorProps
-  extends Omit<WidgetAppBarProps, 'onBackToElements'>,
-    Partial<EditorPartProps> {
+  extends Omit<WidgetAppBarProps, 'onBackToStructure'>,
+    Partial<TypeParseProps> {
   defaultValues?: Record<string, unknown>;
 }

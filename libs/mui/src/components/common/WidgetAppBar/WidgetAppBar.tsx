@@ -18,7 +18,7 @@ export default function WidgetAppBar({
   fixedT,
   widget,
   widgetTypeSelection,
-  onBackToElements,
+  onBackToStructure,
   onWidgetChange,
 }: WidgetAppBarProps) {
   const ct = useFixedT(fixedT);
@@ -28,7 +28,7 @@ export default function WidgetAppBar({
     <AppBar color="default" position="sticky">
       <Toolbar variant="regular">
         <Tooltip title={ct('btn-back')}>
-          <IconButton onClick={onBackToElements}>
+          <IconButton onClick={onBackToStructure}>
             <ChevronLeftIcon />
           </IconButton>
         </Tooltip>

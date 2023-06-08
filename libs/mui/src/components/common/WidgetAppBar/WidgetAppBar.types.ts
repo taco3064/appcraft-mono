@@ -7,6 +7,6 @@ export interface WidgetAppBarProps {
   fixedT?: EditorProviderProps['fixedT'];
   widget: Partial<NodeWidget>;
   widgetTypeSelection: ReactElement;
-  onBackToElements: MouseEventHandler<HTMLButtonElement>;
+  onBackToStructure: MouseEventHandler<HTMLButtonElement>;
   onWidgetChange: ChangeHandler<keyof NodeWidget>;
 }

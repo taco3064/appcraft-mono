@@ -80,7 +80,6 @@ export const usePropValue: Types.PropValueHook = (
 ) => {
   const {
     collectionPath,
-    values: gg,
     values: { events, nodes, props, [widgetField]: target },
     onChange,
   } = useContext(EditorContext) as Required<Types.EditorContextValue>;

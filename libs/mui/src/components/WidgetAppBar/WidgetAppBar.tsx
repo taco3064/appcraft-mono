@@ -11,7 +11,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 
-import { useFixedT } from '../../../contexts';
+import { useFixedT } from '../../contexts';
 import type { WidgetAppBarProps } from './WidgetAppBar.types';
 
 export default function WidgetAppBar({

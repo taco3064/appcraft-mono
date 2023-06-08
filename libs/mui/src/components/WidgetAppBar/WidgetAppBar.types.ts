@@ -1,7 +1,7 @@
 import type { MouseEventHandler, ReactElement } from 'react';
 import type { NodeWidget } from '@appcraft/types';
 
-import type { ChangeHandler, EditorProviderProps } from '../../../contexts';
+import type { ChangeHandler, EditorProviderProps } from '../../contexts';
 
 export interface WidgetAppBarProps {
   fixedT?: EditorProviderProps['fixedT'];

@@ -6,7 +6,8 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { WidgetAppBar } from '../common';
+import { WidgetAppBar } from '../WidgetAppBar';
+import { WidgetStructure } from '../WidgetStructure';
 import { useFixedT } from '../../contexts';
 import type * as Types from './CraftedWidgetEditor.types';
 
@@ -33,6 +34,8 @@ export default function CraftedWidgetEditor({
         </AppBar>
 
         <Divider />
+
+        <WidgetStructure widget={widget} />
       </Collapse>
 
       <Collapse in={actived === 'editor'}>

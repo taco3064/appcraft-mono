@@ -1,5 +1,5 @@
 import type { CraftedTypeEditorProps } from '../CraftedTypeEditor';
-import type { WidgetAppBarProps } from '../common';
+import type { WidgetAppBarProps } from '../WidgetAppBar';
 
 export type TypeParseProps = Pick<
   CraftedTypeEditorProps,

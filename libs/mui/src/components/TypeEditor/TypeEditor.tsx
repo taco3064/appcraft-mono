@@ -80,7 +80,7 @@ export default function TypeEditor({
             onChange,
             onMixedTypeMapping,
           }}
-          invalidMessage={ct('sdfs')}
+          invalidMessage={ct('msg-select-widget-type-first')}
           onCollectionPathChange={setCollectionPath}
         />
       </Suspense>

@@ -5,6 +5,7 @@ type WidgetLayout = {
   widget: WidgetOptions;
 };
 
-export interface CraftedRendererProps extends RendererProviderProps {
+export interface CraftedRendererProps
+  extends Omit<RendererProviderProps, 'children'> {
   options: WidgetOptions | WidgetLayout[];
 }

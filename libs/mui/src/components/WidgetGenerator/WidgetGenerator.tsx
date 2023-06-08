@@ -1,13 +1,18 @@
-import * as Mui from '@mui/material';
-import { ComponentType, useMemo } from 'react';
+import { Suspense } from 'react';
 
+import { useLazyWidget } from '../../contexts';
+import { useWidgetProps } from '../../hooks';
 import type { WidgetGeneratorProps } from './WidgetGenerator.types';
 
 export default function WidgetGenerator({ options }: WidgetGeneratorProps) {
-  // const WidgetElement = useMemo(
-  //   () => (Mui[options.type as keyof typeof Mui] as ComponentType) || null,
-  //   [options.type]
-  // );
+  const LazyWidget = useLazyWidget(options);
+  const widgetProps = useWidgetProps<typeof LazyWidget>(options);
 
-  return <>TEST</>;
+  console.log(LazyWidget, widgetProps);
+
+  return (
+    <Suspense>
+      <LazyWidget />
+    </Suspense>
+  );
 }

@@ -229,6 +229,12 @@
           "typeName": "ListProps"
         },
         {
+          "id": "ListSubheader",
+          "importType": "mui",
+          "typeFile": "./node_modules/@mui/material/ListSubheader/ListSubheader.d.ts",
+          "typeName": "ListSubheaderProps"
+        },
+        {
           "id": "ListItem",
           "importType": "mui",
           "typeFile": "./node_modules/@mui/material/ListItem/ListItem.d.ts",
@@ -247,22 +253,16 @@
           "typeName": "ListItemIconProps"
         },
         {
-          "id": "ListItemSecondaryAction",
-          "importType": "mui",
-          "typeFile": "./node_modules/@mui/material/ListItemSecondaryAction/ListItemSecondaryAction.d.ts",
-          "typeName": "ListItemSecondaryActionProps"
-        },
-        {
           "id": "ListItemText",
           "importType": "mui",
           "typeFile": "./node_modules/@mui/material/ListItemText/ListItemText.d.ts",
           "typeName": "ListItemTextProps"
         },
         {
-          "id": "ListSubheader",
+          "id": "ListItemSecondaryAction",
           "importType": "mui",
-          "typeFile": "./node_modules/@mui/material/ListSubheader/ListSubheader.d.ts",
-          "typeName": "ListSubheaderProps"
+          "typeFile": "./node_modules/@mui/material/ListItemSecondaryAction/ListItemSecondaryAction.d.ts",
+          "typeName": "ListItemSecondaryActionProps"
         }
       ]
     },

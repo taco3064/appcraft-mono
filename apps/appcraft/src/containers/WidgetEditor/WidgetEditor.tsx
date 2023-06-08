@@ -4,13 +4,13 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedWidgetEditor, CraftedRenderer } from '@appcraft/mui';
 import { MUI_WIDGETS } from '@appcraft/types';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Components, useTheme } from '@mui/material/styles';
 import type { NodeWidget } from '@appcraft/types';
 
 import * as Component from '~appcraft/components';
 import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
-import { CommonButton } from '~appcraft/components/common';
+import { CommonButton, LazyMui } from '~appcraft/components/common';
 import { useEditedWidget } from './WidgetEditor.hooks';
 import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks';
 import type * as Types from './WidgetEditor.types';
@@ -40,6 +40,7 @@ export default function WidgetEditor({
   const width = useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
+  const toLazy = useCallback((widgetType: string) => LazyMui[widgetType], []);
 
   const actionNode = useNodePicker(
     () =>
@@ -89,7 +90,9 @@ export default function WidgetEditor({
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
-        content={<CraftedRenderer options={widget as NodeWidget} />}
+        content={
+          <CraftedRenderer lazy={toLazy} options={widget as NodeWidget} />
+        }
         drawer={
           <CraftedWidgetEditor
             {...widgets.get(widget?.type)}

@@ -1,3 +1,3 @@
 export * from './CraftedWidgetEditor';
 export * from './CraftedRenderer';
-export * from './TypeEditor';
+export * from './CraftedTypeEditor';

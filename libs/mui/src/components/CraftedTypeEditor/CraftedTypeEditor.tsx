@@ -5,9 +5,9 @@ import { Suspense, lazy, useMemo, useState } from 'react';
 import { EditorProvider, useFixedT } from '../../contexts';
 import { TypeList } from '../TypeList';
 import { TypeListSkeleton } from '../TypeListSkeleton';
-import type { TypeEditorProps } from './TypeEditor.types';
+import type { CraftedTypeEditorProps } from './CraftedTypeEditor.types';
 
-export default function TypeEditor({
+export default function CraftedTypeEditor({
   action,
   disableSelection,
   fixedT,
@@ -18,7 +18,7 @@ export default function TypeEditor({
   values,
   onChange,
   onMixedTypeMapping,
-}: TypeEditorProps) {
+}: CraftedTypeEditorProps) {
   const ct = useFixedT(fixedT);
   const [collectionPath, setCollectionPath] = useState('');
 

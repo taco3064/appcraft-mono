@@ -1,6 +1,6 @@
 import type { NodeWidget } from '@appcraft/types';
 
-import type { TypeEditorProps } from '../TypeEditor';
+import type { TypeEditorProps } from '../CraftedTypeEditor';
 import type { WidgetAppBarProps } from '../common';
 
 export type EditorPartProps = Pick<

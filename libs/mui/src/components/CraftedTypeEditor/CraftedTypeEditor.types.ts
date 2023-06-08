@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 
 import type { EditorProviderProps } from '../../contexts';
 
-export interface TypeEditorProps
+export interface CraftedTypeEditorProps
   extends Omit<TypesParseOptions, 'propPath'>,
     Omit<EditorProviderProps, 'children' | 'collectionPath'> {
   disableSelection?: boolean;

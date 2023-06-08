@@ -1,7 +1,7 @@
 import Container from '@mui/material/Container';
 import ReplayIcon from '@mui/icons-material/Replay';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { TypeEditor } from '@appcraft/mui';
+import { CraftedTypeEditor } from '@appcraft/mui';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useState, useTransition } from 'react';
@@ -84,7 +84,7 @@ export default function ConfigDetail<C extends object = object>({
       />
 
       <Container maxWidth="sm">
-        <TypeEditor
+        <CraftedTypeEditor
           {...{ typeFile, typeName, mixedTypes, values }}
           disableSelection
           fixedT={ct}

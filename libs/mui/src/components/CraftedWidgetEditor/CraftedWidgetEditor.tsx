@@ -1,7 +1,7 @@
 import Collapse from '@mui/material/Collapse';
 import { useState } from 'react';
 
-import { TypeEditor } from '../TypeEditor';
+import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { WidgetAppBar } from '../common';
 import type * as Types from './CraftedWidgetEditor.types';
 
@@ -20,7 +20,7 @@ export default function CraftedWidgetEditor({
       <Collapse in={actived === 'structure'}>Widget Structure</Collapse>
 
       <Collapse in={actived === 'editor'}>
-        <TypeEditor
+        <CraftedTypeEditor
           {...(props as Types.EditorPartProps)}
           fixedT={fixedT}
           mixedTypes={widget.mapping}

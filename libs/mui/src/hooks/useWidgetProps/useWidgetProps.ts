@@ -1,11 +1,14 @@
 import _set from 'lodash.set';
-import { ComponentProps, ExoticComponent, useMemo } from 'react';
+import { ComponentProps, ExoticComponent, useMemo, useRef } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 const useWidgetProps = <T extends ExoticComponent>(
-  options: Appcraft.WidgetOptions
-): ComponentProps<T> =>
-  useMemo(() => {
+  options: Appcraft.WidgetOptions,
+  render: (child: Appcraft.WidgetOptions) => JSX.Element
+): ComponentProps<T> => {
+  const ref = useRef<typeof render>(render);
+
+  return useMemo(() => {
     const fields: Appcraft.WidgetField[] = ['events', 'nodes', 'props'];
     const { type } = options as Appcraft.NodeWidget;
 
@@ -19,7 +22,15 @@ const useWidgetProps = <T extends ExoticComponent>(
               options as Appcraft.NodeWidget;
 
             Object.entries(props).forEach(([propPath, value]) => {
-              if (widgetField === 'props') {
+              if (widgetField === 'nodes') {
+                _set(
+                  result,
+                  propPath,
+                  Array.isArray(value)
+                    ? value.map(ref.current)
+                    : ref.current(value as Appcraft.WidgetOptions)
+                );
+              } else if (widgetField === 'props') {
                 _set(result, propPath, value);
               }
             });
@@ -27,6 +38,7 @@ const useWidgetProps = <T extends ExoticComponent>(
             return result;
           }, {})
     ) as ComponentProps<T>;
-  }, [options]);
+  }, [options, ref]);
+};
 
 export default useWidgetProps;

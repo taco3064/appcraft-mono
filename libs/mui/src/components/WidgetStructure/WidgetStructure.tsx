@@ -9,7 +9,7 @@ import { useFixedT } from '../../contexts';
 import type { ActionElement } from '../CraftedTypeEditor';
 import type { WidgetStructureProps } from './WidgetStructure.types';
 
-export default function WidgetStructure<A extends ActionElement>({
+export default function WidgetStructure<A extends ActionElement = undefined>({
   action,
   fixedT,
   open,

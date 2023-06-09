@@ -17,7 +17,7 @@ export type Collapsable<
   (A extends undefined ? Partial<CollapsedAction<A>> : CollapsedAction<A>);
 
 export type CraftedTypeEditorProps<A extends ActionElement> = Collapsable<
-  Omit<TypesParseOptions, 'propPath'> &
+  Omit<TypesParseOptions, 'propPath' | 'mixedTypes'> &
     Omit<EditorProviderProps, 'children' | 'collectionPath'> & {
       disableSelection?: boolean;
       parser: Pick<DataSource, 'url' | 'method' | 'headers'>;

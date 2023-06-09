@@ -17,11 +17,12 @@ import type { TypeListProps } from './TypeList.types';
 export default function TypeList({
   disableSelection,
   superior,
+  values,
+  onChange,
   onCollectionPathChange,
-  ...props
 }: TypeListProps) {
   const ct = useFixedT();
-  const { items, onItemAdd } = useTypeItems(superior, props);
+  const { items, onItemAdd } = useTypeItems(superior, values, onChange);
   const isModifiable = onItemAdd instanceof Function;
 
   const [breadcrumbs, { back: handleBack, to: handleTo }] = usePropertyRouter(

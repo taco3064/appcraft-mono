@@ -1,18 +1,13 @@
 import _toPath from 'lodash.topath';
-import { useState, useTransition } from 'react';
-import type { NodeWidget, PropTypesDef, WidgetField } from '@appcraft/types';
+import { startTransition, useState } from 'react';
+import type { PropTypesDef } from '@appcraft/types';
 
 import { getPropPath } from '../usePropertyRouter';
 import { useCollection } from '../../contexts';
 import { usePropertiesSorting } from '../usePropertiesSorting';
 import type { TypeItemsHook } from './useTypeItems.types';
 
-const useTypeItems: TypeItemsHook = (
-  superior,
-  { values: widgetValues, mixedTypes, onChange, onMixedTypeMapping }
-) => {
-  const [, setTransition] = useTransition();
-
+const useTypeItems: TypeItemsHook = (superior, widgetValues, onChange) => {
   const { path, source, values } = useCollection(
     superior.type.startsWith('array') ? [] : {}
   );
@@ -21,25 +16,17 @@ const useTypeItems: TypeItemsHook = (
   const properties = usePropertiesSorting(superior);
 
   const handleDelete = (fn: () => string) =>
-    setTransition(() => {
+    startTransition(() => {
       const { events, nodes, props } = widgetValues;
       const propPath = getPropPath(source, [..._toPath(path), fn()]);
 
-      delete mixedTypes?.[propPath];
+      delete widgetValues.mapping?.[propPath];
 
       [events, nodes, props].forEach((options) => {
         delete (options as Record<string, unknown>)?.[propPath];
       });
 
-      setStructure({ ...structure });
-      onMixedTypeMapping({ ...mixedTypes });
-
-      onChange({
-        ...widgetValues,
-        events,
-        nodes,
-        props,
-      } as NodeWidget);
+      onChange({ ...widgetValues });
     });
 
   if (superior.type === 'exact') {

@@ -45,22 +45,18 @@ export default function CraftedWidgetEditor({
         }
       />
 
-      {selected && (
+      {widget && (
         <CraftedTypeEditor
           {...(props as Types.TypeParseProps)}
           open={Boolean(selected)}
           fixedT={fixedT}
-          mixedTypes={selected.mapping}
-          values={selected}
+          values={widget}
           onChange={onWidgetChange}
           action={
             <WidgetAppBar
-              description={selected?.type?.replace(/([A-Z])/g, ' $1')}
+              description={widget.type.replace(/([A-Z])/g, ' $1')}
               onBackToStructure={() => setSelected(null)}
             />
-          }
-          onMixedTypeMapping={(mapping) =>
-            onWidgetChange({ ...selected, mapping })
           }
         />
       )}

@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useTransition } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import _get from 'lodash.get';
 import _set from 'lodash.set';
 import type * as Appcraft from '@appcraft/types';
@@ -7,9 +7,7 @@ import type * as Types from './EditorContext.types';
 
 export const EditorContext = createContext<Types.EditorContextValue>({
   collectionPath: '',
-  values: {},
   onChange: () => null,
-  onMixedTypeMapping: () => null,
 });
 
 export const useFixedT: Types.FixedTHook = (() => {
@@ -115,7 +113,9 @@ export const useMixedTypeMapping: Types.MixedTypeMapping = (
   widgetField,
   propName
 ) => {
-  const [, setTransition] = useTransition();
+  const { values, onChange } = useContext(
+    EditorContext
+  ) as Required<Types.EditorContextValue>;
 
   const { path: propPath } = usePropValue(
     collectionType,
@@ -123,45 +123,30 @@ export const useMixedTypeMapping: Types.MixedTypeMapping = (
     propName
   );
 
-  const { mixedTypes, values, onMixedTypeMapping, onChange } = useContext(
-    EditorContext
-  ) as Required<Types.EditorContextValue>;
-
   return [
-    mixedTypes?.[propPath] || null,
+    values.mapping?.[propPath] || null,
 
-    (mixedText) =>
-      setTransition(() => {
-        if (mixedText) {
-          onMixedTypeMapping({ ...mixedTypes, [propPath]: mixedText });
-        } else {
-          const { events, nodes, props } = values;
+    (mixedText) => {
+      if (mixedText) {
+        onChange({
+          ...values,
+          mapping: { ...values.mapping, [propPath]: mixedText },
+        });
+      } else {
+        const { mapping, events, nodes, props } = values;
 
-          delete mixedTypes[propPath];
-          onMixedTypeMapping({ ...mixedTypes });
+        delete mapping?.[propPath];
 
-          Object.entries({ events, nodes, props }).forEach(
-            ([key, options = {}]) => {
-              const widgetField = key as Appcraft.WidgetField;
-
-              Object.keys(options).forEach((path) => {
-                if (path.startsWith(propPath)) {
-                  const { [widgetField]: target } = values as Record<
-                    string,
-                    Record<string, object>
-                  >;
-
-                  delete target[path];
-                }
-              });
-
-              onChange({
-                ...values,
-                [widgetField]: { ...values[widgetField] },
-              } as Appcraft.NodeWidget);
+        [events, nodes, props].forEach((options = {}) =>
+          Object.keys(options).forEach((path) => {
+            if (path.startsWith(propPath)) {
+              delete (options as Record<string, unknown>)[path];
             }
-          );
-        }
-      }),
+          })
+        );
+
+        onChange({ ...values });
+      }
+    },
   ];
 };

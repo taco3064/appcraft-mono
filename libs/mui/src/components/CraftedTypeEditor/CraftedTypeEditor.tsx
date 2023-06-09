@@ -16,13 +16,11 @@ export default function CraftedTypeEditor<
   open = true,
   disableSelection,
   fixedT,
-  mixedTypes,
   parser,
   typeFile,
   typeName,
   values,
   onChange,
-  onMixedTypeMapping,
 }: Types.CraftedTypeEditorProps<A>) {
   const ct = useFixedT(fixedT);
   const [collectionPath, setCollectionPath] = useState('');
@@ -40,7 +38,7 @@ export default function CraftedTypeEditor<
                 typeFile,
                 typeName,
                 propPath: collectionPath,
-                mixedTypes,
+                mixedTypes: values?.mapping,
               },
             });
 
@@ -60,18 +58,16 @@ export default function CraftedTypeEditor<
             ),
         };
       }),
-    [parser, typeFile, typeName, collectionPath, mixedTypes]
+    [parser, typeFile, typeName, collectionPath, values?.mapping]
   );
 
   return (
     <EditorProvider
       {...{
         fixedT,
-        mixedTypes,
         collectionPath,
         values,
         onChange,
-        onMixedTypeMapping,
       }}
     >
       <Collapse in={open}>
@@ -86,10 +82,8 @@ export default function CraftedTypeEditor<
           <LazyTypeList
             {...{
               disableSelection,
-              mixedTypes,
               values,
               onChange,
-              onMixedTypeMapping,
             }}
             invalidMessage={ct('msg-select-widget-type-first')}
             onCollectionPathChange={setCollectionPath}

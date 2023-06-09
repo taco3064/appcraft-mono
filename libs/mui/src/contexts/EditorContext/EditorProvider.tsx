@@ -7,21 +7,17 @@ export default function InteractivedProvider({
   children,
   collectionPath,
   fixedT,
-  mixedTypes,
   values,
   onChange,
-  onMixedTypeMapping,
 }: Types.EditorProviderProps) {
   const value = useMemo(
     () => ({
       fixedT,
       collectionPath,
-      mixedTypes,
       values,
       onChange,
-      onMixedTypeMapping,
     }),
-    [fixedT, collectionPath, mixedTypes, values, onChange, onMixedTypeMapping]
+    [fixedT, collectionPath, values, onChange]
   );
 
   return (

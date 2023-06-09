@@ -1,6 +1,6 @@
-import type { CollectionType, PropTypesDef } from '@appcraft/types';
+import type { CollectionType, NodeWidget, PropTypesDef } from '@appcraft/types';
 import type { BasicType } from '../usePropertiesSorting';
-import type { EditorProviderProps } from '../../contexts';
+import type { ChangeHandler } from '../../contexts';
 
 export interface TypeItem {
   key: string;
@@ -11,10 +11,8 @@ export interface TypeItem {
 
 export type TypeItemsHook = (
   superior: BasicType,
-  props: Pick<
-    EditorProviderProps,
-    'mixedTypes' | 'values' | 'onChange' | 'onMixedTypeMapping'
-  >
+  values: NodeWidget,
+  onChange: ChangeHandler
 ) => {
   items: TypeItem[];
   onItemAdd?: () => void;

@@ -19,12 +19,9 @@ export type Collection = Array<unknown> | Record<string, unknown>;
 //* Context Value
 export interface EditorContextValue {
   fixedT?: (key: string, options?: object) => string;
-  mixedTypes?: Appcraft.TypesMapping;
   collectionPath: string;
-  values: Partial<Pick<Appcraft.NodeWidget, Appcraft.WidgetField>>;
-
+  values?: Appcraft.NodeWidget;
   onChange: ChangeHandler;
-  onMixedTypeMapping: (mapping: Record<string, string>) => void;
 }
 
 //* Provider Props

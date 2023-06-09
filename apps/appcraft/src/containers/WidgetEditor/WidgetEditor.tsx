@@ -102,14 +102,17 @@ export default function WidgetEditor({
               theme.components[`Mui${widget?.type}` as keyof Components]
                 ?.defaultProps || {}
             }
-            renderWidgetTypeSelection={(defaultValue, onChange) => (
+            renderWidgetTypeSelection={(onChange) => (
               <Component.WidgetSelect
-                {...{ defaultValue, onChange }}
+                {...{ onChange }}
                 fullWidth
+                required
+                autoFocus
                 size="small"
                 margin="dense"
                 variant="outlined"
                 label={wt('lbl-widget-type')}
+                defaultValue=""
               />
             )}
           />

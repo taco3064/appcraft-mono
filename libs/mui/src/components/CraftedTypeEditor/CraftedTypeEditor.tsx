@@ -13,7 +13,7 @@ export default function CraftedTypeEditor<
   A extends Types.ActionElement = undefined
 >({
   action,
-  open,
+  open = true,
   disableSelection,
   fixedT,
   mixedTypes,
@@ -74,15 +74,15 @@ export default function CraftedTypeEditor<
         onMixedTypeMapping,
       }}
     >
-      {action && (
-        <>
-          {action}
-          <Divider />
-        </>
-      )}
-
       <Suspense fallback={<TypeListSkeleton />}>
-        <Collapse in={!open}>
+        <Collapse in={open}>
+          {action && (
+            <>
+              {action}
+              <Divider />
+            </>
+          )}
+
           <LazyTypeList
             {...{
               disableSelection,

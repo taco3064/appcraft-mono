@@ -264,7 +264,7 @@ const getTypeByPath: Types.PrivateGetTypeByPath = (
 
 //* Service Methods
 export const parse: Types.ParseService = ({
-  propPath = '',
+  collectionPath = '',
   mixedTypes = {},
   ...options
 }) => {
@@ -272,7 +272,7 @@ export const parse: Types.ParseService = ({
 
   const types = getTypeByPath(basicType, {
     info: { required: true },
-    paths: _toPath(propPath),
+    paths: _toPath(collectionPath),
     mixedTypes,
     source,
   });

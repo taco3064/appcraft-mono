@@ -6,7 +6,7 @@ import type { WidgetStructureProps } from '../WidgetStructure';
 
 export type TypeParseProps = Pick<
   CraftedTypeEditorProps<undefined>,
-  'typeFile' | 'typeName' | 'disableSelection' | 'parser'
+  'disableSelection' | 'parser'
 >;
 
 export interface CraftedWidgetEditorProps

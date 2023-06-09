@@ -66,6 +66,6 @@ export type PropTypesDef =
 export interface TypesParseOptions {
   typeFile: string;
   typeName: string;
-  propPath?: string;
   mixedTypes?: TypesMapping;
+  collectionPath?: string;
 }

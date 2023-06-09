@@ -3,6 +3,7 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { Suspense, lazy, useMemo, useState } from 'react';
+import type { NodeWidget } from '@appcraft/types';
 
 import { EditorProvider, useFixedT } from '../../contexts';
 import { TypeList } from '../TypeList';
@@ -17,11 +18,10 @@ export default function CraftedTypeEditor<
   disableSelection,
   fixedT,
   parser,
-  typeFile,
-  typeName,
   values,
   onChange,
 }: Types.CraftedTypeEditorProps<A>) {
+  const { typeFile, typeName, mixedTypes } = values as NodeWidget;
   const ct = useFixedT(fixedT);
   const [collectionPath, setCollectionPath] = useState('');
 
@@ -37,8 +37,8 @@ export default function CraftedTypeEditor<
               data: {
                 typeFile,
                 typeName,
-                propPath: collectionPath,
-                mixedTypes: values?.mapping,
+                mixedTypes,
+                collectionPath,
               },
             });
 
@@ -58,7 +58,7 @@ export default function CraftedTypeEditor<
             ),
         };
       }),
-    [parser, typeFile, typeName, collectionPath, values?.mapping]
+    [parser, typeFile, typeName, mixedTypes, collectionPath]
   );
 
   return (

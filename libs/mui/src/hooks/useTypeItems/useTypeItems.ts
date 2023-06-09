@@ -17,10 +17,10 @@ const useTypeItems: TypeItemsHook = (superior, widgetValues, onChange) => {
 
   const handleDelete = (fn: () => string) =>
     startTransition(() => {
-      const { events, nodes, props } = widgetValues;
+      const { mixedTypes, events, nodes, props } = widgetValues;
       const propPath = getPropPath(source, [..._toPath(path), fn()]);
 
-      delete widgetValues.mapping?.[propPath];
+      delete mixedTypes?.[propPath];
 
       [events, nodes, props].forEach((options) => {
         delete (options as Record<string, unknown>)?.[propPath];

@@ -1,29 +1,49 @@
 import type { TypesMapping } from '../services/config.types';
+import type { TypesParseOptions } from './prop-types-def.types';
 
-interface BaseWidget {
-  id: string;
-  description?: string;
+enum Category {
+  config,
+  node,
+  plainText,
 }
 
-export interface PlainTextWidget extends BaseWidget {
-  content: string;
-}
-
-export interface NodeWidget<
+type Nodes<
   E extends string[] = [],
   N extends string[] = [],
   P extends string[] = []
-> extends BaseWidget {
-  type: string;
-  mapping?: TypesMapping;
-  props?: Record<string, unknown>;
-  events?: Record<string, unknown>;
+> = Partial<
+  Record<E[number], NodeWidget> &
+    Record<N[number], NodeWidget[]> &
+    Record<P[number], PlainTextWidget>
+>;
 
-  nodes?: Partial<
-    Record<E[number], NodeWidget> &
-      Record<N[number], NodeWidget[]> &
-      Record<P[number], PlainTextWidget>
-  >;
-}
+type BaseOptions<
+  C extends keyof typeof Category,
+  P extends Record<string, unknown>
+> = {
+  category: C;
+  description?: string;
+} & P;
+
+export type ConfigOptions = BaseOptions<
+  'config',
+  Omit<TypesParseOptions, 'collectionPath'> & {
+    type: string;
+    props?: Record<string, unknown>;
+    events?: Record<string, unknown>;
+  }
+>;
+
+export type NodeWidget = BaseOptions<
+  'node',
+  Omit<ConfigOptions, 'category'> & { nodes?: Nodes }
+>;
+
+export type PlainTextWidget = BaseOptions<
+  'plainText',
+  {
+    content: string;
+  }
+>;
 
 export type WidgetOptions = PlainTextWidget | NodeWidget;

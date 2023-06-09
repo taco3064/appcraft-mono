@@ -12,6 +12,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import type { NodeWidget } from '@appcraft/types';
 
 import { WidgetAddDialog } from '../WidgetAddDialog';
 import { useFixedT } from '../../contexts';
@@ -36,7 +37,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
         {...{ renderWidgetTypeSelection }}
         open={building}
         onClose={() => setBuilding(false)}
-        onConfirm={(e) => onWidgetChange({ ...widget, ...e })}
+        onConfirm={(e) => onWidgetChange({ ...widget, ...e } as NodeWidget)}
       />
 
       <Collapse in={open}>

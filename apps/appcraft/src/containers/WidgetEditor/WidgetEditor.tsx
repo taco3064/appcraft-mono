@@ -3,35 +3,22 @@ import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedWidgetEditor, CraftedRenderer } from '@appcraft/mui';
-import { MUI_WIDGETS } from '@appcraft/types';
 import { useCallback, useState } from 'react';
 import { Components, useTheme } from '@mui/material/styles';
-import type { NodeWidget } from '@appcraft/types';
 
 import * as Component from '~appcraft/components';
 import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
 import { CommonButton, LazyMui } from '~appcraft/components/common';
 import { useEditedWidget } from './WidgetEditor.hooks';
 import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks';
-import type * as Types from './WidgetEditor.types';
-
-const widgets = MUI_WIDGETS.widgets.reduce<Types.WidgetMap>(
-  (result, { components }) => {
-    components.forEach(({ id, typeFile, typeName }) =>
-      result.set(id, { typeFile, typeName })
-    );
-
-    return result;
-  },
-  new Map()
-);
+import type { WidgetEditorProps } from './WidgetEditor.types';
 
 export default function WidgetEditor({
   PersistentDrawerContentProps,
   data,
   superiors: { names, breadcrumbs },
   onActionNodePick = (e) => e,
-}: Types.WidgetEditorProps) {
+}: WidgetEditorProps) {
   const [at, ct, wt] = useFixedT('app', 'appcraft', 'widgets');
   const [open, setOpen] = useState(true);
   const { widget, onReset, onWidgetChange } = useEditedWidget(data);
@@ -93,7 +80,6 @@ export default function WidgetEditor({
         content={<CraftedRenderer lazy={toLazy} options={widget} />}
         drawer={
           <CraftedWidgetEditor
-            {...widgets.get(widget?.type)}
             fixedT={ct}
             parser={TYPES_PARSER as object}
             widget={widget}

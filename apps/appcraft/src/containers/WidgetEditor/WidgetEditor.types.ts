@@ -5,10 +5,7 @@ import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
 import type { ConfigData } from '~appcraft/services';
 import type { PersistentDrawerContentProps } from '~appcraft/components';
 
-export type WidgetMap = Map<
-  string,
-  Pick<CraftedWidgetEditorProps, 'typeFile' | 'typeName'>
->;
+export type WidgetMap = Map<string, Record<'typeFile' | 'typeName', string>>;
 
 export type EditedWidgetHook = (data: WidgetEditorProps['data']) => Pick<
   CraftedWidgetEditorProps,

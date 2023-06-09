@@ -9,7 +9,7 @@ export default function CraftedRenderer({
   return !options ? null : (
     <RendererProvider lazy={lazy}>
       {!Array.isArray(options) ? (
-        <WidgetGenerator key={options.id} options={options} />
+        <WidgetGenerator options={options} />
       ) : (
         options.map((layout) => <>Layout</>)
       )}

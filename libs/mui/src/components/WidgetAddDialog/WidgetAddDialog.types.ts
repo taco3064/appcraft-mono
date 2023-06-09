@@ -4,7 +4,7 @@ import type { NodeWidget } from '@appcraft/types';
 
 import type { EditorProviderProps } from '../../contexts';
 
-export type WidgetInfo = Pick<NodeWidget, 'id' | 'type' | 'description'>;
+export type WidgetInfo = Pick<NodeWidget, 'type' | 'description'>;
 
 export interface WidgetAddDialogProps
   extends Required<Pick<DialogProps, 'open' | 'onClose'>> {

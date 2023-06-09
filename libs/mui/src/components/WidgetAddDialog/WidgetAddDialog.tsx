@@ -17,7 +17,6 @@ export default function WidgetAddDialog({
   const ct = useFixedT(fixedT);
 
   const [info, setInfo] = useState<WidgetInfo>({
-    id: `Widget_${Math.random().toFixed(5).replace('.', '')}`,
     type: '',
   });
 

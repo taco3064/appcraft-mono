@@ -113,9 +113,10 @@ export const useMixedTypeMapping: Types.MixedTypeMapping = (
   widgetField,
   propName
 ) => {
-  const { values, onChange } = useContext(
-    EditorContext
-  ) as Required<Types.EditorContextValue>;
+  const {
+    values: { mixedTypes, events, nodes, props, ...values },
+    onChange,
+  } = useContext(EditorContext) as Required<Types.EditorContextValue>;
 
   const { path: propPath } = usePropValue(
     collectionType,
@@ -124,18 +125,16 @@ export const useMixedTypeMapping: Types.MixedTypeMapping = (
   );
 
   return [
-    values.mapping?.[propPath] || null,
+    mixedTypes?.[propPath] || null,
 
     (mixedText) => {
       if (mixedText) {
         onChange({
           ...values,
-          mapping: { ...values.mapping, [propPath]: mixedText },
+          mixedTypes: { ...mixedTypes, [propPath]: mixedText },
         });
       } else {
-        const { mapping, events, nodes, props } = values;
-
-        delete mapping?.[propPath];
+        delete mixedTypes?.[propPath];
 
         [events, nodes, props].forEach((options = {}) =>
           Object.keys(options).forEach((path) => {

@@ -1,3 +1,5 @@
+import Collapse from '@mui/material/Collapse';
+import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { Suspense, lazy, useMemo, useState } from 'react';
@@ -5,10 +7,13 @@ import { Suspense, lazy, useMemo, useState } from 'react';
 import { EditorProvider, useFixedT } from '../../contexts';
 import { TypeList } from '../TypeList';
 import { TypeListSkeleton } from '../TypeListSkeleton';
-import type { CraftedTypeEditorProps } from './CraftedTypeEditor.types';
+import type * as Types from './CraftedTypeEditor.types';
 
-export default function CraftedTypeEditor({
+export default function CraftedTypeEditor<
+  A extends Types.ActionElement = undefined
+>({
   action,
+  open,
   disableSelection,
   fixedT,
   mixedTypes,
@@ -18,7 +23,7 @@ export default function CraftedTypeEditor({
   values,
   onChange,
   onMixedTypeMapping,
-}: CraftedTypeEditorProps) {
+}: Types.CraftedTypeEditorProps<A>) {
   const ct = useFixedT(fixedT);
   const [collectionPath, setCollectionPath] = useState('');
 
@@ -69,20 +74,27 @@ export default function CraftedTypeEditor({
         onMixedTypeMapping,
       }}
     >
-      {action}
+      {action && (
+        <>
+          {action}
+          <Divider />
+        </>
+      )}
 
       <Suspense fallback={<TypeListSkeleton />}>
-        <LazyTypeList
-          {...{
-            disableSelection,
-            mixedTypes,
-            values,
-            onChange,
-            onMixedTypeMapping,
-          }}
-          invalidMessage={ct('msg-select-widget-type-first')}
-          onCollectionPathChange={setCollectionPath}
-        />
+        <Collapse in={!open}>
+          <LazyTypeList
+            {...{
+              disableSelection,
+              mixedTypes,
+              values,
+              onChange,
+              onMixedTypeMapping,
+            }}
+            invalidMessage={ct('msg-select-widget-type-first')}
+            onCollectionPathChange={setCollectionPath}
+          />
+        </Collapse>
       </Suspense>
     </EditorProvider>
   );

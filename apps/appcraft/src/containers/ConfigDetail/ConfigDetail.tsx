@@ -85,9 +85,10 @@ export default function ConfigDetail<C extends object = object>({
 
       <Container maxWidth="sm">
         <CraftedTypeEditor
-          {...{ typeFile, typeName, mixedTypes, values }}
+          {...{ typeFile, typeName, mixedTypes }}
           disableSelection
           fixedT={ct}
+          values={{}}
           parser={TYPES_PARSER as object}
           onChange={setValues}
           onMixedTypeMapping={setMixedTypes}

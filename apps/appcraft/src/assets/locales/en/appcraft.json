@@ -5,7 +5,7 @@
   "btn-clear-type": "Clear Type",
   "btn-reset-type": "Reset Type",
   "lbl-description": "Description",
-  "msg-no-elements": "No elements to display.",
+  "msg-no-widget": "This section will display the widget structure. Please click 'Add' to start building the widget content.",
   "msg-select-widget-type-first": "Select a widget type first.",
   "ttl-node-array-map": "Array Map",
   "ttl-node-plain-text": "Plain Text",

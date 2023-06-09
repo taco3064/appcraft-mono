@@ -1,12 +1,6 @@
-import type { MouseEventHandler, ReactElement } from 'react';
-import type { NodeWidget } from '@appcraft/types';
-
-import type { ChangeHandler, EditorProviderProps } from '../../contexts';
+import type { MouseEventHandler } from 'react';
 
 export interface WidgetAppBarProps {
-  fixedT?: EditorProviderProps['fixedT'];
-  widget: Partial<NodeWidget>;
-  widgetTypeSelection: ReactElement;
+  description: string;
   onBackToStructure: MouseEventHandler<HTMLButtonElement>;
-  onWidgetChange: ChangeHandler<keyof NodeWidget>;
 }

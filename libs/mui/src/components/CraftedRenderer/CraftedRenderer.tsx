@@ -6,7 +6,7 @@ export default function CraftedRenderer({
   lazy,
   options,
 }: CraftedRendererProps) {
-  return (
+  return !options ? null : (
     <RendererProvider lazy={lazy}>
       {!Array.isArray(options) ? (
         <WidgetGenerator key={options.id} options={options} />

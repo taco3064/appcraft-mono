@@ -1,2 +1,7 @@
 export { default as CraftedTypeEditor } from './CraftedTypeEditor';
-export type { CraftedTypeEditorProps } from './CraftedTypeEditor.types';
+
+export type {
+  ActionElement,
+  Collapsable,
+  CraftedTypeEditorProps,
+} from './CraftedTypeEditor.types';

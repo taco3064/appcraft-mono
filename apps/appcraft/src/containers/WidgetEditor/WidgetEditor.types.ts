@@ -12,8 +12,9 @@ export type WidgetMap = Map<
 
 export type EditedWidgetHook = (data: WidgetEditorProps['data']) => Pick<
   CraftedWidgetEditorProps,
-  'widget' | 'onWidgetChange'
+  'onWidgetChange'
 > & {
+  widget?: NodeWidget;
   onReset: () => void;
 };
 

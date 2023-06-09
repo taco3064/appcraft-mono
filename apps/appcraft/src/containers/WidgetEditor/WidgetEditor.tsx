@@ -90,9 +90,7 @@ export default function WidgetEditor({
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
-        content={
-          <CraftedRenderer lazy={toLazy} options={widget as NodeWidget} />
-        }
+        content={<CraftedRenderer lazy={toLazy} options={widget} />}
         drawer={
           <CraftedWidgetEditor
             {...widgets.get(widget?.type)}
@@ -104,17 +102,16 @@ export default function WidgetEditor({
               theme.components[`Mui${widget?.type}` as keyof Components]
                 ?.defaultProps || {}
             }
-            widgetTypeSelection={
+            renderWidgetTypeSelection={(defaultValue, onChange) => (
               <Component.WidgetSelect
+                {...{ defaultValue, onChange }}
                 fullWidth
                 size="small"
                 margin="dense"
                 variant="outlined"
                 label={wt('lbl-widget-type')}
-                defaultValue={widget.type || ''}
-                onChange={(e) => onWidgetChange('type', e.target.value)}
               />
-            }
+            )}
           />
         }
       />

@@ -1,9 +1,8 @@
 import AppBar from '@mui/material/AppBar';
-import Collapse from '@mui/material/Collapse';
-import Divider from '@mui/material/Divider';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import type { NodeWidget } from '@appcraft/types';
 
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { WidgetAppBar } from '../WidgetAppBar';
@@ -15,54 +14,54 @@ export default function CraftedWidgetEditor({
   defaultValues,
   fixedT,
   widget,
-  widgetTypeSelection,
+  renderWidgetTypeSelection,
   onWidgetChange,
   ...props
 }: Types.CraftedWidgetEditorProps) {
   const ct = useFixedT(fixedT);
-  const [actived, setActived] = useState<'structure' | 'editor'>('editor');
+  const [selected, setSelected] = useState<NodeWidget | null>(null);
 
   return (
     <>
-      <Collapse in={actived === 'structure'}>
-        <AppBar color="default" position="sticky">
-          <Toolbar variant="regular">
-            <Typography variant="subtitle1" fontWeight="bolder" color="primary">
-              {ct('ttl-structure')}
-            </Typography>
-          </Toolbar>
-        </AppBar>
+      <WidgetStructure
+        fixedT={fixedT}
+        open={Boolean(!selected)}
+        widget={widget}
+        renderWidgetTypeSelection={renderWidgetTypeSelection}
+        onWidgetChange={onWidgetChange}
+        onWidgetSelect={setSelected}
+        action={
+          <AppBar color="default" position="sticky">
+            <Toolbar variant="regular">
+              <Typography
+                variant="subtitle1"
+                fontWeight="bolder"
+                color="primary"
+              >
+                {ct('ttl-structure')}
+              </Typography>
+            </Toolbar>
+          </AppBar>
+        }
+      />
 
-        <Divider />
-
-        <WidgetStructure widget={widget} />
-      </Collapse>
-
-      <Collapse in={actived === 'editor'}>
+      {selected && (
         <CraftedTypeEditor
           {...(props as Types.TypeParseProps)}
+          open={Boolean(selected)}
           fixedT={fixedT}
-          mixedTypes={widget.mapping}
-          values={widget}
+          mixedTypes={selected.mapping}
+          values={selected}
           onChange={(fieldName, value) => onWidgetChange(fieldName, value)}
           onMixedTypeMapping={(mapping) => onWidgetChange('mapping', mapping)}
           action={
-            <>
-              <WidgetAppBar
-                onBackToStructure={() => setActived('structure')}
-                {...{
-                  fixedT,
-                  widget,
-                  widgetTypeSelection,
-                  onWidgetChange,
-                }}
-              />
-
-              <Divider />
-            </>
+            <WidgetAppBar
+              description={selected.type.replace(/([A-Z])/g, ' $1')}
+              onBackToStructure={() => setSelected(null)}
+            />
           }
         />
-      </Collapse>
+      )}
     </>
   );
 }

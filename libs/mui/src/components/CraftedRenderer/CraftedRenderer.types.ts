@@ -7,5 +7,5 @@ type WidgetLayout = {
 
 export interface CraftedRendererProps
   extends Omit<RendererProviderProps, 'children'> {
-  options: WidgetOptions | WidgetLayout[];
+  options?: WidgetOptions | WidgetLayout[];
 }

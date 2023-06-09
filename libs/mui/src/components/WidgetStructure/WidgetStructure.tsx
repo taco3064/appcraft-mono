@@ -1,13 +1,17 @@
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
+import CloseIcon from '@mui/icons-material/Close';
 import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 
 import { WidgetAddDialog } from '../WidgetAddDialog';
 import { useFixedT } from '../../contexts';
@@ -24,7 +28,6 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
   onWidgetSelect,
 }: WidgetStructureProps<A>) {
   const ct = useFixedT(fixedT);
-  const [, setTransition] = useTransition();
   const [building, setBuilding] = useState(false);
 
   return (
@@ -33,13 +36,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
         {...{ renderWidgetTypeSelection }}
         open={building}
         onClose={() => setBuilding(false)}
-        onConfirm={(e) =>
-          setTransition(() =>
-            Object.entries(e).forEach(([field, value]) =>
-              onWidgetChange(field as keyof typeof e, value)
-            )
-          )
-        }
+        onConfirm={(e) => onWidgetChange({ ...widget, ...e })}
       />
 
       <Collapse in={open}>
@@ -53,7 +50,18 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
         <List>
           {widget ? (
             <ListItemButton onClick={() => onWidgetSelect(widget)}>
-              <ListItemText primary={widget.description || widget.type} />
+              <ListItemText
+                primary={widget.type}
+                secondary={widget.description}
+              />
+
+              <ListItemSecondaryAction onClick={(e) => e.stopPropagation()}>
+                <Tooltip title={ct('btn-remove-widget')}>
+                  <IconButton onClick={() => onWidgetChange(null)}>
+                    <CloseIcon />
+                  </IconButton>
+                </Tooltip>
+              </ListItemSecondaryAction>
             </ListItemButton>
           ) : (
             <ListItem>

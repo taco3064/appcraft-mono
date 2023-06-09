@@ -2,10 +2,7 @@ import type { ReactNode } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 //* Variable
-export type ChangeHandler<F extends keyof Appcraft.NodeWidget> = (
-  widgetField: F,
-  values: Appcraft.NodeWidget[F] | null
-) => void;
+export type ChangeHandler = (e: Appcraft.NodeWidget | null) => void;
 
 export type MixedTypeMappingResult = [
   string | null,
@@ -26,7 +23,7 @@ export interface EditorContextValue {
   collectionPath: string;
   values: Partial<Pick<Appcraft.NodeWidget, Appcraft.WidgetField>>;
 
-  onChange: ChangeHandler<Appcraft.WidgetField>;
+  onChange: ChangeHandler;
   onMixedTypeMapping: (mapping: Record<string, string>) => void;
 }
 
@@ -44,16 +41,6 @@ export type CollectionHook = (defaultValues?: Collection) => {
   path: string;
   source: object;
   values: Collection;
-};
-
-export type PropValueHook = <V>(
-  collectionType: Appcraft.CollectionType,
-  widgetField: Appcraft.WidgetField,
-  propName: string
-) => {
-  path: string;
-  value: V;
-  onChange: (value: V) => void;
 };
 
 export type MixedTypeMapping = (

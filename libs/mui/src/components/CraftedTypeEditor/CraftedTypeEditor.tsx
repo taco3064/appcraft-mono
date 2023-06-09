@@ -74,15 +74,15 @@ export default function CraftedTypeEditor<
         onMixedTypeMapping,
       }}
     >
-      <Suspense fallback={<TypeListSkeleton />}>
-        <Collapse in={open}>
-          {action && (
-            <>
-              {action}
-              <Divider />
-            </>
-          )}
+      <Collapse in={open}>
+        {action && (
+          <>
+            {action}
+            <Divider />
+          </>
+        )}
 
+        <Suspense fallback={<TypeListSkeleton />}>
           <LazyTypeList
             {...{
               disableSelection,
@@ -94,8 +94,8 @@ export default function CraftedTypeEditor<
             invalidMessage={ct('msg-select-widget-type-first')}
             onCollectionPathChange={setCollectionPath}
           />
-        </Collapse>
-      </Suspense>
+        </Suspense>
+      </Collapse>
     </EditorProvider>
   );
 }

@@ -1,6 +1,6 @@
 import _toPath from 'lodash.topath';
 import { useState, useTransition } from 'react';
-import type { PropTypesDef, WidgetField } from '@appcraft/types';
+import type { NodeWidget, PropTypesDef, WidgetField } from '@appcraft/types';
 
 import { getPropPath } from '../usePropertyRouter';
 import { useCollection } from '../../contexts';
@@ -20,19 +20,27 @@ const useTypeItems: TypeItemsHook = (
   const [structure, setStructure] = useState(values);
   const properties = usePropertiesSorting(superior);
 
-  const handleDelete = (fn: () => string) => {
-    const propPath = getPropPath(source, [..._toPath(path), fn()]);
+  const handleDelete = (fn: () => string) =>
+    setTransition(() => {
+      const { events, nodes, props } = widgetValues;
+      const propPath = getPropPath(source, [..._toPath(path), fn()]);
 
-    delete mixedTypes?.[propPath];
+      delete mixedTypes?.[propPath];
 
-    setStructure({ ...structure });
-    onMixedTypeMapping({ ...mixedTypes });
+      [events, nodes, props].forEach((options) => {
+        delete (options as Record<string, unknown>)?.[propPath];
+      });
 
-    Object.entries(widgetValues).forEach(([field, options]) => {
-      delete (options as Record<string, unknown>)?.[propPath];
-      onChange(field as WidgetField, { ...options });
+      setStructure({ ...structure });
+      onMixedTypeMapping({ ...mixedTypes });
+
+      onChange({
+        ...widgetValues,
+        events,
+        nodes,
+        props,
+      } as NodeWidget);
     });
-  };
 
   if (superior.type === 'exact') {
     return {
@@ -67,14 +75,12 @@ const useTypeItems: TypeItemsHook = (
           collectionType: 'object',
           options,
           onDelete: () =>
-            setTransition(() =>
-              handleDelete(() => {
-                delete (structure as Record<string, unknown>)[propName];
-                setStructure({ ...structure });
+            handleDelete(() => {
+              delete (structure as Record<string, unknown>)[propName];
+              setStructure({ ...structure });
 
-                return propName;
-              })
-            ),
+              return propName;
+            }),
         };
       }),
       onItemAdd: () =>
@@ -98,16 +104,14 @@ const useTypeItems: TypeItemsHook = (
           collectionType: 'array',
           options,
           onDelete: () =>
-            setTransition(() =>
-              handleDelete(() => {
-                const arr = structure as [];
+            handleDelete(() => {
+              const arr = structure as [];
 
-                arr.splice(i, 1);
-                setStructure([...arr]);
+              arr.splice(i, 1);
+              setStructure([...arr]);
 
-                return i.toString();
-              })
-            ),
+              return i.toString();
+            }),
         };
       }),
       onItemAdd: () => setStructure([...((structure as []) || []), null]),

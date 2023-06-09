@@ -4,6 +4,7 @@
   "btn-back": "返回",
   "btn-clear-type": "清空型別",
   "btn-new-widget": "新增",
+  "btn-remove-widget": "移除",
   "btn-reset-type": "重設型別",
   "lbl-description": "說明",
   "msg-no-widget": "此區塊將顯示當前組件的組成結構。請點擊新增以開始建構網頁內容",

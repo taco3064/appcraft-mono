@@ -10,13 +10,11 @@ export const useEditedWidget: EditedWidgetHook = (data) => {
 
   return {
     widget,
+    onWidgetChange: setWidget,
 
     onReset: () =>
       setWidget(
         !data?.content ? null : JSON.parse(JSON.stringify(data.content || {}))
       ),
-
-    onWidgetChange: (widgetField, value) =>
-      setWidget({ ...widget, [widgetField]: value }),
   };
 };

@@ -2,7 +2,6 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import type { NodeWidget } from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
 import { useFixedT } from '../../contexts';

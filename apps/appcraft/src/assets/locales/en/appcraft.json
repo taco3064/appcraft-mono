@@ -3,6 +3,7 @@
   "btn-back": "Back",
   "btn-clear-type": "Clear Type",
   "btn-new-widget": "New Widget",
+  "btn-remove-widget": "Delete Widget",
   "btn-reset-type": "Reset Type",
   "lbl-description": "Description",
   "msg-no-widget": "This section will display the widget structure. Please click 'New Widget' to start building the widget content.",

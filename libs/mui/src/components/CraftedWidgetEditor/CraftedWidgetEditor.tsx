@@ -52,13 +52,15 @@ export default function CraftedWidgetEditor({
           fixedT={fixedT}
           mixedTypes={selected.mapping}
           values={selected}
-          onChange={(fieldName, value) => onWidgetChange(fieldName, value)}
-          onMixedTypeMapping={(mapping) => onWidgetChange('mapping', mapping)}
+          onChange={onWidgetChange}
           action={
             <WidgetAppBar
-              description={selected.type.replace(/([A-Z])/g, ' $1')}
+              description={selected?.type?.replace(/([A-Z])/g, ' $1')}
               onBackToStructure={() => setSelected(null)}
             />
+          }
+          onMixedTypeMapping={(mapping) =>
+            onWidgetChange({ ...selected, mapping })
           }
         />
       )}

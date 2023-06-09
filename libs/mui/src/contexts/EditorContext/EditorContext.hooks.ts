@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, useTransition } from 'react';
 import _get from 'lodash.get';
 import _set from 'lodash.set';
-import type { WidgetField } from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 
 import type * as Types from './EditorContext.types';
 
@@ -73,13 +73,14 @@ export const useCollection: Types.CollectionHook = (defaultValues) => {
   };
 };
 
-export const usePropValue: Types.PropValueHook = (
-  collectionType,
-  widgetField,
-  propName
+export const usePropValue = <V>(
+  collectionType: Appcraft.CollectionType,
+  widgetField: Appcraft.WidgetField,
+  propName: string
 ) => {
   const {
     collectionPath,
+    values,
     values: { events, nodes, props, [widgetField]: target },
     onChange,
   } = useContext(EditorContext) as Required<Types.EditorContextValue>;
@@ -91,14 +92,20 @@ export const usePropValue: Types.PropValueHook = (
 
   return {
     path: propPath,
-    value: Object.assign({}, ...[events, nodes, props])[propPath] || null,
-    onChange: (value) => {
+
+    value:
+      (Object.assign({}, ...[events, nodes, props])[propPath] as V) || null,
+
+    onChange: (value: V | null) => {
       delete (target as Record<string, unknown>)?.[propPath];
 
-      onChange(widgetField, {
-        ...target,
-        ...((value || value === 0) && { [propPath]: value }),
-      });
+      onChange({
+        ...values,
+        [widgetField]: {
+          ...target,
+          ...((value || value === 0) && { [propPath]: value }),
+        },
+      } as Appcraft.NodeWidget);
     },
   };
 };
@@ -135,7 +142,7 @@ export const useMixedTypeMapping: Types.MixedTypeMapping = (
 
           Object.entries({ events, nodes, props }).forEach(
             ([key, options = {}]) => {
-              const widgetField = key as WidgetField;
+              const widgetField = key as Appcraft.WidgetField;
 
               Object.keys(options).forEach((path) => {
                 if (path.startsWith(propPath)) {
@@ -148,7 +155,10 @@ export const useMixedTypeMapping: Types.MixedTypeMapping = (
                 }
               });
 
-              onChange(widgetField, { ...values[widgetField] });
+              onChange({
+                ...values,
+                [widgetField]: { ...values[widgetField] },
+              } as Appcraft.NodeWidget);
             }
           );
         }

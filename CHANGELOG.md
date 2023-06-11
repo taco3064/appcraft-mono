@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.37](https://github.com/taco3064/appcraft-mono/compare/v0.0.36...v0.0.37) (2023-06-11)
+
+
+### Features
+
+* **@appcraft/mui:** add locales to lib ([545d86f](https://github.com/taco3064/appcraft-mono/commit/545d86f5f18d9bfadcbd9b6e49bb4db8c98b2db2))
+* **@appcraft/mui:** add new component: TypeItemNode ([17309b7](https://github.com/taco3064/appcraft-mono/commit/17309b71c1afe8fb12d53928f0bf3eaeb4fb69e4))
+* **@appcraft/mui:** add new component: WidgetAddDialog ([1b4b79c](https://github.com/taco3064/appcraft-mono/commit/1b4b79ced9318f1cf7c990ddbad06f76365abd6c))
+* **@appcraft/mui:** add new component: WidgetStructure ([533bd83](https://github.com/taco3064/appcraft-mono/commit/533bd83bbdd19786120dffbf7172d573571181ef))
+* **@appcraft/mui:** add node in TypeItem ([a4f3dc0](https://github.com/taco3064/appcraft-mono/commit/a4f3dc0a1b89d248a9b67127b90c8d9842b9bf03))
+* **ts2-props:** add new service to get element/node property paths ([4e74ba9](https://github.com/taco3064/appcraft-mono/commit/4e74ba9d2a881851537a4cb63147c912ffc10cdc))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** add tooltip message when the widget type is unselected. ([35c45c1](https://github.com/taco3064/appcraft-mono/commit/35c45c1a6b8995e6120bc6d50da9d72c821c5fef))
+* **@appcraft/mui:** fixed the bugs of onWidgetChange ([5a184b3](https://github.com/taco3064/appcraft-mono/commit/5a184b3c53e1823745acda228e1e23280290abbe))
+* **@appcraft/mui:** fixed the renderer error ([c400b62](https://github.com/taco3064/appcraft-mono/commit/c400b624ee7adf01705072ce90763198a4079d69))
+* **@appcraft/mui:** make sure the options of render ([cb931cd](https://github.com/taco3064/appcraft-mono/commit/cb931cd580d9f0650ba67525da449d5669c0841f))
+* **@appcraft/mui:** re-design the selection layout in type-item ([f1c3040](https://github.com/taco3064/appcraft-mono/commit/f1c304074c3e6619d0a6758d46732a1499e84f75))
+* **@appcraft/mui:** remove unused components ([d09cad3](https://github.com/taco3064/appcraft-mono/commit/d09cad3e772b927fceb35543333c8f2015148dc5))
+* **@appcraft/mui:** remove unused import ([9527d44](https://github.com/taco3064/appcraft-mono/commit/9527d446dde6e86c0ee44874e5e1023cbbd3d6c1))
+* **@appcraft/mui:** remove unused source code ([4926306](https://github.com/taco3064/appcraft-mono/commit/4926306995e3d338dc9ee52de6909233356c2093))
+* **@appcraft/mui:** rename TypeEditor as CraftedTypeEditor ([4be5539](https://github.com/taco3064/appcraft-mono/commit/4be553938910ee510b7e963cb17f47c10df34284))
+* **@appcraft/mui:** update type category ([9f9a86e](https://github.com/taco3064/appcraft-mono/commit/9f9a86ea8e584c24ecff9e59a399ebc22ffdaf30))
+* **@appcraft/mui:** update types in WidgetStructure ([e9cc5c6](https://github.com/taco3064/appcraft-mono/commit/e9cc5c6028b3eabb4b619830a95d81d80ecc43d6))
+* **editor-app-bar:** remove unused import ([6012e8d](https://github.com/taco3064/appcraft-mono/commit/6012e8d3f9ca0141edd8bda861231b0235902630))
+* **hierarchy-item(apps/appcraft):** add default text(No Description) on bottom ([ca3f135](https://github.com/taco3064/appcraft-mono/commit/ca3f135c2d17174d4eaa8a23cc58c9398df00a01))
+* **locales(apps/appcraft):** update locales ([03f16b2](https://github.com/taco3064/appcraft-mono/commit/03f16b2e7517badb2a2f0bea63412cfcce093f78))
+* **mui-widgets.json:** fixed the invalid props ([c0fa05b](https://github.com/taco3064/appcraft-mono/commit/c0fa05be57b95b4a8a64df824af708fd81643562))
+* refactor types ([5917fd0](https://github.com/taco3064/appcraft-mono/commit/5917fd0e0e8829a12fe36a07a00eead6180bc6fc))
+* refactor types ([50eeeeb](https://github.com/taco3064/appcraft-mono/commit/50eeeebe6a808056e9989cba55ad11cb19d0eca5))
+* refactor widget editor ([d2cab4e](https://github.com/taco3064/appcraft-mono/commit/d2cab4e3dd3f687e285fb11d443fe72b1ca06cb8))
+* rename components and props ([20cc46d](https://github.com/taco3064/appcraft-mono/commit/20cc46deb3eaaafe7483693fb2397af253efbe0a))
+* **widget-editor(apps/appcraft):** add default props process ([488d2df](https://github.com/taco3064/appcraft-mono/commit/488d2dfc679d101450d66794bdd284c1e68bd9d2))
+
 ### [0.0.36](https://github.com/taco3064/appcraft-mono/compare/v0.0.35...v0.0.36) (2023-05-23)
 
 

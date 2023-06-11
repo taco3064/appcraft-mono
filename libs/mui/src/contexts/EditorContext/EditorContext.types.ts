@@ -1,29 +1,47 @@
 import type { ReactNode } from 'react';
+import type * as Appcraft from '@appcraft/types';
 
-export type GetPropPathString = (values: object, paths: string[]) => string;
+//* Variable
+export type ChangeHandler = (e: Appcraft.NodeWidget | null) => void;
 
-export type EditorContextValue<V extends object = object> = Required<
-  EditorValue<V>
->;
+export type MixedTypeMappingResult = [
+  string | null,
+  (mixedText?: string) => void
+];
 
-export interface EditorProviderProps<V extends object = object> {
-  children: ReactNode;
-  propPath: string;
-  mixedTypes?: Record<string, string>;
-  values: V;
-  onChange: (values: V) => void;
-  onMixedTypeMapping: (mapping: Record<string, string>) => void;
+export type Replaces = {
+  pattern: RegExp;
+  replacement: string | ((match: string, ...args: string[]) => string);
+}[];
+
+export type Collection = Array<unknown> | Record<string, unknown>;
+
+//* Context Value
+export interface EditorContextValue {
+  fixedT?: (key: string, options?: object) => string;
+  collectionPath: string;
+  values?: Appcraft.NodeWidget;
+  onChange: ChangeHandler;
 }
 
-export type EditorValue<V extends object = object> = Pick<
-  EditorProviderProps<V>,
-  'propPath' | 'mixedTypes' | 'values' | 'onChange' | 'onMixedTypeMapping'
->;
+//* Provider Props
+export interface EditorProviderProps extends EditorContextValue {
+  children: ReactNode;
+}
 
-export type ContextHook = () => EditorContextValue;
-export type PropPathHook = () => EditorContextValue['propPath'];
-export type PropValueHook = <V>(propName?: string) => [V, (value: V) => void];
+//* Custom Hook
+export type FixedTHook = (
+  defaultFixedT?: EditorProviderProps['fixedT']
+) => Required<EditorProviderProps>['fixedT'];
+
+export type CollectionHook = (defaultValues?: Collection) => {
+  path: string;
+  source: object;
+  values: Collection;
+};
 
 export type MixedTypeMapping = (
-  propName?: string
-) => [string | null, (mixedText?: string) => void];
+  collectionType: Appcraft.CollectionType,
+  widgetField: Appcraft.WidgetField,
+  propName: string
+) => MixedTypeMappingResult;

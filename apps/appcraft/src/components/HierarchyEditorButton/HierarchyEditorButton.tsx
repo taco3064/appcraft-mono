@@ -3,13 +3,13 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import Button from '@mui/material/Button';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import TextField from '@mui/material/TextField';
+import { FlexDialog } from '@appcraft/mui';
 import { FormEventHandler, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import type { PaperProps } from '@mui/material/Paper';
 
 import { CommonButton, CommonButtonProps } from '../common';
-import { FlexDialog } from '~appcraft/styles';
 import { addHierarchy, updateHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './HierarchyEditorButton.types';

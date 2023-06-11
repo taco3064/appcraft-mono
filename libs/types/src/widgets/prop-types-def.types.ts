@@ -1,3 +1,5 @@
+import type { TypesMapping } from '../services/config.types';
+
 export enum PropType {
   arrayOf,
   bool,
@@ -25,30 +27,25 @@ export interface BaseProptype<T extends keyof typeof PropType, O = undefined>
   options?: O;
 }
 
+export type FuncOptions = { params: PropTypesDef[]; return?: PropTypesDef };
+export type OneOfTypeOptions = PropTypesDef & { text: string };
+
 export type BoolProp = BaseProptype<'bool'>;
 export type ElementProp = BaseProptype<'element'>;
 export type ExactProp = BaseProptype<'exact', Record<string, PropTypesDef>>;
+export type FuncProp = BaseProptype<'func', FuncOptions>;
 export type InstanceOfProp = BaseProptype<'instanceOf', string>;
 export type NodeProp = BaseProptype<'node'>;
 export type NumberProp = BaseProptype<'number'>;
 export type ObjectOfProp = BaseProptype<'objectOf', PropTypesDef>;
 export type ObjectProp = BaseProptype<'object'>;
 export type OneOfProp = BaseProptype<'oneOf', (boolean | number | string)[]>;
+export type OneOfTypeProp = BaseProptype<'oneOfType', OneOfTypeOptions[]>;
 export type StringProp = BaseProptype<'string'>;
 
 export type ArrayOfProp = BaseProptype<
   'arrayOf',
   PropTypesDef | PropTypesDef[]
->;
-
-export type OneOfTypeProp = BaseProptype<
-  'oneOfType',
-  (PropTypesDef & { text: string })[]
->;
-
-export type FuncProp = BaseProptype<
-  'func',
-  { params: PropTypesDef[]; return?: PropTypesDef }
 >;
 
 export type PropTypesDef =
@@ -69,6 +66,6 @@ export type PropTypesDef =
 export interface TypesParseOptions {
   typeFile: string;
   typeName: string;
-  propPath?: string;
-  mixedTypes?: Record<string, string>;
+  mixedTypes?: TypesMapping;
+  collectionPath?: string;
 }

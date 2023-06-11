@@ -14,7 +14,6 @@ import type * as Types from './HierarchyList.types';
 
 export default function HierarchyList({
   category,
-  disableBreadcrumb = false,
   disableGroup = false,
   icon,
   onActionNodePick = (e) => e,

@@ -5,7 +5,6 @@ import type { NodePickerFn } from '~appcraft/hooks';
 
 export interface HierarchyListProps {
   category: string;
-  disableBreadcrumb?: boolean;
   disableGroup?: boolean;
   icon: typeof SvgIcon;
 

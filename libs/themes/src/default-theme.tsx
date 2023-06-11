@@ -58,29 +58,6 @@ export const DEFAULT_THEME: ThemeOptions = {
         },
       },
     },
-    MuiDialogActions: {
-      styleOverrides: {
-        root: {
-          padding: 0,
-
-          '& > *': {
-            borderTopLeftRadius: 0,
-            borderTopRightRadius: 0,
-            margin: '0 !important',
-          },
-        },
-      },
-    },
-    MuiDialogContent: {
-      styleOverrides: {
-        root: {
-          display: 'flex',
-          gap: 16,
-          paddingTop: 16,
-          paddingBottom: 16,
-        },
-      },
-    },
     MuiFilledInput: {
       defaultProps: {
         disableUnderline: true,

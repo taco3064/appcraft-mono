@@ -1,21 +1,12 @@
 import type { GetOrderSeqFn } from './useTypeCategory.types';
 
-export const getOrderSeq: GetOrderSeqFn = (type) => {
-  if (/^(arrayOf|exact|object|objectOf)$/.test(type)) {
-    return 0;
-  }
+const regs: RegExp[] = [
+  /^(node|element)$/,
+  /^(arrayOf|exact|object|objectOf)$/,
+  /^(oneOfType)$/,
+  /^(bool|instanceOf|number|oneOf|string)$/,
+  /^(func)$/,
+];
 
-  if (/^(oneOfType)$/.test(type)) {
-    return 1;
-  }
-
-  if (/^(bool|instanceOf|number|oneOf|string)$/.test(type)) {
-    return 4;
-  }
-
-  if (/^(func)$/.test(type)) {
-    return 5;
-  }
-
-  return -1;
-};
+export const getOrderSeq: GetOrderSeqFn = (type) =>
+  regs.findIndex((value) => value.test(type));

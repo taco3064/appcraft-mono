@@ -5,5 +5,4 @@ export * from './HierarchyItem';
 export * from './PersistentDrawerContent';
 export * from './SigninButton';
 export * from './UserinfoMenuToggle';
-export * from './WidgetEditorBar';
 export * from './WidgetSelect';

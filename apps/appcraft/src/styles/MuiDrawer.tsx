@@ -1,7 +1,7 @@
 import Container, { ContainerProps } from '@mui/material/Container';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
-import type { PaperProps } from '@mui/material/Paper';
 import { withStyles } from 'tss-react/mui';
+import type { PaperProps } from '@mui/material/Paper';
 
 interface SizedDrawerProps extends Omit<DrawerProps, 'PaperProps'> {
   PaperProps?: Omit<

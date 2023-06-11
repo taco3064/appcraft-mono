@@ -1,6 +1,8 @@
+export type TypesMapping = Record<string, string>;
+
 export interface ConfigData<C, U = undefined> {
   _id: U;
   content: C;
-  mapping?: Record<string, string>;
+  mapping?: TypesMapping;
   timestamp: string;
 }

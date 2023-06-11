@@ -1,116 +1,98 @@
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
 import List from '@mui/material/List';
-import type { PropTypesDef } from '@appcraft/types';
+import ListSubheader from '@mui/material/ListSubheader';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 
 import { TypeItem } from '../TypeItem';
-import { TypeSubheader } from '../TypeSubheader';
-import { usePropPath, usePropValue } from '../../contexts';
-import { usePropertiesSorting, usePropertyRouter } from '../../hooks';
+import { useFixedT } from '../../contexts';
+import { usePropertyRouter, useTypeItems } from '../../hooks';
 import type { TypeListProps } from './TypeList.types';
 
 export default function TypeList({
   disableSelection,
   superior,
   values,
-  onPropPathChange,
+  onChange,
+  onCollectionPathChange,
 }: TypeListProps) {
-  const propPath = usePropPath();
-  const properties = usePropertiesSorting(superior);
-  const [value, onChange] = usePropValue<object>(superior?.propName);
-
-  const isSubElAllowed =
-    /^object/.test(superior?.type) ||
-    (superior?.type === 'arrayOf' && !Array.isArray(superior.options));
+  const ct = useFixedT();
+  const { items, onItemAdd } = useTypeItems(superior, values, onChange);
+  const isModifiable = onItemAdd instanceof Function;
 
   const [breadcrumbs, { back: handleBack, to: handleTo }] = usePropertyRouter(
-    { values, onPropPathChange },
-    propPath
+    onCollectionPathChange
   );
 
   return (
     <List
       subheader={
-        <TypeSubheader
-          breadcrumbs={breadcrumbs}
-          onBack={handleBack}
-          onAddElement={
-            !isSubElAllowed
-              ? undefined
-              : () =>
-                  onChange(
-                    superior.type === 'arrayOf'
-                      ? [...((value as []) || []), null]
-                      : {
-                          ...value,
-                          [`key_${Object.keys(value || {}).length}`]: null,
-                        }
-                  )
-          }
-        />
+        <ListSubheader
+          component={Toolbar}
+          variant="dense"
+          sx={{
+            background: 'inherit',
+            gap: (theme) => theme.spacing(1),
+            minHeight: 0,
+          }}
+        >
+          {breadcrumbs.length > 0 && (
+            <Tooltip title={ct('btn-back')}>
+              <IconButton
+                onClick={() => handleBack()}
+                sx={{ margin: (theme) => theme.spacing(1, 0) }}
+              >
+                <ChevronLeftIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+
+          <Breadcrumbs separator="." style={{ marginRight: 'auto' }}>
+            {breadcrumbs.map(({ name, isStructureArray, isLast }, i) =>
+              isLast ? (
+                <Typography
+                  key={`${name}_${i}`}
+                  variant="subtitle1"
+                  color="secondary"
+                >
+                  {isStructureArray ? `[${name}]` : name}
+                </Typography>
+              ) : (
+                <Link
+                  key={`${name}_${i}`}
+                  component="button"
+                  underline="hover"
+                  variant="subtitle1"
+                  color="text.primary"
+                  onClick={() => handleBack(i)}
+                >
+                  {isStructureArray ? `[${name}]` : name}
+                </Link>
+              )
+            )}
+          </Breadcrumbs>
+
+          {breadcrumbs.length > 0 && isModifiable && (
+            <Tooltip title={ct('btn-add-prop')}>
+              <IconButton size="small" onClick={onItemAdd}>
+                <PlaylistAddIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+        </ListSubheader>
       }
     >
-      {superior?.type === 'exact' &&
-        properties.map((opts) => (
-          <TypeItem
-            key={opts.propName}
-            disableSelection={disableSelection}
-            options={opts}
-            onDisplayItemClick={handleTo}
-          />
-        ))}
-
-      {/^object/.test(superior?.type) &&
-        Object.keys(value || {}).map((propName) => {
-          const opts: PropTypesDef = {
-            ...(superior?.options as PropTypesDef),
-            propName,
-          };
-
-          return (
-            <TypeItem
-              key={propName}
-              disableSelection={disableSelection}
-              options={opts}
-              onDisplayItemClick={handleTo}
-              onItemRemove={() => {
-                delete (value as Record<string, unknown>)[propName];
-                onChange({ ...value });
-              }}
-            />
-          );
-        })}
-
-      {superior?.type === 'arrayOf' &&
-        Array.isArray(superior.options) &&
-        superior.options.map((opts) => (
-          <TypeItem
-            key={opts.propName}
-            disableSelection={disableSelection}
-            options={opts}
-            onDisplayItemClick={handleTo}
-          />
-        ))}
-
-      {isSubElAllowed &&
-        Array.isArray(value) &&
-        value.map((_el, i) => {
-          const opts: PropTypesDef = {
-            ...(superior?.options as PropTypesDef),
-            propName: `[${i}]`,
-          };
-
-          return (
-            <TypeItem
-              key={`el_${i}`}
-              disableSelection={disableSelection}
-              options={opts}
-              onDisplayItemClick={handleTo}
-              onItemRemove={() => {
-                value.splice(i, 1);
-                onChange([...value]);
-              }}
-            />
-          );
-        })}
+      {items.map(({ key, collectionType, options, onDelete }) => (
+        <TypeItem
+          {...{ key, collectionType, disableSelection, options, onDelete }}
+          onSubitemView={handleTo}
+        />
+      ))}
     </List>
   );
 }

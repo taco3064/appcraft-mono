@@ -40,7 +40,7 @@ export default function HierarchyItem({
         sx={(theme) => ({
           borderRadius: theme.spacing(2),
           justifyContent: 'center',
-          padding: theme.spacing(6, 0, 2, 0),
+          padding: theme.spacing(4, 0, 4, 0),
         })}
       >
         {type === 'item' ? (
@@ -49,22 +49,20 @@ export default function HierarchyItem({
           <FolderRoundedIcon color="warning" style={{ fontSize: 160 }} />
         )}
 
-        {(description || action) && (
-          <ImageListItemBar
-            subtitle={
-              <Typography
-                variant="body1"
-                color="text.secondary"
-                whiteSpace="pre-line"
-              >
-                {description}
-              </Typography>
-            }
-            actionPosition="right"
-            actionIcon={action}
-            onClick={(e) => e.stopPropagation()}
-          />
-        )}
+        <ImageListItemBar
+          subtitle={
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              whiteSpace="pre-line"
+            >
+              {description || at('txt-no-description')}
+            </Typography>
+          }
+          actionPosition="right"
+          actionIcon={action}
+          onClick={(e) => e.stopPropagation()}
+        />
       </ListItemButton>
 
       <ImageListItemBar

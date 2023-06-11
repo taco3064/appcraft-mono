@@ -2,37 +2,33 @@ import _get from 'lodash.get';
 import _toPath from 'lodash.topath';
 import { useCallback, useMemo } from 'react';
 
-import { getPropPathString } from '../../contexts';
+import { getPropPath } from './usePropertyRouter.utils';
+import { useCollection } from '../../contexts';
 import type { PropertyRouterHook } from './usePropertyRouter.types';
 
-const usePropertyRouter: PropertyRouterHook = (
-  { values, onPropPathChange },
-  propPath
-) => {
-  const paths = useMemo<string[]>(() => _toPath(propPath), [propPath]);
+const usePropertyRouter: PropertyRouterHook = (onCollectionPathChange) => {
+  const { path, source } = useCollection();
+  const paths = useMemo<string[]>(() => _toPath(path), [path]);
 
   return [
     paths.map((name, i) => ({
       name,
-      isArrayElement: Array.isArray(_get(values, paths.slice(0, i))),
+      isStructureArray: Array.isArray(_get(source, paths.slice(0, i))),
       isLast: i === paths.length - 1,
     })),
 
     {
       back: (index) =>
-        onPropPathChange(
-          getPropPathString(
-            values,
-            paths.slice(0, (index || paths.length - 2) + 1)
-          )
+        onCollectionPathChange(
+          getPropPath(source, paths.slice(0, (index || paths.length - 2) + 1))
         ),
 
       to: useCallback(
         ({ propName }) =>
-          onPropPathChange(
-            getPropPathString(values, [...paths, propName] as string[])
+          onCollectionPathChange(
+            getPropPath(source, [...paths, propName] as string[])
           ),
-        [values, paths, onPropPathChange]
+        [source, paths, onCollectionPathChange]
       ),
     },
   ];

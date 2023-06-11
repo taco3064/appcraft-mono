@@ -1,45 +1,33 @@
-import * as Appcraft from '@appcraft/mui';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
-import Collapse from '@mui/material/Collapse';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import Typography from '@mui/material/Typography';
-import { MUI_WIDGETS } from '@appcraft/types';
-import { useState } from 'react';
+import { CraftedWidgetEditor, CraftedRenderer } from '@appcraft/mui';
+import { useCallback, useState } from 'react';
+import { Components, useTheme } from '@mui/material/styles';
 
 import * as Component from '~appcraft/components';
 import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
-import { CommonButton } from '~appcraft/components/common';
-import { NestedElements } from '../NestedElements';
-import { useEditedValues } from './WidgetEditor.hooks';
+import { CommonButton, LazyMui } from '~appcraft/components/common';
+import { useEditedWidget } from './WidgetEditor.hooks';
 import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks';
-import type * as Types from './WidgetEditor.types';
-
-const widgets = MUI_WIDGETS.widgets.reduce<Types.WidgetMap>(
-  (result, { components }) => {
-    components.forEach(({ id, typeFile, typeName }) =>
-      result.set(id, { typeFile, typeName })
-    );
-
-    return result;
-  },
-  new Map()
-);
+import type { WidgetEditorProps } from './WidgetEditor.types';
 
 export default function WidgetEditor({
   PersistentDrawerContentProps,
   data,
   superiors: { names, breadcrumbs },
   onActionNodePick = (e) => e,
-}: Types.WidgetEditorProps) {
-  const [at, wt] = useFixedT('app', 'widgets');
+}: WidgetEditorProps) {
+  const [at, ct, wt] = useFixedT('app', 'appcraft', 'widgets');
   const [open, setOpen] = useState(true);
-  const { values, widget, ...valuesHandle } = useEditedValues(data);
+  const { widget, onReset, onWidgetChange } = useEditedWidget(data);
 
+  const theme = useTheme();
   const width = useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
+  const toLazy = useCallback((widgetType: string) => LazyMui[widgetType], []);
 
   const actionNode = useNodePicker(
     () =>
@@ -57,7 +45,7 @@ export default function WidgetEditor({
             btnVariant="icon"
             icon={RestartAltIcon}
             text={at('btn-reset')}
-            onClick={() => valuesHandle.onReset()}
+            onClick={onReset}
           />
         ),
         save: (
@@ -89,53 +77,31 @@ export default function WidgetEditor({
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
-        content={<Appcraft.CraftedRenderer options={values} />}
+        content={<CraftedRenderer lazy={toLazy} options={widget} />}
         drawer={
-          <>
-            <Component.WidgetEditorBar
-              widget={widget}
-              onElementAdd={valuesHandle.onWidgetAdd}
-              onBackToElements={() => valuesHandle.onEditingChange(null)}
-              onValueChange={valuesHandle.onWidgetChange}
-            />
-
-            <Collapse in={Boolean(!widget)}>
-              <NestedElements
-                widgets={values.widgets}
-                onWidgetClick={valuesHandle.onEditingChange}
+          <CraftedWidgetEditor
+            fixedT={ct}
+            parser={TYPES_PARSER as object}
+            widget={widget}
+            onWidgetChange={onWidgetChange}
+            defaultValues={
+              theme.components[`Mui${widget?.type}` as keyof Components]
+                ?.defaultProps || {}
+            }
+            renderWidgetTypeSelection={(onChange) => (
+              <Component.WidgetSelect
+                {...{ onChange }}
+                fullWidth
+                required
+                autoFocus
+                size="small"
+                margin="dense"
+                variant="outlined"
+                label={wt('lbl-widget-type')}
+                defaultValue=""
               />
-            </Collapse>
-
-            <Collapse in={Boolean(widget)}>
-              {!widget?.type ? (
-                <Typography
-                  variant="h6"
-                  color="text.secondary"
-                  align="center"
-                  sx={{
-                    justifyContent: 'center',
-                    marginTop: (theme) => theme.spacing(2),
-                  }}
-                >
-                  {wt('msg-select-widget-type-first')}
-                </Typography>
-              ) : (
-                <Appcraft.CraftedEditor
-                  {...widgets.get(widget.type)}
-                  disableSelection
-                  parser={TYPES_PARSER as Appcraft.CraftedEditorProps['parser']}
-                  mixedTypes={widget.mapping}
-                  values={widget.content}
-                  onChange={(content) =>
-                    valuesHandle.onWidgetChange('content', content)
-                  }
-                  onMixedTypeMapping={(mapping) =>
-                    valuesHandle.onWidgetChange('mapping', mapping)
-                  }
-                />
-              )}
-            </Collapse>
-          </>
+            )}
+          />
         }
       />
     </>

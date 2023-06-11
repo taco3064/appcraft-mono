@@ -1,74 +1,150 @@
-import React from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import _get from 'lodash.get';
 import _set from 'lodash.set';
-import _toPath from 'lodash.topath';
+import type * as Appcraft from '@appcraft/types';
 
-import { getPropPathString } from './EditorContext.utils';
 import type * as Types from './EditorContext.types';
 
-export const EditorContext = React.createContext<Types.EditorValue>({
-  propPath: '',
-  values: {},
-  onChange: (v) => null,
-  onMixedTypeMapping: () => null,
+export const EditorContext = createContext<Types.EditorContextValue>({
+  collectionPath: '',
+  onChange: () => null,
 });
 
-const useContext: Types.ContextHook = () =>
-  React.useContext(EditorContext) as Types.EditorContextValue;
-
-export const usePropPath = () => {
-  const { propPath } = useContext();
-
-  return propPath;
-};
-
-export const usePropValue: Types.PropValueHook = (propName) => {
-  const { propPath, values, onChange } = useContext();
-
-  return [
-    (propName && _get(values, [..._toPath(propPath), propName])) || null,
-
-    (value) => {
-      const paths = [..._toPath(propPath), propName] as string[];
-
-      if (Array.isArray(values)) {
-        onChange?.([..._set(values, paths, value)] as object);
-      } else {
-        onChange?.({ ..._set(values as object, paths, value) });
-      }
+export const useFixedT: Types.FixedTHook = (() => {
+  const replaces: Types.Replaces = [
+    { pattern: /^[^-]+-/, replacement: '' },
+    {
+      pattern: /-(.)/g,
+      replacement: (_match, letter) => ` ${letter.toUpperCase()}`,
+    },
+    {
+      pattern: /^./,
+      replacement: (match) => match.toUpperCase(),
     },
   ];
+
+  return (defaultFixedT) => {
+    const { fixedT } = useContext(EditorContext);
+
+    return useMemo(
+      () =>
+        fixedT ||
+        defaultFixedT ||
+        ((key) =>
+          replaces.reduce<string>(
+            (result, { pattern, replacement }) =>
+              result.replace(pattern, replacement as string),
+            key
+          )),
+      [defaultFixedT, fixedT]
+    );
+  };
+})();
+
+export const useCollection: Types.CollectionHook = (defaultValues) => {
+  const {
+    collectionPath,
+    values: { events, nodes, props },
+  } = useContext(EditorContext) as Required<Types.EditorContextValue>;
+
+  const source = useMemo(
+    () =>
+      Object.entries({ events, nodes, props }).reduce(
+        (result, [type, options = {}]) => {
+          Object.entries(options).forEach(([path, value]) => {
+            if (path.startsWith(collectionPath)) {
+              _set(result, path, type === 'props' ? value : Symbol(type));
+            }
+          });
+
+          return result;
+        },
+        {}
+      ),
+    [collectionPath, events, nodes, props]
+  );
+
+  return {
+    path: collectionPath,
+    source,
+    values: _get(source, collectionPath) || defaultValues || null,
+  };
 };
 
-export const useMixedTypeMapping: Types.MixedTypeMapping = (propName) => {
-  const [, setTransition] = React.useTransition();
-  const { propPath, mixedTypes, values, onMixedTypeMapping, onChange } =
-    useContext();
+export const usePropValue = <V>(
+  collectionType: Appcraft.CollectionType,
+  widgetField: Appcraft.WidgetField,
+  propName: string
+) => {
+  const {
+    collectionPath,
+    values,
+    values: { events, nodes, props, [widgetField]: target },
+    onChange,
+  } = useContext(EditorContext) as Required<Types.EditorContextValue>;
 
-  const path = React.useMemo(
-    () =>
-      getPropPathString(values, [..._toPath(propPath), propName] as string[]),
-    [values, propPath, propName]
+  const propPath =
+    collectionType === 'array'
+      ? `${collectionPath}[${propName}]`
+      : `${collectionPath ? `${collectionPath}.` : ''}${propName}`;
+
+  return {
+    path: propPath,
+
+    value:
+      (Object.assign({}, ...[events, nodes, props])[propPath] as V) || null,
+
+    onChange: (value: V | null) => {
+      delete (target as Record<string, unknown>)?.[propPath];
+
+      onChange({
+        ...values,
+        [widgetField]: {
+          ...target,
+          ...((value || value === 0) && { [propPath]: value }),
+        },
+      } as Appcraft.NodeWidget);
+    },
+  };
+};
+
+export const useMixedTypeMapping: Types.MixedTypeMapping = (
+  collectionType,
+  widgetField,
+  propName
+) => {
+  const {
+    values: { mixedTypes, events, nodes, props, ...values },
+    onChange,
+  } = useContext(EditorContext) as Required<Types.EditorContextValue>;
+
+  const { path: propPath } = usePropValue(
+    collectionType,
+    widgetField,
+    propName
   );
 
   return [
-    mixedTypes?.[path] || null,
+    mixedTypes?.[propPath] || null,
 
     (mixedText) => {
       if (mixedText) {
-        onMixedTypeMapping({ ...mixedTypes, [path]: mixedText });
-      } else {
-        delete mixedTypes[path];
-
-        setTransition(() => {
-          onMixedTypeMapping({ ...mixedTypes });
-
-          if (Array.isArray(values)) {
-            onChange?.([..._set(values, path, undefined)] as object);
-          } else {
-            onChange?.({ ..._set(values as object, path, undefined) });
-          }
+        onChange({
+          ...values,
+          mixedTypes: { ...mixedTypes, [propPath]: mixedText },
         });
+      } else {
+        delete mixedTypes?.[propPath];
+
+        [events, nodes, props].forEach((options = {}) =>
+          Object.keys(options).forEach((path) => {
+            if (path.startsWith(propPath)) {
+              delete (options as Record<string, unknown>)[path];
+            }
+          })
+        );
+
+        onChange({ ...values });
       }
     },
   ];

@@ -26,3 +26,12 @@ export type UtilGetProptype<R = Appcraft.PropTypesDef> = (
 export type ParseService = (
   options: Appcraft.TypesParseOptions
 ) => Appcraft.PropTypesDef | null;
+
+export type GetNodeProperties = (
+  options: Omit<Appcraft.TypesParseOptions, 'collectionPath' | 'mixedTypes'>[]
+) => Record<
+  (typeof options)[number]['typeName'],
+  {
+    [path: string]: 'element' | 'node';
+  }
+>;

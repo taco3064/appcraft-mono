@@ -18,12 +18,18 @@ import type { TypeItemMixedProps } from './TypeItemMixed.types';
 
 export default function TypeItemMixed({
   action,
-  selection,
+  collectionType,
   options,
   renderMatchedField,
+  selection,
 }: TypeItemMixedProps) {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useMixedTypeMapping(options.propName);
+
+  const [selected, setSelected] = useMixedTypeMapping(
+    collectionType,
+    'props',
+    options.propName as string
+  );
 
   const ct = useFixedT();
   const displayName = useDisplayPropName(options.propName);

@@ -1,3 +1,5 @@
+import type { TypesMapping } from '../services/config.types';
+
 export enum PropType {
   arrayOf,
   bool,
@@ -64,6 +66,6 @@ export type PropTypesDef =
 export interface TypesParseOptions {
   typeFile: string;
   typeName: string;
-  propPath?: string;
-  mixedTypes?: Record<string, string>;
+  mixedTypes?: TypesMapping;
+  collectionPath?: string;
 }

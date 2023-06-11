@@ -1,15 +1,21 @@
-import type { WidgetOptions } from '@appcraft/types';
+import type { NodeWidget } from '@appcraft/types';
 
-import type { EditorAppBarProps } from '../EditorAppBar';
-import type { TypeEditorProps } from '../TypeEditor';
+import type { CraftedTypeEditorProps } from '../CraftedTypeEditor';
+import type { EditorProviderProps } from '../../contexts';
+import type { WidgetStructureProps } from '../WidgetStructure';
 
-export type EditorPartProps<V extends object = object> = Pick<
-  TypeEditorProps<V>,
-  'typeFile' | 'typeName' | 'disableSelection' | 'parser'
+export type TypeParseProps = Pick<
+  CraftedTypeEditorProps<undefined>,
+  'disableSelection' | 'parser'
 >;
 
-export interface CraftedWidgetEditorProps<V extends object = object>
-  extends EditorAppBarProps,
-    Partial<EditorPartProps<V>> {
-  widgets: WidgetOptions[];
+export interface CraftedWidgetEditorProps
+  extends Partial<TypeParseProps>,
+    Pick<
+      WidgetStructureProps<undefined>,
+      'renderWidgetTypeSelection' | 'onWidgetChange'
+    > {
+  defaultValues?: Record<string, unknown>;
+  fixedT?: EditorProviderProps['fixedT'];
+  widget?: NodeWidget;
 }

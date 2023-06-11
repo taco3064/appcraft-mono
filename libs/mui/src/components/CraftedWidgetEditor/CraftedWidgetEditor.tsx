@@ -1,67 +1,65 @@
-import Collapse from '@mui/material/Collapse';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { useState } from 'react';
+import type { NodeWidget } from '@appcraft/types';
 
-import { EditorAppBar } from '../EditorAppBar';
-import { NestedElements } from '../NestedElements';
-import { TypeEditor } from '../TypeEditor';
+import { CraftedTypeEditor } from '../CraftedTypeEditor';
+import { WidgetAppBar } from '../WidgetAppBar';
+import { WidgetStructure } from '../WidgetStructure';
 import { useFixedT } from '../../contexts';
 import type * as Types from './CraftedWidgetEditor.types';
 
 export default function CraftedWidgetEditor({
+  defaultValues,
   fixedT,
-  select,
   widget,
-  widgets,
-  onBackToElements,
-  onWidgetAdd,
+  renderWidgetTypeSelection,
   onWidgetChange,
-  onWidgetSelect,
   ...props
 }: Types.CraftedWidgetEditorProps) {
   const ct = useFixedT(fixedT);
+  const [selected, setSelected] = useState<NodeWidget | null>(null);
 
   return (
     <>
-      <EditorAppBar
-        {...{
-          fixedT,
-          select,
-          widget,
-          onBackToElements,
-          onWidgetAdd,
-          onWidgetChange,
-          onWidgetSelect,
-        }}
+      <WidgetStructure
+        fixedT={fixedT}
+        open={Boolean(!selected)}
+        widget={widget}
+        renderWidgetTypeSelection={renderWidgetTypeSelection}
+        onWidgetChange={onWidgetChange}
+        onWidgetSelect={setSelected}
+        action={
+          <AppBar color="default" position="sticky">
+            <Toolbar variant="regular">
+              <Typography
+                variant="subtitle1"
+                fontWeight="bolder"
+                color="primary"
+              >
+                {ct('ttl-structure')}
+              </Typography>
+            </Toolbar>
+          </AppBar>
+        }
       />
 
-      <Collapse in={Boolean(!widget)}>
-        <NestedElements {...{ fixedT, widgets, onWidgetSelect }} />
-      </Collapse>
-
-      <Collapse in={Boolean(widget)}>
-        {!widget?.type ? (
-          <Typography
-            variant="h6"
-            color="text.secondary"
-            align="center"
-            sx={{
-              justifyContent: 'center',
-              marginTop: (theme) => theme.spacing(2),
-            }}
-          >
-            {ct('msg-select-widget-type-first')}
-          </Typography>
-        ) : (
-          <TypeEditor
-            {...(props as Types.EditorPartProps)}
-            fixedT={fixedT}
-            mixedTypes={widget.mapping}
-            values={widget.content}
-            onChange={(content) => onWidgetChange('content', content)}
-            onMixedTypeMapping={(mapping) => onWidgetChange('mapping', mapping)}
-          />
-        )}
-      </Collapse>
+      {widget && (
+        <CraftedTypeEditor
+          {...(props as Types.TypeParseProps)}
+          open={Boolean(selected)}
+          fixedT={fixedT}
+          values={widget}
+          onChange={onWidgetChange}
+          action={
+            <WidgetAppBar
+              description={widget.type.replace(/([A-Z])/g, ' $1')}
+              onBackToStructure={() => setSelected(null)}
+            />
+          }
+        />
+      )}
     </>
   );
 }

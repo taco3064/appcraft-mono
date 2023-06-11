@@ -2,44 +2,22 @@ import type TsMorph from 'ts-morph';
 import type * as Appcraft from '@appcraft/types';
 
 export type Generators = [
-  PrivateGetProptype<Appcraft.OneOfProp>,
-  PrivateGetProptype<Appcraft.BoolProp>,
-  PrivateGetProptype<Appcraft.NumberProp>,
-  PrivateGetProptype<Appcraft.StringProp>,
-  PrivateGetProptype<Appcraft.ElementProp | Appcraft.NodeProp>,
-  PrivateGetProptype<Appcraft.InstanceOfProp>,
-  PrivateGetProptype<Appcraft.FuncProp>,
-  PrivateGetProptype<Appcraft.PropTypesDef>,
-  PrivateGetProptype<Appcraft.ArrayOfProp>,
-  PrivateGetProptype<
+  UtilGetProptype<Appcraft.OneOfProp>,
+  UtilGetProptype<Appcraft.BoolProp>,
+  UtilGetProptype<Appcraft.NumberProp>,
+  UtilGetProptype<Appcraft.StringProp>,
+  UtilGetProptype<Appcraft.ElementProp | Appcraft.NodeProp>,
+  UtilGetProptype<Appcraft.InstanceOfProp>,
+  UtilGetProptype<Appcraft.FuncProp>,
+  UtilGetProptype<Appcraft.PropTypesDef>,
+  UtilGetProptype<Appcraft.ArrayOfProp>,
+  UtilGetProptype<
     Appcraft.ExactProp | Appcraft.ObjectProp | Appcraft.ObjectOfProp
   >
 ];
 
-export type TypeResult = [TsMorph.Type, Appcraft.GeneratorInfo] | null;
-
 //* Methods
-export type PrivateGetSourceAndBasicType = (
-  options: Omit<Appcraft.TypesParseOptions, 'superior'>
-) => [TsMorph.SourceFile, TsMorph.Type];
-
-export type PrivateGetMixedTypeByPath = (
-  mixedTypes: Appcraft.TypesParseOptions['mixedTypes'],
-  paths: string[]
-) => string | null;
-
-export type PrivateGetTypeByPath = (
-  type: TsMorph.Type,
-  options: {
-    readonly info: Appcraft.GeneratorInfo;
-    paths: string[];
-    mixedTypes: Appcraft.TypesParseOptions['mixedTypes'];
-    source: TsMorph.SourceFile;
-    superior?: string[];
-  }
-) => TypeResult;
-
-export type PrivateGetProptype<R = Appcraft.PropTypesDef> = (
+export type UtilGetProptype<R = Appcraft.PropTypesDef> = (
   type: TsMorph.Type,
   info: Appcraft.GeneratorInfo,
   source?: TsMorph.SourceFile
@@ -48,3 +26,12 @@ export type PrivateGetProptype<R = Appcraft.PropTypesDef> = (
 export type ParseService = (
   options: Appcraft.TypesParseOptions
 ) => Appcraft.PropTypesDef | null;
+
+export type GetNodeProperties = (
+  options: Omit<Appcraft.TypesParseOptions, 'collectionPath' | 'mixedTypes'>[]
+) => Record<
+  (typeof options)[number]['typeName'],
+  {
+    [path: string]: 'element' | 'node';
+  }
+>;

@@ -1,3 +1,11 @@
+import type { WidgetOptions } from '@appcraft/types';
 import type { RendererProviderProps } from '../../contexts';
 
-export type CraftedRendererProps = Pick<RendererProviderProps, 'options'>;
+type WidgetLayout = {
+  widget: WidgetOptions;
+};
+
+export interface CraftedRendererProps
+  extends Omit<RendererProviderProps, 'children'> {
+  options?: WidgetOptions | WidgetLayout[];
+}

@@ -15,4 +15,14 @@ export default class TypesResolve {
 
     res.json(typesResolve.parse(body));
   }
+
+  @Endpoint({
+    method: 'post',
+    description: '取得指定的 Typescript Interface 中的 Element 與 Node',
+  })
+  getNodeProperties(req: Request, res: Response) {
+    const body = req.body as TypesParseOptions[];
+
+    res.json(typesResolve.getNodeProperties(body));
+  }
 }

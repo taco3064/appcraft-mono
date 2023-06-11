@@ -12,11 +12,17 @@ import type { TypeItemPureProps } from './TypeItemPure.types';
 
 export default function TypeItemPure({
   action,
-  selection,
+  collectionType,
   options,
+  selection,
 }: TypeItemPureProps) {
   const displayName = useDisplayPropName(options.propName);
-  const [value, onChange] = usePropValue<unknown>(options.propName);
+
+  const { value, onChange } = usePropValue(
+    collectionType,
+    'props',
+    options.propName as string
+  );
 
   return (
     <ListItem>

@@ -9,6 +9,7 @@ import type * as Types from './TypeItem.types';
 
 export default function TypeItem({
   action,
+  collectionType,
   disableSelection = false,
   options,
   onDelete,
@@ -40,8 +41,8 @@ export default function TypeItem({
       {category === 'Display' && (
         <Common.TypeItemDisplay
           action={actions}
-          selection={selection}
           options={options as Common.TypeItemDisplayProps['options']}
+          selection={selection}
           onClick={onSubitemView}
         />
       )}
@@ -49,28 +50,21 @@ export default function TypeItem({
       {category === 'Pure' && (
         <Common.TypeItemPure
           action={actions}
-          selection={selection}
+          collectionType={collectionType}
           options={options as Common.TypeItemPureProps['options']}
-        />
-      )}
-
-      {category === 'Node' && (
-        <Common.TypeItemNode
-          action={actions}
           selection={selection}
-          options={options as Common.TypeItemNodeProps['options']}
-          onSubnodeView={() => null}
         />
       )}
 
       {category === 'Mixed' && (
         <Common.TypeItemMixed
           action={actions}
-          selection={selection}
+          collectionType={collectionType}
           options={options as Common.TypeItemMixedProps['options']}
+          selection={selection}
           renderMatchedField={(matched, matchedAction) => (
             <TypeItem
-              {...{ disableSelection, onDelete, onSubitemView }}
+              {...{ collectionType, disableSelection, onDelete, onSubitemView }}
               options={matched}
               action={matchedAction}
             />

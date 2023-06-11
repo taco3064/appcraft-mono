@@ -10,7 +10,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import { TypeItem } from '../TypeItem';
-import { useFixedT, usePropPath } from '../../contexts';
+import { useFixedT } from '../../contexts';
 import { usePropertyRouter, useTypeItems } from '../../hooks';
 import type { TypeListProps } from './TypeList.types';
 
@@ -18,15 +18,15 @@ export default function TypeList({
   disableSelection,
   superior,
   values,
-  onPropPathChange,
+  onChange,
+  onCollectionPathChange,
 }: TypeListProps) {
   const ct = useFixedT();
-  const propPath = usePropPath();
-  const { isModifiable, items, value, onChange } = useTypeItems(superior);
+  const { items, onItemAdd } = useTypeItems(superior, values, onChange);
+  const isModifiable = onItemAdd instanceof Function;
 
   const [breadcrumbs, { back: handleBack, to: handleTo }] = usePropertyRouter(
-    { values, onPropPathChange },
-    propPath
+    onCollectionPathChange
   );
 
   return (
@@ -53,14 +53,14 @@ export default function TypeList({
           )}
 
           <Breadcrumbs separator="." style={{ marginRight: 'auto' }}>
-            {breadcrumbs.map(({ name, isArrayElement, isLast }, i) =>
+            {breadcrumbs.map(({ name, isStructureArray, isLast }, i) =>
               isLast ? (
                 <Typography
                   key={`${name}_${i}`}
                   variant="subtitle1"
                   color="secondary"
                 >
-                  {isArrayElement ? `[${name}]` : name}
+                  {isStructureArray ? `[${name}]` : name}
                 </Typography>
               ) : (
                 <Link
@@ -71,7 +71,7 @@ export default function TypeList({
                   color="text.primary"
                   onClick={() => handleBack(i)}
                 >
-                  {isArrayElement ? `[${name}]` : name}
+                  {isStructureArray ? `[${name}]` : name}
                 </Link>
               )
             )}
@@ -79,19 +79,7 @@ export default function TypeList({
 
           {breadcrumbs.length > 0 && isModifiable && (
             <Tooltip title={ct('btn-add-prop')}>
-              <IconButton
-                size="small"
-                onClick={() =>
-                  onChange(
-                    superior.type === 'arrayOf'
-                      ? [...((value as []) || []), null]
-                      : {
-                          ...value,
-                          [`key_${Object.keys(value || {}).length}`]: null,
-                        }
-                  )
-                }
-              >
+              <IconButton size="small" onClick={onItemAdd}>
                 <PlaylistAddIcon />
               </IconButton>
             </Tooltip>
@@ -99,9 +87,9 @@ export default function TypeList({
         </ListSubheader>
       }
     >
-      {items.map(({ key, options, onDelete }) => (
+      {items.map(({ key, collectionType, options, onDelete }) => (
         <TypeItem
-          {...{ key, disableSelection, options, onDelete }}
+          {...{ key, collectionType, disableSelection, options, onDelete }}
           onSubitemView={handleTo}
         />
       ))}

@@ -1,10 +1,10 @@
 import Container from '@mui/material/Container';
 import ReplayIcon from '@mui/icons-material/Replay';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { TypeEditor } from '@appcraft/mui';
+import { CraftedTypeEditor } from '@appcraft/mui';
+import { startTransition, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
-import { useState, useTransition } from 'react';
 
 import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
 import { Breadcrumbs } from '~appcraft/components';
@@ -22,7 +22,6 @@ export default function ConfigDetail<C extends object = object>({
   onSave,
 }: ConfigDetailProps<C>) {
   const { enqueueSnackbar } = useSnackbar();
-  const [, setTransition] = useTransition();
   const [at, ct] = useFixedT('app', 'appcraft');
 
   const [values, setValues] = useState(() =>
@@ -50,7 +49,7 @@ export default function ConfigDetail<C extends object = object>({
             icon={ReplayIcon}
             text={at('btn-reset')}
             onClick={() =>
-              setTransition(() => {
+              startTransition(() => {
                 setValues(JSON.parse(JSON.stringify(data?.content || {})));
                 setMixedTypes(JSON.parse(JSON.stringify(data?.mapping || {})));
               })
@@ -84,13 +83,13 @@ export default function ConfigDetail<C extends object = object>({
       />
 
       <Container maxWidth="sm">
-        <TypeEditor
-          {...{ typeFile, typeName, mixedTypes, values }}
+        <CraftedTypeEditor
+          {...{ typeFile, typeName, mixedTypes }}
           disableSelection
           fixedT={ct}
+          values={values}
           parser={TYPES_PARSER as object}
           onChange={setValues}
-          onMixedTypeMapping={setMixedTypes}
         />
       </Container>
     </>

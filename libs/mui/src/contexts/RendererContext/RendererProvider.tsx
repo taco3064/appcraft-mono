@@ -5,14 +5,9 @@ import type { RendererProviderProps } from './RendererContext.types';
 
 export default function RendererProvider({
   children,
-  options,
+  lazy,
 }: RendererProviderProps) {
-  const value = useMemo(
-    () => ({
-      options,
-    }),
-    [options]
-  );
+  const value = useMemo(() => ({ lazy }), [lazy]);
 
   return (
     <RendererContext.Provider value={value}>

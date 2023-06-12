@@ -1,6 +1,4 @@
-import type { CollectionType, NodeWidget, PropTypesDef } from '@appcraft/types';
-import type { BasicType } from '../usePropertiesSorting';
-import type { ChangeHandler } from '../../contexts';
+import type { CollectionType, PropTypesDef } from '@appcraft/types';
 
 export interface TypeItem {
   key: string;
@@ -9,11 +7,7 @@ export interface TypeItem {
   onDelete?: (options: PropTypesDef) => void;
 }
 
-export type TypeItemsHook = (
-  superior: BasicType,
-  values: NodeWidget,
-  onChange: ChangeHandler
-) => {
+export type TypeItemsHookResult = {
   items: TypeItem[];
   onItemAdd?: () => void;
 };

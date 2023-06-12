@@ -1,4 +1,4 @@
-import type { GetOrderSeqFn } from './useTypeCategory.types';
+import type { GetOrderSeqUtil } from './useTypeCategory.types';
 
 const regs: RegExp[] = [
   /^(node|element)$/,
@@ -8,5 +8,5 @@ const regs: RegExp[] = [
   /^(func)$/,
 ];
 
-export const getOrderSeq: GetOrderSeqFn = (type) =>
+export const getOrderSeq: GetOrderSeqUtil = (type) =>
   regs.findIndex((value) => value.test(type));

@@ -1,0 +1,10 @@
+{
+  "parser": {
+    "url": "/api/ts2-props/types-resolve/parse",
+    "method": "POST"
+  },
+  "nodes": {
+    "url": "/api/ts2-props/types-resolve/getNodeProperties",
+    "method": "POST"
+  }
+}

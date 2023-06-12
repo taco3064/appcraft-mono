@@ -1,8 +1,8 @@
+import type { ConfigData, ConfigOptions } from '@appcraft/types';
 import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
-import type { ConfigData } from '~appcraft/services';
 
-export interface ConfigDetailProps<C extends object> {
-  data: ConfigData<Partial<C>, string>;
+export interface ConfigDetailProps {
+  data: ConfigData<ConfigOptions, string>;
   typeFile: string;
   typeName: string;
   onActionNodePick?: NodePickerFn<'reset' | 'save'>;
@@ -13,3 +13,12 @@ export interface ConfigDetailProps<C extends object> {
     breadcrumbs: Breadcrumb[];
   };
 }
+
+export type ConfigValuesHook = (
+  options: Pick<ConfigDetailProps, 'data' | 'typeFile' | 'typeName' | 'onSave'>
+) => {
+  values: ConfigOptions;
+  onChange: (values: ConfigOptions) => void;
+  onReset: () => void;
+  onSave: () => void;
+};

@@ -1,13 +1,13 @@
+import * as Appcraft from '@appcraft/mui';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { CraftedWidgetEditor, CraftedRenderer } from '@appcraft/mui';
-import { useCallback, useState } from 'react';
 import { Components, useTheme } from '@mui/material/styles';
+import { useCallback, useState } from 'react';
 
 import * as Component from '~appcraft/components';
-import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
+import TYPES_FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
 import { CommonButton, LazyMui } from '~appcraft/components/common';
 import { useEditedWidget } from './WidgetEditor.hooks';
 import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks';
@@ -77,11 +77,13 @@ export default function WidgetEditor({
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
-        content={<CraftedRenderer lazy={toLazy} options={widget} />}
+        content={<Appcraft.CraftedRenderer lazy={toLazy} options={widget} />}
         drawer={
-          <CraftedWidgetEditor
+          <Appcraft.CraftedWidgetEditor
+            fetchOptions={
+              TYPES_FETCH_OPTIONS as Appcraft.CraftedWidgetEditorProps['fetchOptions']
+            }
             fixedT={ct}
-            parser={TYPES_PARSER as object}
             widget={widget}
             onWidgetChange={onWidgetChange}
             defaultValues={

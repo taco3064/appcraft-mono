@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import type { NodeWidget } from '@appcraft/types';
 
 import * as Hooks from '~appcraft/hooks';
 import { PageContainer } from '~appcraft/styles';
@@ -24,7 +25,7 @@ export default function Detail() {
 
   const { data: widget, refetch } = useQuery({
     queryKey: [id],
-    queryFn: findConfig<object>,
+    queryFn: findConfig<NodeWidget>,
     refetchOnWindowFocus: false,
   });
 

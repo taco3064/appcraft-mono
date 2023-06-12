@@ -2,7 +2,7 @@ import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import Head from 'next/head';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import type { PaletteOptions } from '@mui/material/styles';
+import type { ConfigOptions } from '@appcraft/types';
 
 import * as Hooks from '~appcraft/hooks';
 import { CommonButton } from '~appcraft/components/common';
@@ -25,7 +25,7 @@ export default function Detail() {
 
   const { data: theme, refetch } = useQuery({
     queryKey: [id],
-    queryFn: findConfig<PaletteOptions>,
+    queryFn: findConfig<ConfigOptions>,
     refetchOnWindowFocus: false,
   });
 

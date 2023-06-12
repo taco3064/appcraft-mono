@@ -3,7 +3,7 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { Suspense, lazy, useMemo, useState } from 'react';
-import type { NodeWidget } from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 
 import { EditorProvider, useFixedT } from '../../contexts';
 import { TypeList } from '../TypeList';
@@ -11,7 +11,8 @@ import { TypeListSkeleton } from '../TypeListSkeleton';
 import type * as Types from './CraftedTypeEditor.types';
 
 export default function CraftedTypeEditor<
-  A extends Types.ActionElement = undefined
+  A extends Types.ActionElement = undefined,
+  E extends Appcraft.NodeWidget | Appcraft.ConfigOptions = Appcraft.NodeWidget
 >({
   action,
   open = true,
@@ -20,8 +21,8 @@ export default function CraftedTypeEditor<
   parser,
   values,
   onChange,
-}: Types.CraftedTypeEditorProps<A>) {
-  const { typeFile, typeName, mixedTypes } = values as NodeWidget;
+}: Types.CraftedTypeEditorProps<A, E>) {
+  const { typeFile, typeName, mixedTypes } = values as E;
   const ct = useFixedT(fixedT);
   const [collectionPath, setCollectionPath] = useState('');
 

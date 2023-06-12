@@ -6,9 +6,9 @@ import type { WidgetAddDialogProps } from '../WidgetAddDialog';
 
 export type WidgetStructureProps<A extends ActionElement> = Collapsable<
   Pick<WidgetAddDialogProps, 'renderWidgetTypeSelection'> & {
-    fixedT?: EditorProviderProps['fixedT'];
+    fixedT?: EditorProviderProps<NodeWidget>['fixedT'];
     widget?: NodeWidget;
-    onWidgetChange: ChangeHandler;
+    onWidgetChange: ChangeHandler<NodeWidget>;
     onWidgetSelect: (widget: NodeWidget) => void;
   },
   A

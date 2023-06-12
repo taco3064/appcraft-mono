@@ -2,43 +2,23 @@ import Container from '@mui/material/Container';
 import ReplayIcon from '@mui/icons-material/Replay';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedTypeEditor } from '@appcraft/mui';
-import { startTransition, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { useSnackbar } from 'notistack';
+import type { NodeWidget } from '@appcraft/types';
 
-import TYPES_PARSER from '~appcraft/assets/json/types-parser.json';
+import TYPES_FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
 import { Breadcrumbs } from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
-import { upsertConfig } from '~appcraft/services';
+import { useConfigValues } from './ConfigDetail.hooks';
 import { useFixedT, useNodePicker } from '~appcraft/hooks';
 import type { ConfigDetailProps } from './ConfigDetail.types';
 
-export default function ConfigDetail<C extends object = object>({
-  data,
+export default function ConfigDetail({
   superiors: { names, breadcrumbs },
-  typeFile,
-  typeName,
   onActionNodePick = (e) => e,
-  onSave,
-}: ConfigDetailProps<C>) {
-  const { enqueueSnackbar } = useSnackbar();
+  ...props
+}: ConfigDetailProps) {
   const [at, ct] = useFixedT('app', 'appcraft');
-
-  const [values, setValues] = useState(() =>
-    JSON.parse(JSON.stringify(data?.content || {}))
-  );
-
-  const [mixedTypes, setMixedTypes] = useState(() =>
-    JSON.parse(JSON.stringify(data?.mapping || {}))
-  );
-
-  const mutation = useMutation({
-    mutationFn: upsertConfig<C>,
-    onSuccess: () => {
-      enqueueSnackbar(at('txt-succeed-update'), { variant: 'success' });
-      onSave?.();
-    },
-  });
+  const { data } = props;
+  const { values, onChange, onReset, onSave } = useConfigValues(props);
 
   const actionNode = useNodePicker(
     () =>
@@ -48,12 +28,7 @@ export default function ConfigDetail<C extends object = object>({
             btnVariant="icon"
             icon={ReplayIcon}
             text={at('btn-reset')}
-            onClick={() =>
-              startTransition(() => {
-                setValues(JSON.parse(JSON.stringify(data?.content || {})));
-                setMixedTypes(JSON.parse(JSON.stringify(data?.mapping || {})));
-              })
-            }
+            onClick={onReset}
           />
         ),
         save: (
@@ -61,13 +36,11 @@ export default function ConfigDetail<C extends object = object>({
             btnVariant="icon"
             icon={SaveAltIcon}
             text={at('btn-save')}
-            onClick={() =>
-              mutation.mutate({ ...data, content: values, mapping: mixedTypes })
-            }
+            onClick={onSave}
           />
         ),
       }),
-    [values, mixedTypes]
+    [values]
   );
 
   return (
@@ -84,12 +57,11 @@ export default function ConfigDetail<C extends object = object>({
 
       <Container maxWidth="sm">
         <CraftedTypeEditor
-          {...{ typeFile, typeName, mixedTypes }}
           disableSelection
           fixedT={ct}
+          parser={TYPES_FETCH_OPTIONS.parser as object}
           values={values}
-          parser={TYPES_PARSER as object}
-          onChange={setValues}
+          onChange={onChange}
         />
       </Container>
     </>

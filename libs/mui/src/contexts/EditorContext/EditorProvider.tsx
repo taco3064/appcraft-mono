@@ -1,16 +1,16 @@
-import { useMemo } from 'react';
+import { ComponentProps, useMemo } from 'react';
 
 import { EditorContext } from './EditorContext.hooks';
 import type * as Types from './EditorContext.types';
 
-export default function InteractivedProvider({
+export default function InteractivedProvider<V extends Types.OptionValues>({
   children,
   collectionPath,
   fixedT,
   values,
   onChange,
-}: Types.EditorProviderProps) {
-  const value = useMemo(
+}: Types.EditorProviderProps<V>) {
+  const value = useMemo<Types.EditorContextValue<V>>(
     () => ({
       fixedT,
       collectionPath,
@@ -21,6 +21,10 @@ export default function InteractivedProvider({
   );
 
   return (
-    <EditorContext.Provider value={value}>{children}</EditorContext.Provider>
+    <EditorContext.Provider
+      value={value as ComponentProps<typeof EditorContext.Provider>['value']}
+    >
+      {children}
+    </EditorContext.Provider>
   );
 }

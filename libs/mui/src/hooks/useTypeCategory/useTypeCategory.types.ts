@@ -8,4 +8,4 @@ enum Categories {
 }
 
 export type Category = keyof typeof Categories;
-export type GetOrderSeqFn = (type: PropTypesDef['type']) => number;
+export type GetOrderSeqUtil = (type: PropTypesDef['type']) => number;

@@ -1,8 +1,10 @@
-export type TypesMapping = Record<string, string>;
+import type { ConfigOptions, NodeWidget } from '../widgets';
 
-export interface ConfigData<C, U = undefined> {
+export interface ConfigData<
+  C extends ConfigOptions | NodeWidget,
+  U = undefined
+> {
   _id: U;
   content: C;
-  mapping?: TypesMapping;
   timestamp: string;
 }

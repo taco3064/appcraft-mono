@@ -19,9 +19,12 @@ export default class Config {
     method: 'post',
     description: '建立新的 Config Data',
   })
-  async upsert(req: Request, res: Response) {
+  async upsert<V extends ConfigTypes.OptionValues>(
+    req: Request,
+    res: Response
+  ) {
     res.json(
-      await config.upsert(req.body as ConfigTypes.ConfigData<object, string>)
+      await config.upsert(req.body as ConfigTypes.ConfigData<V, string>)
     );
   }
 

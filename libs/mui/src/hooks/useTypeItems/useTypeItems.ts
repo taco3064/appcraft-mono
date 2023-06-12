@@ -1,13 +1,17 @@
 import _toPath from 'lodash.topath';
 import { startTransition, useState } from 'react';
-import type { PropTypesDef } from '@appcraft/types';
+import type { PropTypesDef, WidgetField } from '@appcraft/types';
 
 import { getPropPath } from '../usePropertyRouter';
-import { useCollection } from '../../contexts';
-import { usePropertiesSorting } from '../usePropertiesSorting';
-import type { TypeItemsHook } from './useTypeItems.types';
+import { ChangeHandler, OptionValues, useCollection } from '../../contexts';
+import { BasicType, usePropertiesSorting } from '../usePropertiesSorting';
+import type { TypeItemsHookResult } from './useTypeItems.types';
 
-const useTypeItems: TypeItemsHook = (superior, widgetValues, onChange) => {
+const useTypeItems = <V extends OptionValues>(
+  superior: BasicType,
+  widgetValues: V,
+  onChange: ChangeHandler<V>
+): TypeItemsHookResult => {
   const { path, source, values } = useCollection(
     superior.type.startsWith('array') ? [] : {}
   );
@@ -17,16 +21,19 @@ const useTypeItems: TypeItemsHook = (superior, widgetValues, onChange) => {
 
   const handleDelete = (fn: () => string) =>
     startTransition(() => {
-      const { mixedTypes, events, nodes, props } = widgetValues;
+      const fields: WidgetField[] = ['events', 'nodes', 'props'];
+      const { mixedTypes } = widgetValues;
       const propPath = getPropPath(source, [..._toPath(path), fn()]);
 
       delete mixedTypes?.[propPath];
 
-      [events, nodes, props].forEach((options) => {
+      fields.forEach((field) => {
+        const { [field as keyof V]: options } = widgetValues;
+
         delete (options as Record<string, unknown>)?.[propPath];
       });
 
-      onChange({ ...widgetValues });
+      onChange({ ...widgetValues } as V);
     });
 
   if (superior.type === 'exact') {

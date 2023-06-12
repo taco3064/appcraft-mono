@@ -1,8 +1,7 @@
 import type { CraftedWidgetEditorProps } from '@appcraft/mui';
-import type { NodeWidget } from '@appcraft/types';
+import type { ConfigData, NodeWidget } from '@appcraft/types';
 
 import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
-import type { ConfigData } from '~appcraft/services';
 import type { PersistentDrawerContentProps } from '~appcraft/components';
 
 export type WidgetMap = Map<string, Record<'typeFile' | 'typeName', string>>;
@@ -16,7 +15,7 @@ export type EditedWidgetHook = (data: WidgetEditorProps['data']) => Pick<
 };
 
 export interface WidgetEditorProps {
-  data: ConfigData<Partial<NodeWidget>, string>;
+  data: ConfigData<NodeWidget, string>;
   onActionNodePick?: NodePickerFn<'expand' | 'reset' | 'save'>;
 
   PersistentDrawerContentProps?: Omit<

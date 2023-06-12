@@ -1,4 +1,4 @@
-import type { TypesMapping } from '../services/config.types';
+export type TypesMapping = Record<string, string>;
 
 export enum PropType {
   arrayOf,

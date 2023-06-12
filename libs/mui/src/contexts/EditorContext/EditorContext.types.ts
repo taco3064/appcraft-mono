@@ -2,7 +2,8 @@ import type { ReactNode } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 //* Variable
-export type ChangeHandler = (e: Appcraft.NodeWidget | null) => void;
+export type OptionValues = Appcraft.NodeWidget | Appcraft.ConfigOptions;
+export type ChangeHandler<E extends OptionValues> = (e?: E | null) => void;
 
 export type MixedTypeMappingResult = [
   string | null,
@@ -15,31 +16,23 @@ export type Replaces = {
 }[];
 
 export type Collection = Array<unknown> | Record<string, unknown>;
+export type FixedT = (key: string, options?: object) => string;
 
 //* Context Value
-export interface EditorContextValue {
-  fixedT?: (key: string, options?: object) => string;
+export interface EditorContextValue<V extends OptionValues> {
   collectionPath: string;
-  values?: Appcraft.NodeWidget;
-  onChange: ChangeHandler;
+  fixedT?: FixedT;
+  values?: V;
+  onChange: ChangeHandler<V>;
 }
 
 //* Provider Props
-export interface EditorProviderProps extends EditorContextValue {
+export interface EditorProviderProps<V extends OptionValues>
+  extends EditorContextValue<V> {
   children: ReactNode;
 }
 
 //* Custom Hook
-export type FixedTHook = (
-  defaultFixedT?: EditorProviderProps['fixedT']
-) => Required<EditorProviderProps>['fixedT'];
-
-export type CollectionHook = (defaultValues?: Collection) => {
-  path: string;
-  source: object;
-  values: Collection;
-};
-
 export type MixedTypeMapping = (
   collectionType: Appcraft.CollectionType,
   widgetField: Appcraft.WidgetField,

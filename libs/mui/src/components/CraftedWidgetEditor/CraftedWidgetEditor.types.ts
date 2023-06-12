@@ -4,18 +4,21 @@ import type { CraftedTypeEditorProps } from '../CraftedTypeEditor';
 import type { EditorProviderProps } from '../../contexts';
 import type { WidgetStructureProps } from '../WidgetStructure';
 
-export type TypeParseProps = Pick<
-  CraftedTypeEditorProps<undefined>,
-  'disableSelection' | 'parser'
+type BaseProps = Pick<
+  CraftedTypeEditorProps<undefined, NodeWidget>,
+  'disableSelection'
 >;
 
+type FetchOptions = CraftedTypeEditorProps<undefined, NodeWidget>['parser'];
+
 export interface CraftedWidgetEditorProps
-  extends Partial<TypeParseProps>,
+  extends BaseProps,
     Pick<
       WidgetStructureProps<undefined>,
       'renderWidgetTypeSelection' | 'onWidgetChange'
     > {
   defaultValues?: Record<string, unknown>;
-  fixedT?: EditorProviderProps['fixedT'];
+  fetchOptions: Record<'parser' | 'nodes', FetchOptions>;
+  fixedT?: EditorProviderProps<NodeWidget>['fixedT'];
   widget?: NodeWidget;
 }

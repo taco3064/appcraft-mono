@@ -1,4 +1,3 @@
-import type { TypesMapping } from '../services/config.types';
 import type { TypesParseOptions } from './prop-types-def.types';
 
 enum Category {

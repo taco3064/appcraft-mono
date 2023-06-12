@@ -12,6 +12,8 @@ import type * as Types from './CraftedWidgetEditor.types';
 
 export default function CraftedWidgetEditor({
   defaultValues,
+  disableSelection,
+  fetchOptions: { parser, nodes },
   fixedT,
   widget,
   renderWidgetTypeSelection,
@@ -47,9 +49,10 @@ export default function CraftedWidgetEditor({
 
       {widget && (
         <CraftedTypeEditor
-          {...(props as Types.TypeParseProps)}
-          open={Boolean(selected)}
+          disableSelection={disableSelection}
           fixedT={fixedT}
+          open={Boolean(selected)}
+          parser={parser}
           values={widget}
           onChange={onWidgetChange}
           action={

@@ -5,12 +5,13 @@ import type * as Appcraft from '@appcraft/types';
 
 import type * as Types from './EditorContext.types';
 
-export const EditorContext = createContext<Types.EditorContextValue>({
-  collectionPath: '',
-  onChange: () => null,
-});
+export const EditorContext = (<V extends Types.OptionValues>() =>
+  createContext<Types.EditorContextValue<V>>({
+    collectionPath: '',
+    onChange: () => null,
+  }))();
 
-export const useFixedT: Types.FixedTHook = (() => {
+export const useFixedT = (() => {
   const replaces: Types.Replaces = [
     { pattern: /^[^-]+-/, replacement: '' },
     {
@@ -23,10 +24,10 @@ export const useFixedT: Types.FixedTHook = (() => {
     },
   ];
 
-  return (defaultFixedT) => {
+  return (defaultFixedT?: Types.FixedT) => {
     const { fixedT } = useContext(EditorContext);
 
-    return useMemo(
+    return useMemo<Types.FixedT>(
       () =>
         fixedT ||
         defaultFixedT ||
@@ -41,47 +42,50 @@ export const useFixedT: Types.FixedTHook = (() => {
   };
 })();
 
-export const useCollection: Types.CollectionHook = (defaultValues) => {
-  const {
-    collectionPath,
-    values: { events, nodes, props },
-  } = useContext(EditorContext) as Required<Types.EditorContextValue>;
+export const useCollection = <V extends Types.OptionValues>(
+  defaultValues?: Types.Collection
+) => {
+  const { collectionPath, values } = useContext(EditorContext) as Required<
+    Types.EditorContextValue<V>
+  >;
 
-  const source = useMemo(
-    () =>
-      Object.entries({ events, nodes, props }).reduce(
-        (result, [type, options = {}]) => {
-          Object.entries(options).forEach(([path, value]) => {
-            if (path.startsWith(collectionPath)) {
-              _set(result, path, type === 'props' ? value : Symbol(type));
-            }
-          });
+  const source = useMemo<object>(() => {
+    const fields: Appcraft.WidgetField[] = ['events', 'nodes', 'props'];
 
-          return result;
-        },
-        {}
-      ),
-    [collectionPath, events, nodes, props]
-  );
+    return fields.reduce((result, field) => {
+      const { [field as keyof V]: options } = values;
+
+      Object.entries(options as Record<string, unknown>).forEach(
+        ([path, value]) => {
+          if (path.startsWith(collectionPath)) {
+            _set(result, path, field === 'props' ? value : Symbol(field));
+          }
+        }
+      );
+
+      return {};
+    }, {});
+  }, [collectionPath, values]);
 
   return {
     path: collectionPath,
     source,
-    values: _get(source, collectionPath) || defaultValues || null,
+    values:
+      ((_get(source, collectionPath) || defaultValues) as Types.Collection) ||
+      null,
   };
 };
 
-export const usePropValue = <V>(
+export const usePropValue = <V extends Types.OptionValues, P = unknown>(
   collectionType: Appcraft.CollectionType,
-  widgetField: Appcraft.WidgetField,
+  widgetField: keyof V,
   propName: string
 ) => {
-  const {
-    collectionPath,
-    values,
-    values: { events, nodes, props, [widgetField]: target },
-    onChange,
-  } = useContext(EditorContext) as Required<Types.EditorContextValue>;
+  const fields: Appcraft.WidgetField[] = ['events', 'nodes', 'props'];
+
+  const { collectionPath, values, onChange } = useContext(
+    EditorContext
+  ) as Required<Types.EditorContextValue<V>>;
 
   const propPath =
     collectionType === 'array'
@@ -92,9 +96,18 @@ export const usePropValue = <V>(
     path: propPath,
 
     value:
-      (Object.assign({}, ...[events, nodes, props])[propPath] as V) || null,
+      (Object.assign(
+        {},
+        ...fields.map((field) => {
+          const { [field as keyof V]: options } = values;
 
-    onChange: (value: V | null) => {
+          return options;
+        })
+      )[propPath] as P) || null,
+
+    onChange: (value: P | null) => {
+      const { [widgetField]: target } = values;
+
       delete (target as Record<string, unknown>)?.[propPath];
 
       onChange({
@@ -103,22 +116,22 @@ export const usePropValue = <V>(
           ...target,
           ...((value || value === 0) && { [propPath]: value }),
         },
-      } as Appcraft.NodeWidget);
+      } as V);
     },
   };
 };
 
-export const useMixedTypeMapping: Types.MixedTypeMapping = (
-  collectionType,
-  widgetField,
-  propName
+export const useMixedTypeMapping = <V extends Types.OptionValues>(
+  collectionType: Appcraft.CollectionType,
+  widgetField: keyof V,
+  propName: string
 ) => {
   const {
-    values: { mixedTypes, events, nodes, props, ...values },
+    values: { mixedTypes, ...values },
     onChange,
-  } = useContext(EditorContext) as Required<Types.EditorContextValue>;
+  } = useContext(EditorContext) as Required<Types.EditorContextValue<V>>;
 
-  const { path: propPath } = usePropValue(
+  const { path: propPath } = usePropValue<V>(
     collectionType,
     widgetField,
     propName
@@ -132,20 +145,24 @@ export const useMixedTypeMapping: Types.MixedTypeMapping = (
         onChange({
           ...values,
           mixedTypes: { ...mixedTypes, [propPath]: mixedText },
-        });
+        } as V);
       } else {
+        const fields: Appcraft.WidgetField[] = ['events', 'nodes', 'props'];
+
         delete mixedTypes?.[propPath];
 
-        [events, nodes, props].forEach((options = {}) =>
-          Object.keys(options).forEach((path) => {
+        fields.forEach((field) => {
+          const { [field as keyof V]: options } = values;
+
+          Object.keys(options as Record<string, unknown>).forEach((path) => {
             if (path.startsWith(propPath)) {
               delete (options as Record<string, unknown>)[path];
             }
-          })
-        );
+          });
+        });
 
-        onChange({ ...values });
+        onChange({ ...values } as V);
       }
     },
-  ];
+  ] as Types.MixedTypeMappingResult;
 };

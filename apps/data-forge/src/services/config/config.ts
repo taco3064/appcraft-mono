@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 import { getCollection } from '../common';
 import type * as Types from './config.types';
 
-export const find = async <C extends object = object>(id: string) => {
+export const find = async <C extends Types.OptionValues>(id: string) => {
   const collection = await getCollection<Types.ConfigData<C, ObjectId>>({
     db: 'data-forge',
     collection: 'config',
@@ -16,10 +16,9 @@ export const find = async <C extends object = object>(id: string) => {
   return data;
 };
 
-export const upsert = async <C extends object = object>({
+export const upsert = async <C extends Types.OptionValues>({
   _id: id,
   content,
-  mapping,
 }: Types.ConfigData<C, string>) => {
   const timestamp = new Date().toISOString();
 
@@ -30,20 +29,19 @@ export const upsert = async <C extends object = object>({
 
   const result = await collection.updateOne(
     { _id: { $eq: new ObjectId(id) } },
-    { $set: { _id: new ObjectId(id), content, mapping, timestamp } },
+    { $set: { _id: new ObjectId(id), content, timestamp } },
     { upsert: true }
   );
 
   return {
     _id: result.upsertedId,
     content,
-    mapping,
     timestamp,
   } as Types.ConfigData<C, ObjectId>;
 };
 
-export const remove: Types.RemoveService = async (id) => {
-  const collection = await getCollection<Types.ConfigData<object, ObjectId>>({
+export const remove = async <C extends Types.OptionValues>(id: string) => {
+  const collection = await getCollection<Types.ConfigData<C, ObjectId>>({
     db: 'data-forge',
     collection: 'config',
   });

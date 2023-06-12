@@ -1,2 +1,2 @@
 export * from './config';
-export type { ConfigData } from './config.types';
+export type { ConfigData, OptionValues } from './config.types';

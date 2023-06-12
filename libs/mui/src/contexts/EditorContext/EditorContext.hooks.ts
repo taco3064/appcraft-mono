@@ -53,7 +53,7 @@ export const useCollection = <V extends Types.OptionValues>(
     const fields: Appcraft.WidgetField[] = ['events', 'nodes', 'props'];
 
     return fields.reduce((result, field) => {
-      const { [field as keyof V]: options } = values;
+      const { [field as keyof V]: options = {} } = values;
 
       Object.entries(options as Record<string, unknown>).forEach(
         ([path, value]) => {
@@ -99,7 +99,7 @@ export const usePropValue = <V extends Types.OptionValues, P = unknown>(
       (Object.assign(
         {},
         ...fields.map((field) => {
-          const { [field as keyof V]: options } = values;
+          const { [field as keyof V]: options = {} } = values;
 
           return options;
         })
@@ -152,7 +152,7 @@ export const useMixedTypeMapping = <V extends Types.OptionValues>(
         delete mixedTypes?.[propPath];
 
         fields.forEach((field) => {
-          const { [field as keyof V]: options } = values;
+          const { [field as keyof V]: options = {} } = values;
 
           Object.keys(options as Record<string, unknown>).forEach((path) => {
             if (path.startsWith(propPath)) {

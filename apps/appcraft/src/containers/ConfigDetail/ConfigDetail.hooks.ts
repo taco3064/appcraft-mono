@@ -28,11 +28,14 @@ export const useConfigValues: ConfigValuesHook = ({
     () =>
       JSON.parse(
         JSON.stringify(
-          data?.content || {
-            mixedTypes: {},
-            typeFile,
-            typeName,
-          }
+          Object.assign(
+            {
+              mixedTypes: {},
+              typeFile,
+              typeName,
+            },
+            data?.content || {}
+          )
         )
       ) as ConfigOptions
   );
@@ -45,11 +48,14 @@ export const useConfigValues: ConfigValuesHook = ({
       setValues(() =>
         JSON.parse(
           JSON.stringify(
-            data?.content || {
-              mixedTypes: {},
-              typeFile,
-              typeName,
-            }
+            Object.assign(
+              {
+                mixedTypes: {},
+                typeFile,
+                typeName,
+              },
+              data?.content || {}
+            )
           )
         )
       ),

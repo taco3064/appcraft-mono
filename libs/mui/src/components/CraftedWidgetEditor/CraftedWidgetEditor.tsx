@@ -28,6 +28,7 @@ export default function CraftedWidgetEditor({
       <WidgetStructure
         fixedT={fixedT}
         open={Boolean(!selected)}
+        nodes={nodes}
         widget={widget}
         renderWidgetTypeSelection={renderWidgetTypeSelection}
         onWidgetChange={onWidgetChange}

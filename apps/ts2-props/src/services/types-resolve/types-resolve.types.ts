@@ -2,36 +2,40 @@ import type TsMorph from 'ts-morph';
 import type * as Appcraft from '@appcraft/types';
 
 export type Generators = [
-  UtilGetProptype<Appcraft.OneOfProp>,
-  UtilGetProptype<Appcraft.BoolProp>,
-  UtilGetProptype<Appcraft.NumberProp>,
-  UtilGetProptype<Appcraft.StringProp>,
-  UtilGetProptype<Appcraft.ElementProp | Appcraft.NodeProp>,
-  UtilGetProptype<Appcraft.InstanceOfProp>,
-  UtilGetProptype<Appcraft.FuncProp>,
-  UtilGetProptype<Appcraft.PropTypesDef>,
-  UtilGetProptype<Appcraft.ArrayOfProp>,
-  UtilGetProptype<
+  GetProptypeUtil<Appcraft.OneOfProp>,
+  GetProptypeUtil<Appcraft.BoolProp>,
+  GetProptypeUtil<Appcraft.NumberProp>,
+  GetProptypeUtil<Appcraft.StringProp>,
+  GetProptypeUtil<Appcraft.ElementProp | Appcraft.NodeProp>,
+  GetProptypeUtil<Appcraft.InstanceOfProp>,
+  GetProptypeUtil<Appcraft.FuncProp>,
+  GetProptypeUtil<Appcraft.PropTypesDef>,
+  GetProptypeUtil<Appcraft.ArrayOfProp>,
+  GetProptypeUtil<
     Appcraft.ExactProp | Appcraft.ObjectProp | Appcraft.ObjectOfProp
   >
 ];
 
 //* Methods
-export type UtilGetProptype<R = Appcraft.PropTypesDef> = (
+export type GetProptypeUtil<R = Appcraft.PropTypesDef> = (
   type: TsMorph.Type,
   info: Appcraft.GeneratorInfo,
   source?: TsMorph.SourceFile
 ) => R | false;
+
+export type FindNodePropsUtil = (
+  source: TsMorph.SourceFile,
+  type: TsMorph.Type,
+  options: {
+    info: Appcraft.GeneratorInfo;
+    paths?: string[];
+  }
+) => Appcraft.WidgetChildren;
 
 export type ParseService = (
   options: Appcraft.TypesParseOptions
 ) => Appcraft.PropTypesDef | null;
 
 export type GetNodeProperties = (
-  options: Omit<Appcraft.TypesParseOptions, 'collectionPath' | 'mixedTypes'>[]
-) => Record<
-  (typeof options)[number]['typeName'],
-  {
-    [path: string]: 'element' | 'node';
-  }
->;
+  options: Pick<Appcraft.TypesParseOptions, 'typeFile' | 'typeName'>[]
+) => Appcraft.WidgetStructure<(typeof options)[number]['typeName']>;

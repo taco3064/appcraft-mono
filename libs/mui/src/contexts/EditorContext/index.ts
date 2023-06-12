@@ -11,6 +11,7 @@ export type {
   ChangeHandler,
   Collection,
   EditorProviderProps,
+  FixedT,
   MixedTypeMappingResult,
   OptionValues,
 } from './EditorContext.types';

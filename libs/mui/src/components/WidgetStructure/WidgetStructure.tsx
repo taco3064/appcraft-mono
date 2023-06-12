@@ -1,35 +1,77 @@
-import AddIcon from '@mui/icons-material/Add';
-import Button from '@mui/material/Button';
-import CloseIcon from '@mui/icons-material/Close';
 import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
+import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
-import ListItemText from '@mui/material/ListItemText';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import { useState } from 'react';
-import type { NodeWidget } from '@appcraft/types';
+import axios from 'axios';
+import { Suspense, lazy, useMemo, useState } from 'react';
+import type { NodeWidget, WidgetOptions } from '@appcraft/types';
 
+import { NoWidgetItem } from '../common';
 import { WidgetAddDialog } from '../WidgetAddDialog';
+import { WidgetStructureItem } from '../WidgetStructureItem';
 import { useFixedT } from '../../contexts';
+import { useStructurePath } from '../../hooks';
 import type { ActionElement } from '../CraftedTypeEditor';
-import type { WidgetStructureProps } from './WidgetStructure.types';
+import type * as Types from './WidgetStructure.types';
 
 export default function WidgetStructure<A extends ActionElement = undefined>({
   action,
   fixedT,
+  nodes,
   open = true,
-  widget,
   renderWidgetTypeSelection,
+  widget,
   onWidgetChange,
   onWidgetSelect,
-}: WidgetStructureProps<A>) {
+}: Types.WidgetStructureProps<A>) {
   const ct = useFixedT(fixedT);
   const [building, setBuilding] = useState(false);
+
+  const { items, paths, onPathsChange } = useStructurePath(
+    widget as NodeWidget
+  );
+
+  const LazyStructureItems = useMemo(
+    () =>
+      lazy(async () => {
+        const targets = items.reduce<Types.ParseOptions[]>((result, item) => {
+          if (item.category === 'node' && item.typeName && item.typeFile) {
+            result.push({
+              typeFile: item.typeFile,
+              typeName: item.typeName,
+            });
+          }
+
+          return result;
+        }, []);
+
+        const isValid = Boolean(targets.length);
+
+        const { data } = !isValid
+          ? { data: null }
+          : await axios({
+              ...nodes,
+              data: targets,
+            });
+
+        return {
+          default: ({ onStructureSelect, ...props }) => (
+            <>
+              {items.map((item, index) => (
+                <WidgetStructureItem
+                  {...props}
+                  key={`node_${index}`}
+                  item={item}
+                  structure={item.category === 'node' && data?.[item.typeName]}
+                  onStructureSelect={(path) => onStructureSelect(index, path)}
+                />
+              ))}
+            </>
+          ),
+        };
+      }),
+    [nodes, items]
+  );
 
   return (
     <>
@@ -37,7 +79,9 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
         {...{ renderWidgetTypeSelection }}
         open={building}
         onClose={() => setBuilding(false)}
-        onConfirm={(e) => onWidgetChange({ ...widget, ...e } as NodeWidget)}
+        onConfirm={(e) =>
+          onWidgetChange({ ...widget, ...e, category: 'node' } as NodeWidget)
+        }
       />
 
       <Collapse in={open}>
@@ -49,54 +93,23 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
         )}
 
         <List>
-          {widget ? (
-            <ListItemButton onClick={() => onWidgetSelect(widget)}>
-              <ListItemText
-                primary={widget.type}
-                secondary={widget.description}
-              />
-
-              <ListItemSecondaryAction onClick={(e) => e.stopPropagation()}>
-                <Tooltip title={ct('btn-remove-widget')}>
-                  <IconButton onClick={() => onWidgetChange(null)}>
-                    <CloseIcon />
-                  </IconButton>
-                </Tooltip>
-              </ListItemSecondaryAction>
-            </ListItemButton>
+          {!widget ? (
+            <NoWidgetItem fixedT={fixedT} onAdd={() => setBuilding(true)} />
           ) : (
-            <ListItem>
-              <ListItemText
-                disableTypography
-                primary={
-                  <Typography
-                    variant="h6"
-                    color="text.secondary"
-                    align="center"
-                    sx={{ marginTop: (theme) => theme.spacing(2) }}
-                  >
-                    {ct('msg-no-widget')}
-                  </Typography>
-                }
-                secondary={
-                  <Button
-                    color="primary"
-                    size="large"
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    onClick={() => setBuilding(true)}
-                  >
-                    {ct('btn-new-widget')}
-                  </Button>
-                }
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: (theme) => theme.spacing(3),
+            <Suspense fallback={<LinearProgress />}>
+              <LazyStructureItems
+                fixedT={fixedT}
+                onRemoved={(e: WidgetOptions) => console.log(e)}
+                onClick={(e: WidgetOptions) => {
+                  if (e.category === 'node') {
+                    onWidgetSelect(e);
+                  }
                 }}
+                onStructureSelect={(index: number, path: string) =>
+                  console.log(index, path)
+                }
               />
-            </ListItem>
+            </Suspense>
           )}
         </List>
       </Collapse>

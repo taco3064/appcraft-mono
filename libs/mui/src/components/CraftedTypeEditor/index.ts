@@ -4,4 +4,5 @@ export type {
   ActionElement,
   Collapsable,
   CraftedTypeEditorProps,
+  FetchOptions,
 } from './CraftedTypeEditor.types';

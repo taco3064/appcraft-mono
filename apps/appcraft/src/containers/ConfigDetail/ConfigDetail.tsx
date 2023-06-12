@@ -2,7 +2,6 @@ import Container from '@mui/material/Container';
 import ReplayIcon from '@mui/icons-material/Replay';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedTypeEditor } from '@appcraft/mui';
-import type { NodeWidget } from '@appcraft/types';
 
 import TYPES_FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
 import { Breadcrumbs } from '~appcraft/components';
@@ -19,6 +18,8 @@ export default function ConfigDetail({
   const [at, ct] = useFixedT('app', 'appcraft');
   const { data } = props;
   const { values, onChange, onReset, onSave } = useConfigValues(props);
+
+  console.log(values);
 
   const actionNode = useNodePicker(
     () =>

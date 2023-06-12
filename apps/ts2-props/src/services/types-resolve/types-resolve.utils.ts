@@ -252,7 +252,7 @@ const generators: Types.Generators = [
 ];
 
 //* 取得目標 Type 對應的 PropTypes
-export const getProptype: Types.UtilGetProptype = (type, info, source) =>
+export const getProptype: Types.GetProptypeUtil = (type, info, source) =>
   generators.reduce((result, generator) => {
     if (!result || type.getText().startsWith('React.Ref<')) {
       return generator(type, info, source);
@@ -260,3 +260,42 @@ export const getProptype: Types.UtilGetProptype = (type, info, source) =>
 
     return result;
   }, false);
+
+export const findNodeProps: Types.FindNodePropsUtil = (
+  source,
+  type,
+  { info, paths = [] }
+) => {
+  const proptype = getProptype(type, info, source);
+
+  if (proptype) {
+    console.log(proptype.propName);
+
+    if (/^(element|node)$/.test(proptype.type)) {
+      return { [paths.join('.')]: proptype.type };
+    } else if (proptype.type === 'exact') {
+      const properties = type.getProperties?.() || [];
+
+      return properties.reduce((result, property) => {
+        const propName = property.getName();
+
+        if (!/^(sx|style)$/.test(propName)) {
+          const $type = property.getTypeAtLocation(source);
+
+          return {
+            ...result,
+            ...($type.getText() !== 'React.CSSProperties' &&
+              findNodeProps(source, $type, {
+                info: { propName, required: !property.isOptional() },
+                paths: [...paths, propName],
+              })),
+          };
+        }
+
+        return result;
+      }, {});
+    }
+  }
+
+  return {};
+};

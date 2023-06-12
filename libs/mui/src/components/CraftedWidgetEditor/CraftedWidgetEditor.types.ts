@@ -1,7 +1,7 @@
 import type { NodeWidget } from '@appcraft/types';
 
 import type { CraftedTypeEditorProps } from '../CraftedTypeEditor';
-import type { EditorProviderProps } from '../../contexts';
+import type { ChangeHandler, FixedT } from '../../contexts';
 import type { WidgetStructureProps } from '../WidgetStructure';
 
 type BaseProps = Pick<
@@ -13,12 +13,10 @@ type FetchOptions = CraftedTypeEditorProps<undefined, NodeWidget>['parser'];
 
 export interface CraftedWidgetEditorProps
   extends BaseProps,
-    Pick<
-      WidgetStructureProps<undefined>,
-      'renderWidgetTypeSelection' | 'onWidgetChange'
-    > {
+    Pick<WidgetStructureProps<undefined>, 'renderWidgetTypeSelection'> {
   defaultValues?: Record<string, unknown>;
   fetchOptions: Record<'parser' | 'nodes', FetchOptions>;
-  fixedT?: EditorProviderProps<NodeWidget>['fixedT'];
+  fixedT?: FixedT;
   widget?: NodeWidget;
+  onWidgetChange: ChangeHandler<NodeWidget>;
 }

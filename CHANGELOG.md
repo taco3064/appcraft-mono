@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.39](https://github.com/taco3064/appcraft-mono/compare/v0.0.38...v0.0.39) (2023-06-12)
+
+
+### Features
+
+* **@appcraft/mui:** add new component: NoWidgetItem ([900265d](https://github.com/taco3064/appcraft-mono/commit/900265d1876b127848dbc81d36153ec50f5bc408))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** add new component: WidgetStructureItem ([d238aa2](https://github.com/taco3064/appcraft-mono/commit/d238aa2bbbc9af96786831a666557aded331b55c))
+* **@appcraft/mui:** fixed the empty variable error ([a526f69](https://github.com/taco3064/appcraft-mono/commit/a526f692264efd4592742a111a0c9942352405a9))
+* **ts2-props:** fixed the error return value in getNodeProperties ([ab81192](https://github.com/taco3064/appcraft-mono/commit/ab811926d518193a88e55f3e670d1337e0daa51d))
+
 ### [0.0.38](https://github.com/taco3064/appcraft-mono/compare/v0.0.37...v0.0.38) (2023-06-12)
 
 ### [0.0.37](https://github.com/taco3064/appcraft-mono/compare/v0.0.36...v0.0.37) (2023-06-11)

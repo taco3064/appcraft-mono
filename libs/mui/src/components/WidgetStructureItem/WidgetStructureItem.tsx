@@ -9,8 +9,9 @@ import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
-import type { WidgetOptions } from '@appcraft/types';
+import type { NodeType, WidgetOptions } from '@appcraft/types';
 
+import { getDisplayPropName } from '../../hooks';
 import { useFixedT } from '../../contexts';
 import type { WidgetStructureItemProps } from './WidgetStructureItem.types';
 
@@ -23,14 +24,14 @@ export default function WidgetStructureItem<I extends WidgetOptions>({
   onStructureSelect,
 }: WidgetStructureItemProps<I>) {
   const ct = useFixedT(fixedT);
-  const structures = Object.keys(structure || {});
+  const structures = Object.entries(structure || {});
   const isNode = item.category === 'node';
   const primary = isNode ? item.type : ct('ttl-node-plain-text');
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <ListItemButton onClick={() => onClick(item)}>
+      <ListItemButton selected={open} onClick={() => onClick(item)}>
         <ListItemIcon
           onClick={(e) => {
             e.stopPropagation();
@@ -57,9 +58,14 @@ export default function WidgetStructureItem<I extends WidgetOptions>({
 
       {structures.length > 0 && (
         <Collapse in={open}>
-          {structures.map((path) => (
+          {structures.map(([path, type]) => (
             <ListItemButton key={path} onClick={() => onStructureSelect(path)}>
-              <ListItemText primary={path} />
+              <ListItemIcon />
+
+              <ListItemText
+                primary={getDisplayPropName(path)}
+                secondary={getDisplayPropName(type as NodeType)}
+              />
             </ListItemButton>
           ))}
         </Collapse>

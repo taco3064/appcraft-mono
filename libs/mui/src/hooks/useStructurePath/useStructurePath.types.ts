@@ -1,12 +1,14 @@
 import type { NodeWidget, WidgetOptions } from '@appcraft/types';
 
+export type Path = string | number;
+
 export type StructurePathHook = (widget: NodeWidget) => {
-  paths: string[];
+  paths: Path[];
   items: WidgetOptions[];
-  onPathsChange: (paths: string[]) => void;
+  onPathsChange: (paths: Path[]) => void;
 };
 
 export type GetItemsUtil = (
-  widget: NodeWidget,
-  paths: string[]
+  widget: WidgetOptions[],
+  paths: Path[]
 ) => WidgetOptions[];

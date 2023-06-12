@@ -1,12 +1,15 @@
+import AddIcon from '@mui/icons-material/Add';
+import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
-import Divider from '@mui/material/Divider';
 import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { Suspense, lazy, useMemo, useState } from 'react';
 import type { NodeWidget, WidgetOptions } from '@appcraft/types';
 
-import { NoWidgetItem } from '../common';
 import { WidgetAddDialog } from '../WidgetAddDialog';
 import { WidgetStructureItem } from '../WidgetStructureItem';
 import { useFixedT } from '../../contexts';
@@ -31,28 +34,24 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
     widget as NodeWidget
   );
 
+  console.log(paths);
+
   const LazyStructureItems = useMemo(
     () =>
       lazy(async () => {
         const targets = items.reduce<Types.ParseOptions[]>((result, item) => {
-          if (item.category === 'node' && item.typeName && item.typeFile) {
-            result.push({
-              typeFile: item.typeFile,
-              typeName: item.typeName,
-            });
+          const { typeFile = null, typeName = null } =
+            item.category === 'node' ? item : {};
+
+          if (typeFile && typeName) {
+            result.push({ typeFile, typeName });
           }
 
           return result;
         }, []);
 
-        const isValid = Boolean(targets.length);
-
-        const { data } = !isValid
-          ? { data: null }
-          : await axios({
-              ...nodes,
-              data: targets,
-            });
+        const { data } =
+          (targets.length && (await axios({ ...nodes, data: targets }))) || {};
 
         return {
           default: ({ onStructureSelect, ...props }) => (
@@ -85,31 +84,59 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
       />
 
       <Collapse in={open}>
-        {action && (
-          <>
-            {action}
-            <Divider />
-          </>
-        )}
+        {action}
 
         <List>
-          {!widget ? (
-            <NoWidgetItem fixedT={fixedT} onAdd={() => setBuilding(true)} />
-          ) : (
+          {widget ? (
+            //* Structure List
             <Suspense fallback={<LinearProgress />}>
               <LazyStructureItems
                 fixedT={fixedT}
-                onRemoved={(e: WidgetOptions) => console.log(e)}
+                onRemove={(e: WidgetOptions) => console.log(e)}
                 onClick={(e: WidgetOptions) => {
                   if (e.category === 'node') {
                     onWidgetSelect(e);
                   }
                 }}
                 onStructureSelect={(index: number, path: string) =>
-                  console.log(index, path)
+                  onPathsChange([...paths, index, path])
                 }
               />
             </Suspense>
+          ) : (
+            //* Empty List
+            <ListItem>
+              <ListItemText
+                disableTypography
+                primary={
+                  <Typography
+                    variant="h6"
+                    color="text.secondary"
+                    align="center"
+                    sx={{ marginTop: (theme) => theme.spacing(2) }}
+                  >
+                    {ct('msg-no-widget')}
+                  </Typography>
+                }
+                secondary={
+                  <Button
+                    color="primary"
+                    size="large"
+                    variant="contained"
+                    startIcon={<AddIcon />}
+                    onClick={() => setBuilding(true)}
+                  >
+                    {ct('btn-new-widget')}
+                  </Button>
+                }
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: (theme) => theme.spacing(3),
+                }}
+              />
+            </ListItem>
           )}
         </List>
       </Collapse>

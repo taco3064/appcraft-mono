@@ -10,19 +10,19 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import { TypeItem } from '../TypeItem';
-import { useFixedT } from '../../contexts';
+import { OptionValues, useFixedT } from '../../contexts';
 import { usePropertyRouter, useTypeItems } from '../../hooks';
 import type { TypeListProps } from './TypeList.types';
 
-export default function TypeList({
+export default function TypeList<V extends OptionValues>({
   disableSelection,
   superior,
   values,
   onChange,
   onCollectionPathChange,
-}: TypeListProps) {
+}: TypeListProps<V>) {
   const ct = useFixedT();
-  const { items, onItemAdd } = useTypeItems(superior, values, onChange);
+  const { items, onItemAdd } = useTypeItems<V>(superior, values, onChange);
   const isModifiable = onItemAdd instanceof Function;
 
   const [breadcrumbs, { back: handleBack, to: handleTo }] = usePropertyRouter(

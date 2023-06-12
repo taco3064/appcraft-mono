@@ -1,4 +1,4 @@
-import type { DataSource } from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 import type { ReactElement } from 'react';
 
 import type { EditorProviderProps } from '../../contexts';
@@ -16,10 +16,13 @@ export type Collapsable<
 > = P &
   (A extends undefined ? Partial<CollapsedAction<A>> : CollapsedAction<A>);
 
-export type CraftedTypeEditorProps<A extends ActionElement> = Collapsable<
-  Omit<EditorProviderProps, 'children' | 'collectionPath'> & {
+export type CraftedTypeEditorProps<
+  A extends ActionElement,
+  E extends Appcraft.NodeWidget | Appcraft.ConfigOptions
+> = Collapsable<
+  Omit<EditorProviderProps<E>, 'children' | 'collectionPath'> & {
     disableSelection?: boolean;
-    parser: Pick<DataSource, 'url' | 'method' | 'headers'>;
+    parser: Pick<Appcraft.DataSource, 'url' | 'method' | 'headers'>;
   },
   A
 >;

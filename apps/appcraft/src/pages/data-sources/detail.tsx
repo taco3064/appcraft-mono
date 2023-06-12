@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import type { DataSource } from '@appcraft/types';
+import type { ConfigOptions } from '@appcraft/types';
 
 import { ConfigDetail } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
@@ -19,7 +19,7 @@ export default function Detail() {
 
   const { data: datasource } = useQuery({
     queryKey: [id],
-    queryFn: findConfig<DataSource>,
+    queryFn: findConfig<ConfigOptions>,
     refetchOnWindowFocus: false,
   });
 

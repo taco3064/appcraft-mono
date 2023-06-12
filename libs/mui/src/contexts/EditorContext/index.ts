@@ -12,4 +12,5 @@ export type {
   Collection,
   EditorProviderProps,
   MixedTypeMappingResult,
+  OptionValues,
 } from './EditorContext.types';

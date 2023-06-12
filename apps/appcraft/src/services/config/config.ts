@@ -1,13 +1,15 @@
 import axios from 'axios';
+import type { ConfigData } from '@appcraft/types';
+
 import type * as Types from './config.types';
 
-export async function findConfig<C extends object>({
+export async function findConfig<C extends Types.ConfigValues>({
   queryKey: [id],
 }: Types.FindConfigContext) {
   const { data } =
     !id || typeof id !== 'string'
       ? { data: null }
-      : await axios.get<Types.ConfigData<C, string>>(
+      : await axios.get<ConfigData<C, string>>(
           `/api/data-forge/config/find/${id}`
         );
 
@@ -15,14 +17,14 @@ export async function findConfig<C extends object>({
     _id: id,
     content: {},
     timestamp: new Date().toISOString(),
-  }) as Types.ConfigData<C, string>;
+  }) as ConfigData<C, string>;
 }
 
-export function upsertConfig<C extends object>(
-  data: Omit<Types.ConfigData<C, string>, 'timestamp'>
+export function upsertConfig<C extends Types.ConfigValues>(
+  data: Omit<ConfigData<C, string>, 'timestamp'>
 ) {
   return axios
-    .post<Types.ConfigData<C, string>>('/api/data-forge/config/upsert', data)
+    .post<ConfigData<C, string>>('/api/data-forge/config/upsert', data)
     .then(({ data: modified }) => modified);
 }
 

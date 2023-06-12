@@ -8,7 +8,7 @@ export type WidgetInfo = Pick<NodeWidget, 'type' | 'description'>;
 
 export interface WidgetAddDialogProps
   extends Required<Pick<DialogProps, 'open' | 'onClose'>> {
-  fixedT?: EditorProviderProps['fixedT'];
+  fixedT?: EditorProviderProps<NodeWidget>['fixedT'];
   onConfirm: (e: WidgetInfo) => void;
 
   renderWidgetTypeSelection: (

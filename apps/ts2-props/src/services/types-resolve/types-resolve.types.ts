@@ -28,10 +28,5 @@ export type ParseService = (
 ) => Appcraft.PropTypesDef | null;
 
 export type GetNodeProperties = (
-  options: Omit<Appcraft.TypesParseOptions, 'collectionPath' | 'mixedTypes'>[]
-) => Record<
-  (typeof options)[number]['typeName'],
-  {
-    [path: string]: 'element' | 'node';
-  }
->;
+  options: Pick<Appcraft.TypesParseOptions, 'typeFile' | 'typeName'>[]
+) => Appcraft.WidgetStructure<(typeof options)[number]['typeName']>;

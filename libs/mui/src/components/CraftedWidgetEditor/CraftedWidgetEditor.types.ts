@@ -1,20 +1,13 @@
 import type { NodeWidget } from '@appcraft/types';
 
-import type { CraftedTypeEditorProps } from '../CraftedTypeEditor';
 import type { ChangeHandler, FixedT } from '../../contexts';
+import type { FetchOptions } from '../CraftedTypeEditor';
 import type { WidgetStructureProps } from '../WidgetStructure';
 
-type BaseProps = Pick<
-  CraftedTypeEditorProps<undefined, NodeWidget>,
-  'disableSelection'
->;
-
-type FetchOptions = CraftedTypeEditorProps<undefined, NodeWidget>['parser'];
-
 export interface CraftedWidgetEditorProps
-  extends BaseProps,
-    Pick<WidgetStructureProps<undefined>, 'renderWidgetTypeSelection'> {
+  extends Pick<WidgetStructureProps<undefined>, 'renderWidgetTypeSelection'> {
   defaultValues?: Record<string, unknown>;
+  disableSelection?: boolean;
   fetchOptions: Record<'parser' | 'nodes', FetchOptions>;
   fixedT?: FixedT;
   widget?: NodeWidget;

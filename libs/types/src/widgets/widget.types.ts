@@ -6,14 +6,8 @@ enum Category {
   plainText,
 }
 
-type Nodes<
-  E extends string[] = [],
-  N extends string[] = [],
-  P extends string[] = []
-> = Partial<
-  Record<E[number], NodeWidget> &
-    Record<N[number], NodeWidget[]> &
-    Record<P[number], PlainTextWidget>
+type Nodes<E extends string[] = [], N extends string[] = []> = Partial<
+  Record<E[number], WidgetOptions> & Record<N[number], WidgetOptions[]>
 >;
 
 type BaseOptions<
@@ -46,3 +40,5 @@ export type PlainTextWidget = BaseOptions<
 >;
 
 export type WidgetOptions = PlainTextWidget | NodeWidget;
+export type WidgetChildren = Record<keyof Nodes, 'element' | 'node'>;
+export type WidgetStructure<N extends string> = Record<N, WidgetChildren>;

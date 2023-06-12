@@ -10,6 +10,11 @@ interface CollapsedAction<A extends ActionElement> {
   open: boolean;
 }
 
+export type FetchOptions = Pick<
+  Appcraft.DataSource,
+  'url' | 'method' | 'headers'
+>;
+
 export type Collapsable<
   P extends Record<string, unknown>,
   A extends ActionElement
@@ -22,7 +27,7 @@ export type CraftedTypeEditorProps<
 > = Collapsable<
   Omit<EditorProviderProps<E>, 'children' | 'collectionPath'> & {
     disableSelection?: boolean;
-    parser: Pick<Appcraft.DataSource, 'url' | 'method' | 'headers'>;
+    parser: FetchOptions;
   },
   A
 >;

@@ -1,11 +1,11 @@
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
-import type { FormEvent } from 'react';
+import { FormEvent, startTransition, useState } from 'react';
+import type { NodeWidget } from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
 import { useFixedT } from '../../contexts';
-import type { WidgetAddDialogProps, WidgetInfo } from './WidgetAddDialog.types';
+import type { WidgetAddDialogProps } from './WidgetAddDialog.types';
 
 export default function WidgetAddDialog({
   fixedT,
@@ -15,20 +15,24 @@ export default function WidgetAddDialog({
   onConfirm,
 }: WidgetAddDialogProps) {
   const ct = useFixedT(fixedT);
+  const [data, setData] = useState<NodeWidget | null>(null);
 
-  const [info, setInfo] = useState<WidgetInfo>({
-    type: '',
-  });
+  const handleClose: typeof onClose = (...e) =>
+    startTransition(() => {
+      setData(null);
+      onClose(...e);
+    });
 
   return (
     <FlexDialog
-      {...{ open, onClose }}
       fullWidth
       maxWidth="xs"
       direction="column"
+      open={open}
+      onClose={handleClose}
       action={
         <>
-          <Button onClick={(e) => onClose(e, 'escapeKeyDown')}>
+          <Button onClick={(e) => handleClose(e, 'escapeKeyDown')}>
             {ct('btn-cancel')}
           </Button>
 
@@ -43,14 +47,14 @@ export default function WidgetAddDialog({
           onSubmit: (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
 
-            onConfirm(info);
-            onClose(e, 'escapeKeyDown');
+            onConfirm(data as NodeWidget);
+            handleClose(e, 'escapeKeyDown');
           },
         } as object
       }
     >
       {renderWidgetTypeSelection((e) =>
-        setInfo({ ...info, type: e.target.value })
+        setData({ ...e, category: 'node', description: data?.description })
       )}
 
       <TextField
@@ -59,8 +63,10 @@ export default function WidgetAddDialog({
         margin="dense"
         variant="outlined"
         label={ct('lbl-description')}
-        defaultValue={info.description || ''}
-        onChange={(e) => setInfo({ ...info, description: e.target.value })}
+        defaultValue={data?.description || ''}
+        onChange={(e) =>
+          setData({ ...(data as NodeWidget), description: e.target.value })
+        }
       />
     </FlexDialog>
   );

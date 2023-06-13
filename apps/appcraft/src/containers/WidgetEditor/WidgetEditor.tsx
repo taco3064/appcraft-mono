@@ -4,6 +4,7 @@ import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { Components, useTheme } from '@mui/material/styles';
+import { MUI_WIDGETS } from '@appcraft/types';
 import { useCallback, useState } from 'react';
 
 import * as Component from '~appcraft/components';
@@ -11,7 +12,18 @@ import TYPES_FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json'
 import { CommonButton, LazyMui } from '~appcraft/components/common';
 import { useEditedWidget } from './WidgetEditor.hooks';
 import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks';
-import type { WidgetEditorProps } from './WidgetEditor.types';
+import type { WidgetEditorProps, WidgetMap } from './WidgetEditor.types';
+
+const widgets = MUI_WIDGETS.widgets.reduce<WidgetMap>(
+  (result, { components }) => {
+    components.forEach(({ id, typeFile, typeName }) =>
+      result.set(id, { typeFile, typeName })
+    );
+
+    return result;
+  },
+  new Map()
+);
 
 export default function WidgetEditor({
   PersistentDrawerContentProps,
@@ -99,7 +111,12 @@ export default function WidgetEditor({
                 variant="outlined"
                 label={wt('lbl-widget-type')}
                 defaultValue=""
-                onChange={onChange}
+                onChange={({ target: { value } }) =>
+                  onChange({
+                    ...widgets.get(value),
+                    type: value,
+                  })
+                }
               />
             )}
           />

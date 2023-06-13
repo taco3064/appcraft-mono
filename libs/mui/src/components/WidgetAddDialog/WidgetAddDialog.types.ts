@@ -1,17 +1,16 @@
-import type { ChangeEventHandler } from 'react';
 import type { DialogProps } from '@mui/material/Dialog';
 import type { NodeWidget } from '@appcraft/types';
 
 import type { FixedT } from '../../contexts';
 
-export type WidgetInfo = Pick<NodeWidget, 'type' | 'description'>;
+type ChangeEventField = 'type' | 'typeFile' | 'typeName';
 
 export interface WidgetAddDialogProps
   extends Required<Pick<DialogProps, 'open' | 'onClose'>> {
   fixedT?: FixedT;
-  onConfirm: (e: WidgetInfo) => void;
+  onConfirm: (e: NodeWidget) => void;
 
   renderWidgetTypeSelection: (
-    onChange: ChangeEventHandler<HTMLInputElement>
+    onChange: (e: Pick<NodeWidget, ChangeEventField>) => void
   ) => JSX.Element;
 }

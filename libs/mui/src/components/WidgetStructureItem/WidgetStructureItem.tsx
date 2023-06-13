@@ -20,11 +20,11 @@ export default function WidgetStructureItem<I extends WidgetOptions>({
   item,
   structure,
   onClick,
+  onNodeSelect,
   onRemove,
-  onStructureSelect,
 }: WidgetStructureItemProps<I>) {
   const ct = useFixedT(fixedT);
-  const structures = Object.entries(structure || {});
+  const structures: [string, NodeType][] = Object.entries(structure || {});
   const isNode = item.category === 'node';
   const primary = isNode ? item.type : ct('ttl-node-plain-text');
   const [open, setOpen] = useState(false);
@@ -59,12 +59,12 @@ export default function WidgetStructureItem<I extends WidgetOptions>({
       {structures.length > 0 && (
         <Collapse in={open}>
           {structures.map(([path, type]) => (
-            <ListItemButton key={path} onClick={() => onStructureSelect(path)}>
+            <ListItemButton key={path} onClick={() => onNodeSelect(type, path)}>
               <ListItemIcon />
 
               <ListItemText
                 primary={getDisplayPropName(path)}
-                secondary={getDisplayPropName(type as NodeType)}
+                secondary={getDisplayPropName(type)}
               />
             </ListItemButton>
           ))}

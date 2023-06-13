@@ -13,7 +13,7 @@ import type { NodeWidget, WidgetOptions } from '@appcraft/types';
 import { WidgetAddDialog } from '../WidgetAddDialog';
 import { WidgetStructureItem } from '../WidgetStructureItem';
 import { useFixedT } from '../../contexts';
-import { useStructurePath } from '../../hooks';
+import { useStructure } from '../../hooks';
 import type { ActionElement } from '../CraftedTypeEditor';
 import type * as Types from './WidgetStructure.types';
 
@@ -30,11 +30,11 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
   const ct = useFixedT(fixedT);
   const [building, setBuilding] = useState(false);
 
-  const { items, paths, onPathsChange } = useStructurePath(
+  const { items, breadcrumbs, onNodeActive } = useStructure(
     widget as NodeWidget
   );
 
-  console.log(paths);
+  console.log(items, breadcrumbs);
 
   const LazyStructureItems = useMemo(
     () =>
@@ -54,7 +54,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
           (targets.length && (await axios({ ...nodes, data: targets }))) || {};
 
         return {
-          default: ({ onStructureSelect, ...props }) => (
+          default: ({ onNodeSelect, ...props }) => (
             <>
               {items.map((item, index) => (
                 <WidgetStructureItem
@@ -62,7 +62,9 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
                   key={`node_${index}`}
                   item={item}
                   structure={item.category === 'node' && data?.[item.typeName]}
-                  onStructureSelect={(path) => onStructureSelect(index, path)}
+                  onNodeSelect={(type, path) =>
+                    onNodeSelect({ item, type, index, path })
+                  }
                 />
               ))}
             </>
@@ -98,9 +100,17 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
                     onWidgetSelect(e);
                   }
                 }}
-                onStructureSelect={(index: number, path: string) =>
-                  onPathsChange([...paths, index, path])
-                }
+                onNodeSelect={(e: Types.NodeSelectEvent) => {
+                  if (e.item.category === 'node') {
+                    onNodeActive({
+                      type: e.item.type,
+                      description: e.item.description,
+                      isMultiChildren: e.type === 'node',
+                      propPath: e.path,
+                      index: e.index,
+                    });
+                  }
+                }}
               />
             </Suspense>
           ) : (

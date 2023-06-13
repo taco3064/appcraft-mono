@@ -1,14 +1,11 @@
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import List from '@mui/material/List';
-import ListSubheader from '@mui/material/ListSubheader';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
-import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
+import { IconTipButton, ListToolbar } from '../../styles';
 import { TypeItem } from '../TypeItem';
 import { OptionValues, useFixedT } from '../../contexts';
 import { usePropertyRouter, useTypeItems } from '../../hooks';
@@ -32,59 +29,52 @@ export default function TypeList<V extends OptionValues>({
   return (
     <List
       subheader={
-        <ListSubheader
-          component={Toolbar}
-          variant="dense"
-          sx={{
-            background: 'inherit',
-            gap: (theme) => theme.spacing(1),
-            minHeight: 0,
-          }}
-        >
-          {breadcrumbs.length > 0 && (
-            <Tooltip title={ct('btn-back')}>
-              <IconButton
-                onClick={() => handleBack()}
-                sx={{ margin: (theme) => theme.spacing(1, 0) }}
+        breadcrumbs.length > 0 && (
+          <ListToolbar>
+            <IconTipButton
+              title={ct('btn-back')}
+              onClick={() => handleBack()}
+              sx={{ margin: (theme) => theme.spacing(1, 0) }}
+            >
+              <ChevronLeftIcon />
+            </IconTipButton>
+
+            <Breadcrumbs separator="." style={{ marginRight: 'auto' }}>
+              {breadcrumbs.map(({ name, isStructureArray }, i, arr) =>
+                i === arr.length - 1 ? (
+                  <Typography
+                    key={`breadcrumb_${i}`}
+                    variant="subtitle1"
+                    color="secondary"
+                  >
+                    {isStructureArray ? `[${name}]` : name}
+                  </Typography>
+                ) : (
+                  <Link
+                    key={`breadcrumb_${i}`}
+                    component="button"
+                    underline="hover"
+                    variant="subtitle1"
+                    color="text.primary"
+                    onClick={() => handleBack(i)}
+                  >
+                    {isStructureArray ? `[${name}]` : name}
+                  </Link>
+                )
+              )}
+            </Breadcrumbs>
+
+            {isModifiable && (
+              <IconTipButton
+                title={ct('btn-add-prop')}
+                size="small"
+                onClick={onItemAdd}
               >
-                <ChevronLeftIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-
-          <Breadcrumbs separator="." style={{ marginRight: 'auto' }}>
-            {breadcrumbs.map(({ name, isStructureArray, isLast }, i) =>
-              isLast ? (
-                <Typography
-                  key={`${name}_${i}`}
-                  variant="subtitle1"
-                  color="secondary"
-                >
-                  {isStructureArray ? `[${name}]` : name}
-                </Typography>
-              ) : (
-                <Link
-                  key={`${name}_${i}`}
-                  component="button"
-                  underline="hover"
-                  variant="subtitle1"
-                  color="text.primary"
-                  onClick={() => handleBack(i)}
-                >
-                  {isStructureArray ? `[${name}]` : name}
-                </Link>
-              )
-            )}
-          </Breadcrumbs>
-
-          {breadcrumbs.length > 0 && isModifiable && (
-            <Tooltip title={ct('btn-add-prop')}>
-              <IconButton size="small" onClick={onItemAdd}>
                 <PlaylistAddIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-        </ListSubheader>
+              </IconTipButton>
+            )}
+          </ListToolbar>
+        )
       }
     >
       {items.map(({ key, collectionType, options, onDelete }) => (

@@ -7,10 +7,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
-import Tooltip from '@mui/material/Tooltip';
 import { useState } from 'react';
 import type { NodeType, WidgetOptions } from '@appcraft/types';
 
+import { IconTipButton } from '../../styles';
 import { getDisplayPropName } from '../../hooks';
 import { useFixedT } from '../../contexts';
 import type { WidgetStructureItemProps } from './WidgetStructureItem.types';
@@ -48,11 +48,12 @@ export default function WidgetStructureItem<I extends WidgetOptions>({
         <ListItemText primary={primary} secondary={item.description} />
 
         <ListItemSecondaryAction onClick={(e) => e.stopPropagation()}>
-          <Tooltip title={ct('btn-remove-widget')}>
-            <IconButton onClick={() => onRemove(item)}>
-              <CloseIcon />
-            </IconButton>
-          </Tooltip>
+          <IconTipButton
+            title={ct('btn-remove-widget')}
+            onClick={() => onRemove(item)}
+          >
+            <CloseIcon />
+          </IconTipButton>
         </ListItemSecondaryAction>
       </ListItemButton>
 

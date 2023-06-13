@@ -1,7 +1,12 @@
 import type { PropTypesDef } from '@appcraft/types';
 
 export type PropPathRouterHandler = (options: PropTypesDef) => void;
-export type GetPropPathFn = (source: object, paths: string[]) => string;
+export type GetPropPathUtil = (paths: (string | number)[]) => string;
+
+export type GetPropPathBySourceUtil = (
+  source: object,
+  paths: string[]
+) => string;
 
 export type PropertyRouterHook = (
   onCollectionPathChange: (propPath: string) => void
@@ -9,7 +14,6 @@ export type PropertyRouterHook = (
   {
     name: string;
     isStructureArray: boolean;
-    isLast: boolean;
   }[],
   {
     back: (index?: number) => void;

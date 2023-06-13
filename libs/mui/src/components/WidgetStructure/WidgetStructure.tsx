@@ -1,15 +1,20 @@
 import AddIcon from '@mui/icons-material/Add';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Collapse from '@mui/material/Collapse';
 import LinearProgress from '@mui/material/LinearProgress';
+import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { Suspense, lazy, useMemo, useState } from 'react';
 import type { NodeWidget, WidgetOptions } from '@appcraft/types';
 
+import { IconTipButton, ListToolbar } from '../../styles';
 import { WidgetAddDialog } from '../WidgetAddDialog';
 import { WidgetStructureItem } from '../WidgetStructureItem';
 import { useFixedT } from '../../contexts';
@@ -30,7 +35,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
   const ct = useFixedT(fixedT);
   const [building, setBuilding] = useState(false);
 
-  const { items, breadcrumbs, onNodeActive } = useStructure(
+  const { isMultiChildren, items, breadcrumbs, onNodeActive } = useStructure(
     widget as NodeWidget
   );
 
@@ -88,7 +93,54 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
       <Collapse in={open}>
         {action}
 
-        <List>
+        <List
+          subheader={
+            breadcrumbs.length > 0 && (
+              <ListToolbar>
+                <IconTipButton
+                  title={ct('btn-back')}
+                  onClick={() => onNodeActive(breadcrumbs.length - 1)}
+                  sx={{ margin: (theme) => theme.spacing(1, 0) }}
+                >
+                  <ChevronLeftIcon />
+                </IconTipButton>
+
+                <Breadcrumbs separator="›" style={{ marginRight: 'auto' }}>
+                  {breadcrumbs.map(({ type, tooltip }, i, arr) => (
+                    <Tooltip key={`breadcrumb_${i}`} title={tooltip}>
+                      {i === arr.length - 1 ? (
+                        <Typography variant="subtitle1" color="secondary">
+                          {type}
+                        </Typography>
+                      ) : (
+                        <Link
+                          key={`breadcrumb_${i}`}
+                          component="button"
+                          underline="hover"
+                          variant="subtitle1"
+                          color="text.primary"
+                          onClick={() => onNodeActive(i + 1)}
+                        >
+                          {type}
+                        </Link>
+                      )}
+                    </Tooltip>
+                  ))}
+                </Breadcrumbs>
+
+                {(isMultiChildren || items.length < 1) && (
+                  <IconTipButton
+                    title={ct('btn-new-widget')}
+                    size="small"
+                    onClick={() => setBuilding(true)}
+                  >
+                    <AddIcon />
+                  </IconTipButton>
+                )}
+              </ListToolbar>
+            )
+          }
+        >
           {widget ? (
             //* Structure List
             <Suspense fallback={<LinearProgress />}>
@@ -104,7 +156,6 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
                   if (e.item.category === 'node') {
                     onNodeActive({
                       type: e.item.type,
-                      description: e.item.description,
                       isMultiChildren: e.type === 'node',
                       propPath: e.path,
                       index: e.index,

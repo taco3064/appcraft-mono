@@ -2,6 +2,7 @@ import _get from 'lodash.get';
 import { useMemo, useState } from 'react';
 import type { WidgetOptions } from '@appcraft/types';
 
+import { getPropPath } from '../usePropertyRouter';
 import type * as Types from './useStructure.types';
 
 const useStructure: Types.StructureHook = (widget) => {
@@ -10,21 +11,25 @@ const useStructure: Types.StructureHook = (widget) => {
   const breadcrumbs = useMemo(
     () =>
       activeNodes.reduce<Types.Breadcrumb[]>(
-        (result, { type, description, propPath }, i, arr) => {
-          const { paths = [] } = result[result.length - 1] || {};
+        (result, { type, propPath }, i, arr) => {
+          const { paths: prevPaths = [] } = result[result.length - 1] || {};
           const { isMultiChildren = false, index = 0 } = arr[i - 1] || {};
+
+          const paths = [
+            ...prevPaths,
+            ...(isMultiChildren ? [index] : []),
+            'nodes',
+            propPath,
+          ];
 
           return [
             ...result,
             {
               type,
-              description,
-              paths: [
-                ...paths,
-                ...(isMultiChildren ? [index] : []),
-                'nodes',
-                propPath,
-              ],
+              paths,
+              tooltip: `${type}.${getPropPath(
+                paths.filter((propName) => propName !== 'nodes')
+              )}`,
             },
           ];
         },
@@ -33,23 +38,22 @@ const useStructure: Types.StructureHook = (widget) => {
     [activeNodes]
   );
 
-  const target = !breadcrumbs.length
-    ? widget
-    : _get(widget, breadcrumbs[breadcrumbs.length - 1]?.paths);
+  const target =
+    (!breadcrumbs.length
+      ? widget
+      : _get(widget, breadcrumbs[breadcrumbs.length - 1]?.paths)) || [];
 
   return {
     breadcrumbs,
-    items: (!target
-      ? []
-      : Array.isArray(target)
-      ? target
-      : [target]) as WidgetOptions[],
+    items: (Array.isArray(target) ? target : [target]) as WidgetOptions[],
 
-    onNodeActive: (e) => {
-      if (typeof e !== 'number') {
-        setActiveNodes([...activeNodes, e]);
-      }
-    },
+    isMultiChildren:
+      activeNodes[activeNodes.length - 1]?.isMultiChildren || false,
+
+    onNodeActive: (e) =>
+      setActiveNodes(
+        typeof e !== 'number' ? [...activeNodes, e] : activeNodes.slice(0, e)
+      ),
   };
 };
 

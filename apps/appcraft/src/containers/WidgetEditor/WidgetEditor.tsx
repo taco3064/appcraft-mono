@@ -95,7 +95,6 @@ export default function WidgetEditor({
                 {...{ onChange }}
                 fullWidth
                 required
-                autoFocus
                 size="small"
                 margin="dense"
                 variant="outlined"

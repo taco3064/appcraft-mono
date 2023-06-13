@@ -92,7 +92,6 @@ export default function WidgetEditor({
             }
             renderWidgetTypeSelection={(onChange) => (
               <Component.WidgetSelect
-                {...{ onChange }}
                 fullWidth
                 required
                 size="small"
@@ -100,6 +99,7 @@ export default function WidgetEditor({
                 variant="outlined"
                 label={wt('lbl-widget-type')}
                 defaultValue=""
+                onChange={onChange}
               />
             )}
           />

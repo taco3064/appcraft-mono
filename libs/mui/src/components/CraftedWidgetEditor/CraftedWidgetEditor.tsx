@@ -1,8 +1,6 @@
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
-import type { NodeWidget } from '@appcraft/types';
 
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { WidgetAppBar } from '../WidgetAppBar';
@@ -20,49 +18,41 @@ export default function CraftedWidgetEditor({
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
   const ct = useFixedT(fixedT);
-  const [selected, setSelected] = useState<NodeWidget | null>(null);
 
   return (
-    <>
-      <WidgetStructure
-        fixedT={fixedT}
-        open={Boolean(!selected)}
-        nodes={nodes}
-        widget={widget}
-        renderWidgetTypeSelection={renderWidgetTypeSelection}
-        onWidgetChange={onWidgetChange}
-        onWidgetSelect={setSelected}
-        action={
-          <AppBar color="default" position="sticky">
-            <Toolbar variant="regular">
-              <Typography
-                variant="subtitle1"
-                fontWeight="bolder"
-                color="primary"
-              >
-                {ct('ttl-structure')}
-              </Typography>
-            </Toolbar>
-          </AppBar>
-        }
-      />
-
-      {selected && (
+    <WidgetStructure
+      open
+      fixedT={fixedT}
+      nodes={nodes}
+      widget={widget}
+      renderWidgetTypeSelection={renderWidgetTypeSelection}
+      onWidgetChange={onWidgetChange}
+      action={
+        <AppBar color="default" position="sticky">
+          <Toolbar variant="regular">
+            <Typography variant="subtitle1" fontWeight="bolder" color="primary">
+              {ct('ttl-structure')}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      }
+    >
+      {({ selected, onBackToStructure, onSelectedChange }) => (
         <CraftedTypeEditor
           disableSelection={disableSelection}
           fixedT={fixedT}
           open={Boolean(selected)}
           parser={parser}
           values={selected}
-          onChange={onWidgetChange} //! 會錯誤
+          onChange={onSelectedChange}
           action={
             <WidgetAppBar
               description={selected.type.replace(/([A-Z])/g, ' $1')}
-              onBackToStructure={() => setSelected(null)}
+              onBackToStructure={onBackToStructure}
             />
           }
         />
       )}
-    </>
+    </WidgetStructure>
   );
 }

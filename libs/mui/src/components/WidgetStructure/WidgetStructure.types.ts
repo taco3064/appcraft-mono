@@ -1,4 +1,5 @@
 import type * as Appcraft from '@appcraft/types';
+import type { ReactNode } from 'react';
 
 import type { ActionElement, Collapsable } from '../CraftedTypeEditor';
 import type { ChangeHandler, FixedT } from '../../contexts';
@@ -16,7 +17,12 @@ export type WidgetStructureProps<A extends ActionElement> = Collapsable<
     nodes: FetchOptions;
     widget?: Appcraft.NodeWidget;
     onWidgetChange: ChangeHandler<Appcraft.NodeWidget>;
-    onWidgetSelect: (widget: Appcraft.NodeWidget) => void;
+
+    children: (e: {
+      selected: Appcraft.NodeWidget;
+      onBackToStructure: () => void;
+      onSelectedChange: ChangeHandler<Appcraft.NodeWidget>;
+    }) => ReactNode;
   },
   A
 >;

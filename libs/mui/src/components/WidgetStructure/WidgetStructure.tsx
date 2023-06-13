@@ -24,16 +24,16 @@ import type * as Types from './WidgetStructure.types';
 
 export default function WidgetStructure<A extends ActionElement = undefined>({
   action,
+  children,
   fixedT,
   nodes,
-  open = true,
   renderWidgetTypeSelection,
   widget,
   onWidgetChange,
-  onWidgetSelect,
 }: Types.WidgetStructureProps<A>) {
   const ct = useFixedT(fixedT);
   const [building, setBuilding] = useState(false);
+  const [selected, setSelected] = useState<NodeWidget | null>(null);
 
   const { isMultiChildren, items, breadcrumbs, onNodeActive } = useStructure(
     widget as NodeWidget
@@ -102,7 +102,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
         }}
       />
 
-      <Collapse in={open}>
+      <Collapse in={Boolean(!selected)}>
         {action}
 
         <List
@@ -175,7 +175,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
                 fixedT={fixedT}
                 onClick={(e: WidgetOptions) => {
                   if (e.category === 'node') {
-                    onWidgetSelect(e);
+                    setSelected(e);
                   }
                 }}
                 onRemove={(e: WidgetOptions) => {
@@ -210,6 +210,29 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
           )}
         </List>
       </Collapse>
+
+      {selected &&
+        children({
+          selected,
+          onBackToStructure: () => setSelected(null),
+          onSelectedChange: (modified) => {
+            if (!breadcrumbs.length) {
+              onWidgetChange(modified);
+            } else {
+              const { paths } = breadcrumbs[breadcrumbs.length - 1];
+
+              onWidgetChange({
+                ..._set(
+                  widget as NodeWidget,
+                  paths,
+                  !isMultiChildren
+                    ? modified
+                    : items.map((item) => (item !== selected ? item : modified))
+                ),
+              });
+            }
+          },
+        })}
     </>
   );
 }

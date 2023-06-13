@@ -18,7 +18,6 @@ export default function CraftedWidgetEditor({
   widget,
   renderWidgetTypeSelection,
   onWidgetChange,
-  ...props
 }: Types.CraftedWidgetEditorProps) {
   const ct = useFixedT(fixedT);
   const [selected, setSelected] = useState<NodeWidget | null>(null);
@@ -48,17 +47,17 @@ export default function CraftedWidgetEditor({
         }
       />
 
-      {widget && (
+      {selected && (
         <CraftedTypeEditor
           disableSelection={disableSelection}
           fixedT={fixedT}
           open={Boolean(selected)}
           parser={parser}
-          values={widget}
-          onChange={onWidgetChange}
+          values={selected}
+          onChange={onWidgetChange} //! 會錯誤
           action={
             <WidgetAppBar
-              description={widget.type.replace(/([A-Z])/g, ' $1')}
+              description={selected.type.replace(/([A-Z])/g, ' $1')}
               onBackToStructure={() => setSelected(null)}
             />
           }

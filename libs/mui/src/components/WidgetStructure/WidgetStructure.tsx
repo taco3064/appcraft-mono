@@ -57,7 +57,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
           (targets.length && (await axios({ ...nodes, data: targets }))) || {};
 
         return {
-          default: ({ onNodeSelect, ...props }) => (
+          default: ({ onSelect, ...props }) => (
             <>
               {items.map((item, index) => (
                 <WidgetStructureItem
@@ -65,8 +65,8 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
                   key={`node_${index}`}
                   item={item}
                   structure={item.category === 'node' && data?.[item.typeName]}
-                  onNodeSelect={(type, path) =>
-                    onNodeSelect({ item, type, index, path })
+                  onSelect={(type, path) =>
+                    onSelect({ item, type, index, path })
                   }
                 />
               ))}
@@ -173,13 +173,29 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
             <Suspense fallback={<LinearProgress />}>
               <LazyStructureItems
                 fixedT={fixedT}
-                onRemove={(e: WidgetOptions) => console.log(e)}
                 onClick={(e: WidgetOptions) => {
                   if (e.category === 'node') {
                     onWidgetSelect(e);
                   }
                 }}
-                onNodeSelect={(e: Types.NodeSelectEvent) => {
+                onRemove={(e: WidgetOptions) => {
+                  if (e === widget) {
+                    onWidgetChange();
+                  } else {
+                    const { paths } = breadcrumbs[breadcrumbs.length - 1];
+
+                    onWidgetChange({
+                      ..._set(
+                        widget as NodeWidget,
+                        paths,
+                        !isMultiChildren
+                          ? undefined
+                          : items.filter((item) => item !== e)
+                      ),
+                    });
+                  }
+                }}
+                onSelect={(e: Types.NodeSelectEvent) => {
                   if (e.item.category === 'node') {
                     onNodeActive({
                       type: e.item.type,

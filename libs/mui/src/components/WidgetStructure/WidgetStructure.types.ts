@@ -21,9 +21,9 @@ export type WidgetStructureProps<A extends ActionElement> = Collapsable<
   A
 >;
 
-export type NodeSelectEvent = {
+export interface NodeSelectEvent {
   item: Appcraft.WidgetOptions;
   type: Appcraft.NodeType;
   path: string;
   index: number;
-};
+}

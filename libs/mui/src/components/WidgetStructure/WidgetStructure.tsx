@@ -6,15 +6,15 @@ import Collapse from '@mui/material/Collapse';
 import LinearProgress from '@mui/material/LinearProgress';
 import Link from '@mui/material/Link';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import _set from 'lodash.set';
 import axios from 'axios';
 import { Suspense, lazy, useMemo, useState } from 'react';
 import type { NodeWidget, WidgetOptions } from '@appcraft/types';
 
 import { IconTipButton, ListToolbar } from '../../styles';
+import { ListPlaceholder } from '../common';
 import { WidgetAddDialog } from '../WidgetAddDialog';
 import { WidgetStructureItem } from '../WidgetStructureItem';
 import { useFixedT } from '../../contexts';
@@ -38,8 +38,6 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
   const { isMultiChildren, items, breadcrumbs, onNodeActive } = useStructure(
     widget as NodeWidget
   );
-
-  console.log(items, breadcrumbs);
 
   const LazyStructureItems = useMemo(
     () =>
@@ -85,9 +83,23 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
         {...{ renderWidgetTypeSelection }}
         open={building}
         onClose={() => setBuilding(false)}
-        onConfirm={(e) =>
-          onWidgetChange({ ...widget, ...e, category: 'node' } as NodeWidget)
-        }
+        onConfirm={(e) => {
+          if (!breadcrumbs.length) {
+            onWidgetChange({ ...widget, ...e, category: 'node' } as NodeWidget);
+          } else {
+            const { paths } = breadcrumbs[breadcrumbs.length - 1];
+
+            onWidgetChange({
+              ..._set(
+                widget as NodeWidget,
+                paths,
+                isMultiChildren
+                  ? [...items, { ...e, category: 'node' }]
+                  : { ...e, category: 'node' }
+              ),
+            });
+          }
+        }}
       />
 
       <Collapse in={open}>
@@ -141,7 +153,22 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
             )
           }
         >
-          {widget ? (
+          {!widget ? (
+            <ListPlaceholder
+              message={ct('msg-no-widget')}
+              action={
+                <Button
+                  color="primary"
+                  size="large"
+                  variant="contained"
+                  startIcon={<AddIcon />}
+                  onClick={() => setBuilding(true)}
+                >
+                  {ct('btn-new-widget')}
+                </Button>
+              }
+            />
+          ) : (
             //* Structure List
             <Suspense fallback={<LinearProgress />}>
               <LazyStructureItems
@@ -164,40 +191,6 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
                 }}
               />
             </Suspense>
-          ) : (
-            //* Empty List
-            <ListItem>
-              <ListItemText
-                disableTypography
-                primary={
-                  <Typography
-                    variant="h6"
-                    color="text.secondary"
-                    align="center"
-                    sx={{ marginTop: (theme) => theme.spacing(2) }}
-                  >
-                    {ct('msg-no-widget')}
-                  </Typography>
-                }
-                secondary={
-                  <Button
-                    color="primary"
-                    size="large"
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    onClick={() => setBuilding(true)}
-                  >
-                    {ct('btn-new-widget')}
-                  </Button>
-                }
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: (theme) => theme.spacing(3),
-                }}
-              />
-            </ListItem>
           )}
         </List>
       </Collapse>

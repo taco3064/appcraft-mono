@@ -7,7 +7,6 @@ import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import _set from 'lodash.set';
 import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
@@ -31,12 +30,14 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
 }: Types.WidgetStructureProps<A>) {
   const ct = useFixedT(fixedT);
   const [building, setBuilding] = useState(false);
-  const [selected, setSelected] = useState<Appcraft.NodeWidget | null>(null);
 
   const { isMultiChildren, items, breadcrumbs, onNodeActive } =
     Hooks.useStructure(widget as Appcraft.NodeWidget);
 
-  const { onWidgetAdd, onWidgetRemove } = Hooks.useWidgetMutation(
+  const [
+    selected,
+    { onWidgetAdd, onWidgetModify, onWidgetRemove, onWidgetSelect },
+  ] = Hooks.useWidgetMutation(
     widget as Appcraft.NodeWidget,
     isMultiChildren,
     breadcrumbs[breadcrumbs.length - 1]?.paths,
@@ -45,7 +46,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
 
   const LazyWidgetNodes = Hooks.useLazyWidgetNodes<
     Appcraft.WidgetStructure,
-    Types.LazyWidgetNodesProps
+    Types.LazyWidgetNodesProps<typeof onNodeActive>
   >(fetchOptions, items, ({ fetchData, widgets, onActive, ...props }) => (
     <>
       {widgets.map((item, index) => (
@@ -54,7 +55,16 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
           key={`item_${index}`}
           item={item}
           structure={item.category === 'node' && fetchData?.[item.typeName]}
-          onActive={(type, path) => onActive({ item, type, index, path })}
+          onActive={(type, propPath) => {
+            if (item.category === 'node') {
+              onActive({
+                type: item.type,
+                isMultiChildren: type === 'node',
+                propPath,
+                index,
+              });
+            }
+          }}
         />
       ))}
     </>
@@ -92,10 +102,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
                           {type}
                         </Typography>
                       ) : (
-                        <BreadcrumbLink
-                          key={`breadcrumb_${i}`}
-                          onClick={() => onNodeActive(i + 1)}
-                        >
+                        <BreadcrumbLink onClick={() => onNodeActive(i + 1)}>
                           {type}
                         </BreadcrumbLink>
                       )}
@@ -138,20 +145,11 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
                 fixedT={fixedT}
                 onClick={(e) => {
                   if (e.category === 'node') {
-                    setSelected(e);
+                    onWidgetSelect(e);
                   }
                 }}
                 onRemove={onWidgetRemove}
-                onActive={(e) => {
-                  if (e.item.category === 'node') {
-                    onNodeActive({
-                      type: e.item.type,
-                      isMultiChildren: e.type === 'node',
-                      propPath: e.path,
-                      index: e.index,
-                    });
-                  }
-                }}
+                onActive={onNodeActive}
               />
             </Suspense>
           )}
@@ -161,24 +159,8 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
       {selected &&
         renderWidgetEditor({
           selected,
-          onBackToStructure: () => setSelected(null),
-          onSelectedChange: (modified) => {
-            if (!breadcrumbs.length) {
-              onWidgetChange(modified);
-            } else {
-              const { paths } = breadcrumbs[breadcrumbs.length - 1];
-
-              onWidgetChange({
-                ..._set(
-                  widget as Appcraft.NodeWidget,
-                  paths,
-                  !isMultiChildren
-                    ? modified
-                    : items.map((item) => (item !== selected ? item : modified))
-                ),
-              });
-            }
-          },
+          onBackToStructure: () => onWidgetSelect(null),
+          onSelectedChange: onWidgetModify<Appcraft.NodeWidget>,
         })}
     </>
   );

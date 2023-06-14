@@ -1,12 +1,16 @@
 import type * as Appcraft from '@appcraft/types';
-import type { ChangeHandler } from '../../contexts';
 
 export type WidgetMutationHook = (
   widget: Appcraft.NodeWidget,
   isMultiChildren: boolean,
   paths: undefined | (string | number)[],
-  onWidgetChange: ChangeHandler<Appcraft.NodeWidget>
-) => {
-  onWidgetAdd: (e: Appcraft.NodeWidget) => void;
-  onWidgetRemove: (e: Appcraft.WidgetOptions) => void;
-};
+  onWidgetChange: (e: Appcraft.NodeWidget | null) => void
+) => [
+  Appcraft.NodeWidget | null,
+  {
+    onWidgetAdd: (e: Appcraft.NodeWidget) => void;
+    onWidgetModify: <W extends Appcraft.WidgetOptions>(e: W) => void;
+    onWidgetRemove: (e: Appcraft.WidgetOptions) => void;
+    onWidgetSelect: (e: Appcraft.NodeWidget | null) => void;
+  }
+];

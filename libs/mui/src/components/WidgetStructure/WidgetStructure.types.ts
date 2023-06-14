@@ -2,7 +2,7 @@ import type * as Appcraft from '@appcraft/types';
 import type { ReactNode } from 'react';
 
 import type { ActionElement, Collapsable } from '../CraftedTypeEditor';
-import type { ChangeHandler, FixedT } from '../../contexts';
+import type { FixedT } from '../../contexts';
 import type { WidgetAddDialogProps } from '../WidgetAddDialog';
 import type { WidgetNodeProps } from '../WidgetNode';
 
@@ -13,11 +13,11 @@ export interface NodeSelectEvent {
   index: number;
 }
 
-export type LazyWidgetNodesProps = Omit<
+export type LazyWidgetNodesProps<A> = Omit<
   WidgetNodeProps<Appcraft.WidgetOptions>,
   'item' | 'structure' | 'onActive'
 > & {
-  onActive: (e: NodeSelectEvent) => void;
+  onActive: A;
 };
 
 export type WidgetStructureProps<A extends ActionElement> = Collapsable<
@@ -25,12 +25,12 @@ export type WidgetStructureProps<A extends ActionElement> = Collapsable<
     fetchOptions: Appcraft.FetchOptions;
     fixedT?: FixedT;
     widget?: Appcraft.NodeWidget;
-    onWidgetChange: ChangeHandler<Appcraft.NodeWidget>;
+    onWidgetChange: (e: Appcraft.NodeWidget | null) => void;
 
     renderWidgetEditor: (options: {
       selected: Appcraft.NodeWidget;
       onBackToStructure: () => void;
-      onSelectedChange: ChangeHandler<Appcraft.NodeWidget>;
+      onSelectedChange: (e: Appcraft.NodeWidget) => void;
     }) => ReactNode;
   },
   A

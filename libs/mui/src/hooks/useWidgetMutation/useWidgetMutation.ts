@@ -1,5 +1,7 @@
 import _get from 'lodash.get';
 import _set from 'lodash.set';
+import { useState } from 'react';
+import type * as Appcraft from '@appcraft/types';
 
 import type { WidgetMutationHook } from './useWidgetMutation.types';
 
@@ -9,44 +11,65 @@ const useWidgetMutation: WidgetMutationHook = (
   paths,
   onWidgetChange
 ) => {
+  const [selected, setSelected] = useState<Appcraft.NodeWidget | null>(null);
   const target = _get(widget, paths || []) || [];
   const items = Array.isArray(target) ? target : [target];
 
-  return {
-    onWidgetAdd: (e) =>
-      onWidgetChange(
-        !paths?.length
-          ? {
-              ...widget,
-              ...e,
-              category: 'node',
-            }
-          : {
-              ..._set(
-                widget,
-                paths,
-                !isMultiChildren
-                  ? { ...e, category: 'node' }
-                  : [...items, { ...e, category: 'node' }]
-              ),
-            }
-      ),
+  return [
+    selected,
+    {
+      onWidgetSelect: setSelected,
 
-    onWidgetRemove: (e) =>
-      onWidgetChange(
-        e === widget || !paths?.length
-          ? null
-          : {
-              ..._set(
-                widget,
-                paths,
-                !isMultiChildren
-                  ? undefined
-                  : items.filter((item) => item !== e)
-              ),
-            }
-      ),
-  };
+      onWidgetAdd: (e) =>
+        onWidgetChange(
+          !paths?.length
+            ? {
+                ...widget,
+                ...e,
+                category: 'node',
+              }
+            : {
+                ..._set(
+                  widget,
+                  paths,
+                  !isMultiChildren
+                    ? { ...e, category: 'node' }
+                    : [...items, { ...e, category: 'node' }]
+                ),
+              }
+        ),
+
+      onWidgetModify: <W extends Appcraft.WidgetOptions>(e: W) =>
+        onWidgetChange(
+          !paths?.length
+            ? (e as Appcraft.NodeWidget)
+            : {
+                ..._set(
+                  widget,
+                  paths,
+                  !isMultiChildren
+                    ? e
+                    : items.map((item) => (item !== selected ? item : e))
+                ),
+              }
+        ),
+
+      onWidgetRemove: (e) =>
+        onWidgetChange(
+          e === widget || !paths?.length
+            ? null
+            : {
+                ..._set(
+                  widget,
+                  paths,
+                  !isMultiChildren
+                    ? undefined
+                    : items.filter((item) => item !== e)
+                ),
+              }
+        ),
+    },
+  ];
 };
 
 export default useWidgetMutation;

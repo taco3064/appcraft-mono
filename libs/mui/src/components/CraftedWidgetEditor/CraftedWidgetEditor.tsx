@@ -76,7 +76,8 @@ export default function CraftedWidgetEditor({
   return (
     <>
       <WidgetAddDialog
-        {...{ renderWidgetTypeSelection }}
+        {...{ fixedT, renderWidgetTypeSelection }}
+        disablePlaintext={breadcrumbs.length === 0}
         open={adding}
         onClose={() => setAdding(false)}
         onConfirm={onWidgetAdd}
@@ -164,13 +165,13 @@ export default function CraftedWidgetEditor({
             <Suspense fallback={<LinearProgress />}>
               <LazyWidgetNodes
                 fixedT={fixedT}
+                onActive={onNodeActive}
+                onRemove={onWidgetRemove}
                 onClick={(e) => {
                   if (e.category === 'node') {
                     onWidgetSelect(e);
                   }
                 }}
-                onRemove={onWidgetRemove}
-                onActive={onNodeActive}
               />
             </Suspense>
           )}

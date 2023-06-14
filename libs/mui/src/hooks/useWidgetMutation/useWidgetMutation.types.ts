@@ -8,8 +8,8 @@ export type WidgetMutationHook = (
 ) => [
   Appcraft.NodeWidget | null,
   {
-    onWidgetAdd: (e: Appcraft.NodeWidget) => void;
-    onWidgetModify: <W extends Appcraft.WidgetOptions>(e: W) => void;
+    onWidgetAdd: (e: Appcraft.WidgetOptions) => void;
+    onWidgetModify: (e: Appcraft.NodeWidget) => void;
     onWidgetRemove: (e: Appcraft.WidgetOptions) => void;
     onWidgetSelect: (e: Appcraft.NodeWidget | null) => void;
   }

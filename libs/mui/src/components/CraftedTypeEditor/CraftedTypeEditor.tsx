@@ -10,8 +10,8 @@ import { BasicType, useLazyTypeList } from '../../hooks';
 import type * as Types from './CraftedTypeEditor.types';
 
 export default function CraftedTypeEditor<
-  A extends Types.ActionElement = undefined,
-  E extends Appcraft.NodeWidget | Appcraft.ConfigOptions = Appcraft.NodeWidget
+  E extends Appcraft.NodeWidget | Appcraft.ConfigOptions,
+  A extends Types.ActionElement = undefined
 >({
   action,
   open = true,

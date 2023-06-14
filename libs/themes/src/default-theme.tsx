@@ -45,6 +45,11 @@ export const DEFAULT_THEME: ThemeOptions = {
         },
       }),
     },
+    MuiAppBar: {
+      defaultProps: {
+        position: 'sticky',
+      },
+    },
     MuiDialog: {
       defaultProps: {
         TransitionComponent: Transition,

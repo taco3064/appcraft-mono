@@ -11,11 +11,14 @@ const useWidgetProps = <T extends ExoticComponent>(
   const ref = useRef<Renderer>(render);
 
   return useMemo(() => {
-    const { type } = options as Appcraft.NodeWidget;
+    const { type, content } = options as Appcraft.NodeWidget &
+      Appcraft.PlainTextWidget;
+
+    console.log(type, content);
 
     return !type
       ? ({
-          children: (options as Appcraft.PlainTextWidget).content || '',
+          children: content || '',
         } as ComponentProps<T>)
       : getProps<ComponentProps<T>>(
           options as Appcraft.NodeWidget,

@@ -1,5 +1,5 @@
+import type * as Appcraft from '@appcraft/types';
 import type { DialogProps } from '@mui/material/Dialog';
-import type { NodeWidget } from '@appcraft/types';
 import type { ReactNode } from 'react';
 
 import type { FixedT } from '../../contexts';
@@ -8,10 +8,11 @@ type ChangeEventField = 'type' | 'typeFile' | 'typeName';
 
 export interface WidgetAddDialogProps
   extends Required<Pick<DialogProps, 'open' | 'onClose'>> {
+  disablePlaintext?: boolean;
   fixedT?: FixedT;
-  onConfirm: (e: NodeWidget) => void;
+  onConfirm: (e: Appcraft.WidgetOptions) => void;
 
   renderWidgetTypeSelection: (options: {
-    onChange: (e: Pick<NodeWidget, ChangeEventField>) => void;
+    onChange: (e: Pick<Appcraft.NodeWidget, ChangeEventField>) => void;
   }) => ReactNode;
 }

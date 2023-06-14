@@ -8,26 +8,31 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
 import { useState } from 'react';
-import type { NodeType, WidgetOptions } from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 
 import { IconTipButton } from '../../styles';
 import { getDisplayPropName } from '../../hooks';
 import { useFixedT } from '../../contexts';
 import type { WidgetNodeProps } from './WidgetNode.types';
 
-export default function WidgetNode<I extends WidgetOptions>({
+type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
+
+export default function WidgetNode<I extends Appcraft.WidgetOptions>({
   fixedT,
   item,
   structure,
-  onClick,
   onActive,
+  onClick,
   onRemove,
 }: WidgetNodeProps<I>) {
   const ct = useFixedT(fixedT);
-  const structures: [string, NodeType][] = Object.entries(structure || {});
-  const isNode = item.category === 'node';
-  const primary = isNode ? item.type : ct('ttl-node-plain-text');
+  const { category, description, type, content } = item as MixedWidget;
+  const isNode = category === 'node';
   const [open, setOpen] = useState(false);
+
+  const structures: [string, Appcraft.NodeType][] = Object.entries(
+    structure || {}
+  );
 
   return (
     <>
@@ -47,8 +52,9 @@ export default function WidgetNode<I extends WidgetOptions>({
 
         <ListItemText
           primaryTypographyProps={{ fontWeight: 'bolder' }}
-          primary={primary}
-          secondary={item.description}
+          {...(isNode
+            ? { primary: type, secondary: description }
+            : { primary: ct('ttl-node-plain-text'), secondary: content })}
         />
 
         <ListItemSecondaryAction onClick={(e) => e.stopPropagation()}>

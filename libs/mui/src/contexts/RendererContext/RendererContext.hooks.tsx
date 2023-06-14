@@ -1,12 +1,12 @@
 import { createContext, lazy, useContext, useMemo } from 'react';
-import type { NodeWidget, WidgetOptions } from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 
 import type * as Types from './RendererContext.types';
 
 export const RendererContext = createContext<Types.RendererContextValue>({});
 
-export const useLazyWidget = (widget: WidgetOptions) => {
-  const { type } = widget as NodeWidget;
+export const useLazyWidget = (widget: Appcraft.WidgetOptions) => {
+  const { type } = widget as Appcraft.NodeWidget;
 
   const { lazy: externalLazy } = useContext(
     RendererContext

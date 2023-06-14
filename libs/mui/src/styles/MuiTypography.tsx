@@ -1,6 +1,17 @@
 import Typography from '@mui/material/Typography';
 import { withStyles } from 'tss-react/mui';
 
+export const BreadcrumbText = withStyles(
+  Typography,
+  (theme) => ({
+    root: {
+      color: theme.palette.secondary.main,
+      fontSize: theme.typography.subtitle1.fontSize,
+    },
+  }),
+  { name: 'BreadcrumbText' }
+);
+
 export const GapTypography = withStyles(
   Typography,
   (theme) => ({

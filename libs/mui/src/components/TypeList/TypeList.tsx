@@ -2,9 +2,8 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import List from '@mui/material/List';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
-import Typography from '@mui/material/Typography';
 
-import { BreadcrumbLink, IconTipButton, ListToolbar } from '../../styles';
+import * as Styles from '../../styles';
 import { TypeItem } from '../TypeItem';
 import { OptionValues, useFixedT } from '../../contexts';
 import { usePropertyRouter, useTypeItems } from '../../hooks';
@@ -29,46 +28,42 @@ export default function TypeList<V extends OptionValues>({
     <List
       subheader={
         breadcrumbs.length > 0 && (
-          <ListToolbar>
-            <IconTipButton
+          <Styles.ListToolbar>
+            <Styles.IconTipButton
               title={ct('btn-back')}
               onClick={() => handleBack()}
               sx={{ margin: (theme) => theme.spacing(1, 0) }}
             >
               <ChevronLeftIcon />
-            </IconTipButton>
+            </Styles.IconTipButton>
 
             <Breadcrumbs separator="." style={{ marginRight: 'auto' }}>
               {breadcrumbs.map(({ name, isStructureArray }, i, arr) =>
                 i === arr.length - 1 ? (
-                  <Typography
-                    key={`breadcrumb_${i}`}
-                    variant="subtitle1"
-                    color="secondary"
-                  >
+                  <Styles.BreadcrumbText key={`breadcrumb_${i}`}>
                     {isStructureArray ? `[${name}]` : name}
-                  </Typography>
+                  </Styles.BreadcrumbText>
                 ) : (
-                  <BreadcrumbLink
+                  <Styles.BreadcrumbLink
                     key={`breadcrumb_${i}`}
                     onClick={() => handleBack(i)}
                   >
                     {isStructureArray ? `[${name}]` : name}
-                  </BreadcrumbLink>
+                  </Styles.BreadcrumbLink>
                 )
               )}
             </Breadcrumbs>
 
             {isModifiable && (
-              <IconTipButton
+              <Styles.IconTipButton
                 title={ct('btn-add-prop')}
                 size="small"
                 onClick={onItemAdd}
               >
                 <PlaylistAddIcon />
-              </IconTipButton>
+              </Styles.IconTipButton>
             )}
-          </ListToolbar>
+          </Styles.ListToolbar>
         )
       }
     >

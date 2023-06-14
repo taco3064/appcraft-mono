@@ -9,6 +9,6 @@ export interface WidgetNodeProps<I extends Appcraft.WidgetOptions> {
     : undefined;
 
   onClick: (item: I) => void;
-  onSelect: (type: Appcraft.NodeType, path: string) => void;
+  onActive: (type: Appcraft.NodeType, path: string) => void;
   onRemove: (item: I) => void;
 }

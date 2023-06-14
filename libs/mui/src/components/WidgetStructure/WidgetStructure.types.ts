@@ -15,9 +15,9 @@ export interface NodeSelectEvent {
 
 export type LazyWidgetNodesProps = Omit<
   WidgetNodeProps<Appcraft.WidgetOptions>,
-  'item' | 'structure' | 'onSelect'
+  'item' | 'structure' | 'onActive'
 > & {
-  onSelect: (e: NodeSelectEvent) => void;
+  onActive: (e: NodeSelectEvent) => void;
 };
 
 export type WidgetStructureProps<A extends ActionElement> = Collapsable<

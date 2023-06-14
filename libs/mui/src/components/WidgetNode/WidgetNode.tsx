@@ -20,7 +20,7 @@ export default function WidgetNode<I extends WidgetOptions>({
   item,
   structure,
   onClick,
-  onSelect,
+  onActive,
   onRemove,
 }: WidgetNodeProps<I>) {
   const ct = useFixedT(fixedT);
@@ -64,7 +64,7 @@ export default function WidgetNode<I extends WidgetOptions>({
       {structures.length > 0 && (
         <Collapse in={open}>
           {structures.map(([path, type]) => (
-            <ListItemButton key={path} onClick={() => onSelect(type, path)}>
+            <ListItemButton key={path} onClick={() => onActive(type, path)}>
               <ListItemIcon />
 
               <ListItemText

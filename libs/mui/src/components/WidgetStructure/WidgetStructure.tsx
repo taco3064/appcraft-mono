@@ -46,7 +46,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
   const LazyWidgetNodes = Hooks.useLazyWidgetNodes<
     Appcraft.WidgetStructure,
     Types.LazyWidgetNodesProps
-  >(fetchOptions, items, ({ fetchData, widgets, onSelect, ...props }) => (
+  >(fetchOptions, items, ({ fetchData, widgets, onActive, ...props }) => (
     <>
       {widgets.map((item, index) => (
         <WidgetNode
@@ -54,7 +54,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
           key={`item_${index}`}
           item={item}
           structure={item.category === 'node' && fetchData?.[item.typeName]}
-          onSelect={(type, path) => onSelect({ item, type, index, path })}
+          onActive={(type, path) => onActive({ item, type, index, path })}
         />
       ))}
     </>
@@ -142,7 +142,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
                   }
                 }}
                 onRemove={onWidgetRemove}
-                onSelect={(e) => {
+                onActive={(e) => {
                   if (e.item.category === 'node') {
                     onNodeActive({
                       type: e.item.type,

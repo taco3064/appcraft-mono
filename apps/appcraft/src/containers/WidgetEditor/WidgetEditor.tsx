@@ -102,7 +102,7 @@ export default function WidgetEditor({
               theme.components[`Mui${widget?.type}` as keyof Components]
                 ?.defaultProps || {}
             }
-            renderWidgetTypeSelection={(onChange) => (
+            renderWidgetTypeSelection={({ onChange }) => (
               <Component.WidgetSelect
                 fullWidth
                 required

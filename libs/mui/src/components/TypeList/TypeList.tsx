@@ -1,11 +1,10 @@
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import Typography from '@mui/material/Typography';
 
-import { IconTipButton, ListToolbar } from '../../styles';
+import { BreadcrumbLink, IconTipButton, ListToolbar } from '../../styles';
 import { TypeItem } from '../TypeItem';
 import { OptionValues, useFixedT } from '../../contexts';
 import { usePropertyRouter, useTypeItems } from '../../hooks';
@@ -50,16 +49,12 @@ export default function TypeList<V extends OptionValues>({
                     {isStructureArray ? `[${name}]` : name}
                   </Typography>
                 ) : (
-                  <Link
+                  <BreadcrumbLink
                     key={`breadcrumb_${i}`}
-                    component="button"
-                    underline="hover"
-                    variant="subtitle1"
-                    color="text.primary"
                     onClick={() => handleBack(i)}
                   >
                     {isStructureArray ? `[${name}]` : name}
-                  </Link>
+                  </BreadcrumbLink>
                 )
               )}
             </Breadcrumbs>

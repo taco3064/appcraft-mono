@@ -52,9 +52,10 @@ export default function WidgetAddDialog({
         } as object
       }
     >
-      {renderWidgetTypeSelection((e) =>
-        setData({ ...e, category: 'node', description: data?.description })
-      )}
+      {renderWidgetTypeSelection({
+        onChange: (e) =>
+          setData({ ...e, category: 'node', description: data?.description }),
+      })}
 
       <TextField
         fullWidth

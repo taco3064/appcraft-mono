@@ -32,14 +32,14 @@ export default function WidgetStructureItem<I extends WidgetOptions>({
   return (
     <>
       <ListItemButton selected={open} onClick={() => onClick(item)}>
-        <ListItemIcon
-          onClick={(e) => {
-            e.stopPropagation();
-            setOpen(!open);
-          }}
-        >
+        <ListItemIcon>
           {structures.length > 0 && (
-            <IconButton>
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpen(!open);
+              }}
+            >
               {open ? <ExpandMoreIcon /> : <ChevronRightIcon />}
             </IconButton>
           )}

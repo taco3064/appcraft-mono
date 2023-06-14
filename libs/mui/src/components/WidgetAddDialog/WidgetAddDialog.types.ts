@@ -1,5 +1,6 @@
 import type { DialogProps } from '@mui/material/Dialog';
 import type { NodeWidget } from '@appcraft/types';
+import type { ReactNode } from 'react';
 
 import type { FixedT } from '../../contexts';
 
@@ -10,7 +11,7 @@ export interface WidgetAddDialogProps
   fixedT?: FixedT;
   onConfirm: (e: NodeWidget) => void;
 
-  renderWidgetTypeSelection: (
-    onChange: (e: Pick<NodeWidget, ChangeEventField>) => void
-  ) => JSX.Element;
+  renderWidgetTypeSelection: (options: {
+    onChange: (e: Pick<NodeWidget, ChangeEventField>) => void;
+  }) => ReactNode;
 }

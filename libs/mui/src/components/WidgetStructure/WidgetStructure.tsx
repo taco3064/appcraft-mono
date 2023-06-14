@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Collapse from '@mui/material/Collapse';
 import LinearProgress from '@mui/material/LinearProgress';
-import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
@@ -13,7 +12,7 @@ import axios from 'axios';
 import { Suspense, lazy, useMemo, useState } from 'react';
 import type { NodeWidget, WidgetOptions } from '@appcraft/types';
 
-import { IconTipButton, ListToolbar } from '../../styles';
+import { BreadcrumbLink, IconTipButton, ListToolbar } from '../../styles';
 import { ListPlaceholder } from '../common';
 import { WidgetAddDialog } from '../WidgetAddDialog';
 import { WidgetStructureItem } from '../WidgetStructureItem';
@@ -125,16 +124,12 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
                           {type}
                         </Typography>
                       ) : (
-                        <Link
+                        <BreadcrumbLink
                           key={`breadcrumb_${i}`}
-                          component="button"
-                          underline="hover"
-                          variant="subtitle1"
-                          color="text.primary"
                           onClick={() => onNodeActive(i + 1)}
                         >
                           {type}
-                        </Link>
+                        </BreadcrumbLink>
                       )}
                     </Tooltip>
                   ))}

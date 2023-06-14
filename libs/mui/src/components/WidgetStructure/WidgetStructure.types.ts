@@ -18,7 +18,7 @@ export type WidgetStructureProps<A extends ActionElement> = Collapsable<
     widget?: Appcraft.NodeWidget;
     onWidgetChange: ChangeHandler<Appcraft.NodeWidget>;
 
-    children: (e: {
+    children: (options: {
       selected: Appcraft.NodeWidget;
       onBackToStructure: () => void;
       onSelectedChange: ChangeHandler<Appcraft.NodeWidget>;

@@ -45,7 +45,11 @@ export default function WidgetStructureItem<I extends WidgetOptions>({
           )}
         </ListItemIcon>
 
-        <ListItemText primary={primary} secondary={item.description} />
+        <ListItemText
+          primaryTypographyProps={{ fontWeight: 'bolder' }}
+          primary={primary}
+          secondary={item.description}
+        />
 
         <ListItemSecondaryAction onClick={(e) => e.stopPropagation()}>
           <IconTipButton
@@ -64,6 +68,8 @@ export default function WidgetStructureItem<I extends WidgetOptions>({
               <ListItemIcon />
 
               <ListItemText
+                primaryTypographyProps={{ variant: 'subtitle2' }}
+                secondaryTypographyProps={{ variant: 'caption' }}
                 primary={getDisplayPropName(path)}
                 secondary={getDisplayPropName(type)}
               />

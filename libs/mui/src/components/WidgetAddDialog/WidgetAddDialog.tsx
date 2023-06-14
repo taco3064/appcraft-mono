@@ -1,6 +1,6 @@
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { FormEvent, startTransition, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import type { NodeWidget } from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
@@ -17,11 +17,10 @@ export default function WidgetAddDialog({
   const ct = useFixedT(fixedT);
   const [data, setData] = useState<NodeWidget | null>(null);
 
-  const handleClose: typeof onClose = (...e) =>
-    startTransition(() => {
-      setData(null);
-      onClose(...e);
-    });
+  const handleClose: typeof onClose = (...e) => {
+    setData(null);
+    onClose(...e);
+  };
 
   return (
     <FlexDialog

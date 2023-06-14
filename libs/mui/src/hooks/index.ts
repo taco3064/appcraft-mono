@@ -6,4 +6,5 @@ export * from './usePropertyRouter';
 export * from './useStructure';
 export * from './useTypeCategory';
 export * from './useTypeItems';
+export * from './useWidgetMutation';
 export * from './useWidgetProps';

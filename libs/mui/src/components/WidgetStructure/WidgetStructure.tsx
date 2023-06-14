@@ -16,7 +16,7 @@ import { ListPlaceholder } from '../common';
 import { WidgetAddDialog } from '../WidgetAddDialog';
 import { WidgetNode } from '../WidgetNode';
 import { useFixedT } from '../../contexts';
-import { useLazyWidgetNodes, useStructure } from '../../hooks';
+import * as Hooks from '../../hooks';
 import type { ActionElement } from '../CraftedTypeEditor';
 import type * as Types from './WidgetStructure.types';
 
@@ -33,11 +33,17 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
   const [building, setBuilding] = useState(false);
   const [selected, setSelected] = useState<Appcraft.NodeWidget | null>(null);
 
-  const { isMultiChildren, items, breadcrumbs, onNodeActive } = useStructure(
-    widget as Appcraft.NodeWidget
+  const { isMultiChildren, items, breadcrumbs, onNodeActive } =
+    Hooks.useStructure(widget as Appcraft.NodeWidget);
+
+  const { onWidgetAdd, onWidgetRemove } = Hooks.useWidgetMutation(
+    widget as Appcraft.NodeWidget,
+    isMultiChildren,
+    breadcrumbs[breadcrumbs.length - 1]?.paths,
+    onWidgetChange
   );
 
-  const LazyWidgetNodes = useLazyWidgetNodes<
+  const LazyWidgetNodes = Hooks.useLazyWidgetNodes<
     Appcraft.WidgetStructure,
     Types.LazyWidgetNodesProps
   >(fetchOptions, items, ({ fetchData, widgets, onSelect, ...props }) => (
@@ -60,27 +66,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
         {...{ renderWidgetTypeSelection }}
         open={building}
         onClose={() => setBuilding(false)}
-        onConfirm={(e) => {
-          if (!breadcrumbs.length) {
-            onWidgetChange({
-              ...widget,
-              ...e,
-              category: 'node',
-            } as Appcraft.NodeWidget);
-          } else {
-            const { paths } = breadcrumbs[breadcrumbs.length - 1];
-
-            onWidgetChange({
-              ..._set(
-                widget as Appcraft.NodeWidget,
-                paths,
-                isMultiChildren
-                  ? [...items, { ...e, category: 'node' }]
-                  : { ...e, category: 'node' }
-              ),
-            });
-          }
-        }}
+        onConfirm={onWidgetAdd}
       />
 
       <Collapse in={Boolean(!selected)}>
@@ -155,23 +141,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
                     setSelected(e);
                   }
                 }}
-                onRemove={(e) => {
-                  if (e === widget) {
-                    onWidgetChange();
-                  } else {
-                    const { paths } = breadcrumbs[breadcrumbs.length - 1];
-
-                    onWidgetChange({
-                      ..._set(
-                        widget as Appcraft.NodeWidget,
-                        paths,
-                        !isMultiChildren
-                          ? undefined
-                          : items.filter((item) => item !== e)
-                      ),
-                    });
-                  }
-                }}
+                onRemove={onWidgetRemove}
                 onSelect={(e) => {
                   if (e.item.category === 'node') {
                     onNodeActive({

@@ -1,5 +1,5 @@
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import List from '@mui/material/List';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
@@ -33,7 +33,7 @@ export default function TypeList<V extends OptionValues>({
               title={ct('btn-back')}
               onClick={() => handleBack()}
             >
-              <ChevronLeftIcon />
+              <ArrowBackIcon />
             </Styles.IconTipButton>
 
             <Breadcrumbs separator="." style={{ marginRight: 'auto' }}>

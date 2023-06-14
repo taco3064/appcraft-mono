@@ -1,8 +1,8 @@
 import AddIcon from '@mui/icons-material/Add';
 import AppBar from '@mui/material/AppBar';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Collapse from '@mui/material/Collapse';
 import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
@@ -116,7 +116,7 @@ export default function CraftedWidgetEditor({
                   title={ct('btn-back')}
                   onClick={() => onNodeActive(breadcrumbs.length - 1)}
                 >
-                  <ChevronLeftIcon />
+                  <ArrowBackIcon />
                 </Styles.IconTipButton>
 
                 <Breadcrumbs separator="›" style={{ marginRight: 'auto' }}>

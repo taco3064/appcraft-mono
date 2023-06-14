@@ -8,11 +8,7 @@ export const ListToolbar = withStyles(
     ComponentRef<typeof ListSubheader>,
     Omit<ListSubheaderProps, 'component'>
   >((props, ref) => (
-    <ListSubheader
-      ref={ref}
-      {...props}
-      {...{ component: Toolbar, variant: 'dense' }}
-    />
+    <ListSubheader ref={ref} {...props} {...{ component: Toolbar }} />
   )),
   (theme) => ({
     root: {

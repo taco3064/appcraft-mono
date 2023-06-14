@@ -32,7 +32,6 @@ export default function TypeList<V extends OptionValues>({
             <Styles.IconTipButton
               title={ct('btn-back')}
               onClick={() => handleBack()}
-              sx={{ margin: (theme) => theme.spacing(1, 0) }}
             >
               <ChevronLeftIcon />
             </Styles.IconTipButton>

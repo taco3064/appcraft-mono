@@ -18,7 +18,6 @@ export const ListToolbar = withStyles(
     root: {
       background: 'inherit',
       gap: theme.spacing(1),
-      minHeight: 0,
     },
   }),
   { name: 'ListToolbar' }

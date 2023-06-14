@@ -115,7 +115,6 @@ export default function CraftedWidgetEditor({
                 <Styles.IconTipButton
                   title={ct('btn-back')}
                   onClick={() => onNodeActive(breadcrumbs.length - 1)}
-                  sx={{ margin: (theme) => theme.spacing(1, 0) }}
                 >
                   <ChevronLeftIcon />
                 </Styles.IconTipButton>

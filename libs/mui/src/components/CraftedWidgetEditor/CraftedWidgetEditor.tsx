@@ -122,15 +122,12 @@ export default function CraftedWidgetEditor({
                 <Breadcrumbs separator="›" style={{ marginRight: 'auto' }}>
                   {breadcrumbs.map(({ type, tooltip }, i, arr) => (
                     <Tooltip key={`breadcrumb_${i}`} title={tooltip}>
-                      {i === arr.length - 1 ? (
-                        <Styles.BreadcrumbText>{type}</Styles.BreadcrumbText>
-                      ) : (
-                        <Styles.BreadcrumbLink
-                          onClick={() => onNodeActive(i + 1)}
-                        >
-                          {type}
-                        </Styles.BreadcrumbLink>
-                      )}
+                      <Styles.Breadcrumb
+                        brcVariant={i === arr.length - 1 ? 'text' : 'link'}
+                        onClick={() => onNodeActive(i + 1)}
+                      >
+                        {type}
+                      </Styles.Breadcrumb>
                     </Tooltip>
                   ))}
                 </Breadcrumbs>

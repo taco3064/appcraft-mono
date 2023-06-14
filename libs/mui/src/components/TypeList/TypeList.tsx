@@ -37,20 +37,15 @@ export default function TypeList<V extends OptionValues>({
             </Styles.IconTipButton>
 
             <Breadcrumbs separator="." style={{ marginRight: 'auto' }}>
-              {breadcrumbs.map(({ name, isStructureArray }, i, arr) =>
-                i === arr.length - 1 ? (
-                  <Styles.BreadcrumbText key={`breadcrumb_${i}`}>
-                    {isStructureArray ? `[${name}]` : name}
-                  </Styles.BreadcrumbText>
-                ) : (
-                  <Styles.BreadcrumbLink
-                    key={`breadcrumb_${i}`}
-                    onClick={() => handleBack(i)}
-                  >
-                    {isStructureArray ? `[${name}]` : name}
-                  </Styles.BreadcrumbLink>
-                )
-              )}
+              {breadcrumbs.map(({ name, isStructureArray }, i, arr) => (
+                <Styles.Breadcrumb
+                  key={`breadcrumb_${i}`}
+                  brcVariant={i === arr.length - 1 ? 'text' : 'link'}
+                  onClick={() => handleBack(i)}
+                >
+                  {isStructureArray ? `[${name}]` : name}
+                </Styles.Breadcrumb>
+              ))}
             </Breadcrumbs>
 
             {isModifiable && (

@@ -1,7 +1,6 @@
-import type { NodeWidget } from '@appcraft/types';
+import type { FetchOptions, NodeWidget } from '@appcraft/types';
 
 import type { ChangeHandler, FixedT } from '../../contexts';
-import type { FetchOptions } from '../CraftedTypeEditor';
 import type { WidgetStructureProps } from '../WidgetStructure';
 
 export interface CraftedWidgetEditorProps

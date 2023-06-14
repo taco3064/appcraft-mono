@@ -8,8 +8,7 @@ import List from '@mui/material/List';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import _set from 'lodash.set';
-import axios from 'axios';
-import { Suspense, lazy, useMemo, useState } from 'react';
+import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import { BreadcrumbLink, IconTipButton, ListToolbar } from '../../styles';

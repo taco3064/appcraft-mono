@@ -1,4 +1,5 @@
 export * from './useDisplayPropName';
+export * from './useLazyTypeList';
 export * from './useLazyWidgetNodes';
 export * from './usePropertiesSorting';
 export * from './usePropertyRouter';

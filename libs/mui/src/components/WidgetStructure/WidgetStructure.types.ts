@@ -3,7 +3,6 @@ import type { ReactNode } from 'react';
 
 import type { ActionElement, Collapsable } from '../CraftedTypeEditor';
 import type { ChangeHandler, FixedT } from '../../contexts';
-import type { FetchOptions } from '../../hooks';
 import type { WidgetAddDialogProps } from '../WidgetAddDialog';
 import type { WidgetNodeProps } from '../WidgetNode';
 
@@ -23,7 +22,7 @@ export type LazyWidgetNodesProps = Omit<
 
 export type WidgetStructureProps<A extends ActionElement> = Collapsable<
   Pick<WidgetAddDialogProps, 'renderWidgetTypeSelection'> & {
-    fetchOptions: FetchOptions;
+    fetchOptions: Appcraft.FetchOptions;
     fixedT?: FixedT;
     widget?: Appcraft.NodeWidget;
     onWidgetChange: ChangeHandler<Appcraft.NodeWidget>;

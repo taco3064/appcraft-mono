@@ -1,4 +1,13 @@
-import type { DataSource, TypesParseOptions } from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 
-export type FetchOptions = Pick<DataSource, 'url' | 'method' | 'headers'>;
-export type ParseOptions = Pick<TypesParseOptions, 'typeFile' | 'typeName'>;
+export type ParseOptions = Pick<
+  Appcraft.TypesParseOptions,
+  'typeFile' | 'typeName'
+>;
+
+export type RenderFn<D, R> = (
+  options: R & {
+    fetchData: D;
+    widgets: Appcraft.WidgetOptions[];
+  }
+) => JSX.Element;

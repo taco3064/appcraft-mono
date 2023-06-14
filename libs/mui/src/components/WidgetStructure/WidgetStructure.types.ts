@@ -3,29 +3,9 @@ import type { ReactNode } from 'react';
 
 import type { ActionElement, Collapsable } from '../CraftedTypeEditor';
 import type { ChangeHandler, FixedT } from '../../contexts';
-import type { FetchOptions } from '../CraftedTypeEditor';
+import type { FetchOptions } from '../../hooks';
 import type { WidgetAddDialogProps } from '../WidgetAddDialog';
-
-export type ParseOptions = Pick<
-  Appcraft.TypesParseOptions,
-  'typeFile' | 'typeName'
->;
-
-export type WidgetStructureProps<A extends ActionElement> = Collapsable<
-  Pick<WidgetAddDialogProps, 'renderWidgetTypeSelection'> & {
-    fixedT?: FixedT;
-    nodes: FetchOptions;
-    widget?: Appcraft.NodeWidget;
-    onWidgetChange: ChangeHandler<Appcraft.NodeWidget>;
-
-    children: (options: {
-      selected: Appcraft.NodeWidget;
-      onBackToStructure: () => void;
-      onSelectedChange: ChangeHandler<Appcraft.NodeWidget>;
-    }) => ReactNode;
-  },
-  A
->;
+import type { WidgetNodeProps } from '../WidgetNode';
 
 export interface NodeSelectEvent {
   item: Appcraft.WidgetOptions;
@@ -33,3 +13,26 @@ export interface NodeSelectEvent {
   path: string;
   index: number;
 }
+
+export type LazyWidgetNodesProps = Omit<
+  WidgetNodeProps<Appcraft.WidgetOptions>,
+  'item' | 'structure' | 'onSelect'
+> & {
+  onSelect: (e: NodeSelectEvent) => void;
+};
+
+export type WidgetStructureProps<A extends ActionElement> = Collapsable<
+  Pick<WidgetAddDialogProps, 'renderWidgetTypeSelection'> & {
+    fetchOptions: FetchOptions;
+    fixedT?: FixedT;
+    widget?: Appcraft.NodeWidget;
+    onWidgetChange: ChangeHandler<Appcraft.NodeWidget>;
+
+    renderWidgetEditor: (options: {
+      selected: Appcraft.NodeWidget;
+      onBackToStructure: () => void;
+      onSelectedChange: ChangeHandler<Appcraft.NodeWidget>;
+    }) => ReactNode;
+  },
+  A
+>;

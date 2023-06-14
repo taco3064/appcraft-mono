@@ -13,16 +13,16 @@ import type { NodeType, WidgetOptions } from '@appcraft/types';
 import { IconTipButton } from '../../styles';
 import { getDisplayPropName } from '../../hooks';
 import { useFixedT } from '../../contexts';
-import type { WidgetStructureItemProps } from './WidgetStructureItem.types';
+import type { WidgetNodeProps } from './WidgetNode.types';
 
-export default function WidgetStructureItem<I extends WidgetOptions>({
+export default function WidgetNode<I extends WidgetOptions>({
   fixedT,
   item,
   structure,
   onClick,
   onSelect,
   onRemove,
-}: WidgetStructureItemProps<I>) {
+}: WidgetNodeProps<I>) {
   const ct = useFixedT(fixedT);
   const structures: [string, NodeType][] = Object.entries(structure || {});
   const isNode = item.category === 'node';

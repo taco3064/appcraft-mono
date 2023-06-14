@@ -23,7 +23,7 @@ export default function CraftedWidgetEditor({
     <WidgetStructure
       open
       fixedT={fixedT}
-      nodes={nodes}
+      fetchOptions={nodes}
       widget={widget}
       renderWidgetTypeSelection={renderWidgetTypeSelection}
       onWidgetChange={onWidgetChange}
@@ -36,8 +36,11 @@ export default function CraftedWidgetEditor({
           </Toolbar>
         </AppBar>
       }
-    >
-      {({ selected, onBackToStructure, onSelectedChange }) => (
+      renderWidgetEditor={({
+        selected,
+        onBackToStructure,
+        onSelectedChange,
+      }) => (
         <CraftedTypeEditor
           disableSelection={disableSelection}
           fixedT={fixedT}
@@ -53,6 +56,6 @@ export default function CraftedWidgetEditor({
           }
         />
       )}
-    </WidgetStructure>
+    />
   );
 }

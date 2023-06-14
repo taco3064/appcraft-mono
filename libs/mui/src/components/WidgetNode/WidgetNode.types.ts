@@ -1,7 +1,7 @@
 import type * as Appcraft from '@appcraft/types';
 import type { FixedT } from '../../contexts';
 
-export interface WidgetStructureItemProps<I extends Appcraft.WidgetOptions> {
+export interface WidgetNodeProps<I extends Appcraft.WidgetOptions> {
   fixedT?: FixedT;
   item: I;
   structure: I extends Appcraft.NodeWidget

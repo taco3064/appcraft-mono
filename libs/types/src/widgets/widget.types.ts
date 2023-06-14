@@ -42,4 +42,8 @@ export type PlainTextWidget = BaseOptions<
 export type NodeType = 'element' | 'node';
 export type WidgetOptions = PlainTextWidget | NodeWidget;
 export type WidgetChildren = Record<keyof Nodes, NodeType>;
-export type WidgetStructure<N extends string> = Record<N, WidgetChildren>;
+
+export type WidgetStructure<N extends string = string> = Record<
+  N,
+  WidgetChildren
+>;

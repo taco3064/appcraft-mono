@@ -10,71 +10,50 @@ import Typography from '@mui/material/Typography';
 import _set from 'lodash.set';
 import axios from 'axios';
 import { Suspense, lazy, useMemo, useState } from 'react';
-import type { NodeWidget, WidgetOptions } from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 
 import { BreadcrumbLink, IconTipButton, ListToolbar } from '../../styles';
 import { ListPlaceholder } from '../common';
 import { WidgetAddDialog } from '../WidgetAddDialog';
-import { WidgetStructureItem } from '../WidgetStructureItem';
+import { WidgetNode } from '../WidgetNode';
 import { useFixedT } from '../../contexts';
-import { useStructure } from '../../hooks';
+import { useLazyWidgetNodes, useStructure } from '../../hooks';
 import type { ActionElement } from '../CraftedTypeEditor';
 import type * as Types from './WidgetStructure.types';
 
 export default function WidgetStructure<A extends ActionElement = undefined>({
   action,
-  children,
+  fetchOptions,
   fixedT,
-  nodes,
+  renderWidgetEditor,
   renderWidgetTypeSelection,
   widget,
   onWidgetChange,
 }: Types.WidgetStructureProps<A>) {
   const ct = useFixedT(fixedT);
   const [building, setBuilding] = useState(false);
-  const [selected, setSelected] = useState<NodeWidget | null>(null);
+  const [selected, setSelected] = useState<Appcraft.NodeWidget | null>(null);
 
   const { isMultiChildren, items, breadcrumbs, onNodeActive } = useStructure(
-    widget as NodeWidget
+    widget as Appcraft.NodeWidget
   );
 
-  const LazyStructureItems = useMemo(
-    () =>
-      lazy(async () => {
-        const targets = items.reduce<Types.ParseOptions[]>((result, item) => {
-          const { typeFile = null, typeName = null } =
-            item.category === 'node' ? item : {};
-
-          if (typeFile && typeName) {
-            result.push({ typeFile, typeName });
-          }
-
-          return result;
-        }, []);
-
-        const { data } =
-          (targets.length && (await axios({ ...nodes, data: targets }))) || {};
-
-        return {
-          default: ({ onSelect, ...props }) => (
-            <>
-              {items.map((item, index) => (
-                <WidgetStructureItem
-                  {...props}
-                  key={`node_${index}`}
-                  item={item}
-                  structure={item.category === 'node' && data?.[item.typeName]}
-                  onSelect={(type, path) =>
-                    onSelect({ item, type, index, path })
-                  }
-                />
-              ))}
-            </>
-          ),
-        };
-      }),
-    [nodes, items]
-  );
+  const LazyWidgetNodes = useLazyWidgetNodes<
+    Appcraft.WidgetStructure,
+    Types.LazyWidgetNodesProps
+  >(fetchOptions, items, ({ fetchData, widgets, onSelect, ...props }) => (
+    <>
+      {widgets.map((item, index) => (
+        <WidgetNode
+          {...props}
+          key={`item_${index}`}
+          item={item}
+          structure={item.category === 'node' && fetchData?.[item.typeName]}
+          onSelect={(type, path) => onSelect({ item, type, index, path })}
+        />
+      ))}
+    </>
+  ));
 
   return (
     <>
@@ -84,13 +63,17 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
         onClose={() => setBuilding(false)}
         onConfirm={(e) => {
           if (!breadcrumbs.length) {
-            onWidgetChange({ ...widget, ...e, category: 'node' } as NodeWidget);
+            onWidgetChange({
+              ...widget,
+              ...e,
+              category: 'node',
+            } as Appcraft.NodeWidget);
           } else {
             const { paths } = breadcrumbs[breadcrumbs.length - 1];
 
             onWidgetChange({
               ..._set(
-                widget as NodeWidget,
+                widget as Appcraft.NodeWidget,
                 paths,
                 isMultiChildren
                   ? [...items, { ...e, category: 'node' }]
@@ -166,14 +149,14 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
           ) : (
             //* Structure List
             <Suspense fallback={<LinearProgress />}>
-              <LazyStructureItems
+              <LazyWidgetNodes
                 fixedT={fixedT}
-                onClick={(e: WidgetOptions) => {
+                onClick={(e) => {
                   if (e.category === 'node') {
                     setSelected(e);
                   }
                 }}
-                onRemove={(e: WidgetOptions) => {
+                onRemove={(e) => {
                   if (e === widget) {
                     onWidgetChange();
                   } else {
@@ -181,7 +164,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
 
                     onWidgetChange({
                       ..._set(
-                        widget as NodeWidget,
+                        widget as Appcraft.NodeWidget,
                         paths,
                         !isMultiChildren
                           ? undefined
@@ -190,7 +173,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
                     });
                   }
                 }}
-                onSelect={(e: Types.NodeSelectEvent) => {
+                onSelect={(e) => {
                   if (e.item.category === 'node') {
                     onNodeActive({
                       type: e.item.type,
@@ -207,7 +190,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
       </Collapse>
 
       {selected &&
-        children({
+        renderWidgetEditor({
           selected,
           onBackToStructure: () => setSelected(null),
           onSelectedChange: (modified) => {
@@ -218,7 +201,7 @@ export default function WidgetStructure<A extends ActionElement = undefined>({
 
               onWidgetChange({
                 ..._set(
-                  widget as NodeWidget,
+                  widget as Appcraft.NodeWidget,
                   paths,
                   !isMultiChildren
                     ? modified

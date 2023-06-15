@@ -76,19 +76,6 @@ export const useThemeStyle: Types.ThemeStyleHook = () => {
       createTheme({
         ...DEFAULT_THEME,
         palette,
-        components: {
-          ...DEFAULT_THEME.components,
-          MuiButton: {
-            styleOverrides: {
-              containedInherit: ({ theme }) => ({
-                background: theme.palette.common.white,
-                color: theme.palette.getContrastText(
-                  theme.palette.common.white
-                ),
-              }),
-            },
-          },
-        },
       }),
     [palette]
   );

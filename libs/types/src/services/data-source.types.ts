@@ -13,3 +13,5 @@ export interface DataSource
 
   method?: 'GET' | 'DELETE' | 'POST' | 'PUT' | 'PATCH';
 }
+
+export type FetchOptions = Pick<DataSource, 'url' | 'method' | 'headers'>;

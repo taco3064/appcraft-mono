@@ -1,15 +1,13 @@
-import AddIcon from '@mui/icons-material/Add';
-import Button from '@mui/material/Button';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
-import { useFixedT } from '../../../contexts';
-import type { NoWidgetItemProps } from './NoWidgetItem.types';
+import type { ListPlaceholderProps } from './ListPlaceholder.types';
 
-export default function NoWidgetItem({ fixedT, onAdd }: NoWidgetItemProps) {
-  const ct = useFixedT(fixedT);
-
+export default function ListPlaceholder({
+  action,
+  message,
+}: ListPlaceholderProps) {
   return (
     <ListItem>
       <ListItemText
@@ -21,20 +19,10 @@ export default function NoWidgetItem({ fixedT, onAdd }: NoWidgetItemProps) {
             align="center"
             sx={{ marginTop: (theme) => theme.spacing(2) }}
           >
-            {ct('msg-no-widget')}
+            {message}
           </Typography>
         }
-        secondary={
-          <Button
-            color="primary"
-            size="large"
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={onAdd}
-          >
-            {ct('btn-new-widget')}
-          </Button>
-        }
+        secondary={action}
         sx={{
           display: 'flex',
           flexDirection: 'column',

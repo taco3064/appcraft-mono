@@ -2,7 +2,7 @@ import _toPath from 'lodash.topath';
 import { startTransition, useState } from 'react';
 import type { PropTypesDef, WidgetField } from '@appcraft/types';
 
-import { getPropPath } from '../usePropertyRouter';
+import { getPropPathBySource } from '../usePropertyRouter';
 import { ChangeHandler, OptionValues, useCollection } from '../../contexts';
 import { BasicType, usePropertiesSorting } from '../usePropertiesSorting';
 import type { TypeItemsHookResult } from './useTypeItems.types';
@@ -23,7 +23,7 @@ const useTypeItems = <V extends OptionValues>(
     startTransition(() => {
       const fields: WidgetField[] = ['events', 'nodes', 'props'];
       const { mixedTypes } = widgetValues;
-      const propPath = getPropPath(source, [..._toPath(path), fn()]);
+      const propPath = getPropPathBySource(source, [..._toPath(path), fn()]);
 
       delete mixedTypes?.[propPath];
 

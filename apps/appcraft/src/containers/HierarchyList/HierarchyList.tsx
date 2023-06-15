@@ -19,19 +19,21 @@ export default function HierarchyList({
   onActionNodePick = (e) => e,
   onItemActionRender,
 }: Types.HierarchyListProps) {
+  const { breadcrumbs, keyword, superiors } =
+    Hooks.useHierarchyFilter(category);
+
   const { pathname, push } = useRouter();
-  const { breadcrumbs, superiors } = Hooks.useSuperiors(category);
-  const superior = superiors[superiors.length - 1] || null;
+  const superiorList = Object.keys(superiors);
+  const superior = superiorList[superiorList.length - 1] || null;
   const width = Hooks.useWidth();
 
   const [at] = Hooks.useFixedT('app');
-  const [collapsed, setCollapsed] = useState(true);
-  const [keyword, setKeyword] = useState<string>('');
+  const [collapsed, setCollapsed] = useState(Boolean(!keyword));
 
   const { data: hierarchies, refetch } = useQuery({
     refetchOnWindowFocus: false,
     queryFn: searchHierarchy,
-    queryKey: [category, { keyword, superior }],
+    queryKey: [category, keyword ? { keyword } : { superior }],
   });
 
   const actionNode = Hooks.useNodePicker(
@@ -79,15 +81,21 @@ export default function HierarchyList({
     <>
       <Component.Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
-        onCustomize={($breadcrumbs) => [...$breadcrumbs, ...breadcrumbs]}
+        onCustomize={($breadcrumbs) => [
+          ...$breadcrumbs,
+          ...(!keyword
+            ? breadcrumbs
+            : [{ text: `${at('btn-filter')}: ${keyword}` }]),
+        ]}
         action={actionNode}
       />
 
       <Component.CollapseKeyword
+        key={keyword}
         in={!collapsed}
         defaultValue={keyword}
         onCollapse={() => setCollapsed(true)}
-        onConfirm={setKeyword}
+        onConfirm={(value) => push({ pathname, query: { keyword: value } })}
       />
 
       {!hierarchies?.length ? (
@@ -117,15 +125,15 @@ export default function HierarchyList({
                     ? {
                         pathname,
                         query: {
-                          superiors: [...superiors, data._id].join('-'),
+                          superiors: [...superiorList, data._id].join('-'),
                         },
                       }
                     : {
                         pathname: `${pathname}/detail`,
                         query: {
                           id: data._id,
-                          ...(superiors.length && {
-                            superiors: superiors.join('-'),
+                          ...(superiorList.length && {
+                            superiors: superiorList.join('-'),
                           }),
                         },
                       }

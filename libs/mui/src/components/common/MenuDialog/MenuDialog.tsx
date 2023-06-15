@@ -6,10 +6,10 @@ import type { MouseEvent } from 'react';
 import { FlexDialog } from '../../../styles';
 import type { MenuDialogProps } from './MenuDialog.types';
 
-export default function MenuDialog<V extends string = string>({
+export default function MenuDialog<V extends { toString(): string }>({
   options,
   open,
-  value: selected,
+  value: selected = null,
   onChange,
   onClose,
 }: MenuDialogProps<V>) {
@@ -30,7 +30,7 @@ export default function MenuDialog<V extends string = string>({
       >
         {options.map(({ primary, secondary, value }) => (
           <MenuItem
-            key={value}
+            key={`${primary}_${value.toString()}`}
             selected={value === selected}
             onClick={(e) => handleSelect(e, value)}
             sx={{ borderRadius: (theme) => theme.spacing(1) }}

@@ -1,13 +1,16 @@
 import Button from '@mui/material/Button';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
-import type { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
+import type * as Appcraft from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
 import { useFixedT } from '../../contexts';
-import type { WidgetAddDialogProps, WidgetInfo } from './WidgetAddDialog.types';
+import type { WidgetAddDialogProps } from './WidgetAddDialog.types';
 
 export default function WidgetAddDialog({
+  disablePlaintext = false,
   fixedT,
   open,
   renderWidgetTypeSelection,
@@ -15,20 +18,33 @@ export default function WidgetAddDialog({
   onConfirm,
 }: WidgetAddDialogProps) {
   const ct = useFixedT(fixedT);
+  const [data, setData] = useState<Appcraft.WidgetOptions>();
 
-  const [info, setInfo] = useState<WidgetInfo>({
-    type: '',
-  });
+  const [active, setActive] =
+    useState<Appcraft.WidgetOptions['category']>('node');
+
+  const handleClose: typeof onClose = (...e) => {
+    setActive('node');
+    setData(undefined);
+    onClose(...e);
+  };
 
   return (
     <FlexDialog
-      {...{ open, onClose }}
       fullWidth
       maxWidth="xs"
       direction="column"
+      open={open}
+      onClose={handleClose}
+      onSubmit={(e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        onConfirm(data as Appcraft.NodeWidget);
+        handleClose(e, 'escapeKeyDown');
+      }}
       action={
         <>
-          <Button onClick={(e) => onClose(e, 'escapeKeyDown')}>
+          <Button onClick={(e) => handleClose(e, 'escapeKeyDown')}>
             {ct('btn-cancel')}
           </Button>
 
@@ -37,20 +53,46 @@ export default function WidgetAddDialog({
           </Button>
         </>
       }
-      PaperProps={
-        {
-          component: 'form',
-          onSubmit: (e: FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-
-            onConfirm(info);
-            onClose(e, 'escapeKeyDown');
-          },
-        } as object
-      }
     >
-      {renderWidgetTypeSelection((e) =>
-        setInfo({ ...info, type: e.target.value })
+      {!disablePlaintext && (
+        <Tabs
+          variant="fullWidth"
+          value={active}
+          onChange={(_e, newActive) => setActive(newActive)}
+        >
+          <Tab label={ct('ttl-node-widget')} value="node" />
+
+          <Tab
+            label={ct('ttl-node-plain-text')}
+            value="plainText"
+            disabled={disablePlaintext}
+          />
+        </Tabs>
+      )}
+
+      {active === 'node' ? (
+        renderWidgetTypeSelection({
+          onChange: (e) =>
+            setData({ ...e, category: 'node', description: data?.description }),
+        })
+      ) : (
+        <TextField
+          autoFocus
+          fullWidth
+          required
+          size="small"
+          margin="dense"
+          variant="outlined"
+          label={ct('lbl-plain-text')}
+          defaultValue={(data as Appcraft.PlainTextWidget)?.content || ''}
+          onChange={(e) =>
+            setData({
+              ...(data as Appcraft.PlainTextWidget),
+              category: 'plainText',
+              content: e.target.value,
+            })
+          }
+        />
       )}
 
       <TextField
@@ -59,8 +101,13 @@ export default function WidgetAddDialog({
         margin="dense"
         variant="outlined"
         label={ct('lbl-description')}
-        defaultValue={info.description || ''}
-        onChange={(e) => setInfo({ ...info, description: e.target.value })}
+        defaultValue={data?.description || ''}
+        onChange={(e) =>
+          setData({
+            ...(data as Appcraft.WidgetOptions),
+            description: e.target.value,
+          })
+        }
       />
     </FlexDialog>
   );

@@ -1,18 +1,17 @@
 import Collapse from '@mui/material/Collapse';
-import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import axios from 'axios';
-import { Suspense, lazy, useMemo, useState } from 'react';
+import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import { EditorProvider, useFixedT } from '../../contexts';
 import { TypeList } from '../TypeList';
 import { TypeListSkeleton } from '../TypeListSkeleton';
+import { BasicType, useLazyTypeList } from '../../hooks';
 import type * as Types from './CraftedTypeEditor.types';
 
 export default function CraftedTypeEditor<
-  A extends Types.ActionElement = undefined,
-  E extends Appcraft.NodeWidget | Appcraft.ConfigOptions = Appcraft.NodeWidget
+  E extends Appcraft.NodeWidget | Appcraft.ConfigOptions,
+  A extends Types.ActionElement = undefined
 >({
   action,
   open = true,
@@ -21,45 +20,32 @@ export default function CraftedTypeEditor<
   parser,
   values,
   onChange,
-}: Types.CraftedTypeEditorProps<A, E>) {
+}: Types.CraftedTypeEditorProps<E, A>) {
   const { typeFile, typeName, mixedTypes } = values as E;
   const ct = useFixedT(fixedT);
   const [collectionPath, setCollectionPath] = useState('');
 
-  const LazyTypeList = useMemo(
-    () =>
-      lazy(async () => {
-        const isValid = Boolean(typeFile && typeName);
-
-        const { data } = !isValid
-          ? { data: null }
-          : await axios({
-              ...parser,
-              data: {
-                typeFile,
-                typeName,
-                mixedTypes,
-                collectionPath,
-              },
-            });
-
-        return {
-          default: ({ invalidMessage, ...props }) =>
-            !data ? (
-              <Typography
-                variant="h6"
-                color="text.secondary"
-                justifyContent="center"
-                lineHeight={3}
-              >
-                {invalidMessage}
-              </Typography>
-            ) : (
-              <TypeList {...props} superior={data} />
-            ),
-        };
-      }),
-    [parser, typeFile, typeName, mixedTypes, collectionPath]
+  const LazyTypeList = useLazyTypeList<BasicType, Types.LazyTypeListProps<E>>(
+    parser,
+    {
+      typeFile,
+      typeName,
+      mixedTypes,
+      collectionPath,
+    },
+    ({ fetchData, message, ...props }) =>
+      !fetchData ? (
+        <Typography
+          variant="h6"
+          color="text.secondary"
+          justifyContent="center"
+          lineHeight={3}
+        >
+          {message}
+        </Typography>
+      ) : (
+        <TypeList {...props} superior={fetchData} />
+      )
   );
 
   return (
@@ -72,21 +58,16 @@ export default function CraftedTypeEditor<
       }}
     >
       <Collapse in={open}>
-        {action && (
-          <>
-            {action}
-            <Divider />
-          </>
-        )}
+        {action}
 
         <Suspense fallback={<TypeListSkeleton />}>
           <LazyTypeList
             {...{
               disableSelection,
-              values,
               onChange,
             }}
-            invalidMessage={ct('msg-select-widget-type-first')}
+            message={ct('msg-select-widget-type-first')}
+            values={values as E}
             onCollectionPathChange={setCollectionPath}
           />
         </Suspense>

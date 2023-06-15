@@ -29,7 +29,11 @@ const useWidgetMutation: WidgetMutationHook = (
               }) as Appcraft.NodeWidget
         ),
 
-      onWidgetModify: (e) =>
+      onWidgetModify: (e) => {
+        if (e.category === 'node') {
+          setSelected(e);
+        }
+
         onWidgetChange(
           !paths?.length
             ? (e as Appcraft.NodeWidget)
@@ -42,7 +46,8 @@ const useWidgetMutation: WidgetMutationHook = (
                     : items.map((item) => (item !== selected ? item : e))
                 ),
               }
-        ),
+        );
+      },
 
       onWidgetRemove: (e) =>
         onWidgetChange(

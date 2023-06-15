@@ -1,3 +1,4 @@
+export * from './MuiAvatar';
 export * from './MuiBreadcrumbs';
 export * from './MuiDialog';
 export * from './MuiIconButton';

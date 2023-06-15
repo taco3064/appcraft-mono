@@ -1,8 +1,10 @@
+import Avatar from '@mui/material/Avatar';
 import Checkbox from '@mui/material/Checkbox';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
+import { TinyAvatar } from '../../styles';
 import { useTypeCategory } from '../../hooks';
 import * as Common from '../common';
 import type * as Types from './TypeItem.types';
@@ -19,7 +21,19 @@ export default function TypeItem({
 
   const selection = disableSelection ? null : (
     <ListItemIcon onClick={(e) => e.stopPropagation()}>
-      <Checkbox color="primary" />
+      <Checkbox
+        color="primary"
+        checkedIcon={
+          <TinyAvatar variant="square" color="primary">
+            S
+          </TinyAvatar>
+        }
+        indeterminateIcon={
+          <TinyAvatar variant="square" color="secondary">
+            P
+          </TinyAvatar>
+        }
+      />
     </ListItemIcon>
   );
 

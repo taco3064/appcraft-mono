@@ -20,7 +20,7 @@ export default function CraftedTypeEditor<
   parser,
   values,
   onChange,
-}: Types.CraftedTypeEditorProps<A, E>) {
+}: Types.CraftedTypeEditorProps<E, A>) {
   const { typeFile, typeName, mixedTypes } = values as E;
   const ct = useFixedT(fixedT);
   const [collectionPath, setCollectionPath] = useState('');

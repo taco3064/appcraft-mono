@@ -24,8 +24,8 @@ export type Collapsable<
   (A extends undefined ? Partial<CollapsedAction<A>> : CollapsedAction<A>);
 
 export type CraftedTypeEditorProps<
-  A extends ActionElement,
-  E extends Appcraft.NodeWidget | Appcraft.ConfigOptions
+  E extends Appcraft.NodeWidget | Appcraft.ConfigOptions,
+  A extends ActionElement
 > = Collapsable<
   Omit<EditorProviderProps<E>, 'children' | 'collectionPath'> & {
     disableSelection?: boolean;

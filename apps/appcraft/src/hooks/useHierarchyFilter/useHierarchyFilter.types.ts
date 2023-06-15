@@ -5,11 +5,11 @@ export interface Breadcrumb {
   url?: string | UrlObject;
 }
 
-export type SuperiorsHook = (
+export type HierarchyFilterHook = (
   category: string,
   itemId?: string
 ) => {
   breadcrumbs: Breadcrumb[];
-  names: Record<string, string>;
-  superiors: string[];
+  keyword?: string;
+  superiors: Record<string, string>;
 };

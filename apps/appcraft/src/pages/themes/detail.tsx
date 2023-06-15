@@ -21,7 +21,7 @@ export default function Detail() {
     'reset',
     'save',
   ]);
-  const { names, breadcrumbs } = Hooks.useSuperiors(category, id);
+  const { superiors, breadcrumbs } = Hooks.useHierarchyFilter(category, id);
 
   const { data: theme, refetch } = useQuery({
     queryKey: [id],
@@ -33,7 +33,7 @@ export default function Detail() {
     <PageContainer
       ContentProps={{ disableGutters: true }}
       maxWidth="lg"
-      title={tt('ttl-detail', { name: names[id] })}
+      title={tt('ttl-detail', { name: superiors[id] })}
       action={
         <>
           {theme && (
@@ -51,7 +51,7 @@ export default function Detail() {
       }
     >
       <Head>
-        <title>Appcraft | {tt('ttl-detail', { name: names[id] })}</title>
+        <title>Appcraft | {tt('ttl-detail', { name: superiors[id] })}</title>
       </Head>
 
       <ConfigDetail
@@ -59,7 +59,7 @@ export default function Detail() {
         typeName="PaletteOptions"
         typeFile="./node_modules/@mui/material/styles/index.d.ts"
         data={theme}
-        superiors={{ names, breadcrumbs }}
+        superiors={{ names: superiors, breadcrumbs }}
         onSave={refetch}
         onActionNodePick={handleActionNodePick}
       />

@@ -1,16 +1,14 @@
 import Badge from '@mui/material/Badge';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
-import Tooltip from '@mui/material/Tooltip';
 import UndoIcon from '@mui/icons-material/Undo';
 import { useState } from 'react';
 
-import { GapTypography, TypeItemAction } from '../../../styles';
+import { GapTypography, IconTipButton, TypeItemAction } from '../../../styles';
 import { MenuDialog } from '../MenuDialog';
 import { useDisplayPropName } from '../../../hooks';
 import { useFixedT, useMixedTypeMapping } from '../../../contexts';
@@ -41,17 +39,19 @@ export default function TypeItemMixed({
         renderMatchedField(
           matched,
           <>
-            <Tooltip title={ct('btn-clear-type')}>
-              <IconButton onClick={() => setSelected()}>
-                <UndoIcon />
-              </IconButton>
-            </Tooltip>
+            <IconTipButton
+              title={ct('btn-clear-type')}
+              onClick={() => setSelected()}
+            >
+              <UndoIcon />
+            </IconTipButton>
 
-            <Tooltip title={ct('btn-reset-type')}>
-              <IconButton onClick={() => setOpen(true)}>
-                <PlaylistAddCheckIcon />
-              </IconButton>
-            </Tooltip>
+            <IconTipButton
+              title={ct('btn-reset-type')}
+              onClick={() => setOpen(true)}
+            >
+              <PlaylistAddCheckIcon />
+            </IconTipButton>
           </>
         )
       ) : (

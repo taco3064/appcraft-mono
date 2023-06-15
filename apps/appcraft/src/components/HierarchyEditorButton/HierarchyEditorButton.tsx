@@ -4,10 +4,9 @@ import Button from '@mui/material/Button';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import TextField from '@mui/material/TextField';
 import { FlexDialog } from '@appcraft/mui';
-import { FormEventHandler, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
-import type { PaperProps } from '@mui/material/Paper';
 
 import { CommonButton, CommonButtonProps } from '../common';
 import { addHierarchy, updateHierarchy } from '~appcraft/services';
@@ -43,7 +42,7 @@ export default function HierarchyEditorButton({
     onCancel?.();
   };
 
-  const handleSubmit: FormEventHandler<HTMLDivElement> = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     const formdata = new FormData(e.target as HTMLFormElement);
 
     e.preventDefault();
@@ -75,12 +74,13 @@ export default function HierarchyEditorButton({
       />
 
       <FlexDialog
-        PaperProps={{ component: 'form', onSubmit: handleSubmit } as PaperProps}
         fullWidth
         direction="column"
         maxWidth="xs"
         title={at(`btn-${mode}-${data.type}`)}
         open={open}
+        onClose={handleClose}
+        onSubmit={handleSubmit}
         action={
           <>
             <Button color="inherit" onClick={handleClose}>
@@ -92,7 +92,6 @@ export default function HierarchyEditorButton({
             </Button>
           </>
         }
-        onClose={handleClose}
       >
         <TextField
           autoFocus

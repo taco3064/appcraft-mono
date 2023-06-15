@@ -1,15 +1,30 @@
-import type { NodeWidget } from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 
-import type { ChangeHandler, FixedT } from '../../contexts';
-import type { FetchOptions } from '../CraftedTypeEditor';
-import type { WidgetStructureProps } from '../WidgetStructure';
+import type { FixedT } from '../../contexts';
+import type { WidgetAddDialogProps } from '../WidgetAddDialog';
+import type { WidgetNodeProps } from '../WidgetNode';
+
+export interface NodeSelectEvent {
+  item: Appcraft.WidgetOptions;
+  type: Appcraft.NodeType;
+  path: string;
+  index: number;
+}
+
+export type LazyWidgetNodesProps<A> = Omit<
+  WidgetNodeProps<Appcraft.WidgetOptions>,
+  'item' | 'structure' | 'onActive'
+> & {
+  onActive: A;
+};
 
 export interface CraftedWidgetEditorProps
-  extends Pick<WidgetStructureProps<undefined>, 'renderWidgetTypeSelection'> {
+  extends Pick<WidgetAddDialogProps, 'renderWidgetTypeSelection'> {
   defaultValues?: Record<string, unknown>;
   disableSelection?: boolean;
-  fetchOptions: Record<'parser' | 'nodes', FetchOptions>;
+  fetchOptions: Record<'parser' | 'nodes', Appcraft.FetchOptions>;
   fixedT?: FixedT;
-  widget?: NodeWidget;
-  onWidgetChange: ChangeHandler<NodeWidget>;
+  widget?: Appcraft.NodeWidget;
+
+  onWidgetChange: (e: Appcraft.NodeWidget | null) => void;
 }

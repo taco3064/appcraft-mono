@@ -15,7 +15,7 @@ export default function Detail() {
   const id = query.id as string;
 
   const [wt] = Hooks.useFixedT('widgets');
-  const { names, breadcrumbs } = Hooks.useSuperiors(category, id);
+  const { superiors, breadcrumbs } = Hooks.useHierarchyFilter(category, id);
 
   const [action, handleActionNodePick] = Hooks.useNodePickHandle([
     'expand',
@@ -34,7 +34,7 @@ export default function Detail() {
       ContentProps={{ disableGutters: true }}
       id={id}
       maxWidth={false}
-      title={wt('ttl-detail', { name: names[id] })}
+      title={wt('ttl-detail', { name: superiors[id] })}
       action={
         <>
           {action?.expand}
@@ -44,12 +44,12 @@ export default function Detail() {
       }
     >
       <Head>
-        <title>Appcraft | {wt('ttl-detail', { name: names[id] })}</title>
+        <title>Appcraft | {wt('ttl-detail', { name: superiors[id] })}</title>
       </Head>
 
       <WidgetEditor
         data={widget}
-        superiors={{ names, breadcrumbs }}
+        superiors={{ names: superiors, breadcrumbs }}
         onActionNodePick={handleActionNodePick}
         PersistentDrawerContentProps={{
           disableGutters: true,

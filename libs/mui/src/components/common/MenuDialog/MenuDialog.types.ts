@@ -2,7 +2,7 @@ import type { DialogProps } from '@mui/material/Dialog';
 
 export interface MenuDialogProps<V>
   extends Pick<DialogProps, 'open' | 'onClose'> {
-  value: V | null;
+  value?: V | null;
   onChange: (newValue: V) => void;
 
   options: {

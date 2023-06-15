@@ -6,15 +6,16 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { ReactNode } from 'react';
+import { FormEventHandler, ReactNode } from 'react';
 import { withStyles } from 'tss-react/mui';
 
-interface FlexDialogProps extends DialogProps {
+interface FlexDialogProps extends Omit<DialogProps, 'onSubmit'> {
   icon?: ReactNode;
   title?: string;
   action?: ReactNode;
   children: ReactNode;
   direction?: 'row' | 'column';
+  onSubmit?: FormEventHandler<HTMLFormElement>;
 }
 
 export const FlexDialog = withStyles(
@@ -25,13 +26,22 @@ export const FlexDialog = withStyles(
     action,
     children,
     onClose,
+    onSubmit,
     direction: _direction,
     ...props
   }: FlexDialogProps) => (
     <Dialog
       {...props}
       onClose={onClose}
-      PaperProps={{ elevation: 0, ...PaperProps }}
+      PaperProps={{
+        elevation: 0,
+        ...PaperProps,
+        ...(onSubmit &&
+          ({
+            component: 'form',
+            onSubmit,
+          } as object)),
+      }}
     >
       {(title || icon) && (
         <DialogTitle

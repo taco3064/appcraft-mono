@@ -19,8 +19,6 @@ export default function ConfigDetail({
   const { data } = props;
   const { values, onChange, onReset, onSave } = useConfigValues(props);
 
-  console.log(values);
-
   const actionNode = useNodePicker(
     () =>
       onActionNodePick({

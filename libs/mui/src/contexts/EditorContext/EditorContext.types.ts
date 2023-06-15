@@ -3,7 +3,7 @@ import type * as Appcraft from '@appcraft/types';
 
 //* Variable
 export type OptionValues = Appcraft.NodeWidget | Appcraft.ConfigOptions;
-export type ChangeHandler<E extends OptionValues> = (e?: E | null) => void;
+export type ChangeHandler<E extends OptionValues> = (e: E) => void;
 
 export type MixedTypeMappingResult = [
   string | null,

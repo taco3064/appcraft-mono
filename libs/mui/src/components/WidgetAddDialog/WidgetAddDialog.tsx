@@ -37,6 +37,12 @@ export default function WidgetAddDialog({
       direction="column"
       open={open}
       onClose={handleClose}
+      onSubmit={(e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        onConfirm(data as Appcraft.NodeWidget);
+        handleClose(e, 'escapeKeyDown');
+      }}
       action={
         <>
           <Button onClick={(e) => handleClose(e, 'escapeKeyDown')}>
@@ -47,17 +53,6 @@ export default function WidgetAddDialog({
             {ct('btn-confirm')}
           </Button>
         </>
-      }
-      PaperProps={
-        {
-          component: 'form',
-          onSubmit: (e: FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-
-            onConfirm(data as Appcraft.NodeWidget);
-            handleClose(e, 'escapeKeyDown');
-          },
-        } as object
       }
     >
       {!disablePlaintext && (

@@ -17,7 +17,7 @@ export type LazyTypeListProps<
   message: string;
 };
 
-export type Collapsable<
+type Collapsable<
   P extends Record<string, unknown>,
   A extends ActionElement
 > = P &

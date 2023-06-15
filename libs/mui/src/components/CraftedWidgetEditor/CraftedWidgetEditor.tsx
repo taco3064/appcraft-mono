@@ -58,16 +58,15 @@ export default function CraftedWidgetEditor({
           key={`item_${index}`}
           item={item}
           structure={item.category === 'node' && fetchData?.[item.typeName]}
-          onActive={(type, propPath) => {
-            if (item.category === 'node') {
-              onActive({
-                type: item.type,
-                isMultiChildren: type === 'node',
-                propPath,
-                index,
-              });
-            }
-          }}
+          onActive={(type, propPath) =>
+            item.category === 'node' &&
+            onActive({
+              type: item.type,
+              isMultiChildren: type === 'node',
+              propPath,
+              index,
+            })
+          }
         />
       ))}
     </>
@@ -83,7 +82,7 @@ export default function CraftedWidgetEditor({
         onConfirm={onWidgetAdd}
       />
 
-      {selected && (
+      {selected?.category === 'node' && (
         <CraftedTypeEditor
           disableSelection={disableSelection}
           fixedT={fixedT}

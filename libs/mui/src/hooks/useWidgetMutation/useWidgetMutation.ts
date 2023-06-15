@@ -11,7 +11,7 @@ const useWidgetMutation: WidgetMutationHook = (
   paths,
   onWidgetChange
 ) => {
-  const [selected, setSelected] = useState<Appcraft.NodeWidget | null>(null);
+  const [selected, setSelected] = useState<Appcraft.WidgetOptions | null>(null);
   const target = _get(widget, paths || []) || [];
   const items = Array.isArray(target) ? target : [target];
 

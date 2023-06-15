@@ -15,14 +15,15 @@ export const search: Types.SearchService = async (
 
   const cursor = await collection.find({
     userid: { $eq: userid },
-    ...(superior && { superior: { $eq: superior } }),
     ...(category && { category: { $eq: category } }),
-    ...(keyword && {
-      $or: [
-        { name: { $regex: keyword, $options: 'i' } },
-        { description: { $regex: keyword, $options: 'i' } },
-      ],
-    }),
+    ...(!keyword
+      ? { superior: superior ? { $eq: superior } : null }
+      : {
+          $or: [
+            { name: { $regex: keyword, $options: 'i' } },
+            { description: { $regex: keyword, $options: 'i' } },
+          ],
+        }),
   });
 
   return cursor.sort(['category', 'type', 'name']).toArray();

@@ -1,6 +1,6 @@
 import type { NodeWidget, WidgetOptions } from '@appcraft/types';
 
-type BreadcrumbPath = string | number;
+export type NodePath = string | number;
 type BaseNode<C extends Record<string, unknown>> = Pick<NodeWidget, 'type'> & C;
 
 export type ActiveNode = BaseNode<{
@@ -9,17 +9,11 @@ export type ActiveNode = BaseNode<{
   index: number;
 }>;
 
-export type Breadcrumb = Required<
-  BaseNode<{
-    tooltip: string;
-    paths: BreadcrumbPath[];
-  }>
->;
-
 export type StructureHook = (widget: NodeWidget) => {
+  breadcrumbs: string[];
   isMultiChildren: boolean;
   items: WidgetOptions[];
-  breadcrumbs: Breadcrumb[];
+  paths: NodePath[];
 
   onNodeActive: (e: number | ActiveNode) => void;
 };

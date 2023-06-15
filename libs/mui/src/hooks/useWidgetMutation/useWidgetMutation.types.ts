@@ -1,9 +1,10 @@
 import type * as Appcraft from '@appcraft/types';
+import type { NodePath } from '../useStructure';
 
 export type WidgetMutationHook = (
   widget: Appcraft.NodeWidget,
   isMultiChildren: boolean,
-  paths: undefined | (string | number)[],
+  paths: undefined | NodePath[],
   onWidgetChange: (e: Appcraft.NodeWidget | null) => void
 ) => [
   Appcraft.WidgetOptions | null,

@@ -7,7 +7,6 @@ import Collapse from '@mui/material/Collapse';
 import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
 import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
@@ -33,7 +32,7 @@ export default function CraftedWidgetEditor({
   const ct = useFixedT(fixedT);
   const [adding, setAdding] = useState(false);
 
-  const { isMultiChildren, items, breadcrumbs, onNodeActive } =
+  const { isMultiChildren, items, paths, breadcrumbs, onNodeActive } =
     Hooks.useStructure(widget as Appcraft.NodeWidget);
 
   const [
@@ -42,7 +41,7 @@ export default function CraftedWidgetEditor({
   ] = Hooks.useWidgetMutation(
     widget as Appcraft.NodeWidget,
     isMultiChildren,
-    breadcrumbs[breadcrumbs.length - 1]?.paths,
+    paths,
     onWidgetChange
   );
 
@@ -75,7 +74,7 @@ export default function CraftedWidgetEditor({
     <>
       <WidgetAddDialog
         {...{ fixedT, renderWidgetTypeSelection }}
-        disablePlaintext={breadcrumbs.length === 0}
+        disablePlaintext={paths.length === 0}
         open={adding}
         onClose={() => setAdding(false)}
         onConfirm={onWidgetAdd}
@@ -126,15 +125,14 @@ export default function CraftedWidgetEditor({
                 </Styles.IconTipButton>
 
                 <Breadcrumbs separator="›" style={{ marginRight: 'auto' }}>
-                  {breadcrumbs.map(({ type, tooltip }, i, arr) => (
-                    <Tooltip key={`breadcrumb_${i}`} title={tooltip}>
-                      <Styles.Breadcrumb
-                        brcVariant={i === arr.length - 1 ? 'text' : 'link'}
-                        onClick={() => onNodeActive(i + 1)}
-                      >
-                        {type}
-                      </Styles.Breadcrumb>
-                    </Tooltip>
+                  {breadcrumbs.map((text, i, arr) => (
+                    <Styles.Breadcrumb
+                      key={`breadcrumb_${i}`}
+                      brcVariant={i === arr.length - 1 ? 'text' : 'link'}
+                      onClick={() => onNodeActive(i + 1)}
+                    >
+                      {text}
+                    </Styles.Breadcrumb>
                   ))}
                 </Breadcrumbs>
 

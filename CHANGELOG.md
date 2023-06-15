@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.40](https://github.com/taco3064/appcraft-mono/compare/v0.0.39...v0.0.40) (2023-06-15)
+
+
+### Features
+
+* **@appcraft/mui:** add breadcrumbs to WidgetStructure ([4d674f1](https://github.com/taco3064/appcraft-mono/commit/4d674f199ed654a692784894d876c7f926cfc8ae))
+* **@appcraft/mui:** add custom breadcrumbs component ([46d6412](https://github.com/taco3064/appcraft-mono/commit/46d6412d7b95789aa140e3fb2bcff911d652a635))
+* **@appcraft/mui:** add new component: ListPlaceholder ([4cc8265](https://github.com/taco3064/appcraft-mono/commit/4cc8265bdd4b7b4428a2bdf64b176ec638456a29))
+* **@appcraft/mui:** add new component: PlainTextDialog ([0871a5d](https://github.com/taco3064/appcraft-mono/commit/0871a5d6df7321a2defa20c9e82f7aee330573a8))
+* **@appcraft/mui:** add new hook: useLazyTypeList ([70207de](https://github.com/taco3064/appcraft-mono/commit/70207deb79c4fe81245af2c8fdb058e982834b19))
+* **@appcraft/mui:** add new hook: useLazyWidgetNodes ([a3ce194](https://github.com/taco3064/appcraft-mono/commit/a3ce1945de7c0714ed1935bd57ebd89c618d7ba4))
+* **@appcraft/mui:** add new hook: useWidgetMutation ([e8e1d44](https://github.com/taco3064/appcraft-mono/commit/e8e1d44d980c592f9f20e7c3f760c758f9df2e44))
+* **@appcraft/mui:** add remove handle to structure item in WidgetStructure ([87a7f0f](https://github.com/taco3064/appcraft-mono/commit/87a7f0fd75622845de9dceddfd8b5da4367ce5c5))
+* **@appcraft/mui:** add selected widget change handle in WidgetStructure ([5144e4e](https://github.com/taco3064/appcraft-mono/commit/5144e4e80d3e117c54dfe2507862f8b544a6ce4f))
+* **@appcraft/mui:** allowed the selected be PlainText in useWidgetMutation ([4ba4b56](https://github.com/taco3064/appcraft-mono/commit/4ba4b56cdf4f7ad911e223f085307d91f6834151))
+* **@appcraft/mui:** support form submit event on FlexDialog ([59ac9dc](https://github.com/taco3064/appcraft-mono/commit/59ac9dc1758b60764dae7a2090f930d853d78e85))
+* **@appcraft/mui:** support new render for Plain Text ([7200ede](https://github.com/taco3064/appcraft-mono/commit/7200ede8818a2818233d08477263882bb41f4571))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** fixed breadcrumb info error ([73ddd7a](https://github.com/taco3064/appcraft-mono/commit/73ddd7a3744774734420fabb26cbb86ca567cf42))
+* **@appcraft/mui:** fixed the calculate error of breadcrumbs in useStructure ([decc81b](https://github.com/taco3064/appcraft-mono/commit/decc81b10f65d038e244176108d93486f772cc8e))
+* **@appcraft/mui:** fixed the invalid breadcrumb path ([c646214](https://github.com/taco3064/appcraft-mono/commit/c64621491d0cdae2b68e45be64834500ae30b1b9))
+* **@appcraft/mui:** fixed the invalid type in onWidgetChange ([4c0ea79](https://github.com/taco3064/appcraft-mono/commit/4c0ea7958e5712c72fa3f09cbd791af352935e3a))
+* **@appcraft/mui:** fixed the logic of path in WidgetStructure ([53f93cf](https://github.com/taco3064/appcraft-mono/commit/53f93cf033246c1eda7cfa185664d73d0716336d))
+* **@appcraft/mui:** make sure breadcrumbs will show correct text ([c4465ee](https://github.com/taco3064/appcraft-mono/commit/c4465eec179b6ae423a7032e8a6dd9143aec9496))
+* **@appcraft/mui:** remove transition process in WidgetGenerator ([cbefb76](https://github.com/taco3064/appcraft-mono/commit/cbefb76326d3fb9baedadeaf9330801c6e33e9c5))
+* **@appcraft/mui:** rename props ([c3affa0](https://github.com/taco3064/appcraft-mono/commit/c3affa0262e08fc93b37348f9078aa381bd5934d))
+* **@appcraft/mui:** set the modified widget as selected again onWidgetModify ([00c3cd3](https://github.com/taco3064/appcraft-mono/commit/00c3cd3d42f8a8dbe1555ef80792cd0245b792ca))
+* **@appcraft/mui:** update the style in WidgetStructureItem ([e5d6c2a](https://github.com/taco3064/appcraft-mono/commit/e5d6c2acfdfa303ad12f424d0026c2013b9d09da))
+* **apps/appcraft:** re-design the ux of hierarchy filter ([b369e61](https://github.com/taco3064/appcraft-mono/commit/b369e614a5de43cf34650f896435555ca91eea9e))
+* **hierarchy-editor-button(apps/appcraft):** update props ([3586584](https://github.com/taco3064/appcraft-mono/commit/3586584eb0e31be61078a02974baf1e46da92e0d))
+* **widget-editor(apps/appcraft):** remove autoFocus on WidgetSelect ([47f5b85](https://github.com/taco3064/appcraft-mono/commit/47f5b85ac0c7f9443ee428d1c173c36414ca1441))
+
 ### [0.0.39](https://github.com/taco3064/appcraft-mono/compare/v0.0.38...v0.0.39) (2023-06-12)
 
 

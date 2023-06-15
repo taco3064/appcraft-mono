@@ -45,7 +45,7 @@ const useStructure: Types.StructureHook = (widget) => {
                 const target = _get(widget, path) as Appcraft.NodeWidget;
 
                 if (target?.category === 'node' && target?.type) {
-                  const [path1, path2] = path.reverse();
+                  const [path1, path2] = paths.slice(i + 2);
 
                   result.push(
                     `${target.type}.${

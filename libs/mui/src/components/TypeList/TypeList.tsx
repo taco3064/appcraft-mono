@@ -1,11 +1,11 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
 import List from '@mui/material/List';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
 import * as Styles from '../../styles';
-import { TypeItem } from '../TypeItem';
+import { Breadcrumbs } from '../common';
 import { OptionValues, useFixedT } from '../../contexts';
+import { TypeItem } from '../TypeItem';
 import { usePropertyRouter, useTypeItems } from '../../hooks';
 import type { TypeListProps } from './TypeList.types';
 
@@ -36,7 +36,11 @@ export default function TypeList<V extends OptionValues>({
               <ArrowBackIcon />
             </Styles.IconTipButton>
 
-            <Breadcrumbs separator="." style={{ marginRight: 'auto' }}>
+            <Breadcrumbs
+              separator="."
+              maxItems={2}
+              style={{ marginRight: 'auto' }}
+            >
               {breadcrumbs.map(({ name, isStructureArray }, i, arr) => (
                 <Styles.Breadcrumb
                   key={`breadcrumb_${i}`}

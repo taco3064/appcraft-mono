@@ -1,7 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
 import AppBar from '@mui/material/AppBar';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -11,10 +10,10 @@ import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
+import * as Common from '../common';
 import * as Hooks from '../../hooks';
 import * as Styles from '../../styles';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { ListPlaceholder, PlainTextDialog, WidgetAppBar } from '../common';
 import { WidgetAddDialog } from '../WidgetAddDialog';
 import { WidgetNode } from '../WidgetNode';
 import { useFixedT } from '../../contexts';
@@ -80,7 +79,7 @@ export default function CraftedWidgetEditor({
         onConfirm={onWidgetAdd}
       />
 
-      <PlainTextDialog
+      <Common.PlainTextDialog
         open={selected?.category === 'plainText'}
         values={selected as Appcraft.PlainTextWidget}
         onClose={() => onWidgetSelect(null)}
@@ -96,7 +95,7 @@ export default function CraftedWidgetEditor({
           values={selected}
           onChange={onWidgetModify}
           action={
-            <WidgetAppBar
+            <Common.WidgetAppBar
               description={selected.type.replace(/([A-Z])/g, ' $1')}
               onBackToStructure={() => onWidgetSelect(null)}
             />
@@ -124,7 +123,11 @@ export default function CraftedWidgetEditor({
                   <ArrowBackIcon />
                 </Styles.IconTipButton>
 
-                <Breadcrumbs separator="›" style={{ marginRight: 'auto' }}>
+                <Common.Breadcrumbs
+                  separator="›"
+                  maxItems={2}
+                  style={{ marginRight: 'auto' }}
+                >
                   {breadcrumbs.map((text, i, arr) => (
                     <Styles.Breadcrumb
                       key={`breadcrumb_${i}`}
@@ -134,7 +137,7 @@ export default function CraftedWidgetEditor({
                       {text}
                     </Styles.Breadcrumb>
                   ))}
-                </Breadcrumbs>
+                </Common.Breadcrumbs>
 
                 {(isMultiChildren || items.length < 1) && (
                   <Styles.IconTipButton
@@ -150,7 +153,7 @@ export default function CraftedWidgetEditor({
           }
         >
           {!widget ? (
-            <ListPlaceholder
+            <Common.ListPlaceholder
               message={ct('msg-no-widget')}
               action={
                 <Button

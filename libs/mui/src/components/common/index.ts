@@ -1,3 +1,4 @@
+export * from './Breadcrumbs';
 export * from './ListPlaceholder';
 export * from './PlainTextDialog';
 export * from './TypeItemDisplay';

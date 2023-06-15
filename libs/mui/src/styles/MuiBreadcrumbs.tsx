@@ -35,8 +35,12 @@ export const Breadcrumb = (function <R>() {
     ),
     (theme, { brcVariant }) => ({
       root: {
-        color: theme.palette.secondary.main,
         fontSize: theme.typography.subtitle1.fontSize,
+
+        color:
+          brcVariant === 'link'
+            ? theme.palette.text.secondary
+            : theme.palette.secondary.main,
 
         ...(brcVariant === 'link' && {
           textDecoration: 'none',

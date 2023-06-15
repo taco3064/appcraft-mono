@@ -18,11 +18,10 @@ export default function WidgetAddDialog({
   onConfirm,
 }: WidgetAddDialogProps) {
   const ct = useFixedT(fixedT);
+  const [data, setData] = useState<Appcraft.WidgetOptions>();
 
   const [active, setActive] =
     useState<Appcraft.WidgetOptions['category']>('node');
-
-  const [data, setData] = useState<Appcraft.WidgetOptions>();
 
   const handleClose: typeof onClose = (...e) => {
     setActive('node');

@@ -4,8 +4,8 @@ import Divider from '@mui/material/Divider';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import { IconTipButton } from '../../styles';
-import { useFixedT } from '../../contexts';
+import { IconTipButton } from '../../../styles';
+import { useFixedT } from '../../../contexts';
 import type { WidgetAppBarProps } from './WidgetAppBar.types';
 
 export default function WidgetAppBar({

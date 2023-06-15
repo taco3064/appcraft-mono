@@ -50,6 +50,17 @@ export const DEFAULT_THEME: ThemeOptions = {
         position: 'sticky',
       },
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
+        },
+        containedInherit: ({ theme }) => ({
+          background: theme.palette.common.white,
+          color: theme.palette.getContrastText(theme.palette.common.white),
+        }),
+      },
+    },
     MuiDialog: {
       defaultProps: {
         TransitionComponent: Transition,
@@ -69,7 +80,7 @@ export const DEFAULT_THEME: ThemeOptions = {
       },
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: 16,
         },
       },
     },
@@ -93,7 +104,14 @@ export const DEFAULT_THEME: ThemeOptions = {
     MuiMenu: {
       styleOverrides: {
         paper: {
-          borderRadius: 8,
+          borderRadius: 16,
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: 16,
         },
       },
     },

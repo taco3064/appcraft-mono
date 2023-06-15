@@ -15,9 +15,8 @@ import type * as Appcraft from '@appcraft/types';
 import * as Hooks from '../../hooks';
 import * as Styles from '../../styles';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { ListPlaceholder } from '../common';
+import { ListPlaceholder, PlainTextDialog, WidgetAppBar } from '../common';
 import { WidgetAddDialog } from '../WidgetAddDialog';
-import { WidgetAppBar } from '../WidgetAppBar';
 import { WidgetNode } from '../WidgetNode';
 import { useFixedT } from '../../contexts';
 import type * as Types from './CraftedWidgetEditor.types';
@@ -80,6 +79,13 @@ export default function CraftedWidgetEditor({
         open={adding}
         onClose={() => setAdding(false)}
         onConfirm={onWidgetAdd}
+      />
+
+      <PlainTextDialog
+        open={selected?.category === 'plainText'}
+        values={selected as Appcraft.PlainTextWidget}
+        onClose={() => onWidgetSelect(null)}
+        onConfirm={onWidgetModify}
       />
 
       {selected?.category === 'node' && (
@@ -166,11 +172,7 @@ export default function CraftedWidgetEditor({
                 fixedT={fixedT}
                 onActive={onNodeActive}
                 onRemove={onWidgetRemove}
-                onClick={(e) => {
-                  if (e.category === 'node') {
-                    onWidgetSelect(e);
-                  }
-                }}
+                onClick={onWidgetSelect}
               />
             </Suspense>
           )}

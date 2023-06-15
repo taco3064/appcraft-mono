@@ -60,7 +60,7 @@ export const PageContainer = withStyles(
       },
       '& > [role=contentinfo]': {
         background: ContentProps?.disableGutters ? 'transparent' : null,
-        borderRadius: theme.spacing(1),
+        borderRadius: theme.spacing(2),
         paddingTop: theme.spacing(ContentProps?.disableGutters ? 0 : 2),
         paddingBottom: theme.spacing(ContentProps?.disableGutters ? 0 : 2),
       },

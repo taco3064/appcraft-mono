@@ -10,16 +10,19 @@ const useStructure: Types.StructureHook = (widget) => {
 
   const paths = useMemo(
     () =>
-      activeNodes.reduce<Types.NodePath[]>((result, { propPath }, i, arr) => {
-        const { isMultiChildren = false, index = 0 } = arr[i - 1] || {};
+      activeNodes.reduce<Types.NodePath[]>(
+        (result, { index, propPath }, i, arr) => {
+          const { isMultiChildren = false } = arr[i - 1] || {};
 
-        return [
-          ...result,
-          ...(isMultiChildren ? [index] : []),
-          'nodes',
-          propPath,
-        ];
-      }, []),
+          return [
+            ...result,
+            ...(isMultiChildren ? [index] : []),
+            'nodes',
+            propPath,
+          ];
+        },
+        []
+      ),
     [activeNodes]
   );
 

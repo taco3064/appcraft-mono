@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.41](https://github.com/taco3064/appcraft-mono/compare/v0.0.40...v0.0.41) (2023-06-15)
+
+
+### Bug Fixes
+
+* **apps/data-forge:** fixed the search error ([7113893](https://github.com/taco3064/appcraft-mono/commit/711389311548f54f9372e6bf69fe864624f0e707))
+
 ### [0.0.40](https://github.com/taco3064/appcraft-mono/compare/v0.0.39...v0.0.40) (2023-06-15)
 
 

@@ -53,7 +53,7 @@ export const DEFAULT_THEME: ThemeOptions = {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
+          borderRadius: 12,
         },
         containedInherit: ({ theme }) => ({
           background: theme.palette.common.white,

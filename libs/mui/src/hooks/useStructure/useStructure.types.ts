@@ -1,6 +1,6 @@
 import type { NodeWidget, WidgetOptions } from '@appcraft/types';
+import type { NodePath } from '../../contexts';
 
-export type NodePath = string | number;
 type BaseNode<C extends Record<string, unknown>> = Pick<NodeWidget, 'type'> & C;
 
 export type ActiveNode = BaseNode<{

@@ -6,7 +6,7 @@ import { FormEvent, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
-import { useFixedT } from '../../contexts';
+import { useFixedT } from '../../hooks';
 import type { WidgetAddDialogProps } from './WidgetAddDialog.types';
 
 export default function WidgetAddDialog({

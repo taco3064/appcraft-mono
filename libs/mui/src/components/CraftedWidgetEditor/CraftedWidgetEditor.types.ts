@@ -21,10 +21,9 @@ export type LazyWidgetNodesProps<A> = Omit<
 export interface CraftedWidgetEditorProps
   extends Pick<WidgetAddDialogProps, 'renderWidgetTypeSelection'> {
   defaultValues?: Record<string, unknown>;
-  disableSelection?: boolean;
   fetchOptions: Record<'parser' | 'nodes', Appcraft.FetchOptions>;
   fixedT?: FixedT;
-  widget?: Appcraft.NodeWidget;
+  widget?: Appcraft.RootNodeWidget;
 
-  onWidgetChange: (e: Appcraft.NodeWidget | null) => void;
+  onWidgetChange: (e: Appcraft.RootNodeWidget | null) => void;
 }

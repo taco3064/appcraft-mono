@@ -294,6 +294,12 @@
           "typeName": "InputAdornmentProps"
         },
         {
+          "id": "MenuItem",
+          "importType": "mui",
+          "typeFile": "./node_modules/@mui/material/MenuItem/MenuItem.d.ts",
+          "typeName": "MenuItemProps"
+        },
+        {
           "id": "Radio",
           "importType": "mui",
           "typeFile": "./node_modules/@mui/material/Radio/Radio.d.ts",

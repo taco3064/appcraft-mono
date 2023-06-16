@@ -2,7 +2,7 @@ import _get from 'lodash.get';
 import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import { getPropPath } from '../usePropertyRouter';
+import { NodePath } from '../../contexts';
 import type * as Types from './useStructure.types';
 
 const useStructure: Types.StructureHook = (widget) => {
@@ -10,19 +10,16 @@ const useStructure: Types.StructureHook = (widget) => {
 
   const paths = useMemo(
     () =>
-      activeNodes.reduce<Types.NodePath[]>(
-        (result, { index, propPath }, i, arr) => {
-          const { isMultiChildren = false } = arr[i - 1] || {};
+      activeNodes.reduce<NodePath[]>((result, { index, propPath }, i, arr) => {
+        const { isMultiChildren = false } = arr[i - 1] || {};
 
-          return [
-            ...result,
-            ...(isMultiChildren ? [index] : []),
-            'nodes',
-            propPath,
-          ];
-        },
-        []
-      ),
+        return [
+          ...result,
+          ...(isMultiChildren ? [index] : []),
+          'nodes',
+          propPath,
+        ];
+      }, []),
     [activeNodes]
   );
 

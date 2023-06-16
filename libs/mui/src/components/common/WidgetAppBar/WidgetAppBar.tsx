@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 import { IconTipButton } from '../../../styles';
-import { useFixedT } from '../../../contexts';
+import { useFixedT } from '../../../hooks';
 import type { WidgetAppBarProps } from './WidgetAppBar.types';
 
 export default function WidgetAppBar({

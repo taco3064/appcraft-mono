@@ -2,27 +2,30 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import List from '@mui/material/List';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
+import * as Hooks from '../../hooks';
 import * as Styles from '../../styles';
 import { Breadcrumbs } from '../common';
-import { OptionValues, useFixedT } from '../../contexts';
 import { TypeItem } from '../TypeItem';
-import { usePropertyRouter, useTypeItems } from '../../hooks';
+import type { OptionValues } from '../../contexts';
 import type { TypeListProps } from './TypeList.types';
 
 export default function TypeList<V extends OptionValues>({
-  disableSelection,
   superior,
   values,
   onChange,
   onCollectionPathChange,
 }: TypeListProps<V>) {
-  const ct = useFixedT();
-  const { items, onItemAdd } = useTypeItems<V>(superior, values, onChange);
-  const isModifiable = onItemAdd instanceof Function;
+  const [breadcrumbs, { back: handleBack, to: handleTo }] =
+    Hooks.usePropertyRouter(onCollectionPathChange);
 
-  const [breadcrumbs, { back: handleBack, to: handleTo }] = usePropertyRouter(
-    onCollectionPathChange
+  const { items, onItemAdd } = Hooks.useTypeItems<V>(
+    superior,
+    values,
+    onChange
   );
+
+  const ct = Hooks.useFixedT();
+  const isModifiable = onItemAdd instanceof Function;
 
   return (
     <List
@@ -67,7 +70,7 @@ export default function TypeList<V extends OptionValues>({
     >
       {items.map(({ key, collectionType, options, onDelete }) => (
         <TypeItem
-          {...{ key, collectionType, disableSelection, options, onDelete }}
+          {...{ key, collectionType, options, onDelete }}
           onSubitemView={handleTo}
         />
       ))}

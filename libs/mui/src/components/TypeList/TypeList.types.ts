@@ -1,11 +1,7 @@
-import type { ConfigOptions, NodeWidget } from '@appcraft/types';
-
 import type { BasicType } from '../../hooks';
-import type { ChangeHandler } from '../../contexts';
-import type { TypeItemProps } from '../TypeItem';
+import type { ChangeHandler, OptionValues } from '../../contexts';
 
-export interface TypeListProps<V extends ConfigOptions | NodeWidget>
-  extends Pick<TypeItemProps, 'disableSelection'> {
+export interface TypeListProps<V extends OptionValues> {
   superior: BasicType;
   values: V;
   onChange: ChangeHandler<V>;

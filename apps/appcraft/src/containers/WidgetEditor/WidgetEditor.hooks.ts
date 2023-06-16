@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import type { NodeWidget } from '@appcraft/types';
+import { useCallback, useState } from 'react';
+import type { RootNodeWidget } from '@appcraft/types';
 
 import type { EditedWidgetHook } from './WidgetEditor.types';
 
 export const useEditedWidget: EditedWidgetHook = (data) => {
-  const [widget, setWidget] = useState<NodeWidget>(
+  const [widget, setWidget] = useState<RootNodeWidget>(
     () => data?.content?.type && JSON.parse(JSON.stringify(data.content || {}))
   );
 
   return {
     widget,
-    onWidgetChange: (e) => setWidget(!e ? null : e),
+    onWidgetChange: useCallback((e) => setWidget(!e ? null : e), [setWidget]),
 
     onReset: () =>
       setWidget(

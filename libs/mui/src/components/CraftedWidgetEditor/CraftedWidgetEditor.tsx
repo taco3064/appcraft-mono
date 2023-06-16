@@ -13,22 +13,21 @@ import type * as Appcraft from '@appcraft/types';
 import * as Common from '../common';
 import * as Hooks from '../../hooks';
 import * as Styles from '../../styles';
+import { ConstructProvider } from '../../contexts';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { WidgetAddDialog } from '../WidgetAddDialog';
 import { WidgetNode } from '../WidgetNode';
-import { useFixedT } from '../../contexts';
 import type * as Types from './CraftedWidgetEditor.types';
 
 export default function CraftedWidgetEditor({
   defaultValues, //! defaultProps - 尚未完成
-  disableSelection,
   fetchOptions,
   fixedT,
-  widget,
   renderWidgetTypeSelection,
+  widget,
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
-  const ct = useFixedT(fixedT);
+  const ct = Hooks.useFixedT(fixedT);
   const [adding, setAdding] = useState(false);
 
   const { isMultiChildren, items, paths, breadcrumbs, onNodeActive } =
@@ -38,7 +37,7 @@ export default function CraftedWidgetEditor({
     selected,
     { onWidgetAdd, onWidgetModify, onWidgetRemove, onWidgetSelect },
   ] = Hooks.useWidgetMutation(
-    widget as Appcraft.NodeWidget,
+    widget as Appcraft.RootNodeWidget,
     isMultiChildren,
     paths,
     onWidgetChange
@@ -87,20 +86,21 @@ export default function CraftedWidgetEditor({
       />
 
       {selected?.category === 'node' && (
-        <CraftedTypeEditor
-          disableSelection={disableSelection}
-          fixedT={fixedT}
-          open={Boolean(selected)}
-          parser={fetchOptions.parser}
-          values={selected}
-          onChange={onWidgetModify}
-          action={
-            <Common.WidgetAppBar
-              description={selected.type.replace(/([A-Z])/g, ' $1')}
-              onBackToStructure={() => onWidgetSelect(null)}
-            />
-          }
-        />
+        <ConstructProvider {...{ paths, widget, onWidgetChange }}>
+          <CraftedTypeEditor
+            fixedT={fixedT}
+            open={Boolean(selected)}
+            parser={fetchOptions.parser}
+            values={selected}
+            onChange={onWidgetModify}
+            action={
+              <Common.WidgetAppBar
+                description={selected.type.replace(/([A-Z])/g, ' $1')}
+                onBackToStructure={() => onWidgetSelect(null)}
+              />
+            }
+          />
+        </ConstructProvider>
       )}
 
       <Collapse in={Boolean(!selected)}>

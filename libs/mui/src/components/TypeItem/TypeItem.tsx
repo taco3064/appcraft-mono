@@ -1,26 +1,31 @@
-import Checkbox from '@mui/material/Checkbox';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 
-import { useTypeCategory } from '../../hooks';
-import * as Common from '../common';
+import * as Hooks from '../../hooks';
+import { TypeItemDisplay, TypeItemDisplayProps } from '../TypeItemDisplay';
+import { TypeItemMixed, TypeItemMixedProps } from '../TypeItemMixed';
+import { TypeItemPure, TypeItemPureProps } from '../TypeItemPure';
+import { TypeItemSelection } from '../common';
 import type * as Types from './TypeItem.types';
 
 export default function TypeItem({
   action,
   collectionType,
-  disableSelection = false,
+  disabled = false,
   options,
   onDelete,
   onSubitemView,
 }: Types.TypeItemProps) {
-  const category = useTypeCategory(options);
+  const { category, label, propPath } = Hooks.useTypeItem(
+    collectionType,
+    options
+  );
 
-  const selection = disableSelection ? null : (
-    <ListItemIcon onClick={(e) => e.stopPropagation()}>
-      <Checkbox color="primary" />
-    </ListItemIcon>
+  const [status, selection] = Hooks.useConstructSelection(
+    propPath,
+    ({ status, onStatusChange }) => (
+      <TypeItemSelection status={status} onStatusChange={onStatusChange} />
+    )
   );
 
   const actions =
@@ -39,32 +44,40 @@ export default function TypeItem({
   return (
     <>
       {category === 'Display' && (
-        <Common.TypeItemDisplay
+        <TypeItemDisplay
           action={actions}
-          options={options as Common.TypeItemDisplayProps['options']}
+          disabled={disabled || Boolean(status)}
+          label={label}
+          propPath={propPath}
+          options={options as TypeItemDisplayProps['options']}
           selection={selection}
           onClick={onSubitemView}
         />
       )}
 
       {category === 'Pure' && (
-        <Common.TypeItemPure
+        <TypeItemPure
           action={actions}
-          collectionType={collectionType}
-          options={options as Common.TypeItemPureProps['options']}
+          disabled={disabled || Boolean(status)}
+          label={label}
+          propPath={propPath}
+          options={options as TypeItemPureProps['options']}
           selection={selection}
         />
       )}
 
       {category === 'Mixed' && (
-        <Common.TypeItemMixed
+        <TypeItemMixed
           action={actions}
-          collectionType={collectionType}
-          options={options as Common.TypeItemMixedProps['options']}
+          disabled={disabled || Boolean(status)}
+          label={label}
+          propPath={propPath}
+          options={options as TypeItemMixedProps['options']}
           selection={selection}
           renderMatchedField={(matched, matchedAction) => (
             <TypeItem
-              {...{ collectionType, disableSelection, onDelete, onSubitemView }}
+              {...{ collectionType, onDelete, onSubitemView }}
+              disabled={disabled || Boolean(status)}
               options={matched}
               action={matchedAction}
             />

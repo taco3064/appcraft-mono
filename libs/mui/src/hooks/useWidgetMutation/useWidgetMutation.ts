@@ -23,10 +23,10 @@ const useWidgetMutation: WidgetMutationHook = (
       onWidgetAdd: (e) =>
         onWidgetChange(
           (!paths?.length
-            ? e
+            ? { ...e, construct: {} }
             : {
                 ..._set(widget, paths, !isMultiChildren ? e : [...items, e]),
-              }) as Appcraft.NodeWidget
+              }) as Appcraft.RootNodeWidget
         ),
 
       onWidgetModify: (e) => {
@@ -36,7 +36,7 @@ const useWidgetMutation: WidgetMutationHook = (
 
         onWidgetChange(
           !paths?.length
-            ? (e as Appcraft.NodeWidget)
+            ? (e as Appcraft.RootNodeWidget)
             : {
                 ..._set(
                   widget,

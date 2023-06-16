@@ -18,6 +18,8 @@ type BaseOptions<
   description?: string;
 } & P;
 
+export type PlainTextWidget = BaseOptions<'plainText', { content: string }>;
+
 export type ConfigOptions = BaseOptions<
   'config',
   Omit<TypesParseOptions, 'collectionPath'> & {
@@ -32,12 +34,9 @@ export type NodeWidget = BaseOptions<
   Omit<ConfigOptions, 'category'> & { nodes?: Nodes }
 >;
 
-export type PlainTextWidget = BaseOptions<
-  'plainText',
-  {
-    content: string;
-  }
->;
+export interface RootNodeWidget extends NodeWidget {
+  construct: Record<'state' | 'props', string[]>;
+}
 
 export type NodeType = 'element' | 'node';
 export type WidgetOptions = PlainTextWidget | NodeWidget;

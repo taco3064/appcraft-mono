@@ -38,7 +38,7 @@ export default function CraftedWidgetEditor({
     selected,
     { onWidgetAdd, onWidgetModify, onWidgetRemove, onWidgetSelect },
   ] = Hooks.useWidgetMutation(
-    widget as Appcraft.NodeWidget,
+    widget as Appcraft.RootNodeWidget,
     isMultiChildren,
     paths,
     onWidgetChange

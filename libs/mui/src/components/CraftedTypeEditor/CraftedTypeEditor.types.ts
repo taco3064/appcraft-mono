@@ -1,7 +1,7 @@
 import type * as Appcraft from '@appcraft/types';
 import type { ReactElement } from 'react';
 
-import type { EditorProviderProps } from '../../contexts';
+import type { EditorProviderProps, OptionValues } from '../../contexts';
 import type { TypeListProps } from '../TypeList';
 
 export type ActionElement = ReactElement | undefined;
@@ -11,9 +11,10 @@ interface CollapsedAction<A extends ActionElement> {
   open: boolean;
 }
 
-export type LazyTypeListProps<
-  E extends Appcraft.NodeWidget | Appcraft.ConfigOptions
-> = Omit<TypeListProps<E>, 'superior'> & {
+export type LazyTypeListProps<V extends OptionValues> = Omit<
+  TypeListProps<V>,
+  'superior'
+> & {
   message: string;
 };
 
@@ -24,10 +25,10 @@ type Collapsable<
   (A extends undefined ? Partial<CollapsedAction<A>> : CollapsedAction<A>);
 
 export type CraftedTypeEditorProps<
-  E extends Appcraft.NodeWidget | Appcraft.ConfigOptions,
+  V extends OptionValues,
   A extends ActionElement
 > = Collapsable<
-  Omit<EditorProviderProps<E>, 'children' | 'collectionPath'> & {
+  Omit<EditorProviderProps<V>, 'children' | 'collectionPath'> & {
     disableSelection?: boolean;
     parser: Appcraft.FetchOptions;
   },

@@ -1,16 +1,15 @@
 import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
-import type * as Appcraft from '@appcraft/types';
 
 import * as Hooks from '../../hooks';
-import { EditorProvider } from '../../contexts';
+import { EditorProvider, OptionValues } from '../../contexts';
 import { TypeList } from '../TypeList';
 import { TypeListSkeleton } from '../common';
 import type * as Types from './CraftedTypeEditor.types';
 
 export default function CraftedTypeEditor<
-  E extends Appcraft.NodeWidget | Appcraft.ConfigOptions,
+  V extends OptionValues,
   A extends Types.ActionElement = undefined
 >({
   action,
@@ -20,14 +19,14 @@ export default function CraftedTypeEditor<
   parser,
   values,
   onChange,
-}: Types.CraftedTypeEditorProps<E, A>) {
-  const { typeFile, typeName, mixedTypes } = values as E;
+}: Types.CraftedTypeEditorProps<V, A>) {
+  const { typeFile, typeName, mixedTypes } = values as V;
   const ct = Hooks.useFixedT(fixedT);
   const [collectionPath, setCollectionPath] = useState('');
 
   const LazyTypeList = Hooks.useLazyTypeList<
     Hooks.BasicType,
-    Types.LazyTypeListProps<E>
+    Types.LazyTypeListProps<V>
   >(
     parser,
     {
@@ -70,7 +69,7 @@ export default function CraftedTypeEditor<
               onChange,
             }}
             message={ct('msg-select-widget-type-first')}
-            values={values as E}
+            values={values as V}
             onCollectionPathChange={setCollectionPath}
           />
         </Suspense>

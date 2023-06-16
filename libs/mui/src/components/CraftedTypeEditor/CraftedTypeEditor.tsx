@@ -3,10 +3,10 @@ import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import { EditorProvider, useFixedT } from '../../contexts';
+import * as Hooks from '../../hooks';
+import { EditorProvider } from '../../contexts';
 import { TypeList } from '../TypeList';
 import { TypeListSkeleton } from '../TypeListSkeleton';
-import { BasicType, useLazyTypeList } from '../../hooks';
 import type * as Types from './CraftedTypeEditor.types';
 
 export default function CraftedTypeEditor<
@@ -22,10 +22,13 @@ export default function CraftedTypeEditor<
   onChange,
 }: Types.CraftedTypeEditorProps<E, A>) {
   const { typeFile, typeName, mixedTypes } = values as E;
-  const ct = useFixedT(fixedT);
+  const ct = Hooks.useFixedT(fixedT);
   const [collectionPath, setCollectionPath] = useState('');
 
-  const LazyTypeList = useLazyTypeList<BasicType, Types.LazyTypeListProps<E>>(
+  const LazyTypeList = Hooks.useLazyTypeList<
+    Hooks.BasicType,
+    Types.LazyTypeListProps<E>
+  >(
     parser,
     {
       typeFile,

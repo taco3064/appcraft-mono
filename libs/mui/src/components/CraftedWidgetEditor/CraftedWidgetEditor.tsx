@@ -16,7 +16,6 @@ import * as Styles from '../../styles';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { WidgetAddDialog } from '../WidgetAddDialog';
 import { WidgetNode } from '../WidgetNode';
-import { useFixedT } from '../../contexts';
 import type * as Types from './CraftedWidgetEditor.types';
 
 export default function CraftedWidgetEditor({
@@ -28,7 +27,7 @@ export default function CraftedWidgetEditor({
   renderWidgetTypeSelection,
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
-  const ct = useFixedT(fixedT);
+  const ct = Hooks.useFixedT(fixedT);
   const [adding, setAdding] = useState(false);
 
   const { isMultiChildren, items, paths, breadcrumbs, onNodeActive } =

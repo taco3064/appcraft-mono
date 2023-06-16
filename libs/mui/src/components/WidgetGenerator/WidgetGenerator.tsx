@@ -1,15 +1,15 @@
 import { Suspense } from 'react';
 
-import { useLazyWidget } from '../../contexts';
-import { useWidgetProps } from '../../hooks';
+import * as Hooks from '../../hooks';
 import type { WidgetGeneratorProps } from './WidgetGenerator.types';
 
 export default function WidgetGenerator({ options }: WidgetGeneratorProps) {
-  const LazyWidget = useLazyWidget(options);
+  const LazyWidget = Hooks.useLazyWidget(options);
 
-  const widgetProps = useWidgetProps<typeof LazyWidget>(options, (child) => (
-    <WidgetGenerator options={child} />
-  ));
+  const widgetProps = Hooks.useWidgetProps<typeof LazyWidget>(
+    options,
+    (child) => <WidgetGenerator options={child} />
+  );
 
   return (
     <Suspense>

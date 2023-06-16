@@ -3,11 +3,10 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
+import * as Hooks from '../../../hooks';
 import { BoolInput } from '../BoolInput';
 import { NumberInput } from '../NumberInput';
 import { TypeItemAction } from '../../../styles';
-import { useDisplayPropName } from '../../../hooks';
-import { usePropValue } from '../../../contexts';
 import type { TypeItemPureProps } from './TypeItemPure.types';
 
 export default function TypeItemPure({
@@ -16,9 +15,9 @@ export default function TypeItemPure({
   options,
   selection,
 }: TypeItemPureProps) {
-  const displayName = useDisplayPropName(options.propName);
+  const displayName = Hooks.useDisplayPropName(options.propName);
 
-  const { value, onChange } = usePropValue(
+  const { value, onChange } = Hooks.usePropValue(
     collectionType,
     'props',
     options.propName as string

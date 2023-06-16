@@ -1,10 +1,10 @@
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { FormEvent, useState } from 'react';
+import { FormEvent } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import { FlexDialog } from '../../../styles';
-import { useFixedT } from '../../../contexts';
+import { useFixedT } from '../../../hooks';
 import type { PlainTextDialogProps } from './PlainTextDialog.types';
 
 export default function PlainTextDialog({

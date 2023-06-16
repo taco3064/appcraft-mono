@@ -2,9 +2,10 @@ import _toPath from 'lodash.topath';
 import { startTransition, useState } from 'react';
 import type { PropTypesDef, WidgetField } from '@appcraft/types';
 
-import { getPropPathBySource } from '../usePropertyRouter';
-import { ChangeHandler, OptionValues, useCollection } from '../../contexts';
 import { BasicType, usePropertiesSorting } from '../usePropertiesSorting';
+import { getPropPathBySource } from '../usePropertyRouter';
+import { useCollection } from '../useCollection';
+import type { ChangeHandler, OptionValues } from '../../contexts';
 import type { TypeItemsHookResult } from './useTypeItems.types';
 
 const useTypeItems = <V extends OptionValues>(

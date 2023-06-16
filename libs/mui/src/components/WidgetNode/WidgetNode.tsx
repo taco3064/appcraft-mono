@@ -10,9 +10,8 @@ import ListItemText from '@mui/material/ListItemText';
 import { useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
+import * as Hooks from '../../hooks';
 import { IconTipButton } from '../../styles';
-import { getDisplayPropName } from '../../hooks';
-import { useFixedT } from '../../contexts';
 import type { WidgetNodeProps } from './WidgetNode.types';
 
 type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
@@ -25,7 +24,7 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
   onClick,
   onRemove,
 }: WidgetNodeProps<I>) {
-  const ct = useFixedT(fixedT);
+  const ct = Hooks.useFixedT(fixedT);
   const { category, description, type, content } = item as MixedWidget;
   const isNode = category === 'node';
   const [open, setOpen] = useState(false);
@@ -76,8 +75,8 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
               <ListItemText
                 primaryTypographyProps={{ variant: 'subtitle2' }}
                 secondaryTypographyProps={{ variant: 'caption' }}
-                primary={getDisplayPropName(path)}
-                secondary={getDisplayPropName(type)}
+                primary={Hooks.getDisplayPropName(path)}
+                secondary={Hooks.getDisplayPropName(type)}
               />
             </ListItemButton>
           ))}

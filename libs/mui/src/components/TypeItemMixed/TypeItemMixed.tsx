@@ -15,6 +15,7 @@ import type { TypeItemMixedProps } from './TypeItemMixed.types';
 
 export default function TypeItemMixed({
   action,
+  disabled = false,
   label,
   options,
   propPath,
@@ -33,6 +34,7 @@ export default function TypeItemMixed({
           matched,
           <>
             <IconTipButton
+              disabled={disabled}
               title={ct('btn-clear-type')}
               onClick={() => setSelected()}
             >
@@ -40,6 +42,7 @@ export default function TypeItemMixed({
             </IconTipButton>
 
             <IconTipButton
+              disabled={disabled}
               title={ct('btn-reset-type')}
               onClick={() => setOpen(true)}
             >

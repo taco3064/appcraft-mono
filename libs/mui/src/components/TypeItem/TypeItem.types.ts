@@ -6,6 +6,7 @@ import type { PropPathRouterHandler, TypeItem } from '../../hooks';
 export interface TypeItemProps
   extends Pick<TypeItem, 'collectionType' | 'onDelete'> {
   action?: ReactNode;
+  disabled?: boolean;
   options: PropTypesDef;
   onSubitemView: PropPathRouterHandler;
 }

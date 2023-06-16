@@ -5,6 +5,7 @@ export type CollectionType = 'array' | 'object';
 export type WidgetField = 'nodes' | 'props' | 'events';
 
 export interface BaseField<O extends PropTypesDef> {
+  disabled?: boolean;
   label: string;
   options: O;
   propPath: string;

@@ -10,6 +10,7 @@ import type { TypeItemPureProps } from './TypeItemPure.types';
 
 export default function TypeItemPure({
   action,
+  disabled = false,
   label,
   options,
   propPath,
@@ -30,6 +31,7 @@ export default function TypeItemPure({
                 fullWidth
                 size="small"
                 variant="outlined"
+                disabled={disabled}
                 required={options.required}
                 label={label}
                 defaultValue={value || ''}
@@ -42,6 +44,7 @@ export default function TypeItemPure({
                 fullWidth
                 size="small"
                 variant="outlined"
+                disabled={disabled}
                 required={options.required}
                 InputProps={
                   {
@@ -62,6 +65,7 @@ export default function TypeItemPure({
                 fullWidth
                 size="small"
                 variant="outlined"
+                disabled={disabled}
                 required={options.required}
                 label={label}
                 InputProps={
@@ -89,6 +93,7 @@ export default function TypeItemPure({
                 fullWidth
                 size="small"
                 variant="outlined"
+                disabled={disabled}
                 required={options.required}
                 label={label}
                 value={value || ''}

@@ -9,19 +9,23 @@ import type { TypeItemDisplayProps } from './TypeItemDisplay.types';
 
 export default function TypeItemDisplay({
   action,
+  disabled = false,
   label,
   options,
   selection,
   onClick,
 }: TypeItemDisplayProps) {
   return (
-    <ListItemButton onClick={() => onClick(options)}>
+    <ListItemButton onClick={() => !disabled && onClick(options)}>
       {selection}
 
       <ListItemText
         disableTypography
         primary={
-          <GapTypography variant="subtitle1" color="text.primary">
+          <GapTypography
+            variant="subtitle1"
+            color={disabled ? 'text.secondary' : 'text.primary'}
+          >
             {options.type === 'func' ? (
               <DeviceHubIcon color="secondary" />
             ) : options.type === 'arrayOf' ? (

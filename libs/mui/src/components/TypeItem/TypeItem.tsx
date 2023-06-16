@@ -11,6 +11,7 @@ import type * as Types from './TypeItem.types';
 export default function TypeItem({
   action,
   collectionType,
+  disabled = false,
   options,
   onDelete,
   onSubitemView,
@@ -45,6 +46,7 @@ export default function TypeItem({
       {category === 'Display' && (
         <TypeItemDisplay
           action={actions}
+          disabled={disabled || Boolean(status)}
           label={label}
           propPath={propPath}
           options={options as TypeItemDisplayProps['options']}
@@ -56,6 +58,7 @@ export default function TypeItem({
       {category === 'Pure' && (
         <TypeItemPure
           action={actions}
+          disabled={disabled || Boolean(status)}
           label={label}
           propPath={propPath}
           options={options as TypeItemPureProps['options']}
@@ -66,6 +69,7 @@ export default function TypeItem({
       {category === 'Mixed' && (
         <TypeItemMixed
           action={actions}
+          disabled={disabled || Boolean(status)}
           label={label}
           propPath={propPath}
           options={options as TypeItemMixedProps['options']}
@@ -73,6 +77,7 @@ export default function TypeItem({
           renderMatchedField={(matched, matchedAction) => (
             <TypeItem
               {...{ collectionType, onDelete, onSubitemView }}
+              disabled={disabled || Boolean(status)}
               options={matched}
               action={matchedAction}
             />

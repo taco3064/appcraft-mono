@@ -3,10 +3,9 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
-import * as Hooks from '../../../hooks';
-import { BoolInput } from '../BoolInput';
-import { NumberInput } from '../NumberInput';
-import { TypeItemAction } from '../../../styles';
+import * as Common from '../common';
+import * as Hooks from '../../hooks';
+import { TypeItemAction } from '../../styles';
 import type { TypeItemPureProps } from './TypeItemPure.types';
 
 export default function TypeItemPure({
@@ -51,7 +50,7 @@ export default function TypeItemPure({
                 required={options.required}
                 InputProps={
                   {
-                    inputComponent: BoolInput,
+                    inputComponent: Common.BoolInput,
                     inputProps: {
                       label: displayName,
                       checked: Boolean(value),
@@ -72,7 +71,7 @@ export default function TypeItemPure({
                 label={displayName}
                 InputProps={
                   {
-                    inputComponent: NumberInput,
+                    inputComponent: Common.NumberInput,
                     inputProps: {
                       defaultValue: value as number,
                       onChange: (e: { target: { value: string } }) =>

@@ -2,8 +2,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
 
+import { TypeItemDisplay, TypeItemDisplayProps } from '../TypeItemDisplay';
+import { TypeItemMixed, TypeItemMixedProps } from '../TypeItemMixed';
+import { TypeItemPure, TypeItemPureProps } from '../TypeItemPure';
+import { TypeItemSelection, Status } from '../common';
 import { useTypeCategory } from '../../hooks';
-import * as Common from '../common';
 import type * as Types from './TypeItem.types';
 
 export default function TypeItem({
@@ -14,11 +17,11 @@ export default function TypeItem({
   onDelete,
   onSubitemView,
 }: Types.TypeItemProps) {
-  const [status, setStatus] = useState<Common.Status>(null);
+  const [status, setStatus] = useState<Status>(null);
   const category = useTypeCategory(options);
 
   const selection = disableSelection ? null : (
-    <Common.TypeItemSelection
+    <TypeItemSelection
       status={status}
       onStatusChange={(newStatus) => setStatus(newStatus)}
     />
@@ -40,28 +43,28 @@ export default function TypeItem({
   return (
     <>
       {category === 'Display' && (
-        <Common.TypeItemDisplay
+        <TypeItemDisplay
           action={actions}
-          options={options as Common.TypeItemDisplayProps['options']}
+          options={options as TypeItemDisplayProps['options']}
           selection={selection}
           onClick={onSubitemView}
         />
       )}
 
       {category === 'Pure' && (
-        <Common.TypeItemPure
+        <TypeItemPure
           action={actions}
           collectionType={collectionType}
-          options={options as Common.TypeItemPureProps['options']}
+          options={options as TypeItemPureProps['options']}
           selection={selection}
         />
       )}
 
       {category === 'Mixed' && (
-        <Common.TypeItemMixed
+        <TypeItemMixed
           action={actions}
           collectionType={collectionType}
-          options={options as Common.TypeItemMixedProps['options']}
+          options={options as TypeItemMixedProps['options']}
           selection={selection}
           renderMatchedField={(matched, matchedAction) => (
             <TypeItem

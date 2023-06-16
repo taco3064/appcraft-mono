@@ -6,7 +6,7 @@ import type * as Appcraft from '@appcraft/types';
 import * as Hooks from '../../hooks';
 import { EditorProvider } from '../../contexts';
 import { TypeList } from '../TypeList';
-import { TypeListSkeleton } from '../TypeListSkeleton';
+import { TypeListSkeleton } from '../common';
 import type * as Types from './CraftedTypeEditor.types';
 
 export default function CraftedTypeEditor<

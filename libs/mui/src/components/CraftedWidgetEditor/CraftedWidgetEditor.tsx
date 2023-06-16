@@ -23,8 +23,8 @@ export default function CraftedWidgetEditor({
   defaultValues, //! defaultProps - 尚未完成
   fetchOptions,
   fixedT,
-  widget,
   renderWidgetTypeSelection,
+  widget,
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
   const ct = Hooks.useFixedT(fixedT);
@@ -86,7 +86,7 @@ export default function CraftedWidgetEditor({
       />
 
       {selected?.category === 'node' && (
-        <ConstructProvider widget={widget} onWidgetChange={onWidgetChange}>
+        <ConstructProvider {...{ paths, widget, onWidgetChange }}>
           <CraftedTypeEditor
             fixedT={fixedT}
             open={Boolean(selected)}

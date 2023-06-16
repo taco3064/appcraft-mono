@@ -1,5 +1,5 @@
 import type * as Appcraft from '@appcraft/types';
-import type { NodePath } from '../useStructure';
+import type { NodePath } from '../../contexts';
 
 type ModifyEvent = Appcraft.WidgetOptions | Appcraft.RootNodeWidget;
 

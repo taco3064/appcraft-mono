@@ -2,6 +2,7 @@ import { createContext, useContext, useMemo } from 'react';
 import type * as Types from './Construct.types';
 
 const ConstructContext = createContext<Types.ConstructContextValue>({
+  paths: [],
   onWidgetChange: () => null,
 });
 
@@ -10,12 +11,13 @@ export const useConstructContext = () =>
 
 export function ConstructProvider({
   children,
+  paths,
   widget,
   onWidgetChange,
 }: Types.ConstructProviderProps) {
   const value = useMemo(
-    () => ({ widget, onWidgetChange }),
-    [widget, onWidgetChange]
+    () => ({ paths, widget, onWidgetChange }),
+    [paths, widget, onWidgetChange]
   );
 
   return (

@@ -35,7 +35,7 @@ export type NodeWidget = BaseOptions<
 >;
 
 export interface RootNodeWidget extends NodeWidget {
-  construct: Record<'state' | 'props', string[]>;
+  construct: Record<'state' | 'props', Record<string, string>>;
 }
 
 export type NodeType = 'element' | 'node';

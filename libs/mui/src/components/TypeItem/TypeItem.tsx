@@ -21,6 +21,7 @@ export default function TypeItem({
   );
 
   const [status, selection] = Hooks.useConstructSelection(
+    propPath,
     ({ status, onStatusChange }) => (
       <TypeItemSelection status={status} onStatusChange={onStatusChange} />
     )

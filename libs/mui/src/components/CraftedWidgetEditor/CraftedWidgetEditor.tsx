@@ -13,6 +13,7 @@ import type * as Appcraft from '@appcraft/types';
 import * as Common from '../common';
 import * as Hooks from '../../hooks';
 import * as Styles from '../../styles';
+import { ConstructProvider } from '../../contexts';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { WidgetAddDialog } from '../WidgetAddDialog';
 import { WidgetNode } from '../WidgetNode';
@@ -20,7 +21,6 @@ import type * as Types from './CraftedWidgetEditor.types';
 
 export default function CraftedWidgetEditor({
   defaultValues, //! defaultProps - 尚未完成
-  disableSelection,
   fetchOptions,
   fixedT,
   widget,
@@ -86,20 +86,21 @@ export default function CraftedWidgetEditor({
       />
 
       {selected?.category === 'node' && (
-        <CraftedTypeEditor
-          disableSelection={disableSelection}
-          fixedT={fixedT}
-          open={Boolean(selected)}
-          parser={fetchOptions.parser}
-          values={selected}
-          onChange={onWidgetModify}
-          action={
-            <Common.WidgetAppBar
-              description={selected.type.replace(/([A-Z])/g, ' $1')}
-              onBackToStructure={() => onWidgetSelect(null)}
-            />
-          }
-        />
+        <ConstructProvider widget={widget} onWidgetChange={onWidgetChange}>
+          <CraftedTypeEditor
+            fixedT={fixedT}
+            open={Boolean(selected)}
+            parser={fetchOptions.parser}
+            values={selected}
+            onChange={onWidgetModify}
+            action={
+              <Common.WidgetAppBar
+                description={selected.type.replace(/([A-Z])/g, ' $1')}
+                onBackToStructure={() => onWidgetSelect(null)}
+              />
+            }
+          />
+        </ConstructProvider>
       )}
 
       <Collapse in={Boolean(!selected)}>

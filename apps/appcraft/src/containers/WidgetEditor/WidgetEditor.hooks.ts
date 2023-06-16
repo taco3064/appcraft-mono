@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import type { RootNodeWidget } from '@appcraft/types';
 
 import type { EditedWidgetHook } from './WidgetEditor.types';
@@ -10,7 +10,7 @@ export const useEditedWidget: EditedWidgetHook = (data) => {
 
   return {
     widget,
-    onWidgetChange: (e) => setWidget(!e ? null : e),
+    onWidgetChange: useCallback((e) => setWidget(!e ? null : e), [setWidget]),
 
     onReset: () =>
       setWidget(

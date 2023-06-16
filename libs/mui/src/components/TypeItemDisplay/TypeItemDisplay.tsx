@@ -5,17 +5,15 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
 import { GapTypography, TypeItemAction } from '../../styles';
-import { useDisplayPropName } from '../../hooks';
 import type { TypeItemDisplayProps } from './TypeItemDisplay.types';
 
 export default function TypeItemDisplay({
   action,
-  selection,
+  label,
   options,
+  selection,
   onClick,
 }: TypeItemDisplayProps) {
-  const displayName = useDisplayPropName(options.propName);
-
   return (
     <ListItemButton onClick={() => onClick(options)}>
       {selection}
@@ -32,7 +30,7 @@ export default function TypeItemDisplay({
               <DataObjectIcon color="secondary" />
             )}
 
-            {displayName}
+            {label}
           </GapTypography>
         }
       />

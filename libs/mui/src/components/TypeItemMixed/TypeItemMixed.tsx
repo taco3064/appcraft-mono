@@ -15,20 +15,15 @@ import type { TypeItemMixedProps } from './TypeItemMixed.types';
 
 export default function TypeItemMixed({
   action,
-  collectionType,
+  label,
   options,
+  propPath,
   renderMatchedField,
   selection,
 }: TypeItemMixedProps) {
-  const [selected, setSelected] = Hooks.useMixedTypeMapping(
-    collectionType,
-    'props',
-    options.propName as string
-  );
-
+  const [selected, setSelected] = Hooks.useMixedTypeMapping(propPath);
   const [open, setOpen] = useState(false);
   const ct = Hooks.useFixedT();
-  const displayName = Hooks.useDisplayPropName(options.propName);
   const matched = options.options?.find(({ text }) => text === selected);
 
   return (
@@ -69,7 +64,7 @@ export default function TypeItemMixed({
                   <BookmarkBorderIcon color="secondary" />
                 </Badge>
 
-                {displayName}
+                {label}
               </GapTypography>
             }
           />

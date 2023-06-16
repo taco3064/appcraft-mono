@@ -10,17 +10,12 @@ import type { TypeItemPureProps } from './TypeItemPure.types';
 
 export default function TypeItemPure({
   action,
-  collectionType,
+  label,
   options,
+  propPath,
   selection,
 }: TypeItemPureProps) {
-  const displayName = Hooks.useDisplayPropName(options.propName);
-
-  const { value, onChange } = Hooks.usePropValue(
-    collectionType,
-    'props',
-    options.propName as string
-  );
+  const { value, onChange } = Hooks.usePropValue(propPath);
 
   return (
     <ListItem>
@@ -36,7 +31,7 @@ export default function TypeItemPure({
                 size="small"
                 variant="outlined"
                 required={options.required}
-                label={displayName}
+                label={label}
                 defaultValue={value || ''}
                 onChange={(e) => onChange(e.target.value)}
               />
@@ -52,7 +47,7 @@ export default function TypeItemPure({
                   {
                     inputComponent: Common.BoolInput,
                     inputProps: {
-                      label: displayName,
+                      label,
                       checked: Boolean(value),
                       onChange: (e: { target: { checked: boolean } }) =>
                         onChange(e.target.checked),
@@ -68,7 +63,7 @@ export default function TypeItemPure({
                 size="small"
                 variant="outlined"
                 required={options.required}
-                label={displayName}
+                label={label}
                 InputProps={
                   {
                     inputComponent: Common.NumberInput,
@@ -95,7 +90,7 @@ export default function TypeItemPure({
                 size="small"
                 variant="outlined"
                 required={options.required}
-                label={displayName}
+                label={label}
                 value={value || ''}
                 onChange={(e) => onChange(e.target.value)}
                 SelectProps={{ displayEmpty: options.required }}

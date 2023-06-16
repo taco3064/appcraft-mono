@@ -14,7 +14,6 @@ export default function CraftedTypeEditor<
 >({
   action,
   open = true,
-  disableSelection,
   fixedT,
   parser,
   values,
@@ -64,12 +63,9 @@ export default function CraftedTypeEditor<
 
         <Suspense fallback={<TypeListSkeleton />}>
           <LazyTypeList
-            {...{
-              disableSelection,
-              onChange,
-            }}
             message={ct('msg-select-widget-type-first')}
             values={values as V}
+            onChange={onChange}
             onCollectionPathChange={setCollectionPath}
           />
         </Suspense>

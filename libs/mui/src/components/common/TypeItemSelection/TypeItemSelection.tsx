@@ -2,6 +2,7 @@ import Checkbox from '@mui/material/Checkbox';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
 import { TinyAvatar } from '../../../styles';
+import { statuses } from '../../../hooks';
 import * as Types from './TypeItemSelection.types';
 
 export default function TypeItemSelection({
@@ -26,9 +27,7 @@ export default function TypeItemSelection({
         }
         onClick={() =>
           onStatusChange(
-            Types.statuses[
-              (Types.statuses.indexOf(status) + 1) % Types.statuses.length
-            ]
+            statuses[(statuses.indexOf(status) + 1) % statuses.length]
           )
         }
       />

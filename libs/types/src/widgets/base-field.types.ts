@@ -5,8 +5,9 @@ export type CollectionType = 'array' | 'object';
 export type WidgetField = 'nodes' | 'props' | 'events';
 
 export interface BaseField<O extends PropTypesDef> {
-  collectionType: CollectionType;
+  label: string;
   options: O;
+  propPath: string;
   action?: ReactNode;
   selection?: ReactNode;
 }

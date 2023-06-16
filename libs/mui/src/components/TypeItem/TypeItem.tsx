@@ -1,30 +1,29 @@
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
-import { useState } from 'react';
 
+import * as Hooks from '../../hooks';
 import { TypeItemDisplay, TypeItemDisplayProps } from '../TypeItemDisplay';
 import { TypeItemMixed, TypeItemMixedProps } from '../TypeItemMixed';
 import { TypeItemPure, TypeItemPureProps } from '../TypeItemPure';
-import { TypeItemSelection, Status } from '../common';
-import { useTypeCategory } from '../../hooks';
+import { TypeItemSelection } from '../common';
 import type * as Types from './TypeItem.types';
 
 export default function TypeItem({
   action,
   collectionType,
-  disableSelection = false,
   options,
   onDelete,
   onSubitemView,
 }: Types.TypeItemProps) {
-  const [status, setStatus] = useState<Status>(null);
-  const category = useTypeCategory(options);
+  const { category, label, propPath } = Hooks.useTypeItem(
+    collectionType,
+    options
+  );
 
-  const selection = disableSelection ? null : (
-    <TypeItemSelection
-      status={status}
-      onStatusChange={(newStatus) => setStatus(newStatus)}
-    />
+  const [status, selection] = Hooks.useConstructSelection(
+    ({ status, onStatusChange }) => (
+      <TypeItemSelection status={status} onStatusChange={onStatusChange} />
+    )
   );
 
   const actions =
@@ -45,6 +44,8 @@ export default function TypeItem({
       {category === 'Display' && (
         <TypeItemDisplay
           action={actions}
+          label={label}
+          propPath={propPath}
           options={options as TypeItemDisplayProps['options']}
           selection={selection}
           onClick={onSubitemView}
@@ -54,7 +55,8 @@ export default function TypeItem({
       {category === 'Pure' && (
         <TypeItemPure
           action={actions}
-          collectionType={collectionType}
+          label={label}
+          propPath={propPath}
           options={options as TypeItemPureProps['options']}
           selection={selection}
         />
@@ -63,12 +65,13 @@ export default function TypeItem({
       {category === 'Mixed' && (
         <TypeItemMixed
           action={actions}
-          collectionType={collectionType}
+          label={label}
+          propPath={propPath}
           options={options as TypeItemMixedProps['options']}
           selection={selection}
           renderMatchedField={(matched, matchedAction) => (
             <TypeItem
-              {...{ collectionType, disableSelection, onDelete, onSubitemView }}
+              {...{ collectionType, onDelete, onSubitemView }}
               options={matched}
               action={matchedAction}
             />

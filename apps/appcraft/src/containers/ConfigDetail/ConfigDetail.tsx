@@ -56,7 +56,6 @@ export default function ConfigDetail({
 
       <Container maxWidth="sm">
         <CraftedTypeEditor
-          disableSelection
           fixedT={ct}
           parser={TYPES_FETCH_OPTIONS.parser as object}
           values={values}

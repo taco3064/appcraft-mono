@@ -1,6 +1,6 @@
 import _get from 'lodash.get';
 import _set from 'lodash.set';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import type { WidgetMutationHook } from './useWidgetMutation.types';
@@ -12,8 +12,15 @@ const useWidgetMutation: WidgetMutationHook = (
   onWidgetChange
 ) => {
   const [selected, setSelected] = useState<Appcraft.WidgetOptions | null>(null);
-  const target = _get(widget, paths || []) || [];
-  const items = Array.isArray(target) ? target : [target];
+  const target = _get(widget, paths || []);
+
+  const items = useMemo(() => {
+    if (target) {
+      return Array.isArray(target) ? target : [target];
+    }
+
+    return [];
+  }, [target]);
 
   return [
     selected,
@@ -29,25 +36,36 @@ const useWidgetMutation: WidgetMutationHook = (
               }) as Appcraft.RootNodeWidget
         ),
 
-      onWidgetModify: (e) => {
-        if (e.category === 'node') {
-          setSelected(e);
-        }
+      onWidgetModify: useCallback(
+        (e) => {
+          if (e.category === 'node') {
+            setSelected(e);
+          }
 
-        onWidgetChange(
-          !paths?.length
-            ? (e as Appcraft.RootNodeWidget)
-            : {
-                ..._set(
-                  widget,
-                  paths,
-                  !isMultiChildren
-                    ? e
-                    : items.map((item) => (item !== selected ? item : e))
-                ),
-              }
-        );
-      },
+          onWidgetChange(
+            !paths?.length
+              ? (e as Appcraft.RootNodeWidget)
+              : {
+                  ..._set(
+                    widget,
+                    paths,
+                    !isMultiChildren
+                      ? e
+                      : items.map((item) => (item !== selected ? item : e))
+                  ),
+                }
+          );
+        },
+        [
+          isMultiChildren,
+          items,
+          paths,
+          selected,
+          widget,
+          onWidgetChange,
+          setSelected,
+        ]
+      ),
 
       onWidgetRemove: (e) =>
         onWidgetChange(

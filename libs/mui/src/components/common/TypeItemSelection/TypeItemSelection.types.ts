@@ -1,5 +1,4 @@
-export const statuses = [null, 'state', 'props'] as const;
-export type Status = (typeof statuses)[number];
+import type { Status } from '../../../hooks';
 
 export interface TypeItemSelectionProps {
   status: Status;

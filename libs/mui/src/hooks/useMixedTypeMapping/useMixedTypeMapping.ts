@@ -1,24 +1,11 @@
-import type * as Appcraft from '@appcraft/types';
+import { useEditorContext } from '../../contexts';
+import type * as Types from './useMixedTypeMapping.types';
 
-import { OptionValues, useEditorContext } from '../../contexts';
-import { usePropValue } from '../usePropValue';
-import type { MixedTypeMappingResult } from './useMixedTypeMapping.types';
-
-const useMixedTypeMapping = <V extends OptionValues>(
-  collectionType: Appcraft.CollectionType,
-  widgetField: keyof V,
-  propName: string
-) => {
+const useMixedTypeMapping: Types.MixedTypeMappingHook = (propPath: string) => {
   const {
     values: { mixedTypes, ...values },
     onChange,
   } = useEditorContext();
-
-  const { path: propPath } = usePropValue<V>(
-    collectionType,
-    widgetField,
-    propName
-  );
 
   return [
     mixedTypes?.[propPath] || null,
@@ -28,26 +15,22 @@ const useMixedTypeMapping = <V extends OptionValues>(
         onChange({
           ...values,
           mixedTypes: { ...mixedTypes, [propPath]: mixedText },
-        } as V);
+        });
       } else {
-        const fields: Appcraft.WidgetField[] = ['events', 'nodes', 'props'];
+        const { props } = values;
 
         delete mixedTypes?.[propPath];
 
-        fields.forEach((field) => {
-          const { [field as keyof V]: options = {} } = values;
-
-          Object.keys(options as Record<string, unknown>).forEach((path) => {
-            if (path.startsWith(propPath)) {
-              delete (options as Record<string, unknown>)[path];
-            }
-          });
+        Object.keys(props || {}).forEach((path) => {
+          if (path.startsWith(propPath)) {
+            delete props?.[path];
+          }
         });
 
-        onChange({ ...values } as V);
+        onChange({ ...values });
       }
     },
-  ] as MixedTypeMappingResult;
+  ];
 };
 
 export default useMixedTypeMapping;

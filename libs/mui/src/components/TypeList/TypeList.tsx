@@ -10,7 +10,6 @@ import type { OptionValues } from '../../contexts';
 import type { TypeListProps } from './TypeList.types';
 
 export default function TypeList<V extends OptionValues>({
-  disableSelection,
   superior,
   values,
   onChange,
@@ -71,7 +70,7 @@ export default function TypeList<V extends OptionValues>({
     >
       {items.map(({ key, collectionType, options, onDelete }) => (
         <TypeItem
-          {...{ key, collectionType, disableSelection, options, onDelete }}
+          {...{ key, collectionType, options, onDelete }}
           onSubitemView={handleTo}
         />
       ))}

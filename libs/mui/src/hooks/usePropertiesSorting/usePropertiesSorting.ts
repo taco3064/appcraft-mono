@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { getOrderSeq } from '../useTypeCategory';
+import { getOrderSeq } from '../useTypeItem';
 import type { PropertiesSortingHook } from './usePropertiesSorting.types';
 
 const usePropertiesSorting: PropertiesSortingHook = (basicType) =>

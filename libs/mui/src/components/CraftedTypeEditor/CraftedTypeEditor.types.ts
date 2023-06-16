@@ -29,7 +29,6 @@ export type CraftedTypeEditorProps<
   A extends ActionElement
 > = Collapsable<
   Omit<EditorProviderProps<V>, 'children' | 'collectionPath'> & {
-    disableSelection?: boolean;
     parser: Appcraft.FetchOptions;
   },
   A

@@ -1,5 +1,5 @@
 export * from './useCollection';
-export * from './useDisplayPropName';
+export * from './useConstructSelection';
 export * from './useFixedT';
 export * from './useLazyTypeList';
 export * from './useLazyWidget';
@@ -9,7 +9,7 @@ export * from './usePropValue';
 export * from './usePropertiesSorting';
 export * from './usePropertyRouter';
 export * from './useStructure';
-export * from './useTypeCategory';
+export * from './useTypeItem';
 export * from './useTypeItems';
 export * from './useWidgetMutation';
 export * from './useWidgetProps';

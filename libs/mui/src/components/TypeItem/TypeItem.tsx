@@ -1,10 +1,7 @@
-import Avatar from '@mui/material/Avatar';
-import Checkbox from '@mui/material/Checkbox';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
+import { useState } from 'react';
 
-import { TinyAvatar } from '../../styles';
 import { useTypeCategory } from '../../hooks';
 import * as Common from '../common';
 import type * as Types from './TypeItem.types';
@@ -17,24 +14,14 @@ export default function TypeItem({
   onDelete,
   onSubitemView,
 }: Types.TypeItemProps) {
+  const [status, setStatus] = useState<Common.Status>(null);
   const category = useTypeCategory(options);
 
   const selection = disableSelection ? null : (
-    <ListItemIcon onClick={(e) => e.stopPropagation()}>
-      <Checkbox
-        color="primary"
-        checkedIcon={
-          <TinyAvatar variant="square" color="primary">
-            S
-          </TinyAvatar>
-        }
-        indeterminateIcon={
-          <TinyAvatar variant="square" color="secondary">
-            P
-          </TinyAvatar>
-        }
-      />
-    </ListItemIcon>
+    <Common.TypeItemSelection
+      status={status}
+      onStatusChange={(newStatus) => setStatus(newStatus)}
+    />
   );
 
   const actions =

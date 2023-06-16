@@ -1,11 +1,11 @@
-import type { WidgetOptions } from '@appcraft/types';
+import type { RootNodeWidget } from '@appcraft/types';
 import type { RendererProviderProps } from '../../contexts';
 
 type WidgetLayout = {
-  widget: WidgetOptions;
+  widget: RootNodeWidget;
 };
 
 export interface CraftedRendererProps
   extends Omit<RendererProviderProps, 'children'> {
-  options?: WidgetOptions | WidgetLayout[];
+  options?: RootNodeWidget | WidgetLayout[];
 }

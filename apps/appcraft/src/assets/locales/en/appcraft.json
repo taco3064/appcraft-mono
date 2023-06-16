@@ -10,6 +10,7 @@
   "lbl-description": "Description",
   "lbl-plain-text": "Text",
   "msg-no-widget": "This section will display the widget structure. Please click 'New Widget' to start building the widget content.",
+  "msg-no-widgets": "No Widgets Available",
   "msg-select-widget-type-first": "Select a widget type first.",
   "ttl-node-array-map": "Array Map",
   "ttl-node-plain-text": "Plain Text",

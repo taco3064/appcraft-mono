@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.42](https://github.com/taco3064/appcraft-mono/compare/v0.0.41...v0.0.42) (2023-06-16)
+
+
+### Features
+
+* **@appcraft/mui:** add disabled to TypeItem ([3cd9086](https://github.com/taco3064/appcraft-mono/commit/3cd90865f745303ba59f067c144553ff865582b8))
+* **@appcraft/mui:** add new component: TypeItemSelection ([226ac0c](https://github.com/taco3064/appcraft-mono/commit/226ac0cd4b9c562423bc03101aa02e99849001c8))
+* **@appcraft/mui:** add new type: RootNodeWidget ([08240f7](https://github.com/taco3064/appcraft-mono/commit/08240f7b12e414873e4039ecb71e61c069689a90))
+* **@appcraft/mui:** support set the prop as global state or widget props ([2e29b22](https://github.com/taco3064/appcraft-mono/commit/2e29b225d32bac4feb7c13a68ee2c2079b9f80cd))
+* **mui-widget.json:** add MenuItem ([f04089b](https://github.com/taco3064/appcraft-mono/commit/f04089b96f61489688505dab50006e8d93a99a1b))
+
 ### [0.0.41](https://github.com/taco3064/appcraft-mono/compare/v0.0.40...v0.0.41) (2023-06-15)
 
 

@@ -6,8 +6,7 @@ const ConstructContext = createContext<Types.ConstructContextValue>({
   onWidgetChange: () => null,
 });
 
-export const useConstructContext = () =>
-  useContext(ConstructContext) as Required<Types.ConstructContextValue>;
+export const useConstructContext = () => useContext(ConstructContext);
 
 export function ConstructProvider({
   children,

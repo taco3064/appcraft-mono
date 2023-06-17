@@ -90,21 +90,19 @@ export default function CraftedWidgetEditor({
       />
 
       {selected?.category === 'node' && (
-        <ConstructProvider {...{ paths, widget, onWidgetChange }}>
-          <CraftedTypeEditor
-            fixedT={fixedT}
-            open={Boolean(selected)}
-            parser={fetchOptions.parser}
-            values={selected}
-            onChange={onWidgetModify}
-            action={
-              <Common.WidgetAppBar
-                description={selected.type.replace(/([A-Z])/g, ' $1')}
-                onBackToStructure={() => onWidgetSelect(null)}
-              />
-            }
-          />
-        </ConstructProvider>
+        <CraftedTypeEditor
+          fixedT={fixedT}
+          open={Boolean(selected)}
+          parser={fetchOptions.parser}
+          values={selected}
+          onChange={onWidgetModify}
+          action={
+            <Common.WidgetAppBar
+              description={selected.type.replace(/([A-Z])/g, ' $1')}
+              onBackToStructure={() => onWidgetSelect(null)}
+            />
+          }
+        />
       )}
 
       <Collapse in={Boolean(!selected)}>

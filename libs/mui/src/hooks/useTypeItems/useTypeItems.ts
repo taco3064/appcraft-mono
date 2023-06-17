@@ -22,7 +22,7 @@ const useTypeItems = <V extends OptionValues>(
 
   const handleDelete = (fn: () => string) =>
     startTransition(() => {
-      const fields: WidgetField[] = ['events', 'nodes', 'props'];
+      const fields: WidgetField[] = ['nodes', 'props', 'todos'];
       const { mixedTypes } = widgetValues;
       const propPath = getPropPathBySource(source, [..._toPath(path), fn()]);
 

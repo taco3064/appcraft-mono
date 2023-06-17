@@ -18,10 +18,7 @@ export type LazyTypeListProps<V extends OptionValues> = Omit<
   message: string;
 };
 
-type Collapsable<
-  P extends Record<string, unknown>,
-  A extends ActionElement
-> = P &
+type Collapsable<P, A extends ActionElement> = P &
   (A extends undefined ? Partial<CollapsedAction<A>> : CollapsedAction<A>);
 
 export type CraftedTypeEditorProps<

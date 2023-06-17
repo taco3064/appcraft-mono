@@ -10,7 +10,7 @@ const useCollection = <V extends OptionValues>(defaultValues?: Collection) => {
   const { collectionPath, values } = useEditorContext<V>();
 
   const source = useMemo<object>(() => {
-    const fields: Appcraft.WidgetField[] = ['events', 'nodes', 'props'];
+    const fields: Appcraft.WidgetField[] = ['nodes', 'props', 'todos'];
 
     return fields.reduce((result, field) => {
       const { [field as keyof V]: options = {} } = values;

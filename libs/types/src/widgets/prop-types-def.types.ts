@@ -1,6 +1,6 @@
 export type TypesMapping = Record<string, string>;
 
-export enum PropType {
+enum PropType {
   arrayOf,
   bool,
   element,

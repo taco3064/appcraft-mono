@@ -7,7 +7,7 @@ export const getProps = <P extends object>(
   options: Appcraft.NodeWidget | Appcraft.ConfigOptions,
   renderer?: Renderer
 ) => {
-  const fields: Appcraft.WidgetField[] = ['events', 'nodes', 'props'];
+  const fields: Appcraft.WidgetField[] = ['nodes', 'props', 'todos'];
 
   return fields.reduce((result, widgetField) => {
     const { [widgetField as keyof typeof options]: props = {} } = options;

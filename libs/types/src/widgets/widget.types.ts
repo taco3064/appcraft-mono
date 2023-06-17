@@ -1,19 +1,29 @@
 import type { TypesParseOptions } from './prop-types-def.types';
+import type * as Todos from './todo.types';
 
-enum Category {
+//* Category Names
+enum OptionCategory {
   config,
   node,
   plainText,
 }
 
+export type NodeType = 'element' | 'node';
+
+//* Node & Structure
 type Nodes<E extends string[] = [], N extends string[] = []> = Partial<
   Record<E[number], WidgetOptions> & Record<N[number], WidgetOptions[]>
 >;
 
-type BaseOptions<
-  C extends keyof typeof Category,
-  P extends Record<string, unknown>
-> = {
+export type WidgetChildren = Record<keyof Nodes, NodeType>;
+
+export type WidgetStructure<N extends string = string> = Record<
+  N,
+  WidgetChildren
+>;
+
+//* Options
+type BaseOptions<C extends keyof typeof OptionCategory, P> = {
   category: C;
   description?: string;
 } & P;
@@ -25,24 +35,35 @@ export type ConfigOptions = BaseOptions<
   Omit<TypesParseOptions, 'collectionPath'> & {
     type: string;
     props?: Record<string, unknown>;
-    events?: Record<string, unknown>;
+    todos?: Record<
+      string,
+      (
+        | Todos.ConvertTodoEvent
+        | Todos.DefineTodoEvent
+        | Todos.EvaluateTodoEvent
+      )[]
+    >;
   }
 >;
 
 export type NodeWidget = BaseOptions<
   'node',
-  Omit<ConfigOptions, 'category'> & { nodes?: Nodes }
+  Omit<ConfigOptions, 'category' | 'todos'> & {
+    nodes?: Nodes;
+    todos?: Record<
+      string,
+      (
+        | Todos.ConvertTodoEvent
+        | Todos.DefineTodoEvent
+        | Todos.EvaluateTodoEvent
+        | Todos.FetchTodoEvent
+      )[]
+    >;
+  }
 >;
 
 export interface RootNodeWidget extends NodeWidget {
   construct: Record<'state' | 'props', Record<string, string>>;
 }
 
-export type NodeType = 'element' | 'node';
 export type WidgetOptions = PlainTextWidget | NodeWidget;
-export type WidgetChildren = Record<keyof Nodes, NodeType>;
-
-export type WidgetStructure<N extends string = string> = Record<
-  N,
-  WidgetChildren
->;

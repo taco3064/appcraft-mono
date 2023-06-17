@@ -26,9 +26,8 @@ export const initialCredentials: Types.InitialCredentialsService = async (
   return tokens;
 };
 
-export const revokeToken: Types.RevokeTokenService = async (accessToken) => {
-  await client.revokeToken(accessToken);
-};
+export const revokeToken: Types.RevokeTokenService = async (accessToken) =>
+  client.revokeToken(accessToken);
 
 export const verifyToken: Types.VerifyTokenService = async (idToken, res) => {
   try {
@@ -64,6 +63,6 @@ export const verifyToken: Types.VerifyTokenService = async (idToken, res) => {
         cookieOpts
       );
 
-    return await verifyToken(credentials.id_token);
+    return verifyToken(credentials.id_token);
   }
 };

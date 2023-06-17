@@ -60,16 +60,13 @@ export const add: Types.AddService = async (userid, newData) => {
     collection: 'hierarchy',
   });
 
-  const result = await collection.insertOne({
+  const { insertedId } = await collection.insertOne({
     ...newData,
     userid,
     _id: new ObjectId(),
   });
 
-  return {
-    ...newData,
-    _id: result.insertedId,
-  };
+  return { ...newData, _id: insertedId };
 };
 
 export const update: Types.UpdateService = async (userid, { _id, ...data }) => {
@@ -78,7 +75,7 @@ export const update: Types.UpdateService = async (userid, { _id, ...data }) => {
     collection: 'hierarchy',
   });
 
-  const result = await collection.updateOne(
+  const { upsertedId } = await collection.updateOne(
     {
       userid: { $eq: userid },
       _id: { $eq: new ObjectId(_id) },
@@ -88,10 +85,7 @@ export const update: Types.UpdateService = async (userid, { _id, ...data }) => {
     }
   );
 
-  return {
-    ...data,
-    _id: result.upsertedId,
-  };
+  return { ...data, _id: upsertedId };
 };
 
 export const remove: Types.RemoveService = async (userid, dataid) => {
@@ -108,5 +102,6 @@ export const remove: Types.RemoveService = async (userid, dataid) => {
   });
 
   await config.remove(dataid);
-  await Promise.all(children.map(({ _id }) => remove(userid, _id.toString())));
+
+  return Promise.all(children.map(({ _id }) => remove(userid, _id.toString())));
 };

@@ -9,11 +9,9 @@ export const find = async <C extends Types.OptionValues>(id: string) => {
     collection: 'config',
   });
 
-  const data = await collection.findOne({
+  return collection.findOne({
     _id: { $eq: new ObjectId(id) },
   });
-
-  return data;
 };
 
 export const upsert = async <C extends Types.OptionValues>({
@@ -46,7 +44,7 @@ export const remove = async <C extends Types.OptionValues>(id: string) => {
     collection: 'config',
   });
 
-  await collection.deleteOne({
+  return collection.deleteOne({
     _id: { $eq: new ObjectId(id) },
   });
 };

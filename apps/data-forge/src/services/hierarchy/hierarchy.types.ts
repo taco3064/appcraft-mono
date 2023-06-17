@@ -25,4 +25,7 @@ export type UpdateService = (
   data: HierarchyData<string>
 ) => Promise<HierarchyData<ObjectId>>;
 
-export type RemoveService = (userid: string, dataid: string) => Promise<void>;
+export type RemoveService = (
+  userid: string,
+  dataid: string
+) => Promise<unknown>;

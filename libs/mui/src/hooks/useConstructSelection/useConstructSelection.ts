@@ -41,12 +41,12 @@ const useConstructSelection: Types.ConstructSelectionHook = (
               ...widget,
               construct: Object.entries(construct).reduce(
                 (result, [field, pathAlias]) => {
-                  if (newStatus === field) {
+                  if (newStatus !== field) {
+                    delete pathAlias[globalPath];
+                  } else {
                     pathAlias[globalPath] = `${field}_${Math.random()
                       .toFixed(7)
                       .replace('.', '')}`;
-                  } else {
-                    delete pathAlias[globalPath];
                   }
 
                   return { ...result, [field]: pathAlias };

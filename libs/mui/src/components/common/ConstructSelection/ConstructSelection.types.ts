@@ -1,6 +1,6 @@
 import type { Status } from '../../../hooks';
 
-export interface TypeItemSelectionProps {
+export interface ConstructSelectionProps {
   status: Status;
   onStatusChange: (e: Status) => void;
 }

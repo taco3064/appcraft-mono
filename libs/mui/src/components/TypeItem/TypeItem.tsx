@@ -2,10 +2,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 
 import * as Hooks from '../../hooks';
+import { ConstructSelection } from '../common';
 import { TypeItemDisplay, TypeItemDisplayProps } from '../TypeItemDisplay';
 import { TypeItemMixed, TypeItemMixedProps } from '../TypeItemMixed';
 import { TypeItemPure, TypeItemPureProps } from '../TypeItemPure';
-import { TypeItemSelection } from '../common';
 import type * as Types from './TypeItem.types';
 
 export default function TypeItem({
@@ -24,7 +24,7 @@ export default function TypeItem({
   const [status, selection] = Hooks.useConstructSelection(
     propPath,
     ({ status, onStatusChange }) => (
-      <TypeItemSelection status={status} onStatusChange={onStatusChange} />
+      <ConstructSelection status={status} onStatusChange={onStatusChange} />
     )
   );
 

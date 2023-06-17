@@ -6,7 +6,7 @@ import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
 
-export default function DataSources() {
+export default function Todos() {
   const { pathname } = useRouter();
   const [nt] = useFixedT('nav');
 
@@ -20,7 +20,7 @@ export default function DataSources() {
     <PageContainer
       ContentProps={{ disableGutters: true }}
       maxWidth="lg"
-      title={nt('ttl-data-sources')}
+      title={nt('ttl-todos')}
       action={
         <>
           {action?.search}
@@ -30,7 +30,7 @@ export default function DataSources() {
       }
     >
       <Head>
-        <title>Appcraft | {nt('ttl-data-sources')}</title>
+        <title>Appcraft | {nt('ttl-todos')}</title>
       </Head>
 
       <HierarchyList

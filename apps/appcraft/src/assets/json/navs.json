@@ -1,15 +1,15 @@
 [
   {
-    "title": "ttl-data-sources",
-    "description": "dsc-datasources",
-    "icon": "storage",
-    "url": "/data-sources"
-  },
-  {
     "title": "ttl-themes",
     "description": "dsc-themes",
     "icon": "palette",
     "url": "/themes"
+  },
+  {
+    "title": "ttl-todos",
+    "description": "dsc-todos",
+    "icon": "assignment",
+    "url": "/todos"
   },
   {
     "title": "ttl-widgets",

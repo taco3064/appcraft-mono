@@ -1,5 +1,5 @@
 import type { TypesParseOptions } from './prop-types-def.types';
-import type * as Todos from './todo.types';
+import type { WidgetEvent } from './todo.types';
 
 //* Category Names
 enum OptionCategory {
@@ -35,14 +35,7 @@ export type ConfigOptions = BaseOptions<
   Omit<TypesParseOptions, 'collectionPath'> & {
     type: string;
     props?: Record<string, unknown>;
-    todos?: Record<
-      string,
-      (
-        | Todos.ConvertTodoEvent
-        | Todos.DefineTodoEvent
-        | Todos.EvaluateTodoEvent
-      )[]
-    >;
+    todos?: Record<string, WidgetEvent[]>;
   }
 >;
 
@@ -50,15 +43,7 @@ export type NodeWidget = BaseOptions<
   'node',
   Omit<ConfigOptions, 'category' | 'todos'> & {
     nodes?: Nodes;
-    todos?: Record<
-      string,
-      (
-        | Todos.ConvertTodoEvent
-        | Todos.DefineTodoEvent
-        | Todos.EvaluateTodoEvent
-        | Todos.FetchTodoEvent
-      )[]
-    >;
+    todos?: Record<string, WidgetEvent[]>;
   }
 >;
 

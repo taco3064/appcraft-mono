@@ -1,109 +1,47 @@
 import type { AxiosRequestConfig } from 'axios';
 
-//* Category Names
-enum ConversionCategory {
-  template,
-  subTodos,
-}
+//* Declaration - 僅指定資料型態
+type Declarations = 'arr' | 'bool' | 'date' | 'num' | 'obj' | 'str' | never;
+type ArrayDeclaration<T extends Declaration[] = []> = T;
 
-enum TodoEventCategory {
-  convert,
-  define,
-  evaluate,
-  fetch,
-}
+type ObjectDeclaration<
+  T extends Record<string, Declaration> = { [key: string]: never }
+> = T;
 
-enum VariableCategory {
-  arr,
-  bool,
-  date,
-  num,
-  obj,
-  str,
-}
+export type Declaration = Declarations | ArrayDeclaration | ObjectDeclaration;
 
-//* Conversion
-type BaseConversion<C extends keyof typeof ConversionCategory, O> = {
+//* Definition - 明確定義的資料值
+type Definitions = boolean | Date | number | string | never;
+type ArrayDefinition<T extends Definition[] = []> = T;
+
+type ObjectDefinition<
+  T extends Record<string, Definition> = { [key: string]: never }
+> = T;
+
+export type Definition = Definitions | ArrayDefinition | ObjectDefinition;
+
+//* Reusable Events
+type Todos = 'convert' | 'define' | 'fetch';
+
+type BaseTodoEvent<C extends Todos, P> = {
   category: C;
-  target: string; //* 轉換目標的參數路徑
-  alias: string; //* 轉換後的參數名稱
-} & O;
-
-export type TemplateConversion = BaseConversion<
-  'template',
-  { template?: string }
->;
-
-export type SubTodosConversion<C extends Conversion[] = []> = BaseConversion<
-  'subTodos',
-  { todos: ConvertTodoEvent<C>[] }
->;
-
-export type Conversion = TemplateConversion | SubTodosConversion;
-
-//* Evaluation
-export interface Evaluation {
-  target: string; //* 目標進行判斷的參數路徑
-  source: string | DefineTodoEvent; //* 比對來源參數的路徑或是定義事件
-  todo: ConvertTodoEvent | DefineTodoEvent | FetchTodoEvent; //* 比對成功後要執行的事件
-}
-
-//* Events
-type BaseTodoEvent<
-  C extends keyof typeof TodoEventCategory,
-  Output,
-  Options
-> = {
-  category: C;
+  key: string; //* Output Key
   description?: string;
-  output?: Output;
-  inputs?: Record<string, keyof typeof VariableCategory> & {
-    default?: keyof typeof VariableCategory;
-  };
-} & Options;
+  inputs?: Definition;
+} & P;
 
-export type ConvertTodoEvent<C extends Conversion[] = []> = BaseTodoEvent<
-  'convert',
-  Record<C[number]['alias'], unknown>,
+export type DefineTodoEvent = BaseTodoEvent<
+  'define',
   {
-    conversions: C;
+    initial?: string; //* 使用 JSON.stringify 建立初始值
+    template?: string; //* 使用 lodash template 讀取 inputs 建立初始值
   }
 >;
 
-export type DefineTodoEvent<T extends keyof typeof VariableCategory = 'str'> =
-  BaseTodoEvent<
-    'define',
-    T extends 'arr'
-      ? Array<unknown>
-      : T extends 'bool'
-      ? boolean
-      : T extends 'date'
-      ? Date
-      : T extends 'num'
-      ? number
-      : T extends 'obj'
-      ? Record<string, unknown>
-      : T extends 'str'
-      ? string
-      : never,
-    {
-      initial?: string;
-      type: T;
-    }
-  >;
-
-export type EvaluateTodoEvent = BaseTodoEvent<
-  'evaluate',
-  Evaluation['todo'],
-  {
-    evaluation: Evaluation[];
-  }
->;
-
-export type FetchTodoEvent<Output = unknown> = BaseTodoEvent<
+export type FetchTodoEvent = BaseTodoEvent<
   'fetch',
-  Output,
   Pick<AxiosRequestConfig, 'url' | 'method'> & {
+    params?: Declaration;
     headers?: Record<
       | 'Accept'
       | 'Content-Length'
@@ -115,8 +53,46 @@ export type FetchTodoEvent<Output = unknown> = BaseTodoEvent<
   }
 >;
 
-export type TodoEvent =
-  | ConvertTodoEvent
-  | DefineTodoEvent
-  | EvaluateTodoEvent
-  | FetchTodoEvent;
+export type ConvertTodoEvent = BaseTodoEvent<
+  'convert',
+  {
+    conversions: {
+      evaluation?: EvaluateFlowNode; //* 條件判斷
+      getter: DefineTodoEvent; //* 目標要進行轉換的值
+      setter: string; //* 目標進行回寫值的路徑 (for output)
+    }[]; //* 轉換函式名稱
+  }
+>;
+
+export type TodoEvent = DefineTodoEvent | FetchTodoEvent;
+
+//* Flows
+type Flows = 'evaluate' | 'iterate';
+
+type BaseFlowNode<C extends Flows, P = never> = {
+  category: C;
+  description?: string;
+  extractResultPath: string; //* Flow Node 目標要處理值的路徑
+  done?: {
+    type: 'state' | 'prop';
+    statusKey: string; //* 目標進行回寫值的 Status Key (for output)
+  };
+} & P;
+
+export type EvaluateFlowNode = BaseFlowNode<
+  'evaluate',
+  {
+    target: Pick<DefineTodoEvent, 'initial' | 'template'>; //* 判斷值
+    satisfied: FlowNode | TodoEvent; //* 條件成立時的下一步
+  }
+>;
+
+export type IterateFlowNode = BaseFlowNode<
+  'iterate',
+  {
+    conversion: ConvertTodoEvent;
+  }
+>;
+
+export type FlowNode = EvaluateFlowNode | IterateFlowNode;
+export type WidgetEvent = TodoEvent | FlowNode;

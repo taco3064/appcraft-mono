@@ -13,7 +13,7 @@ export default function Detail() {
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
 
-  const [dst] = Hooks.useFixedT('data-sources');
+  const [tt] = Hooks.useFixedT('todos');
   const { superiors, breadcrumbs } = Hooks.useHierarchyFilter(category, id);
 
   const [action, handleActionNodePick] = Hooks.useNodePickHandle([
@@ -31,7 +31,7 @@ export default function Detail() {
     <PageContainer
       ContentProps={{ disableGutters: true }}
       maxWidth="lg"
-      title={dst('ttl-detail', { name: superiors[id] })}
+      title={tt('ttl-detail', { name: superiors[id] })}
       action={
         <>
           {action?.reset}
@@ -40,7 +40,7 @@ export default function Detail() {
       }
     >
       <Head>
-        <title>Appcraft | {dst('ttl-detail', { name: superiors[id] })}</title>
+        <title>Appcraft | {tt('ttl-detail', { name: superiors[id] })}</title>
       </Head>
 
       <ConfigDetail

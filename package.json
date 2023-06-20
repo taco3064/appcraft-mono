@@ -27,6 +27,7 @@
     "lodash.set": "^4.3.2",
     "lodash.topath": "^4.5.2",
     "mongodb": "^5.1.0",
+    "nanoid": "^4.0.2",
     "next": "13.1.1",
     "notistack": "^3.0.1",
     "react": "18.2.0",

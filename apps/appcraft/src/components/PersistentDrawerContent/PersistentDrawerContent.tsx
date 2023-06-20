@@ -1,4 +1,5 @@
 import Container from '@mui/material/Container';
+import { nanoid } from 'nanoid';
 import { useRef } from 'react';
 
 import { SizedDrawer } from '~appcraft/styles';
@@ -14,7 +15,7 @@ export default function PersistentDrawerContent({
   open,
   ...props
 }: PersistentDrawerContentProps) {
-  const { current: id } = useRef(Math.random().toFixed(7).replace('.', ''));
+  const { current: id } = useRef(nanoid(5));
 
   return (
     <Container

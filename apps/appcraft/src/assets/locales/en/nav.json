@@ -1,13 +1,13 @@
 {
-  "dsc-datasources": "Manage RESTful API settings related to data source.",
   "dsc-pages": "An instant editor that integrates widgets and theme styles to create unique page functionalities.",
   "dsc-themes": "Manage your own unique theme styles.",
+  "dsc-todos": "Manage reusable todo event configurations for flexible and diverse component functionality.",
   "dsc-websites": "Edit the navigation menu on the website and configure the homepage content.",
   "dsc-widgets": "Design and assembly interface for reusable widgets.",
-  "ttl-data-sources": "Data Sources",
   "ttl-pages": "Web Page Editor",
   "ttl-settings": "Settings",
   "ttl-themes": "Theme Styles",
+  "ttl-todos": "Todo Events",
   "ttl-websites": "Websites",
   "ttl-widgets": "Widget Storage"
 }

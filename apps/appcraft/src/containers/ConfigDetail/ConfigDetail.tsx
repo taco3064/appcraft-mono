@@ -11,6 +11,7 @@ import { useFixedT, useNodePicker } from '~appcraft/hooks';
 import type { ConfigDetailProps } from './ConfigDetail.types';
 
 export default function ConfigDetail({
+  header,
   superiors: { names, breadcrumbs },
   onActionNodePick = (e) => e,
   ...props
@@ -55,6 +56,8 @@ export default function ConfigDetail({
       />
 
       <Container maxWidth="sm">
+        {header}
+
         <CraftedTypeEditor
           fixedT={ct}
           parser={TYPES_FETCH_OPTIONS.parser as object}

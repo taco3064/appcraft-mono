@@ -1,3 +1,7 @@
 {
+  "lbl-variant": "事項類型",
+  "opt-convert": "轉換陣列元素",
+  "opt-define": "建立變量",
+  "opt-fetch": "獲取/傳送數據",
   "ttl-detail": "執行事項設置 - {{ name }}"
 }

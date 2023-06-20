@@ -46,27 +46,31 @@ export default function CraftedWidgetEditor({
   const LazyWidgetNodes = Hooks.useLazyWidgetNodes<
     Appcraft.WidgetStructure,
     Types.LazyWidgetNodesProps<typeof onNodeActive>
-  >(fetchOptions.nodes, items, ({ fetchData, widgets, onActive, ...props }) => (
-    <>
-      {widgets.map((item, index) => (
-        <WidgetNode
-          {...props}
-          key={`item_${index}`}
-          item={item}
-          structure={item.category === 'node' && fetchData?.[item.typeName]}
-          onActive={(type, propPath) =>
-            item.category === 'node' &&
-            onActive({
-              type: item.type,
-              isMultiChildren: type === 'node',
-              propPath,
-              index,
-            })
-          }
-        />
-      ))}
-    </>
-  ));
+  >(fetchOptions.nodes, items, ({ fetchData, widgets, onActive, ...props }) =>
+    widgets.length === 0 ? (
+      <Common.ListPlaceholder message={ct('msg-no-widgets')} />
+    ) : (
+      <>
+        {widgets.map((item, index) => (
+          <WidgetNode
+            {...props}
+            key={`item_${index}`}
+            item={item}
+            structure={item.category === 'node' && fetchData?.[item.typeName]}
+            onActive={(type, propPath) =>
+              item.category === 'node' &&
+              onActive({
+                type: item.type,
+                isMultiChildren: type === 'node',
+                propPath,
+                index,
+              })
+            }
+          />
+        ))}
+      </>
+    )
+  );
 
   return (
     <>
@@ -86,21 +90,19 @@ export default function CraftedWidgetEditor({
       />
 
       {selected?.category === 'node' && (
-        <ConstructProvider {...{ paths, widget, onWidgetChange }}>
-          <CraftedTypeEditor
-            fixedT={fixedT}
-            open={Boolean(selected)}
-            parser={fetchOptions.parser}
-            values={selected}
-            onChange={onWidgetModify}
-            action={
-              <Common.WidgetAppBar
-                description={selected.type.replace(/([A-Z])/g, ' $1')}
-                onBackToStructure={() => onWidgetSelect(null)}
-              />
-            }
-          />
-        </ConstructProvider>
+        <CraftedTypeEditor
+          fixedT={fixedT}
+          open={Boolean(selected)}
+          parser={fetchOptions.parser}
+          values={selected}
+          onChange={onWidgetModify}
+          action={
+            <Common.WidgetAppBar
+              description={selected.type.replace(/([A-Z])/g, ' $1')}
+              onBackToStructure={() => onWidgetSelect(null)}
+            />
+          }
+        />
       )}
 
       <Collapse in={Boolean(!selected)}>

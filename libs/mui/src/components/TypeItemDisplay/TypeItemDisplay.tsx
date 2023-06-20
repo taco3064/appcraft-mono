@@ -16,7 +16,10 @@ export default function TypeItemDisplay({
   onClick,
 }: TypeItemDisplayProps) {
   return (
-    <ListItemButton onClick={() => !disabled && onClick(options)}>
+    <ListItemButton
+      disableRipple={disabled}
+      onClick={() => !disabled && onClick(options)}
+    >
       {selection}
 
       <ListItemText
@@ -27,11 +30,11 @@ export default function TypeItemDisplay({
             color={disabled ? 'text.secondary' : 'text.primary'}
           >
             {options.type === 'func' ? (
-              <DeviceHubIcon color="secondary" />
+              <DeviceHubIcon color={disabled ? 'disabled' : 'secondary'} />
             ) : options.type === 'arrayOf' ? (
-              <DataArrayIcon color="secondary" />
+              <DataArrayIcon color={disabled ? 'disabled' : 'secondary'} />
             ) : (
-              <DataObjectIcon color="secondary" />
+              <DataObjectIcon color={disabled ? 'disabled' : 'secondary'} />
             )}
 
             {label}

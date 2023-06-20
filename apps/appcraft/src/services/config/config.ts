@@ -28,6 +28,5 @@ export function upsertConfig<C extends Types.ConfigValues>(
     .then(({ data: modified }) => modified);
 }
 
-export const removeConfig: Types.RemoveConfigService = async (id) => {
-  await axios.delete(`/api/data-forge/config/remove/${id}`);
-};
+export const removeConfig: Types.RemoveConfigService = async (id) =>
+  axios.delete(`/api/data-forge/config/remove/${id}`);

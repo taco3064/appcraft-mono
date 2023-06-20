@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import type { PropTypesDef } from './prop-types-def.types';
 
 export type CollectionType = 'array' | 'object';
-export type WidgetField = 'nodes' | 'props' | 'events';
+export type WidgetField = 'nodes' | 'props' | 'todos';
 
 export interface BaseField<O extends PropTypesDef> {
   disabled?: boolean;

@@ -13,18 +13,22 @@ const useConstructSelection: Types.ConstructSelectionHook = (
   const { values } = useEditorContext();
 
   const [status, globalPath] = useMemo<[Types.Status, string]>(() => {
-    const { construct } = widget;
-    const target = _get(widget, nodePath);
+    if (widget) {
+      const { construct } = widget;
+      const target = _get(widget, nodePath);
 
-    const globalPath = `${getPropPath(nodePath)}${
-      Array.isArray(target) ? `[${target.indexOf(values)}]` : ''
-    }.props["${propPath}"]`;
+      const globalPath = `${getPropPath(nodePath)}${
+        Array.isArray(target) ? `[${target.indexOf(values)}]` : ''
+      }.props["${propPath}"]`;
 
-    const field = Object.keys(construct).find(
-      (status) => globalPath in construct[status as keyof typeof construct]
-    ) as Types.Status;
+      const field = Object.keys(construct).find(
+        (status) => globalPath in construct[status as keyof typeof construct]
+      ) as Types.Status;
 
-    return [field || null, globalPath];
+      return [field || null, globalPath];
+    }
+
+    return [null, ''];
   }, [propPath, nodePath, values, widget]);
 
   return [
@@ -41,12 +45,12 @@ const useConstructSelection: Types.ConstructSelectionHook = (
               ...widget,
               construct: Object.entries(construct).reduce(
                 (result, [field, pathAlias]) => {
-                  if (newStatus === field) {
+                  if (newStatus !== field) {
+                    delete pathAlias[globalPath];
+                  } else {
                     pathAlias[globalPath] = `${field}_${Math.random()
                       .toFixed(7)
                       .replace('.', '')}`;
-                  } else {
-                    delete pathAlias[globalPath];
                   }
 
                   return { ...result, [field]: pathAlias };

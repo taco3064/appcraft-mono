@@ -1,7 +1,7 @@
 import type { NodeWidget, WidgetOptions } from '@appcraft/types';
 import type { NodePath } from '../../contexts';
 
-type BaseNode<C extends Record<string, unknown>> = Pick<NodeWidget, 'type'> & C;
+type BaseNode<C> = Pick<NodeWidget, 'type'> & C;
 
 export type ActiveNode = BaseNode<{
   isMultiChildren: boolean;

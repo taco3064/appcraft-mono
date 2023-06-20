@@ -33,7 +33,6 @@ export type PlainTextWidget = BaseOptions<'plainText', { content: string }>;
 export type ConfigOptions = BaseOptions<
   'config',
   Omit<TypesParseOptions, 'collectionPath'> & {
-    type: string;
     props?: Record<string, unknown>;
     todos?: Record<string, WidgetEvent[]>;
   }
@@ -41,9 +40,9 @@ export type ConfigOptions = BaseOptions<
 
 export type NodeWidget = BaseOptions<
   'node',
-  Omit<ConfigOptions, 'category' | 'todos'> & {
+  Omit<ConfigOptions, 'category'> & {
+    type: string;
     nodes?: Nodes;
-    todos?: Record<string, WidgetEvent[]>;
   }
 >;
 

@@ -1,24 +1,22 @@
 import type { AxiosRequestConfig } from 'axios';
 
 //* Declaration - 僅指定資料型態
-type Declarations = 'arr' | 'bool' | 'date' | 'num' | 'obj' | 'str' | never;
-type ArrayDeclaration<T extends Declaration[] = []> = T;
-
-type ObjectDeclaration<
-  T extends Record<string, Declaration> = { [key: string]: never }
-> = T;
-
-export type Declaration = Declarations | ArrayDeclaration | ObjectDeclaration;
+export type Declaration =
+  | 'bool'
+  | 'date'
+  | 'num'
+  | 'str'
+  | [Declaration]
+  | { [key: string]: Declaration };
 
 //* Definition - 明確定義的資料值
-type Definitions = boolean | Date | number | string | never;
-type ArrayDefinition<T extends Definition[] = []> = T;
-
-type ObjectDefinition<
-  T extends Record<string, Definition> = { [key: string]: never }
-> = T;
-
-export type Definition = Definitions | ArrayDefinition | ObjectDefinition;
+export type Definition =
+  | boolean
+  | Date
+  | number
+  | string
+  | [Definition]
+  | { [key: string]: Definition };
 
 //* Reusable Events
 type Todos = 'convert' | 'define' | 'fetch';
@@ -27,7 +25,7 @@ type BaseTodoEvent<C extends Todos, P> = {
   category: C;
   key: string; //* Output Key
   description?: string;
-  inputs?: Definition;
+  declaration?: Declaration;
 } & P;
 
 export type DefineTodoEvent = BaseTodoEvent<
@@ -41,7 +39,6 @@ export type DefineTodoEvent = BaseTodoEvent<
 export type FetchTodoEvent = BaseTodoEvent<
   'fetch',
   Pick<AxiosRequestConfig, 'url' | 'method'> & {
-    params?: Declaration;
     headers?: Record<
       | 'Accept'
       | 'Content-Length'
@@ -64,7 +61,11 @@ export type ConvertTodoEvent = BaseTodoEvent<
   }
 >;
 
-export type TodoEvent = DefineTodoEvent | FetchTodoEvent;
+export type TodoEvent = DefineTodoEvent | FetchTodoEvent | ConvertTodoEvent;
+
+export type ImplementTodo<E extends TodoEvent = TodoEvent> = E & {
+  inputs?: Definition;
+};
 
 //* Flows
 type Flows = 'evaluate' | 'iterate';
@@ -82,17 +83,17 @@ type BaseFlowNode<C extends Flows, P = never> = {
 export type EvaluateFlowNode = BaseFlowNode<
   'evaluate',
   {
-    target: Pick<DefineTodoEvent, 'initial' | 'template'>; //* 判斷值
-    satisfied: FlowNode | TodoEvent; //* 條件成立時的下一步
+    target: Pick<ImplementTodo<DefineTodoEvent>, 'initial' | 'template'>; //* 判斷值
+    satisfied: FlowNode | ImplementTodo; //* 條件成立時的下一步
   }
 >;
 
 export type IterateFlowNode = BaseFlowNode<
   'iterate',
   {
-    conversion: ConvertTodoEvent;
+    conversion: ImplementTodo<ConvertTodoEvent>;
   }
 >;
 
 export type FlowNode = EvaluateFlowNode | IterateFlowNode;
-export type WidgetEvent = TodoEvent | FlowNode;
+export type WidgetEvent = ImplementTodo | FlowNode;

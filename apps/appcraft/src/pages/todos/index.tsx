@@ -1,5 +1,5 @@
+import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import Head from 'next/head';
-import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import { useRouter } from 'next/router';
 
 import { HierarchyList } from '~appcraft/containers';
@@ -35,7 +35,7 @@ export default function Todos() {
 
       <HierarchyList
         category={pathname.replace(/^\//, '')}
-        icon={StorageRoundedIcon}
+        icon={AssignmentRoundedIcon}
         onActionNodePick={handleActionNodePick}
       />
     </PageContainer>

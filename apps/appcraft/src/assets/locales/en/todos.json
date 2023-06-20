@@ -1,3 +1,7 @@
 {
+  "lbl-variant": "Todo Variant",
+  "opt-convert": "Transform Array Values",
+  "opt-define": "Define Variable",
+  "opt-fetch": "Fetch/Send Data",
   "ttl-detail": "Todo Events - {{ name }}"
 }

@@ -1,12 +1,13 @@
+import AppBar from '@mui/material/AppBar';
 import Head from 'next/head';
-import { useQuery } from '@tanstack/react-query';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+import Toolbar from '@mui/material/Toolbar';
 import { useRouter } from 'next/router';
-import type { ConfigOptions } from '@appcraft/types';
 
 import * as Hooks from '~appcraft/hooks';
 import { ConfigDetail } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
-import { findConfig } from '~appcraft/services';
 
 export default function Detail() {
   const { pathname, query } = useRouter();
@@ -14,18 +15,13 @@ export default function Detail() {
   const id = query.id as string;
 
   const [tt] = Hooks.useFixedT('todos');
+  const { todo, variant, onVariantChange } = Hooks.useTodoConfig(id);
   const { superiors, breadcrumbs } = Hooks.useHierarchyFilter(category, id);
 
   const [action, handleActionNodePick] = Hooks.useNodePickHandle([
     'reset',
     'save',
   ]);
-
-  const { data: datasource } = useQuery({
-    queryKey: [id],
-    queryFn: findConfig<ConfigOptions>,
-    refetchOnWindowFocus: false,
-  });
 
   return (
     <PageContainer
@@ -44,12 +40,35 @@ export default function Detail() {
       </Head>
 
       <ConfigDetail
-        key={`${id}:${datasource.timestamp}`}
-        typeName="DataSource"
-        typeFile="./node_modules/@appcraft/types/src/services/data-source.types.d.ts"
-        data={datasource}
+        key={`${id}:${todo.timestamp}:${variant}}`}
+        typeName={todo.content.typeName}
+        typeFile={todo.content.typeFile}
+        data={todo}
         superiors={{ names: superiors, breadcrumbs }}
         onActionNodePick={handleActionNodePick}
+        header={
+          <AppBar
+            position="sticky"
+            elevation={0}
+            sx={{ borderRadius: (theme) => theme.spacing(2) }}
+          >
+            <Toolbar sx={{ justifyContent: 'flex-end' }}>
+              <TextField
+                select
+                variant="outlined"
+                size="small"
+                label={tt('lbl-variant')}
+                value={variant}
+                onChange={onVariantChange}
+                sx={{ width: (theme) => theme.spacing(28) }}
+              >
+                <MenuItem value="define">{tt('opt-define')}</MenuItem>
+                <MenuItem value="fetch">{tt('opt-fetch')}</MenuItem>
+                <MenuItem value="convert">{tt('opt-convert')}</MenuItem>
+              </TextField>
+            </Toolbar>
+          </AppBar>
+        }
       />
     </PageContainer>
   );

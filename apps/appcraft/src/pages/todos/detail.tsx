@@ -4,8 +4,6 @@ import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import type { ConfigOptions, TodoEvent } from '@appcraft/types';
 
 import * as Hooks from '~appcraft/hooks';
 import { ConfigDetail } from '~appcraft/containers';

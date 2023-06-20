@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.46](https://github.com/taco3064/appcraft-mono/compare/v0.0.45...v0.0.46) (2023-06-20)
+
+
+### Features
+
+* **todos/detail:** adjust the configuration of todos ([5e1f3e0](https://github.com/taco3064/appcraft-mono/commit/5e1f3e052ddf2e6ec3f33a592cc38fe106138719))
+
+
+### Bug Fixes
+
+* **/pages/todos/index:** update icon ([0d8879b](https://github.com/taco3064/appcraft-mono/commit/0d8879bd4443e0113beae036b9e2a418b9b9b7da))
+* **todo.types:** fixed the types of declaration/definition ([50a1d4d](https://github.com/taco3064/appcraft-mono/commit/50a1d4d8beb0cead94fbffe664ff754a9d0d2a66))
+* **usehierarchyfilter:** breadcrumbs doesn't need to contain the item ([a812a66](https://github.com/taco3064/appcraft-mono/commit/a812a66292554f664dd5c4b46bcef8fb1e819b38))
+
 ### [0.0.45](https://github.com/taco3064/appcraft-mono/compare/v0.0.42...v0.0.45) (2023-06-20)
 
 

@@ -137,35 +137,38 @@ const generators: Types.Generators = [
   },
 
   //* Array
-  (type, info) => {
-    if (type.isArray()) {
-      const proptype = getProptype(type.getArrayElementType(), {
-        propName: '[*]',
-        required: true,
-      });
+  (type, info, source) => {
+    const isArray = type.isArray();
+    const isTuple = type.isTuple();
 
-      return proptype && { ...info, type: 'arrayOf', options: proptype };
-    }
+    if (isArray || isTuple) {
+      if (isArray && source) {
+        const options = getProptype(type.getArrayElementType(), {
+          propName: '[*]',
+          required: true,
+        });
 
-    if (type.isTuple()) {
-      const proptypes: PropTypesDef[] =
-        type.isTuple() &&
-        type.getTupleElements().reduce<PropTypesDef[]>((result, tuple, i) => {
-          const proptype = getProptype(tuple, {
-            propName: `[${i}]`,
-            required: true,
-          });
-
-          return !proptype ? result : result.concat(proptype);
-        }, []);
-
-      return (
-        proptypes.length > 0 && {
-          ...info,
-          type: 'arrayOf',
-          options: proptypes,
+        if (options) {
+          return { ...info, type: 'arrayOf', options };
         }
-      );
+      } else if (isTuple && source) {
+        const options = type
+          .getTupleElements()
+          .reduce<PropTypesDef[]>((result, tuple, i) => {
+            const proptype = getProptype(tuple, {
+              propName: `[${i}]`,
+              required: true,
+            });
+
+            return !proptype ? result : result.concat(proptype);
+          }, []);
+
+        if (options?.length) {
+          return { ...info, type: 'arrayOf', options };
+        }
+      }
+
+      return { ...info, type: 'array' };
     }
 
     return false;
@@ -269,8 +272,6 @@ export const findNodeProps: Types.FindNodePropsUtil = (
   const proptype = getProptype(type, info, source);
 
   if (proptype) {
-    console.log(proptype.propName);
-
     if (/^(element|node)$/.test(proptype.type)) {
       return { [paths.join('.')]: proptype.type };
     } else if (proptype.type === 'exact') {

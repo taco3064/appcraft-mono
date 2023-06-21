@@ -10,7 +10,7 @@ export type Generators = [
   GetProptypeUtil<Appcraft.InstanceOfProp>,
   GetProptypeUtil<Appcraft.FuncProp>,
   GetProptypeUtil<Appcraft.PropTypesDef>,
-  GetProptypeUtil<Appcraft.ArrayOfProp>,
+  GetProptypeUtil<Appcraft.ArrayProp | Appcraft.ArrayOfProp>,
   GetProptypeUtil<
     Appcraft.ExactProp | Appcraft.ObjectProp | Appcraft.ObjectOfProp
   >

@@ -86,7 +86,7 @@ const useTypeItems = <V extends OptionValues>(
     };
   }
 
-  if (superior?.type === 'arrayOf' && !Array.isArray(superior.options)) {
+  if (/^array/.test(superior?.type) && !Array.isArray(superior.options)) {
     return {
       items: Object.values(structure).map((_el, i) => {
         const options: PropTypesDef = {

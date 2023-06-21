@@ -23,8 +23,8 @@ type Todos = 'convert' | 'define' | 'fetch';
 
 type BaseTodoEvent<C extends Todos, P> = {
   category: C;
-  key: string; //* Output Key
-  description?: string;
+  outputKey: string; //* Output Key
+  description: string;
   declaration?: Declaration;
 } & P;
 

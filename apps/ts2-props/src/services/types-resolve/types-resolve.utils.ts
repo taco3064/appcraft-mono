@@ -142,28 +142,24 @@ const generators: Types.Generators = [
     const isTuple = type.isTuple();
 
     if (isArray || isTuple) {
-      if (isArray && source) {
-        const options = getProptype(type.getArrayElementType(), {
-          propName: '[*]',
-          required: true,
-        });
-
-        if (options) {
-          return { ...info, type: 'arrayOf', options };
-        }
-      } else if (isTuple && source) {
-        const options = type
-          .getTupleElements()
-          .reduce<PropTypesDef[]>((result, tuple, i) => {
-            const proptype = getProptype(tuple, {
-              propName: `[${i}]`,
+      if (source) {
+        const options = isArray
+          ? getProptype(type.getArrayElementType(), {
+              propName: '[*]',
               required: true,
-            });
+            })
+          : type
+              .getTupleElements()
+              .reduce<PropTypesDef[]>((result, tuple, i) => {
+                const proptype = getProptype(tuple, {
+                  propName: `[${i}]`,
+                  required: true,
+                });
 
-            return !proptype ? result : result.concat(proptype);
-          }, []);
+                return !proptype ? result : result.concat(proptype);
+              }, []);
 
-        if (options?.length) {
+        if ((Array.isArray(options) && options.length) || options) {
           return { ...info, type: 'arrayOf', options };
         }
       }

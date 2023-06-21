@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.47](https://github.com/taco3064/appcraft-mono/compare/v0.0.46...v0.0.47) (2023-06-21)
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** add new situation of disable oneOf select ([890cc5d](https://github.com/taco3064/appcraft-mono/commit/890cc5d8339657ad4245c389a66c603ed9975716))
+* add new proptype(array) ([a036e9c](https://github.com/taco3064/appcraft-mono/commit/a036e9ce0726973fe75bd5d3672b569cb5795d08))
+* **use-mixed-type-mapping:** fixed the bug of removing mapping ([40585e8](https://github.com/taco3064/appcraft-mono/commit/40585e8257b532a99091298bf6e243cb95d74ac9))
+* **use-todo-config:** fixed the data generation error ([f43e401](https://github.com/taco3064/appcraft-mono/commit/f43e401ba6491f588337938cc426ae2746596f47))
+* **use-type-item:** remove [] with the propName in propPath ([0e378f0](https://github.com/taco3064/appcraft-mono/commit/0e378f0afb92a53843c4ba39bc1d0b2b3a7263b4))
+
 ### [0.0.46](https://github.com/taco3064/appcraft-mono/compare/v0.0.45...v0.0.46) (2023-06-20)
 
 

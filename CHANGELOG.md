@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.49](https://github.com/taco3064/appcraft-mono/compare/v0.0.48...v0.0.49) (2023-06-21)
+
+
+### Bug Fixes
+
+* **@appcraft/types:** update the field name as 'outputKey' in BaseTodoEvent ([159fe34](https://github.com/taco3064/appcraft-mono/commit/159fe34eb04a2a10f8d1ce5f3addb253f5478e94))
+
 ### [0.0.48](https://github.com/taco3064/appcraft-mono/compare/v0.0.47...v0.0.48) (2023-06-21)
 
 

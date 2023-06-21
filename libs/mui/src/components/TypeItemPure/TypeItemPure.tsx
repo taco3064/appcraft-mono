@@ -2,6 +2,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
+import dayjs from 'dayjs';
+import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 
 import * as Common from '../common';
 import * as Hooks from '../../hooks';
@@ -84,6 +86,23 @@ export default function TypeItemPure({
                     },
                   } as object
                 }
+              />
+            )}
+
+            {options.type === 'instanceOf' && options.options === 'Date' && (
+              <MobileDateTimePicker
+                ampm={false}
+                label={label}
+                value={value ? dayjs(value as string) : null}
+                onChange={(e) => onChange(e?.toDate().toISOString())}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    required: options.required,
+                    size: 'small',
+                    variant: 'outlined',
+                  },
+                }}
               />
             )}
 

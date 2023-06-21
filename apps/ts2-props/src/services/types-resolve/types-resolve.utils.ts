@@ -37,14 +37,8 @@ const generators: Types.Generators = [
   },
 
   //* Class
-  (type, info, source) => {
-    const typeAtLocation =
-      source && type.getSymbol()?.getTypeAtLocation(source);
-
-    if (
-      typeAtLocation?.getConstructSignatures().length &&
-      type.getText() in global
-    ) {
+  (type, info) => {
+    if (type.getText() in global) {
       return { ...info, type: 'instanceOf', options: type.getText() };
     }
 

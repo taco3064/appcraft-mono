@@ -31,7 +31,7 @@ type BaseTodoEvent<C extends Todos, P> = {
 export type DefineTodoEvent = BaseTodoEvent<
   'define',
   {
-    initial?: string; //* 使用 JSON.stringify 建立初始值
+    initial?: Definition; //* 初始值
     template?: string; //* 使用 lodash template 讀取 inputs 建立初始值
   }
 >;

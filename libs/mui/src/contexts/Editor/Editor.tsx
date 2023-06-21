@@ -1,4 +1,6 @@
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ComponentProps, createContext, useContext, useMemo } from 'react';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import type * as Types from './Editor.types';
 
 const EditorContext = (<V extends Types.OptionValues>() =>
@@ -28,10 +30,12 @@ export function EditorProvider<V extends Types.OptionValues>({
   );
 
   return (
-    <EditorContext.Provider
-      value={value as ComponentProps<typeof EditorContext.Provider>['value']}
-    >
-      {children}
-    </EditorContext.Provider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <EditorContext.Provider
+        value={value as ComponentProps<typeof EditorContext.Provider>['value']}
+      >
+        {children}
+      </EditorContext.Provider>
+    </LocalizationProvider>
   );
 }

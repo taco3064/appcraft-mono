@@ -45,7 +45,7 @@ export default function Widgets() {
             color="default"
             icon={VisibilityOutlinedIcon}
             text={at('btn-preview')}
-            onClick={() => console.log(theme._id)}
+            onClick={() => console.log(theme._id)} //! 待實作 preview 功能
           />
         )}
       />

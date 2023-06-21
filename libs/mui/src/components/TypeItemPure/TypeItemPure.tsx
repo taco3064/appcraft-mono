@@ -89,16 +89,18 @@ export default function TypeItemPure({
 
             {options.type === 'oneOf' && (
               <TextField
+                SelectProps={{ displayEmpty: options.required }}
                 select
                 fullWidth
                 size="small"
                 variant="outlined"
-                disabled={disabled}
                 required={options.required}
                 label={label}
                 value={value || ''}
                 onChange={(e) => onChange(e.target.value)}
-                SelectProps={{ displayEmpty: options.required }}
+                disabled={
+                  disabled || Boolean(options.options?.length === 1 && value)
+                }
               >
                 {!options.required && <MenuItem value="">&nbsp;</MenuItem>}
 

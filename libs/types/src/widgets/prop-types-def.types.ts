@@ -1,6 +1,7 @@
 export type TypesMapping = Record<string, string>;
 
 enum PropType {
+  array,
   arrayOf,
   bool,
   element,
@@ -30,6 +31,7 @@ export interface BaseProptype<T extends keyof typeof PropType, O = undefined>
 export type FuncOptions = { params: PropTypesDef[]; return?: PropTypesDef };
 export type OneOfTypeOptions = PropTypesDef & { text: string };
 
+export type ArrayProp = BaseProptype<'array'>;
 export type BoolProp = BaseProptype<'bool'>;
 export type ElementProp = BaseProptype<'element'>;
 export type ExactProp = BaseProptype<'exact', Record<string, PropTypesDef>>;
@@ -49,6 +51,7 @@ export type ArrayOfProp = BaseProptype<
 >;
 
 export type PropTypesDef =
+  | ArrayProp
   | ArrayOfProp
   | BoolProp
   | ElementProp

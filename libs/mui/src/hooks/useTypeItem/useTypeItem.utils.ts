@@ -2,7 +2,7 @@ import type * as Types from './useTypeItem.types';
 
 const regs: RegExp[] = [
   /^(node|element)$/,
-  /^(arrayOf|exact|object|objectOf)$/,
+  /^(array|arrayOf|exact|object|objectOf)$/,
   /^(oneOfType)$/,
   /^(bool|instanceOf|number|oneOf|string)$/,
   /^(func)$/,

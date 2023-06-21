@@ -15,7 +15,7 @@ const useTypeItem: Types.TypeItemHook = (
 
     propPath:
       collectionType === 'array'
-        ? `${collectionPath}[${propName}]`
+        ? `${collectionPath}${propName}`
         : `${collectionPath ? `${collectionPath}.` : ''}${propName}`,
 
     category: useMemo<Types.Category | null>(() => {

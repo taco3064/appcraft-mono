@@ -34,6 +34,7 @@ const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
           return {
             ...data,
             content: {
+              ...data.content,
               category: 'config',
               typeFile,
               typeName: 'DefineTodoEvent',
@@ -48,6 +49,7 @@ const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
           return {
             ...data,
             content: {
+              ...data.content,
               category: 'config',
               typeFile,
               typeName: 'FetchTodoEvent',
@@ -62,6 +64,7 @@ const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
           return {
             ...data,
             content: {
+              ...data.content,
               category: 'config',
               typeFile,
               typeName: 'ConvertTodoEvent',

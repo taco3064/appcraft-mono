@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getProps } from '@appcraft/mui';
+import { nanoid } from 'nanoid';
 import type { ConfigData, ConfigOptions, TodoEvent } from '@appcraft/types';
 
 import { findConfig } from '~appcraft/services';
@@ -40,6 +41,7 @@ const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
               typeName: 'DefineTodoEvent',
               props: {
                 ...props,
+                outputKey: nanoid(4),
                 category: 'define',
               },
             },
@@ -55,6 +57,7 @@ const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
               typeName: 'FetchTodoEvent',
               props: {
                 ...props,
+                outputKey: nanoid(4),
                 category: 'fetch',
               },
             },
@@ -70,6 +73,7 @@ const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
               typeName: 'ConvertTodoEvent',
               props: {
                 ...props,
+                outputKey: nanoid(4),
                 category: 'convert',
               },
             },

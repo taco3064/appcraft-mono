@@ -2,8 +2,6 @@ import axios from 'axios';
 import { lazy, useMemo, useRef } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import type * as Types from './useLazyTypeList.types';
-
 const useLazyTypeList = <D, R>(
   fetchOptions: Appcraft.FetchOptions,
   {
@@ -12,9 +10,9 @@ const useLazyTypeList = <D, R>(
     mixedTypes,
     collectionPath,
   }: Appcraft.TypesParseOptions,
-  renderFn: Types.RenderFn<D, R>
+  renderer: Appcraft.LazyRenderer<D, R>
 ) => {
-  const renderRef = useRef(renderFn);
+  const renderRef = useRef(renderer);
 
   return useMemo(
     () =>

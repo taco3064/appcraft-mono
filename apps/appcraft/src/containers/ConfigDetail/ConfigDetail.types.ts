@@ -1,27 +1,14 @@
 import type { ConfigData, ConfigOptions } from '@appcraft/types';
 import type { ReactNode } from 'react';
 
-import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
+import type * as Hooks from '~appcraft/hooks';
 
-export interface ConfigDetailProps {
-  data: ConfigData<ConfigOptions, string>;
+export interface ConfigDetailProps extends Hooks.ConfigValueOptions {
   header?: ReactNode;
-  typeFile: string;
-  typeName: string;
-  onActionNodePick?: NodePickerFn<'reset' | 'save'>;
-  onSave?: () => void;
+  onActionNodePick?: Hooks.NodePickerFn<'reset' | 'save'>;
 
   superiors: {
     names: Record<string, string>;
-    breadcrumbs: Breadcrumb[];
+    breadcrumbs: Hooks.Breadcrumb[];
   };
 }
-
-export type ConfigValuesHook = (
-  options: Pick<ConfigDetailProps, 'data' | 'typeFile' | 'typeName' | 'onSave'>
-) => {
-  values: ConfigOptions;
-  onChange: (values: ConfigOptions) => void;
-  onReset: () => void;
-  onSave: () => void;
-};

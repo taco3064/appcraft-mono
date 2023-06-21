@@ -4,6 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "dev": "SERVICE_PROXY=http://127.0.0.1:80 npx nx run-many --target=serve --parallel=4",
     "commit": "git-cz",
     "prepare": "husky install"
   },

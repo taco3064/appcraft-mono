@@ -31,7 +31,7 @@ export default function TypeItemDisplay({
           >
             {options.type === 'func' ? (
               <DeviceHubIcon color={disabled ? 'disabled' : 'secondary'} />
-            ) : options.type === 'arrayOf' ? (
+            ) : /^array/.test(options.type) ? (
               <DataArrayIcon color={disabled ? 'disabled' : 'secondary'} />
             ) : (
               <DataObjectIcon color={disabled ? 'disabled' : 'secondary'} />

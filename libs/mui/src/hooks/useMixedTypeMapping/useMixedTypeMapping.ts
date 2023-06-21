@@ -27,7 +27,7 @@ const useMixedTypeMapping: Types.MixedTypeMappingHook = (propPath: string) => {
           }
         });
 
-        onChange({ ...values });
+        onChange({ ...values, mixedTypes });
       }
     },
   ];

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.48](https://github.com/taco3064/appcraft-mono/compare/v0.0.47...v0.0.48) (2023-06-21)
+
+
+### Features
+
+* **@appcraft/mui:** support parsing date type and display ([42b78c4](https://github.com/taco3064/appcraft-mono/commit/42b78c4d7ffeaae2192139fa9f29755b13feb68a))
+
 ### [0.0.47](https://github.com/taco3064/appcraft-mono/compare/v0.0.46...v0.0.47) (2023-06-21)
 
 

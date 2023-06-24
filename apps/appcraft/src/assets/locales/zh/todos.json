@@ -1,4 +1,5 @@
 {
+  "btn-run": "執行測試",
   "lbl-variant": "事項類型",
   "opt-convert": "轉換陣列元素",
   "opt-define": "建立變量",

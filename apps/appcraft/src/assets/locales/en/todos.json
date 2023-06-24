@@ -1,4 +1,5 @@
 {
+  "btn-run": "Run Test",
   "lbl-variant": "Todo Variant",
   "opt-convert": "Transform Array Values",
   "opt-define": "Define Variable",

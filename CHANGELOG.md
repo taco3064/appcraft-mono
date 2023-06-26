@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.50](https://github.com/taco3064/appcraft-mono/compare/v0.0.49...v0.0.50) (2023-06-26)
+
+
+### Features
+
+* **todos:** add run-test button ([a27d2da](https://github.com/taco3064/appcraft-mono/commit/a27d2da6a0e513f81289a42fa03104b0769c7901))
+
+
+### Bug Fixes
+
+* move custom hooks to /hooks ([7c1891d](https://github.com/taco3064/appcraft-mono/commit/7c1891d899a3bd37a89cbc2fb96ea2acb92ea261))
+* **todo.types.ts:** update the field name(declaration) as inputDeclaration ([5f6b11c](https://github.com/taco3064/appcraft-mono/commit/5f6b11c6cdea9f03300bebfcaa5e9d312c781de3))
+
 ### [0.0.49](https://github.com/taco3064/appcraft-mono/compare/v0.0.48...v0.0.49) (2023-06-21)
 
 

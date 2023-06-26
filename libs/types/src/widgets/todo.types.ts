@@ -25,7 +25,7 @@ type BaseTodoEvent<C extends Todos, P> = {
   category: C;
   outputKey: string; //* Output Key
   description: string;
-  declaration?: Declaration;
+  inputDeclaration?: Declaration;
 } & P;
 
 export type DefineTodoEvent = BaseTodoEvent<

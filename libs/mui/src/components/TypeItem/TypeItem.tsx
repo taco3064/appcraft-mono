@@ -28,7 +28,7 @@ export default function TypeItem({
   onSubitemView,
 }: Types.TypeItemProps) {
   const ct = Hooks.useFixedT();
-  const [naming, setNaming] = useState(false);
+  const [naming, setNaming] = useState(!options.propName);
 
   const { category, label, propPath } = Hooks.useTypeItem(
     collectionType,
@@ -45,7 +45,7 @@ export default function TypeItem({
   const actions =
     !action && !onDelete ? null : (
       <>
-        {!naming && options.propName !== '*' && action}
+        {!naming && options.propName && action}
 
         {onRename && (
           <IconTipButton
@@ -74,11 +74,13 @@ export default function TypeItem({
             const formdata = new FormData(e.currentTarget);
 
             e.preventDefault();
-            setNaming(false);
-            onRename?.(formdata.get('propName') as string);
+
+            if (onRename?.(formdata.get('propName') as string)) {
+              setNaming(false);
+            }
           }}
         >
-          <ListItemIcon />
+          {selection && <ListItemIcon />}
 
           <ListItemText
             disableTypography
@@ -91,8 +93,10 @@ export default function TypeItem({
                   size="small"
                   variant="outlined"
                   name="propName"
-                  label={ct('lbl-prop-naming', { name: options.propName })}
                   defaultValue={options.propName}
+                  label={ct('lbl-prop-naming', {
+                    name: options.propName || 'empty',
+                  })}
                 />
               )
             }
@@ -145,7 +149,7 @@ export default function TypeItem({
           {category === 'Mixed' && (
             <TypeItemMixed
               action={actions}
-              disabled={disabled || Boolean(status) || options.propName === '*'}
+              disabled={disabled || Boolean(status) || !options.propName}
               label={label}
               propPath={propPath}
               options={options as TypeItemMixedProps['options']}
@@ -154,7 +158,7 @@ export default function TypeItem({
                 <TypeItem
                   {...{ collectionType, onDelete, onSubitemView }}
                   disabled={disabled || Boolean(status)}
-                  options={matched}
+                  options={{ ...matched, propName: options.propName }}
                   action={matchedAction}
                 />
               )}

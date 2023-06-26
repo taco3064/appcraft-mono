@@ -10,22 +10,21 @@ import type { OptionValues } from '../../contexts';
 import type { TypeListProps } from './TypeList.types';
 
 export default function TypeList<V extends OptionValues>({
-  superior,
+  collection,
   values,
   onChange,
   onCollectionPathChange,
 }: TypeListProps<V>) {
+  const ct = Hooks.useFixedT();
+
   const [breadcrumbs, { back: handleBack, to: handleTo }] =
     Hooks.usePropertyRouter(onCollectionPathChange);
 
   const { items, onItemAdd } = Hooks.useTypeItems<V>(
-    superior,
+    collection,
     values,
     onChange
   );
-
-  const ct = Hooks.useFixedT();
-  const isModifiable = onItemAdd instanceof Function;
 
   return (
     <List
@@ -55,7 +54,7 @@ export default function TypeList<V extends OptionValues>({
               ))}
             </Breadcrumbs>
 
-            {isModifiable && (
+            {onItemAdd instanceof Function && (
               <Styles.IconTipButton
                 title={ct('btn-add-prop')}
                 size="small"

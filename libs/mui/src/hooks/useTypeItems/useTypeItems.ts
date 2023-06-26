@@ -10,16 +10,16 @@ import type { ChangeHandler, OptionValues } from '../../contexts';
 import type { TypeItemsHookResult } from './useTypeItems.types';
 
 const useTypeItems = <V extends OptionValues>(
-  superior: BasicType,
+  collection: BasicType,
   widgetValues: V,
   onChange: ChangeHandler<V>
 ): TypeItemsHookResult => {
   const { path, source, values } = useCollection(
-    superior.type.startsWith('array') ? [] : {}
+    collection.type.startsWith('array') ? [] : {}
   );
 
   const [structure, setStructure] = useState(values);
-  const properties = usePropertiesSorting(superior);
+  const properties = usePropertiesSorting(collection);
 
   const handleDelete = (fn: () => string) =>
     startTransition(() => {
@@ -32,7 +32,7 @@ const useTypeItems = <V extends OptionValues>(
       onChange({ ...widgetValues } as V);
     });
 
-  if (superior.type === 'exact') {
+  if (collection.type === 'exact') {
     return {
       items: properties.map((options) => ({
         key: options.propName as string,
@@ -42,9 +42,9 @@ const useTypeItems = <V extends OptionValues>(
     };
   }
 
-  if (superior?.type === 'arrayOf' && Array.isArray(superior.options)) {
+  if (collection?.type === 'arrayOf' && Array.isArray(collection.options)) {
     return {
-      items: superior.options.map((options) => ({
+      items: collection.options.map((options) => ({
         key: options.propName as string,
         collectionType: 'array',
         options,
@@ -52,16 +52,16 @@ const useTypeItems = <V extends OptionValues>(
     };
   }
 
-  if (/^object/.test(superior?.type)) {
-    const list = Object.keys(structure);
+  if (/^object/.test(collection?.type)) {
+    const list = Object.keys({ ...values, ...structure });
 
     return {
-      ...(list.every((propName) => propName !== '*') && {
-        onItemAdd: () => setStructure({ ...structure, '*': null }),
+      ...(list.every((propName) => propName) && {
+        onItemAdd: () => setStructure({ ...structure, '': null }),
       }),
       items: list.map((propName) => {
         const options: PropTypesDef = {
-          ...(superior?.options as PropTypesDef),
+          ...(collection?.options as PropTypesDef),
           propName,
         };
 
@@ -77,11 +77,20 @@ const useTypeItems = <V extends OptionValues>(
               return propName;
             }),
 
-          onRename: (newPropName) =>
+          onRename: (newPropName) => {
+            if (newPropName in values) {
+              return false;
+            }
+
             handleDelete(() => {
               const propPath = getPropPathBySource(source, [
                 ..._toPath(path),
                 propName,
+              ]);
+
+              const newPropPath = getPropPathBySource(source, [
+                ..._toPath(path),
+                newPropName,
               ]);
 
               const { mixedTypes, props } = widgetValues;
@@ -89,28 +98,29 @@ const useTypeItems = <V extends OptionValues>(
               const value = props?.[propPath];
 
               if (mixed) {
-                mixedTypes[propPath] = mixed;
+                mixedTypes[newPropPath] = mixed;
               }
 
-              if (value) {
-                props[propPath] = value;
-              }
+              widgetValues.props = { ...props, [newPropPath]: value || null };
 
               delete (structure as Record<string, unknown>)[propName];
               setStructure({ ...structure, [newPropName]: value });
 
               return propName;
-            }),
+            });
+
+            return true;
+          },
         };
       }),
     };
   }
 
-  if (/^array/.test(superior?.type) && !Array.isArray(superior.options)) {
+  if (/^array/.test(collection?.type) && !Array.isArray(collection.options)) {
     return {
       items: Object.values(structure).map((_el, i) => {
         const options: PropTypesDef = {
-          ...(superior?.options as PropTypesDef),
+          ...(collection?.options as PropTypesDef),
           propName: `[${i}]`,
         };
 

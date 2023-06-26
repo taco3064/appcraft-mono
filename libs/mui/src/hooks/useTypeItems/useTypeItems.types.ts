@@ -5,7 +5,7 @@ export interface TypeItem {
   collectionType: CollectionType;
   options: PropTypesDef;
   onDelete?: () => void;
-  onRename?: (newPropName: string) => void;
+  onRename?: (newPropName: string) => boolean;
 }
 
 export type TypeItemsHookResult = {

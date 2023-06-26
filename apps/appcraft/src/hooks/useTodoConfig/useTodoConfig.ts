@@ -11,7 +11,7 @@ import type { TodoConfigResult, TodoVariant } from './useTodoConfig.types';
 const typeFile = './libs/types/src/widgets/todo.types.ts';
 
 const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: [id],
     queryFn: findConfig<ConfigOptions>,
     refetchOnWindowFocus: false,
@@ -26,6 +26,7 @@ const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
 
   return {
     variant,
+    refetch,
     onVariantChange: (e) => setVariant(e.target.value as TodoVariant),
 
     todo: useMemo(() => {

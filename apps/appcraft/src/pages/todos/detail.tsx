@@ -3,6 +3,8 @@ import Head from 'next/head';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
+import { getProps, getTodoEventHandle } from '@appcraft/mui';
+import { useMemo } from 'react';
 import { useRouter } from 'next/router';
 
 import * as Hooks from '~appcraft/hooks';
@@ -16,13 +18,18 @@ export default function Detail() {
   const id = query.id as string;
 
   const [tt] = Hooks.useFixedT('todos');
-  const { todo, variant, onVariantChange } = Hooks.useTodoConfig(id);
+  const { todo, variant, refetch, onVariantChange } = Hooks.useTodoConfig(id);
   const { superiors, breadcrumbs } = Hooks.useHierarchyFilter(category, id);
 
   const [action, handleActionNodePick] = Hooks.useNodePickHandle([
     'reset',
     'save',
   ]);
+
+  const handleRun = useMemo(
+    () => getTodoEventHandle([getProps(todo.content)]),
+    [todo]
+  );
 
   return (
     <PageContainer
@@ -35,7 +42,7 @@ export default function Detail() {
             btnVariant="icon"
             icon={PlayTodoIcon}
             text={tt('btn-run')}
-            onClick={() => console.log('test')}
+            onClick={handleRun}
           />
 
           {action?.reset}
@@ -54,6 +61,7 @@ export default function Detail() {
         data={todo}
         superiors={{ names: superiors, breadcrumbs }}
         onActionNodePick={handleActionNodePick}
+        onSave={refetch}
         header={
           <AppBar
             position="sticky"

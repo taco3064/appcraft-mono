@@ -40,8 +40,8 @@ const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
               typeFile,
               typeName: 'DefineTodoEvent',
               props: {
-                ...props,
                 outputKey: nanoid(4),
+                ...props,
                 category: 'define',
               },
             },
@@ -56,8 +56,8 @@ const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
               typeFile,
               typeName: 'FetchTodoEvent',
               props: {
-                ...props,
                 outputKey: nanoid(4),
+                ...props,
                 category: 'fetch',
               },
             },
@@ -72,8 +72,8 @@ const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
               typeFile,
               typeName: 'ConvertTodoEvent',
               props: {
-                ...props,
                 outputKey: nanoid(4),
+                ...props,
                 category: 'convert',
               },
             },

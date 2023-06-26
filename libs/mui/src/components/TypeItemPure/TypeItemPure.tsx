@@ -3,11 +3,11 @@ import DialpadIcon from '@mui/icons-material/Dialpad';
 import InputAdornment from '@mui/material/InputAdornment';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import MenuIcon from '@mui/icons-material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import SwipeIcon from '@mui/icons-material/Swipe';
 import TextField from '@mui/material/TextField';
-import TextFieldsIcon from '@mui/icons-material/TextFields';
+import TitleIcon from '@mui/icons-material/Title';
 import dayjs from 'dayjs';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 
@@ -47,7 +47,7 @@ export default function TypeItemPure({
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <TextFieldsIcon color="disabled" />
+                      <TitleIcon color="disabled" />
                     </InputAdornment>
                   ),
                 }}
@@ -153,7 +153,7 @@ export default function TypeItemPure({
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <MenuIcon color="disabled" />
+                      <MenuOpenIcon color="disabled" />
                     </InputAdornment>
                   ),
                 }}

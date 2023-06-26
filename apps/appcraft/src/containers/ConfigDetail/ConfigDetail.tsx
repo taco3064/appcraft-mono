@@ -6,7 +6,7 @@ import { CraftedTypeEditor } from '@appcraft/mui';
 import TYPES_FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
 import { Breadcrumbs } from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
-import { useConfigValues } from './ConfigDetail.hooks';
+import { useConfigValues } from '~appcraft/hooks';
 import { useFixedT, useNodePicker } from '~appcraft/hooks';
 import type { ConfigDetailProps } from './ConfigDetail.types';
 

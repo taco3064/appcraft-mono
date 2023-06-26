@@ -5,9 +5,9 @@ import type { ConfigOptions } from '@appcraft/types';
 
 import { upsertConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
-import type { ConfigValuesHook } from './ConfigDetail.types';
+import type { ConfigValuesHook } from './useConfigValues.types';
 
-export const useConfigValues: ConfigValuesHook = ({
+const useConfigValues: ConfigValuesHook = ({
   data,
   typeFile,
   typeName,
@@ -43,6 +43,7 @@ export const useConfigValues: ConfigValuesHook = ({
   return {
     values,
     onChange: setValues,
+    onSave: () => mutation.mutate({ ...data, content: values }),
 
     onReset: () =>
       setValues(() =>
@@ -59,7 +60,7 @@ export const useConfigValues: ConfigValuesHook = ({
           )
         )
       ),
-
-    onSave: () => mutation.mutate({ ...data, content: values }),
   };
 };
+
+export default useConfigValues;

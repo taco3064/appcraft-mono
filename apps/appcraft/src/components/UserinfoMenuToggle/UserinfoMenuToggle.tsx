@@ -1,3 +1,4 @@
+import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -6,21 +7,30 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import Menu from '@mui/material/Menu';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Skeleton from '@mui/material/Skeleton';
+import Tooltip from '@mui/material/Tooltip';
 import { Suspense, useState } from 'react';
+import type { Userinfo } from '@appcraft/types';
 
-import type * as Types from './UserinfoMenuToggle.types';
+import * as Hooks from '~appcraft/hooks';
 import { Link, SizedListItemIcon } from '~appcraft/styles';
-import { useLazyAvatar } from './UserinfoMenuToggle.hooks';
-import { useFixedT, useAuthTokens } from '~appcraft/hooks';
+import type * as Types from './UserinfoMenuToggle.types';
 
 export default function UserinfoMenuToggle({
   menuTransform,
   signoutURL,
 }: Types.UserinfoMenuToggleProps) {
-  const [at] = useFixedT('app');
+  const [at] = Hooks.useFixedT('app');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
-  const { authorized, tokens } = useAuthTokens();
-  const LazyAvatar = useLazyAvatar(tokens.id);
+  const { authorized, tokens } = Hooks.useAuthTokens();
+
+  const LazyAvatar = Hooks.useLazyUserProfile<Userinfo>(
+    tokens.id,
+    ({ fetchData }) => (
+      <Tooltip title={fetchData?.username}>
+        <Avatar alt={fetchData?.username} src={fetchData?.picture} />
+      </Tooltip>
+    )
+  );
 
   return !authorized ? null : (
     <Suspense fallback={<Skeleton variant="circular" width={40} height={40} />}>

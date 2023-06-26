@@ -51,3 +51,10 @@ export interface RootNodeWidget extends NodeWidget {
 }
 
 export type WidgetOptions = PlainTextWidget | NodeWidget;
+
+//* Lazy Renderer Fn
+export type LazyRenderer<D, R = Record<string, never>> = (
+  options: R & {
+    fetchData: D | null;
+  }
+) => JSX.Element;

@@ -6,8 +6,9 @@ import Toolbar from '@mui/material/Toolbar';
 import { useRouter } from 'next/router';
 
 import * as Hooks from '~appcraft/hooks';
+import { CommonButton } from '~appcraft/components/common';
 import { ConfigDetail } from '~appcraft/containers';
-import { PageContainer } from '~appcraft/styles';
+import { PageContainer, PlayTodoIcon } from '~appcraft/styles';
 
 export default function Detail() {
   const { pathname, query } = useRouter();
@@ -30,6 +31,13 @@ export default function Detail() {
       title={tt('ttl-detail', { name: superiors[id] })}
       action={
         <>
+          <CommonButton
+            btnVariant="icon"
+            icon={PlayTodoIcon}
+            text={tt('btn-run')}
+            onClick={() => console.log('test')}
+          />
+
           {action?.reset}
           {action?.save}
         </>

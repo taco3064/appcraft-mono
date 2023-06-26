@@ -8,10 +8,9 @@ import { MUI_WIDGETS } from '@appcraft/types';
 import { useCallback, useState } from 'react';
 
 import * as Component from '~appcraft/components';
+import * as Hooks from '~appcraft/hooks';
 import TYPES_FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
 import { CommonButton, LazyMui } from '~appcraft/components/common';
-import { useEditedWidget } from './WidgetEditor.hooks';
-import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks';
 import type { WidgetEditorProps, WidgetMap } from './WidgetEditor.types';
 
 const widgets = MUI_WIDGETS.widgets.reduce<WidgetMap>(
@@ -31,17 +30,17 @@ export default function WidgetEditor({
   superiors: { names, breadcrumbs },
   onActionNodePick = (e) => e,
 }: WidgetEditorProps) {
-  const [at, ct, wt] = useFixedT('app', 'appcraft', 'widgets');
+  const [at, ct, wt] = Hooks.useFixedT('app', 'appcraft', 'widgets');
   const [open, setOpen] = useState(true);
-  const { widget, onReset, onWidgetChange } = useEditedWidget(data);
+  const { widget, onReset, onWidgetChange } = Hooks.useWidgetValues(data);
 
   const theme = useTheme();
-  const width = useWidth();
+  const width = Hooks.useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
   const toLazy = useCallback((widgetType: string) => LazyMui[widgetType], []);
 
-  const actionNode = useNodePicker(
+  const actionNode = Hooks.useNodePicker(
     () =>
       onActionNodePick({
         expand: !isCollapsable ? null : (

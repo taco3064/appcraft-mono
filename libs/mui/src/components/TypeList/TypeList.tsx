@@ -68,11 +68,8 @@ export default function TypeList<V extends OptionValues>({
         )
       }
     >
-      {items.map(({ key, collectionType, options, onDelete }) => (
-        <TypeItem
-          {...{ key, collectionType, options, onDelete }}
-          onSubitemView={handleTo}
-        />
+      {items.map(({ key, ...item }) => (
+        <TypeItem key={key} {...item} onSubitemView={handleTo} />
       ))}
     </List>
   );

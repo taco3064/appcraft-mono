@@ -51,7 +51,11 @@ export default function TypeItemMixed({
           </>
         )
       ) : (
-        <ListItemButton onClick={() => setOpen(true)}>
+        <ListItemButton
+          disableRipple={disabled}
+          disableTouchRipple={disabled}
+          onClick={() => !disabled && setOpen(true)}
+        >
           {selection && <ListItemIcon />}
 
           <ListItemText

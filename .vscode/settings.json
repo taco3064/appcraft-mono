@@ -1,5 +1,7 @@
 {
   "editor.formatOnSave": true,
+  "explorer.sortOrder": "type",
+  "explorer.sortOrderLexicographicOptions": "upper",
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },
@@ -20,7 +22,5 @@
   },
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "explorer.sortOrder": "type",
-  "explorer.sortOrderLexicographicOptions": "upper"
+  }
 }

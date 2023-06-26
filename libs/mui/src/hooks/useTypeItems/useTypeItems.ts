@@ -1,6 +1,7 @@
+import _set from 'lodash.set';
 import _toPath from 'lodash.topath';
 import { startTransition, useState } from 'react';
-import type { PropTypesDef, WidgetField } from '@appcraft/types';
+import type { PropTypesDef } from '@appcraft/types';
 
 import { BasicType, usePropertiesSorting } from '../usePropertiesSorting';
 import { getPropPathBySource } from '../usePropertyRouter';
@@ -22,17 +23,11 @@ const useTypeItems = <V extends OptionValues>(
 
   const handleDelete = (fn: () => string) =>
     startTransition(() => {
-      const fields: WidgetField[] = ['nodes', 'props', 'todos'];
-      const { mixedTypes } = widgetValues;
       const propPath = getPropPathBySource(source, [..._toPath(path), fn()]);
+      const { mixedTypes, props } = widgetValues;
 
       delete mixedTypes?.[propPath];
-
-      fields.forEach((field) => {
-        const { [field as keyof V]: options } = widgetValues;
-
-        delete (options as Record<string, unknown>)?.[propPath];
-      });
+      delete props?.[propPath];
 
       onChange({ ...widgetValues } as V);
     });
@@ -58,8 +53,13 @@ const useTypeItems = <V extends OptionValues>(
   }
 
   if (/^object/.test(superior?.type)) {
+    const list = Object.keys(structure);
+
     return {
-      items: Object.keys(structure).map((propName) => {
+      ...(list.every((propName) => propName !== '*') && {
+        onItemAdd: () => setStructure({ ...structure, '*': null }),
+      }),
+      items: list.map((propName) => {
         const options: PropTypesDef = {
           ...(superior?.options as PropTypesDef),
           propName,
@@ -76,13 +76,33 @@ const useTypeItems = <V extends OptionValues>(
 
               return propName;
             }),
+
+          onRename: (newPropName) =>
+            handleDelete(() => {
+              const propPath = getPropPathBySource(source, [
+                ..._toPath(path),
+                propName,
+              ]);
+
+              const { mixedTypes, props } = widgetValues;
+              const mixed = mixedTypes?.[propPath];
+              const value = props?.[propPath];
+
+              if (mixed) {
+                mixedTypes[propPath] = mixed;
+              }
+
+              if (value) {
+                props[propPath] = value;
+              }
+
+              delete (structure as Record<string, unknown>)[propName];
+              setStructure({ ...structure, [newPropName]: value });
+
+              return propName;
+            }),
         };
       }),
-      onItemAdd: () =>
-        setStructure({
-          ...structure,
-          [`key_${Object.keys(structure).length}`]: null,
-        }),
     };
   }
 

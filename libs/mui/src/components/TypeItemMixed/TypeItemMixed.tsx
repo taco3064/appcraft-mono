@@ -27,7 +27,12 @@ export default function TypeItemMixed({
   const ct = Hooks.useFixedT();
   const matched = options.options?.find(({ text }) => text === selected);
 
-  return (
+  const types =
+    options.options?.filter(
+      ({ type }) => !/^(func|element|node)$/.test(type)
+    ) || [];
+
+  return !types.length ? null : (
     <>
       {matched ? (
         renderMatchedField(
@@ -84,26 +89,24 @@ export default function TypeItemMixed({
         </ListItemButton>
       )}
 
-      {Array.isArray(options.options) && (
-        <MenuDialog
-          value={selected}
-          open={open}
-          onChange={setSelected}
-          onClose={() => setOpen(false)}
-          options={options.options
-            ?.sort(({ type: t1, text: p1 }, { type: t2, text: p2 }) => {
-              const s1 = `${t1}:${p1}`;
-              const s2 = `${t2}:${p2}`;
+      <MenuDialog
+        value={selected}
+        open={open}
+        onChange={setSelected}
+        onClose={() => setOpen(false)}
+        options={types
+          ?.sort(({ type: t1, text: p1 }, { type: t2, text: p2 }) => {
+            const s1 = `${t1}:${p1}`;
+            const s2 = `${t2}:${p2}`;
 
-              return s1 < s2 ? -1 : s1 > s2 ? 1 : 0;
-            })
-            .map(({ type, text }) => ({
-              primary: type,
-              secondary: text.replace(/import\s*\(.*?\)\s*;?\./g, ''),
-              value: text,
-            }))}
-        />
-      )}
+            return s1 < s2 ? -1 : s1 > s2 ? 1 : 0;
+          })
+          .map(({ type, text }) => ({
+            primary: type,
+            secondary: text.replace(/import\s*\(.*?\)\s*;?\./g, ''),
+            value: text,
+          }))}
+      />
     </>
   );
 }

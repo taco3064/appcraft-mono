@@ -102,6 +102,7 @@ export const getTypeByPath: Types.GetTypeByPath = (
     const target = paths.shift();
     const currentPath = [...superior, target];
 
+    //* Function
     if (callSignature) {
       switch (target) {
         case 'return':
@@ -129,127 +130,76 @@ export const getTypeByPath: Types.GetTypeByPath = (
       }
     }
 
-    if (type?.isArray() && /^\d+$/.test(target)) {
-      const element = type.getArrayElementType();
+    //* Array
+    if (/^\d+$/.test(target)) {
       const subinfo = { propName: target, required: true };
+      const mixed = getMixedTypeByPath(mixedTypes, currentPath);
 
-      return !element.isUnion()
-        ? getTypeByPath(element, {
-            info: subinfo,
-            mixedTypes,
-            paths,
-            source,
-            superior: currentPath,
-          })
-        : element.getUnionTypes().reduce<Types.TypeResult>(
-            (result, union) =>
-              result ||
-              getTypeByPath(union, {
-                info: subinfo,
-                mixedTypes,
-                paths: [...paths],
-                source,
-                superior: currentPath,
-              }),
-            null
-          );
+      const base =
+        (type?.isArray()
+          ? type.getArrayElementType()
+          : type?.isTuple() &&
+            type.getTupleElements()[Number.parseInt(target, 10)]) || null;
+
+      const element =
+        mixed &&
+        base.getUnionTypes()?.find((union) => union.getText() === mixed);
+
+      return getTypeByPath(element || base, {
+        info: subinfo,
+        mixedTypes,
+        paths,
+        source,
+        superior: currentPath,
+      });
     }
 
-    if (type?.isTuple() && /^\d+$/.test(target)) {
-      const element = type.getTupleElements()[Number.parseInt(target, 10)];
-      const subinfo = { propName: target, required: true };
+    //* Object
+    const args = type?.getAliasTypeArguments() || [];
+    const strIdxType = type?.getStringIndexType();
+    const symbol = type.getProperty(target);
 
-      return !element.isUnion()
-        ? getTypeByPath(element, {
-            info: subinfo,
-            mixedTypes,
-            paths,
-            source,
-            superior: currentPath,
-          })
-        : element.getUnionTypes().reduce<Types.TypeResult>(
-            (result, union) =>
-              result ||
-              getTypeByPath(union, {
-                info: subinfo,
-                mixedTypes,
-                paths: [...paths],
-                source,
-                superior: currentPath,
-              }),
-            null
-          );
+    if (
+      strIdxType ||
+      (type.getText().startsWith('Record<') && args.length > 0)
+    ) {
+      const subinfo = { propName: target, required: true };
+      const base = strIdxType || args[1];
+      const mixed = getMixedTypeByPath(mixedTypes, currentPath);
+
+      const property =
+        mixed &&
+        base.getUnionTypes()?.find((union) => union.getText() === mixed);
+
+      return getTypeByPath(property || base, {
+        info: subinfo,
+        mixedTypes,
+        paths,
+        source,
+        superior: currentPath,
+      });
     }
 
-    if (!type?.isArray() && !type?.isTuple()) {
-      const args = type?.getAliasTypeArguments() || [];
-      const properties = type?.getProperties() || [];
+    if (symbol) {
+      const base = symbol.getTypeAtLocation(source);
+      const mixed = getMixedTypeByPath(mixedTypes, currentPath);
 
-      if (properties.length) {
-        const symbol = type.getProperty(target);
+      const subinfo = {
+        propName: target,
+        required: !symbol.isOptional() || false,
+      };
 
-        if (symbol) {
-          const element = symbol.getTypeAtLocation(source);
+      const property =
+        mixed &&
+        base.getUnionTypes()?.find((union) => union.getText() === mixed);
 
-          const subinfo = {
-            propName: target,
-            required: !symbol.isOptional() || false,
-          };
-
-          if (element.getText() !== 'React.ReactNode' && element?.isUnion()) {
-            const mixed = getMixedTypeByPath(mixedTypes, currentPath);
-
-            const union = element
-              .getUnionTypes()
-              .find((union) => union.getText() === mixed);
-
-            return (
-              union &&
-              getTypeByPath(union, {
-                info: subinfo,
-                mixedTypes,
-                paths: [...paths],
-                source,
-                superior: currentPath,
-              })
-            );
-          }
-
-          return getTypeByPath(element, {
-            info: subinfo,
-            mixedTypes,
-            paths,
-            source,
-            superior: currentPath,
-          });
-        }
-      }
-
-      if (args.length && type.getText().startsWith('Record<')) {
-        const subinfo = { propName: target, required: true };
-        const [, element] = args;
-
-        return element.getText() === 'React.ReactNode' || !element?.isUnion()
-          ? getTypeByPath(element, {
-              info: subinfo,
-              mixedTypes,
-              paths,
-              source,
-              superior: currentPath,
-            })
-          : element.getUnionTypes().reduce<Types.TypeResult>(
-              (result, union) =>
-                result ||
-                getTypeByPath(union, {
-                  info: subinfo,
-                  mixedTypes,
-                  paths: [...paths],
-                  source,
-                  superior: currentPath,
-                }),
-              null
-            );
-      }
+      return getTypeByPath(property || base, {
+        info: subinfo,
+        mixedTypes,
+        paths,
+        source,
+        superior: currentPath,
+      });
     }
 
     return null;

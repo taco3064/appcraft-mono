@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.52](https://github.com/taco3064/appcraft-mono/compare/v0.0.51...v0.0.52) (2023-06-27)
+
+
+### Features
+
+* **@appcraft/mui:** if select the oneOf mixed type, and it has only 1 option, that is default value ([e8d501b](https://github.com/taco3064/appcraft-mono/commit/e8d501b964ce6fe3bd9ffc934399a790df8228e2))
+* **ts2-props:** add new service method: parseWidget ([7ea60e0](https://github.com/taco3064/appcraft-mono/commit/7ea60e0c14d235173a2f86f212a7915f498c4661))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** fixed bugs ([8340a88](https://github.com/taco3064/appcraft-mono/commit/8340a88b16c350112fa265fa756ae939416ff6d9))
+* **@appcraft/mui:** fixed pseudo collection bugs ([bbf54e5](https://github.com/taco3064/appcraft-mono/commit/bbf54e5c6c8c07c6cc5fd82f1fe46d31ee975787))
+* **@appcraft/mui:** fixed the error without generate key in WidgetGenerator ([e7c61e0](https://github.com/taco3064/appcraft-mono/commit/e7c61e057dfaf232e10f13e9582c9e9adc2dcef1))
+* **lazy-mui:** update lazy settings ([cc51933](https://github.com/taco3064/appcraft-mono/commit/cc5193370cedf4664a72f06e473c68da01a2e758))
+* **mui-widgets.json:** update configurations ([b6eeb54](https://github.com/taco3064/appcraft-mono/commit/b6eeb541b547a322f6be78d8200ca3ab321457a4))
+* **ts2-props:** update parsing rules ([eaebed5](https://github.com/taco3064/appcraft-mono/commit/eaebed5b04871fba8fcf8303dd32f6a3fccb54d5))
+
 ### [0.0.51](https://github.com/taco3064/appcraft-mono/compare/v0.0.50...v0.0.51) (2023-06-27)
 
 

@@ -1,8 +1,18 @@
+import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
+import Collapse from '@mui/material/Collapse';
+import LabelIcon from '@mui/icons-material/Label';
+import LabelOutlinedIcon from '@mui/icons-material/LabelOutlined';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import TextField from '@mui/material/TextField';
+import UndoIcon from '@mui/icons-material/Undo';
+import { useState } from 'react';
 
 import * as Hooks from '../../hooks';
 import { ConstructSelection } from '../common';
+import { IconTipButton, TypeItemAction } from '../../styles';
 import { TypeItemDisplay, TypeItemDisplayProps } from '../TypeItemDisplay';
 import { TypeItemMixed, TypeItemMixedProps } from '../TypeItemMixed';
 import { TypeItemPure, TypeItemPureProps } from '../TypeItemPure';
@@ -14,8 +24,12 @@ export default function TypeItem({
   disabled = false,
   options,
   onDelete,
+  onRename,
   onSubitemView,
 }: Types.TypeItemProps) {
+  const ct = Hooks.useFixedT();
+  const [naming, setNaming] = useState(!options.propName);
+
   const { category, label, propPath } = Hooks.useTypeItem(
     collectionType,
     options
@@ -31,59 +45,127 @@ export default function TypeItem({
   const actions =
     !action && !onDelete ? null : (
       <>
-        {action}
+        {!naming && options.propName && action}
 
-        {onDelete && (
-          <IconButton onClick={() => onDelete(options)}>
+        {onRename && (
+          <IconTipButton
+            color={naming ? 'primary' : 'default'}
+            title={ct('btn-rename-prop')}
+            onClick={() => setNaming(true)}
+          >
+            {naming ? <LabelIcon /> : <LabelOutlinedIcon />}
+          </IconTipButton>
+        )}
+
+        {!naming && onDelete && (
+          <IconTipButton title={ct('btn-remove-prop')} onClick={onDelete}>
             <CloseIcon />
-          </IconButton>
+          </IconTipButton>
         )}
       </>
     );
 
   return (
     <>
-      {category === 'Display' && (
-        <TypeItemDisplay
-          action={actions}
-          disabled={disabled || Boolean(status)}
-          label={label}
-          propPath={propPath}
-          options={options as TypeItemDisplayProps['options']}
-          selection={selection}
-          onClick={onSubitemView}
-        />
-      )}
+      <Collapse in={naming}>
+        <ListItem
+          component="form"
+          onSubmit={(e) => {
+            const formdata = new FormData(e.currentTarget);
 
-      {category === 'Pure' && (
-        <TypeItemPure
-          action={actions}
-          disabled={disabled || Boolean(status)}
-          label={label}
-          propPath={propPath}
-          options={options as TypeItemPureProps['options']}
-          selection={selection}
-        />
-      )}
+            e.preventDefault();
 
-      {category === 'Mixed' && (
-        <TypeItemMixed
-          action={actions}
-          disabled={disabled || Boolean(status)}
-          label={label}
-          propPath={propPath}
-          options={options as TypeItemMixedProps['options']}
-          selection={selection}
-          renderMatchedField={(matched, matchedAction) => (
-            <TypeItem
-              {...{ collectionType, onDelete, onSubitemView }}
+            if (onRename?.(formdata.get('propName') as string)) {
+              setNaming(false);
+            }
+          }}
+        >
+          {selection && <ListItemIcon />}
+
+          <ListItemText
+            disableTypography
+            primary={
+              naming && (
+                <TextField
+                  autoFocus
+                  fullWidth
+                  required
+                  size="small"
+                  variant="outlined"
+                  name="propName"
+                  defaultValue={options.propName}
+                  label={ct('lbl-prop-naming', {
+                    name: options.propName || 'empty',
+                  })}
+                />
+              )
+            }
+          />
+
+          <TypeItemAction onClick={(e) => e.stopPropagation()}>
+            <IconTipButton
+              title={ct('btn-cancel')}
+              onClick={() => setNaming(false)}
+            >
+              <UndoIcon />
+            </IconTipButton>
+
+            <IconTipButton
+              type="submit"
+              color="primary"
+              title={ct('btn-confirm')}
+            >
+              <CheckIcon />
+            </IconTipButton>
+          </TypeItemAction>
+        </ListItem>
+      </Collapse>
+
+      <Collapse in={!naming}>
+        <>
+          {category === 'Display' && (
+            <TypeItemDisplay
+              action={actions}
               disabled={disabled || Boolean(status)}
-              options={matched}
-              action={matchedAction}
+              label={label}
+              propPath={propPath}
+              options={options as TypeItemDisplayProps['options']}
+              selection={selection}
+              onClick={onSubitemView}
             />
           )}
-        />
-      )}
+
+          {category === 'Pure' && (
+            <TypeItemPure
+              action={actions}
+              disabled={disabled || Boolean(status)}
+              label={label}
+              propPath={propPath}
+              options={options as TypeItemPureProps['options']}
+              selection={selection}
+            />
+          )}
+
+          {category === 'Mixed' && (
+            <TypeItemMixed
+              action={actions}
+              disabled={disabled || Boolean(status) || !options.propName}
+              label={label}
+              propPath={propPath}
+              options={options as TypeItemMixedProps['options']}
+              selection={selection}
+              renderMatchedField={(matched, matchedAction) => (
+                <TypeItem
+                  {...{ collectionType, onDelete, onSubitemView }}
+                  disabled={disabled || Boolean(status)}
+                  options={{ ...matched, propName: options.propName }}
+                  action={matchedAction}
+                />
+              )}
+            />
+          )}
+        </>
+      </Collapse>
     </>
   );
 }

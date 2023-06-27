@@ -45,7 +45,7 @@ export default function CraftedTypeEditor<
           {message}
         </Typography>
       ) : (
-        <TypeList {...props} superior={fetchData} />
+        <TypeList {...props} collection={fetchData} />
       )
   );
 

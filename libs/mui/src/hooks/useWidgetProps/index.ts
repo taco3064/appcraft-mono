@@ -1,2 +1,2 @@
 export { default as useWidgetProps } from './useWidgetProps';
-export { getProps } from './useWidgetProps.utils';
+export { getProps, getTodoEventHandle } from './useWidgetProps.utils';

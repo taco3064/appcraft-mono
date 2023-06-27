@@ -166,77 +166,86 @@ const generators: Types.Generators = [
 
   //* Object
   (type, info, source) => {
-    const properties = type.getProperties?.();
+    if (source) {
+      const args = type.getAliasTypeArguments();
+      const properties = type.getProperties?.();
+      const strIdxType = type.getStringIndexType();
 
-    if (type.isObject() || type.isInterface() || properties?.length) {
-      if (source) {
-        const args = type.getAliasTypeArguments();
+      //* { [key: string]: value; }
+      if (strIdxType) {
+        const options = getProptype(strIdxType, {
+          propName: '*',
+          required: false,
+        });
 
-        if (type.getText().startsWith('Record<') && args.length > 0) {
-          const keys = getProptype(args[0], {
-            propName: '*',
-            required: false,
-          });
-
-          const options = getProptype(args[1], {
-            propName: '*',
-            required: false,
-          });
-
-          if (options && keys) {
-            return keys.type !== 'oneOf'
-              ? { ...info, type: 'objectOf', options }
-              : {
-                  ...info,
-                  type: 'exact',
-                  options: keys.options?.reduce(
-                    (result, key) => ({
-                      ...result,
-                      [key as string]: {
-                        ...options,
-                        propName: key,
-                      },
-                    }),
-                    {}
-                  ),
-                };
-          }
-
-          return false;
-        }
-
-        if (properties.length > 0) {
-          const options = properties.reduce<[string, PropTypesDef][]>(
-            (result, property) => {
-              const propName = property.getName();
-              const typeAtLocation = property.getTypeAtLocation(source);
-
-              const proptype = getProptype(typeAtLocation, {
-                propName,
-                required: !property.isOptional(),
-              });
-
-              if (proptype) {
-                result.push([propName, proptype]);
-              }
-
-              return result;
-            },
-            []
-          );
-
-          return (
-            options.length > 0 && {
-              ...info,
-              type: 'exact',
-              options: Object.fromEntries(options),
-            }
-          );
-        }
-
-        return false;
+        return options && { ...info, type: 'objectOf', options };
       }
 
+      //* Record<key, value>
+      if (type.getText().startsWith('Record<') && args.length > 0) {
+        const keys = getProptype(args[0], {
+          propName: '*',
+          required: false,
+        });
+
+        const options = getProptype(args[1], {
+          propName: '*',
+          required: false,
+        });
+
+        if (options && keys) {
+          return keys.type !== 'oneOf'
+            ? { ...info, type: 'objectOf', options }
+            : {
+                ...info,
+                type: 'exact',
+                options: keys.options?.reduce(
+                  (result, key) => ({
+                    ...result,
+                    [key as string]: {
+                      ...options,
+                      propName: key,
+                    },
+                  }),
+                  {}
+                ),
+              };
+        }
+      }
+
+      if (properties.length > 0) {
+        const options = properties.reduce<[string, PropTypesDef][]>(
+          (result, property) => {
+            const propName = property.getName();
+            const typeAtLocation = property.getTypeAtLocation(source);
+
+            const proptype = getProptype(typeAtLocation, {
+              propName,
+              required: !property.isOptional(),
+            });
+
+            if (proptype) {
+              result.push([propName, proptype]);
+            }
+
+            return result;
+          },
+          []
+        );
+
+        return (
+          options.length > 0 && {
+            ...info,
+            type: 'exact',
+            options: Object.fromEntries(options),
+          }
+        );
+      }
+
+      return false;
+    }
+
+    if (type.isObject() || type.isInterface()) {
       return { ...info, type: 'object' };
     }
 

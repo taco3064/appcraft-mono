@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import type { PropPathRouterHandler, TypeItem } from '../../hooks';
 
 export interface TypeItemProps
-  extends Pick<TypeItem, 'collectionType' | 'onDelete'> {
+  extends Pick<TypeItem, 'collectionType' | 'onDelete' | 'onRename'> {
   action?: ReactNode;
   disabled?: boolean;
   options: PropTypesDef;

@@ -1,7 +1,13 @@
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import DialpadIcon from '@mui/icons-material/Dialpad';
+import InputAdornment from '@mui/material/InputAdornment';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import SwipeIcon from '@mui/icons-material/Swipe';
 import TextField from '@mui/material/TextField';
+import TitleIcon from '@mui/icons-material/Title';
 import dayjs from 'dayjs';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 
@@ -38,6 +44,13 @@ export default function TypeItemPure({
                 label={label}
                 defaultValue={value || ''}
                 onChange={(e) => onChange(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <TitleIcon color="disabled" />
+                    </InputAdornment>
+                  ),
+                }}
               />
             )}
 
@@ -57,6 +70,11 @@ export default function TypeItemPure({
                       onChange: (e: { target: { checked: boolean } }) =>
                         onChange(e.target.checked),
                     },
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SwipeIcon color="disabled" />
+                      </InputAdornment>
+                    ),
                   } as object
                 }
               />
@@ -84,6 +102,11 @@ export default function TypeItemPure({
                               )
                         ),
                     },
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <DialpadIcon color="disabled" />
+                      </InputAdornment>
+                    ),
                   } as object
                 }
               />
@@ -101,6 +124,13 @@ export default function TypeItemPure({
                     required: options.required,
                     size: 'small',
                     variant: 'outlined',
+                    InputProps: {
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <CalendarMonthIcon color="disabled" />
+                        </InputAdornment>
+                      ),
+                    },
                   },
                 }}
               />
@@ -120,6 +150,13 @@ export default function TypeItemPure({
                 disabled={
                   disabled || Boolean(options.options?.length === 1 && value)
                 }
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <MenuOpenIcon color="disabled" />
+                    </InputAdornment>
+                  ),
+                }}
               >
                 {!options.required && <MenuItem value="">&nbsp;</MenuItem>}
 

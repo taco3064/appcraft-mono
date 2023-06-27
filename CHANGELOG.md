@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.51](https://github.com/taco3064/appcraft-mono/compare/v0.0.50...v0.0.51) (2023-06-27)
+
+
+### Features
+
+* **@appcraft/mui:** add rename property feature ([0408f4b](https://github.com/taco3064/appcraft-mono/commit/0408f4be1ef77f208ef22141289930c8ad3556e9))
+* **@appcraft/mui:** add rename property feature ([226cdb5](https://github.com/taco3064/appcraft-mono/commit/226cdb5fad461712e34f6c20822a073ba711b1cf))
+* **type-item-pure:** add type icon ([120dc2f](https://github.com/taco3064/appcraft-mono/commit/120dc2f74d80089f838d54e3a173ed504bbc1040))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** add new util function: getTodoEventHandle ([bb6502c](https://github.com/taco3064/appcraft-mono/commit/bb6502c6d17d69eb25b6665cd02e161530f767b5))
+* **@appcraft/mui:** type-item-mixed doesn't need to support node/element/func ([97ff0c1](https://github.com/taco3064/appcraft-mono/commit/97ff0c17c8661530903e344a1c6187aff50400af))
+* **ts-morph:** fixed the bug of getTypeByPath ([e02e5ea](https://github.com/taco3064/appcraft-mono/commit/e02e5ea7119e4d10ffb1db440d370a01dd6bc8c5))
+* **type-item-pure:** update icon ([f7ca202](https://github.com/taco3064/appcraft-mono/commit/f7ca202ffebd927d7e73f6b4d6a0145055dda71b))
+* **use-todo-config:** outputKey must be generated before original data ([e32cb0a](https://github.com/taco3064/appcraft-mono/commit/e32cb0a9a9c189a12f26cd4b1925764d8ebeed3a))
+* **use-todo-config:** update type file path ([28e4a44](https://github.com/taco3064/appcraft-mono/commit/28e4a44f01ea948c0da23f20bcf97121d23eada0))
+
 ### [0.0.50](https://github.com/taco3064/appcraft-mono/compare/v0.0.49...v0.0.50) (2023-06-26)
 
 

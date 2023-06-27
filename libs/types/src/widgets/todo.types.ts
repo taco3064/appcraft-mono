@@ -1,13 +1,10 @@
 import type { AxiosRequestConfig } from 'axios';
 
-//* Declaration - 僅指定資料型態
-export type Declaration =
-  | 'bool'
-  | 'date'
-  | 'num'
-  | 'str'
-  | Declaration[]
-  | { [key: string]: Declaration };
+//* RetrieveTarget - 僅指定資料型態
+export type RetrieveTarget =
+  | 'Retrieve Target'
+  | RetrieveTarget[]
+  | { [key: string]: RetrieveTarget };
 
 //* Definition - 明確定義的資料值
 export type Definition =
@@ -25,7 +22,7 @@ type BaseTodoEvent<C extends Todos, P> = {
   category: C;
   outputKey: string; //* Output Key
   description: string;
-  inputDeclaration?: { [key: string]: Declaration };
+  retrieve?: { [key: string]: RetrieveTarget };
 } & P;
 
 export type DefineTodoEvent = BaseTodoEvent<

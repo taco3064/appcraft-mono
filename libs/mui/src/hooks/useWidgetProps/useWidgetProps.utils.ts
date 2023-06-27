@@ -45,8 +45,7 @@ export const getTodoEventHandle: Types.GetTodoEventHandleUtil = (() => {
             const { category } = event;
 
             if (/^(convert|define|fetch)$/.test(category)) {
-              const { outputKey, inputDeclaration, ...todo } =
-                event as Appcraft.TodoEvent;
+              const { outputKey, ...todo } = event as Appcraft.TodoEvent;
 
               console.log('implement', todo);
             } else {

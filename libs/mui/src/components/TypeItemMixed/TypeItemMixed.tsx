@@ -21,7 +21,11 @@ export default function TypeItemMixed({
   renderMatchedField,
   selection,
 }: TypeItemMixedProps) {
-  const [selected, setSelected] = Hooks.useMixedTypeMapping(propPath);
+  const [selected, setSelected] = Hooks.useMixedTypeMapping(
+    propPath,
+    options.options || []
+  );
+
   const [open, setOpen] = useState(false);
   const ct = Hooks.useFixedT();
   const matched = options.options?.find(({ text }) => text === selected);

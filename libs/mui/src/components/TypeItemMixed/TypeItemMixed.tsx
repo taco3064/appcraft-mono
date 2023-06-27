@@ -1,4 +1,3 @@
-import Badge from '@mui/material/Badge';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -9,7 +8,7 @@ import UndoIcon from '@mui/icons-material/Undo';
 import { useState } from 'react';
 
 import * as Hooks from '../../hooks';
-import { GapTypography, IconTipButton, TypeItemAction } from '../../styles';
+import * as Styles from '../../styles';
 import { MenuDialog } from '../common';
 import type { TypeItemMixedProps } from './TypeItemMixed.types';
 
@@ -22,7 +21,11 @@ export default function TypeItemMixed({
   renderMatchedField,
   selection,
 }: TypeItemMixedProps) {
-  const [selected, setSelected] = Hooks.useMixedTypeMapping(propPath);
+  const [selected, setSelected] = Hooks.useMixedTypeMapping(
+    propPath,
+    options.options || []
+  );
+
   const [open, setOpen] = useState(false);
   const ct = Hooks.useFixedT();
   const matched = options.options?.find(({ text }) => text === selected);
@@ -38,21 +41,21 @@ export default function TypeItemMixed({
         renderMatchedField(
           matched,
           <>
-            <IconTipButton
+            <Styles.IconTipButton
               disabled={disabled}
               title={ct('btn-clear-type')}
               onClick={() => setSelected()}
             >
               <UndoIcon />
-            </IconTipButton>
+            </Styles.IconTipButton>
 
-            <IconTipButton
+            <Styles.IconTipButton
               disabled={disabled}
               title={ct('btn-reset-type')}
               onClick={() => setOpen(true)}
             >
               <PlaylistAddCheckIcon />
-            </IconTipButton>
+            </Styles.IconTipButton>
           </>
         )
       ) : (
@@ -66,25 +69,24 @@ export default function TypeItemMixed({
           <ListItemText
             disableTypography
             primary={
-              <GapTypography variant="subtitle1" color="text.primary">
-                <Badge
+              <Styles.GapTypography variant="subtitle1" color="text.primary">
+                <Styles.CompositeIcon
                   anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                  badgeContent={
-                    <HelpOutlineIcon fontSize="small" color="warning" />
-                  }
-                >
-                  <BookmarkBorderIcon color="secondary" />
-                </Badge>
+                  primaryProps={{ color: 'secondary' }}
+                  secondaryProps={{ color: 'warning' }}
+                  primary={BookmarkBorderIcon}
+                  secondary={HelpOutlineIcon}
+                />
 
                 {label}
-              </GapTypography>
+              </Styles.GapTypography>
             }
           />
 
           {action && (
-            <TypeItemAction onClick={(e) => e.stopPropagation()}>
+            <Styles.TypeItemAction onClick={(e) => e.stopPropagation()}>
               {action}
-            </TypeItemAction>
+            </Styles.TypeItemAction>
           )}
         </ListItemButton>
       )}

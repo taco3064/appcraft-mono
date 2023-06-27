@@ -1,11 +1,11 @@
 import _set from 'lodash/set';
 import type * as Appcraft from '@appcraft/types';
 
-import type { Renderer } from './useWidgetProps.types';
+import type * as Types from './useWidgetProps.types';
 
 export const getProps = <P extends object>(
   options: Appcraft.NodeWidget | Appcraft.ConfigOptions,
-  renderer?: Renderer
+  renderer?: Types.Renderer
 ) => {
   const fields: Appcraft.WidgetField[] = ['nodes', 'props', 'todos'];
 
@@ -27,7 +27,7 @@ export const getProps = <P extends object>(
           propPath,
           Array.isArray(value)
             ? value.map(renderer)
-            : renderer(value as Appcraft.WidgetOptions)
+            : renderer(value as Appcraft.WidgetOptions, 0)
         );
       }
     });
@@ -36,12 +36,24 @@ export const getProps = <P extends object>(
   }, {}) as P;
 };
 
-export const getTodoEventHandle =
-  (options: Appcraft.WidgetEvent[]) =>
-  async (...args: unknown[]) =>
-    options.reduce((result, todo) => {
-      //! todo: handle event
-      console.log(todo);
+export const getTodoEventHandle: Types.GetTodoEventHandleUtil = (() => {
+  return (options) =>
+    (...args) =>
+      options.reduce(
+        (result, event) =>
+          result.then((params) => {
+            const { category } = event;
 
-      return result;
-    }, Promise.resolve({ e: args }));
+            if (/^(convert|define|fetch)$/.test(category)) {
+              const { outputKey, ...todo } = event as Appcraft.TodoEvent;
+
+              console.log('implement', todo);
+            } else {
+              console.log('flow');
+            }
+
+            return { ...params };
+          }),
+        Promise.resolve({ e: args })
+      );
+})();

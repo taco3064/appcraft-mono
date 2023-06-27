@@ -75,8 +75,8 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
               <ListItemText
                 primaryTypographyProps={{ variant: 'subtitle2' }}
                 secondaryTypographyProps={{ variant: 'caption' }}
-                primary={Hooks.getDisplayPropName(path)}
-                secondary={Hooks.getDisplayPropName(type)}
+                primary={path}
+                secondary={type}
               />
             </ListItemButton>
           ))}

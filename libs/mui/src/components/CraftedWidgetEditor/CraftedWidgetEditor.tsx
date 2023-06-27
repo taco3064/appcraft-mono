@@ -13,7 +13,6 @@ import type * as Appcraft from '@appcraft/types';
 import * as Common from '../common';
 import * as Hooks from '../../hooks';
 import * as Styles from '../../styles';
-import { ConstructProvider } from '../../contexts';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { WidgetAddDialog } from '../WidgetAddDialog';
 import { WidgetNode } from '../WidgetNode';

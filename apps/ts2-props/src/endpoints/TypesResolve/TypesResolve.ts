@@ -8,12 +8,22 @@ import type { TypesParseOptions } from '@appcraft/types';
 export default class TypesResolve {
   @Endpoint({
     method: 'post',
-    description: '解析指定的 Typescript Interface',
+    description: '解析指定的 Configuration Typescript Interface',
   })
-  parse(req: Request, res: Response) {
+  parseConfigs(req: Request, res: Response) {
     const body = req.body as TypesParseOptions;
 
-    res.json(typesResolve.parse(body));
+    res.json(typesResolve.parseConfigs(body));
+  }
+
+  @Endpoint({
+    method: 'post',
+    description: '解析指定的 Widget Props Typescript Interface',
+  })
+  parseWidget(req: Request, res: Response) {
+    const body = req.body as TypesParseOptions;
+
+    res.json(typesResolve.parseWidget(body));
   }
 
   @Endpoint({

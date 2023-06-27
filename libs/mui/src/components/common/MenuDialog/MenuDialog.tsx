@@ -39,7 +39,6 @@ export default function MenuDialog<V extends { toString(): string }>({
               {...{ primary, secondary }}
               primaryTypographyProps={{
                 fontWeight: 'bolder',
-                textTransform: 'capitalize',
               }}
               secondaryTypographyProps={{
                 whiteSpace: 'pre-wrap',

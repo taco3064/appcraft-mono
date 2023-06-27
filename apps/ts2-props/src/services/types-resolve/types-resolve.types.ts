@@ -32,7 +32,11 @@ export type FindNodePropsUtil = (
   }
 ) => Appcraft.WidgetChildren;
 
-export type ParseService = (
+export type ParseConfigService = (
+  options: Appcraft.TypesParseOptions
+) => Appcraft.PropTypesDef | null;
+
+export type ParseWidgetService = (
   options: Appcraft.TypesParseOptions
 ) => Appcraft.PropTypesDef | null;
 

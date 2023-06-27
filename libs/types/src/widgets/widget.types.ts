@@ -34,7 +34,6 @@ export type ConfigOptions = BaseOptions<
   'config',
   Omit<TypesParseOptions, 'collectionPath'> & {
     props?: Record<string, unknown>;
-    todos?: Record<string, WidgetEvent[]>;
   }
 >;
 
@@ -43,6 +42,7 @@ export type NodeWidget = BaseOptions<
   Omit<ConfigOptions, 'category'> & {
     type: string;
     nodes?: Nodes;
+    todos?: Record<string, WidgetEvent[]>;
   }
 >;
 

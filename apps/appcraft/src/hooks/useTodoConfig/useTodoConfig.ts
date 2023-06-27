@@ -10,7 +10,7 @@ import type { TodoConfigResult, TodoVariant } from './useTodoConfig.types';
 const typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts';
 
 const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: [id],
     queryFn: findConfig<ConfigOptions>,
     refetchOnWindowFocus: false,
@@ -25,6 +25,7 @@ const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
 
   return {
     variant,
+    refetch,
     onVariantChange: (e) => setVariant(e.target.value as TodoVariant),
 
     todo: useMemo(() => {
@@ -40,8 +41,8 @@ const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
               typeFile,
               typeName: 'DefineTodoEvent',
               props: {
-                ...props,
                 outputKey: nanoid(4),
+                ...props,
                 category: 'define',
               },
             },
@@ -56,8 +57,8 @@ const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
               typeFile,
               typeName: 'FetchTodoEvent',
               props: {
-                ...props,
                 outputKey: nanoid(4),
+                ...props,
                 category: 'fetch',
               },
             },
@@ -72,8 +73,8 @@ const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
               typeFile,
               typeName: 'ConvertTodoEvent',
               props: {
-                ...props,
                 outputKey: nanoid(4),
+                ...props,
                 category: 'convert',
               },
             },

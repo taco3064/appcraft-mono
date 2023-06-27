@@ -13,7 +13,7 @@ interface CollapsedAction<A extends ActionElement> {
 
 export type LazyTypeListProps<V extends OptionValues> = Omit<
   TypeListProps<V>,
-  'superior'
+  'collection'
 > & {
   message: string;
 };

@@ -13,7 +13,15 @@ export const getProps = <P extends object>(
     const { [widgetField as keyof typeof options]: props = {} } = options;
 
     Object.entries(props).forEach(([propPath, value]) => {
-      if (renderer instanceof Function && widgetField === 'nodes') {
+      if (widgetField === 'props') {
+        _set(result, propPath, value);
+      } else if (widgetField === 'todos') {
+        _set(
+          result,
+          propPath,
+          getTodoEventHandle(value as Appcraft.WidgetEvent[])
+        );
+      } else if (renderer instanceof Function && widgetField === 'nodes') {
         _set(
           result,
           propPath,
@@ -21,11 +29,19 @@ export const getProps = <P extends object>(
             ? value.map(renderer)
             : renderer(value as Appcraft.WidgetOptions)
         );
-      } else if (widgetField === 'props') {
-        _set(result, propPath, value);
       }
     });
 
     return result;
   }, {}) as P;
 };
+
+export const getTodoEventHandle =
+  (options: Appcraft.WidgetEvent[]) =>
+  async (...args: unknown[]) =>
+    options.reduce((result, todo) => {
+      //! todo: handle event
+      console.log(todo);
+
+      return result;
+    }, Promise.resolve({ e: args }));

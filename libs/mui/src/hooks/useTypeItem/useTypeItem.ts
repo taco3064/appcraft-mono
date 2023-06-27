@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { getDisplayPropName, getOrderSeq } from './useTypeItem.utils';
+import { getOrderSeq } from './useTypeItem.utils';
 import { useEditorContext } from '../../contexts';
 import type * as Types from './useTypeItem.types';
 
@@ -11,7 +11,7 @@ const useTypeItem: Types.TypeItemHook = (
   const { collectionPath } = useEditorContext();
 
   return {
-    label: useMemo(() => getDisplayPropName(propName), [propName]),
+    label: propName || '',
 
     propPath:
       collectionType === 'array'

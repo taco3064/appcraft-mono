@@ -25,11 +25,11 @@ const generators: Types.Generators = [
 
   //* ReactNode / ReactElement
   (type, info) => {
-    if (type.getText() === 'React.ReactNode') {
+    if (/\.ReactNode$/.test(type.getText())) {
       return { ...info, type: 'node' };
     }
 
-    if (type.getText().startsWith('React.ReactElement<')) {
+    if (/\.ReactElement<.+>$/.test(type.getText())) {
       return { ...info, type: 'element' };
     }
 
@@ -171,6 +171,35 @@ const generators: Types.Generators = [
       const properties = type.getProperties?.();
       const strIdxType = type.getStringIndexType();
 
+      if (properties.length > 0) {
+        const options = properties.reduce<[string, PropTypesDef][]>(
+          (result, property) => {
+            const propName = property.getName();
+            const typeAtLocation = property.getTypeAtLocation(source);
+
+            const proptype = getProptype(typeAtLocation, {
+              propName,
+              required: !property.isOptional(),
+            });
+
+            if (proptype) {
+              result.push([propName, proptype]);
+            }
+
+            return result;
+          },
+          []
+        );
+
+        return (
+          options.length > 0 && {
+            ...info,
+            type: 'exact',
+            options: Object.fromEntries(options),
+          }
+        );
+      }
+
       //* { [key: string]: value; }
       if (strIdxType) {
         const options = getProptype(strIdxType, {
@@ -211,35 +240,6 @@ const generators: Types.Generators = [
                 ),
               };
         }
-      }
-
-      if (properties.length > 0) {
-        const options = properties.reduce<[string, PropTypesDef][]>(
-          (result, property) => {
-            const propName = property.getName();
-            const typeAtLocation = property.getTypeAtLocation(source);
-
-            const proptype = getProptype(typeAtLocation, {
-              propName,
-              required: !property.isOptional(),
-            });
-
-            if (proptype) {
-              result.push([propName, proptype]);
-            }
-
-            return result;
-          },
-          []
-        );
-
-        return (
-          options.length > 0 && {
-            ...info,
-            type: 'exact',
-            options: Object.fromEntries(options),
-          }
-        );
       }
 
       return false;

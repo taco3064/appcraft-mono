@@ -4,25 +4,13 @@ import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { Components, useTheme } from '@mui/material/styles';
-import { MUI_WIDGETS } from '@appcraft/types';
 import { useCallback, useState } from 'react';
 
 import * as Component from '~appcraft/components';
 import * as Hooks from '~appcraft/hooks';
-import TYPES_FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
-import { CommonButton, LazyMui } from '~appcraft/components/common';
-import type { WidgetEditorProps, WidgetMap } from './WidgetEditor.types';
-
-const widgets = MUI_WIDGETS.widgets.reduce<WidgetMap>(
-  (result, { components }) => {
-    components.forEach(({ id, typeFile, typeName }) =>
-      result.set(id, { typeFile, typeName })
-    );
-
-    return result;
-  },
-  new Map()
-);
+import FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
+import { CommonButton, LazyMui, typeMap } from '~appcraft/components/common';
+import type { WidgetEditorProps } from './WidgetEditor.types';
 
 export default function WidgetEditor({
   PersistentDrawerContentProps,
@@ -91,12 +79,13 @@ export default function WidgetEditor({
         content={<Appcraft.CraftedRenderer lazy={toLazy} options={widget} />}
         drawer={
           <Appcraft.CraftedWidgetEditor
-            fetchOptions={
-              TYPES_FETCH_OPTIONS as Appcraft.CraftedWidgetEditorProps['fetchOptions']
-            }
             fixedT={ct}
             widget={widget}
             onWidgetChange={onWidgetChange}
+            fetchOptions={{
+              parser: FETCH_OPTIONS.WIDGET,
+              nodes: FETCH_OPTIONS.NODES,
+            }}
             defaultValues={
               theme.components[`Mui${widget?.type}` as keyof Components]
                 ?.defaultProps || {}
@@ -112,8 +101,9 @@ export default function WidgetEditor({
                 defaultValue=""
                 onChange={({ target: { value } }) =>
                   onChange({
-                    ...widgets.get(value),
                     type: value,
+                    typeName: value,
+                    typeFile: typeMap.get(value),
                   })
                 }
               />

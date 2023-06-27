@@ -6,7 +6,7 @@ import type { Renderer } from './useWidgetProps.types';
 
 const useWidgetProps = <T extends ExoticComponent>(
   options: Appcraft.WidgetOptions,
-  render: Renderer
+  renderer: Renderer
 ): ComponentProps<T> => {
   const { type, content } = options as Appcraft.NodeWidget &
     Appcraft.PlainTextWidget;
@@ -15,7 +15,7 @@ const useWidgetProps = <T extends ExoticComponent>(
     ? ({
         children: content || '',
       } as ComponentProps<T>)
-    : getProps<ComponentProps<T>>(options as Appcraft.NodeWidget, render);
+    : getProps<ComponentProps<T>>(options as Appcraft.NodeWidget, renderer);
 };
 
 export default useWidgetProps;

@@ -1,9 +1,10 @@
 import * as TsMorph from 'ts-morph';
 import _toPath from 'lodash.topath';
 import path from 'path';
-import { MUI_WIDGETS } from '@appcraft/types';
 
 import type * as Types from './ts-morph.types';
+
+const project = new TsMorph.Project();
 
 //* 依照指定路徑取得配對的 Type Text
 const getMixedTypeByPath: Types.GetMixedTypeByPath = (mixedTypes, paths) => {
@@ -16,55 +17,51 @@ const getMixedTypeByPath: Types.GetMixedTypeByPath = (mixedTypes, paths) => {
   return mixedTypes[path];
 };
 
-//* 依目標檔案位置取得 SourceFile 及 Declaration
-export const getSourceAndType: Types.GetSourceAndType = (() => {
-  const { initialize, widgets } = MUI_WIDGETS;
-  const project = new TsMorph.Project();
+//* 依目標檔案位置取得 SourceFile 及 Declaration (For Configurations)
+export const getSourceAndType: Types.GetSourceAndType = ({
+  typeFile,
+  typeName,
+}) => {
+  const filePath = path.resolve(process.cwd(), typeFile);
 
-  initialize.forEach(({ typeFile, override }) => {
-    const source = project.addSourceFileAtPath(
-      path.resolve(process.cwd(), typeFile)
-    );
+  const source =
+    project.getSourceFile(filePath) || project.addSourceFileAtPath(filePath);
 
-    override.forEach(({ patternType, pattern, replacement, extractType }) => {
-      const node = extractType.reduce<TsMorph.Node>(
-        (result, { method, typeName }) => result[method](typeName),
-        source
-      );
+  return [
+    source,
+    source.getInterface(typeName)?.getType() ||
+      source.getTypeAlias(typeName)?.getType() ||
+      source
+        .getExportSymbols()
+        .find((exports) => {
+          const type = exports.getDeclaredType();
 
-      source.replaceText(
-        [node.getStart(), node.getEnd()],
-        node
-          .getText()
-          .replace(/\r?\n/g, '')
-          .replace(
-            patternType === 'string' ? pattern : new RegExp(pattern),
-            replacement
-          )
-      );
-    });
-  });
+          return (
+            type?.getSymbol()?.getName() === typeName ||
+            type?.getAliasSymbol()?.getName() === typeName
+          );
+        })
+        ?.getDeclaredType(),
+  ];
+};
 
-  widgets.forEach(({ components }) =>
-    components.forEach(({ typeFile, typeName, override }) => {
-      const filePath = path.resolve(process.cwd(), typeFile);
-      const source = project.addSourceFileAtPath(filePath);
+export const getWidgetSourceAndType: Types.GetSourceAndType = (() => {
+  const source = project.addSourceFileAtPath(
+    path.resolve(process.cwd(), './node_modules/@types/react/index.d.ts')
+  );
 
-      override?.forEach(({ patternType, pattern, replacement, extractBy }) => {
-        const node = source[extractBy](typeName);
+  const aria = source.getModule('React').getInterface('AriaAttributes');
 
-        source.replaceText(
-          [node.getStart(), node.getEnd()],
-          node
-            .getText()
-            .replace(/\r?\n/g, '')
-            .replace(
-              patternType === 'string' ? pattern : new RegExp(pattern),
-              replacement
-            )
-        );
-      });
-    })
+  source.replaceText(
+    [aria.getStart(), aria.getEnd()],
+    `type AriaAttributes = {};`
+  );
+
+  const attr = source.getModule('React').getInterface('HTMLAttributes');
+
+  source.replaceText(
+    [attr.getStart(), attr.getEnd()],
+    `type HTMLAttributes<T> = {};`
   );
 
   return ({ typeFile, typeName }) => {
@@ -73,22 +70,14 @@ export const getSourceAndType: Types.GetSourceAndType = (() => {
     const source =
       project.getSourceFile(filePath) || project.addSourceFileAtPath(filePath);
 
-    return [
-      source,
-      source.getInterface(typeName)?.getType() ||
-        source.getTypeAlias(typeName)?.getType() ||
-        source
-          .getExportSymbols()
-          .find((exports) => {
-            const type = exports.getDeclaredType();
+    source.replaceText([0, 0], "import { ComponentProps } from 'react';");
 
-            return (
-              type?.getSymbol()?.getName() === typeName ||
-              type?.getAliasSymbol()?.getName() === typeName
-            );
-          })
-          ?.getDeclaredType(),
-    ];
+    source.replaceText(
+      [source.getEnd(), source.getEnd()],
+      `type Pseudo_${typeName}Props = ComponentProps<typeof ${typeName}>;`
+    );
+
+    return [source, source.getTypeAlias(`Pseudo_${typeName}Props`).getType()];
   };
 })();
 
@@ -159,13 +148,14 @@ export const getTypeByPath: Types.GetTypeByPath = (
     const strIdxType = type?.getStringIndexType();
     const symbol = type.getProperty(target);
 
-    if (
-      strIdxType ||
-      (type.getText().startsWith('Record<') && args.length > 0)
-    ) {
-      const subinfo = { propName: target, required: true };
-      const base = strIdxType || args[1];
+    if (symbol) {
+      const base = symbol.getTypeAtLocation(source);
       const mixed = getMixedTypeByPath(mixedTypes, currentPath);
+
+      const subinfo = {
+        propName: target,
+        required: !symbol.isOptional() || false,
+      };
 
       const property =
         mixed &&
@@ -180,14 +170,13 @@ export const getTypeByPath: Types.GetTypeByPath = (
       });
     }
 
-    if (symbol) {
-      const base = symbol.getTypeAtLocation(source);
+    if (
+      strIdxType ||
+      (type.getText().startsWith('Record<') && args.length > 0)
+    ) {
+      const subinfo = { propName: target, required: true };
+      const base = strIdxType || args[1];
       const mixed = getMixedTypeByPath(mixedTypes, currentPath);
-
-      const subinfo = {
-        propName: target,
-        required: !symbol.isOptional() || false,
-      };
 
       const property =
         mixed &&

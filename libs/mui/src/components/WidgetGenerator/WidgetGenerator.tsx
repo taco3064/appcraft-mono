@@ -8,7 +8,12 @@ export default function WidgetGenerator({ options }: WidgetGeneratorProps) {
 
   const widgetProps = Hooks.useWidgetProps<typeof LazyWidget>(
     options,
-    (child) => <WidgetGenerator options={child} />
+    (child, i) => (
+      <WidgetGenerator
+        key={`${child.category === 'node' ? child.type : child.category}_${i}`}
+        options={child}
+      />
+    )
   );
 
   return (

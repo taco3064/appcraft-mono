@@ -1,11 +1,11 @@
 import InputAdornment from '@mui/material/InputAdornment';
+import SvgIcon from '@mui/material/SvgIcon';
 import TextField from '@mui/material/TextField';
 import { withStyles } from 'tss-react/mui';
-import type { ComponentProps, ReactElement } from 'react';
+import type { ComponentProps } from 'react';
 import type { FilledInputClasses } from '@mui/material/FilledInput';
 import type { InputClasses } from '@mui/material/Input';
 import type { OutlinedInputClasses } from '@mui/material/OutlinedInput';
-import SvgIcon from '@mui/material/SvgIcon';
 
 export const AdornmentTextField = (() => {
   type TextFieldProps = ComponentProps<typeof TextField>;

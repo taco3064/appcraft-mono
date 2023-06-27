@@ -13,7 +13,7 @@ import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 
 import * as Common from '../common';
 import * as Hooks from '../../hooks';
-import { TypeItemAction } from '../../styles';
+import { AdornmentTextField, TypeItemAction } from '../../styles';
 import type { TypeItemPureProps } from './TypeItemPure.types';
 
 export default function TypeItemPure({
@@ -35,32 +35,27 @@ export default function TypeItemPure({
         primary={
           <>
             {options.type === 'string' && (
-              <TextField
+              <AdornmentTextField
                 fullWidth
                 size="small"
                 variant="outlined"
+                icon={TitleIcon}
                 disabled={disabled}
                 required={options.required}
                 label={label}
                 defaultValue={value || ''}
                 onChange={(e) => onChange(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <TitleIcon color="disabled" />
-                    </InputAdornment>
-                  ),
-                }}
               />
             )}
 
             {options.type === 'bool' && (
-              <TextField
+              <AdornmentTextField
                 fullWidth
                 size="small"
                 variant="outlined"
                 disabled={disabled}
                 required={options.required}
+                icon={SwipeIcon}
                 InputProps={
                   {
                     inputComponent: Common.BoolInput,
@@ -70,23 +65,19 @@ export default function TypeItemPure({
                       onChange: (e: { target: { checked: boolean } }) =>
                         onChange(e.target.checked),
                     },
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SwipeIcon color="disabled" />
-                      </InputAdornment>
-                    ),
                   } as object
                 }
               />
             )}
 
             {options.type === 'number' && (
-              <TextField
+              <AdornmentTextField
                 fullWidth
                 size="small"
                 variant="outlined"
                 disabled={disabled}
                 required={options.required}
+                icon={DialpadIcon}
                 label={label}
                 InputProps={
                   {
@@ -102,11 +93,6 @@ export default function TypeItemPure({
                               )
                         ),
                     },
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <DialpadIcon color="disabled" />
-                      </InputAdornment>
-                    ),
                   } as object
                 }
               />
@@ -118,45 +104,36 @@ export default function TypeItemPure({
                 label={label}
                 value={value ? dayjs(value as string) : null}
                 onChange={(e) => onChange(e?.toDate().toISOString())}
+                slots={{
+                  textField: AdornmentTextField as typeof TextField,
+                }}
                 slotProps={{
                   textField: {
                     fullWidth: true,
                     required: options.required,
                     size: 'small',
                     variant: 'outlined',
-                    InputProps: {
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <CalendarMonthIcon color="disabled" />
-                        </InputAdornment>
-                      ),
-                    },
-                  },
+                    icon: CalendarMonthIcon,
+                  } as object,
                 }}
               />
             )}
 
             {options.type === 'oneOf' && (
-              <TextField
+              <AdornmentTextField
                 SelectProps={{ displayEmpty: options.required }}
                 select
                 fullWidth
                 size="small"
                 variant="outlined"
                 required={options.required}
+                icon={MenuOpenIcon}
                 label={label}
                 value={value || ''}
                 onChange={(e) => onChange(e.target.value)}
                 disabled={
                   disabled || Boolean(options.options?.length === 1 && value)
                 }
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <MenuOpenIcon color="disabled" />
-                    </InputAdornment>
-                  ),
-                }}
               >
                 {!options.required && <MenuItem value="">&nbsp;</MenuItem>}
 
@@ -165,7 +142,7 @@ export default function TypeItemPure({
                     {option.toString()}
                   </MenuItem>
                 ))}
-              </TextField>
+              </AdornmentTextField>
             )}
           </>
         }

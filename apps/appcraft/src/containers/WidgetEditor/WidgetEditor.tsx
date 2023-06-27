@@ -13,16 +13,13 @@ import FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
 import { CommonButton, LazyMui } from '~appcraft/components/common';
 import type { WidgetEditorProps, WidgetMap } from './WidgetEditor.types';
 
-const widgets = MUI_WIDGETS.widgets.reduce<WidgetMap>(
-  (result, { components }) => {
-    components.forEach(({ id, typeFile, typeName }) =>
-      result.set(id, { typeFile, typeName })
-    );
+const widgets = MUI_WIDGETS.reduce<WidgetMap>((result, { components }) => {
+  components.forEach(({ typeFile, typeName }) =>
+    result.set(typeName, typeFile)
+  );
 
-    return result;
-  },
-  new Map()
-);
+  return result;
+}, new Map());
 
 export default function WidgetEditor({
   PersistentDrawerContentProps,
@@ -113,8 +110,9 @@ export default function WidgetEditor({
                 defaultValue=""
                 onChange={({ target: { value } }) =>
                   onChange({
-                    ...widgets.get(value),
                     type: value,
+                    typeName: value,
+                    typeFile: widgets.get(value),
                   })
                 }
               />

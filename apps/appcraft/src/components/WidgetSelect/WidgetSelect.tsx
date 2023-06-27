@@ -14,7 +14,7 @@ export default function WidgetSelect(props: WidgetSelectProps) {
     <TextField SelectProps={{ displayEmpty: true }} select {...props}>
       <MenuItem value="">&nbsp;</MenuItem>
 
-      {MUI_WIDGETS.widgets.reduce((options, { category, components }) => {
+      {MUI_WIDGETS.reduce((options, { category, components }) => {
         options.push(
           <ListItemButton key={category} disabled>
             <ListItemText
@@ -26,10 +26,10 @@ export default function WidgetSelect(props: WidgetSelectProps) {
             />
           </ListItemButton>,
 
-          ...components.map(({ id }) => (
+          ...components.map(({ typeName }) => (
             <MenuItem
-              key={id}
-              value={id}
+              key={typeName}
+              value={typeName}
               sx={(theme) => ({ paddingLeft: theme.spacing(2) })}
             >
               <ListItemText
@@ -39,7 +39,7 @@ export default function WidgetSelect(props: WidgetSelectProps) {
                   lineHeight: 1.5,
                   style: { margin: 0 },
                 }}
-                primary={id}
+                primary={typeName}
               />
             </MenuItem>
           ))

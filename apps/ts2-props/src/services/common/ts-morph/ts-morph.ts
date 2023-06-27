@@ -1,9 +1,10 @@
 import * as TsMorph from 'ts-morph';
 import _toPath from 'lodash.topath';
 import path from 'path';
-import { MUI_WIDGETS } from '@appcraft/types';
 
 import type * as Types from './ts-morph.types';
+
+const project = new TsMorph.Project();
 
 //* 依照指定路徑取得配對的 Type Text
 const getMixedTypeByPath: Types.GetMixedTypeByPath = (mixedTypes, paths) => {
@@ -16,81 +17,127 @@ const getMixedTypeByPath: Types.GetMixedTypeByPath = (mixedTypes, paths) => {
   return mixedTypes[path];
 };
 
-//* 依目標檔案位置取得 SourceFile 及 Declaration
-export const getSourceAndType: Types.GetSourceAndType = (() => {
-  const { initialize, widgets } = MUI_WIDGETS;
-  const project = new TsMorph.Project();
+//* 依目標檔案位置取得 SourceFile 及 Declaration (For Configurations)
+export const getSourceAndType: Types.GetSourceAndType = ({
+  typeFile,
+  typeName,
+}) => {
+  const filePath = path.resolve(process.cwd(), typeFile);
 
-  initialize.forEach(({ typeFile, override }) => {
-    const source = project.addSourceFileAtPath(
-      path.resolve(process.cwd(), typeFile)
-    );
+  const source =
+    project.getSourceFile(filePath) || project.addSourceFileAtPath(filePath);
 
-    override.forEach(({ patternType, pattern, replacement, extractType }) => {
-      const node = extractType.reduce<TsMorph.Node>(
-        (result, { method, typeName }) => result[method](typeName),
-        source
-      );
+  return [
+    source,
+    source.getInterface(typeName)?.getType() ||
+      source.getTypeAlias(typeName)?.getType() ||
+      source
+        .getExportSymbols()
+        .find((exports) => {
+          const type = exports.getDeclaredType();
 
-      source.replaceText(
-        [node.getStart(), node.getEnd()],
-        node
-          .getText()
-          .replace(/\r?\n/g, '')
-          .replace(
-            patternType === 'string' ? pattern : new RegExp(pattern),
-            replacement
-          )
-      );
-    });
-  });
+          return (
+            type?.getSymbol()?.getName() === typeName ||
+            type?.getAliasSymbol()?.getName() === typeName
+          );
+        })
+        ?.getDeclaredType(),
+  ];
+};
 
-  widgets.forEach(({ components }) =>
-    components.forEach(({ typeFile, typeName, override }) => {
-      const filePath = path.resolve(process.cwd(), typeFile);
-      const source = project.addSourceFileAtPath(filePath);
+export const getWidgetSourceAndType: Types.GetSourceAndType = ({
+  typeFile,
+  typeName,
+}) => {
+  const filePath = path.resolve(process.cwd(), typeFile);
 
-      override?.forEach(({ patternType, pattern, replacement, extractBy }) => {
-        const node = source[extractBy](typeName);
+  const source =
+    project.getSourceFile(filePath) || project.addSourceFileAtPath(filePath);
 
-        source.replaceText(
-          [node.getStart(), node.getEnd()],
-          node
-            .getText()
-            .replace(/\r?\n/g, '')
-            .replace(
-              patternType === 'string' ? pattern : new RegExp(pattern),
-              replacement
-            )
-        );
-      });
-    })
+  source.replaceText([0, 0], "import { ComponentProps } from 'react';");
+
+  source.replaceText(
+    [source.getEnd(), source.getEnd()],
+    `type Pseudo_${typeName}Props = ComponentProps<typeof ${typeName}>;`
   );
 
-  return ({ typeFile, typeName }) => {
-    const filePath = path.resolve(process.cwd(), typeFile);
+  return [source, source.getTypeAlias(`Pseudo_${typeName}Props`).getType()];
+};
 
-    const source =
-      project.getSourceFile(filePath) || project.addSourceFileAtPath(filePath);
+// export const getSourceAndType: Types.GetSourceAndType = (() => {
+//   const { initialize, widgets } = MUI_WIDGETS;
+//   const project = new TsMorph.Project();
 
-    return [
-      source,
-      source.getInterface(typeName)?.getType() ||
-        source.getTypeAlias(typeName)?.getType() ||
-        source
-          .getExportSymbols()
-          .find((exports) => {
-            const type = exports.getDeclaredType();
+//   initialize.forEach(({ typeFile, override }) => {
+//     const source = project.addSourceFileAtPath(
+//       path.resolve(process.cwd(), typeFile)
+//     );
 
-            return (
-              type?.getSymbol()?.getName() === typeName ||
-              type?.getAliasSymbol()?.getName() === typeName
-            );
-          })
-          ?.getDeclaredType(),
-    ];
-  };
-})();
+//     override.forEach(({ patternType, pattern, replacement, extractType }) => {
+//       const node = extractType.reduce<TsMorph.Node>(
+//         (result, { method, typeName }) => result[method](typeName),
+//         source
+//       );
+
+//       source.replaceText(
+//         [node.getStart(), node.getEnd()],
+//         node
+//           .getText()
+//           .replace(/\r?\n/g, '')
+//           .replace(
+//             patternType === 'string' ? pattern : new RegExp(pattern),
+//             replacement
+//           )
+//       );
+//     });
+//   });
+
+//   widgets.forEach(({ components }) =>
+//     components.forEach(({ typeFile, typeName, override }) => {
+//       const filePath = path.resolve(process.cwd(), typeFile);
+//       const source = project.addSourceFileAtPath(filePath);
+
+//       override?.forEach(({ patternType, pattern, replacement, extractBy }) => {
+//         const node = source[extractBy](typeName);
+
+//         source.replaceText(
+//           [node.getStart(), node.getEnd()],
+//           node
+//             .getText()
+//             .replace(/\r?\n/g, '')
+//             .replace(
+//               patternType === 'string' ? pattern : new RegExp(pattern),
+//               replacement
+//             )
+//         );
+//       });
+//     })
+//   );
+
+//   return ({ typeFile, typeName }) => {
+//     const filePath = path.resolve(process.cwd(), typeFile);
+
+//     const source =
+//       project.getSourceFile(filePath) || project.addSourceFileAtPath(filePath);
+
+//     return [
+//       source,
+//       source.getInterface(typeName)?.getType() ||
+//         source.getTypeAlias(typeName)?.getType() ||
+//         source
+//           .getExportSymbols()
+//           .find((exports) => {
+//             const type = exports.getDeclaredType();
+
+//             return (
+//               type?.getSymbol()?.getName() === typeName ||
+//               type?.getAliasSymbol()?.getName() === typeName
+//             );
+//           })
+//           ?.getDeclaredType(),
+//     ];
+//   };
+// })();
 
 //* 依照指定路徑取得目標 Type
 export const getTypeByPath: Types.GetTypeByPath = (

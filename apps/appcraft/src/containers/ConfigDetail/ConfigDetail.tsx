@@ -3,7 +3,7 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedTypeEditor } from '@appcraft/mui';
 
-import TYPES_FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
+import FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
 import { Breadcrumbs } from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
 import { useConfigValues } from '~appcraft/hooks';
@@ -60,7 +60,7 @@ export default function ConfigDetail({
 
         <CraftedTypeEditor
           fixedT={ct}
-          parser={TYPES_FETCH_OPTIONS.parser as object}
+          parser={FETCH_OPTIONS.CONFIGS}
           values={values}
           onChange={onChange}
         />

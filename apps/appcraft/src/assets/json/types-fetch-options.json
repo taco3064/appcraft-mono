@@ -1,10 +1,14 @@
 {
-  "parser": {
-    "url": "/api/ts2-props/types-resolve/parse",
+  "CONFIGS": {
+    "url": "/api/ts2-props/types-resolve/parseConfigs",
     "method": "POST"
   },
-  "nodes": {
+  "NODES": {
     "url": "/api/ts2-props/types-resolve/getNodeProperties",
+    "method": "POST"
+  },
+  "WIDGET": {
+    "url": "/api/ts2-props/types-resolve/parseWidget",
     "method": "POST"
   }
 }

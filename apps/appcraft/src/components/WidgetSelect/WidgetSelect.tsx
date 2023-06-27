@@ -39,7 +39,7 @@ export default function WidgetSelect(props: WidgetSelectProps) {
                   lineHeight: 1.5,
                   style: { margin: 0 },
                 }}
-                primary={id.replace(/([A-Z])/g, ' $1')}
+                primary={id}
               />
             </MenuItem>
           ))

@@ -9,7 +9,7 @@ import { useCallback, useState } from 'react';
 
 import * as Component from '~appcraft/components';
 import * as Hooks from '~appcraft/hooks';
-import TYPES_FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
+import FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
 import { CommonButton, LazyMui } from '~appcraft/components/common';
 import type { WidgetEditorProps, WidgetMap } from './WidgetEditor.types';
 
@@ -91,12 +91,13 @@ export default function WidgetEditor({
         content={<Appcraft.CraftedRenderer lazy={toLazy} options={widget} />}
         drawer={
           <Appcraft.CraftedWidgetEditor
-            fetchOptions={
-              TYPES_FETCH_OPTIONS as Appcraft.CraftedWidgetEditorProps['fetchOptions']
-            }
             fixedT={ct}
             widget={widget}
             onWidgetChange={onWidgetChange}
+            fetchOptions={{
+              parser: FETCH_OPTIONS.WIDGET,
+              nodes: FETCH_OPTIONS.NODES,
+            }}
             defaultValues={
               theme.components[`Mui${widget?.type}` as keyof Components]
                 ?.defaultProps || {}

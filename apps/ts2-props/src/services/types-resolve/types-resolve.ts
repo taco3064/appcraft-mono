@@ -5,7 +5,7 @@ import { getSourceAndType, getTypeByPath } from '../common';
 import type * as Types from './types-resolve.types';
 
 //* Service Methods
-export const parse: Types.ParseService = ({
+export const parseConfigs: Types.ParseConfigService = ({
   collectionPath = '',
   mixedTypes = {},
   ...options
@@ -20,6 +20,16 @@ export const parse: Types.ParseService = ({
   });
 
   return (types && getProptype(...types, source)) || null;
+};
+
+export const parseWidget: Types.ParseWidgetService = ({
+  collectionPath = '',
+  mixedTypes = {},
+  ...options
+}) => {
+  console.log('=====');
+
+  return null;
 };
 
 export const getNodeProperties: Types.GetNodeProperties = (options) =>

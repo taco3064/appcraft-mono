@@ -159,13 +159,14 @@ export const getTypeByPath: Types.GetTypeByPath = (
     const strIdxType = type?.getStringIndexType();
     const symbol = type.getProperty(target);
 
-    if (
-      strIdxType ||
-      (type.getText().startsWith('Record<') && args.length > 0)
-    ) {
-      const subinfo = { propName: target, required: true };
-      const base = strIdxType || args[1];
+    if (symbol) {
+      const base = symbol.getTypeAtLocation(source);
       const mixed = getMixedTypeByPath(mixedTypes, currentPath);
+
+      const subinfo = {
+        propName: target,
+        required: !symbol.isOptional() || false,
+      };
 
       const property =
         mixed &&
@@ -180,14 +181,13 @@ export const getTypeByPath: Types.GetTypeByPath = (
       });
     }
 
-    if (symbol) {
-      const base = symbol.getTypeAtLocation(source);
+    if (
+      strIdxType ||
+      (type.getText().startsWith('Record<') && args.length > 0)
+    ) {
+      const subinfo = { propName: target, required: true };
+      const base = strIdxType || args[1];
       const mixed = getMixedTypeByPath(mixedTypes, currentPath);
-
-      const subinfo = {
-        propName: target,
-        required: !symbol.isOptional() || false,
-      };
 
       const property =
         mixed &&

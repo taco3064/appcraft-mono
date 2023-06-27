@@ -7,8 +7,7 @@ import type { ConfigData, ConfigOptions, TodoEvent } from '@appcraft/types';
 import { findConfig } from '~appcraft/services';
 import type { TodoConfigResult, TodoVariant } from './useTodoConfig.types';
 
-// const typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts';
-const typeFile = './libs/types/src/widgets/todo.types.ts';
+const typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts';
 
 const useTodoConfig = <T extends TodoEvent>(id: string): TodoConfigResult => {
   const { data, refetch } = useQuery({

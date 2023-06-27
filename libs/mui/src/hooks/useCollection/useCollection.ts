@@ -8,17 +8,17 @@ import type { Collection } from './useCollection.types';
 const useCollection = <V extends OptionValues>(defaultValues?: Collection) => {
   const { collectionPath, values } = useEditorContext<V>();
 
-  const source = useMemo<object>(
-    () =>
-      Object.entries(values.props || {}).reduce((result, [path, value]) => {
-        if (path.startsWith(collectionPath)) {
-          _set(result, path, value);
-        }
+  const source = useMemo<object>(() => {
+    const { props = {}, mixedTypes = {} } = values;
 
-        return result;
-      }, {}),
-    [collectionPath, values]
-  );
+    return Object.keys({ ...props, ...mixedTypes }).reduce((result, path) => {
+      if (path.startsWith(collectionPath)) {
+        _set(result, path, _get(props, [path], null));
+      }
+
+      return result;
+    }, {});
+  }, [collectionPath, values]);
 
   return {
     path: collectionPath,

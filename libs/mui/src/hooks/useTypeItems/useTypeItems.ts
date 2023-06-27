@@ -117,8 +117,12 @@ const useTypeItems = <V extends OptionValues>(
   }
 
   if (/^array/.test(collection?.type) && !Array.isArray(collection.options)) {
+    const length = Math.max((values as []).length, (structure as []).length);
+
+    console.log(values, structure, length);
+
     return {
-      items: Object.values(structure).map((_el, i) => {
+      items: Array.from({ length }).map((_el, i) => {
         const options: PropTypesDef = {
           ...(collection?.options as PropTypesDef),
           propName: `[${i}]`,

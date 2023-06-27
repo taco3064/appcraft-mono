@@ -27,7 +27,7 @@ export const getProps = <P extends object>(
           propPath,
           Array.isArray(value)
             ? value.map(renderer)
-            : renderer(value as Appcraft.WidgetOptions)
+            : renderer(value as Appcraft.WidgetOptions, 0)
         );
       }
     });

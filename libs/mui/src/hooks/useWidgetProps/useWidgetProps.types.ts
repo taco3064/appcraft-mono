@@ -1,6 +1,6 @@
 import type { WidgetEvent, WidgetOptions } from '@appcraft/types';
 
-export type Renderer = (child: WidgetOptions) => JSX.Element;
+export type Renderer = (child: WidgetOptions, index: number) => JSX.Element;
 
 export type GetTodoEventHandleUtil = (
   options: WidgetEvent[]

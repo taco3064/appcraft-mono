@@ -31,11 +31,9 @@ export const InputAdornment = lazy(
 );
 export const Radio = lazy(() => import('@mui/material/Radio'));
 export const RadioGroup = lazy(() => import('@mui/material/RadioGroup'));
-export const Select = lazy(() => import('@mui/material/Select'));
 export const Slider = lazy(() => import('@mui/material/Slider'));
 export const Switch = lazy(() => import('@mui/material/Switch'));
-export const FilledInput = lazy(() => import('@mui/material/FilledInput'));
-export const OutlinedInput = lazy(() => import('@mui/material/OutlinedInput'));
+export const TextField = lazy(() => import('@mui/material/TextField'));
 export const ToggleButton = lazy(() => import('@mui/material/ToggleButton'));
 export const ToggleButtonGroup = lazy(
   () => import('@mui/material/ToggleButtonGroup')

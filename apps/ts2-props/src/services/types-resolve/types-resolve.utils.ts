@@ -25,11 +25,11 @@ const generators: Types.Generators = [
 
   //* ReactNode / ReactElement
   (type, info) => {
-    if (type.getText() === 'React.ReactNode') {
+    if (/\.ReactNode$/.test(type.getText())) {
       return { ...info, type: 'node' };
     }
 
-    if (type.getText().startsWith('React.ReactElement<')) {
+    if (/\.ReactElement<.+>$/.test(type.getText())) {
       return { ...info, type: 'element' };
     }
 

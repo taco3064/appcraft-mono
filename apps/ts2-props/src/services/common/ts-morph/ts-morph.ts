@@ -45,24 +45,41 @@ export const getSourceAndType: Types.GetSourceAndType = ({
   ];
 };
 
-export const getWidgetSourceAndType: Types.GetSourceAndType = ({
-  typeFile,
-  typeName,
-}) => {
-  const filePath = path.resolve(process.cwd(), typeFile);
-
-  const source =
-    project.getSourceFile(filePath) || project.addSourceFileAtPath(filePath);
-
-  source.replaceText([0, 0], "import { ComponentProps } from 'react';");
-
-  source.replaceText(
-    [source.getEnd(), source.getEnd()],
-    `type Pseudo_${typeName}Props = ComponentProps<typeof ${typeName}>;`
+export const getWidgetSourceAndType: Types.GetSourceAndType = (() => {
+  const source = project.addSourceFileAtPath(
+    path.resolve(process.cwd(), './node_modules/@types/react/index.d.ts')
   );
 
-  return [source, source.getTypeAlias(`Pseudo_${typeName}Props`).getType()];
-};
+  const aria = source.getModule('React').getInterface('AriaAttributes');
+
+  source.replaceText(
+    [aria.getStart(), aria.getEnd()],
+    `type AriaAttributes = {};`
+  );
+
+  const attr = source.getModule('React').getInterface('HTMLAttributes');
+
+  source.replaceText(
+    [attr.getStart(), attr.getEnd()],
+    `type HTMLAttributes<T> = {};`
+  );
+
+  return ({ typeFile, typeName }) => {
+    const filePath = path.resolve(process.cwd(), typeFile);
+
+    const source =
+      project.getSourceFile(filePath) || project.addSourceFileAtPath(filePath);
+
+    source.replaceText([0, 0], "import { ComponentProps } from 'react';");
+
+    source.replaceText(
+      [source.getEnd(), source.getEnd()],
+      `type Pseudo_${typeName}Props = ComponentProps<typeof ${typeName}>;`
+    );
+
+    return [source, source.getTypeAlias(`Pseudo_${typeName}Props`).getType()];
+  };
+})();
 
 // export const getSourceAndType: Types.GetSourceAndType = (() => {
 //   const { initialize, widgets } = MUI_WIDGETS;

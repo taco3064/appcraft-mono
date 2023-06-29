@@ -8,10 +8,14 @@ enum OptionCategory {
   plainText,
 }
 
-//* Node & Structure
+//* Node & Event Props
 export type NodeType = 'element' | 'node';
 export type ChildNodes = Record<string, NodeType>;
-export type StructureNode<N extends string = string> = Record<N, ChildNodes>;
+
+export type NodeAndEventProps = {
+  nodes: Record<string, ChildNodes>;
+  events: Record<string, string[]>;
+};
 
 //* Options
 type BaseOptions<C extends keyof typeof OptionCategory, P> = {

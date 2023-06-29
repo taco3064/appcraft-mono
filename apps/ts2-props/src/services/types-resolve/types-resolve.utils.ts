@@ -83,7 +83,17 @@ const generators: Types.Generators = [
 
   //* Union
   (type, info, source) => {
-    if (type.isUnion()) {
+    if (type.getText() === 'unknown') {
+      return {
+        ...info,
+        type: 'oneOfType',
+        options: ['bool', 'number', 'string'].map((type) => ({
+          ...info,
+          type: type as Appcraft.PropTypesDef['type'],
+          text: type,
+        })),
+      };
+    } else if (type.isUnion()) {
       const [oneOf, oneOfType] = type
         .getUnionTypes()
         .reduce<
@@ -265,37 +275,54 @@ export const getProptype: Types.GetProptypeUtil = (type, info, source) =>
     return result;
   }, false);
 
-export const findNodeProps: Types.FindNodePropsUtil = (
+export const findNodesAndEventsProps: Types.FindNodesAndEventsPropsUtil = (
   source,
   type,
-  { info, paths = [] }
+  { info, paths = [], count = 0 }
 ) => {
   const proptype = getProptype(type, info, source);
 
-  if (proptype) {
+  if (proptype && count < 3) {
     if (/^(element|node)$/.test(proptype.type)) {
-      return { [paths.join('.')]: proptype.type as Appcraft.NodeType };
+      return {
+        nodes: { [paths.join('.')]: proptype.type as Appcraft.NodeType },
+      };
+    } else if (
+      count < 2 &&
+      proptype.type === 'func' &&
+      /^on[A-Z]/.test(info.propName || '')
+    ) {
+      return {
+        events: [paths.join('.')],
+      };
     } else if (proptype.type === 'exact') {
       const properties = type.getProperties?.() || [];
 
-      return properties.reduce((result, property) => {
-        const propName = property.getName();
+      return properties.reduce(
+        ({ nodes, events }, property) => {
+          const propName = property.getName();
 
-        if (!/^(sx|style)$/.test(propName)) {
-          const $type = property.getTypeAtLocation(source);
+          if (!/^(sx|style)$/.test(propName)) {
+            const $type = property.getTypeAtLocation(source);
 
-          return {
-            ...result,
-            ...($type.getText() !== 'React.CSSProperties' &&
-              findNodeProps(source, $type, {
+            if ($type.getText() !== 'React.CSSProperties') {
+              const result = findNodesAndEventsProps(source, $type, {
                 info: { propName, required: !property.isOptional() },
                 paths: [...paths, propName],
-              })),
-          };
-        }
+                count: count + 1,
+              });
 
-        return result;
-      }, {});
+              return {
+                nodes: { ...nodes, ...result.nodes },
+                events: [...events, ...(result.events || [])],
+              };
+            }
+          }
+
+          return { nodes, events };
+        },
+        { nodes: {}, events: [] }
+      );
     }
   }
 

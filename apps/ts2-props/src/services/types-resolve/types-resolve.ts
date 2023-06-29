@@ -1,7 +1,7 @@
 import _toPath from 'lodash.topath';
 
 import * as Common from '../common';
-import { findNodeProps, getProptype } from './types-resolve.utils';
+import { findNodesAndEventsProps, getProptype } from './types-resolve.utils';
 import type * as Types from './types-resolve.types';
 
 //* Service Methods
@@ -39,15 +39,21 @@ export const parseWidget: Types.ParseWidgetService = ({
   return (types && getProptype(...types, source)) || null;
 };
 
-export const getNodeProperties: Types.GetNodeProperties = (options) =>
-  options.reduce((result, opts) => {
-    const sourceType = Common.getWidgetSourceAndType(opts);
+export const getNodesAndEvents: Types.GetNodesAndEvents = (options) =>
+  options.reduce(
+    (result, opts) => {
+      const sourceType = Common.getWidgetSourceAndType(opts);
 
-    if (!(opts.typeName in result)) {
-      result[opts.typeName] = findNodeProps(...sourceType, {
-        info: { required: true },
-      });
-    }
+      if (!(opts.typeName in result)) {
+        const { nodes, events } = findNodesAndEventsProps(...sourceType, {
+          info: { required: true },
+        });
 
-    return result;
-  }, {});
+        result.nodes[opts.typeName] = nodes;
+        result.events[opts.typeName] = events;
+      }
+
+      return result;
+    },
+    { nodes: {}, events: {} }
+  );

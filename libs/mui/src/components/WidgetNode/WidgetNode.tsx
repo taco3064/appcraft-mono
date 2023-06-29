@@ -16,6 +16,7 @@ import type { WidgetNodeProps } from './WidgetNode.types';
 type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
 
 export default function WidgetNode<I extends Appcraft.WidgetOptions>({
+  events,
   fixedT,
   item,
   structure,
@@ -31,6 +32,8 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
   const structures: [string, Appcraft.NodeType][] = Object.entries(
     structure || {}
   );
+
+  console.log(events);
 
   return (
     <>

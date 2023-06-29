@@ -42,34 +42,36 @@ export default function CraftedWidgetEditor({
   );
 
   const LazyWidgetNodes = Hooks.useLazyWidgetNodes<
-    Appcraft.StructureNode,
+    Appcraft.NodeAndEventProps,
     Types.LazyWidgetNodesProps<typeof onNodeActive>
-  >(fetchOptions.nodes, items, ({ fetchData, widgets, onActive, ...props }) =>
-    widgets.length === 0 ? (
-      <Common.ListPlaceholder message={ct('msg-no-widgets')} />
-    ) : (
-      <>
-        {widgets.map((item, index) => (
-          <WidgetNode
-            {...props}
-            key={`item_${index}`}
-            item={item}
-            structure={
-              item.category !== 'node' ? undefined : fetchData?.[item.typeName]
-            }
-            onActive={(type, propPath) =>
-              item.category === 'node' &&
-              onActive({
-                type: item.type,
-                isMultiChildren: type === 'node',
-                propPath,
-                index,
-              })
-            }
-          />
-        ))}
-      </>
-    )
+  >(
+    fetchOptions.getNodesAndEvents,
+    items,
+    ({ fetchData: { events, nodes } = {}, widgets, onActive, ...props }) =>
+      widgets.length === 0 ? (
+        <Common.ListPlaceholder message={ct('msg-no-widgets')} />
+      ) : (
+        <>
+          {widgets.map((item, index) => (
+            <WidgetNode
+              {...props}
+              key={`item_${index}`}
+              item={item}
+              events={item.category === 'node' && events?.[item.typeName]}
+              structure={item.category === 'node' && nodes?.[item.typeName]}
+              onActive={(type, propPath) =>
+                item.category === 'node' &&
+                onActive({
+                  type: item.type,
+                  isMultiChildren: type === 'node',
+                  propPath,
+                  index,
+                })
+              }
+            />
+          ))}
+        </>
+      )
   );
 
   return (
@@ -115,6 +117,7 @@ export default function CraftedWidgetEditor({
         </AppBar>
 
         <List
+          disablePadding
           subheader={
             breadcrumbs.length > 0 && (
               <Styles.ListToolbar>

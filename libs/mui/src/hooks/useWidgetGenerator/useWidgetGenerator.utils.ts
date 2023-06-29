@@ -1,6 +1,8 @@
 import _set from 'lodash/set';
 import type * as Appcraft from '@appcraft/types';
+import type { Components } from '@mui/material/styles';
 
+import { getPropPath } from '../usePropertyRouter';
 import type * as Types from './useWidgetGenerator.types';
 
 export const getProps = <P extends object>(
@@ -35,6 +37,41 @@ export const getProps = <P extends object>(
     return result;
   }, {}) as P;
 };
+
+export const getDefaultProps: Types.GetDefaultPropsUtil = (() => {
+  const split: Types.SplitDefaultProps = (target, paths) => {
+    if (Array.isArray(target)) {
+      return target.reduce(
+        (result, item, i) => ({
+          ...result,
+          ...split(item, [...paths, i]),
+        }),
+        {}
+      );
+    } else if (
+      !!target &&
+      typeof target === 'object' &&
+      target.constructor === Object
+    ) {
+      return Object.entries(target).reduce(
+        (result, [key, value]) => ({
+          ...result,
+          ...split(value, [...paths, key]),
+        }),
+        {}
+      );
+    }
+
+    return { [getPropPath(paths)]: target };
+  };
+
+  return (theme, type) => {
+    const defaultProps =
+      theme.components?.[`Mui${type}` as keyof Components]?.defaultProps || {};
+
+    return split(defaultProps, []);
+  };
+})();
 
 export const getTodoEventHandle: Types.GetTodoEventHandleUtil = (() => {
   return (options) =>

@@ -19,7 +19,6 @@ import { WidgetNode } from '../WidgetNode';
 import type * as Types from './CraftedWidgetEditor.types';
 
 export default function CraftedWidgetEditor({
-  defaultValues, //! defaultProps - 尚未完成
   fetchOptions,
   fixedT,
   renderWidgetTypeSelection,

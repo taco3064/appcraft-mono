@@ -1,21 +1,26 @@
+import type * as Appcraft from '@appcraft/types';
+import type { Theme } from '@mui/material/styles';
+
 import type {
   ComponentProps,
   ComponentType,
   LazyExoticComponent,
   ReactNode,
 } from 'react';
-import type * as Appcraft from '@appcraft/types';
+
+//* Variables
+export type PlainTextProps = { children?: ReactNode };
+export type PlainTextComponent = ComponentType<PlainTextProps>;
+
+//* Mehtods
+export type SplitDefaultProps = (
+  target: unknown,
+  paths: (string | number)[]
+) => Record<string, unknown>;
 
 export type ExternalLazy = (
   widgetType: string
 ) => LazyExoticComponent<ComponentType>;
-export type PlainTextProps = { children?: ReactNode };
-export type PlainTextComponent = ComponentType<PlainTextProps>;
-
-export type GeneratorFn = (
-  options: Appcraft.WidgetOptions,
-  index: number
-) => JSX.Element;
 
 export type Renderer = (
   WidgetElement:
@@ -25,11 +30,23 @@ export type Renderer = (
   index: number
 ) => JSX.Element;
 
-export type GetTodoEventHandleUtil = (
-  options: Appcraft.WidgetEvent[]
-) => (...args: unknown[]) => Promise<Record<string, unknown>>;
+export type GeneratorFn = (
+  options: Appcraft.WidgetOptions,
+  index: number
+) => JSX.Element;
 
+//* Custom Hooks
 export type WidgetGeneratorHook = (
   externalLazy: ExternalLazy,
   renderer: Renderer
 ) => GeneratorFn;
+
+//* Utils
+export type GetDefaultPropsUtil = (
+  theme: Theme,
+  type: string
+) => Record<string, unknown>;
+
+export type GetTodoEventHandleUtil = (
+  options: Appcraft.WidgetEvent[]
+) => (...args: unknown[]) => Promise<Record<string, unknown>>;

@@ -50,7 +50,12 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
         </ListItemIcon>
 
         <ListItemText
-          primaryTypographyProps={{ fontWeight: 'bolder' }}
+          primaryTypographyProps={{
+            fontWeight: 'bolder',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
           {...(isNode
             ? { primary: type, secondary: description }
             : { primary: ct('ttl-node-plain-text'), secondary: content })}

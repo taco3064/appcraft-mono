@@ -29,7 +29,6 @@ export type FindNodesAndEventsPropsUtil = (
   options: {
     info: Appcraft.GeneratorInfo;
     paths?: string[];
-    count?: number;
   }
 ) => {
   nodes?: Appcraft.ChildNodes;

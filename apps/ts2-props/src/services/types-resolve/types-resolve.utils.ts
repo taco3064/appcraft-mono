@@ -278,17 +278,16 @@ export const getProptype: Types.GetProptypeUtil = (type, info, source) =>
 export const findNodesAndEventsProps: Types.FindNodesAndEventsPropsUtil = (
   source,
   type,
-  { info, paths = [], count = 0 }
+  { info, paths = [] }
 ) => {
   const proptype = getProptype(type, info, source);
 
-  if (proptype && count < 3) {
+  if (proptype) {
     if (/^(element|node)$/.test(proptype.type)) {
       return {
         nodes: { [paths.join('.')]: proptype.type as Appcraft.NodeType },
       };
     } else if (
-      count < 2 &&
       proptype.type === 'func' &&
       /^on[A-Z]/.test(info.propName || '')
     ) {
@@ -309,7 +308,6 @@ export const findNodesAndEventsProps: Types.FindNodesAndEventsPropsUtil = (
               const result = findNodesAndEventsProps(source, $type, {
                 info: { propName, required: !property.isOptional() },
                 paths: [...paths, propName],
-                count: count + 1,
               });
 
               return {

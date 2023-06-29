@@ -57,7 +57,7 @@ export default function CraftedWidgetEditor({
               {...props}
               key={`item_${index}`}
               item={item}
-              events={item.category === 'node' && events?.[item.typeName]}
+              event={item.category === 'node' && events?.[item.typeName]}
               structure={item.category === 'node' && nodes?.[item.typeName]}
               onActive={(type, propPath) =>
                 item.category === 'node' &&

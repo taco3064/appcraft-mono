@@ -30,7 +30,7 @@ export type FindNodePropsUtil = (
     info: Appcraft.GeneratorInfo;
     paths?: string[];
   }
-) => Appcraft.WidgetChildren;
+) => Appcraft.ChildNodes;
 
 export type ParseConfigService = (
   options: Appcraft.TypesParseOptions
@@ -42,4 +42,4 @@ export type ParseWidgetService = (
 
 export type GetNodeProperties = (
   options: Pick<Appcraft.TypesParseOptions, 'typeFile' | 'typeName'>[]
-) => Appcraft.WidgetStructure<(typeof options)[number]['typeName']>;
+) => Appcraft.StructureNode<(typeof options)[number]['typeName']>;

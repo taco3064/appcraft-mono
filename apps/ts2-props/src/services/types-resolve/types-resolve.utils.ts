@@ -1,4 +1,4 @@
-import type { OneOfProp, OneOfTypeProp, PropTypesDef } from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 import type * as Types from './types-resolve.types';
 
 //* 定義 PropTypes 的檢查方式及回傳的 Config 內容 (要注意先後順序)
@@ -86,7 +86,9 @@ const generators: Types.Generators = [
     if (type.isUnion()) {
       const [oneOf, oneOfType] = type
         .getUnionTypes()
-        .reduce<[OneOfProp['options'], OneOfTypeProp['options']]>(
+        .reduce<
+          [Appcraft.OneOfProp['options'], Appcraft.OneOfTypeProp['options']]
+        >(
           ([literals, types], union) => {
             if (union.isLiteral()) {
               literals.push(JSON.parse(union.getText()));
@@ -144,7 +146,7 @@ const generators: Types.Generators = [
             })
           : type
               .getTupleElements()
-              .reduce<PropTypesDef[]>((result, tuple, i) => {
+              .reduce<Appcraft.PropTypesDef[]>((result, tuple, i) => {
                 const proptype = getProptype(tuple, {
                   propName: `[${i}]`,
                   required: true,
@@ -172,7 +174,7 @@ const generators: Types.Generators = [
       const strIdxType = type.getStringIndexType();
 
       if (properties.length > 0) {
-        const options = properties.reduce<[string, PropTypesDef][]>(
+        const options = properties.reduce<[string, Appcraft.PropTypesDef][]>(
           (result, property) => {
             const propName = property.getName();
             const typeAtLocation = property.getTypeAtLocation(source);
@@ -272,7 +274,7 @@ export const findNodeProps: Types.FindNodePropsUtil = (
 
   if (proptype) {
     if (/^(element|node)$/.test(proptype.type)) {
-      return { [paths.join('.')]: proptype.type };
+      return { [paths.join('.')]: proptype.type as Appcraft.NodeType };
     } else if (proptype.type === 'exact') {
       const properties = type.getProperties?.() || [];
 

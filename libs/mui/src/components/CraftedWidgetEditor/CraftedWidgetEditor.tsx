@@ -42,7 +42,7 @@ export default function CraftedWidgetEditor({
   );
 
   const LazyWidgetNodes = Hooks.useLazyWidgetNodes<
-    Appcraft.WidgetStructure,
+    Appcraft.StructureNode,
     Types.LazyWidgetNodesProps<typeof onNodeActive>
   >(fetchOptions.nodes, items, ({ fetchData, widgets, onActive, ...props }) =>
     widgets.length === 0 ? (
@@ -54,7 +54,9 @@ export default function CraftedWidgetEditor({
             {...props}
             key={`item_${index}`}
             item={item}
-            structure={item.category === 'node' && fetchData?.[item.typeName]}
+            structure={
+              item.category !== 'node' ? undefined : fetchData?.[item.typeName]
+            }
             onActive={(type, propPath) =>
               item.category === 'node' &&
               onActive({

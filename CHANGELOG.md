@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.53](https://github.com/taco3064/appcraft-mono/compare/v0.0.52...v0.0.53) (2023-06-29)
+
+
+### Features
+
+* **@appcraft/mui:** add support default props ([becd3b8](https://github.com/taco3064/appcraft-mono/commit/becd3b819708a00cd8b1b67f6b10a74ecffdbb0d))
+
+
+### Bug Fixes
+
+* **widget-node(@appcraft/mui):** add text overflow css ([e90b522](https://github.com/taco3064/appcraft-mono/commit/e90b52271c0262fb3d43b6b13897e96be0cbb1df))
+
 ### [0.0.52](https://github.com/taco3064/appcraft-mono/compare/v0.0.51...v0.0.52) (2023-06-27)
 
 

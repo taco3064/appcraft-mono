@@ -1,11 +1,11 @@
 import _set from 'lodash/set';
 import type * as Appcraft from '@appcraft/types';
 
-import type * as Types from './useWidgetProps.types';
+import type * as Types from './useWidgetGenerator.types';
 
 export const getProps = <P extends object>(
   options: Appcraft.NodeWidget | Appcraft.ConfigOptions,
-  renderer?: Types.Renderer
+  renderer?: Types.GeneratorFn
 ) => {
   const fields: Appcraft.WidgetField[] = ['nodes', 'props', 'todos'];
 

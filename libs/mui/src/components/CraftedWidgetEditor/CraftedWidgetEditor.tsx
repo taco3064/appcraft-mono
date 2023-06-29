@@ -107,7 +107,7 @@ export default function CraftedWidgetEditor({
         />
       )}
 
-      <Collapse in={Boolean(!selected)}>
+      <Collapse in={selected?.category !== 'node'}>
         <AppBar color="default" position="sticky">
           <Toolbar variant="regular">
             <Typography variant="subtitle1" fontWeight="bolder" color="primary">

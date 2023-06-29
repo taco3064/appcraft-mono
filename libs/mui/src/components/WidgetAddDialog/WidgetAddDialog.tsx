@@ -3,10 +3,11 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import TextField from '@mui/material/TextField';
 import { FormEvent, useState } from 'react';
+import { useTheme } from '@mui/material/styles';
 import type * as Appcraft from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
-import { useFixedT } from '../../hooks';
+import { getDefaultProps, useFixedT } from '../../hooks';
 import type { WidgetAddDialogProps } from './WidgetAddDialog.types';
 
 export default function WidgetAddDialog({
@@ -17,6 +18,7 @@ export default function WidgetAddDialog({
   onClose,
   onConfirm,
 }: WidgetAddDialogProps) {
+  const theme = useTheme();
   const ct = useFixedT(fixedT);
   const [data, setData] = useState<Appcraft.WidgetOptions>();
 
@@ -73,7 +75,12 @@ export default function WidgetAddDialog({
       {active === 'node' ? (
         renderWidgetTypeSelection({
           onChange: (e) =>
-            setData({ ...e, category: 'node', description: data?.description }),
+            setData({
+              ...e,
+              category: 'node',
+              description: data?.description,
+              props: getDefaultProps(theme, e.type),
+            }),
         })
       ) : (
         <TextField

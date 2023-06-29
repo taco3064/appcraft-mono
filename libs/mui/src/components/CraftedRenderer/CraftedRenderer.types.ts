@@ -1,11 +1,11 @@
 import type { RootNodeWidget } from '@appcraft/types';
-import type { RendererProviderProps } from '../../contexts';
+import type { ExternalLazy } from '../../hooks';
 
 type WidgetLayout = {
   widget: RootNodeWidget;
 };
 
-export interface CraftedRendererProps
-  extends Omit<RendererProviderProps, 'children'> {
+export interface CraftedRendererProps {
+  lazy: ExternalLazy;
   options?: RootNodeWidget | WidgetLayout[];
 }

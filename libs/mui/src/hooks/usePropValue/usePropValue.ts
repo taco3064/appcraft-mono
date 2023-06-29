@@ -17,7 +17,7 @@ const usePropValue = <P = unknown>(propPath: string) => {
         ...values,
         props: {
           ...target,
-          ...((value || value === 0) && { [propPath]: value }),
+          ...(value != null && { [propPath]: value }),
         },
       });
     },

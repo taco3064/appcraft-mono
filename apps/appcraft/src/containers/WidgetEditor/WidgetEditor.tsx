@@ -3,7 +3,6 @@ import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { Components, useTheme } from '@mui/material/styles';
 import { useCallback, useState } from 'react';
 
 import * as Component from '~appcraft/components';
@@ -22,7 +21,6 @@ export default function WidgetEditor({
   const [open, setOpen] = useState(true);
   const { widget, onReset, onWidgetChange } = Hooks.useWidgetValues(data);
 
-  const theme = useTheme();
   const width = Hooks.useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
@@ -86,10 +84,6 @@ export default function WidgetEditor({
               parser: FETCH_OPTIONS.WIDGET,
               nodes: FETCH_OPTIONS.NODES,
             }}
-            defaultValues={
-              theme.components[`Mui${widget?.type}` as keyof Components]
-                ?.defaultProps || {}
-            }
             renderWidgetTypeSelection={({ onChange }) => (
               <Component.WidgetSelect
                 fullWidth

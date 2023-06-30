@@ -1,3 +1,4 @@
+import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Collapse from '@mui/material/Collapse';
@@ -6,11 +7,12 @@ import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Tooltip from '@mui/material/Tooltip';
 import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Hooks from '../../hooks';
-import { IconTipButton, TypeItemAction } from '../../styles';
+import * as Styles from '../../styles';
 import type { WidgetNodeProps } from './WidgetNode.types';
 
 type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
@@ -53,7 +55,9 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
     [structure]
   );
 
-  console.log(events);
+  const [display, setDisplay] = useState<'events' | 'nodes'>(() =>
+    structures.length > 0 ? 'nodes' : 'events'
+  );
 
   return (
     <>
@@ -83,37 +87,61 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
             : { primary: ct('ttl-node-plain-text'), secondary: content })}
         />
 
-        <TypeItemAction onClick={(e) => e.stopPropagation()}>
-          <IconTipButton
+        <Styles.TypeItemAction onClick={(e) => e.stopPropagation()}>
+          <Styles.IconTipButton
             title={ct('btn-remove-widget')}
             onClick={() => onRemove(item)}
           >
             <CloseIcon />
-          </IconTipButton>
-        </TypeItemAction>
+          </Styles.IconTipButton>
+
+          {open && structures.length > 0 && events.length > 0 && (
+            <Tooltip
+              title={ct(`btn-${display === 'events' ? 'todos' : 'nodes'}`)}
+            >
+              <Styles.WidgetNodeSwitch value={display} onChange={setDisplay} />
+            </Tooltip>
+          )}
+        </Styles.TypeItemAction>
       </ListItemButton>
 
-      {structures.length > 0 && (
-        <Collapse in={open}>
-          {structures.map(([path, type]) => (
-            <ListItemButton key={path} onClick={() => onActive(type, path)}>
-              <ListItemIcon />
+      <Collapse in={open && structures.length > 0 && display === 'nodes'}>
+        {structures.map(([path, type]) => (
+          <ListItemButton key={path} onClick={() => onActive(type, path)}>
+            <ListItemIcon />
 
-              <ListItemText
-                primaryTypographyProps={{
-                  variant: 'subtitle2',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-                secondaryTypographyProps={{ variant: 'caption' }}
-                primary={path}
-                secondary={type}
-              />
-            </ListItemButton>
-          ))}
-        </Collapse>
-      )}
+            <ListItemText
+              primaryTypographyProps={{
+                variant: 'subtitle2',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+              secondaryTypographyProps={{ variant: 'caption' }}
+              primary={path}
+              secondary={type}
+            />
+          </ListItemButton>
+        ))}
+      </Collapse>
+
+      <Collapse in={open && events.length > 0 && display === 'events'}>
+        {events.map((path) => (
+          <ListItemButton key={path}>
+            <ListItemIcon />
+
+            <ListItemText
+              primaryTypographyProps={{
+                variant: 'subtitle2',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+              primary={path}
+            />
+          </ListItemButton>
+        ))}
+      </Collapse>
     </>
   );
 }

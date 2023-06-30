@@ -5,7 +5,6 @@ const regs: RegExp[] = [
   /^(array|arrayOf|exact|object|objectOf)$/,
   /^(oneOfType)$/,
   /^(bool|instanceOf|number|oneOf|string)$/,
-  /^(func)$/,
 ];
 
 export const getDisplayPropName: Types.GetDisplayPropNameUtil = (propName) =>

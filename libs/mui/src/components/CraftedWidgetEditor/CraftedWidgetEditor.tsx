@@ -178,9 +178,7 @@ export default function CraftedWidgetEditor({
               <LazyWidgetNodes
                 fixedT={fixedT}
                 onClick={onWidgetSelect}
-                onEventActive={(item, propPath) =>
-                  console.log(paths, item, propPath)
-                }
+                onEventActive={(activePaths) => console.log(activePaths)}
                 onNodeActive={(type, activePaths) => {
                   setIsReactNode(type === 'node');
                   onPathsChange([...paths, ...activePaths]);

@@ -125,7 +125,10 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
 
       <Collapse in={open && events.length > 0 && display === 'events'}>
         {events.map((path) => (
-          <ListItemButton key={path} onClick={() => onEventActive(item, path)}>
+          <ListItemButton
+            key={path}
+            onClick={() => onEventActive(['events', path])}
+          >
             <ListItemIcon />
 
             <ListItemText

@@ -9,7 +9,7 @@ export interface WidgetNodeProps<I extends Appcraft.WidgetOptions> {
   structure?: I extends Appcraft.NodeWidget ? Appcraft.ChildNodes : false;
 
   onClick: (item: I) => void;
-  onEventActive: (item: I, path: string) => void;
+  onEventActive: (paths: PropPaths) => void;
   onNodeActive: (type: Appcraft.NodeType, paths: PropPaths) => void;
   onRemove: (item: I) => void;
 }

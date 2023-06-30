@@ -1,12 +1,12 @@
 import type * as Appcraft from '@appcraft/types';
-import type { NodePath } from '../../contexts';
+import type { PropPaths } from '../../contexts';
 
 type ModifyEvent = Appcraft.WidgetOptions | Appcraft.RootNodeWidget;
 
 export type WidgetMutationHook = (
   widget: Appcraft.RootNodeWidget,
   isMultiChildren: boolean,
-  paths: undefined | NodePath[],
+  paths: undefined | PropPaths,
   onWidgetChange: (e: Appcraft.RootNodeWidget | null) => void
 ) => {
   selected: Appcraft.WidgetOptions | null;

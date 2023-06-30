@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
 import type { RootNodeWidget } from '@appcraft/types';
 
-export type NodePath = string | number;
+export type PropPaths = (string | number)[];
 
 export interface ConstructContextValue {
-  paths: NodePath[];
+  paths: PropPaths;
   widget?: RootNodeWidget;
   onWidgetChange: (widget: RootNodeWidget) => void;
 }

@@ -19,6 +19,7 @@ type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
 export default function WidgetNode<I extends Appcraft.WidgetOptions>({
   event,
   fixedT,
+  index,
   item,
   structure,
   onClick,
@@ -31,27 +32,13 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
   const isNode = category === 'node';
   const [open, setOpen] = useState(false);
 
-  const events: string[] = useMemo(() => {
-    if (Array.isArray(event)) {
-      return event.sort((n1, n2) => {
-        const s1 =
-          (n1.match(/\./g) || []).length - (n2.match(/\./g) || []).length;
+  const events: string[] = useMemo(
+    () => (Array.isArray(event) ? Hooks.sortPropPaths(event) : []),
+    [event]
+  );
 
-        return s1 || (n1 > n2 ? 1 : n1 < n2 ? -1 : 0);
-      });
-    }
-
-    return [];
-  }, [event]);
-
-  const structures: [string, Appcraft.NodeType][] = useMemo(
-    () =>
-      Object.entries(structure || {}).sort(([n1], [n2]) => {
-        const s1 =
-          (n1.match(/\./g) || []).length - (n2.match(/\./g) || []).length;
-
-        return s1 || (n1 > n2 ? 1 : n1 < n2 ? -1 : 0);
-      }),
+  const structures = useMemo<[string, Appcraft.NodeType][]>(
+    () => Hooks.sortPropPaths(Object.entries(structure || {}), (e) => e[0]),
     [structure]
   );
 
@@ -107,7 +94,18 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
 
       <Collapse in={open && structures.length > 0 && display === 'nodes'}>
         {structures.map(([path, type]) => (
-          <ListItemButton key={path} onClick={() => onNodeActive(type, path)}>
+          <ListItemButton
+            key={path}
+            onClick={() =>
+              onNodeActive(type, [
+                ...(typeof index === 'number' && type === 'node'
+                  ? [index]
+                  : []),
+                'nodes',
+                path,
+              ])
+            }
+          >
             <ListItemIcon />
 
             <ListItemText

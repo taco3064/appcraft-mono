@@ -27,9 +27,11 @@ export default function CraftedWidgetEditor({
 }: Types.CraftedWidgetEditorProps) {
   const ct = Hooks.useFixedT(fixedT);
   const [adding, setAdding] = useState(false);
+  const [isReactNode, setIsReactNode] = useState(false);
 
-  const { isMultiChildren, items, paths, breadcrumbs, onNodeActive } =
-    Hooks.useStructure(widget as Appcraft.NodeWidget);
+  const { items, paths, breadcrumbs, onPathsChange } = Hooks.useStructure(
+    widget as Appcraft.NodeWidget
+  );
 
   const {
     selected,
@@ -39,18 +41,18 @@ export default function CraftedWidgetEditor({
     onWidgetSelect,
   } = Hooks.useWidgetMutation(
     widget as Appcraft.RootNodeWidget,
-    isMultiChildren,
+    isReactNode,
     paths,
     onWidgetChange
   );
 
   const LazyWidgetNodes = Hooks.useLazyWidgetNodes<
     Appcraft.NodeAndEventProps,
-    Types.LazyWidgetNodesProps<typeof onNodeActive>
+    Types.LazyWidgetNodesProps
   >(
     fetchOptions.getNodesAndEvents,
     items,
-    ({ fetchData: { events, nodes } = {}, widgets, onNodeActive, ...props }) =>
+    ({ fetchData: { events, nodes } = {}, widgets, ...props }) =>
       widgets.length === 0 ? (
         <Common.ListPlaceholder message={ct('msg-no-widgets')} />
       ) : (
@@ -58,19 +60,11 @@ export default function CraftedWidgetEditor({
           {widgets.map((item, index) => (
             <WidgetNode
               {...props}
+              {...(paths.length && { index })}
               key={`item_${index}`}
               item={item}
               event={item.category === 'node' && events?.[item.typeName]}
               structure={item.category === 'node' && nodes?.[item.typeName]}
-              onNodeActive={(type, propPath) =>
-                item.category === 'node' &&
-                onNodeActive({
-                  type: item.type,
-                  isMultiChildren: type === 'node',
-                  propPath,
-                  index,
-                })
-              }
             />
           ))}
         </>
@@ -126,7 +120,11 @@ export default function CraftedWidgetEditor({
               <Styles.ListToolbar>
                 <Styles.IconTipButton
                   title={ct('btn-back')}
-                  onClick={() => onNodeActive(breadcrumbs.length - 1)}
+                  onClick={() =>
+                    onPathsChange(
+                      breadcrumbs[breadcrumbs.length - 2]?.paths || []
+                    )
+                  }
                 >
                   <ArrowBackIcon />
                 </Styles.IconTipButton>
@@ -136,18 +134,18 @@ export default function CraftedWidgetEditor({
                   maxItems={2}
                   style={{ marginRight: 'auto' }}
                 >
-                  {breadcrumbs.map((text, i, arr) => (
+                  {breadcrumbs.map(({ text, paths: toPaths }, i, arr) => (
                     <Styles.Breadcrumb
                       key={`breadcrumb_${i}`}
                       brcVariant={i === arr.length - 1 ? 'text' : 'link'}
-                      onClick={() => onNodeActive(i + 1)}
+                      onClick={() => onPathsChange(toPaths)}
                     >
                       {text}
                     </Styles.Breadcrumb>
                   ))}
                 </Common.Breadcrumbs>
 
-                {(isMultiChildren || items.length < 1) && (
+                {(isReactNode || items.length < 1) && (
                   <Styles.IconTipButton
                     title={ct('btn-new-widget')}
                     size="small"
@@ -180,8 +178,13 @@ export default function CraftedWidgetEditor({
               <LazyWidgetNodes
                 fixedT={fixedT}
                 onClick={onWidgetSelect}
-                onEventActive={(item, propPath) => console.log(item, propPath)}
-                onNodeActive={onNodeActive}
+                onEventActive={(item, propPath) =>
+                  console.log(paths, item, propPath)
+                }
+                onNodeActive={(type, activePaths) => {
+                  setIsReactNode(type === 'node');
+                  onPathsChange([...paths, ...activePaths]);
+                }}
                 onRemove={onWidgetRemove}
               />
             </Suspense>

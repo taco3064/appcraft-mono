@@ -11,12 +11,10 @@ export interface NodeSelectEvent {
   index: number;
 }
 
-export type LazyWidgetNodesProps<N> = Omit<
+export type LazyWidgetNodesProps = Omit<
   WidgetNodeProps<Appcraft.WidgetOptions>,
-  'item' | 'structure' | 'onNodeActive'
-> & {
-  onNodeActive: N;
-};
+  'index' | 'item' | 'structure'
+>;
 
 export interface CraftedWidgetEditorProps
   extends Pick<WidgetAddDialogProps, 'renderWidgetTypeSelection'> {

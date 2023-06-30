@@ -10,11 +10,13 @@ export const WidgetNodeSwitch = (() => {
 
   return withStyles(
     ({ value, onChange, ...props }: WidgetNodeSwitchProps) => (
-      <Switch
-        {...props}
-        checked={value === 'events'}
-        onChange={(e) => onChange(e.target.checked ? 'events' : 'nodes')}
-      />
+      <span>
+        <Switch
+          {...props}
+          checked={value === 'events'}
+          onChange={(e) => onChange(e.target.checked ? 'events' : 'nodes')}
+        />
+      </span>
     ),
     (theme, { value }) => ({
       root: {

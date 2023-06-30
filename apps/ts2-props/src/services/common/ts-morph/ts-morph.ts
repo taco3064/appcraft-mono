@@ -46,23 +46,30 @@ export const getSourceAndType: Types.GetSourceAndType = ({
 };
 
 export const getWidgetSourceAndType: Types.GetSourceAndType = (() => {
-  const source = project.addSourceFileAtPath(
-    path.resolve(process.cwd(), './node_modules/@types/react/index.d.ts')
-  );
+  [
+    './node_modules/@types/react/index.d.ts',
+    './node_modules/@types/react/ts5.0/index.d.ts',
+  ].forEach((override) => {
+    const source = project.addSourceFileAtPath(
+      path.resolve(process.cwd(), override)
+    );
 
-  const aria = source.getModule('React').getInterface('AriaAttributes');
+    const aria = source.getModule('React').getInterface('AriaAttributes');
 
-  source.replaceText(
-    [aria.getStart(), aria.getEnd()],
-    `type AriaAttributes = {};`
-  );
+    source.replaceText(
+      [aria.getStart(), aria.getEnd()],
+      `type AriaAttributes = {};`
+    );
 
-  const attr = source.getModule('React').getInterface('HTMLAttributes');
+    const attr = source.getModule('React').getInterface('HTMLAttributes');
 
-  source.replaceText(
-    [attr.getStart(), attr.getEnd()],
-    `type HTMLAttributes<T> = {};`
-  );
+    source.replaceText(
+      [attr.getStart(), attr.getEnd()],
+      `type HTMLAttributes<T> = {
+        onClick?: MouseEventHandler<T>;
+      };`
+    );
+  });
 
   return ({ typeFile, typeName }) => {
     const filePath = path.resolve(process.cwd(), typeFile);

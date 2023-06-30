@@ -4,9 +4,8 @@ import type { FixedT } from '../../contexts';
 export interface WidgetNodeProps<I extends Appcraft.WidgetOptions> {
   fixedT?: FixedT;
   item: I;
-  structure: I extends Appcraft.NodeWidget
-    ? Appcraft.WidgetChildren
-    : undefined;
+  event?: I extends Appcraft.NodeWidget ? string[] : false;
+  structure?: I extends Appcraft.NodeWidget ? Appcraft.ChildNodes : false;
 
   onClick: (item: I) => void;
   onActive: (type: Appcraft.NodeType, path: string) => void;

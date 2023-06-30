@@ -28,11 +28,12 @@ export default class TypesResolve {
 
   @Endpoint({
     method: 'post',
-    description: '取得指定的 Typescript Interface 中的 Element 與 Node',
+    description:
+      '取得指定的 Widget Props 中 ReactNode / ReactElement / Events 的 Props',
   })
-  getNodeProperties(req: Request, res: Response) {
+  getNodesAndEvents(req: Request, res: Response) {
     const body = req.body as TypesParseOptions[];
 
-    res.json(typesResolve.getNodeProperties(body));
+    res.json(typesResolve.getNodesAndEvents(body));
   }
 }

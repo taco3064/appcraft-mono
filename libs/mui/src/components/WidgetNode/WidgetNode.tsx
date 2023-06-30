@@ -5,18 +5,18 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemText from '@mui/material/ListItemText';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Hooks from '../../hooks';
-import { IconTipButton } from '../../styles';
+import { IconTipButton, TypeItemAction } from '../../styles';
 import type { WidgetNodeProps } from './WidgetNode.types';
 
 type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
 
 export default function WidgetNode<I extends Appcraft.WidgetOptions>({
+  event,
   fixedT,
   item,
   structure,
@@ -29,9 +29,31 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
   const isNode = category === 'node';
   const [open, setOpen] = useState(false);
 
-  const structures: [string, Appcraft.NodeType][] = Object.entries(
-    structure || {}
+  const events: string[] = useMemo(() => {
+    if (Array.isArray(event)) {
+      return event.sort((n1, n2) => {
+        const s1 =
+          (n1.match(/\./g) || []).length - (n2.match(/\./g) || []).length;
+
+        return s1 || (n1 > n2 ? 1 : n1 < n2 ? -1 : 0);
+      });
+    }
+
+    return [];
+  }, [event]);
+
+  const structures: [string, Appcraft.NodeType][] = useMemo(
+    () =>
+      Object.entries(structure || {}).sort(([n1], [n2]) => {
+        const s1 =
+          (n1.match(/\./g) || []).length - (n2.match(/\./g) || []).length;
+
+        return s1 || (n1 > n2 ? 1 : n1 < n2 ? -1 : 0);
+      }),
+    [structure]
   );
+
+  console.log(events);
 
   return (
     <>
@@ -61,14 +83,14 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
             : { primary: ct('ttl-node-plain-text'), secondary: content })}
         />
 
-        <ListItemSecondaryAction onClick={(e) => e.stopPropagation()}>
+        <TypeItemAction onClick={(e) => e.stopPropagation()}>
           <IconTipButton
             title={ct('btn-remove-widget')}
             onClick={() => onRemove(item)}
           >
             <CloseIcon />
           </IconTipButton>
-        </ListItemSecondaryAction>
+        </TypeItemAction>
       </ListItemButton>
 
       {structures.length > 0 && (
@@ -78,7 +100,12 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
               <ListItemIcon />
 
               <ListItemText
-                primaryTypographyProps={{ variant: 'subtitle2' }}
+                primaryTypographyProps={{
+                  variant: 'subtitle2',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
                 secondaryTypographyProps={{ variant: 'caption' }}
                 primary={path}
                 secondary={type}

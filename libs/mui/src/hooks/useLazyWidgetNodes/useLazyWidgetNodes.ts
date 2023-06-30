@@ -35,7 +35,7 @@ const useLazyWidgetNodes = <D, R>(
             renderRef.current({ ...props, fetchData, widgets: items }),
         };
       }),
-    [fetchOptions, items, renderRef]
+    [fetchOptions, items]
   );
 };
 

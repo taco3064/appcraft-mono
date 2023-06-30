@@ -1,4 +1,3 @@
-import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Collapse from '@mui/material/Collapse';

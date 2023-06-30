@@ -19,12 +19,10 @@ export const WidgetNodeSwitch = (() => {
     (theme, { value }) => ({
       root: {
         width: 60,
-        height: 34,
-        padding: 7,
-        margin: 1,
+        height: theme.spacing(4),
+        padding: theme.spacing(1),
       },
       switchBase: {
-        margin: 1,
         padding: 0,
         transform: 'translateX(6px)',
       },
@@ -40,8 +38,8 @@ export const WidgetNodeSwitch = (() => {
       thumb: {
         backgroundColor:
           theme.palette[value === 'events' ? 'success' : 'info'].dark,
-        width: 32,
-        height: 32,
+        width: theme.spacing(4),
+        height: theme.spacing(4),
 
         ...({
           '&::before': {

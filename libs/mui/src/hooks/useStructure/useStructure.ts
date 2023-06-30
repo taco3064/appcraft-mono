@@ -23,17 +23,19 @@ const useStructure: Types.StructureHook = (widget) => {
     [activeNodes]
   );
 
-  const target = (!paths.length ? widget : _get(widget, paths)) || [];
-
   return {
     paths,
 
     isMultiChildren:
       activeNodes[activeNodes.length - 1]?.isMultiChildren || false,
 
-    items: (Array.isArray(target)
-      ? target
-      : [target]) as Appcraft.WidgetOptions[],
+    items: useMemo(() => {
+      const target = (!paths.length ? widget : _get(widget, paths)) || [];
+
+      return (
+        Array.isArray(target) ? target : [target]
+      ) as Appcraft.WidgetOptions[];
+    }, [paths, widget]),
 
     breadcrumbs: useMemo(
       () =>

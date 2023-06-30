@@ -8,12 +8,10 @@ export type WidgetMutationHook = (
   isMultiChildren: boolean,
   paths: undefined | NodePath[],
   onWidgetChange: (e: Appcraft.RootNodeWidget | null) => void
-) => [
-  Appcraft.WidgetOptions | null,
-  {
-    onWidgetAdd: (e: Appcraft.WidgetOptions) => void;
-    onWidgetModify: <E extends ModifyEvent>(e: E) => void;
-    onWidgetRemove: (e: Appcraft.WidgetOptions) => void;
-    onWidgetSelect: (e: Appcraft.WidgetOptions | null) => void;
-  }
-];
+) => {
+  selected: Appcraft.WidgetOptions | null;
+  onWidgetAdd: (e: Appcraft.WidgetOptions) => void;
+  onWidgetModify: <E extends ModifyEvent>(e: E) => void;
+  onWidgetRemove: (e: Appcraft.WidgetOptions) => void;
+  onWidgetSelect: (e: Appcraft.WidgetOptions | null) => void;
+};

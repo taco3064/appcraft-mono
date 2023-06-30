@@ -21,8 +21,9 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
   fixedT,
   item,
   structure,
-  onActive,
   onClick,
+  onEventActive,
+  onNodeActive,
   onRemove,
 }: WidgetNodeProps<I>) {
   const ct = Hooks.useFixedT(fixedT);
@@ -106,7 +107,7 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
 
       <Collapse in={open && structures.length > 0 && display === 'nodes'}>
         {structures.map(([path, type]) => (
-          <ListItemButton key={path} onClick={() => onActive(type, path)}>
+          <ListItemButton key={path} onClick={() => onNodeActive(type, path)}>
             <ListItemIcon />
 
             <ListItemText
@@ -126,7 +127,7 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
 
       <Collapse in={open && events.length > 0 && display === 'events'}>
         {events.map((path) => (
-          <ListItemButton key={path}>
+          <ListItemButton key={path} onClick={() => onEventActive(item, path)}>
             <ListItemIcon />
 
             <ListItemText

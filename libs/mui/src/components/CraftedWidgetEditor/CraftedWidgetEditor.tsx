@@ -31,10 +31,13 @@ export default function CraftedWidgetEditor({
   const { isMultiChildren, items, paths, breadcrumbs, onNodeActive } =
     Hooks.useStructure(widget as Appcraft.NodeWidget);
 
-  const [
+  const {
     selected,
-    { onWidgetAdd, onWidgetModify, onWidgetRemove, onWidgetSelect },
-  ] = Hooks.useWidgetMutation(
+    onWidgetAdd,
+    onWidgetModify,
+    onWidgetRemove,
+    onWidgetSelect,
+  } = Hooks.useWidgetMutation(
     widget as Appcraft.RootNodeWidget,
     isMultiChildren,
     paths,
@@ -47,7 +50,7 @@ export default function CraftedWidgetEditor({
   >(
     fetchOptions.getNodesAndEvents,
     items,
-    ({ fetchData: { events, nodes } = {}, widgets, onActive, ...props }) =>
+    ({ fetchData: { events, nodes } = {}, widgets, onNodeActive, ...props }) =>
       widgets.length === 0 ? (
         <Common.ListPlaceholder message={ct('msg-no-widgets')} />
       ) : (
@@ -59,9 +62,9 @@ export default function CraftedWidgetEditor({
               item={item}
               event={item.category === 'node' && events?.[item.typeName]}
               structure={item.category === 'node' && nodes?.[item.typeName]}
-              onActive={(type, propPath) =>
+              onNodeActive={(type, propPath) =>
                 item.category === 'node' &&
-                onActive({
+                onNodeActive({
                   type: item.type,
                   isMultiChildren: type === 'node',
                   propPath,
@@ -176,9 +179,10 @@ export default function CraftedWidgetEditor({
             <Suspense fallback={<LinearProgress />}>
               <LazyWidgetNodes
                 fixedT={fixedT}
-                onActive={onNodeActive}
-                onRemove={onWidgetRemove}
                 onClick={onWidgetSelect}
+                onEventActive={(item, propPath) => console.log(item, propPath)}
+                onNodeActive={onNodeActive}
+                onRemove={onWidgetRemove}
               />
             </Suspense>
           )}

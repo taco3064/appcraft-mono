@@ -11,11 +11,11 @@ export interface NodeSelectEvent {
   index: number;
 }
 
-export type LazyWidgetNodesProps<A> = Omit<
+export type LazyWidgetNodesProps<N> = Omit<
   WidgetNodeProps<Appcraft.WidgetOptions>,
-  'item' | 'structure' | 'onActive'
+  'item' | 'structure' | 'onNodeActive'
 > & {
-  onActive: A;
+  onNodeActive: N;
 };
 
 export interface CraftedWidgetEditorProps

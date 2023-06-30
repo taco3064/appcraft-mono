@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.54](https://github.com/taco3064/appcraft-mono/compare/v0.0.53...v0.0.54) (2023-06-30)
+
+
+### Features
+
+* **ts2-props:** support parsing unknown type ([9d4debf](https://github.com/taco3064/appcraft-mono/commit/9d4debfe9595fba74a3c96040adb280a91b2a242))
+
+
+### Bug Fixes
+
+* **crafted-widget-editor:** update the collapsing rules ([eed919a](https://github.com/taco3064/appcraft-mono/commit/eed919ab343ba0c737f2d23dfdf7189709cbb4d0))
+* **ts2-props:** make sure parser could parse correct result ([d74949f](https://github.com/taco3064/appcraft-mono/commit/d74949f2df891a74609adff7081a7a3efb2df36b))
+* **use-lazy-widget-nodes:** remove ref dependencies ([7cbb200](https://github.com/taco3064/appcraft-mono/commit/7cbb200bce8d28262f15f51f1634953b04d2776e))
+* **widget-node:** add items sorting ([cbf5b7c](https://github.com/taco3064/appcraft-mono/commit/cbf5b7c87a5d384e8e3ae1c2f13b7ae1f936a4d6))
+
 ### [0.0.53](https://github.com/taco3064/appcraft-mono/compare/v0.0.52...v0.0.53) (2023-06-29)
 
 

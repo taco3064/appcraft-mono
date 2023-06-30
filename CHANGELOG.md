@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.55](https://github.com/taco3064/appcraft-mono/compare/v0.0.54...v0.0.55) (2023-06-30)
+
+
+### Features
+
+* **widget-node:** add event list ([7724438](https://github.com/taco3064/appcraft-mono/commit/7724438ae2a8274f90d7c2cd75196f0408e9d37e))
+
 ### [0.0.54](https://github.com/taco3064/appcraft-mono/compare/v0.0.53...v0.0.54) (2023-06-30)
 
 

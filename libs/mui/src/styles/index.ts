@@ -5,5 +5,6 @@ export * from './MuiIcon';
 export * from './MuiIconButton';
 export * from './MuiListItemSecondaryAction';
 export * from './MuiListSubheader';
+export * from './MuiSwitch';
 export * from './MuiTextField';
 export * from './MuiTypography';

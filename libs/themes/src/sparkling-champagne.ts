@@ -26,9 +26,9 @@ export const SPARKLING_CHAMPAGNE: PaletteOptions = {
     contrastText: '#2A2A2A',
   },
   success: {
-    light: '#FFF3E3',
-    main: '#FFD3A3',
-    dark: '#FFBE80',
+    light: '#C5E7D9',
+    main: '#7FCDA6',
+    dark: '#56B586',
     contrastText: '#2A2A2A',
   },
   warning: {

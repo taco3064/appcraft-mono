@@ -60,7 +60,7 @@ export default function ConfigDetail({
 
         <CraftedTypeEditor
           fixedT={ct}
-          parser={FETCH_OPTIONS.CONFIGS}
+          parser={FETCH_OPTIONS.CONFIGS_PARSER}
           values={values}
           onChange={onChange}
         />

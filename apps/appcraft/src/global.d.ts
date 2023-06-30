@@ -10,9 +10,9 @@ declare module '~appcraft/assets/json/types-fetch-options.json' {
     method: 'GET' | 'DELETE' | 'POST' | 'PUT' | 'PATCH';
   }
 
-  export const CONFIGS: FetchOptions;
-  export const NODES: FetchOptions;
-  export const WIDGET: FetchOptions;
+  export const CONFIGS_PARSER: FetchOptions;
+  export const GET_NODES_AND_EVENTS: FetchOptions;
+  export const PROPS_PARSER: FetchOptions;
 }
 
 declare const __WEBPACK_DEFINE__: {

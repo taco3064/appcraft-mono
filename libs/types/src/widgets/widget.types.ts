@@ -8,19 +8,14 @@ enum OptionCategory {
   plainText,
 }
 
+//* Node & Event Props
 export type NodeType = 'element' | 'node';
+export type ChildNodes = Record<string, NodeType>;
 
-//* Node & Structure
-type Nodes<E extends string[] = [], N extends string[] = []> = Partial<
-  Record<E[number], WidgetOptions> & Record<N[number], WidgetOptions[]>
->;
-
-export type WidgetChildren = Record<keyof Nodes, NodeType>;
-
-export type WidgetStructure<N extends string = string> = Record<
-  N,
-  WidgetChildren
->;
+export type NodeAndEventProps = {
+  nodes: Record<string, ChildNodes>;
+  events: Record<string, string[]>;
+};
 
 //* Options
 type BaseOptions<C extends keyof typeof OptionCategory, P> = {
@@ -41,7 +36,7 @@ export type NodeWidget = BaseOptions<
   'node',
   Omit<ConfigOptions, 'category'> & {
     type: string;
-    nodes?: Nodes;
+    nodes?: Record<string, WidgetOptions | WidgetOptions[]>;
     todos?: Record<string, WidgetEvent[]>;
   }
 >;

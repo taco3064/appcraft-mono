@@ -1,4 +1,4 @@
-import type { OneOfProp, OneOfTypeProp, PropTypesDef } from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 import type * as Types from './types-resolve.types';
 
 //* 定義 PropTypes 的檢查方式及回傳的 Config 內容 (要注意先後順序)
@@ -83,10 +83,22 @@ const generators: Types.Generators = [
 
   //* Union
   (type, info, source) => {
-    if (type.isUnion()) {
+    if (type.getText() === 'unknown') {
+      return {
+        ...info,
+        type: 'oneOfType',
+        options: ['bool', 'number', 'string'].map((type) => ({
+          ...info,
+          type: type as Appcraft.PropTypesDef['type'],
+          text: type,
+        })),
+      };
+    } else if (type.isUnion()) {
       const [oneOf, oneOfType] = type
         .getUnionTypes()
-        .reduce<[OneOfProp['options'], OneOfTypeProp['options']]>(
+        .reduce<
+          [Appcraft.OneOfProp['options'], Appcraft.OneOfTypeProp['options']]
+        >(
           ([literals, types], union) => {
             if (union.isLiteral()) {
               literals.push(JSON.parse(union.getText()));
@@ -144,7 +156,7 @@ const generators: Types.Generators = [
             })
           : type
               .getTupleElements()
-              .reduce<PropTypesDef[]>((result, tuple, i) => {
+              .reduce<Appcraft.PropTypesDef[]>((result, tuple, i) => {
                 const proptype = getProptype(tuple, {
                   propName: `[${i}]`,
                   required: true,
@@ -172,7 +184,7 @@ const generators: Types.Generators = [
       const strIdxType = type.getStringIndexType();
 
       if (properties.length > 0) {
-        const options = properties.reduce<[string, PropTypesDef][]>(
+        const options = properties.reduce<[string, Appcraft.PropTypesDef][]>(
           (result, property) => {
             const propName = property.getName();
             const typeAtLocation = property.getTypeAtLocation(source);
@@ -263,7 +275,7 @@ export const getProptype: Types.GetProptypeUtil = (type, info, source) =>
     return result;
   }, false);
 
-export const findNodeProps: Types.FindNodePropsUtil = (
+export const findNodesAndEventsProps: Types.FindNodesAndEventsPropsUtil = (
   source,
   type,
   { info, paths = [] }
@@ -272,28 +284,43 @@ export const findNodeProps: Types.FindNodePropsUtil = (
 
   if (proptype) {
     if (/^(element|node)$/.test(proptype.type)) {
-      return { [paths.join('.')]: proptype.type };
+      return {
+        nodes: { [paths.join('.')]: proptype.type as Appcraft.NodeType },
+      };
+    } else if (
+      proptype.type === 'func' &&
+      /^on[A-Z]/.test(info.propName || '')
+    ) {
+      return {
+        events: [paths.join('.')],
+      };
     } else if (proptype.type === 'exact') {
       const properties = type.getProperties?.() || [];
 
-      return properties.reduce((result, property) => {
-        const propName = property.getName();
+      return properties.reduce(
+        ({ nodes, events }, property) => {
+          const propName = property.getName();
 
-        if (!/^(sx|style)$/.test(propName)) {
-          const $type = property.getTypeAtLocation(source);
+          if (!/^(sx|style)$/.test(propName)) {
+            const $type = property.getTypeAtLocation(source);
 
-          return {
-            ...result,
-            ...($type.getText() !== 'React.CSSProperties' &&
-              findNodeProps(source, $type, {
+            if ($type.getText() !== 'React.CSSProperties') {
+              const result = findNodesAndEventsProps(source, $type, {
                 info: { propName, required: !property.isOptional() },
                 paths: [...paths, propName],
-              })),
-          };
-        }
+              });
 
-        return result;
-      }, {});
+              return {
+                nodes: { ...nodes, ...result.nodes },
+                events: [...events, ...(result.events || [])],
+              };
+            }
+          }
+
+          return { nodes, events };
+        },
+        { nodes: {}, events: [] }
+      );
     }
   }
 

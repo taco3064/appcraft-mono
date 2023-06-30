@@ -23,14 +23,17 @@ export type GetProptypeUtil<R = Appcraft.PropTypesDef> = (
   source?: TsMorph.SourceFile
 ) => R | false;
 
-export type FindNodePropsUtil = (
+export type FindNodesAndEventsPropsUtil = (
   source: TsMorph.SourceFile,
   type: TsMorph.Type,
   options: {
     info: Appcraft.GeneratorInfo;
     paths?: string[];
   }
-) => Appcraft.WidgetChildren;
+) => {
+  nodes?: Appcraft.ChildNodes;
+  events?: string[];
+};
 
 export type ParseConfigService = (
   options: Appcraft.TypesParseOptions
@@ -40,6 +43,6 @@ export type ParseWidgetService = (
   options: Appcraft.TypesParseOptions
 ) => Appcraft.PropTypesDef | null;
 
-export type GetNodeProperties = (
+export type GetNodesAndEvents = (
   options: Pick<Appcraft.TypesParseOptions, 'typeFile' | 'typeName'>[]
-) => Appcraft.WidgetStructure<(typeof options)[number]['typeName']>;
+) => Appcraft.NodeAndEventProps;

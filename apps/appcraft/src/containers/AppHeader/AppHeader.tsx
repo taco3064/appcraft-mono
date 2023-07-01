@@ -15,6 +15,7 @@ export default function AppHeader({
   oauth2,
   signoutURL,
   onMenuToggle,
+  onSigninClick,
 }: Types.AppHeaderProps) {
   return (
     <AppBar position="sticky" color="inherit" elevation={0}>
@@ -41,7 +42,7 @@ export default function AppHeader({
             menuTransform="translate(12px, 10px)"
           />
         ) : (
-          <SigninButton oauth2={oauth2} />
+          <SigninButton oauth2={oauth2} onSigninClick={onSigninClick} />
         )}
       </Toolbar>
 

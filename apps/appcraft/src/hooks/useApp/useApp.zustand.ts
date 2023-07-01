@@ -2,7 +2,7 @@ import i18n from 'i18next';
 import { create } from 'zustand';
 
 import resources from '@alienfast/i18next-loader?relativePathAsNamespace=true!~appcraft/assets/locales';
-import type * as Types from './useSetting.types';
+import type * as Types from './useApp.types';
 
 //* i18next
 const initialLng: string =
@@ -22,7 +22,7 @@ i18n.init({
 });
 
 //* Zustand Store
-const useSettingStore = create<Types.SettingState>((set, get) => ({
+const useAppStore = create<Types.AppState>((set, get) => ({
   //* Locales
   lng: initialLng,
   getFixedT: (namespace) => i18n.getFixedT(null, namespace),
@@ -48,4 +48,4 @@ const useSettingStore = create<Types.SettingState>((set, get) => ({
   },
 }));
 
-export default useSettingStore;
+export default useAppStore;

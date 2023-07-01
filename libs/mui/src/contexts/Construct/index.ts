@@ -1,2 +1,2 @@
 export { ConstructProvider, useConstructContext } from './Construct';
-export type { ConstructProviderProps, NodePath } from './Construct.types';
+export type { ConstructProviderProps, PropPaths } from './Construct.types';

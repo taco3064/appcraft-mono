@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { lazy, useMemo, useRef } from 'react';
+import { lazy, useImperativeHandle, useMemo, useRef } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import type * as Types from './useLazyWidgetNodes.types';
@@ -10,6 +10,8 @@ const useLazyWidgetNodes = <D, R>(
   renderFn: Types.RenderFn<D, R>
 ) => {
   const renderRef = useRef(renderFn);
+
+  useImperativeHandle(renderRef, () => renderFn, [renderFn]);
 
   return useMemo(
     () =>

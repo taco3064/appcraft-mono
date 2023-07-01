@@ -10,7 +10,10 @@ import { CommonButton } from '../common';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './SigninButton.types';
 
-export default function SigninButton({ oauth2 }: Types.SigninButtonProps) {
+export default function SigninButton({
+  oauth2,
+  onSigninClick,
+}: Types.SigninButtonProps) {
   const [at] = useFixedT('app');
   const [open, setOpen] = useState(false);
 
@@ -38,7 +41,11 @@ export default function SigninButton({ oauth2 }: Types.SigninButtonProps) {
           orientation="vertical"
           variant="contained"
         >
-          <Button href={oauth2.google} startIcon={<GoogleIcon />}>
+          <Button
+            href={oauth2.google}
+            startIcon={<GoogleIcon />}
+            onClick={(e) => onSigninClick?.('google', e)}
+          >
             Google
           </Button>
         </ButtonGroup>

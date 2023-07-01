@@ -22,6 +22,7 @@ export default function CraftedWidgetEditor({
   fetchOptions,
   fixedT,
   renderWidgetTypeSelection,
+  version,
   widget,
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
@@ -93,6 +94,7 @@ export default function CraftedWidgetEditor({
           open={Boolean(selected)}
           parser={fetchOptions.parser}
           values={selected}
+          version={version}
           onChange={onWidgetModify}
           action={
             <Common.WidgetAppBar

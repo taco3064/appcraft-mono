@@ -78,6 +78,7 @@ export default function WidgetEditor({
         drawer={
           <Appcraft.CraftedWidgetEditor
             fixedT={ct}
+            version={__WEBPACK_DEFINE__.VERSION}
             widget={widget}
             onWidgetChange={onWidgetChange}
             fetchOptions={{

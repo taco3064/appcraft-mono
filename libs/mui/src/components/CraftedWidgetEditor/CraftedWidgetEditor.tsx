@@ -46,12 +46,10 @@ export default function CraftedWidgetEditor({
     onWidgetChange
   );
 
-  const LazyWidgetNodes = Hooks.useLazyWidgetNodes<
-    Appcraft.NodeAndEventProps,
-    Types.LazyWidgetNodesProps
-  >(
+  const LazyWidgetNodes = Hooks.useLazyWidgetNodes<Types.LazyWidgetNodesProps>(
     fetchOptions.getNodesAndEvents,
     items,
+    version,
     ({ fetchData: { events, nodes } = {}, widgets, ...props }) =>
       widgets.length === 0 ? (
         <Common.ListPlaceholder message={ct('msg-no-widgets')} />

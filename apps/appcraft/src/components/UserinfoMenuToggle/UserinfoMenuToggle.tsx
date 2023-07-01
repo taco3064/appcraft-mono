@@ -21,7 +21,7 @@ export default function UserinfoMenuToggle({
 }: Types.UserinfoMenuToggleProps) {
   const [at] = Hooks.useFixedT('app');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
-  const { authorized, tokens } = Hooks.useAuthTokens();
+  const { authorized, tokens } = Hooks.useAuth();
 
   const LazyAvatar = Hooks.useLazyUserProfile<Userinfo>(
     tokens.id,

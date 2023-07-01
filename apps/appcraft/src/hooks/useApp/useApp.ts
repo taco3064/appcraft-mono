@@ -1,15 +1,15 @@
 import { DEFAULT_THEME, PALETTES } from '@appcraft/themes';
 import { PaletteOptions, createTheme } from '@mui/material/styles';
 import { getProps } from '@appcraft/mui';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
-import useSettingStore from './useSetting.hooks';
+import useAppStore from './useApp.zustand';
 import { FindConfigContext, findConfig } from '~appcraft/services';
-import type * as Types from './useSetting.types';
+import type * as Types from './useApp.types';
 
 export const useFixedT: Types.FixedTHook = (...namespaces) => {
-  const { getFixedT } = useSettingStore(
+  const { getFixedT } = useAppStore(
     ({ lng, getFixedT }) => ({
       lng,
       getFixedT,
@@ -20,7 +20,7 @@ export const useFixedT: Types.FixedTHook = (...namespaces) => {
   return namespaces.map((namespace) => getFixedT(namespace));
 };
 
-export const useAuthTokens: Types.UserAutTokensHook = () => {
+export const useAuth: Types.AuthHook = () => {
   const tokens = {
     access:
       global.document?.cookie.match('(^|;)\\s*access\\s*=\\s*([^;]+)')?.pop() ||
@@ -30,14 +30,31 @@ export const useAuthTokens: Types.UserAutTokensHook = () => {
       null,
   };
 
+  const isBrowser = global.sessionStorage && global.location;
+  const authorized = Object.values(tokens).every((token) => token);
+
+  useEffect(() => {
+    if (authorized && isBrowser && global.sessionStorage.getItem('redirect')) {
+      const redirect = global.sessionStorage.getItem('redirect');
+
+      global.sessionStorage.removeItem('redirect');
+      global.location.replace(redirect || '/');
+    }
+  }, [authorized, isBrowser]);
+
   return {
-    authorized: Object.values(tokens).every((token) => token),
+    authorized,
     tokens,
+    onSigninPrepare: () => {
+      if (isBrowser) {
+        global.sessionStorage.setItem('redirect', global.location.href);
+      }
+    },
   };
 };
 
 export const useSettingModified: Types.SettingModifiedHook = () =>
-  useSettingStore(({ lng, setLng, theme, setTheme }) => ({
+  useAppStore(({ lng, setLng, theme, setTheme }) => ({
     lng,
     setLng,
     theme,
@@ -45,7 +62,7 @@ export const useSettingModified: Types.SettingModifiedHook = () =>
   }));
 
 export const useThemeStyle: Types.ThemeStyleHook = () => {
-  const [id, timestamp] = useSettingStore(({ theme, timestamp }) => [
+  const [id, timestamp] = useAppStore(({ theme, timestamp }) => [
     theme,
     timestamp,
   ]);

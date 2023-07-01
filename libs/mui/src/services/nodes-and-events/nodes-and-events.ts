@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type * as Types from './getNodesAndEvents.types';
+import type * as Types from './nodes-and-events.types';
 
 export const getNodesAndEvents: Types.GetNodesAndEventsService = async (
   fetchOptions,

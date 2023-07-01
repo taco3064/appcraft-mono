@@ -1,2 +1,2 @@
-export * from './getNodesAndEvents';
-export * from './getTypeDefinition';
+export * from './nodes-and-events';
+export * from './type-definition';

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type * as Types from './getTypeDefinition.types';
+import type * as Types from './type-definition.types';
 
 export const getTypeDefinition: Types.GetTypeDefinitionService = async (
   fetchOptions,

@@ -4,13 +4,18 @@ import type { PropPaths } from '../../contexts';
 export type Breadcrumbs = {
   text: string;
   paths: PropPaths;
-  type: Appcraft.NodeType;
 }[];
 
+export type PathsChangeHandler = (
+  e: PropPaths,
+  type?: Appcraft.NodeType
+) => void;
+
 export type StructureHook = (widget: Appcraft.NodeWidget) => {
+  type: Appcraft.NodeType;
   breadcrumbs: Breadcrumbs;
   items: Appcraft.WidgetOptions[];
   paths: PropPaths;
 
-  onPathsChange: (e: PropPaths) => void;
+  onPathsChange: PathsChangeHandler;
 };

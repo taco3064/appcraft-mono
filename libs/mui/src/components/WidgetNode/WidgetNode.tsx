@@ -22,6 +22,7 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
   index,
   item,
   structure,
+  superiorNodeType,
   onClick,
   onEventActive,
   onNodeActive,
@@ -97,13 +98,14 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
           <ListItemButton
             key={path}
             onClick={() =>
-              onNodeActive(type, [
-                ...(typeof index === 'number' && type === 'node'
-                  ? [index]
-                  : []),
-                'nodes',
-                path,
-              ])
+              onNodeActive(
+                [
+                  ...(superiorNodeType === 'node' ? [index] : []),
+                  'nodes',
+                  path,
+                ],
+                type
+              )
             }
           >
             <ListItemIcon />
@@ -127,7 +129,13 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
         {events.map((path) => (
           <ListItemButton
             key={path}
-            onClick={() => onEventActive(['events', path])}
+            onClick={() =>
+              onEventActive([
+                ...(superiorNodeType === 'node' ? [index] : []),
+                'events',
+                path,
+              ])
+            }
           >
             <ListItemIcon />
 

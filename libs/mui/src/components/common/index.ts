@@ -7,3 +7,4 @@ export * from './NumberInput';
 export * from './PlainTextDialog';
 export * from './TypeListSkeleton';
 export * from './WidgetAppBar';
+export * from './WidgetBreadcrumbs';

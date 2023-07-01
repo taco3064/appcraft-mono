@@ -12,6 +12,7 @@ const useStructure: Types.StructureHook = (() => {
   ): Types.Breadcrumbs {
     const lastNodesIndex = paths.lastIndexOf('nodes');
     const targetPaths = paths.slice(0, lastNodesIndex);
+
     const target = !lastNodesIndex
       ? widget
       : (_get(widget, targetPaths) as Appcraft.NodeWidget);
@@ -23,32 +24,35 @@ const useStructure: Types.StructureHook = (() => {
           {
             text: `${target.type}.${paths[lastNodesIndex + 1]}`,
             paths: paths.slice(0, lastNodesIndex + 2),
-            type:
-              typeof paths[lastNodesIndex - 1] === 'number'
-                ? 'node'
-                : 'element',
           },
         ];
   }
 
   return (widget) => {
+    const [type, setType] = useState<Appcraft.NodeType>('element');
     const [paths, setPaths] = useState<PropPaths>([]);
 
     return {
       paths,
-      onPathsChange: setPaths,
+      type,
 
-      breadcrumbs: useMemo(
-        () => convertToBreadcrumb(paths, widget),
-        [paths, widget]
-      ),
+      onPathsChange: (activePaths, activeType) => {
+        const target = !activePaths.length ? widget : _get(widget, activePaths);
 
-      items: useMemo(() => {
+        setPaths(activePaths);
+        setType(activeType || (Array.isArray(target) ? 'node' : 'element'));
+      },
+
+      ...useMemo(() => {
         const target = (!paths.length ? widget : _get(widget, paths)) || [];
 
-        return (
-          Array.isArray(target) ? target : [target]
-        ) as Appcraft.WidgetOptions[];
+        return {
+          breadcrumbs: convertToBreadcrumb(paths, widget),
+
+          items: (Array.isArray(target)
+            ? target
+            : [target]) as Appcraft.WidgetOptions[],
+        };
       }, [paths, widget]),
     };
   };

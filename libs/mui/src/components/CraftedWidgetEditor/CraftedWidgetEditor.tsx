@@ -27,9 +27,8 @@ export default function CraftedWidgetEditor({
 }: Types.CraftedWidgetEditorProps) {
   const ct = Hooks.useFixedT(fixedT);
   const [adding, setAdding] = useState(false);
-  const [isReactNode, setIsReactNode] = useState(false);
 
-  const { items, paths, breadcrumbs, onPathsChange } = Hooks.useStructure(
+  const { breadcrumbs, items, paths, type, onPathsChange } = Hooks.useStructure(
     widget as Appcraft.NodeWidget
   );
 
@@ -41,7 +40,7 @@ export default function CraftedWidgetEditor({
     onWidgetSelect,
   } = Hooks.useWidgetMutation(
     widget as Appcraft.RootNodeWidget,
-    isReactNode,
+    type === 'node',
     paths,
     onWidgetChange
   );
@@ -60,8 +59,8 @@ export default function CraftedWidgetEditor({
           {widgets.map((item, index) => (
             <WidgetNode
               {...props}
-              {...(paths.length && { index })}
               key={`item_${index}`}
+              index={index}
               item={item}
               event={item.category === 'node' && events?.[item.typeName]}
               structure={item.category === 'node' && nodes?.[item.typeName]}
@@ -116,46 +115,13 @@ export default function CraftedWidgetEditor({
         <List
           disablePadding
           subheader={
-            breadcrumbs.length > 0 && (
-              <Styles.ListToolbar>
-                <Styles.IconTipButton
-                  title={ct('btn-back')}
-                  onClick={() =>
-                    onPathsChange(
-                      breadcrumbs[breadcrumbs.length - 2]?.paths || []
-                    )
-                  }
-                >
-                  <ArrowBackIcon />
-                </Styles.IconTipButton>
-
-                <Common.Breadcrumbs
-                  separator="›"
-                  maxItems={2}
-                  style={{ marginRight: 'auto' }}
-                >
-                  {breadcrumbs.map(({ text, paths: toPaths }, i, arr) => (
-                    <Styles.Breadcrumb
-                      key={`breadcrumb_${i}`}
-                      brcVariant={i === arr.length - 1 ? 'text' : 'link'}
-                      onClick={() => onPathsChange(toPaths)}
-                    >
-                      {text}
-                    </Styles.Breadcrumb>
-                  ))}
-                </Common.Breadcrumbs>
-
-                {(isReactNode || items.length < 1) && (
-                  <Styles.IconTipButton
-                    title={ct('btn-new-widget')}
-                    size="small"
-                    onClick={() => setAdding(true)}
-                  >
-                    <AddIcon />
-                  </Styles.IconTipButton>
-                )}
-              </Styles.ListToolbar>
-            )
+            <Common.WidgetBreadcrumbs
+              addable={type === 'node' || items.length < 1}
+              breadcrumbs={breadcrumbs}
+              fixedT={fixedT}
+              onAdd={() => setAdding(true)}
+              onRedirect={onPathsChange}
+            />
           }
         >
           {!widget ? (
@@ -177,13 +143,15 @@ export default function CraftedWidgetEditor({
             <Suspense fallback={<LinearProgress />}>
               <LazyWidgetNodes
                 fixedT={fixedT}
+                superiorNodeType={type}
                 onClick={onWidgetSelect}
-                onEventActive={(activePaths) => console.log(activePaths)}
-                onNodeActive={(type, activePaths) => {
-                  setIsReactNode(type === 'node');
-                  onPathsChange([...paths, ...activePaths]);
-                }}
                 onRemove={onWidgetRemove}
+                onEventActive={(activePaths) =>
+                  console.log([...paths, ...activePaths])
+                }
+                onNodeActive={(activePaths, activeNodeType) =>
+                  onPathsChange([...paths, ...activePaths], activeNodeType)
+                }
               />
             </Suspense>
           )}

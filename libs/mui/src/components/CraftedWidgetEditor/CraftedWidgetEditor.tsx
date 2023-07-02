@@ -55,16 +55,23 @@ export default function CraftedWidgetEditor({
         <Common.ListPlaceholder message={ct('msg-no-widgets')} />
       ) : (
         <>
-          {widgets.map((item, index) => (
-            <WidgetNode
-              {...props}
-              key={`item_${index}`}
-              index={index}
-              item={item}
-              event={item.category === 'node' && events?.[item.typeName]}
-              structure={item.category === 'node' && nodes?.[item.typeName]}
-            />
-          ))}
+          {widgets.map((item, index) => {
+            const key =
+              item.category === 'plainText'
+                ? `plain_text_${index}`
+                : `${item.typeFile}#${item.typeName}}`;
+
+            return (
+              <WidgetNode
+                {...props}
+                key={key}
+                index={index}
+                item={item}
+                event={events?.[key]}
+                structure={nodes?.[key]}
+              />
+            );
+          })}
         </>
       )
   );

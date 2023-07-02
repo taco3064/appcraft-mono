@@ -45,12 +45,14 @@ export const getNodesAndEvents: Types.GetNodesAndEvents = (options) =>
       const sourceType = Common.getWidgetSourceAndType(opts);
 
       if (!(opts.typeName in result)) {
+        const key = `${opts.typeFile}#${opts.typeName}`;
+
         const { nodes, events } = findNodesAndEventsProps(...sourceType, {
           info: { required: true },
         });
 
-        result.nodes[opts.typeName] = nodes;
-        result.events[opts.typeName] = events;
+        result.nodes[key] = nodes;
+        result.events[key] = events;
       }
 
       return result;

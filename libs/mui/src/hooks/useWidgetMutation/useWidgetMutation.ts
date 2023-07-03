@@ -1,6 +1,6 @@
 import _get from 'lodash.get';
 import _set from 'lodash.set';
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import type { WidgetMutationHook } from './useWidgetMutation.types';
@@ -14,13 +14,10 @@ const useWidgetMutation: WidgetMutationHook = (
   const [selected, setSelected] = useState<Appcraft.WidgetOptions | null>(null);
   const target = _get(widget, paths || []);
 
-  const items = useMemo(() => {
-    if (target) {
-      return Array.isArray(target) ? target : [target];
-    }
-
-    return [];
-  }, [target]);
+  const items = useMemo(
+    () => (!target ? [] : Array.isArray(target) ? target : [target]),
+    [target]
+  );
 
   return [
     selected,
@@ -34,36 +31,25 @@ const useWidgetMutation: WidgetMutationHook = (
               }) as Appcraft.RootNodeWidget
         ),
 
-      modify: useCallback(
-        (e) => {
-          if (e.category === 'node') {
-            setSelected(e);
-          }
+      modify: (e) => {
+        if (e.category === 'node') {
+          setSelected(e);
+        }
 
-          onWidgetChange(
-            !paths?.length
-              ? (e as Appcraft.RootNodeWidget)
-              : {
-                  ..._set(
-                    widget,
-                    paths,
-                    !isMultiChildren
-                      ? e
-                      : items.map((item) => (item !== selected ? item : e))
-                  ),
-                }
-          );
-        },
-        [
-          isMultiChildren,
-          items,
-          paths,
-          selected,
-          widget,
-          onWidgetChange,
-          setSelected,
-        ]
-      ),
+        onWidgetChange(
+          !paths?.length
+            ? (e as Appcraft.RootNodeWidget)
+            : {
+                ..._set(
+                  widget,
+                  paths,
+                  !isMultiChildren
+                    ? e
+                    : items.map((item) => (item !== selected ? item : e))
+                ),
+              }
+        );
+      },
 
       remove: (e) =>
         onWidgetChange(

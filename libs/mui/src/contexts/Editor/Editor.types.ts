@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { MutableRefObject, ReactNode } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 //* Variable
@@ -15,11 +15,12 @@ export interface EditorContextValue<V extends OptionValues> {
   collectionPath: string;
   fixedT?: FixedT;
   values?: V;
-  onChange: ChangeHandler<V>;
+  handleChangeRef?: MutableRefObject<ChangeHandler<V>>;
 }
 
 //* Provider Props
 export interface EditorProviderProps<V extends OptionValues>
-  extends EditorContextValue<V> {
+  extends Omit<EditorContextValue<V>, 'handleChangeRef'> {
   children: ReactNode;
+  onChange: ChangeHandler<V>;
 }

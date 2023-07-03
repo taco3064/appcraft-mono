@@ -9,11 +9,10 @@ import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import * as Common from '../common';
+import * as Common from '../../components/common';
 import * as Hooks from '../../hooks';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { WidgetAddDialog } from '../WidgetAddDialog';
-import { WidgetNode } from '../WidgetNode';
+import { WidgetAddDialog, WidgetNode } from '../../components';
 import type * as Types from './CraftedWidgetEditor.types';
 
 export default function CraftedWidgetEditor({

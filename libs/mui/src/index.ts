@@ -1,3 +1,3 @@
-export * from './components';
+export * from './containers';
 export * from './styles';
 export { getProps, getTodoEventHandle } from './hooks';

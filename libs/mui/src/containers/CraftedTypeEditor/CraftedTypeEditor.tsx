@@ -4,8 +4,8 @@ import { Suspense, useState } from 'react';
 
 import * as Hooks from '../../hooks';
 import { EditorProvider, OptionValues } from '../../contexts';
-import { TypeList } from '../TypeList';
-import { TypeListSkeleton } from '../common';
+import { TypeList } from '../../components';
+import { TypeListSkeleton } from '../../components/common';
 import type * as Types from './CraftedTypeEditor.types';
 
 export default function CraftedTypeEditor<

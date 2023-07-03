@@ -3,6 +3,7 @@ export * from './MuiBreadcrumbs';
 export * from './MuiDialog';
 export * from './MuiIcon';
 export * from './MuiIconButton';
+export * from './MuiListItem';
 export * from './MuiListItemSecondaryAction';
 export * from './MuiListSubheader';
 export * from './MuiSwitch';

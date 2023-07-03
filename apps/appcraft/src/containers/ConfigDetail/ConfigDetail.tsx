@@ -62,7 +62,6 @@ export default function ConfigDetail({
           fixedT={ct}
           parser={FETCH_OPTIONS.CONFIGS_PARSER}
           values={values}
-          version={__WEBPACK_DEFINE__.VERSION}
           onChange={onChange}
         />
       </Container>

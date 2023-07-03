@@ -11,11 +11,12 @@ export type PathsChangeHandler = (
   type?: Appcraft.NodeType
 ) => void;
 
-export type StructureHook = (widget: Appcraft.NodeWidget) => {
-  type: Appcraft.NodeType;
-  breadcrumbs: Breadcrumbs;
-  items: Appcraft.WidgetOptions[];
-  paths: PropPaths;
-
-  onPathsChange: PathsChangeHandler;
-};
+export type StructureHook = (widget: Appcraft.NodeWidget) => [
+  {
+    type: Appcraft.NodeType;
+    breadcrumbs: Breadcrumbs;
+    items: Appcraft.WidgetOptions[];
+    paths: PropPaths;
+  },
+  PathsChangeHandler
+];

@@ -1,5 +1,5 @@
-import type { Breadcrumbs } from '../../../hooks';
-import type { FixedT, PropPaths } from '../../../contexts';
+import type { Breadcrumbs } from '../../hooks';
+import type { FixedT, PropPaths } from '../../contexts';
 
 export interface WidgetBreadcrumbsProps {
   addable: boolean;

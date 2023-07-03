@@ -32,29 +32,30 @@ const useStructure: Types.StructureHook = (() => {
     const [type, setType] = useState<Appcraft.NodeType>('element');
     const [paths, setPaths] = useState<PropPaths>([]);
 
-    return {
-      paths,
-      type,
+    return [
+      {
+        paths,
+        type,
+        ...useMemo(() => {
+          const target = (!paths.length ? widget : _get(widget, paths)) || [];
 
-      onPathsChange: (activePaths, activeType) => {
+          return {
+            breadcrumbs: convertToBreadcrumb(paths, widget),
+
+            items: (Array.isArray(target)
+              ? target
+              : [target]) as Appcraft.WidgetOptions[],
+          };
+        }, [paths, widget]),
+      },
+
+      (activePaths, activeType) => {
         const target = !activePaths.length ? widget : _get(widget, activePaths);
 
         setPaths(activePaths);
         setType(activeType || (Array.isArray(target) ? 'node' : 'element'));
       },
-
-      ...useMemo(() => {
-        const target = (!paths.length ? widget : _get(widget, paths)) || [];
-
-        return {
-          breadcrumbs: convertToBreadcrumb(paths, widget),
-
-          items: (Array.isArray(target)
-            ? target
-            : [target]) as Appcraft.WidgetOptions[],
-        };
-      }, [paths, widget]),
-    };
+    ];
   };
 })();
 

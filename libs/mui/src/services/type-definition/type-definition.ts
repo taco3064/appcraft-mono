@@ -3,8 +3,7 @@ import type * as Types from './type-definition.types';
 
 export const getTypeDefinition: Types.GetTypeDefinitionService = async (
   fetchOptions,
-  { typeFile, typeName, mixedTypes, collectionPath },
-  version
+  { typeFile, typeName, mixedTypes, collectionPath }
 ) => {
   const { data: fetchData } = !(typeFile && typeName)
     ? { data: null }

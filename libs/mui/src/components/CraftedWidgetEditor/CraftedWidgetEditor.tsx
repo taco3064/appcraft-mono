@@ -22,6 +22,7 @@ export default function CraftedWidgetEditor({
   fetchOptions,
   fixedT,
   renderWidgetTypeSelection,
+  version,
   widget,
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
@@ -45,27 +46,32 @@ export default function CraftedWidgetEditor({
     onWidgetChange
   );
 
-  const LazyWidgetNodes = Hooks.useLazyWidgetNodes<
-    Appcraft.NodeAndEventProps,
-    Types.LazyWidgetNodesProps
-  >(
+  const LazyWidgetNodes = Hooks.useLazyWidgetNodes<Types.LazyWidgetNodesProps>(
     fetchOptions.getNodesAndEvents,
     items,
+    version,
     ({ fetchData: { events, nodes } = {}, widgets, ...props }) =>
       widgets.length === 0 ? (
         <Common.ListPlaceholder message={ct('msg-no-widgets')} />
       ) : (
         <>
-          {widgets.map((item, index) => (
-            <WidgetNode
-              {...props}
-              key={`item_${index}`}
-              index={index}
-              item={item}
-              event={item.category === 'node' && events?.[item.typeName]}
-              structure={item.category === 'node' && nodes?.[item.typeName]}
-            />
-          ))}
+          {widgets.map((item, index) => {
+            const key =
+              item.category === 'plainText'
+                ? `plain_text_${index}`
+                : `${item.typeFile}#${item.typeName}}`;
+
+            return (
+              <WidgetNode
+                {...props}
+                key={key}
+                index={index}
+                item={item}
+                event={events?.[key]}
+                structure={nodes?.[key]}
+              />
+            );
+          })}
         </>
       )
   );
@@ -93,6 +99,7 @@ export default function CraftedWidgetEditor({
           open={Boolean(selected)}
           parser={fetchOptions.parser}
           values={selected}
+          version={version}
           onChange={onWidgetModify}
           action={
             <Common.WidgetAppBar

@@ -13,13 +13,14 @@ export interface NodeSelectEvent {
 
 export type LazyWidgetNodesProps = Omit<
   WidgetNodeProps<Appcraft.WidgetOptions>,
-  'index' | 'item' | 'structure'
+  'index' | 'item' | 'event' | 'structure'
 >;
 
 export interface CraftedWidgetEditorProps
   extends Pick<WidgetAddDialogProps, 'renderWidgetTypeSelection'> {
   fetchOptions: Record<'parser' | 'getNodesAndEvents', Appcraft.FetchOptions>;
   fixedT?: FixedT;
+  version?: string;
   widget?: Appcraft.RootNodeWidget;
 
   onWidgetChange: (e: Appcraft.RootNodeWidget | null) => void;

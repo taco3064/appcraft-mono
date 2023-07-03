@@ -17,23 +17,16 @@ export default function CraftedTypeEditor<
   fixedT,
   parser,
   values,
+  version,
   onChange,
 }: Types.CraftedTypeEditorProps<V, A>) {
-  const { typeFile, typeName, mixedTypes } = values as V;
   const ct = Hooks.useFixedT(fixedT);
   const [collectionPath, setCollectionPath] = useState('');
 
-  const LazyTypeList = Hooks.useLazyTypeList<
-    Hooks.BasicType,
-    Types.LazyTypeListProps<V>
-  >(
+  const LazyTypeList = Hooks.useLazyTypeList<Types.LazyTypeListProps<V>>(
     parser,
-    {
-      typeFile,
-      typeName,
-      mixedTypes,
-      collectionPath,
-    },
+    { ...(values as V), collectionPath },
+    version,
     ({ fetchData, message, ...props }) =>
       !fetchData ? (
         <Typography

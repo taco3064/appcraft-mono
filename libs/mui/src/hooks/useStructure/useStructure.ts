@@ -2,70 +2,60 @@ import _get from 'lodash.get';
 import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import { NodePath } from '../../contexts';
 import type * as Types from './useStructure.types';
+import type { PropPaths } from '../../contexts';
 
-const useStructure: Types.StructureHook = (widget) => {
-  const [activeNodes, setActiveNodes] = useState<Types.ActiveNode[]>([]);
+const useStructure: Types.StructureHook = (() => {
+  function convertToBreadcrumb(
+    paths: PropPaths,
+    widget: Appcraft.NodeWidget
+  ): Types.Breadcrumbs {
+    const lastNodesIndex = paths.lastIndexOf('nodes');
+    const targetPaths = paths.slice(0, lastNodesIndex);
 
-  const paths = useMemo(
-    () =>
-      activeNodes.reduce<NodePath[]>((result, { index, propPath }, i, arr) => {
-        const { isMultiChildren = false } = arr[i - 1] || {};
+    const target = !lastNodesIndex
+      ? widget
+      : (_get(widget, targetPaths) as Appcraft.NodeWidget);
 
-        return [
-          ...result,
-          ...(isMultiChildren ? [index] : []),
-          'nodes',
-          propPath,
+    return !target
+      ? []
+      : [
+          ...convertToBreadcrumb(targetPaths, widget),
+          {
+            text: `${target.type}.${paths[lastNodesIndex + 1]}`,
+            paths: paths.slice(0, lastNodesIndex + 2),
+          },
         ];
-      }, []),
-    [activeNodes]
-  );
+  }
 
-  const target = (!paths.length ? widget : _get(widget, paths)) || [];
+  return (widget) => {
+    const [type, setType] = useState<Appcraft.NodeType>('element');
+    const [paths, setPaths] = useState<PropPaths>([]);
 
-  return {
-    paths,
+    return {
+      paths,
+      type,
 
-    isMultiChildren:
-      activeNodes[activeNodes.length - 1]?.isMultiChildren || false,
+      onPathsChange: (activePaths, activeType) => {
+        const target = !activePaths.length ? widget : _get(widget, activePaths);
 
-    items: (Array.isArray(target)
-      ? target
-      : [target]) as Appcraft.WidgetOptions[],
+        setPaths(activePaths);
+        setType(activeType || (Array.isArray(target) ? 'node' : 'element'));
+      },
 
-    breadcrumbs: useMemo(
-      () =>
-        !paths.length
-          ? []
-          : paths.reduce<string[]>(
-              (result, _path, i) => {
-                const path = paths.slice(0, i + 1);
-                const target = _get(widget, path) as Appcraft.NodeWidget;
+      ...useMemo(() => {
+        const target = (!paths.length ? widget : _get(widget, paths)) || [];
 
-                if (target?.category === 'node' && target?.type) {
-                  const [path1, path2] = paths.slice(i + 2);
+        return {
+          breadcrumbs: convertToBreadcrumb(paths, widget),
 
-                  result.push(
-                    `${target.type}.${
-                      typeof path1 === 'number' ? path2 : path1
-                    }`
-                  );
-                }
-
-                return result;
-              },
-              [`${widget.type}.${paths[1]}`]
-            ),
-      [paths, widget]
-    ),
-
-    onNodeActive: (e) =>
-      setActiveNodes(
-        typeof e !== 'number' ? [...activeNodes, e] : activeNodes.slice(0, e)
-      ),
+          items: (Array.isArray(target)
+            ? target
+            : [target]) as Appcraft.WidgetOptions[],
+        };
+      }, [paths, widget]),
+    };
   };
-};
+})();
 
 export default useStructure;

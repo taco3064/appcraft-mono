@@ -1,11 +1,6 @@
 import type * as Appcraft from '@appcraft/types';
-
-export type BasicType =
-  | Appcraft.ArrayOfProp
-  | Appcraft.ExactProp
-  | Appcraft.ObjectOfProp
-  | Appcraft.ObjectProp;
+import type { StructureType } from '../../services';
 
 export type PropertiesSortingHook = (
-  basicType?: BasicType
+  basicType?: StructureType
 ) => Appcraft.PropTypesDef[];

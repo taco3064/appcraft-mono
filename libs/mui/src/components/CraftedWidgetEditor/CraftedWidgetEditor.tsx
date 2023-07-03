@@ -22,54 +22,56 @@ export default function CraftedWidgetEditor({
   fetchOptions,
   fixedT,
   renderWidgetTypeSelection,
+  version,
   widget,
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
   const ct = Hooks.useFixedT(fixedT);
   const [adding, setAdding] = useState(false);
 
-  const { isMultiChildren, items, paths, breadcrumbs, onNodeActive } =
-    Hooks.useStructure(widget as Appcraft.NodeWidget);
+  const { breadcrumbs, items, paths, type, onPathsChange } = Hooks.useStructure(
+    widget as Appcraft.NodeWidget
+  );
 
-  const [
+  const {
     selected,
-    { onWidgetAdd, onWidgetModify, onWidgetRemove, onWidgetSelect },
-  ] = Hooks.useWidgetMutation(
+    onWidgetAdd,
+    onWidgetModify,
+    onWidgetRemove,
+    onWidgetSelect,
+  } = Hooks.useWidgetMutation(
     widget as Appcraft.RootNodeWidget,
-    isMultiChildren,
+    type === 'node',
     paths,
     onWidgetChange
   );
 
-  const LazyWidgetNodes = Hooks.useLazyWidgetNodes<
-    Appcraft.NodeAndEventProps,
-    Types.LazyWidgetNodesProps<typeof onNodeActive>
-  >(
+  const LazyWidgetNodes = Hooks.useLazyWidgetNodes<Types.LazyWidgetNodesProps>(
     fetchOptions.getNodesAndEvents,
     items,
-    ({ fetchData: { events, nodes } = {}, widgets, onActive, ...props }) =>
+    version,
+    ({ fetchData: { events, nodes } = {}, widgets, ...props }) =>
       widgets.length === 0 ? (
         <Common.ListPlaceholder message={ct('msg-no-widgets')} />
       ) : (
         <>
-          {widgets.map((item, index) => (
-            <WidgetNode
-              {...props}
-              key={`item_${index}`}
-              item={item}
-              event={item.category === 'node' && events?.[item.typeName]}
-              structure={item.category === 'node' && nodes?.[item.typeName]}
-              onActive={(type, propPath) =>
-                item.category === 'node' &&
-                onActive({
-                  type: item.type,
-                  isMultiChildren: type === 'node',
-                  propPath,
-                  index,
-                })
-              }
-            />
-          ))}
+          {widgets.map((item, index) => {
+            const key =
+              item.category === 'plainText'
+                ? `plain_text_${index}`
+                : `${item.typeFile}#${item.typeName}}`;
+
+            return (
+              <WidgetNode
+                {...props}
+                key={key}
+                index={index}
+                item={item}
+                event={events?.[key]}
+                structure={nodes?.[key]}
+              />
+            );
+          })}
         </>
       )
   );
@@ -97,6 +99,7 @@ export default function CraftedWidgetEditor({
           open={Boolean(selected)}
           parser={fetchOptions.parser}
           values={selected}
+          version={version}
           onChange={onWidgetModify}
           action={
             <Common.WidgetAppBar
@@ -119,42 +122,13 @@ export default function CraftedWidgetEditor({
         <List
           disablePadding
           subheader={
-            breadcrumbs.length > 0 && (
-              <Styles.ListToolbar>
-                <Styles.IconTipButton
-                  title={ct('btn-back')}
-                  onClick={() => onNodeActive(breadcrumbs.length - 1)}
-                >
-                  <ArrowBackIcon />
-                </Styles.IconTipButton>
-
-                <Common.Breadcrumbs
-                  separator="›"
-                  maxItems={2}
-                  style={{ marginRight: 'auto' }}
-                >
-                  {breadcrumbs.map((text, i, arr) => (
-                    <Styles.Breadcrumb
-                      key={`breadcrumb_${i}`}
-                      brcVariant={i === arr.length - 1 ? 'text' : 'link'}
-                      onClick={() => onNodeActive(i + 1)}
-                    >
-                      {text}
-                    </Styles.Breadcrumb>
-                  ))}
-                </Common.Breadcrumbs>
-
-                {(isMultiChildren || items.length < 1) && (
-                  <Styles.IconTipButton
-                    title={ct('btn-new-widget')}
-                    size="small"
-                    onClick={() => setAdding(true)}
-                  >
-                    <AddIcon />
-                  </Styles.IconTipButton>
-                )}
-              </Styles.ListToolbar>
-            )
+            <Common.WidgetBreadcrumbs
+              addable={type === 'node' || items.length < 1}
+              breadcrumbs={breadcrumbs}
+              fixedT={fixedT}
+              onAdd={() => setAdding(true)}
+              onRedirect={onPathsChange}
+            />
           }
         >
           {!widget ? (
@@ -176,9 +150,15 @@ export default function CraftedWidgetEditor({
             <Suspense fallback={<LinearProgress />}>
               <LazyWidgetNodes
                 fixedT={fixedT}
-                onActive={onNodeActive}
-                onRemove={onWidgetRemove}
+                superiorNodeType={type}
                 onClick={onWidgetSelect}
+                onRemove={onWidgetRemove}
+                onEventActive={(activePaths) =>
+                  console.log([...paths, ...activePaths])
+                }
+                onNodeActive={(activePaths, activeNodeType) =>
+                  onPathsChange([...paths, ...activePaths], activeNodeType)
+                }
               />
             </Suspense>
           )}

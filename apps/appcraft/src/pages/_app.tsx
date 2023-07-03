@@ -9,7 +9,7 @@ import { Suspense, useState } from 'react';
 import IndexPage from './index';
 import { AppHeader, MenuDrawer, ThemeProvider } from '~appcraft/containers';
 import { MainContainer } from '~appcraft/styles';
-import { useAuthTokens } from '~appcraft/hooks';
+import { useAuth } from '~appcraft/hooks';
 
 const client = new QueryClient({
   defaultOptions: {
@@ -25,7 +25,7 @@ const origin: SnackbarOrigin = {
 };
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { authorized, tokens } = useAuthTokens();
+  const { authorized, tokens, onSigninPrepare } = useAuth();
   const [open, setOpen] = useState(false);
 
   return (
@@ -50,6 +50,7 @@ export default function App({ Component, pageProps }: AppProps) {
                   tokens.access
                 )}`}
                 onMenuToggle={() => setOpen(true)}
+                onSigninClick={onSigninPrepare}
               />
 
               {authorized && (

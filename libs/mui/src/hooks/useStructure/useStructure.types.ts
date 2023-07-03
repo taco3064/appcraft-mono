@@ -1,19 +1,21 @@
-import type { NodeWidget, WidgetOptions } from '@appcraft/types';
-import type { NodePath } from '../../contexts';
+import type * as Appcraft from '@appcraft/types';
+import type { PropPaths } from '../../contexts';
 
-type BaseNode<C> = Pick<NodeWidget, 'type'> & C;
+export type Breadcrumbs = {
+  text: string;
+  paths: PropPaths;
+}[];
 
-export type ActiveNode = BaseNode<{
-  isMultiChildren: boolean;
-  propPath: string;
-  index: number;
-}>;
+export type PathsChangeHandler = (
+  e: PropPaths,
+  type?: Appcraft.NodeType
+) => void;
 
-export type StructureHook = (widget: NodeWidget) => {
-  breadcrumbs: string[];
-  isMultiChildren: boolean;
-  items: WidgetOptions[];
-  paths: NodePath[];
+export type StructureHook = (widget: Appcraft.NodeWidget) => {
+  type: Appcraft.NodeType;
+  breadcrumbs: Breadcrumbs;
+  items: Appcraft.WidgetOptions[];
+  paths: PropPaths;
 
-  onNodeActive: (e: number | ActiveNode) => void;
+  onPathsChange: PathsChangeHandler;
 };

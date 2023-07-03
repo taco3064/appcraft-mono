@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.56](https://github.com/taco3064/appcraft-mono/compare/v0.0.55...v0.0.56) (2023-07-03)
+
+
+### Features
+
+* **@appcraft/mui:** add idb to keep nodes & events settings ([d700250](https://github.com/taco3064/appcraft-mono/commit/d700250ce24bf1656cbdfdc16011d1dbbffa57a1))
+* **@appcraft/mui:** add servcies modules to fetch data ([ceffad3](https://github.com/taco3064/appcraft-mono/commit/ceffad307af72122adf332529168b46a586d7bb2))
+* **@appcraft/mui:** add version property ([9c07b6b](https://github.com/taco3064/appcraft-mono/commit/9c07b6b60e6c640496e1b43fb60abf65ab1e7056))
+* **apps/appcraft:** add location replace as original url after signin ([36087f9](https://github.com/taco3064/appcraft-mono/commit/36087f93d6744a78198700e799730745665118c6))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** fixed bugs ([f432f70](https://github.com/taco3064/appcraft-mono/commit/f432f701c1dc2c6fb9fa3a002d071bb201dae211))
+* **@appcraft/mui:** fixed the bugs of useStructure ([844efcb](https://github.com/taco3064/appcraft-mono/commit/844efcb16df1fd34d9d8e5c1f996674faaf04e72))
+* **@appcraft/mui:** fixed the invalid position of tooltip ([534d2c6](https://github.com/taco3064/appcraft-mono/commit/534d2c6f91d03288a273ac2c5c1f8683c3f50794))
+* **@appcraft/mui:** fixed the upgrade process ([a843070](https://github.com/taco3064/appcraft-mono/commit/a84307045e7def7844a1ca77318f8e0b3cc81722))
+* **@appcraft/mui:** rename props ([863251b](https://github.com/taco3064/appcraft-mono/commit/863251ba28f6418e9a7b3a42268754449d512f0a))
+* **widget-node:** fixed the onEventActive event inputs ([52db16f](https://github.com/taco3064/appcraft-mono/commit/52db16f096dd76b6b77f48620e45de38aa6353c3))
+
 ### [0.0.55](https://github.com/taco3064/appcraft-mono/compare/v0.0.54...v0.0.55) (2023-06-30)
 
 

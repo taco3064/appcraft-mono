@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
+import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
@@ -13,6 +14,7 @@ import * as Comp from '../../components';
 import * as Hooks from '../../hooks';
 import { CraftedTodoEditor } from '../CraftedTodoEditor';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
+import { IconTipButton } from '../../styles';
 import { ListPlaceholder } from '../../styles';
 import { getNodesAndEventsKey } from '../../services';
 import type * as Types from './CraftedWidgetEditor.types';
@@ -99,10 +101,21 @@ export default function CraftedWidgetEditor({
 
       <Collapse in={editedWidget?.category !== 'node'}>
         <AppBar color="default" position="sticky">
-          <Toolbar variant="regular">
+          <Toolbar
+            variant="regular"
+            style={{ justifyContent: 'space-between' }}
+          >
             <Typography variant="subtitle1" fontWeight="bolder" color="primary">
               {ct('ttl-structure')}
             </Typography>
+
+            <IconTipButton
+              size="large"
+              color="primary"
+              title={ct('btn-state-props-mgr')}
+            >
+              <StorageRoundedIcon />
+            </IconTipButton>
           </Toolbar>
         </AppBar>
 

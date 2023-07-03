@@ -10,6 +10,7 @@
   "btn-remove-widget": "移除",
   "btn-rename-property": "變更設置名稱",
   "btn-reset-type": "重設型別",
+  "btn-state-props-mgr": "內部狀態/外部參數管理",
   "btn-todos": "執行事項設置",
   "lbl-description": "說明",
   "lbl-plain-text": "文字內容",

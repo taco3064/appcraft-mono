@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.57](https://github.com/taco3064/appcraft-mono/compare/v0.0.56...v0.0.57) (2023-07-03)
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** add new specification ([6c22686](https://github.com/taco3064/appcraft-mono/commit/6c22686c6493670774e12cf59ede4bcff7397316))
+* **@appcraft/mui:** remove version prop from CraftedTypeEditor ([7b9f1b5](https://github.com/taco3064/appcraft-mono/commit/7b9f1b535bfe6b34b275bb8f846e36400f13305d))
+* **crafted-widget-editor:** fixed the invalid key to get events/nodes setting ([4c0048d](https://github.com/taco3064/appcraft-mono/commit/4c0048dec671d01014b1f41967eb0904f9733820))
+
 ### [0.0.56](https://github.com/taco3064/appcraft-mono/compare/v0.0.55...v0.0.56) (2023-07-03)
 
 

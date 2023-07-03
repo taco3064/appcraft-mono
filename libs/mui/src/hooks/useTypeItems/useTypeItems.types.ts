@@ -8,7 +8,4 @@ export interface TypeItem {
   onRename?: (newPropName: string) => boolean;
 }
 
-export type TypeItemsHookResult = {
-  items: TypeItem[];
-  onItemAdd?: () => void;
-};
+export type TypeItemsHookResult = [TypeItem[]] | [TypeItem[], () => void];

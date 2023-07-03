@@ -20,7 +20,7 @@ export default function TypeList<V extends OptionValues>({
   const [breadcrumbs, { back: handleBack, to: handleTo }] =
     Hooks.usePropertyRouter(onCollectionPathChange);
 
-  const { items, onItemAdd } = Hooks.useTypeItems<V>(
+  const [items, onItemAdd] = Hooks.useTypeItems<V>(
     collection,
     values,
     onChange

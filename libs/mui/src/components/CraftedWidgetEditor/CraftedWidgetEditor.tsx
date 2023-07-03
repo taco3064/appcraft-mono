@@ -27,17 +27,10 @@ export default function CraftedWidgetEditor({
   const ct = Hooks.useFixedT(fixedT);
   const [adding, setAdding] = useState(false);
 
-  const { breadcrumbs, items, paths, type, onPathsChange } = Hooks.useStructure(
-    widget as Appcraft.NodeWidget
-  );
+  const [{ breadcrumbs, items, paths, type }, onPathsChange] =
+    Hooks.useStructure(widget as Appcraft.NodeWidget);
 
-  const {
-    selected,
-    onWidgetAdd,
-    onWidgetModify,
-    onWidgetRemove,
-    onWidgetSelect,
-  } = Hooks.useWidgetMutation(
+  const [selected, handleMutation] = Hooks.useWidgetMutation(
     widget as Appcraft.RootNodeWidget,
     type === 'node',
     paths,
@@ -81,14 +74,14 @@ export default function CraftedWidgetEditor({
         disablePlaintext={paths.length === 0}
         open={adding}
         onClose={() => setAdding(false)}
-        onConfirm={onWidgetAdd}
+        onConfirm={handleMutation.add}
       />
 
       <Common.PlainTextDialog
         open={selected?.category === 'plainText'}
         values={selected as Appcraft.PlainTextWidget}
-        onClose={() => onWidgetSelect(null)}
-        onConfirm={onWidgetModify}
+        onClose={() => handleMutation.select(null)}
+        onConfirm={handleMutation.modify}
       />
 
       {selected?.category === 'node' && (
@@ -97,11 +90,11 @@ export default function CraftedWidgetEditor({
           open={Boolean(selected)}
           parser={fetchOptions.parser}
           values={selected}
-          onChange={onWidgetModify}
+          onChange={handleMutation.modify}
           action={
             <Common.WidgetAppBar
               description={selected.type.replace(/([A-Z])/g, ' $1')}
-              onBackToStructure={() => onWidgetSelect(null)}
+              onBackToStructure={() => handleMutation.select(null)}
             />
           }
         />
@@ -148,8 +141,8 @@ export default function CraftedWidgetEditor({
               <LazyWidgetNodes
                 fixedT={fixedT}
                 superiorNodeType={type}
-                onClick={onWidgetSelect}
-                onRemove={onWidgetRemove}
+                onClick={handleMutation.select}
+                onRemove={handleMutation.remove}
                 onEventActive={(activePaths) =>
                   console.log([...paths, ...activePaths])
                 }

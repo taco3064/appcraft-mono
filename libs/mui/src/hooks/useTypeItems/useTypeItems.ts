@@ -32,33 +32,31 @@ const useTypeItems = <V extends OptionValues>(
     });
 
   if (collection.type === 'exact') {
-    return {
-      items: properties.map((options) => ({
+    return [
+      properties.map((options) => ({
         key: options.propName as string,
         collectionType: 'object',
         options,
       })),
-    };
+    ];
   }
 
   if (collection?.type === 'arrayOf' && Array.isArray(collection.options)) {
-    return {
-      items: collection.options.map((options) => ({
+    return [
+      collection.options.map((options) => ({
         key: options.propName as string,
         collectionType: 'array',
         options,
       })),
-    };
+    ];
   }
 
   if (/^object/.test(collection?.type)) {
     const list = Object.keys({ ...values, ...structure });
+    const isAddable = list.every((propName) => propName);
 
-    return {
-      ...(list.every((propName) => propName) && {
-        onItemAdd: () => setStructure({ ...structure, '': null }),
-      }),
-      items: list.map((propName) => {
+    return [
+      list.map((propName) => {
         const options: PropTypesDef = {
           ...(collection?.options as PropTypesDef),
           propName,
@@ -112,16 +110,18 @@ const useTypeItems = <V extends OptionValues>(
           },
         };
       }),
-    };
+
+      !isAddable
+        ? (undefined as never)
+        : () => setStructure({ ...structure, '': null }),
+    ];
   }
 
   if (/^array/.test(collection?.type) && !Array.isArray(collection.options)) {
     const length = Math.max((values as []).length, (structure as []).length);
 
-    console.log(values, structure, length);
-
-    return {
-      items: Array.from({ length }).map((_el, i) => {
+    return [
+      Array.from({ length }).map((_el, i) => {
         const options: PropTypesDef = {
           ...(collection?.options as PropTypesDef),
           propName: `[${i}]`,
@@ -142,13 +142,12 @@ const useTypeItems = <V extends OptionValues>(
             }),
         };
       }),
-      onItemAdd: () => setStructure([...((structure as []) || []), null]),
-    };
+
+      () => setStructure([...((structure as []) || []), null]),
+    ];
   }
 
-  return {
-    items: [],
-  };
+  return [[]];
 };
 
 export default useTypeItems;

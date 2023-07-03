@@ -22,65 +22,67 @@ const useWidgetMutation: WidgetMutationHook = (
     return [];
   }, [target]);
 
-  return {
+  return [
     selected,
-    onWidgetSelect: setSelected,
+    {
+      add: (e) =>
+        onWidgetChange(
+          (!paths?.length
+            ? { ...e, construct: {} }
+            : {
+                ..._set(widget, paths, !isMultiChildren ? e : [...items, e]),
+              }) as Appcraft.RootNodeWidget
+        ),
 
-    onWidgetAdd: (e) =>
-      onWidgetChange(
-        (!paths?.length
-          ? { ...e, construct: {} }
-          : {
-              ..._set(widget, paths, !isMultiChildren ? e : [...items, e]),
-            }) as Appcraft.RootNodeWidget
+      modify: useCallback(
+        (e) => {
+          if (e.category === 'node') {
+            setSelected(e);
+          }
+
+          onWidgetChange(
+            !paths?.length
+              ? (e as Appcraft.RootNodeWidget)
+              : {
+                  ..._set(
+                    widget,
+                    paths,
+                    !isMultiChildren
+                      ? e
+                      : items.map((item) => (item !== selected ? item : e))
+                  ),
+                }
+          );
+        },
+        [
+          isMultiChildren,
+          items,
+          paths,
+          selected,
+          widget,
+          onWidgetChange,
+          setSelected,
+        ]
       ),
 
-    onWidgetModify: useCallback(
-      (e) => {
-        if (e.category === 'node') {
-          setSelected(e);
-        }
-
+      remove: (e) =>
         onWidgetChange(
-          !paths?.length
-            ? (e as Appcraft.RootNodeWidget)
+          e === widget || !paths?.length
+            ? null
             : {
                 ..._set(
                   widget,
                   paths,
                   !isMultiChildren
-                    ? e
-                    : items.map((item) => (item !== selected ? item : e))
+                    ? undefined
+                    : items.filter((item) => item !== e)
                 ),
               }
-        );
-      },
-      [
-        isMultiChildren,
-        items,
-        paths,
-        selected,
-        widget,
-        onWidgetChange,
-        setSelected,
-      ]
-    ),
+        ),
 
-    onWidgetRemove: (e) =>
-      onWidgetChange(
-        e === widget || !paths?.length
-          ? null
-          : {
-              ..._set(
-                widget,
-                paths,
-                !isMultiChildren
-                  ? undefined
-                  : items.filter((item) => item !== e)
-              ),
-            }
-      ),
-  };
+      select: setSelected,
+    },
+  ];
 };
 
 export default useWidgetMutation;

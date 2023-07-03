@@ -4,11 +4,10 @@ import { useEditorContext } from '../../contexts';
 const usePropValue = <P = unknown>(propPath: string) => {
   const { values, onChange } = useEditorContext();
 
-  return {
-    path: propPath,
-    value: (_get(values, ['props', propPath]) as P) || null,
+  return [
+    (_get(values, ['props', propPath]) as P) || null,
 
-    onChange: (value: P | null) => {
+    (value: P | null) => {
       const { props: target } = values;
 
       delete (target as Record<string, unknown>)?.[propPath];
@@ -21,7 +20,7 @@ const usePropValue = <P = unknown>(propPath: string) => {
         },
       });
     },
-  };
+  ] as [P | null, (value: P | null) => void];
 };
 
 export default usePropValue;

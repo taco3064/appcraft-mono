@@ -1,8 +1,7 @@
-import axios from 'axios';
 import { lazy, useMemo, useRef } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import { StructureType, getTypeDefinition } from '../../services';
+import { getTypeDefinition } from '../../services';
 
 const useLazyTypeList = <R>(
   fetchOptions: Appcraft.FetchOptions,
@@ -12,30 +11,25 @@ const useLazyTypeList = <R>(
     mixedTypes,
     collectionPath,
   }: Appcraft.TypesParseOptions,
-  version: string | undefined,
-  renderer: Appcraft.LazyRenderer<StructureType, R>
+  renderer: Appcraft.LazyRenderer<Appcraft.StructureProp, R>
 ) => {
   const renderRef = useRef(renderer);
 
   return useMemo(
     () =>
       lazy(async () => {
-        const fetchData = await getTypeDefinition(
-          fetchOptions,
-          {
-            typeFile,
-            typeName,
-            mixedTypes,
-            collectionPath,
-          },
-          version
-        );
+        const fetchData = await getTypeDefinition(fetchOptions, {
+          typeFile,
+          typeName,
+          mixedTypes,
+          collectionPath,
+        });
 
         return {
           default: (props: R) => renderRef.current({ ...props, fetchData }),
         };
       }),
-    [fetchOptions, typeFile, typeName, mixedTypes, collectionPath, version]
+    [fetchOptions, typeFile, typeName, mixedTypes, collectionPath]
   );
 };
 

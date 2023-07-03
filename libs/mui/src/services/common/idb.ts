@@ -32,17 +32,24 @@ const getIdbVersion = (version?: string) => {
   return undefined;
 };
 
-export const getDB = (version?: string) =>
-  idb.openDB<AppcraftDB>('appcraft', getIdbVersion(version), {
-    upgrade(db) {
-      const { objectStoreNames: stores } = db;
+export const getDB = (version?: string) => {
+  const idbVersion = getIdbVersion(version);
 
-      (['nodes', 'events'] as (keyof AppcraftStores)[]).forEach((storeName) => {
-        if (stores.contains(storeName)) {
-          db.deleteObjectStore(storeName);
-        }
+  return !idbVersion
+    ? null
+    : idb.openDB<AppcraftDB>('appcraft', getIdbVersion(version), {
+        upgrade(db) {
+          const { objectStoreNames: stores } = db;
 
-        db.createObjectStore(storeName);
+          (['nodes', 'events'] as (keyof AppcraftStores)[]).forEach(
+            (storeName) => {
+              if (stores.contains(storeName)) {
+                db.deleteObjectStore(storeName);
+              }
+
+              db.createObjectStore(storeName);
+            }
+          );
+        },
       });
-    },
-  });
+};

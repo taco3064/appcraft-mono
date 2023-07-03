@@ -23,7 +23,7 @@ export default function TypeItemPure({
   propPath,
   selection,
 }: TypeItemPureProps) {
-  const { value, onChange } = Hooks.usePropValue(propPath);
+  const [value, onChange] = Hooks.usePropValue(propPath);
 
   return (
     <ListItem>

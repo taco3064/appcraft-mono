@@ -2,7 +2,7 @@ import type * as Appcraft from '@appcraft/types';
 import type { ReactElement } from 'react';
 
 import type { EditorProviderProps, OptionValues } from '../../contexts';
-import type { TypeListProps } from '../TypeList';
+import type { TypeListProps } from '../../components';
 
 export type ActionElement = ReactElement | undefined;
 
@@ -27,7 +27,6 @@ export type CraftedTypeEditorProps<
 > = Collapsable<
   Omit<EditorProviderProps<V>, 'children' | 'collectionPath'> & {
     parser: Appcraft.FetchOptions;
-    version?: string;
   },
   A
 >;

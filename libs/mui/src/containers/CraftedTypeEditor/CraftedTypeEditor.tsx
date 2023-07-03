@@ -4,8 +4,7 @@ import { Suspense, useState } from 'react';
 
 import * as Hooks from '../../hooks';
 import { EditorProvider, OptionValues } from '../../contexts';
-import { TypeList } from '../TypeList';
-import { TypeListSkeleton } from '../common';
+import { TypeList, TypeListSkeleton } from '../../components';
 import type * as Types from './CraftedTypeEditor.types';
 
 export default function CraftedTypeEditor<
@@ -17,7 +16,6 @@ export default function CraftedTypeEditor<
   fixedT,
   parser,
   values,
-  version,
   onChange,
 }: Types.CraftedTypeEditorProps<V, A>) {
   const ct = Hooks.useFixedT(fixedT);
@@ -26,7 +24,6 @@ export default function CraftedTypeEditor<
   const LazyTypeList = Hooks.useLazyTypeList<Types.LazyTypeListProps<V>>(
     parser,
     { ...(values as V), collectionPath },
-    version,
     ({ fetchData, message, ...props }) =>
       !fetchData ? (
         <Typography

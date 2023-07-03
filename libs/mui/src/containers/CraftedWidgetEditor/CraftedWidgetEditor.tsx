@@ -1,6 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
 import AppBar from '@mui/material/AppBar';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -10,12 +9,11 @@ import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import * as Common from '../common';
+import * as Comp from '../../components';
 import * as Hooks from '../../hooks';
-import * as Styles from '../../styles';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { WidgetAddDialog } from '../WidgetAddDialog';
-import { WidgetNode } from '../WidgetNode';
+import { ListPlaceholder } from '../../styles';
+import { getNodesAndEventsKey } from '../../services';
 import type * as Types from './CraftedWidgetEditor.types';
 
 export default function CraftedWidgetEditor({
@@ -29,17 +27,10 @@ export default function CraftedWidgetEditor({
   const ct = Hooks.useFixedT(fixedT);
   const [adding, setAdding] = useState(false);
 
-  const { breadcrumbs, items, paths, type, onPathsChange } = Hooks.useStructure(
-    widget as Appcraft.NodeWidget
-  );
+  const [{ breadcrumbs, items, paths, type }, onPathsChange] =
+    Hooks.useStructure(widget as Appcraft.NodeWidget);
 
-  const {
-    selected,
-    onWidgetAdd,
-    onWidgetModify,
-    onWidgetRemove,
-    onWidgetSelect,
-  } = Hooks.useWidgetMutation(
+  const [selected, handleMutation] = Hooks.useWidgetMutation(
     widget as Appcraft.RootNodeWidget,
     type === 'node',
     paths,
@@ -52,21 +43,16 @@ export default function CraftedWidgetEditor({
     version,
     ({ fetchData: { events, nodes } = {}, widgets, ...props }) =>
       widgets.length === 0 ? (
-        <Common.ListPlaceholder message={ct('msg-no-widgets')} />
+        <ListPlaceholder message={ct('msg-no-widgets')} />
       ) : (
         <>
           {widgets.map((item, index) => {
-            const key =
-              item.category === 'plainText'
-                ? `plain_text_${index}`
-                : `${item.typeFile}#${item.typeName}}`;
+            const key = getNodesAndEventsKey(item, `item_${index}`);
 
             return (
-              <WidgetNode
+              <Comp.WidgetNode
                 {...props}
-                key={key}
-                index={index}
-                item={item}
+                {...{ key, index, item }}
                 event={events?.[key]}
                 structure={nodes?.[key]}
               />
@@ -78,19 +64,19 @@ export default function CraftedWidgetEditor({
 
   return (
     <>
-      <WidgetAddDialog
+      <Comp.WidgetAddDialog
         {...{ fixedT, renderWidgetTypeSelection }}
         disablePlaintext={paths.length === 0}
         open={adding}
         onClose={() => setAdding(false)}
-        onConfirm={onWidgetAdd}
+        onConfirm={handleMutation.add}
       />
 
-      <Common.PlainTextDialog
+      <Comp.PlainTextDialog
         open={selected?.category === 'plainText'}
         values={selected as Appcraft.PlainTextWidget}
-        onClose={() => onWidgetSelect(null)}
-        onConfirm={onWidgetModify}
+        onClose={() => handleMutation.select(null)}
+        onConfirm={handleMutation.modify}
       />
 
       {selected?.category === 'node' && (
@@ -99,12 +85,11 @@ export default function CraftedWidgetEditor({
           open={Boolean(selected)}
           parser={fetchOptions.parser}
           values={selected}
-          version={version}
-          onChange={onWidgetModify}
+          onChange={handleMutation.modify}
           action={
-            <Common.WidgetAppBar
+            <Comp.WidgetAppBar
               description={selected.type.replace(/([A-Z])/g, ' $1')}
-              onBackToStructure={() => onWidgetSelect(null)}
+              onBackToStructure={() => handleMutation.select(null)}
             />
           }
         />
@@ -122,7 +107,7 @@ export default function CraftedWidgetEditor({
         <List
           disablePadding
           subheader={
-            <Common.WidgetBreadcrumbs
+            <Comp.WidgetBreadcrumbs
               addable={type === 'node' || items.length < 1}
               breadcrumbs={breadcrumbs}
               fixedT={fixedT}
@@ -132,7 +117,7 @@ export default function CraftedWidgetEditor({
           }
         >
           {!widget ? (
-            <Common.ListPlaceholder
+            <ListPlaceholder
               message={ct('msg-no-widget')}
               action={
                 <Button
@@ -151,8 +136,8 @@ export default function CraftedWidgetEditor({
               <LazyWidgetNodes
                 fixedT={fixedT}
                 superiorNodeType={type}
-                onClick={onWidgetSelect}
-                onRemove={onWidgetRemove}
+                onClick={handleMutation.select}
+                onRemove={handleMutation.remove}
                 onEventActive={(activePaths) =>
                   console.log([...paths, ...activePaths])
                 }

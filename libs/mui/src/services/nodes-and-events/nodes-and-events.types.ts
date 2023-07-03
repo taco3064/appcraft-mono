@@ -5,6 +5,11 @@ export type ParseOptions = Pick<
   'typeFile' | 'typeName'
 >;
 
+export type GetNodesAndEventsKeyUtil = (
+  options: Appcraft.WidgetOptions,
+  defaultKey?: string
+) => string;
+
 export type GetNodesAndEventsService = (
   fetchOptions: Appcraft.FetchOptions,
   items: Appcraft.WidgetOptions[],

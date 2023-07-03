@@ -13,6 +13,7 @@ import * as Comp from '../../components';
 import * as Hooks from '../../hooks';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { ListPlaceholder } from '../../styles';
+import { getNodesAndEventsKey } from '../../services';
 import type * as Types from './CraftedWidgetEditor.types';
 
 export default function CraftedWidgetEditor({
@@ -46,17 +47,12 @@ export default function CraftedWidgetEditor({
       ) : (
         <>
           {widgets.map((item, index) => {
-            const key =
-              item.category === 'plainText'
-                ? `plain_text_${index}`
-                : `${item.typeFile}#${item.typeName}`;
+            const key = getNodesAndEventsKey(item, `item_${index}`);
 
             return (
               <Comp.WidgetNode
                 {...props}
-                key={key}
-                index={index}
-                item={item}
+                {...{ key, index, item }}
                 event={events?.[key]}
                 structure={nodes?.[key]}
               />

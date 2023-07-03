@@ -2,6 +2,7 @@ import axios from 'axios';
 import type { NodeAndEventProps } from '@appcraft/types';
 
 import { getDB } from '../common';
+import { getNodesAndEventsKey } from './nodes-and-events.utils';
 import type * as Types from './nodes-and-events.types';
 
 export const getNodesAndEvents: Types.GetNodesAndEventsService = async (
@@ -14,11 +15,8 @@ export const getNodesAndEvents: Types.GetNodesAndEventsService = async (
   const data: NodeAndEventProps = { nodes: {}, events: {} };
 
   for await (const item of items) {
-    const { typeFile = null, typeName = null } =
-      item.category === 'node' ? item : {};
-
-    if (typeFile && typeName) {
-      const key = `${typeFile}#${typeName}`;
+    if (item.category === 'node') {
+      const key = getNodesAndEventsKey(item);
       const node = await db?.get('nodes', key);
       const event = await db?.get('events', key);
 
@@ -31,7 +29,7 @@ export const getNodesAndEvents: Types.GetNodesAndEventsService = async (
       }
 
       if (!node && !event) {
-        targets.push({ typeFile, typeName });
+        targets.push({ typeFile: item.typeFile, typeName: item.typeName });
       }
     }
   }

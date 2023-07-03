@@ -12,12 +12,12 @@ const useWidgetMutation: WidgetMutationHook = (
   onWidgetChange
 ) => {
   const [selected, setSelected] = useState<Appcraft.WidgetOptions | null>(null);
-  const target = _get(widget, paths || []);
 
-  const items = useMemo(
-    () => (!target ? [] : Array.isArray(target) ? target : [target]),
-    [target]
-  );
+  const items = useMemo(() => {
+    const target = _get(widget, paths || []);
+
+    return !target ? [] : Array.isArray(target) ? target : [target];
+  }, [widget, paths]);
 
   return [
     selected,
@@ -67,6 +67,16 @@ const useWidgetMutation: WidgetMutationHook = (
         ),
 
       select: setSelected,
+
+      todo: (e) => {
+        const paths = e.slice(0, e.lastIndexOf('events'));
+
+        const target = !paths.length
+          ? widget
+          : (_get(widget, paths) as Appcraft.NodeWidget);
+
+        console.log(target);
+      },
     },
   ];
 };

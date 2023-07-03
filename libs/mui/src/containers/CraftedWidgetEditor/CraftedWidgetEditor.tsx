@@ -139,7 +139,7 @@ export default function CraftedWidgetEditor({
                 onClick={handleMutation.select}
                 onRemove={handleMutation.remove}
                 onEventActive={(activePaths) =>
-                  console.log([...paths, ...activePaths])
+                  handleMutation.todo([...paths, ...activePaths])
                 }
                 onNodeActive={(activePaths, activeNodeType) =>
                   onPathsChange([...paths, ...activePaths], activeNodeType)

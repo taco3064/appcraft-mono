@@ -57,7 +57,7 @@ export default function CraftedWidgetEditor({
             const key =
               item.category === 'plainText'
                 ? `plain_text_${index}`
-                : `${item.typeFile}#${item.typeName}}`;
+                : `${item.typeFile}#${item.typeName}`;
 
             return (
               <WidgetNode

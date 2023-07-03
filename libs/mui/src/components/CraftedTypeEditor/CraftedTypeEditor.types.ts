@@ -27,7 +27,6 @@ export type CraftedTypeEditorProps<
 > = Collapsable<
   Omit<EditorProviderProps<V>, 'children' | 'collectionPath'> & {
     parser: Appcraft.FetchOptions;
-    version?: string;
   },
   A
 >;

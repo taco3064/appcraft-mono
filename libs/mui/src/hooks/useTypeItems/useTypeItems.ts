@@ -1,16 +1,15 @@
 import _toPath from 'lodash.topath';
 import { startTransition, useState } from 'react';
-import type { PropTypesDef } from '@appcraft/types';
+import type { PropTypesDef, StructureProp } from '@appcraft/types';
 
 import { getPropPathBySource } from '../usePropertyRouter';
 import { useCollection } from '../useCollection';
 import { usePropertiesSorting } from '../usePropertiesSorting';
 import type { ChangeHandler, OptionValues } from '../../contexts';
-import type { StructureType } from '../../services';
 import type { TypeItemsHookResult } from './useTypeItems.types';
 
 const useTypeItems = <V extends OptionValues>(
-  collection: StructureType,
+  collection: StructureProp,
   widgetValues: V,
   onChange: ChangeHandler<V>
 ): TypeItemsHookResult => {

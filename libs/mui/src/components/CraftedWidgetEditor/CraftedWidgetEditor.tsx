@@ -1,6 +1,5 @@
 import AddIcon from '@mui/icons-material/Add';
 import AppBar from '@mui/material/AppBar';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -12,7 +11,6 @@ import type * as Appcraft from '@appcraft/types';
 
 import * as Common from '../common';
 import * as Hooks from '../../hooks';
-import * as Styles from '../../styles';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { WidgetAddDialog } from '../WidgetAddDialog';
 import { WidgetNode } from '../WidgetNode';
@@ -99,7 +97,6 @@ export default function CraftedWidgetEditor({
           open={Boolean(selected)}
           parser={fetchOptions.parser}
           values={selected}
-          version={version}
           onChange={onWidgetModify}
           action={
             <Common.WidgetAppBar

@@ -1,6 +1,6 @@
 import type { MouseEventHandler } from 'react';
 
 export interface WidgetAppBarProps {
-  description: string;
+  description?: string;
   onBackToStructure: MouseEventHandler<HTMLButtonElement>;
 }

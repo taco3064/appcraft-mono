@@ -48,13 +48,13 @@ export default function CraftedWidgetEditor({
         <>
           {widgets.map((item, index) => {
             const key = getNodesAndEventsKey(item, `item_${index}`);
+            const event = events?.[key];
+            const structure = nodes?.[key];
 
             return (
               <Comp.WidgetNode
                 {...props}
-                {...{ key, index, item }}
-                event={events?.[key]}
-                structure={nodes?.[key]}
+                {...{ key, index, item, event, structure }}
               />
             );
           })}
@@ -79,21 +79,21 @@ export default function CraftedWidgetEditor({
         onConfirm={handleMutation.modify}
       />
 
-      {selected?.category === 'node' && (
-        <CraftedTypeEditor
-          fixedT={fixedT}
-          open={Boolean(selected)}
-          parser={fetchOptions.parser}
-          values={selected}
-          onChange={handleMutation.modify}
-          action={
-            <Comp.WidgetAppBar
-              description={selected.type.replace(/([A-Z])/g, ' $1')}
-              onBackToStructure={() => handleMutation.select(null)}
-            />
-          }
-        />
-      )}
+      <CraftedTypeEditor
+        fixedT={fixedT}
+        open={selected?.category === 'node'}
+        parser={fetchOptions.parser}
+        values={selected as Appcraft.NodeWidget}
+        onChange={handleMutation.modify}
+        action={
+          <Comp.WidgetAppBar
+            onBackToStructure={() => handleMutation.select(null)}
+            {...(selected?.category === 'node' && {
+              description: selected.type.replace(/([A-Z])/g, ' $1'),
+            })}
+          />
+        }
+      />
 
       <Collapse in={selected?.category !== 'node'}>
         <AppBar color="default" position="sticky">

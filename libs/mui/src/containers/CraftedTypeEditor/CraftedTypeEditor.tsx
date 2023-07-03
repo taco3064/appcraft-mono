@@ -51,14 +51,16 @@ export default function CraftedTypeEditor<
       <Collapse in={open}>
         {action}
 
-        <Suspense fallback={<TypeListSkeleton />}>
-          <LazyTypeList
-            message={ct('msg-select-widget-type-first')}
-            values={values as V}
-            onChange={onChange}
-            onCollectionPathChange={setCollectionPath}
-          />
-        </Suspense>
+        {open && (
+          <Suspense fallback={<TypeListSkeleton />}>
+            <LazyTypeList
+              message={ct('msg-select-widget-type-first')}
+              values={values as V}
+              onChange={onChange}
+              onCollectionPathChange={setCollectionPath}
+            />
+          </Suspense>
+        )}
       </Collapse>
     </EditorProvider>
   );

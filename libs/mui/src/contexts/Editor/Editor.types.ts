@@ -5,10 +5,7 @@ import type * as Appcraft from '@appcraft/types';
 export type ChangeHandler<E extends OptionValues> = (e: E) => void;
 export type FixedT = (key: string, options?: object) => string;
 
-export type OptionValues =
-  | Appcraft.NodeWidget
-  | Appcraft.ConfigOptions
-  | Appcraft.RootNodeWidget;
+export type OptionValues = Appcraft.NodeWidget | Appcraft.ConfigOptions;
 
 //* Context Value
 export interface EditorContextValue<V extends OptionValues> {

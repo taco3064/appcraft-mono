@@ -14,7 +14,7 @@ export default function WidgetAppBar({
 }: WidgetAppBarProps) {
   const ct = useFixedT();
 
-  return (
+  return !description ? null : (
     <AppBar color="default" position="sticky">
       <Toolbar variant="regular">
         <IconTipButton title={ct('btn-back')} onClick={onBackToStructure}>

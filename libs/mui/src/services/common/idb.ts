@@ -1,6 +1,6 @@
 import * as idb from 'idb';
 import { compareVersions } from 'compare-versions';
-import type { AppcraftDB } from '@appcraft/types';
+import type { AppcraftDB, AppcraftStores } from '@appcraft/types';
 
 const getIdbVersion = (version?: string) => {
   if (global.localStorage && version) {
@@ -37,9 +37,12 @@ export const getDB = (version?: string) =>
     upgrade(db) {
       const { objectStoreNames: stores } = db;
 
-      stores.contains('nodes') && db.deleteObjectStore('nodes');
-      stores.contains('events') && db.deleteObjectStore('events');
-      db.createObjectStore('nodes');
-      db.createObjectStore('events');
+      (['nodes', 'events'] as (keyof AppcraftStores)[]).forEach((storeName) => {
+        if (stores.contains(storeName)) {
+          db.deleteObjectStore(storeName);
+        }
+
+        db.createObjectStore(storeName);
+      });
     },
   });

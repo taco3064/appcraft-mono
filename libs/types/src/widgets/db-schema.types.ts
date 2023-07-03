@@ -1,7 +1,7 @@
 import type { DBSchema } from 'idb';
 import type { ChildNodes } from './widget.types';
 
-export interface AppcraftDB extends DBSchema {
+export type AppcraftStores = {
   events: {
     key: string;
     value: string[];
@@ -10,4 +10,6 @@ export interface AppcraftDB extends DBSchema {
     key: string;
     value: ChildNodes;
   };
-}
+};
+
+export type AppcraftDB = DBSchema & AppcraftStores;

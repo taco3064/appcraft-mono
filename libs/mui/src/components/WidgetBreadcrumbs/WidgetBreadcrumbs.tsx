@@ -10,9 +10,9 @@ import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import * as Styles from '../../../styles';
-import { Breadcrumbs } from '../Breadcrumbs';
-import { useFixedT } from '../../../hooks';
+import * as Styles from '../../styles';
+import { Breadcrumbs } from '../common/Breadcrumbs';
+import { useFixedT } from '../../hooks';
 import type { WidgetBreadcrumbsProps } from './WidgetBreadcrumbs.types';
 
 export default function WidgetBreadcrumbs({

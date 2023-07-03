@@ -1,7 +1,7 @@
 import type * as Appcraft from '@appcraft/types';
 import type { DialogProps } from '@mui/material/Dialog';
 
-import type { FixedT } from '../../../contexts';
+import type { FixedT } from '../../contexts';
 
 export interface PlainTextDialogProps
   extends Required<Pick<DialogProps, 'open' | 'onClose'>> {

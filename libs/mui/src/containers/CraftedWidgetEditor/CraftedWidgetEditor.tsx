@@ -9,10 +9,10 @@ import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import * as Common from '../../components/common';
+import * as Comp from '../../components';
 import * as Hooks from '../../hooks';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { WidgetAddDialog, WidgetNode } from '../../components';
+import { ListPlaceholder } from '../../styles';
 import type * as Types from './CraftedWidgetEditor.types';
 
 export default function CraftedWidgetEditor({
@@ -42,7 +42,7 @@ export default function CraftedWidgetEditor({
     version,
     ({ fetchData: { events, nodes } = {}, widgets, ...props }) =>
       widgets.length === 0 ? (
-        <Common.ListPlaceholder message={ct('msg-no-widgets')} />
+        <ListPlaceholder message={ct('msg-no-widgets')} />
       ) : (
         <>
           {widgets.map((item, index) => {
@@ -52,7 +52,7 @@ export default function CraftedWidgetEditor({
                 : `${item.typeFile}#${item.typeName}`;
 
             return (
-              <WidgetNode
+              <Comp.WidgetNode
                 {...props}
                 key={key}
                 index={index}
@@ -68,7 +68,7 @@ export default function CraftedWidgetEditor({
 
   return (
     <>
-      <WidgetAddDialog
+      <Comp.WidgetAddDialog
         {...{ fixedT, renderWidgetTypeSelection }}
         disablePlaintext={paths.length === 0}
         open={adding}
@@ -76,7 +76,7 @@ export default function CraftedWidgetEditor({
         onConfirm={handleMutation.add}
       />
 
-      <Common.PlainTextDialog
+      <Comp.PlainTextDialog
         open={selected?.category === 'plainText'}
         values={selected as Appcraft.PlainTextWidget}
         onClose={() => handleMutation.select(null)}
@@ -91,7 +91,7 @@ export default function CraftedWidgetEditor({
           values={selected}
           onChange={handleMutation.modify}
           action={
-            <Common.WidgetAppBar
+            <Comp.WidgetAppBar
               description={selected.type.replace(/([A-Z])/g, ' $1')}
               onBackToStructure={() => handleMutation.select(null)}
             />
@@ -111,7 +111,7 @@ export default function CraftedWidgetEditor({
         <List
           disablePadding
           subheader={
-            <Common.WidgetBreadcrumbs
+            <Comp.WidgetBreadcrumbs
               addable={type === 'node' || items.length < 1}
               breadcrumbs={breadcrumbs}
               fixedT={fixedT}
@@ -121,7 +121,7 @@ export default function CraftedWidgetEditor({
           }
         >
           {!widget ? (
-            <Common.ListPlaceholder
+            <ListPlaceholder
               message={ct('msg-no-widget')}
               action={
                 <Button

@@ -11,6 +11,7 @@ import type * as Appcraft from '@appcraft/types';
 
 import * as Comp from '../../components';
 import * as Hooks from '../../hooks';
+import { CraftedTodoEditor } from '../CraftedTodoEditor';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { ListPlaceholder } from '../../styles';
 import { getNodesAndEventsKey } from '../../services';
@@ -32,8 +33,6 @@ export default function CraftedWidgetEditor({
 
   const [{ editedWidget, todoPath }, handleMutation] = Hooks.useWidgetMutation(
     widget as Appcraft.RootNodeWidget,
-    type === 'node',
-    paths,
     onWidgetChange
   );
 
@@ -65,14 +64,15 @@ export default function CraftedWidgetEditor({
   return (
     <>
       <Comp.WidgetAddDialog
-        {...{ fixedT, renderWidgetTypeSelection }}
+        {...{ ct, renderWidgetTypeSelection }}
         disablePlaintext={paths.length === 0}
         open={adding}
         onClose={() => setAdding(false)}
-        onConfirm={handleMutation.add}
+        onConfirm={(e) => handleMutation.add(e, type, paths)}
       />
 
       <Comp.PlainTextDialog
+        ct={ct}
         open={editedWidget?.category === 'plainText'}
         values={editedWidget as Appcraft.PlainTextWidget}
         onClose={() => handleMutation.editing(null)}
@@ -81,21 +81,23 @@ export default function CraftedWidgetEditor({
 
       <CraftedTypeEditor
         fixedT={fixedT}
-        open={!todoPath && editedWidget?.category === 'node'}
+        open={Boolean(!todoPath && editedWidget?.category === 'node')}
         parser={fetchOptions.parser}
         values={editedWidget as Appcraft.NodeWidget}
+        onBack={() => handleMutation.editing(null)}
         onChange={handleMutation.modify}
-        action={
-          <Comp.WidgetAppBar
-            onBackToStructure={() => handleMutation.editing(null)}
-            {...(editedWidget?.category === 'node' && {
-              description: editedWidget.type.replace(/([A-Z])/g, ' $1'),
-            })}
-          />
-        }
       />
 
-      <Collapse in={Boolean(todoPath) || editedWidget?.category !== 'node'}>
+      <CraftedTodoEditor
+        fixedT={fixedT}
+        open={Boolean(todoPath && editedWidget?.category === 'node')}
+        todoPath={todoPath || undefined}
+        values={editedWidget as Appcraft.NodeWidget}
+        onBack={() => handleMutation.editing(null)}
+        onChange={handleMutation.modify}
+      />
+
+      <Collapse in={editedWidget?.category !== 'node'}>
         <AppBar color="default" position="sticky">
           <Toolbar variant="regular">
             <Typography variant="subtitle1" fontWeight="bolder" color="primary">
@@ -108,9 +110,8 @@ export default function CraftedWidgetEditor({
           disablePadding
           subheader={
             <Comp.WidgetBreadcrumbs
+              {...{ breadcrumbs, ct }}
               addable={type === 'node' || items.length < 1}
-              breadcrumbs={breadcrumbs}
-              fixedT={fixedT}
               onAdd={() => setAdding(true)}
               onRedirect={onPathsChange}
             />
@@ -134,10 +135,14 @@ export default function CraftedWidgetEditor({
           ) : (
             <Suspense fallback={<LinearProgress />}>
               <LazyWidgetNodes
-                fixedT={fixedT}
+                ct={ct}
                 superiorNodeType={type}
-                onClick={handleMutation.editing}
-                onRemove={handleMutation.remove}
+                onClick={(editedPaths) =>
+                  handleMutation.editing([...paths, ...editedPaths])
+                }
+                onRemove={(removedPaths) =>
+                  handleMutation.remove([...paths, ...removedPaths])
+                }
                 onEventActive={(activePaths) =>
                   handleMutation.todo([...paths, ...activePaths])
                 }

@@ -42,15 +42,21 @@ export const useAuth: Types.AuthHook = () => {
     }
   }, [authorized, isBrowser]);
 
-  return {
-    authorized,
-    tokens,
-    onSigninPrepare: () => {
+  return [
+    {
+      authorized,
+      tokens,
+
+      isCallbackPending: Boolean(
+        isBrowser && global.sessionStorage.getItem('redirect')
+      ),
+    },
+    () => {
       if (isBrowser) {
         global.sessionStorage.setItem('redirect', global.location.href);
       }
     },
-  };
+  ];
 };
 
 export const useSettingModified: Types.SettingModifiedHook = () =>

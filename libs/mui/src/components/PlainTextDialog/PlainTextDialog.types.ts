@@ -5,7 +5,7 @@ import type { FixedT } from '../../contexts';
 
 export interface PlainTextDialogProps
   extends Required<Pick<DialogProps, 'open' | 'onClose'>> {
-  fixedT?: FixedT;
+  ct: FixedT;
   values?: Appcraft.PlainTextWidget;
   onConfirm: (e: Appcraft.PlainTextWidget) => void;
 }

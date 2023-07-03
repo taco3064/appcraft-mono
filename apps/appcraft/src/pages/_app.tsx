@@ -25,8 +25,10 @@ const origin: SnackbarOrigin = {
 };
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { authorized, tokens, onSigninPrepare } = useAuth();
   const [open, setOpen] = useState(false);
+
+  const [{ authorized, isCallbackPending, tokens }, onSigninPrepare] =
+    useAuth();
 
   return (
     <>
@@ -57,15 +59,17 @@ export default function App({ Component, pageProps }: AppProps) {
                 <MenuDrawer open={open} onClose={() => setOpen(false)} />
               )}
 
-              <Suspense fallback={<LinearProgress />}>
-                <MainContainer
-                  maxWidth={false}
-                  className="app"
-                  component="main"
-                >
-                  {authorized ? <Component {...pageProps} /> : <IndexPage />}
-                </MainContainer>
-              </Suspense>
+              {!isCallbackPending && (
+                <Suspense fallback={<LinearProgress />}>
+                  <MainContainer
+                    maxWidth={false}
+                    className="app"
+                    component="main"
+                  >
+                    {authorized ? <Component {...pageProps} /> : <IndexPage />}
+                  </MainContainer>
+                </Suspense>
+              )}
             </SnackbarProvider>
           </ThemeProvider>
         </QueryClientProvider>

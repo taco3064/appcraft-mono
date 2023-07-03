@@ -2,65 +2,60 @@ import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 
+import * as Comp from '../../components';
 import * as Hooks from '../../hooks';
 import { EditorProvider, OptionValues } from '../../contexts';
-import { TypeList, TypeListSkeleton } from '../../components';
 import type * as Types from './CraftedTypeEditor.types';
 
-export default function CraftedTypeEditor<
-  V extends OptionValues,
-  A extends Types.ActionElement = undefined
->({
-  action,
-  open = true,
+export default function CraftedTypeEditor<V extends OptionValues>({
   fixedT,
+  open = true,
   parser,
   values,
+  onBack,
   onChange,
-}: Types.CraftedTypeEditorProps<V, A>) {
+}: Types.CraftedTypeEditorProps<V>) {
   const ct = Hooks.useFixedT(fixedT);
   const [collectionPath, setCollectionPath] = useState('');
 
   const LazyTypeList = Hooks.useLazyTypeList<Types.LazyTypeListProps<V>>(
     parser,
     { ...(values as V), collectionPath },
-    ({ fetchData, message, ...props }) =>
-      !fetchData ? (
+    ({ fetchData, placeholder, ...props }) =>
+      fetchData ? (
+        <Comp.TypeList {...props} collection={fetchData} />
+      ) : (
         <Typography
           variant="h6"
           color="text.secondary"
           justifyContent="center"
           lineHeight={3}
         >
-          {message}
+          {placeholder}
         </Typography>
-      ) : (
-        <TypeList {...props} collection={fetchData} />
       )
   );
 
   return (
-    <EditorProvider
-      {...{
-        fixedT,
-        collectionPath,
-        values,
-        onChange,
-      }}
-    >
+    <EditorProvider {...{ fixedT, collectionPath, values, onChange }}>
       <Collapse in={open}>
-        {action}
-
-        {open && (
-          <Suspense fallback={<TypeListSkeleton />}>
-            <LazyTypeList
-              message={ct('msg-select-widget-type-first')}
-              values={values as V}
-              onChange={onChange}
-              onCollectionPathChange={setCollectionPath}
-            />
-          </Suspense>
+        {values?.category === 'node' && onBack && (
+          <Comp.WidgetAppBar
+            type="props"
+            ct={ct}
+            description={values.type.replace(/([A-Z])/g, ' $1')}
+            onBackToStructure={onBack}
+          />
         )}
+
+        <Suspense fallback={<Comp.TypeListSkeleton />}>
+          <LazyTypeList
+            placeholder={ct('msg-select-widget-type-first')}
+            values={values as V}
+            onChange={onChange}
+            onCollectionPathChange={setCollectionPath}
+          />
+        </Suspense>
       </Collapse>
     </EditorProvider>
   );

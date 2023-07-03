@@ -17,8 +17,8 @@ import type { WidgetNodeProps } from './WidgetNode.types';
 type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
 
 export default function WidgetNode<I extends Appcraft.WidgetOptions>({
+  ct,
   event,
-  fixedT,
   index,
   item,
   structure,
@@ -28,7 +28,6 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
   onNodeActive,
   onRemove,
 }: WidgetNodeProps<I>) {
-  const ct = Hooks.useFixedT(fixedT);
   const { category, description, type, content } = item as MixedWidget;
   const isNode = category === 'node';
   const [open, setOpen] = useState(false);
@@ -49,7 +48,10 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
 
   return (
     <>
-      <ListItemButton selected={open} onClick={() => onClick(item)}>
+      <ListItemButton
+        selected={open}
+        onClick={() => onClick(superiorNodeType === 'node' ? [index] : [])}
+      >
         <ListItemIcon>
           {structures.length > 0 && (
             <IconButton
@@ -78,7 +80,7 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
         <Styles.TypeItemAction onClick={(e) => e.stopPropagation()}>
           <Styles.IconTipButton
             title={ct('btn-remove-widget')}
-            onClick={() => onRemove(item)}
+            onClick={() => onRemove(superiorNodeType === 'node' ? [index] : [])}
           >
             <CloseIcon />
           </Styles.IconTipButton>

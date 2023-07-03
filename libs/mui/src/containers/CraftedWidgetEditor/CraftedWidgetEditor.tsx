@@ -30,7 +30,7 @@ export default function CraftedWidgetEditor({
   const [{ breadcrumbs, items, paths, type }, onPathsChange] =
     Hooks.useStructure(widget as Appcraft.NodeWidget);
 
-  const [selected, handleMutation] = Hooks.useWidgetMutation(
+  const [{ editedWidget, todoPath }, handleMutation] = Hooks.useWidgetMutation(
     widget as Appcraft.RootNodeWidget,
     type === 'node',
     paths,
@@ -73,29 +73,29 @@ export default function CraftedWidgetEditor({
       />
 
       <Comp.PlainTextDialog
-        open={selected?.category === 'plainText'}
-        values={selected as Appcraft.PlainTextWidget}
-        onClose={() => handleMutation.select(null)}
+        open={editedWidget?.category === 'plainText'}
+        values={editedWidget as Appcraft.PlainTextWidget}
+        onClose={() => handleMutation.editing(null)}
         onConfirm={handleMutation.modify}
       />
 
       <CraftedTypeEditor
         fixedT={fixedT}
-        open={selected?.category === 'node'}
+        open={!todoPath && editedWidget?.category === 'node'}
         parser={fetchOptions.parser}
-        values={selected as Appcraft.NodeWidget}
+        values={editedWidget as Appcraft.NodeWidget}
         onChange={handleMutation.modify}
         action={
           <Comp.WidgetAppBar
-            onBackToStructure={() => handleMutation.select(null)}
-            {...(selected?.category === 'node' && {
-              description: selected.type.replace(/([A-Z])/g, ' $1'),
+            onBackToStructure={() => handleMutation.editing(null)}
+            {...(editedWidget?.category === 'node' && {
+              description: editedWidget.type.replace(/([A-Z])/g, ' $1'),
             })}
           />
         }
       />
 
-      <Collapse in={selected?.category !== 'node'}>
+      <Collapse in={Boolean(todoPath) || editedWidget?.category !== 'node'}>
         <AppBar color="default" position="sticky">
           <Toolbar variant="regular">
             <Typography variant="subtitle1" fontWeight="bolder" color="primary">
@@ -136,7 +136,7 @@ export default function CraftedWidgetEditor({
               <LazyWidgetNodes
                 fixedT={fixedT}
                 superiorNodeType={type}
-                onClick={handleMutation.select}
+                onClick={handleMutation.editing}
                 onRemove={handleMutation.remove}
                 onEventActive={(activePaths) =>
                   handleMutation.todo([...paths, ...activePaths])

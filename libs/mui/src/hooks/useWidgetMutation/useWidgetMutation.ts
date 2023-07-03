@@ -3,6 +3,7 @@ import _set from 'lodash.set';
 import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
+import { getPropPath } from '../../hooks';
 import type { WidgetMutationHook } from './useWidgetMutation.types';
 
 const useWidgetMutation: WidgetMutationHook = (
@@ -11,7 +12,10 @@ const useWidgetMutation: WidgetMutationHook = (
   paths,
   onWidgetChange
 ) => {
-  const [selected, setSelected] = useState<Appcraft.WidgetOptions | null>(null);
+  const [todoPath, setTodoPath] = useState<string | null>(null);
+
+  const [editedWidget, setEditedWidget] =
+    useState<Appcraft.WidgetOptions | null>(null);
 
   const items = useMemo(() => {
     const target = _get(widget, paths || []);
@@ -20,8 +24,14 @@ const useWidgetMutation: WidgetMutationHook = (
   }, [widget, paths]);
 
   return [
-    selected,
+    { editedWidget, todoPath },
+
     {
+      editing: (e: Appcraft.WidgetOptions | null) => {
+        setEditedWidget(e);
+        setTodoPath(null);
+      },
+
       add: (e) =>
         onWidgetChange(
           (!paths?.length
@@ -33,7 +43,7 @@ const useWidgetMutation: WidgetMutationHook = (
 
       modify: (e) => {
         if (e.category === 'node') {
-          setSelected(e);
+          setEditedWidget(e);
         }
 
         onWidgetChange(
@@ -45,7 +55,7 @@ const useWidgetMutation: WidgetMutationHook = (
                   paths,
                   !isMultiChildren
                     ? e
-                    : items.map((item) => (item !== selected ? item : e))
+                    : items.map((item) => (item !== editedWidget ? item : e))
                 ),
               }
         );
@@ -66,16 +76,17 @@ const useWidgetMutation: WidgetMutationHook = (
               }
         ),
 
-      select: setSelected,
-
       todo: (e) => {
-        const paths = e.slice(0, e.lastIndexOf('events'));
+        const index = e.lastIndexOf('events');
+        const widgetPaths = e.slice(0, index);
 
-        const target = !paths.length
-          ? widget
-          : (_get(widget, paths) as Appcraft.NodeWidget);
+        setTodoPath(getPropPath(e.slice(index + 1)));
 
-        console.log(target);
+        setEditedWidget(
+          !widgetPaths.length
+            ? widget
+            : (_get(widget, widgetPaths) as Appcraft.NodeWidget)
+        );
       },
     },
   ];

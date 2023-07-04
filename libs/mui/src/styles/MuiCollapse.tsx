@@ -18,6 +18,8 @@ export const FullHeightCollapse = (() => {
         height: '100% !important',
       },
       wrapperInner: {
+        display: 'flex',
+        flexDirection: 'column' as never,
         height: '100% !important',
         overflow: 'hidden auto',
       },

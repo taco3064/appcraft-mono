@@ -10,6 +10,7 @@ import IndexPage from './index';
 import { AppHeader, MenuDrawer, ThemeProvider } from '~appcraft/containers';
 import { MainContainer } from '~appcraft/styles';
 import { useAuth } from '~appcraft/hooks';
+import 'reactflow/dist/style.css';
 
 const client = new QueryClient({
   defaultOptions: {

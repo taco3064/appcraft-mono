@@ -9,7 +9,6 @@ import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SyncIcon from '@mui/icons-material/Sync';
-import TransformIcon from '@mui/icons-material/Transform';
 import TuneIcon from '@mui/icons-material/Tune';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
@@ -65,11 +64,6 @@ export default function TodoFlowControls({ ct }: TodoFlowControlsProps) {
         <SpeedDialAction
           tooltipTitle={ct('btn-add-condition')}
           icon={<CallSplitIcon />}
-        />
-
-        <SpeedDialAction
-          tooltipTitle={ct('btn-convert-properties')}
-          icon={<TransformIcon />}
         />
 
         <SpeedDialAction

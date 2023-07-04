@@ -1,11 +1,11 @@
-import Collapse from '@mui/material/Collapse';
-
 import * as Hooks from '../../hooks';
+import { FullHeightCollapse } from '../../styles';
 import { WidgetAppBar } from '../../components';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
 
 export default function CraftedTodoEditor({
   fixedT,
+  fullHeight,
   open = true,
   todoPath,
   values,
@@ -15,7 +15,11 @@ export default function CraftedTodoEditor({
   const ct = Hooks.useFixedT(fixedT);
 
   return (
-    <Collapse aria-label="Todo Editor" in={open}>
+    <FullHeightCollapse
+      aria-label="Todo Editor"
+      fullHeight={fullHeight}
+      in={open}
+    >
       {onBack && (
         <WidgetAppBar
           type="events"
@@ -24,6 +28,6 @@ export default function CraftedTodoEditor({
           onBackToStructure={onBack}
         />
       )}
-    </Collapse>
+    </FullHeightCollapse>
   );
 }

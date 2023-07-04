@@ -1,7 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
-import Collapse from '@mui/material/Collapse';
 import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
@@ -14,7 +13,7 @@ import * as Comp from '../../components';
 import * as Hooks from '../../hooks';
 import { CraftedTodoEditor } from '../CraftedTodoEditor';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { IconTipButton } from '../../styles';
+import { FullHeightCollapse, IconTipButton } from '../../styles';
 import { ListPlaceholder } from '../../styles';
 import { getNodesAndEventsKey } from '../../services';
 import type * as Types from './CraftedWidgetEditor.types';
@@ -82,6 +81,7 @@ export default function CraftedWidgetEditor({
       />
 
       <CraftedTypeEditor
+        fullHeight
         fixedT={fixedT}
         open={Boolean(!todoPath && editedWidget?.category === 'node')}
         parser={fetchOptions.parser}
@@ -91,6 +91,7 @@ export default function CraftedWidgetEditor({
       />
 
       <CraftedTodoEditor
+        fullHeight
         fixedT={fixedT}
         open={Boolean(todoPath && editedWidget?.category === 'node')}
         todoPath={todoPath || undefined}
@@ -99,8 +100,9 @@ export default function CraftedWidgetEditor({
         onChange={handleMutation.modify}
       />
 
-      <Collapse
+      <FullHeightCollapse
         aria-label="Widget Structure"
+        fullHeight
         in={editedWidget?.category !== 'node'}
       >
         <AppBar color="default" position="sticky">
@@ -169,7 +171,7 @@ export default function CraftedWidgetEditor({
             </Suspense>
           )}
         </List>
-      </Collapse>
+      </FullHeightCollapse>
     </>
   );
 }

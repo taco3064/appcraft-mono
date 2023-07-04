@@ -3,6 +3,7 @@ import type { ChangeHandler, FixedT } from '../../contexts';
 
 export interface CraftedTodoEditorProps {
   fixedT?: FixedT;
+  fullHeight?: boolean;
   open?: boolean;
   todoPath?: string;
   values?: Appcraft.NodeWidget;

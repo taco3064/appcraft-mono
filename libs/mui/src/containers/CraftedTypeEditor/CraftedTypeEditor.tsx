@@ -1,14 +1,15 @@
-import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 
 import * as Comp from '../../components';
 import * as Hooks from '../../hooks';
 import { EditorProvider, OptionValues } from '../../contexts';
+import { FullHeightCollapse } from '../../styles';
 import type * as Types from './CraftedTypeEditor.types';
 
 export default function CraftedTypeEditor<V extends OptionValues>({
   fixedT,
+  fullHeight,
   open = true,
   parser,
   values,
@@ -38,7 +39,11 @@ export default function CraftedTypeEditor<V extends OptionValues>({
 
   return (
     <EditorProvider {...{ fixedT, collectionPath, values, onChange }}>
-      <Collapse aria-label="Properties Editor" in={open}>
+      <FullHeightCollapse
+        aria-label="Properties Editor"
+        fullHeight={fullHeight}
+        in={open}
+      >
         {values?.category === 'node' && onBack && (
           <Comp.WidgetAppBar
             type="props"
@@ -56,7 +61,7 @@ export default function CraftedTypeEditor<V extends OptionValues>({
             onCollectionPathChange={setCollectionPath}
           />
         </Suspense>
-      </Collapse>
+      </FullHeightCollapse>
     </EditorProvider>
   );
 }

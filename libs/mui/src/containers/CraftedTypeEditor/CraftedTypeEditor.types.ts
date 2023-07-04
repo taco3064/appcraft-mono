@@ -12,6 +12,7 @@ export type LazyTypeListProps<V extends OptionValues> = Omit<
 
 export interface CraftedTypeEditorProps<V extends OptionValues>
   extends Omit<EditorProviderProps<V>, 'children' | 'collectionPath'> {
+  fullHeight?: boolean;
   open?: boolean;
   parser: Appcraft.FetchOptions;
   onBack?: () => void;

@@ -99,7 +99,10 @@ export default function CraftedWidgetEditor({
         onChange={handleMutation.modify}
       />
 
-      <Collapse in={editedWidget?.category !== 'node'}>
+      <Collapse
+        aria-label="Widget Structure"
+        in={editedWidget?.category !== 'node'}
+      >
         <AppBar color="default" position="sticky">
           <Toolbar
             variant="regular"

@@ -15,7 +15,7 @@ export default function CraftedTodoEditor({
   const ct = Hooks.useFixedT(fixedT);
 
   return (
-    <Collapse in={open}>
+    <Collapse aria-label="Todo Editor" in={open}>
       {onBack && (
         <WidgetAppBar
           type="events"

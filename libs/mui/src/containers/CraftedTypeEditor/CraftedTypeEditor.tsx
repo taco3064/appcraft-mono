@@ -38,7 +38,7 @@ export default function CraftedTypeEditor<V extends OptionValues>({
 
   return (
     <EditorProvider {...{ fixedT, collectionPath, values, onChange }}>
-      <Collapse in={open}>
+      <Collapse aria-label="Properties Editor" in={open}>
         {values?.category === 'node' && onBack && (
           <Comp.WidgetAppBar
             type="props"

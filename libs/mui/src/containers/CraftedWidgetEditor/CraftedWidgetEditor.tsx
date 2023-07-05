@@ -85,7 +85,7 @@ export default function CraftedWidgetEditor({
         fullHeight
         fixedT={fixedT}
         open={Boolean(!todoPath && editedWidget?.category === 'node')}
-        parser={fetchOptions.parser}
+        parser={fetchOptions.propsParser}
         values={editedWidget as Appcraft.NodeWidget}
         onBack={() => handleMutation.editing(null)}
         onChange={handleMutation.modify}
@@ -95,7 +95,7 @@ export default function CraftedWidgetEditor({
         fullHeight
         fixedT={fixedT}
         open={Boolean(todoPath && editedWidget?.category === 'node')}
-        parser={fetchOptions.parser}
+        parser={fetchOptions.configParser}
         todoPath={todoPath || undefined}
         typeFile={todoTypeFile}
         values={editedWidget as Appcraft.NodeWidget}

@@ -5,4 +5,5 @@ export {
   getProps,
   getDefaultProps,
   getTodoEventHandle,
+  splitProps,
 } from './useWidgetGenerator.utils';

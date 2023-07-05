@@ -13,9 +13,9 @@ export type PlainTextProps = { children?: ReactNode };
 export type PlainTextComponent = ComponentType<PlainTextProps>;
 
 //* Mehtods
-export type SplitDefaultProps = (
+export type SplitPropsUtil = (
   target: unknown,
-  paths: (string | number)[]
+  paths?: (string | number)[]
 ) => Record<string, unknown>;
 
 export type ExternalLazy = (

@@ -1,12 +1,17 @@
 import type * as Appcraft from '@appcraft/types';
-import type { ChangeHandler, FixedT } from '../../contexts';
+import type { CraftedTypeEditorProps } from '../CraftedTypeEditor';
 
-export interface CraftedTodoEditorProps {
-  fixedT?: FixedT;
-  fullHeight?: boolean;
-  open?: boolean;
+export interface CraftedTodoEditorProps
+  extends Pick<
+    CraftedTypeEditorProps<Appcraft.NodeWidget>,
+    | 'fixedT'
+    | 'fullHeight'
+    | 'open'
+    | 'parser'
+    | 'values'
+    | 'onBack'
+    | 'onChange'
+  > {
   todoPath?: string;
-  values?: Appcraft.NodeWidget;
-  onBack?: () => void;
-  onChange: ChangeHandler<Appcraft.NodeWidget>;
+  typeFile: string;
 }

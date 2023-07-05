@@ -22,6 +22,7 @@ export default function CraftedWidgetEditor({
   fetchOptions,
   fixedT,
   renderWidgetTypeSelection,
+  todoTypeFile,
   version,
   widget,
   onWidgetChange,
@@ -94,7 +95,9 @@ export default function CraftedWidgetEditor({
         fullHeight
         fixedT={fixedT}
         open={Boolean(todoPath && editedWidget?.category === 'node')}
+        parser={fetchOptions.parser}
         todoPath={todoPath || undefined}
+        typeFile={todoTypeFile}
         values={editedWidget as Appcraft.NodeWidget}
         onBack={() => handleMutation.editing(null)}
         onChange={handleMutation.modify}

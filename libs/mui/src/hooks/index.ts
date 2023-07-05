@@ -8,6 +8,7 @@ export * from './usePropValue';
 export * from './usePropertiesSorting';
 export * from './usePropertyRouter';
 export * from './useStructure';
+export * from './useTodoGenerator';
 export * from './useTypeItem';
 export * from './useTypeItems';
 export * from './useWidgetGenerator';

@@ -3,6 +3,7 @@ import ReactFlow, { Background, ReactFlowProvider } from 'reactflow';
 import { useTheme } from '@mui/material/styles';
 
 import * as Hooks from '../../hooks';
+import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { FullHeightCollapse } from '../../styles';
 import { TodoFlowControls, WidgetAppBar } from '../../components';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
@@ -11,7 +12,9 @@ export default function CraftedTodoEditor({
   fixedT,
   fullHeight,
   open = true,
+  parser,
   todoPath,
+  typeFile,
   values,
   onBack,
   onChange,
@@ -51,7 +54,17 @@ export default function CraftedTodoEditor({
             <Background color={theme.palette.text.secondary} gap={16} />
           </ReactFlow>
 
-          <TodoFlowControls ct={ct} onTodoAppend={console.log} />
+          <TodoFlowControls
+            {...{ ct, typeFile }}
+            onTodoAppend={console.log}
+            renderEditor={(todoConfig) => (
+              <CraftedTypeEditor
+                {...{ fixedT, parser }}
+                values={todoConfig}
+                onChange={console.log}
+              />
+            )}
+          />
         </ReactFlowProvider>
       </Paper>
     </FullHeightCollapse>

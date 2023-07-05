@@ -38,40 +38,38 @@ export const getProps = <P extends object>(
   }, {}) as P;
 };
 
-export const getDefaultProps: Types.GetDefaultPropsUtil = (() => {
-  const split: Types.SplitDefaultProps = (target, paths) => {
-    if (Array.isArray(target)) {
-      return target.reduce(
-        (result, item, i) => ({
-          ...result,
-          ...split(item, [...paths, i]),
-        }),
-        {}
-      );
-    } else if (
-      !!target &&
-      typeof target === 'object' &&
-      target.constructor === Object
-    ) {
-      return Object.entries(target).reduce(
-        (result, [key, value]) => ({
-          ...result,
-          ...split(value, [...paths, key]),
-        }),
-        {}
-      );
-    }
+export const splitProps: Types.SplitPropsUtil = (target, paths = []) => {
+  if (Array.isArray(target)) {
+    return target.reduce(
+      (result, item, i) => ({
+        ...result,
+        ...splitProps(item, [...paths, i]),
+      }),
+      {}
+    );
+  } else if (
+    !!target &&
+    typeof target === 'object' &&
+    target.constructor === Object
+  ) {
+    return Object.entries(target).reduce(
+      (result, [key, value]) => ({
+        ...result,
+        ...splitProps(value, [...paths, key]),
+      }),
+      {}
+    );
+  }
 
-    return { [getPropPath(paths)]: target };
-  };
+  return { [getPropPath(paths)]: target };
+};
 
-  return (theme, type) => {
-    const defaultProps =
-      theme.components?.[`Mui${type}` as keyof Components]?.defaultProps || {};
+export const getDefaultProps: Types.GetDefaultPropsUtil = (theme, type) => {
+  const defaultProps =
+    theme.components?.[`Mui${type}` as keyof Components]?.defaultProps || {};
 
-    return split(defaultProps, []);
-  };
-})();
+  return splitProps(defaultProps);
+};
 
 export const getTodoEventHandle: Types.GetTodoEventHandleUtil = (() => {
   return (options) =>
@@ -80,7 +78,7 @@ export const getTodoEventHandle: Types.GetTodoEventHandleUtil = (() => {
         const { category } = event;
         const params = await result;
 
-        console.log(category);
+        console.log(category); //! 待完成
 
         return { ...params };
       }, Promise.resolve({ e: args }));

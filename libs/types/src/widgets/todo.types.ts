@@ -44,7 +44,7 @@ export type VariableTodo = BaseTodo<
 
 export type FetchTodo = BaseTodo<
   'fetch',
-  Pick<AxiosRequestConfig, 'url' | 'method'> & {
+  Required<Pick<AxiosRequestConfig, 'url' | 'method'>> & {
     headers?: Record<
       | 'Accept'
       | 'Content-Length'

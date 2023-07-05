@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.58](https://github.com/taco3064/appcraft-mono/compare/v0.0.57...v0.0.58) (2023-07-05)
+
+
+### Features
+
+* **@appcraft/mui:** add new component: TodoFlowControls ([c5153a3](https://github.com/taco3064/appcraft-mono/commit/c5153a311a1d26b76c3a001c6c6dbb45654b8eeb))
+* **@appcraft/mui:** add new container component: <CraftedTodoEditor /> ([5297098](https://github.com/taco3064/appcraft-mono/commit/5297098f15e42c5d9744b4aa2c4db39f6368bf62))
+* **@appcraft/mui:** add ReactFlow to CraftedTodoEditor ([d9a0edc](https://github.com/taco3064/appcraft-mono/commit/d9a0edc2e9755e8f326e5a45cb5bf8be174cfb2c))
+* **@appcraft/types:** defining Data Types for Todo Configuration ([6e6dc34](https://github.com/taco3064/appcraft-mono/commit/6e6dc340c4a228f2a00c54a3ff3bd146987952f3))
+* **crafted-todo-editor:** add editing feature ([7aff0f6](https://github.com/taco3064/appcraft-mono/commit/7aff0f6ebe19d575473d50011a9be0ffd4e85d0f))
+* **use-widget-mutation:** add todoPath state to record target todo path ([a1f79b9](https://github.com/taco3064/appcraft-mono/commit/a1f79b9da7629c3f7f6af983705d9e3365ec2d29))
+
+
+### Bug Fixes
+
+* **locales:** add new text ([c61ce8d](https://github.com/taco3064/appcraft-mono/commit/c61ce8d85449007fab98f405eebfce74d9dcf478))
+* **todo-flow-controls:** update control buttons ([98c3da2](https://github.com/taco3064/appcraft-mono/commit/98c3da25edb12d423fc971845dc29ee530a69193))
+* **use-todo-config:** update typeFile as webpack define variable ([df823e5](https://github.com/taco3064/appcraft-mono/commit/df823e576358efd89614a246b5c31ad4539af5dc))
+
 ### [0.0.57](https://github.com/taco3064/appcraft-mono/compare/v0.0.56...v0.0.57) (2023-07-03)
 
 

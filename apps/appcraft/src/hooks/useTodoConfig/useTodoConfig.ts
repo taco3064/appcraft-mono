@@ -7,8 +7,6 @@ import type { ConfigData, ConfigOptions, WidgetTodo } from '@appcraft/types';
 import { findConfig } from '~appcraft/services';
 import type { TodoConfigResult, TodoVariant } from './useTodoConfig.types';
 
-const typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts';
-
 const useTodoConfig = (() => {
   function getTypeName(variant: TodoVariant) {
     switch (variant) {
@@ -50,7 +48,7 @@ const useTodoConfig = (() => {
           content: {
             ...data.content,
             category: 'config',
-            typeFile,
+            typeFile: __WEBPACK_DEFINE__.TODO_TYPE_FILE,
             typeName: getTypeName(variant),
             props: {
               id: nanoid(4),

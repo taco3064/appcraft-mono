@@ -83,7 +83,8 @@ export default function WidgetEditor({
             widget={widget}
             onWidgetChange={onWidgetChange}
             fetchOptions={{
-              parser: FETCH_OPTIONS.PROPS_PARSER,
+              configParser: FETCH_OPTIONS.CONFIGS_PARSER,
+              propsParser: FETCH_OPTIONS.PROPS_PARSER,
               getNodesAndEvents: FETCH_OPTIONS.GET_NODES_AND_EVENTS,
             }}
             renderWidgetTypeSelection={({ onChange }) => (

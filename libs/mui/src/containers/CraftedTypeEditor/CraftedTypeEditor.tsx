@@ -49,7 +49,10 @@ export default function CraftedTypeEditor<V extends OptionValues>({
             type="props"
             ct={ct}
             description={values.type.replace(/([A-Z])/g, ' $1')}
-            onBackToStructure={onBack}
+            onBackToStructure={() => {
+              onBack();
+              setCollectionPath('');
+            }}
           />
         )}
 

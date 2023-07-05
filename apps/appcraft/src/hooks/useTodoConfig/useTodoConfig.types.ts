@@ -1,7 +1,7 @@
 import type { ChangeEventHandler } from 'react';
-import type { ConfigData, ConfigOptions, TodoEvent } from '@appcraft/types';
+import type { ConfigData, ConfigOptions, WidgetTodo } from '@appcraft/types';
 
-export type TodoVariant = TodoEvent['category'];
+export type TodoVariant = WidgetTodo['category'];
 
 export interface TodoConfigResult {
   variant: TodoVariant;

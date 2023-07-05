@@ -19,6 +19,7 @@ export interface CraftedWidgetEditorProps
   extends Pick<WidgetAddDialogProps, 'renderWidgetTypeSelection'> {
   fetchOptions: Record<'parser' | 'getNodesAndEvents', Appcraft.FetchOptions>;
   fixedT?: FixedT;
+  todoTypeFile: string;
   version?: string;
   widget?: Appcraft.RootNodeWidget;
 

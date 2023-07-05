@@ -1,13 +1,7 @@
 import type { AxiosRequestConfig } from 'axios';
 
-//* RetrieveTarget - 僅指定資料型態
-export type RetrieveTarget =
-  | 'Retrieve Target'
-  | RetrieveTarget[]
-  | { [key: string]: RetrieveTarget };
-
-//* Definition - 明確定義的資料值
-export type Definition =
+//* Variable Definition
+type Definition =
   | boolean
   | Date
   | number
@@ -15,27 +9,42 @@ export type Definition =
   | Definition[]
   | { [key: string]: Definition };
 
-//* Reusable Events
-type Todos = 'convert' | 'define' | 'fetch';
+type ExtractTodoResult = {
+  sourceType: 'input' | 'superior' | 'todo';
+  key: string;
+  path?: string;
+};
 
-type BaseTodoEvent<C extends Todos, P> = {
+type VariableInitialMode = 'define' | 'extract';
+
+type Variable<M extends VariableInitialMode, I> = {
+  mode: M;
+  template?: string; //* 使用 lodash template 讀取 inputs 建立初始值
+} & (M extends 'extract' ? { initial: I } : { initial?: I });
+
+//* Todo Events
+type Todos = 'variable' | 'fetch' | 'branch' | 'iterate';
+
+type BaseTodo<C extends Todos, P> = {
   category: C;
-  outputKey: string; //* Output Key
+  id: string;
   description: string;
-  retrieve?: { [key: string]: RetrieveTarget };
+  defaultNextTodo?: string;
 } & P;
 
-export type DefineTodoEvent = BaseTodoEvent<
-  'define',
+export type VariableTodo = BaseTodo<
+  'variable',
   {
-    initial?: Definition; //* 初始值
-    template?: string; //* 使用 lodash template 讀取 inputs 建立初始值
+    variables: Record<
+      string,
+      Variable<'define', Definition> | Variable<'extract', ExtractTodoResult>
+    >;
   }
 >;
 
-export type FetchTodoEvent = BaseTodoEvent<
+export type FetchTodo = BaseTodo<
   'fetch',
-  Pick<AxiosRequestConfig, 'url' | 'method'> & {
+  Required<Pick<AxiosRequestConfig, 'url' | 'method'>> & {
     headers?: Record<
       | 'Accept'
       | 'Content-Length'
@@ -44,49 +53,32 @@ export type FetchTodoEvent = BaseTodoEvent<
       | 'Authorization',
       string
     >;
+
+    data?: ExtractTodoResult;
   }
 >;
 
-export type ConvertTodoEvent = BaseTodoEvent<
-  'convert',
+export type ConditionBranchTodo = BaseTodo<
+  'branch',
   {
-    conversions: {
-      evaluation?: EvaluateFlowNode; //* 條件判斷
-      getter: DefineTodoEvent; //* 目標要進行轉換的值
-      setter: string; //* 目標進行回寫值的路徑 (for output)
-    }[]; //* 轉換函式名稱
+    sources: Omit<Variable<'extract', ExtractTodoResult>, 'template'>[];
+    branches: {
+      template: string; //* 使用 lodash template 進行判斷
+      metTodo: string;
+    }[];
   }
 >;
 
-export type TodoEvent = DefineTodoEvent | FetchTodoEvent | ConvertTodoEvent;
-
-//* Flows
-type Flows = 'evaluate' | 'iterate';
-
-type BaseFlowNode<C extends Flows, P = never> = {
-  category: C;
-  description?: string;
-  extractResultPath: string; //* Flow Node 目標要處理值的路徑
-  done?: {
-    type: 'state' | 'prop';
-    statusKey: string; //* 目標進行回寫值的 Status Key (for output)
-  };
-} & P;
-
-export type EvaluateFlowNode = BaseFlowNode<
-  'evaluate',
-  {
-    target: Pick<DefineTodoEvent, 'initial' | 'template'>; //* 判斷值
-    satisfied: FlowNode | TodoEvent; //* 條件成立時的下一步
-  }
->;
-
-export type IterateFlowNode = BaseFlowNode<
+export type IterateTodo = BaseTodo<
   'iterate',
   {
-    conversion: ConvertTodoEvent;
+    source: Omit<Variable<'extract', ExtractTodoResult>, 'template'>;
+    iterateTodo: string;
   }
 >;
 
-export type FlowNode = EvaluateFlowNode | IterateFlowNode;
-export type WidgetEvent = TodoEvent | FlowNode;
+export type WidgetTodo =
+  | VariableTodo
+  | FetchTodo
+  | ConditionBranchTodo
+  | IterateTodo;

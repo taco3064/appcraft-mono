@@ -1,9 +1,9 @@
 import AddIcon from '@mui/icons-material/Add';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
-import Collapse from '@mui/material/Collapse';
 import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
+import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
@@ -11,7 +11,9 @@ import type * as Appcraft from '@appcraft/types';
 
 import * as Comp from '../../components';
 import * as Hooks from '../../hooks';
+import { CraftedTodoEditor } from '../CraftedTodoEditor';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
+import { FullHeightCollapse, IconTipButton } from '../../styles';
 import { ListPlaceholder } from '../../styles';
 import { getNodesAndEventsKey } from '../../services';
 import type * as Types from './CraftedWidgetEditor.types';
@@ -20,6 +22,7 @@ export default function CraftedWidgetEditor({
   fetchOptions,
   fixedT,
   renderWidgetTypeSelection,
+  todoTypeFile,
   version,
   widget,
   onWidgetChange,
@@ -30,10 +33,8 @@ export default function CraftedWidgetEditor({
   const [{ breadcrumbs, items, paths, type }, onPathsChange] =
     Hooks.useStructure(widget as Appcraft.NodeWidget);
 
-  const [selected, handleMutation] = Hooks.useWidgetMutation(
+  const [{ editedWidget, todoPath }, handleMutation] = Hooks.useWidgetMutation(
     widget as Appcraft.RootNodeWidget,
-    type === 'node',
-    paths,
     onWidgetChange
   );
 
@@ -48,13 +49,13 @@ export default function CraftedWidgetEditor({
         <>
           {widgets.map((item, index) => {
             const key = getNodesAndEventsKey(item, `item_${index}`);
+            const event = events?.[key];
+            const structure = nodes?.[key];
 
             return (
               <Comp.WidgetNode
                 {...props}
-                {...{ key, index, item }}
-                event={events?.[key]}
-                structure={nodes?.[key]}
+                {...{ key, index, item, event, structure }}
               />
             );
           })}
@@ -65,42 +66,64 @@ export default function CraftedWidgetEditor({
   return (
     <>
       <Comp.WidgetAddDialog
-        {...{ fixedT, renderWidgetTypeSelection }}
+        {...{ ct, renderWidgetTypeSelection }}
         disablePlaintext={paths.length === 0}
         open={adding}
         onClose={() => setAdding(false)}
-        onConfirm={handleMutation.add}
+        onConfirm={(e) => handleMutation.add(e, type, paths)}
       />
 
       <Comp.PlainTextDialog
-        open={selected?.category === 'plainText'}
-        values={selected as Appcraft.PlainTextWidget}
-        onClose={() => handleMutation.select(null)}
+        ct={ct}
+        open={editedWidget?.category === 'plainText'}
+        values={editedWidget as Appcraft.PlainTextWidget}
+        onClose={() => handleMutation.editing(null)}
         onConfirm={handleMutation.modify}
       />
 
-      {selected?.category === 'node' && (
-        <CraftedTypeEditor
-          fixedT={fixedT}
-          open={Boolean(selected)}
-          parser={fetchOptions.parser}
-          values={selected}
-          onChange={handleMutation.modify}
-          action={
-            <Comp.WidgetAppBar
-              description={selected.type.replace(/([A-Z])/g, ' $1')}
-              onBackToStructure={() => handleMutation.select(null)}
-            />
-          }
-        />
-      )}
+      <CraftedTypeEditor
+        fullHeight
+        fixedT={fixedT}
+        open={Boolean(!todoPath && editedWidget?.category === 'node')}
+        parser={fetchOptions.parser}
+        values={editedWidget as Appcraft.NodeWidget}
+        onBack={() => handleMutation.editing(null)}
+        onChange={handleMutation.modify}
+      />
 
-      <Collapse in={selected?.category !== 'node'}>
+      <CraftedTodoEditor
+        fullHeight
+        fixedT={fixedT}
+        open={Boolean(todoPath && editedWidget?.category === 'node')}
+        parser={fetchOptions.parser}
+        todoPath={todoPath || undefined}
+        typeFile={todoTypeFile}
+        values={editedWidget as Appcraft.NodeWidget}
+        onBack={() => handleMutation.editing(null)}
+        onChange={handleMutation.modify}
+      />
+
+      <FullHeightCollapse
+        aria-label="Widget Structure"
+        fullHeight
+        in={editedWidget?.category !== 'node'}
+      >
         <AppBar color="default" position="sticky">
-          <Toolbar variant="regular">
+          <Toolbar
+            variant="regular"
+            style={{ justifyContent: 'space-between' }}
+          >
             <Typography variant="subtitle1" fontWeight="bolder" color="primary">
               {ct('ttl-structure')}
             </Typography>
+
+            <IconTipButton
+              size="large"
+              color="primary"
+              title={ct('btn-state-props-mgr')}
+            >
+              <StorageRoundedIcon />
+            </IconTipButton>
           </Toolbar>
         </AppBar>
 
@@ -108,9 +131,8 @@ export default function CraftedWidgetEditor({
           disablePadding
           subheader={
             <Comp.WidgetBreadcrumbs
+              {...{ breadcrumbs, ct }}
               addable={type === 'node' || items.length < 1}
-              breadcrumbs={breadcrumbs}
-              fixedT={fixedT}
               onAdd={() => setAdding(true)}
               onRedirect={onPathsChange}
             />
@@ -134,12 +156,16 @@ export default function CraftedWidgetEditor({
           ) : (
             <Suspense fallback={<LinearProgress />}>
               <LazyWidgetNodes
-                fixedT={fixedT}
+                ct={ct}
                 superiorNodeType={type}
-                onClick={handleMutation.select}
-                onRemove={handleMutation.remove}
+                onClick={(editedPaths) =>
+                  handleMutation.editing([...paths, ...editedPaths])
+                }
+                onRemove={(removedPaths) =>
+                  handleMutation.remove([...paths, ...removedPaths])
+                }
                 onEventActive={(activePaths) =>
-                  console.log([...paths, ...activePaths])
+                  handleMutation.todo([...paths, ...activePaths])
                 }
                 onNodeActive={(activePaths, activeNodeType) =>
                   onPathsChange([...paths, ...activePaths], activeNodeType)
@@ -148,7 +174,7 @@ export default function CraftedWidgetEditor({
             </Suspense>
           )}
         </List>
-      </Collapse>
+      </FullHeightCollapse>
     </>
   );
 }

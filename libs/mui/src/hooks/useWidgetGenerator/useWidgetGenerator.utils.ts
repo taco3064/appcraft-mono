@@ -21,7 +21,7 @@ export const getProps = <P extends object>(
         _set(
           result,
           propPath,
-          getTodoEventHandle(value as Appcraft.WidgetEvent[])
+          getTodoEventHandle(value as Record<string, Appcraft.WidgetTodo>)
         );
       } else if (renderer instanceof Function && widgetField === 'nodes') {
         _set(
@@ -38,59 +38,48 @@ export const getProps = <P extends object>(
   }, {}) as P;
 };
 
-export const getDefaultProps: Types.GetDefaultPropsUtil = (() => {
-  const split: Types.SplitDefaultProps = (target, paths) => {
-    if (Array.isArray(target)) {
-      return target.reduce(
-        (result, item, i) => ({
-          ...result,
-          ...split(item, [...paths, i]),
-        }),
-        {}
-      );
-    } else if (
-      !!target &&
-      typeof target === 'object' &&
-      target.constructor === Object
-    ) {
-      return Object.entries(target).reduce(
-        (result, [key, value]) => ({
-          ...result,
-          ...split(value, [...paths, key]),
-        }),
-        {}
-      );
-    }
+export const splitProps: Types.SplitPropsUtil = (target, paths = []) => {
+  if (Array.isArray(target)) {
+    return target.reduce(
+      (result, item, i) => ({
+        ...result,
+        ...splitProps(item, [...paths, i]),
+      }),
+      {}
+    );
+  } else if (
+    !!target &&
+    typeof target === 'object' &&
+    target.constructor === Object
+  ) {
+    return Object.entries(target).reduce(
+      (result, [key, value]) => ({
+        ...result,
+        ...splitProps(value, [...paths, key]),
+      }),
+      {}
+    );
+  }
 
-    return { [getPropPath(paths)]: target };
-  };
+  return { [getPropPath(paths)]: target };
+};
 
-  return (theme, type) => {
-    const defaultProps =
-      theme.components?.[`Mui${type}` as keyof Components]?.defaultProps || {};
+export const getDefaultProps: Types.GetDefaultPropsUtil = (theme, type) => {
+  const defaultProps =
+    theme.components?.[`Mui${type}` as keyof Components]?.defaultProps || {};
 
-    return split(defaultProps, []);
-  };
-})();
+  return splitProps(defaultProps);
+};
 
 export const getTodoEventHandle: Types.GetTodoEventHandleUtil = (() => {
   return (options) =>
     (...args) =>
-      options.reduce(
-        (result, event) =>
-          result.then((params) => {
-            const { category } = event;
+      Object.values(options).reduce(async (result, event) => {
+        const { category } = event;
+        const params = await result;
 
-            if (/^(convert|define|fetch)$/.test(category)) {
-              const { outputKey, ...todo } = event as Appcraft.TodoEvent;
+        console.log(category); //! 待完成
 
-              console.log('implement', todo);
-            } else {
-              console.log('flow');
-            }
-
-            return { ...params };
-          }),
-        Promise.resolve({ e: args })
-      );
+        return { ...params };
+      }, Promise.resolve({ e: args }));
 })();

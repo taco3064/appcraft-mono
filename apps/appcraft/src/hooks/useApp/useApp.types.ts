@@ -15,11 +15,14 @@ export type FixedTHook = <O extends object>(
   ...namespaces: string[]
 ) => ((key: string, options?: O) => string)[];
 
-export type AuthHook = () => {
-  authorized: boolean;
-  tokens: Record<'id' | 'access', string | null>;
-  onSigninPrepare: () => void;
-};
+export type AuthHook = () => [
+  {
+    authorized: boolean;
+    isCallbackPending: boolean;
+    tokens: Record<'id' | 'access', string | null>;
+  },
+  () => void
+];
 
 export type SettingModifiedHook = () => Pick<
   AppState,

@@ -4,18 +4,15 @@ import { FormEvent } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
-import { useFixedT } from '../../hooks';
 import type { PlainTextDialogProps } from './PlainTextDialog.types';
 
 export default function PlainTextDialog({
-  fixedT,
+  ct,
   open,
   values,
   onClose,
   onConfirm,
 }: PlainTextDialogProps) {
-  const ct = useFixedT(fixedT);
-
   return (
     <FlexDialog
       {...{ open, onClose }}

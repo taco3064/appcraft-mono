@@ -5,15 +5,22 @@ type ModifyEvent = Appcraft.WidgetOptions | Appcraft.RootNodeWidget;
 
 export type WidgetMutationHook = (
   widget: Appcraft.RootNodeWidget,
-  isMultiChildren: boolean,
-  paths: undefined | PropPaths,
   onWidgetChange: (e: Appcraft.RootNodeWidget | null) => void
 ) => [
-  Appcraft.WidgetOptions | null,
   {
-    add: (e: Appcraft.WidgetOptions) => void;
+    editedWidget: Appcraft.WidgetOptions | null;
+    todoPath: string | null;
+  },
+  {
+    add: (
+      e: Appcraft.WidgetOptions,
+      type: Appcraft.NodeType,
+      paths: PropPaths
+    ) => void;
+
+    editing: (e: PropPaths | null) => void;
     modify: <E extends ModifyEvent>(e: E) => void;
-    remove: (e: Appcraft.WidgetOptions) => void;
-    select: (e: Appcraft.WidgetOptions | null) => void;
+    remove: (e: PropPaths) => void;
+    todo: (e: PropPaths) => void;
   }
 ];

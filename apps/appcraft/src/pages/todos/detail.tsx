@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import { getProps, getTodoEventHandle } from '@appcraft/mui';
 import { useMemo } from 'react';
 import { useRouter } from 'next/router';
+import type * as Appcraft from '@appcraft/types';
 
 import * as Hooks from '~appcraft/hooks';
 import { CommonButton } from '~appcraft/components/common';
@@ -26,10 +27,11 @@ export default function Detail() {
     'save',
   ]);
 
-  const handleRun = useMemo(
-    () => getTodoEventHandle([getProps(todo.content)]),
-    [todo]
-  );
+  const handleRun = useMemo(() => {
+    const props = getProps(todo.content) as Appcraft.WidgetTodo;
+
+    return getTodoEventHandle({ [props.id]: props });
+  }, [todo]);
 
   return (
     <PageContainer

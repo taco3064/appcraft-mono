@@ -214,10 +214,14 @@ const generators: Types.Generators = [
 
       //* { [key: string]: value; }
       if (strIdxType) {
-        const options = getProptype(strIdxType, {
-          propName: '*',
-          required: false,
-        });
+        const options = getProptype(
+          strIdxType,
+          {
+            propName: '*',
+            required: false,
+          },
+          source
+        );
 
         return options && { ...info, type: 'objectOf', options };
       }
@@ -267,13 +271,15 @@ const generators: Types.Generators = [
 
 //* 取得目標 Type 對應的 PropTypes
 export const getProptype: Types.GetProptypeUtil = (type, info, source) =>
-  generators.reduce((result, generator) => {
-    if (!result || type.getText().startsWith('React.Ref<')) {
-      return generator(type, info, source);
-    }
+  /(React\.Ref<|RefObject<|Ref<)/.test(type.getText())
+    ? false
+    : generators.reduce((result, generator) => {
+        if (!result) {
+          return generator(type, info, source);
+        }
 
-    return result;
-  }, false);
+        return result;
+      }, false);
 
 export const findNodesAndEventsProps: Types.FindNodesAndEventsPropsUtil = (
   source,

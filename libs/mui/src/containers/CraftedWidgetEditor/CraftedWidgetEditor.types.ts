@@ -17,11 +17,14 @@ export type LazyWidgetNodesProps = Omit<
 
 export interface CraftedWidgetEditorProps
   extends Pick<WidgetAddDialogProps, 'renderWidgetTypeSelection'> {
-  fetchOptions: Record<'parser' | 'getNodesAndEvents', Appcraft.FetchOptions>;
   fixedT?: FixedT;
   todoTypeFile: string;
   version?: string;
   widget?: Appcraft.RootNodeWidget;
-
   onWidgetChange: (e: Appcraft.RootNodeWidget | null) => void;
+
+  fetchOptions: Record<
+    'configParser' | 'propsParser' | 'getNodesAndEvents',
+    Appcraft.FetchOptions
+  >;
 }

@@ -1,5 +1,5 @@
 import type { TypesParseOptions } from './prop-types-def.types';
-import type { WidgetEvent } from './todo.types';
+import type { WidgetTodo } from './todo.types';
 
 //* Category Names
 enum OptionCategory {
@@ -37,7 +37,7 @@ export type NodeWidget = BaseOptions<
   Omit<ConfigOptions, 'category'> & {
     type: string;
     nodes?: Record<string, WidgetOptions | WidgetOptions[]>;
-    todos?: Record<string, WidgetEvent[]>;
+    todos?: Record<string, Record<string, WidgetTodo>>;
   }
 >;
 

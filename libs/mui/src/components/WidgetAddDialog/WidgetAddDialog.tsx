@@ -7,19 +7,18 @@ import { useTheme } from '@mui/material/styles';
 import type * as Appcraft from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
-import { getDefaultProps, useFixedT } from '../../hooks';
+import { getDefaultProps } from '../../hooks';
 import type { WidgetAddDialogProps } from './WidgetAddDialog.types';
 
 export default function WidgetAddDialog({
+  ct,
   disablePlaintext = false,
-  fixedT,
   open,
   renderWidgetTypeSelection,
   onClose,
   onConfirm,
 }: WidgetAddDialogProps) {
   const theme = useTheme();
-  const ct = useFixedT(fixedT);
   const [data, setData] = useState<Appcraft.WidgetOptions>();
 
   const [active, setActive] =

@@ -8,8 +8,8 @@ type ChangeEventField = 'type' | 'typeFile' | 'typeName';
 
 export interface WidgetAddDialogProps
   extends Required<Pick<DialogProps, 'open' | 'onClose'>> {
+  ct: FixedT;
   disablePlaintext?: boolean;
-  fixedT?: FixedT;
   onConfirm: (e: Appcraft.WidgetOptions) => void;
 
   renderWidgetTypeSelection: (options: {

@@ -1,29 +1,17 @@
 import AddIcon from '@mui/icons-material/Add';
-import AppBar from '@mui/material/AppBar';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Button from '@mui/material/Button';
-import Collapse from '@mui/material/Collapse';
-import LinearProgress from '@mui/material/LinearProgress';
-import List from '@mui/material/List';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import { Suspense, useState } from 'react';
-import type * as Appcraft from '@appcraft/types';
 
 import * as Styles from '../../styles';
 import { Breadcrumbs } from '../common/Breadcrumbs';
-import { useFixedT } from '../../hooks';
 import type { WidgetBreadcrumbsProps } from './WidgetBreadcrumbs.types';
 
 export default function WidgetBreadcrumbs({
   addable,
   breadcrumbs,
-  fixedT,
+  ct,
   onAdd,
   onRedirect,
 }: WidgetBreadcrumbsProps) {
-  const ct = useFixedT(fixedT);
-
   return !breadcrumbs.length ? null : (
     <Styles.ListToolbar>
       <Styles.IconTipButton

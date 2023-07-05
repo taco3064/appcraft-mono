@@ -45,6 +45,11 @@ const nextConfig = {
         ...base.plugins,
         new DefinePlugin({
           '__WEBPACK_DEFINE__.LANGUAGES': JSON.stringify(languages),
+          '__WEBPACK_DEFINE__.TODO_TYPE_FILE': JSON.stringify(
+            process.env.SERVICE_PROXY === 'http://127.0.0.1:80'
+              ? './libs/types/src/widgets/todo.ts'
+              : './node_modules/@appcraft/types/src/widgets/todo.types.d.ts'
+          ),
         }),
       ],
     };

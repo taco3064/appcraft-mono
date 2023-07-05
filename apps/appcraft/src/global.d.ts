@@ -18,5 +18,6 @@ declare module '~appcraft/assets/json/types-fetch-options.json' {
 declare const __WEBPACK_DEFINE__: {
   ENV: 'development' | 'production';
   LANGUAGES: string[];
+  TODO_TYPE_FILE: string;
   VERSION: string;
 };

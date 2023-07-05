@@ -1,25 +1,23 @@
-import type { ReactNode } from 'react';
+import type { MutableRefObject, ReactNode } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 //* Variable
 export type ChangeHandler<E extends OptionValues> = (e: E) => void;
 export type FixedT = (key: string, options?: object) => string;
 
-export type OptionValues =
-  | Appcraft.NodeWidget
-  | Appcraft.ConfigOptions
-  | Appcraft.RootNodeWidget;
+export type OptionValues = Appcraft.NodeWidget | Appcraft.ConfigOptions;
 
 //* Context Value
 export interface EditorContextValue<V extends OptionValues> {
   collectionPath: string;
   fixedT?: FixedT;
   values?: V;
-  onChange: ChangeHandler<V>;
+  handleChangeRef?: MutableRefObject<ChangeHandler<V>>;
 }
 
 //* Provider Props
 export interface EditorProviderProps<V extends OptionValues>
-  extends EditorContextValue<V> {
+  extends Omit<EditorContextValue<V>, 'handleChangeRef'> {
   children: ReactNode;
+  onChange: ChangeHandler<V>;
 }

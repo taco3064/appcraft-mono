@@ -24,7 +24,7 @@ import type { TodoFlowControlsProps } from './TodoFlowConrols.types';
 export default function TodoFlowControls({
   ct,
   renderEditor,
-  typeFile,
+  typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts',
   onTodoAppend,
 }: TodoFlowControlsProps) {
   const { fitView, zoomIn, zoomOut } = useReactFlow();

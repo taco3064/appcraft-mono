@@ -18,7 +18,7 @@ export type LazyWidgetNodesProps = Omit<
 export interface CraftedWidgetEditorProps
   extends Pick<WidgetAddDialogProps, 'renderWidgetTypeSelection'> {
   fixedT?: FixedT;
-  todoTypeFile: string;
+  todoTypeFile?: string;
   version?: string;
   widget?: Appcraft.RootNodeWidget;
   onWidgetChange: (e: Appcraft.RootNodeWidget | null) => void;

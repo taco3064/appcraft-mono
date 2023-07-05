@@ -13,5 +13,5 @@ export interface CraftedTodoEditorProps
     | 'onChange'
   > {
   todoPath?: string;
-  typeFile: string;
+  typeFile?: string;
 }

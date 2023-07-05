@@ -6,6 +6,6 @@ import type { FixedT } from '../../contexts';
 export interface TodoFlowControlsProps {
   ct: FixedT;
   renderEditor: (todoConfig: Appcraft.ConfigOptions) => ReactNode;
-  typeFile: string;
+  typeFile?: string;
   onTodoAppend: (todo: Appcraft.WidgetTodo) => void;
 }

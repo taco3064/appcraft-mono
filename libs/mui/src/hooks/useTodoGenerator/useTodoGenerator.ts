@@ -3,92 +3,84 @@ import { nanoid } from 'nanoid';
 import type * as Appcraft from '@appcraft/types';
 
 import { splitProps } from '../useWidgetGenerator';
-import type { TodoGeneratorHook } from './useTodoGenerator.types';
+import type { TodoGeneratorHook, ValuesState } from './useTodoGenerator.types';
 
 const useTodoGenerator: TodoGeneratorHook = (typeFile) => {
-  const [todo, setTodo] = useState<Appcraft.WidgetTodo | null>(null);
+  const [values, setValues] = useState<ValuesState>(null);
 
   return [
-    {
-      todo,
-      config: useMemo(() => {
-        switch (todo?.category) {
-          case 'variable':
-            return {
-              category: 'config',
-              typeFile,
-              typeName: 'VariableTodo',
-              props: splitProps(todo),
-            };
-
-          case 'fetch':
-            return {
-              category: 'config',
-              typeFile,
-              typeName: 'FetchTodo',
-              props: splitProps(todo),
-            };
-
-          case 'branch':
-            return {
-              category: 'config',
-              typeFile,
-              typeName: 'ConditionBranchTodo',
-              props: splitProps(todo),
-            };
-
-          case 'iterate':
-            return {
-              category: 'config',
-              typeFile,
-              typeName: 'IterateTodo',
-              props: splitProps(todo),
-            };
-
-          default:
-            return null;
-        }
-      }, [typeFile, todo]),
-    },
+    values,
 
     {
-      cancel: () => setTodo(null),
+      cancel: () => setValues(null),
+
+      change: (config) =>
+        setValues({ todo: values?.todo as Appcraft.WidgetTodo, config }),
 
       create: (category) => {
-        const id = nanoid(4);
+        const data: Pick<Appcraft.WidgetTodo, 'description' | 'id'> = {
+          id: nanoid(4),
+          description: '',
+        };
 
         switch (category) {
-          case 'variable':
-            return setTodo({
+          case 'variable': {
+            const todo: Appcraft.VariableTodo = {
+              ...data,
               category,
-              id,
-              description: '',
               variables: {},
-            });
+            };
 
-          case 'fetch':
-            return setTodo({
+            return setValues({
+              todo,
+              config: {
+                category: 'config',
+                typeFile,
+                typeName: 'VariableTodo',
+                props: splitProps(todo),
+              },
+            });
+          }
+          case 'fetch': {
+            const todo: Appcraft.FetchTodo = {
+              ...data,
               category,
-              id,
-              description: '',
               url: '',
               method: 'GET',
-            });
+            };
 
-          case 'branch':
-            return setTodo({
+            return setValues({
+              todo,
+              config: {
+                category: 'config',
+                typeFile,
+                typeName: 'FetchTodo',
+                props: splitProps(todo),
+              },
+            });
+          }
+          case 'branch': {
+            const todo: Appcraft.ConditionBranchTodo = {
+              ...data,
               category,
-              id,
-              description: '',
               sources: [],
               branches: [],
-            });
+            };
 
-          case 'iterate':
-            return setTodo({
+            return setValues({
+              todo,
+              config: {
+                category: 'config',
+                typeFile,
+                typeName: 'ConditionBranchTodo',
+                props: splitProps(todo),
+              },
+            });
+          }
+          case 'iterate': {
+            const todo: Appcraft.IterateTodo = {
+              ...data,
               category,
-              id,
-              description: '',
               iterateTodo: '',
               source: {
                 mode: 'extract',
@@ -97,7 +89,18 @@ const useTodoGenerator: TodoGeneratorHook = (typeFile) => {
                   key: '',
                 },
               },
+            };
+
+            return setValues({
+              todo,
+              config: {
+                category: 'config',
+                typeFile,
+                typeName: 'IterateTodo',
+                props: splitProps(todo),
+              },
             });
+          }
         }
       },
     },

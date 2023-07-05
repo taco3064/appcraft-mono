@@ -14,11 +14,10 @@ import TuneIcon from '@mui/icons-material/Tune';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import { useReactFlow } from 'reactflow';
-import type { FormEvent } from 'react';
-import type { WidgetTodo } from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 
 import { CompositeIcon, FlexDialog } from '../../styles';
-import { useTodoGenerator } from '../../hooks';
+import { getProps, useTodoGenerator } from '../../hooks';
 import type { TodoFlowControlsProps } from './TodoFlowConrols.types';
 
 export default function TodoFlowControls({
@@ -28,7 +27,7 @@ export default function TodoFlowControls({
   onTodoAppend,
 }: TodoFlowControlsProps) {
   const { fitView, zoomIn, zoomOut } = useReactFlow();
-  const [{ config, todo }, handleTodo] = useTodoGenerator(typeFile);
+  const [values, handleTodo] = useTodoGenerator(typeFile);
 
   return (
     <>
@@ -95,25 +94,33 @@ export default function TodoFlowControls({
         fullWidth
         maxWidth="xs"
         direction="column"
-        open={Boolean(todo)}
+        open={Boolean(values)}
         onClose={handleTodo.cancel}
-        onSubmit={(e: FormEvent<HTMLFormElement>) => {
-          e.preventDefault();
-
-          onTodoAppend(todo as WidgetTodo);
-          handleTodo.cancel();
-        }}
         action={
           <>
             <Button onClick={handleTodo.cancel}>{ct('btn-cancel')}</Button>
 
-            <Button type="submit" color="primary">
+            <Button
+              color="primary"
+              onClick={() => {
+                const todo = getProps<Appcraft.WidgetTodo>(
+                  values?.config as Appcraft.ConfigOptions
+                );
+
+                handleTodo.cancel();
+                onTodoAppend(todo);
+              }}
+            >
               {ct('btn-confirm')}
             </Button>
           </>
         }
       >
-        {config && renderEditor(config)}
+        {values?.config &&
+          renderEditor(
+            values?.config as Appcraft.ConfigOptions,
+            handleTodo.change
+          )}
       </FlexDialog>
     </>
   );

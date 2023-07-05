@@ -81,27 +81,36 @@ export default function CraftedWidgetEditor({
         onConfirm={handleMutation.modify}
       />
 
-      <CraftedTypeEditor
-        fullHeight
-        fixedT={fixedT}
-        open={Boolean(!todoPath && editedWidget?.category === 'node')}
-        parser={fetchOptions.propsParser}
-        values={editedWidget as Appcraft.NodeWidget}
-        onBack={() => handleMutation.editing(null)}
-        onChange={handleMutation.modify}
-      />
+      {editedWidget?.category === 'node' && (
+        <>
+          <CraftedTypeEditor
+            fullHeight
+            fixedT={fixedT}
+            open={Boolean(!todoPath)}
+            parser={fetchOptions.propsParser}
+            values={editedWidget}
+            onBack={() => handleMutation.editing(null)}
+            onChange={handleMutation.modify}
+          />
 
-      <CraftedTodoEditor
-        fullHeight
-        fixedT={fixedT}
-        open={Boolean(todoPath && editedWidget?.category === 'node')}
-        parser={fetchOptions.configParser}
-        todoPath={todoPath || undefined}
-        typeFile={todoTypeFile}
-        values={editedWidget as Appcraft.NodeWidget}
-        onBack={() => handleMutation.editing(null)}
-        onChange={handleMutation.modify}
-      />
+          <CraftedTodoEditor
+            {...(todoPath && { todoPath })}
+            fullHeight
+            fixedT={fixedT}
+            open={Boolean(todoPath)}
+            parser={fetchOptions.configParser}
+            typeFile={todoTypeFile}
+            values={editedWidget.todos?.[todoPath as string]}
+            onBack={() => handleMutation.editing(null)}
+            onChange={(todo) =>
+              handleMutation.modify({
+                ...editedWidget,
+                todos: { ...editedWidget.todos, [todoPath as string]: todo },
+              })
+            }
+          />
+        </>
+      )}
 
       <FullHeightCollapse
         aria-label="Widget Structure"

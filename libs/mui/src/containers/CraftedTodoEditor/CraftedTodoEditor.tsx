@@ -57,11 +57,11 @@ export default function CraftedTodoEditor({
           <TodoFlowControls
             {...{ ct, typeFile }}
             onTodoAppend={console.log}
-            renderEditor={(todoConfig) => (
+            renderEditor={(todoConfig, onTodoConfigChange) => (
               <CraftedTypeEditor
                 {...{ fixedT, parser }}
                 values={todoConfig}
-                onChange={console.log}
+                onChange={onTodoConfigChange}
               />
             )}
           />

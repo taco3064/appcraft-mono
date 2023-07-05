@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.59](https://github.com/taco3064/appcraft-mono/compare/v0.0.58...v0.0.59) (2023-07-05)
+
+
+### Bug Fixes
+
+* **crafted-widget-editor:** update parser props ([5bd9a87](https://github.com/taco3064/appcraft-mono/commit/5bd9a876804120f1e6820e0d92ace24942a5b740))
+* fixed parser bugs ([0a9d460](https://github.com/taco3064/appcraft-mono/commit/0a9d4606b0e75978ca7bb1c8b4078d523717a50b))
+
 ### [0.0.58](https://github.com/taco3064/appcraft-mono/compare/v0.0.57...v0.0.58) (2023-07-05)
 
 

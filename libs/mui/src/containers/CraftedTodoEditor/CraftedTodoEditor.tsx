@@ -51,7 +51,7 @@ export default function CraftedTodoEditor({
             <Background color={theme.palette.text.secondary} gap={16} />
           </ReactFlow>
 
-          <TodoFlowControls ct={ct} />
+          <TodoFlowControls ct={ct} onTodoAppend={console.log} />
         </ReactFlowProvider>
       </Paper>
     </FullHeightCollapse>

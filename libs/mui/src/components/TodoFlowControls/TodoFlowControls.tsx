@@ -17,7 +17,10 @@ import { useReactFlow } from 'reactflow';
 import { CompositeIcon } from '../../styles';
 import type { TodoFlowControlsProps } from './TodoFlowConrols.types';
 
-export default function TodoFlowControls({ ct }: TodoFlowControlsProps) {
+export default function TodoFlowControls({
+  ct,
+  onTodoAppend,
+}: TodoFlowControlsProps) {
   const { fitView, zoomIn, zoomOut } = useReactFlow();
 
   return (

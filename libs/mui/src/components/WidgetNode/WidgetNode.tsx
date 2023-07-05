@@ -78,13 +78,6 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
         />
 
         <Styles.TypeItemAction onClick={(e) => e.stopPropagation()}>
-          <Styles.IconTipButton
-            title={ct('btn-remove-widget')}
-            onClick={() => onRemove(superiorNodeType === 'node' ? [index] : [])}
-          >
-            <CloseIcon />
-          </Styles.IconTipButton>
-
           {open && structures.length > 0 && events.length > 0 && (
             <Tooltip
               title={ct(`btn-${display === 'events' ? 'todos' : 'nodes'}`)}
@@ -92,6 +85,13 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
               <Styles.WidgetNodeSwitch value={display} onChange={setDisplay} />
             </Tooltip>
           )}
+
+          <Styles.IconTipButton
+            title={ct('btn-remove-widget')}
+            onClick={() => onRemove(superiorNodeType === 'node' ? [index] : [])}
+          >
+            <CloseIcon />
+          </Styles.IconTipButton>
         </Styles.TypeItemAction>
       </ListItemButton>
 

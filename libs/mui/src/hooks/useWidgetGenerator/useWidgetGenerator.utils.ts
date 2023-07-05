@@ -21,7 +21,7 @@ export const getProps = <P extends object>(
         _set(
           result,
           propPath,
-          getTodoEventHandle(value as Appcraft.WidgetEvent[])
+          getTodoEventHandle(value as Record<string, Appcraft.WidgetTodo>)
         );
       } else if (renderer instanceof Function && widgetField === 'nodes') {
         _set(
@@ -76,21 +76,12 @@ export const getDefaultProps: Types.GetDefaultPropsUtil = (() => {
 export const getTodoEventHandle: Types.GetTodoEventHandleUtil = (() => {
   return (options) =>
     (...args) =>
-      options.reduce(
-        (result, event) =>
-          result.then((params) => {
-            const { category } = event;
+      Object.values(options).reduce(async (result, event) => {
+        const { category } = event;
+        const params = await result;
 
-            if (/^(convert|define|fetch)$/.test(category)) {
-              const { outputKey, ...todo } = event as Appcraft.TodoEvent;
+        console.log(category);
 
-              console.log('implement', todo);
-            } else {
-              console.log('flow');
-            }
-
-            return { ...params };
-          }),
-        Promise.resolve({ e: args })
-      );
+        return { ...params };
+      }, Promise.resolve({ e: args }));
 })();

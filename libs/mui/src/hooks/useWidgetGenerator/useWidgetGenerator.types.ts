@@ -48,5 +48,5 @@ export type GetDefaultPropsUtil = (
 ) => Record<string, unknown>;
 
 export type GetTodoEventHandleUtil = (
-  options: Appcraft.WidgetEvent[]
+  options: Record<string, Appcraft.WidgetTodo>
 ) => (...args: unknown[]) => Promise<Record<string, unknown>>;

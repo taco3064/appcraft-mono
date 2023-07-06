@@ -4,7 +4,7 @@ import DeviceHubIcon from '@mui/icons-material/DeviceHub';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
-import { GapTypography, TypeItemAction } from '../../styles';
+import { GapTypography, TypeItemAction } from '../../../styles';
 import type { TypeItemDisplayProps } from './TypeItemDisplay.types';
 
 export default function TypeItemDisplay({

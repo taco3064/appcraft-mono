@@ -1,5 +1,5 @@
 import type * as Appcraft from '@appcraft/types';
-import type { PropPathRouterHandler } from '../../hooks';
+import type { PropPathRouterHandler } from '../../../hooks';
 
 export interface TypeItemDisplayProps
   extends Omit<

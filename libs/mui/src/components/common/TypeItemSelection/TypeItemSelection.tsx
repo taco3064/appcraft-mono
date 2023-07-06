@@ -3,12 +3,12 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 
 import { TinyAvatar } from '../../../styles';
 import { statuses } from '../../../hooks';
-import * as Types from './ConstructSelection.types';
+import * as Types from './TypeItemSelection.types';
 
-export default function ConstructSelection({
+export default function TypeItemSelection({
   status,
   onStatusChange,
-}: Types.ConstructSelectionProps) {
+}: Types.TypeItemSelectionProps) {
   return (
     <ListItemIcon onClick={(e) => e.stopPropagation()}>
       <Checkbox

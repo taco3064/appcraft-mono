@@ -11,10 +11,9 @@ import type * as Appcraft from '@appcraft/types';
 
 import * as Comp from '../../components';
 import * as Hooks from '../../hooks';
+import * as Styles from '../../styles';
 import { CraftedTodoEditor } from '../CraftedTodoEditor';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { FullHeightCollapse, IconTipButton } from '../../styles';
-import { ListPlaceholder } from '../../styles';
 import { getNodesAndEventsKey } from '../../services';
 import type * as Types from './CraftedWidgetEditor.types';
 
@@ -44,7 +43,7 @@ export default function CraftedWidgetEditor({
     version,
     ({ fetchData: { events, nodes } = {}, widgets, ...props }) =>
       widgets.length === 0 ? (
-        <ListPlaceholder message={ct('msg-no-widgets')} />
+        <Styles.ListPlaceholder message={ct('msg-no-widgets')} />
       ) : (
         <>
           {widgets.map((item, index) => {
@@ -65,7 +64,7 @@ export default function CraftedWidgetEditor({
 
   return (
     <>
-      <Comp.WidgetAddDialog
+      <Comp.MutationNewWidgetDialog
         {...{ ct, renderWidgetTypeSelection }}
         disablePlaintext={paths.length === 0}
         open={adding}
@@ -73,7 +72,7 @@ export default function CraftedWidgetEditor({
         onConfirm={(e) => handleMutation.add(e, type, paths)}
       />
 
-      <Comp.PlainTextDialog
+      <Comp.MutationPlainTextDialog
         ct={ct}
         open={editedWidget?.category === 'plainText'}
         values={editedWidget as Appcraft.PlainTextWidget}
@@ -112,7 +111,7 @@ export default function CraftedWidgetEditor({
         </>
       )}
 
-      <FullHeightCollapse
+      <Styles.FullHeightCollapse
         aria-label="Widget Structure"
         fullHeight
         in={editedWidget?.category !== 'node'}
@@ -126,13 +125,13 @@ export default function CraftedWidgetEditor({
               {ct('ttl-structure')}
             </Typography>
 
-            <IconTipButton
+            <Styles.IconTipButton
               size="large"
               color="primary"
               title={ct('btn-state-props-mgr')}
             >
               <StorageRoundedIcon />
-            </IconTipButton>
+            </Styles.IconTipButton>
           </Toolbar>
         </AppBar>
 
@@ -148,7 +147,7 @@ export default function CraftedWidgetEditor({
           }
         >
           {!widget ? (
-            <ListPlaceholder
+            <Styles.ListPlaceholder
               message={ct('msg-no-widget')}
               action={
                 <Button
@@ -183,7 +182,7 @@ export default function CraftedWidgetEditor({
             </Suspense>
           )}
         </List>
-      </FullHeightCollapse>
+      </Styles.FullHeightCollapse>
     </>
   );
 }

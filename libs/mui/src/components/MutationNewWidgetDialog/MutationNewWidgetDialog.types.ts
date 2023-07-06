@@ -6,7 +6,7 @@ import type { FixedT } from '../../contexts';
 
 type ChangeEventField = 'type' | 'typeFile' | 'typeName';
 
-export interface WidgetAddDialogProps
+export interface MutationNewWidgetDialogProps
   extends Required<Pick<DialogProps, 'open' | 'onClose'>> {
   ct: FixedT;
   disablePlaintext?: boolean;

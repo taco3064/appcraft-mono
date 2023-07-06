@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.60](https://github.com/taco3064/appcraft-mono/compare/v0.0.59...v0.0.60) (2023-07-06)
+
+
+### Features
+
+* **todo-flow-controls:** make component could append new todo event ([f65742a](https://github.com/taco3064/appcraft-mono/commit/f65742a6b4fd3ca7121c4c0b0ccca7dd912788f6))
+
+
+### Bug Fixes
+
+* fixed bugs ([00a7de4](https://github.com/taco3064/appcraft-mono/commit/00a7de4510cc6ce615ff6fbb6acefd2c48f75c11))
+* **todo-flow-controls:** update the prop(typeFile) as not required ([4502658](https://github.com/taco3064/appcraft-mono/commit/45026581262b612d864c70c16a6e24a8f263d4e0))
+
 ### [0.0.59](https://github.com/taco3064/appcraft-mono/compare/v0.0.58...v0.0.59) (2023-07-05)
 
 

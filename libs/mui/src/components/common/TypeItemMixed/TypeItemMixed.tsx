@@ -7,9 +7,9 @@ import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import UndoIcon from '@mui/icons-material/Undo';
 import { useState } from 'react';
 
-import * as Hooks from '../../hooks';
-import * as Styles from '../../styles';
-import { MenuDialog } from '../common';
+import * as Hooks from '../../../hooks';
+import * as Styles from '../../../styles';
+import { MenuDialog } from '..';
 import type { TypeItemMixedProps } from './TypeItemMixed.types';
 
 export default function TypeItemMixed({

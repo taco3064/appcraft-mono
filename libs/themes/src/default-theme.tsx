@@ -84,6 +84,11 @@ export const DEFAULT_THEME: ThemeOptions = {
         },
       },
     },
+    MuiIcon: {
+      defaultProps: {
+        baseClassName: 'material-icons-outlined',
+      },
+    },
     MuiImageListItem: {
       styleOverrides: {
         root: {

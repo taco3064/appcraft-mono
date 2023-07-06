@@ -4,7 +4,7 @@ import { Suspense, useState } from 'react';
 import * as Comp from '../../components';
 import * as Hooks from '../../hooks';
 import { EditorProvider, OptionValues } from '../../contexts';
-import { FullHeightCollapse } from '../../styles';
+import { FullHeightCollapse, TypeListSkeleton } from '../../styles';
 import type * as Types from './CraftedTypeEditor.types';
 
 export default function CraftedTypeEditor<V extends OptionValues>({
@@ -56,7 +56,7 @@ export default function CraftedTypeEditor<V extends OptionValues>({
           />
         )}
 
-        <Suspense fallback={<Comp.TypeListSkeleton />}>
+        <Suspense fallback={<TypeListSkeleton />}>
           <LazyTypeList
             placeholder={ct('msg-select-widget-type-first')}
             values={values as V}

@@ -3,7 +3,7 @@ import type { DialogProps } from '@mui/material/Dialog';
 
 import type { FixedT } from '../../contexts';
 
-export interface PlainTextDialogProps
+export interface MutationPlainTextDialogProps
   extends Required<Pick<DialogProps, 'open' | 'onClose'>> {
   ct: FixedT;
   values?: Appcraft.PlainTextWidget;

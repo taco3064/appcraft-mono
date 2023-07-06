@@ -4,15 +4,15 @@ import { FormEvent } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
-import type { PlainTextDialogProps } from './PlainTextDialog.types';
+import type { MutationPlainTextDialogProps } from './MutationPlainTextDialog.types';
 
-export default function PlainTextDialog({
+export default function MutationPlainTextDialog({
   ct,
   open,
   values,
   onClose,
   onConfirm,
-}: PlainTextDialogProps) {
+}: MutationPlainTextDialogProps) {
   return (
     <FlexDialog
       {...{ open, onClose }}

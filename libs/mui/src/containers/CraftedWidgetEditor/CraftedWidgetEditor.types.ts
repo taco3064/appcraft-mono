@@ -1,7 +1,7 @@
 import type * as Appcraft from '@appcraft/types';
 
+import type * as Comp from '../../components';
 import type { FixedT } from '../../contexts';
-import type { WidgetAddDialogProps, WidgetNodeProps } from '../../components';
 
 export interface NodeSelectEvent {
   item: Appcraft.WidgetOptions;
@@ -11,14 +11,14 @@ export interface NodeSelectEvent {
 }
 
 export type LazyWidgetNodesProps = Omit<
-  WidgetNodeProps<Appcraft.WidgetOptions>,
+  Comp.WidgetNodeProps<Appcraft.WidgetOptions>,
   'index' | 'item' | 'event' | 'structure'
 >;
 
 export interface CraftedWidgetEditorProps
-  extends Pick<WidgetAddDialogProps, 'renderWidgetTypeSelection'> {
+  extends Pick<Comp.MutationNewWidgetDialogProps, 'renderWidgetTypeSelection'> {
   fixedT?: FixedT;
-  todoTypeFile: string;
+  todoTypeFile?: string;
   version?: string;
   widget?: Appcraft.RootNodeWidget;
   onWidgetChange: (e: Appcraft.RootNodeWidget | null) => void;

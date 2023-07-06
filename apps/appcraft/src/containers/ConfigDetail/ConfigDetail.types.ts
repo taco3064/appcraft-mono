@@ -1,4 +1,3 @@
-import type { ConfigData, ConfigOptions } from '@appcraft/types';
 import type { ReactNode } from 'react';
 
 import type * as Hooks from '~appcraft/hooks';

@@ -10,9 +10,9 @@ import TitleIcon from '@mui/icons-material/Title';
 import dayjs from 'dayjs';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 
-import * as Common from '../common';
-import * as Hooks from '../../hooks';
-import { AdornmentTextField, TypeItemAction } from '../../styles';
+import * as Common from '..';
+import * as Hooks from '../../../hooks';
+import { AdornmentTextField, TypeItemAction } from '../../../styles';
 import type { TypeItemPureProps } from './TypeItemPure.types';
 
 export default function TypeItemPure({

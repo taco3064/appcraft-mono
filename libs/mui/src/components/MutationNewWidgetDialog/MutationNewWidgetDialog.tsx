@@ -8,16 +8,16 @@ import type * as Appcraft from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
 import { getDefaultProps } from '../../hooks';
-import type { WidgetAddDialogProps } from './WidgetAddDialog.types';
+import type { MutationNewWidgetDialogProps } from './MutationNewWidgetDialog.types';
 
-export default function WidgetAddDialog({
+export default function MutationNewWidgetDialog({
   ct,
   disablePlaintext = false,
   open,
   renderWidgetTypeSelection,
   onClose,
   onConfirm,
-}: WidgetAddDialogProps) {
+}: MutationNewWidgetDialogProps) {
   const theme = useTheme();
   const [data, setData] = useState<Appcraft.WidgetOptions>();
 

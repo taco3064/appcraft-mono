@@ -271,7 +271,7 @@ const generators: Types.Generators = [
 
 //* 取得目標 Type 對應的 PropTypes
 export const getProptype: Types.GetProptypeUtil = (type, info, source) =>
-  /(React\.Ref<|RefObject<|Ref<)/.test(type.getText())
+  /^(React\.Ref<|RefObject<|Ref<)/.test(type.getText())
     ? false
     : generators.reduce((result, generator) => {
         if (!result) {

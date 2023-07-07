@@ -18,14 +18,17 @@ export default function Breadcrumbs({
         onClose={() => setOpen(false)}
         onChange={(value) => value()}
         options={
-          children?.slice(0, children.length - maxItems + 1).map((child) => {
-            const { children: primary, onClick } = child.props;
+          children
+            ?.slice(0, children.length - maxItems + 1)
+            .reverse()
+            .map((child) => {
+              const { children: primary, onClick } = child.props;
 
-            return {
-              primary,
-              value: onClick,
-            };
-          }) as { primary: string; value: () => void }[]
+              return {
+                primary,
+                value: onClick,
+              };
+            }) as { primary: string; value: () => void }[]
         }
       />
 

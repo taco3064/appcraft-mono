@@ -11,7 +11,7 @@ export const getFlowNodes: Types.GetFlowNodesUtil = (todos, each) =>
       id: todo.id,
       type: 'default',
       draggable: false,
-      data: { label: todo.description, metadata: todo },
+      data: { label: `${todo.description} | ${todo.category}`, metadata: todo },
       position: { x: 0, y: 0 },
     };
 

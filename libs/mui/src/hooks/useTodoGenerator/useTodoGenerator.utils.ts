@@ -5,14 +5,32 @@ import type * as Appcraft from '@appcraft/types';
 import { splitProps } from '../useWidgetGenerator';
 import type * as Types from './useTodoGenerator.types';
 
-export const getFlowNodes: Types.GetFlowNodesUtil = (todos, each) =>
+export const getFlowNodes: Types.GetFlowNodesUtil = (todos, theme, each) =>
   Object.values(todos).map<Types.TodoNode>((todo) => {
-    const node = {
+    const subInfo = todo.category.replace(/^./, (match) => match.toUpperCase());
+
+    const color =
+      todo.category === 'variable'
+        ? 'info'
+        : todo.category === 'branch'
+        ? 'warning'
+        : todo.category === 'fetch'
+        ? 'success'
+        : 'error';
+
+    const node: Types.TodoNode = {
       id: todo.id,
       type: 'default',
       draggable: false,
-      data: { label: `${todo.description} | ${todo.category}`, metadata: todo },
       position: { x: 0, y: 0 },
+      data: {
+        label: `${todo.description} <${subInfo}>`,
+        metadata: todo,
+      },
+      style: {
+        background: theme.palette[color].main,
+        color: theme.palette[color].contrastText,
+      },
     };
 
     each?.(node);
@@ -20,7 +38,7 @@ export const getFlowNodes: Types.GetFlowNodesUtil = (todos, each) =>
     return node;
   });
 
-export const getFlowEdges: Types.GetFlowEdgesUtil = (todos, each) =>
+export const getFlowEdges: Types.GetFlowEdgesUtil = (todos, theme, each) =>
   Object.values(todos).reduce<Types.TodoEdge[]>((result, todo) => {
     const { id, category, defaultNextTodo } = todo;
 
@@ -68,6 +86,57 @@ export const getFlowEdges: Types.GetFlowEdgesUtil = (todos, each) =>
     return result;
   }, []);
 
+export const getTodoState: Types.GetTodoStateUtil = (typeFile, todo) => {
+  switch (todo.category) {
+    case 'variable':
+      return {
+        todo,
+        config: {
+          category: 'config',
+          typeFile,
+          typeName: 'VariableTodo',
+          props: splitProps(todo),
+        },
+      };
+
+    case 'fetch':
+      return {
+        todo,
+        config: {
+          category: 'config',
+          typeFile,
+          typeName: 'FetchTodo',
+          props: splitProps(todo),
+        },
+      };
+
+    case 'branch':
+      return {
+        todo,
+        config: {
+          category: 'config',
+          typeFile,
+          typeName: 'ConditionBranchTodo',
+          props: splitProps(todo),
+        },
+      };
+
+    case 'iterate':
+      return {
+        todo,
+        config: {
+          category: 'config',
+          typeFile,
+          typeName: 'IterateTodo',
+          props: splitProps(todo),
+        },
+      };
+
+    default:
+      return null;
+  }
+};
+
 export const getInitialTodo: Types.GetInitialTodoUtil = (
   typeFile,
   category
@@ -85,15 +154,7 @@ export const getInitialTodo: Types.GetInitialTodoUtil = (
         variables: {},
       };
 
-      return {
-        todo,
-        config: {
-          category: 'config',
-          typeFile,
-          typeName: 'VariableTodo',
-          props: splitProps(todo),
-        },
-      };
+      return getTodoState(typeFile, todo);
     }
     case 'fetch': {
       const todo: Appcraft.FetchTodo = {
@@ -103,15 +164,7 @@ export const getInitialTodo: Types.GetInitialTodoUtil = (
         method: 'GET',
       };
 
-      return {
-        todo,
-        config: {
-          category: 'config',
-          typeFile,
-          typeName: 'FetchTodo',
-          props: splitProps(todo),
-        },
-      };
+      return getTodoState(typeFile, todo);
     }
     case 'branch': {
       const todo: Appcraft.ConditionBranchTodo = {
@@ -121,15 +174,7 @@ export const getInitialTodo: Types.GetInitialTodoUtil = (
         branches: [],
       };
 
-      return {
-        todo,
-        config: {
-          category: 'config',
-          typeFile,
-          typeName: 'ConditionBranchTodo',
-          props: splitProps(todo),
-        },
-      };
+      return getTodoState(typeFile, todo);
     }
     case 'iterate': {
       const todo: Appcraft.IterateTodo = {
@@ -145,15 +190,7 @@ export const getInitialTodo: Types.GetInitialTodoUtil = (
         },
       };
 
-      return {
-        todo,
-        config: {
-          category: 'config',
-          typeFile,
-          typeName: 'IterateTodo',
-          props: splitProps(todo),
-        },
-      };
+      return getTodoState(typeFile, todo);
     }
     default:
       return null;

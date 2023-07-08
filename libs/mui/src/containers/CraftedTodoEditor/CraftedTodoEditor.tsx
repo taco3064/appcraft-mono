@@ -75,7 +75,29 @@ export default function CraftedTodoEditor({
               fitView
               nodes={nodes}
               edges={edges}
-              onConnect={handleTodo.connect}
+              onNodeClick={handleTodo.select}
+              onConnect={({ source, target }) => {
+                if (source && values?.[source] && source !== target) {
+                  onChange({
+                    ...values,
+                    [source]: {
+                      ...values[source],
+                      defaultNextTodo: target || null,
+                    },
+                  } as never);
+                }
+              }}
+              onEdgeDoubleClick={(e, { source }) => {
+                if (values?.[source]) {
+                  onChange({
+                    ...values,
+                    [source]: {
+                      ...values[source],
+                      defaultNextTodo: null,
+                    },
+                  } as never);
+                }
+              }}
             >
               <Background color={theme.palette.text.secondary} gap={16} />
             </ReactFlow>

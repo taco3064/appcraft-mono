@@ -1,8 +1,10 @@
 import dagre from 'dagre';
 import { useMemo, useState } from 'react';
+import { useTheme } from '@mui/material/styles';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Utils from './useTodoGenerator.utils';
+import { splitProps } from '../useWidgetGenerator';
 import type * as Types from './useTodoGenerator.types';
 
 const DEFAULT_SIZE = { width: 120, height: 30 };
@@ -12,6 +14,7 @@ dagreGraph.setDefaultEdgeLabel(() => ({}));
 dagreGraph.setGraph({ rankdir: 'TB' });
 
 const useTodoGenerator: Types.TodoGeneratorHook = (typeFile, todos) => {
+  const theme = useTheme();
   const [editing, setEditing] = useState<Types.TodoState>(null);
 
   return [
@@ -19,12 +22,14 @@ const useTodoGenerator: Types.TodoGeneratorHook = (typeFile, todos) => {
       editing,
 
       ...useMemo(() => {
-        const nodes = Utils.getFlowNodes(todos || {}, ({ id }) =>
+        const nodes = Utils.getFlowNodes(todos || {}, theme, ({ id }) =>
           dagreGraph.setNode(id, { ...DEFAULT_SIZE })
         );
 
-        const edges = Utils.getFlowEdges(todos || {}, ({ source, target }) =>
-          dagreGraph.setEdge(source, target)
+        const edges = Utils.getFlowEdges(
+          todos || {},
+          theme,
+          ({ source, target }) => dagreGraph.setEdge(source, target)
         );
 
         dagre.layout(dagreGraph);
@@ -43,7 +48,7 @@ const useTodoGenerator: Types.TodoGeneratorHook = (typeFile, todos) => {
             };
           }),
         };
-      }, [todos]),
+      }, [theme, todos]),
     },
     {
       cancel: () => setEditing(null),
@@ -51,10 +56,11 @@ const useTodoGenerator: Types.TodoGeneratorHook = (typeFile, todos) => {
       change: (config) =>
         setEditing({ todo: editing?.todo as Appcraft.WidgetTodo, config }),
 
-      connect: (params) => console.log(params),
-
       create: (category) =>
         setEditing(Utils.getInitialTodo(typeFile, category)),
+
+      select: (_e, { data: { metadata } }) =>
+        setEditing(Utils.getTodoState(typeFile, metadata)),
     },
   ];
 };

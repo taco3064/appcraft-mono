@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.61](https://github.com/taco3064/appcraft-mono/compare/v0.0.60...v0.0.61) (2023-07-09)
+
+
+### Features
+
+* **crafted-todo-editor:** support add/remove edge ([2a654d8](https://github.com/taco3064/appcraft-mono/commit/2a654d8abbcaa5ba9ae284c63dcd1a169a425fcc))
+* **crafted-todo-editor:** support auto fit/layout when append new node/edge ([1d4206a](https://github.com/taco3064/appcraft-mono/commit/1d4206a632de108d02f586531ad1bc0e540b6781))
+
+
+### Bug Fixes
+
+* **todo-types:** update todo-brach types ([924027a](https://github.com/taco3064/appcraft-mono/commit/924027ae2f1d2bb3eb57a0979d3fb801df070392))
+* **use-todo-generator:** update node label format ([ce0da64](https://github.com/taco3064/appcraft-mono/commit/ce0da6460700617976453fea6b043141f016d6ad))
+
 ### [0.0.60](https://github.com/taco3064/appcraft-mono/compare/v0.0.59...v0.0.60) (2023-07-06)
 
 

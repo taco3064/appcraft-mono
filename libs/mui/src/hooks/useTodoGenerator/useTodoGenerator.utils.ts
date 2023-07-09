@@ -40,48 +40,41 @@ export const getFlowNodes: Types.GetFlowNodesUtil = (todos, theme, each) =>
 
 export const getFlowEdges: Types.GetFlowEdgesUtil = (todos, theme, each) =>
   Object.values(todos).reduce<Types.TodoEdge[]>((result, todo) => {
+    const acc: Types.TodoEdge[] = [];
     const { id, category, defaultNextTodo } = todo;
 
     if (defaultNextTodo) {
-      const edge = {
+      acc.push({
         id: `${id}-${defaultNextTodo}`,
         source: id,
         target: defaultNextTodo,
         markerEnd: { type: MarkerType.ArrowClosed },
         ...(category === 'branch' && { label: 'No' }),
         ...(category === 'iterate' && { label: 'Completed' }),
-      };
-
-      each?.(edge);
-      result.push(edge);
+      });
     }
 
     if (category === 'iterate' && todo.iterateTodo) {
-      const edge = {
+      acc.push({
         id: `${id}-${todo.iterateTodo}`,
         source: id,
         target: todo.iterateTodo,
         markerEnd: { type: MarkerType.ArrowClosed },
-      };
-
-      each?.(edge);
-      result.push(edge);
-    } else if (category === 'branch') {
-      todo.branches?.forEach(({ metTodo }) => {
-        if (todos?.[metTodo]) {
-          const edge = {
-            id: `${id}-${metTodo}`,
-            source: id,
-            target: metTodo,
-            label: 'Yes',
-            markerEnd: { type: MarkerType.ArrowClosed },
-          };
-
-          each?.(edge);
-          result.push(edge);
-        }
       });
     }
+
+    if (category === 'branch' && todo.metTodo) {
+      acc.push({
+        id: `${id}-${todo.metTodo}`,
+        source: id,
+        target: todo.metTodo,
+        label: 'Yes',
+        markerEnd: { type: MarkerType.ArrowClosed },
+      });
+    }
+
+    each && acc.forEach(each);
+    result.push(...acc);
 
     return result;
   }, []);
@@ -147,37 +140,32 @@ export const getInitialTodo: Types.GetInitialTodoUtil = (
   };
 
   switch (category) {
-    case 'variable': {
-      const todo: Appcraft.VariableTodo = {
+    case 'variable':
+      return getTodoState(typeFile, {
         ...data,
         category,
         variables: {},
-      };
+      });
 
-      return getTodoState(typeFile, todo);
-    }
-    case 'fetch': {
-      const todo: Appcraft.FetchTodo = {
+    case 'fetch':
+      return getTodoState(typeFile, {
         ...data,
         category,
         url: '',
         method: 'GET',
-      };
+      });
 
-      return getTodoState(typeFile, todo);
-    }
-    case 'branch': {
-      const todo: Appcraft.ConditionBranchTodo = {
+    case 'branch':
+      return getTodoState(typeFile, {
         ...data,
         category,
         sources: [],
-        branches: [],
-      };
+        template: '',
+        metTodo: '',
+      });
 
-      return getTodoState(typeFile, todo);
-    }
-    case 'iterate': {
-      const todo: Appcraft.IterateTodo = {
+    case 'iterate':
+      return getTodoState(typeFile, {
         ...data,
         category,
         iterateTodo: '',
@@ -188,10 +176,8 @@ export const getInitialTodo: Types.GetInitialTodoUtil = (
             key: '',
           },
         },
-      };
+      });
 
-      return getTodoState(typeFile, todo);
-    }
     default:
       return null;
   }

@@ -62,10 +62,8 @@ export type ConditionBranchTodo = BaseTodo<
   'branch',
   {
     sources: Omit<Variable<'extract', ExtractTodoResult>, 'template'>[];
-    branches: {
-      template: string; //* 使用 lodash template 進行判斷
-      metTodo: string;
-    }[];
+    template: string; //* 使用 lodash template 進行判斷
+    metTodo: string;
   }
 >;
 

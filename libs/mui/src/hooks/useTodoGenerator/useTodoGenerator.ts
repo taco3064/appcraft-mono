@@ -1,108 +1,66 @@
-import { useState } from 'react';
-import { nanoid } from 'nanoid';
+import dagre from 'dagre';
+import { useMemo, useState } from 'react';
+import { useTheme } from '@mui/material/styles';
 import type * as Appcraft from '@appcraft/types';
 
+import * as Utils from './useTodoGenerator.utils';
 import { splitProps } from '../useWidgetGenerator';
-import type { TodoGeneratorHook, ValuesState } from './useTodoGenerator.types';
+import type * as Types from './useTodoGenerator.types';
 
-const useTodoGenerator: TodoGeneratorHook = (typeFile) => {
-  const [values, setValues] = useState<ValuesState>(null);
+const DEFAULT_SIZE = { width: 120, height: 30 };
+const dagreGraph = new dagre.graphlib.Graph();
+
+dagreGraph.setDefaultEdgeLabel(() => ({}));
+dagreGraph.setGraph({ rankdir: 'TB' });
+
+const useTodoGenerator: Types.TodoGeneratorHook = (typeFile, todos) => {
+  const theme = useTheme();
+  const [editing, setEditing] = useState<Types.TodoState>(null);
 
   return [
-    values,
-
     {
-      cancel: () => setValues(null),
+      editing,
+
+      ...useMemo(() => {
+        const nodes = Utils.getFlowNodes(todos || {}, theme, ({ id }) =>
+          dagreGraph.setNode(id, { ...DEFAULT_SIZE })
+        );
+
+        const edges = Utils.getFlowEdges(
+          todos || {},
+          theme,
+          ({ source, target }) => dagreGraph.setEdge(source, target)
+        );
+
+        dagre.layout(dagreGraph);
+
+        return {
+          edges,
+          nodes: nodes.map((node) => {
+            const nodeWithPosition = dagreGraph.node(node.id);
+
+            return {
+              ...node,
+              position: {
+                x: nodeWithPosition.x - DEFAULT_SIZE.width / 2,
+                y: nodeWithPosition.y - DEFAULT_SIZE.height / 2,
+              },
+            };
+          }),
+        };
+      }, [theme, todos]),
+    },
+    {
+      cancel: () => setEditing(null),
 
       change: (config) =>
-        setValues({ todo: values?.todo as Appcraft.WidgetTodo, config }),
+        setEditing({ todo: editing?.todo as Appcraft.WidgetTodo, config }),
 
-      create: (category) => {
-        const data: Pick<Appcraft.WidgetTodo, 'description' | 'id'> = {
-          id: nanoid(4),
-          description: '',
-        };
+      create: (category) =>
+        setEditing(Utils.getInitialTodo(typeFile, category)),
 
-        switch (category) {
-          case 'variable': {
-            const todo: Appcraft.VariableTodo = {
-              ...data,
-              category,
-              variables: {},
-            };
-
-            return setValues({
-              todo,
-              config: {
-                category: 'config',
-                typeFile,
-                typeName: 'VariableTodo',
-                props: splitProps(todo),
-              },
-            });
-          }
-          case 'fetch': {
-            const todo: Appcraft.FetchTodo = {
-              ...data,
-              category,
-              url: '',
-              method: 'GET',
-            };
-
-            return setValues({
-              todo,
-              config: {
-                category: 'config',
-                typeFile,
-                typeName: 'FetchTodo',
-                props: splitProps(todo),
-              },
-            });
-          }
-          case 'branch': {
-            const todo: Appcraft.ConditionBranchTodo = {
-              ...data,
-              category,
-              sources: [],
-              branches: [],
-            };
-
-            return setValues({
-              todo,
-              config: {
-                category: 'config',
-                typeFile,
-                typeName: 'ConditionBranchTodo',
-                props: splitProps(todo),
-              },
-            });
-          }
-          case 'iterate': {
-            const todo: Appcraft.IterateTodo = {
-              ...data,
-              category,
-              iterateTodo: '',
-              source: {
-                mode: 'extract',
-                initial: {
-                  sourceType: 'input',
-                  key: '',
-                },
-              },
-            };
-
-            return setValues({
-              todo,
-              config: {
-                category: 'config',
-                typeFile,
-                typeName: 'IterateTodo',
-                props: splitProps(todo),
-              },
-            });
-          }
-        }
-      },
+      select: (_e, { data: { metadata } }) =>
+        setEditing(Utils.getTodoState(typeFile, metadata)),
     },
   ];
 };

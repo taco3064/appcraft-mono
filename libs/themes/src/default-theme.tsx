@@ -113,6 +113,13 @@ export const DEFAULT_THEME: ThemeOptions = {
         },
       },
     },
+    MuiList: {
+      styleOverrides: {
+        root: {
+          width: '100%',
+        },
+      },
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {

@@ -102,7 +102,7 @@ export default function HierarchyList({
         <Typography
           variant="h5"
           color="text.secondary"
-          align="center"
+          justifyContent="center"
           sx={(theme) => ({
             opacity: theme.palette.action.disabledOpacity,
             margin: theme.spacing(6, 0),

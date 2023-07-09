@@ -9,5 +9,5 @@ export interface CraftedTodoEditorProps
   todoPath?: string;
   typeFile?: string;
   values?: Record<string, Appcraft.WidgetTodo>;
-  onChange?: (values: Record<string, Appcraft.WidgetTodo>) => void;
+  onChange: (values: Record<string, Appcraft.WidgetTodo>) => void;
 }

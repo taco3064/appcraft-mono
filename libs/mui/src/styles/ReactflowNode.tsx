@@ -140,17 +140,23 @@ export const WidgetTodoNode = (() => {
 
       return {
         root: {
+          cursor: 'pointer',
           display: 'flex',
           flexDirection: 'column',
           borderRadius: theme.spacing(2),
           background: `linear-gradient(to bottom right, ${theme.palette[color].main}, ${theme.palette[color].dark})`,
           padding: theme.spacing(1, 2),
           ...DEFAULT_NODE_SIZE,
+
+          '&:hover': {
+            transform: 'scale(1.02)',
+          },
         },
         handle: {
           background: theme.palette.text.secondary,
           width: 8,
           height: 8,
+          zIndex: 1,
         },
         primary: {
           width: '100%',

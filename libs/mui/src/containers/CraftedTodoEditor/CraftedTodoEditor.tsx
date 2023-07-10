@@ -1,11 +1,11 @@
 import Paper from '@mui/material/Paper';
-import ReactFlow, { Background, ReactFlowProvider } from 'reactflow';
+import * as Rf from 'reactflow';
 import { useTheme } from '@mui/material/styles';
 
 import * as Comp from '../../components';
 import * as Hooks from '../../hooks';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { FullHeightCollapse } from '../../styles';
+import { FullHeightCollapse, WidgetTodoNode } from '../../styles';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
 
 export default function CraftedTodoEditor({
@@ -70,40 +70,51 @@ export default function CraftedTodoEditor({
             },
           }}
         >
-          <ReactFlowProvider>
-            <ReactFlow
+          <Rf.ReactFlowProvider>
+            <Rf.ReactFlow
               fitView
               nodes={nodes}
               edges={edges}
+              defaultEdgeOptions={{
+                type: 'smoothstep',
+                markerEnd: { type: Rf.MarkerType.ArrowClosed },
+                style: { strokeWidth: 2 },
+              }}
+              nodeTypes={{
+                variable: WidgetTodoNode,
+                fetch: WidgetTodoNode,
+                branch: WidgetTodoNode,
+                iterate: WidgetTodoNode,
+              }}
               onNodeClick={handleTodo.select}
-              onConnect={({ source, target }) => {
+              onConnect={({ source, sourceHandle, target }) => {
                 if (source && values?.[source] && source !== target) {
                   onChange({
                     ...values,
                     [source]: {
                       ...values[source],
-                      defaultNextTodo: target || null,
+                      [sourceHandle as string]: target || null,
                     },
                   } as never);
                 }
               }}
-              onEdgeDoubleClick={(e, { source }) => {
+              onEdgeDoubleClick={(e, { source, sourceHandle }) => {
                 if (values?.[source]) {
                   onChange({
                     ...values,
                     [source]: {
                       ...values[source],
-                      defaultNextTodo: null,
+                      [sourceHandle as string]: null,
                     },
                   } as never);
                 }
               }}
             >
-              <Background color={theme.palette.text.secondary} gap={16} />
-            </ReactFlow>
+              <Rf.Background color={theme.palette.text.secondary} gap={16} />
+            </Rf.ReactFlow>
 
             <Comp.TodoFlowControls ct={ct} onTodoAdd={handleTodo.create} />
-          </ReactFlowProvider>
+          </Rf.ReactFlowProvider>
         </Paper>
       </FullHeightCollapse>
     </>

@@ -2,35 +2,19 @@ import { MarkerType } from 'reactflow';
 import { nanoid } from 'nanoid';
 import type * as Appcraft from '@appcraft/types';
 
+import { DEFAULT_NODE_SIZE } from '../../styles';
 import { splitProps } from '../useWidgetGenerator';
 import type * as Types from './useTodoGenerator.types';
 
-export const getFlowNodes: Types.GetFlowNodesUtil = (todos, theme, each) =>
+export const getFlowNodes: Types.GetFlowNodesUtil = (todos, each) =>
   Object.values(todos).map<Types.TodoNode>((todo) => {
-    const subInfo = todo.category.replace(/^./, (match) => match.toUpperCase());
-
-    const color =
-      todo.category === 'variable'
-        ? 'info'
-        : todo.category === 'branch'
-        ? 'warning'
-        : todo.category === 'fetch'
-        ? 'success'
-        : 'error';
-
     const node: Types.TodoNode = {
       id: todo.id,
-      type: 'default',
+      type: todo.category,
       draggable: false,
       position: { x: 0, y: 0 },
-      data: {
-        label: `${todo.description} <${subInfo}>`,
-        metadata: todo,
-      },
-      style: {
-        background: theme.palette[color].main,
-        color: theme.palette[color].contrastText,
-      },
+      data: todo,
+      ...DEFAULT_NODE_SIZE,
     };
 
     each?.(node);
@@ -38,7 +22,7 @@ export const getFlowNodes: Types.GetFlowNodesUtil = (todos, theme, each) =>
     return node;
   });
 
-export const getFlowEdges: Types.GetFlowEdgesUtil = (todos, theme, each) =>
+export const getFlowEdges: Types.GetFlowEdgesUtil = (todos, each) =>
   Object.values(todos).reduce<Types.TodoEdge[]>((result, todo) => {
     const acc: Types.TodoEdge[] = [];
     const { id, category, defaultNextTodo } = todo;
@@ -47,8 +31,8 @@ export const getFlowEdges: Types.GetFlowEdgesUtil = (todos, theme, each) =>
       acc.push({
         id: `${id}-${defaultNextTodo}`,
         source: id,
+        sourceHandle: 'defaultNextTodo',
         target: defaultNextTodo,
-        markerEnd: { type: MarkerType.ArrowClosed },
         ...(category === 'branch' && { label: 'No' }),
         ...(category === 'iterate' && { label: 'Completed' }),
       });
@@ -58,8 +42,9 @@ export const getFlowEdges: Types.GetFlowEdgesUtil = (todos, theme, each) =>
       acc.push({
         id: `${id}-${todo.iterateTodo}`,
         source: id,
+        sourceHandle: 'iterateTodo',
         target: todo.iterateTodo,
-        markerEnd: { type: MarkerType.ArrowClosed },
+        label: 'Iterate',
       });
     }
 
@@ -67,9 +52,9 @@ export const getFlowEdges: Types.GetFlowEdgesUtil = (todos, theme, each) =>
       acc.push({
         id: `${id}-${todo.metTodo}`,
         source: id,
+        sourceHandle: 'metTodo',
         target: todo.metTodo,
         label: 'Yes',
-        markerEnd: { type: MarkerType.ArrowClosed },
       });
     }
 

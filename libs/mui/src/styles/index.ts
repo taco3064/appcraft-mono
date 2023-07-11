@@ -11,4 +11,4 @@ export * from './MuiListSubheader';
 export * from './MuiSwitch';
 export * from './MuiTextField';
 export * from './MuiTypography';
-export * from './ReactflowNode';
+export * from './ReactFlow';

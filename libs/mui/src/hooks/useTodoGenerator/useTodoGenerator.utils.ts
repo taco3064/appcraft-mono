@@ -1,8 +1,7 @@
-import { MarkerType } from 'reactflow';
 import { nanoid } from 'nanoid';
 import type * as Appcraft from '@appcraft/types';
 
-import { DEFAULT_NODE_SIZE } from '../../styles';
+import { DEFAULT_SIZE } from '../../styles';
 import { splitProps } from '../useWidgetGenerator';
 import type * as Types from './useTodoGenerator.types';
 
@@ -14,7 +13,7 @@ export const getFlowNodes: Types.GetFlowNodesUtil = (todos, each) =>
       draggable: false,
       position: { x: 0, y: 0 },
       data: todo,
-      ...DEFAULT_NODE_SIZE,
+      ...DEFAULT_SIZE.NODE,
     };
 
     each?.(node);

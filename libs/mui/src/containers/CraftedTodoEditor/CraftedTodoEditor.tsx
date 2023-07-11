@@ -1,11 +1,13 @@
-import Paper from '@mui/material/Paper';
 import * as Rf from 'reactflow';
+import Paper from '@mui/material/Paper';
+import _get from 'lodash.get';
+import _set from 'lodash.set';
 import { useTheme } from '@mui/material/styles';
 
 import * as Comp from '../../components';
 import * as Hooks from '../../hooks';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { FullHeightCollapse, WidgetTodoNode } from '../../styles';
+import { FullHeightCollapse } from '../../styles';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
 
 export default function CraftedTodoEditor({
@@ -81,12 +83,30 @@ export default function CraftedTodoEditor({
                 style: { strokeWidth: 2 },
               }}
               nodeTypes={{
-                variable: WidgetTodoNode,
-                fetch: WidgetTodoNode,
-                branch: WidgetTodoNode,
-                iterate: WidgetTodoNode,
+                variable: Comp.TodoFlowNode,
+                fetch: Comp.TodoFlowNode,
+                branch: Comp.TodoFlowNode,
+                iterate: Comp.TodoFlowNode,
               }}
               onNodeClick={handleTodo.select}
+              onNodesDelete={(nodes) => {
+                if (values) {
+                  nodes.forEach(({ id }) => {
+                    delete values[id];
+
+                    edges.forEach(({ source, sourceHandle }) => {
+                      if (
+                        sourceHandle &&
+                        id === _get(values, [source, sourceHandle])
+                      ) {
+                        _set(values, [source, sourceHandle], '');
+                      }
+                    });
+                  });
+                }
+
+                onChange({ ...values } as never);
+              }}
               onConnect={({ source, sourceHandle, target }) => {
                 if (source && values?.[source] && source !== target) {
                   onChange({

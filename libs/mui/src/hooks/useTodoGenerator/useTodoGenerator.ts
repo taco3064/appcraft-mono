@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Utils from './useTodoGenerator.utils';
-import { DEFAULT_NODE_SIZE } from '../../styles';
+import { DEFAULT_SIZE } from '../../styles';
 import type * as Types from './useTodoGenerator.types';
 
 const useTodoGenerator: Types.TodoGeneratorHook = (typeFile, todos) => {
@@ -16,12 +16,10 @@ const useTodoGenerator: Types.TodoGeneratorHook = (typeFile, todos) => {
       ...useMemo(() => {
         const dagreGraph = new dagre.graphlib.Graph()
           .setDefaultEdgeLabel(() => ({}))
-          .setGraph({
-            rankdir: 'TB',
-          });
+          .setGraph({ rankdir: 'RLTB' });
 
         const nodes = Utils.getFlowNodes(todos || {}, ({ id }) =>
-          dagreGraph.setNode(id, { ...DEFAULT_NODE_SIZE })
+          dagreGraph.setNode(id, { ...DEFAULT_SIZE.DAGRE })
         );
 
         const edges = Utils.getFlowEdges(todos || {}, ({ source, target }) =>
@@ -38,8 +36,8 @@ const useTodoGenerator: Types.TodoGeneratorHook = (typeFile, todos) => {
             return {
               ...node,
               position: {
-                x: nodeWithPosition.x - DEFAULT_NODE_SIZE.width / 2,
-                y: nodeWithPosition.y - DEFAULT_NODE_SIZE.height / 2,
+                x: nodeWithPosition.x - DEFAULT_SIZE.NODE.width / 2,
+                y: nodeWithPosition.y - DEFAULT_SIZE.NODE.height / 2,
               },
             };
           }),

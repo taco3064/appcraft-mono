@@ -7,6 +7,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
+import Paper from '@mui/material/Paper';
 import SyncIcon from '@mui/icons-material/Sync';
 import cx from 'clsx';
 import { Handle, HandleProps } from 'reactflow';
@@ -20,6 +21,22 @@ export const DEFAULT_SIZE = {
   DAGRE: { width: 300, height: 40 },
   NODE: { width: 240, height: 60 },
 };
+
+export const TodoBackground = withStyles(
+  Paper,
+  () => ({
+    root: {
+      position: 'relative',
+      width: '100%',
+      height: '100%',
+
+      '& a[aria-label="React Flow attribution"]': {
+        display: 'none !important',
+      },
+    },
+  }),
+  { name: 'TodoBackground' }
+);
 
 export const TodoHandle = (() => {
   interface TodoHandleProps extends HandleProps {

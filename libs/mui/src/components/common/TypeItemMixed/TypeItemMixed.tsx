@@ -40,6 +40,7 @@ export default function TypeItemMixed({
       {matched ? (
         renderMatchedField(
           matched,
+          selected as string,
           <>
             <Styles.IconTipButton
               disabled={disabled}

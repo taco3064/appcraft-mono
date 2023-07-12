@@ -68,9 +68,13 @@ export default function TypeList<V extends OptionValues>({
         )
       }
     >
-      {items.map(({ key, ...item }) => (
-        <TypeItem key={key} {...item} onSubitemView={handleTo} />
-      ))}
+      {!items.length ? (
+        <Styles.ListPlaceholder message={ct('msg-no-properties')} />
+      ) : (
+        items.map(({ key, ...item }) => (
+          <TypeItem key={key} {...item} onSubitemView={handleTo} />
+        ))
+      )}
     </List>
   );
 }

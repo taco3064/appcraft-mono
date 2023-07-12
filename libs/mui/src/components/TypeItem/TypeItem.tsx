@@ -2,6 +2,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Collapse from '@mui/material/Collapse';
 import LabelIcon from '@mui/icons-material/Label';
 import LabelOutlinedIcon from '@mui/icons-material/LabelOutlined';
+import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 
 import * as Common from '../common';
@@ -12,6 +13,7 @@ import type * as Types from './TypeItem.types';
 export default function TypeItem({
   action,
   collectionType,
+  description,
   disabled = false,
   options,
   onDelete,
@@ -76,10 +78,11 @@ export default function TypeItem({
           {category === 'Display' && (
             <Common.TypeItemDisplay
               action={actions}
+              description={description}
               disabled={disabled || Boolean(status)}
               label={label}
-              propPath={propPath}
               options={options as Common.TypeItemDisplayProps['options']}
+              propPath={propPath}
               selection={selection}
               onClick={onSubitemView}
             />
@@ -88,10 +91,11 @@ export default function TypeItem({
           {category === 'Pure' && (
             <Common.TypeItemPure
               action={actions}
+              description={description}
               disabled={disabled || Boolean(status)}
               label={label}
-              propPath={propPath}
               options={options as Common.TypeItemPureProps['options']}
+              propPath={propPath}
               selection={selection}
             />
           )}
@@ -104,12 +108,17 @@ export default function TypeItem({
               propPath={propPath}
               options={options as Common.TypeItemMixedProps['options']}
               selection={selection}
-              renderMatchedField={(matched, matchedAction) => (
+              renderMatchedField={(matched, description, matchedAction) => (
                 <TypeItem
                   {...{ collectionType, onDelete, onSubitemView }}
                   disabled={disabled || Boolean(status)}
                   options={{ ...matched, propName: options.propName }}
                   action={matchedAction}
+                  description={
+                    <Typography variant="caption" color="text.secondary">
+                      {description}
+                    </Typography>
+                  }
                 />
               )}
             />

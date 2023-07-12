@@ -17,8 +17,8 @@ import { CompositeIcon } from './MuiIcon';
 import { TypeItemAction } from './MuiListItemSecondaryAction';
 
 export const DEFAULT_SIZE = {
-  DAGRE: { width: 340, height: 60 },
-  NODE: { width: 220, height: 60 },
+  DAGRE: { width: 300, height: 40 },
+  NODE: { width: 240, height: 60 },
 };
 
 export const TodoHandle = (() => {
@@ -87,7 +87,7 @@ export const TodoNodeLabel = (() => {
             background: `linear-gradient(to bottom right, ${theme.palette[color].main}, ${theme.palette[color].dark})`,
           })}
         >
-          <ListItemIcon style={{ minWidth: 'none', marginRight: 8 }}>
+          <ListItemIcon style={{ minWidth: 48, justifyContent: 'center' }}>
             {category === 'variable' && <AutoFixHighIcon />}
 
             {category === 'fetch' && (

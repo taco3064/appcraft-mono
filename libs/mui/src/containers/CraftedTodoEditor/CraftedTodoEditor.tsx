@@ -64,8 +64,12 @@ export default function CraftedTodoEditor({
               fitView
               nodes={nodes}
               edges={edges}
+              onConnect={handleTodo.connect}
+              onEdgeDoubleClick={handleTodo.deleteEdge}
+              onNodeClick={handleTodo.select}
+              onNodesDelete={handleTodo.deleteNode}
               defaultEdgeOptions={{
-                type: 'smoothstep',
+                type: 'smooth',
                 markerEnd: { type: Rf.MarkerType.ArrowClosed },
                 style: { strokeWidth: 2 },
               }}
@@ -75,10 +79,6 @@ export default function CraftedTodoEditor({
                 branch: Comp.TodoFlowNode,
                 iterate: Comp.TodoFlowNode,
               }}
-              onConnect={handleTodo.connect}
-              onEdgeDoubleClick={handleTodo.deleteEdge}
-              onNodeClick={handleTodo.select}
-              onNodesDelete={handleTodo.deleteNode}
             >
               <Rf.Background color={theme.palette.text.secondary} gap={16} />
             </Rf.ReactFlow>

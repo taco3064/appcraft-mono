@@ -11,7 +11,7 @@ import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
 
 export default function Detail() {
-  const { setTheme } = Hooks.useSettingModified();
+  const [, handleSetting] = Hooks.useSettingModified();
   const { pathname, query } = useRouter();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
@@ -41,7 +41,7 @@ export default function Detail() {
               btnVariant="icon"
               icon={AutoAwesomeOutlinedIcon}
               text={at('btn-apply')}
-              onClick={() => setTheme(theme._id, theme.timestamp)}
+              onClick={() => handleSetting.theme(theme._id, theme.timestamp)}
             />
           )}
 

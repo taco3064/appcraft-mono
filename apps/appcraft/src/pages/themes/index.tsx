@@ -10,7 +10,7 @@ import { PageContainer } from '~appcraft/styles';
 
 export default function Themes() {
   const { pathname } = useRouter();
-  const { setTheme } = Hooks.useSettingModified();
+  const [, handleSetting] = Hooks.useSettingModified();
   const [at, nt] = Hooks.useFixedT('app', 'nav');
 
   const [action, handleActionNodePick] = Hooks.useNodePickHandle([
@@ -45,7 +45,7 @@ export default function Themes() {
             color="default"
             icon={AutoAwesomeOutlinedIcon}
             text={at('btn-apply')}
-            onClick={() => setTheme(theme._id)}
+            onClick={() => handleSetting.theme(theme._id)}
           />
         )}
       />

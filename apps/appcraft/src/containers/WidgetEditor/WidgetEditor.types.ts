@@ -6,6 +6,7 @@ import type { PersistentDrawerContentProps } from '~appcraft/components';
 export interface WidgetEditorProps {
   data: ConfigData<RootNodeWidget, string>;
   onActionNodePick?: NodePickerFn<'expand' | 'reset' | 'save'>;
+  onSave?: () => void;
 
   PersistentDrawerContentProps?: Omit<
     PersistentDrawerContentProps,

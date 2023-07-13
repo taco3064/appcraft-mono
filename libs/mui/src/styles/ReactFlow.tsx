@@ -18,8 +18,8 @@ import { CompositeIcon } from './MuiIcon';
 import { TypeItemAction } from './MuiListItemSecondaryAction';
 
 export const DEFAULT_SIZE = {
-  DAGRE: { width: 300, height: 40 },
-  NODE: { width: 240, height: 60 },
+  DAGRE: { width: 260, height: 80 },
+  NODE: { width: 220, height: 60 },
 };
 
 export const TodoBackground = withStyles(

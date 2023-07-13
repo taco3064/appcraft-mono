@@ -18,7 +18,7 @@ const useTodoGenerator: Types.TodoGeneratorHook = (
   const { nodes, edges } = useMemo(() => {
     const dagreGraph = new dagre.graphlib.Graph()
       .setDefaultEdgeLabel(() => ({}))
-      .setGraph({ rankdir: 'LRTB' });
+      .setGraph({ rankdir: 'TB', align: 'UL', ranker: 'longest-path' });
 
     const nodes = Utils.getFlowNodes(todos || {}, ({ id }) =>
       dagreGraph.setNode(id, { ...DEFAULT_SIZE.DAGRE })
@@ -33,15 +33,9 @@ const useTodoGenerator: Types.TodoGeneratorHook = (
     return {
       edges,
       nodes: nodes.map((node) => {
-        const nodeWithPosition = dagreGraph.node(node.id);
+        const { x, y } = dagreGraph.node(node.id);
 
-        return {
-          ...node,
-          position: {
-            x: nodeWithPosition.x - DEFAULT_SIZE.NODE.width / 2,
-            y: nodeWithPosition.y - DEFAULT_SIZE.NODE.height / 2,
-          },
-        };
+        return { ...node, position: { x, y } };
       }),
     };
   }, [todos]);
@@ -61,12 +55,7 @@ const useTodoGenerator: Types.TodoGeneratorHook = (
       select: (_e, { data }) => setEditing(Utils.getTodoState(typeFile, data)),
 
       connect: ({ source, sourceHandle, target }) => {
-        if (
-          source &&
-          todos[source] &&
-          source !== target &&
-          edges.every((edge) => edge.target !== target)
-        ) {
+        if (source && todos[source] && source !== target) {
           onChange({
             ...todos,
             [source]: {

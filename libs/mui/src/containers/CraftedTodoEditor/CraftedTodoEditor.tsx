@@ -62,6 +62,7 @@ export default function CraftedTodoEditor({
           <Rf.ReactFlowProvider>
             <Rf.ReactFlow
               fitView
+              connectionLineType={Rf.ConnectionLineType.SmoothStep}
               nodes={nodes}
               edges={edges}
               onConnect={handleTodo.connect}
@@ -69,7 +70,7 @@ export default function CraftedTodoEditor({
               onNodeClick={handleTodo.select}
               onNodesDelete={handleTodo.deleteNode}
               defaultEdgeOptions={{
-                type: 'smooth',
+                type: Rf.ConnectionLineType.SmoothStep,
                 markerEnd: { type: Rf.MarkerType.ArrowClosed },
                 style: { strokeWidth: 2 },
               }}

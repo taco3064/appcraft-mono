@@ -77,7 +77,7 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
             : { primary: ct('ttl-node-plain-text'), secondary: content })}
         />
 
-        <Styles.TypeItemAction onClick={(e) => e.stopPropagation()}>
+        <Styles.TypeItemAction>
           {open && structures.length > 0 && events.length > 0 && (
             <Tooltip
               title={ct(`btn-${display === 'events' ? 'todos' : 'nodes'}`)}

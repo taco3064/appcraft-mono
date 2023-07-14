@@ -1,7 +1,6 @@
 import type * as Appcraft from '@appcraft/types';
-import type { Edge, Node, OnConnect } from 'reactflow';
+import type { Edge, Node, ReactFlowProps } from 'reactflow';
 import type { MouseEvent } from 'react';
-import type { Theme } from '@mui/material/styles';
 
 import type { ChangeHandler } from '../../contexts';
 
@@ -11,7 +10,11 @@ export type TodoState = {
 } | null;
 
 export type TodoEdge = Edge<never>;
-export type TodoNode = Node<{ label?: string; metadata: Appcraft.WidgetTodo }>;
+export type TodoNode = Node<Appcraft.WidgetTodo>;
+
+export type TodoChangeHandler = (
+  values: Record<string, Appcraft.WidgetTodo>
+) => void;
 
 //* Util Functions
 export type GetInitialTodoUtil = (
@@ -26,26 +29,28 @@ export type GetTodoStateUtil = (
 
 export type GetFlowNodesUtil = (
   todos: Record<string, Appcraft.WidgetTodo>,
-  theme: Theme,
   each?: (node: TodoNode) => void
 ) => TodoNode[];
 
 export type GetFlowEdgesUtil = (
   todos: Record<string, Appcraft.WidgetTodo>,
-  theme: Theme,
   each?: (edge: TodoEdge) => void
 ) => TodoEdge[];
 
 //* Custom Hooks
 export type TodoGeneratorHook = (
   typeFile: string,
-  todos?: Record<string, Appcraft.WidgetTodo>
+  todos: Record<string, Appcraft.WidgetTodo>,
+  onChange: TodoChangeHandler
 ) => [
   { editing: TodoState; edges: TodoEdge[]; nodes: TodoNode[] },
   {
     cancel: () => void;
     change: ChangeHandler<Appcraft.ConfigOptions>;
+    connect: ReactFlowProps['onConnect'];
     create: <T extends Appcraft.WidgetTodo>(category: T['category']) => void;
+    deleteEdge: ReactFlowProps['onEdgeDoubleClick'];
+    deleteNode: ReactFlowProps['onNodesDelete'];
     select: (e: MouseEvent, node: TodoNode) => void;
   }
 ];

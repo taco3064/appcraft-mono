@@ -5,10 +5,11 @@ export type CollectionType = 'array' | 'object';
 export type WidgetField = 'nodes' | 'props' | 'todos';
 
 export interface BaseField<O extends PropTypesDef> {
+  action?: ReactNode;
+  description?: ReactNode;
   disabled?: boolean;
   label: string;
   options: O;
   propPath: string;
-  action?: ReactNode;
   selection?: ReactNode;
 }

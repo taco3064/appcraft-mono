@@ -9,6 +9,10 @@ import type {
 } from 'react';
 
 //* Variables
+export type ExecuteRecord = {
+  event: unknown[];
+  output: Record<string, unknown>;
+};
 export type PlainTextProps = { children?: ReactNode };
 export type PlainTextComponent = ComponentType<PlainTextProps>;
 
@@ -41,7 +45,7 @@ export type WidgetGeneratorHook = (
   renderer: Renderer
 ) => GeneratorFn;
 
-//* Utils
+//* Util Methods
 export type GetDefaultPropsUtil = (
   theme: Theme,
   type: string
@@ -49,4 +53,15 @@ export type GetDefaultPropsUtil = (
 
 export type GetTodoEventHandleUtil = (
   options: Record<string, Appcraft.WidgetTodo>
-) => (...args: unknown[]) => Promise<Record<string, unknown>>;
+) => (...event: unknown[]) => Promise<void>;
+
+//* Private Methods
+export type GetVaraiblePrivate = (
+  variable: Appcraft.Variables,
+  record: ExecuteRecord
+) => unknown;
+
+export type RunPrivate = (
+  todo: Appcraft.WidgetTodo,
+  options: { todos: Record<string, Appcraft.WidgetTodo>; record: ExecuteRecord }
+) => Promise<void>;

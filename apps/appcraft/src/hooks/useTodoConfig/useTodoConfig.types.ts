@@ -3,9 +3,13 @@ import type { ConfigData, ConfigOptions, WidgetTodo } from '@appcraft/types';
 
 export type TodoVariant = WidgetTodo['category'];
 
-export interface TodoConfigResult {
-  variant: TodoVariant;
-  todo: ConfigData<ConfigOptions>;
-  refetch: () => void;
-  onVariantChange: ChangeEventHandler<HTMLInputElement>;
-}
+export type TodoConfigResult = [
+  {
+    variant: TodoVariant;
+    todo: ConfigData<ConfigOptions>;
+  },
+  {
+    refetch: () => void;
+    variantChange: ChangeEventHandler<HTMLInputElement>;
+  }
+];

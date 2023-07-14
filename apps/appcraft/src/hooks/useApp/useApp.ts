@@ -59,13 +59,21 @@ export const useAuth: Types.AuthHook = () => {
   ];
 };
 
-export const useSettingModified: Types.SettingModifiedHook = () =>
-  useAppStore(({ lng, setLng, theme, setTheme }) => ({
-    lng,
-    setLng,
-    theme,
-    setTheme,
-  }));
+export const useSettingModified: Types.SettingModifiedHook = () => {
+  const { lng, theme, setLng, setTheme } = useAppStore(
+    ({ lng, setLng, theme, setTheme }) => ({
+      lng,
+      setLng,
+      theme,
+      setTheme,
+    })
+  );
+
+  return [
+    { lng, theme },
+    { lng: setLng, theme: setTheme },
+  ];
+};
 
 export const useThemeStyle: Types.ThemeStyleHook = () => {
   const [id, timestamp] = useAppStore(({ theme, timestamp }) => [

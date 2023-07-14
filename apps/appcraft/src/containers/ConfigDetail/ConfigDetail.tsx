@@ -18,7 +18,7 @@ export default function ConfigDetail({
 }: ConfigDetailProps) {
   const [at, ct] = useFixedT('app', 'appcraft');
   const { data } = props;
-  const { values, onChange, onReset, onSave } = useConfigValues(props);
+  const [values, handleConfig] = useConfigValues(props);
 
   const actionNode = useNodePicker(
     () =>
@@ -28,7 +28,7 @@ export default function ConfigDetail({
             btnVariant="icon"
             icon={ReplayIcon}
             text={at('btn-reset')}
-            onClick={onReset}
+            onClick={handleConfig.reset}
           />
         ),
         save: (
@@ -36,7 +36,7 @@ export default function ConfigDetail({
             btnVariant="icon"
             icon={SaveAltIcon}
             text={at('btn-save')}
-            onClick={onSave}
+            onClick={handleConfig.save}
           />
         ),
       }),
@@ -62,7 +62,7 @@ export default function ConfigDetail({
           fixedT={ct}
           parser={FETCH_OPTIONS.CONFIGS_PARSER}
           values={values}
-          onChange={onChange}
+          onChange={handleConfig.change}
         />
       </Container>
     </>

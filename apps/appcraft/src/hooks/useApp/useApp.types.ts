@@ -24,9 +24,12 @@ export type AuthHook = () => [
   () => void
 ];
 
-export type SettingModifiedHook = () => Pick<
-  AppState,
-  'lng' | 'setLng' | 'theme' | 'setTheme'
->;
+export type SettingModifiedHook = () => [
+  Pick<AppState, 'lng' | 'theme'>,
+  {
+    lng: AppState['setLng'];
+    theme: AppState['setTheme'];
+  }
+];
 
 export type ThemeStyleHook = () => ThemeOptions;

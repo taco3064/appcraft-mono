@@ -5,6 +5,7 @@ export interface TypeItemMixedProps
   extends Appcraft.BaseField<Appcraft.OneOfTypeProp> {
   renderMatchedField: (
     matched: Appcraft.PropTypesDef,
+    typeText: string,
     action: ReactNode
   ) => ReactNode;
 }

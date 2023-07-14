@@ -1,4 +1,4 @@
-import _get from 'lodash.get';
+import _get from 'lodash/get';
 import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 

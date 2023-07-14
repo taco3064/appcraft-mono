@@ -1,4 +1,4 @@
-import _get from 'lodash.get';
+import _get from 'lodash/get';
 import type * as Types from './usePropertyRouter.types';
 
 export const getPropPath: Types.GetPropPathUtil = (paths) =>

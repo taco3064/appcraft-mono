@@ -9,6 +9,7 @@ import type { TypeItemDisplayProps } from './TypeItemDisplay.types';
 
 export default function TypeItemDisplay({
   action,
+  description,
   disabled = false,
   label,
   options,
@@ -24,6 +25,7 @@ export default function TypeItemDisplay({
 
       <ListItemText
         disableTypography
+        secondary={description}
         primary={
           <GapTypography
             variant="subtitle1"
@@ -42,11 +44,7 @@ export default function TypeItemDisplay({
         }
       />
 
-      {action && (
-        <TypeItemAction onClick={(e) => e.stopPropagation()}>
-          {action}
-        </TypeItemAction>
-      )}
+      {action && <TypeItemAction>{action}</TypeItemAction>}
     </ListItemButton>
   );
 }

@@ -40,6 +40,7 @@ export default function TypeItemMixed({
       {matched ? (
         renderMatchedField(
           matched,
+          selected as string,
           <>
             <Styles.IconTipButton
               disabled={disabled}
@@ -83,11 +84,7 @@ export default function TypeItemMixed({
             }
           />
 
-          {action && (
-            <Styles.TypeItemAction onClick={(e) => e.stopPropagation()}>
-              {action}
-            </Styles.TypeItemAction>
-          )}
+          {action && <Styles.TypeItemAction>{action}</Styles.TypeItemAction>}
         </ListItemButton>
       )}
 

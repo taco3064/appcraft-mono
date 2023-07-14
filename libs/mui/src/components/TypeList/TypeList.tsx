@@ -11,6 +11,7 @@ import type { TypeListProps } from './TypeList.types';
 
 export default function TypeList<V extends OptionValues>({
   collection,
+  exclude = [],
   values,
   onChange,
   onCollectionPathChange,
@@ -22,6 +23,7 @@ export default function TypeList<V extends OptionValues>({
 
   const [items, onItemAdd] = Hooks.useTypeItems<V>(
     collection,
+    exclude,
     values,
     onChange
   );
@@ -68,9 +70,13 @@ export default function TypeList<V extends OptionValues>({
         )
       }
     >
-      {items.map(({ key, ...item }) => (
-        <TypeItem key={key} {...item} onSubitemView={handleTo} />
-      ))}
+      {!items.length ? (
+        <Styles.ListPlaceholder message={ct('msg-no-properties')} />
+      ) : (
+        items.map(({ key, ...item }) => (
+          <TypeItem key={key} {...item} onSubitemView={handleTo} />
+        ))
+      )}
     </List>
   );
 }

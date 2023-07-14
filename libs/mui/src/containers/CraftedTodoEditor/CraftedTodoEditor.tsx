@@ -1,12 +1,18 @@
-import Paper from '@mui/material/Paper';
-import ReactFlow, { Background, ReactFlowProvider } from 'reactflow';
+import * as Rf from 'reactflow';
 import { useTheme } from '@mui/material/styles';
 
 import * as Comp from '../../components';
 import * as Hooks from '../../hooks';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { FullHeightCollapse } from '../../styles';
+import { FullHeightCollapse, TodoBackground } from '../../styles';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
+
+const exclude: string[] = [
+  'category',
+  'defaultNextTodo',
+  'metTodo',
+  'iterateTodo',
+];
 
 export default function CraftedTodoEditor({
   fixedT,
@@ -24,7 +30,8 @@ export default function CraftedTodoEditor({
 
   const [{ editing, nodes, edges }, handleTodo] = Hooks.useTodoGenerator(
     typeFile,
-    values
+    values || {},
+    onChange
   );
 
   return (
@@ -37,7 +44,7 @@ export default function CraftedTodoEditor({
         onConfirm={(todo) => onChange({ ...values, [todo.id]: todo })}
         renderEditor={(todoConfig) => (
           <CraftedTypeEditor
-            {...{ fixedT, parser }}
+            {...{ exclude, fixedT, parser }}
             values={todoConfig}
             onChange={handleTodo.change}
           />
@@ -58,53 +65,35 @@ export default function CraftedTodoEditor({
           />
         )}
 
-        <Paper
-          elevation={0}
-          sx={{
-            position: 'relative',
-            width: '100%',
-            height: '100%',
-
-            '& a[aria-label="React Flow attribution"]': {
-              display: 'none !important',
-            },
-          }}
-        >
-          <ReactFlowProvider>
-            <ReactFlow
+        <TodoBackground elevation={0}>
+          <Rf.ReactFlowProvider>
+            <Rf.ReactFlow
               fitView
+              connectionLineType={Rf.ConnectionLineType.SmoothStep}
               nodes={nodes}
               edges={edges}
+              onConnect={handleTodo.connect}
+              onEdgeDoubleClick={handleTodo.deleteEdge}
               onNodeClick={handleTodo.select}
-              onConnect={({ source, target }) => {
-                if (source && values?.[source] && source !== target) {
-                  onChange({
-                    ...values,
-                    [source]: {
-                      ...values[source],
-                      defaultNextTodo: target || null,
-                    },
-                  } as never);
-                }
+              onNodesDelete={handleTodo.deleteNode}
+              defaultEdgeOptions={{
+                type: Rf.ConnectionLineType.SmoothStep,
+                markerEnd: { type: Rf.MarkerType.ArrowClosed },
+                style: { strokeWidth: 2 },
               }}
-              onEdgeDoubleClick={(e, { source }) => {
-                if (values?.[source]) {
-                  onChange({
-                    ...values,
-                    [source]: {
-                      ...values[source],
-                      defaultNextTodo: null,
-                    },
-                  } as never);
-                }
+              nodeTypes={{
+                variable: Comp.TodoFlowNode,
+                fetch: Comp.TodoFlowNode,
+                branch: Comp.TodoFlowNode,
+                iterate: Comp.TodoFlowNode,
               }}
             >
-              <Background color={theme.palette.text.secondary} gap={16} />
-            </ReactFlow>
+              <Rf.Background color={theme.palette.text.secondary} gap={16} />
+            </Rf.ReactFlow>
 
             <Comp.TodoFlowControls ct={ct} onTodoAdd={handleTodo.create} />
-          </ReactFlowProvider>
-        </Paper>
+          </Rf.ReactFlowProvider>
+        </TodoBackground>
       </FullHeightCollapse>
     </>
   );

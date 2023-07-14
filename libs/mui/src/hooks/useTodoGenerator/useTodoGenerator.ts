@@ -1,55 +1,48 @@
+import _get from 'lodash/get';
+import _set from 'lodash/set';
 import dagre from 'dagre';
 import { useMemo, useState } from 'react';
-import { useTheme } from '@mui/material/styles';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Utils from './useTodoGenerator.utils';
-import { splitProps } from '../useWidgetGenerator';
+import { DEFAULT_SIZE } from '../../styles';
 import type * as Types from './useTodoGenerator.types';
 
-const DEFAULT_SIZE = { width: 120, height: 30 };
-const dagreGraph = new dagre.graphlib.Graph();
-
-dagreGraph.setDefaultEdgeLabel(() => ({}));
-dagreGraph.setGraph({ rankdir: 'TB' });
-
-const useTodoGenerator: Types.TodoGeneratorHook = (typeFile, todos) => {
-  const theme = useTheme();
+const useTodoGenerator: Types.TodoGeneratorHook = (
+  typeFile,
+  todos,
+  onChange
+) => {
   const [editing, setEditing] = useState<Types.TodoState>(null);
 
+  const { nodes, edges } = useMemo(() => {
+    const dagreGraph = new dagre.graphlib.Graph()
+      .setDefaultEdgeLabel(() => ({}))
+      .setGraph({ rankdir: 'TB', align: 'UL', ranker: 'longest-path' });
+
+    const nodes = Utils.getFlowNodes(todos || {}, ({ id }) =>
+      dagreGraph.setNode(id, { ...DEFAULT_SIZE.DAGRE })
+    );
+
+    const edges = Utils.getFlowEdges(todos || {}, ({ source, target }) =>
+      dagreGraph.setEdge(source, target)
+    );
+
+    dagre.layout(dagreGraph);
+
+    return {
+      edges,
+      nodes: nodes.map((node) => {
+        const { x, y } = dagreGraph.node(node.id);
+
+        return { ...node, position: { x, y } };
+      }),
+    };
+  }, [todos]);
+
   return [
-    {
-      editing,
+    { editing, nodes, edges },
 
-      ...useMemo(() => {
-        const nodes = Utils.getFlowNodes(todos || {}, theme, ({ id }) =>
-          dagreGraph.setNode(id, { ...DEFAULT_SIZE })
-        );
-
-        const edges = Utils.getFlowEdges(
-          todos || {},
-          theme,
-          ({ source, target }) => dagreGraph.setEdge(source, target)
-        );
-
-        dagre.layout(dagreGraph);
-
-        return {
-          edges,
-          nodes: nodes.map((node) => {
-            const nodeWithPosition = dagreGraph.node(node.id);
-
-            return {
-              ...node,
-              position: {
-                x: nodeWithPosition.x - DEFAULT_SIZE.width / 2,
-                y: nodeWithPosition.y - DEFAULT_SIZE.height / 2,
-              },
-            };
-          }),
-        };
-      }, [theme, todos]),
-    },
     {
       cancel: () => setEditing(null),
 
@@ -59,8 +52,47 @@ const useTodoGenerator: Types.TodoGeneratorHook = (typeFile, todos) => {
       create: (category) =>
         setEditing(Utils.getInitialTodo(typeFile, category)),
 
-      select: (_e, { data: { metadata } }) =>
-        setEditing(Utils.getTodoState(typeFile, metadata)),
+      select: (_e, { data }) => setEditing(Utils.getTodoState(typeFile, data)),
+
+      connect: ({ source, sourceHandle, target }) => {
+        if (source && todos[source] && source !== target) {
+          onChange({
+            ...todos,
+            [source]: {
+              ...todos[source],
+              [sourceHandle as string]: target || null,
+            },
+          } as never);
+        }
+      },
+
+      deleteEdge: (_e, { source, sourceHandle }) => {
+        if (todos?.[source]) {
+          onChange({
+            ...todos,
+            [source]: {
+              ...todos[source],
+              [sourceHandle as string]: null,
+            },
+          } as never);
+        }
+      },
+
+      deleteNode: (nodes) => {
+        if (todos) {
+          nodes.forEach(({ id }) => {
+            delete todos[id];
+
+            edges.forEach(({ source, sourceHandle }) => {
+              if (sourceHandle && id === _get(todos, [source, sourceHandle])) {
+                _set(todos, [source, sourceHandle], '');
+              }
+            });
+          });
+        }
+
+        onChange({ ...todos } as never);
+      },
     },
   ];
 };

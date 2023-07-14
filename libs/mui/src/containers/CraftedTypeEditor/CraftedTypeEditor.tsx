@@ -8,6 +8,7 @@ import { FullHeightCollapse, TypeListSkeleton } from '../../styles';
 import type * as Types from './CraftedTypeEditor.types';
 
 export default function CraftedTypeEditor<V extends OptionValues>({
+  exclude,
   fixedT,
   fullHeight,
   open = true,
@@ -59,6 +60,7 @@ export default function CraftedTypeEditor<V extends OptionValues>({
         <Suspense fallback={<TypeListSkeleton />}>
           <LazyTypeList
             placeholder={ct('msg-select-widget-type-first')}
+            exclude={exclude}
             values={values as V}
             onChange={onChange}
             onCollectionPathChange={setCollectionPath}

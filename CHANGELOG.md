@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.62](https://github.com/taco3064/appcraft-mono/compare/v0.0.61...v0.0.62) (2023-07-14)
+
+
+### Features
+
+* **@appcraft/mui:** add auto layout in flow ([1651e28](https://github.com/taco3064/appcraft-mono/commit/1651e28cbcc17101b4fe8fc7e1374105a44b1cb5))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** fixed invalid edge connect ([3e8df52](https://github.com/taco3064/appcraft-mono/commit/3e8df52380f4d320cd390cc7197a9176f759ca56))
+* **@appcraft/mui:** fixed the setting of dagre ([2456d3c](https://github.com/taco3064/appcraft-mono/commit/2456d3c7b4a5f4c7e0e0c9f2eee6c69afcc28d68))
+* **@appcraft/mui:** update the SpeedDial open/close rules ([5845154](https://github.com/taco3064/appcraft-mono/commit/58451547c246de04b8a47873cb83b0c863751964))
+* **@appcraft/mui:** update ui styles ([db80893](https://github.com/taco3064/appcraft-mono/commit/db8089387d4887d9d01cfc038d318f7a5dad8c21))
+* changed to use lodash ([5569618](https://github.com/taco3064/appcraft-mono/commit/55696184cdc3e55bdd9bbe8dea9afe236394b651))
+* **crafted-todo-editor:** fixed bugs ([f8acf6d](https://github.com/taco3064/appcraft-mono/commit/f8acf6dd7db54fea76c61e79a8f6ace9978dbdf5))
+
 ### [0.0.61](https://github.com/taco3064/appcraft-mono/compare/v0.0.60...v0.0.61) (2023-07-09)
 
 

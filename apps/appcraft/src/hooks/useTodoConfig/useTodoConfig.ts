@@ -35,30 +35,34 @@ const useTodoConfig = (() => {
 
     const [variant, setVariant] = useState<TodoVariant>(defaultVariant);
 
-    return {
-      variant,
-      refetch,
-      onVariantChange: (e) => setVariant(e.target.value as TodoVariant),
+    return [
+      {
+        variant,
+        todo: useMemo(() => {
+          const props =
+            (variant === defaultVariant && data.content?.props) || {};
 
-      todo: useMemo(() => {
-        const props = (variant === defaultVariant && data.content?.props) || {};
-
-        return {
-          ...data,
-          content: {
-            ...data.content,
-            category: 'config',
-            typeFile: __WEBPACK_DEFINE__.TODO_TYPE_FILE,
-            typeName: getTypeName(variant),
-            props: {
-              id: nanoid(4),
-              ...props,
-              category: variant,
+          return {
+            ...data,
+            content: {
+              ...data.content,
+              category: 'config',
+              typeFile: __WEBPACK_DEFINE__.TODO_TYPE_FILE,
+              typeName: getTypeName(variant),
+              props: {
+                id: nanoid(4),
+                ...props,
+                category: variant,
+              },
             },
-          },
-        } as ConfigData<ConfigOptions>;
-      }, [defaultVariant, variant, data]),
-    };
+          } as ConfigData<ConfigOptions>;
+        }, [defaultVariant, variant, data]),
+      },
+      {
+        refetch,
+        variantChange: (e) => setVariant(e.target.value as TodoVariant),
+      },
+    ];
   };
 })();
 

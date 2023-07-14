@@ -1,4 +1,4 @@
-import _toPath from 'lodash.topath';
+import _topath from 'lodash/toPath';
 
 import * as Common from '../common';
 import { findNodesAndEventsProps, getProptype } from './types-resolve.utils';
@@ -14,7 +14,7 @@ export const parseConfigs: Types.ParseConfigService = ({
 
   const types = Common.getTypeByPath(root, {
     info: { required: true },
-    paths: _toPath(collectionPath),
+    paths: _topath(collectionPath),
     mixedTypes,
     source,
   });
@@ -31,7 +31,7 @@ export const parseWidget: Types.ParseWidgetService = ({
 
   const types = Common.getTypeByPath(root, {
     info: { required: true },
-    paths: _toPath(collectionPath),
+    paths: _topath(collectionPath),
     mixedTypes,
     source,
   });

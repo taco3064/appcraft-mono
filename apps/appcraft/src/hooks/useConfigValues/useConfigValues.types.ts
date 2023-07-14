@@ -7,9 +7,11 @@ export interface ConfigValueOptions {
   onSave?: () => void;
 }
 
-export type ConfigValuesHook = (options: ConfigValueOptions) => {
-  values: ConfigOptions;
-  onChange: (values: ConfigOptions) => void;
-  onReset: () => void;
-  onSave: () => void;
-};
+export type ConfigValuesHook = (options: ConfigValueOptions) => [
+  ConfigOptions,
+  {
+    change: (values: ConfigOptions) => void;
+    reset: () => void;
+    save: () => void;
+  }
+];

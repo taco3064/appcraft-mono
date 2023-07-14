@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
 import { useSnackbar } from 'notistack';
+import { useState } from 'react';
 import type { ConfigOptions } from '@appcraft/types';
 
 import { upsertConfig } from '~appcraft/services';
@@ -40,27 +40,30 @@ const useConfigValues: ConfigValuesHook = ({
       ) as ConfigOptions
   );
 
-  return {
+  return [
     values,
-    onChange: setValues,
-    onSave: () => mutation.mutate({ ...data, content: values }),
 
-    onReset: () =>
-      setValues(() =>
-        JSON.parse(
-          JSON.stringify(
-            Object.assign(
-              {
-                mixedTypes: {},
-                typeFile,
-                typeName,
-              },
-              data?.content || {}
+    {
+      change: setValues,
+      save: () => mutation.mutate({ ...data, content: values }),
+
+      reset: () =>
+        setValues(() =>
+          JSON.parse(
+            JSON.stringify(
+              Object.assign(
+                {
+                  mixedTypes: {},
+                  typeFile,
+                  typeName,
+                },
+                data?.content || {}
+              )
             )
           )
-        )
-      ),
-  };
+        ),
+    },
+  ];
 };
 
 export default useConfigValues;

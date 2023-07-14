@@ -19,7 +19,7 @@ export default function Detail() {
   const id = query.id as string;
 
   const [tt] = Hooks.useFixedT('todos');
-  const { todo, variant, refetch, onVariantChange } = Hooks.useTodoConfig(id);
+  const [{ todo, variant }, handleTodo] = Hooks.useTodoConfig(id);
   const { superiors, breadcrumbs } = Hooks.useHierarchyFilter(category, id);
 
   const [action, handleActionNodePick] = Hooks.useNodePickHandle([
@@ -63,7 +63,7 @@ export default function Detail() {
         data={todo}
         superiors={{ names: superiors, breadcrumbs }}
         onActionNodePick={handleActionNodePick}
-        onSave={refetch}
+        onSave={handleTodo.refetch}
         header={
           <AppBar
             position="sticky"
@@ -77,7 +77,7 @@ export default function Detail() {
                 size="small"
                 label={tt('lbl-variant')}
                 value={variant}
-                onChange={onVariantChange}
+                onChange={handleTodo.variantChange}
                 sx={{ width: (theme) => theme.spacing(28) }}
               >
                 <MenuItem value="define">{tt('opt-define')}</MenuItem>

@@ -16,10 +16,15 @@ export default function WidgetEditor({
   data,
   superiors: { names, breadcrumbs },
   onActionNodePick = (e) => e,
+  onSave,
 }: WidgetEditorProps) {
   const [at, ct, wt] = Hooks.useFixedT('app', 'appcraft', 'widgets');
   const [open, setOpen] = useState(true);
-  const { widget, onReset, onWidgetChange } = Hooks.useWidgetValues(data);
+
+  const [widget, handleWidget] = Hooks.useWidgetValues({
+    data,
+    onSave,
+  });
 
   const width = Hooks.useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width);
@@ -42,7 +47,7 @@ export default function WidgetEditor({
             btnVariant="icon"
             icon={RestartAltIcon}
             text={at('btn-reset')}
-            onClick={onReset}
+            onClick={handleWidget.reset}
           />
         ),
         save: (
@@ -50,11 +55,11 @@ export default function WidgetEditor({
             btnVariant="icon"
             icon={SaveAltIcon}
             text={at('btn-save')}
-            onClick={() => null}
+            onClick={handleWidget.save}
           />
         ),
       }),
-    [open, isCollapsable, isSettingOpen]
+    [open, widget, isCollapsable, isSettingOpen]
   );
 
   return (
@@ -81,7 +86,7 @@ export default function WidgetEditor({
             todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             version={__WEBPACK_DEFINE__.VERSION}
             widget={widget}
-            onWidgetChange={onWidgetChange}
+            onWidgetChange={handleWidget.change}
             fetchOptions={{
               configParser: FETCH_OPTIONS.CONFIGS_PARSER,
               propsParser: FETCH_OPTIONS.PROPS_PARSER,

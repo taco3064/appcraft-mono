@@ -5,14 +5,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import CloudQueueIcon from '@mui/icons-material/CloudQueue';
 import CropFreeIcon from '@mui/icons-material/CropFree';
 import MenuIcon from '@mui/icons-material/Menu';
-import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDial, { SpeedDialProps } from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SyncIcon from '@mui/icons-material/Sync';
 import TuneIcon from '@mui/icons-material/Tune';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNodes, useReactFlow } from 'reactflow';
 
 import { CompositeIcon } from '../../styles';
@@ -25,6 +25,16 @@ export default function TodoFlowControls({
   const { fitView, zoomIn, zoomOut } = useReactFlow();
   const nodes = useNodes();
 
+  const [openStatus, setOpenStatus] = useState<'viewport' | 'toolbar' | null>(
+    null
+  );
+
+  const handleClose: SpeedDialProps['onClose'] = (e, reason) => {
+    if (reason !== 'mouseLeave') {
+      setOpenStatus(null);
+    }
+  };
+
   useEffect(() => {
     fitView();
   }, [fitView, nodes]);
@@ -32,10 +42,13 @@ export default function TodoFlowControls({
   return (
     <>
       <SpeedDial
-        ariaLabel="Viewport Controls"
         FabProps={{ color: 'default', size: 'small' }}
-        sx={{ position: 'absolute', bottom: 16, left: 8 }}
+        ariaLabel="Viewport Controls"
         icon={<SpeedDialIcon icon={<TuneIcon />} openIcon={<CloseIcon />} />}
+        open={openStatus === 'viewport'}
+        onClick={() => setOpenStatus('viewport')}
+        onClose={handleClose}
+        sx={{ position: 'absolute', bottom: 16, left: 8 }}
       >
         <SpeedDialAction
           tooltipTitle={ct('btn-fit-view')}
@@ -60,10 +73,13 @@ export default function TodoFlowControls({
       </SpeedDial>
 
       <SpeedDial
-        ariaLabel="Toolbar"
         FabProps={{ color: 'secondary', size: 'small' }}
-        sx={{ position: 'absolute', bottom: 16, right: 8 }}
+        ariaLabel="Toolbar"
         icon={<SpeedDialIcon icon={<AddIcon />} openIcon={<CloseIcon />} />}
+        open={openStatus === 'toolbar'}
+        onClick={() => setOpenStatus('toolbar')}
+        onClose={handleClose}
+        sx={{ position: 'absolute', bottom: 16, right: 8 }}
       >
         <SpeedDialAction
           tooltipTitle={ct('btn-add-iterate')}

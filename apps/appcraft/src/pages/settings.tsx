@@ -13,7 +13,7 @@ import { useFixedT, useSettingModified } from '~appcraft/hooks';
 export default function Settings() {
   const { back } = useRouter();
   const [at, nt, tt] = useFixedT('app', 'nav', 'themes');
-  const modified = useSettingModified();
+  const [{ lng, theme }, handleSetting] = useSettingModified();
 
   const { data: palettes } = useQuery({
     refetchOnWindowFocus: false,
@@ -37,8 +37,8 @@ export default function Settings() {
         fullWidth
         select
         label={at('lbl-lng')}
-        value={modified.lng}
-        onChange={(e) => modified.setLng(e.target.value)}
+        value={lng}
+        onChange={(e) => handleSetting.lng(e.target.value)}
       >
         {__WEBPACK_DEFINE__.LANGUAGES.map((opt) => (
           <MenuItem key={opt} value={opt}>
@@ -51,8 +51,8 @@ export default function Settings() {
         fullWidth
         select
         label={at('lbl-theme')}
-        value={modified.theme}
-        onChange={(e) => modified.setTheme(e.target.value)}
+        value={theme}
+        onChange={(e) => handleSetting.theme(e.target.value)}
       >
         {Object.keys(PALETTES).map((opt) => (
           <MenuItem key={opt} value={opt}>

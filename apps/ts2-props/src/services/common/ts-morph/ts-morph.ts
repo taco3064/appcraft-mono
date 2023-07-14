@@ -1,5 +1,5 @@
 import * as TsMorph from 'ts-morph';
-import _toPath from 'lodash.topath';
+import _topath from 'lodash/toPath';
 import path from 'path';
 
 import type * as Types from './ts-morph.types';
@@ -11,7 +11,7 @@ const getMixedTypeByPath: Types.GetMixedTypeByPath = (mixedTypes, paths) => {
   const target = JSON.stringify(paths);
 
   const path = Object.keys(mixedTypes).find(
-    (path) => JSON.stringify(_toPath(path)) === target
+    (path) => JSON.stringify(_topath(path)) === target
   );
 
   return mixedTypes[path];

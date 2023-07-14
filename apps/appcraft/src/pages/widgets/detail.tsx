@@ -51,6 +51,7 @@ export default function Detail() {
         data={widget}
         superiors={{ names: superiors, breadcrumbs }}
         onActionNodePick={handleActionNodePick}
+        onSave={refetch}
         PersistentDrawerContentProps={{
           disableGutters: true,
           maxWidth: false,

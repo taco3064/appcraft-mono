@@ -84,11 +84,7 @@ export default function TypeItemMixed({
             }
           />
 
-          {action && (
-            <Styles.TypeItemAction onClick={(e) => e.stopPropagation()}>
-              {action}
-            </Styles.TypeItemAction>
-          )}
+          {action && <Styles.TypeItemAction>{action}</Styles.TypeItemAction>}
         </ListItemButton>
       )}
 

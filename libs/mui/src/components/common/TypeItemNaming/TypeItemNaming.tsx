@@ -53,7 +53,7 @@ export default function TypeItemNaming({
         }
       />
 
-      <TypeItemAction onClick={(e) => e.stopPropagation()}>
+      <TypeItemAction>
         <IconTipButton title={ct('btn-cancel')} onClick={onClose}>
           <UndoIcon />
         </IconTipButton>

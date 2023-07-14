@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import _get from 'lodash.get';
+import _get from 'lodash/get';
 
 import { getPropPath } from '../usePropertyRouter';
 import { useConstructContext, useEditorContext } from '../../contexts';

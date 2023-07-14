@@ -11,6 +11,7 @@ import type { TypeListProps } from './TypeList.types';
 
 export default function TypeList<V extends OptionValues>({
   collection,
+  exclude = [],
   values,
   onChange,
   onCollectionPathChange,
@@ -22,6 +23,7 @@ export default function TypeList<V extends OptionValues>({
 
   const [items, onItemAdd] = Hooks.useTypeItems<V>(
     collection,
+    exclude,
     values,
     onChange
   );

@@ -1,4 +1,4 @@
-import _get from 'lodash.get';
+import _get from 'lodash/get';
 import { useEditorContext } from '../../contexts';
 
 const usePropValue = <P = unknown>(propPath: string) => {

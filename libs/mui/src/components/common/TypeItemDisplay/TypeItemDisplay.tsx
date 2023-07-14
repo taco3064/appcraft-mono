@@ -44,11 +44,7 @@ export default function TypeItemDisplay({
         }
       />
 
-      {action && (
-        <TypeItemAction onClick={(e) => e.stopPropagation()}>
-          {action}
-        </TypeItemAction>
-      )}
+      {action && <TypeItemAction>{action}</TypeItemAction>}
     </ListItemButton>
   );
 }

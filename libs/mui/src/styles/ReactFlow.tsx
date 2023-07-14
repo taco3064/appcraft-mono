@@ -137,14 +137,7 @@ export const TodoNodeLabel = (() => {
           />
 
           <TypeItemAction>
-            <IconButton
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-
-                onDelete();
-              }}
-            >
+            <IconButton onClick={onDelete}>
               <DeleteOutlineIcon />
             </IconButton>
           </TypeItemAction>

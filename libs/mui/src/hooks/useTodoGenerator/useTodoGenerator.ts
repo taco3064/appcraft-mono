@@ -1,5 +1,5 @@
-import _get from 'lodash.get';
-import _set from 'lodash.set';
+import _get from 'lodash/get';
+import _set from 'lodash/set';
 import dagre from 'dagre';
 import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';

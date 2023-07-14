@@ -7,6 +7,13 @@ import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { FullHeightCollapse, TodoBackground } from '../../styles';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
 
+const exclude: string[] = [
+  'category',
+  'defaultNextTodo',
+  'metTodo',
+  'iterateTodo',
+];
+
 export default function CraftedTodoEditor({
   fixedT,
   fullHeight,
@@ -37,7 +44,7 @@ export default function CraftedTodoEditor({
         onConfirm={(todo) => onChange({ ...values, [todo.id]: todo })}
         renderEditor={(todoConfig) => (
           <CraftedTypeEditor
-            {...{ fixedT, parser }}
+            {...{ exclude, fixedT, parser }}
             values={todoConfig}
             onChange={handleTodo.change}
           />

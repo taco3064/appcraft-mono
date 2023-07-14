@@ -22,6 +22,10 @@ type Variable<M extends VariableInitialMode, I> = {
   template?: string; //* 使用 lodash template 讀取 inputs 建立初始值
 } & (M extends 'extract' ? { initial: I } : { initial?: I });
 
+export type Variables =
+  | Variable<'define', Definition>
+  | Variable<'extract', ExtractTodoResult>;
+
 //* Todo Events
 type Todos = 'variable' | 'fetch' | 'branch' | 'iterate';
 
@@ -35,10 +39,7 @@ type BaseTodo<C extends Todos, P> = {
 export type VariableTodo = BaseTodo<
   'variable',
   {
-    variables: Record<
-      string,
-      Variable<'define', Definition> | Variable<'extract', ExtractTodoResult>
-    >;
+    variables: Record<string, Variables>;
   }
 >;
 

@@ -19,23 +19,21 @@ function getVariable<V extends Appcraft.Definition>(
 
       return _get(src, path as string) as V;
     }
-    case 'define':
-      return (initial ||
-        (() => {
-          switch (mixedType) {
-            case 'Date':
-              return new Date();
-            case 'number':
-              return 0;
-            case 'boolean':
-              return false;
-            case 'string':
-              return '';
-            default:
-              return undefined;
-          }
-        })()) as V;
+    case 'define': {
+      if (initial) {
+        return initial as V;
+      } else if (mixedType === 'Date') {
+        return new Date() as V;
+      } else if (mixedType === 'boolean') {
+        return false as V;
+      } else if (mixedType === 'number') {
+        return 0 as V;
+      } else if (mixedType === 'string') {
+        return '' as V;
+      }
 
+      return undefined;
+    }
     default:
       return undefined;
   }
@@ -45,50 +43,41 @@ async function execute(...args: Types.ExecuteArgs): Promise<void> {
   const [todo, { todos, record }] = args;
   const { id, category, defaultNextTodo, mixedTypes } = todo;
 
-  const [nextTodo, output] = (() => {
-    switch (category) {
-      case 'variable': {
-        const { [defaultNextTodo as string]: nextTodo } = todos;
-        const { variables = {} } = todo;
+  switch (category) {
+    case 'variable': {
+      const { [defaultNextTodo as string]: nextTodo } = todos;
+      const { variables = {} } = todo;
 
-        return [
-          nextTodo,
-          Object.entries(variables).reduce(
-            (result, [key, variable]) =>
-              _set(
-                result,
-                [key],
-                getVariable(
-                  variable,
-                  record,
-                  _get(mixedTypes, [`variables.${key}.initial`])
-                )
-              ),
-            {}
+      const output = Object.entries(variables).reduce(
+        (result, [key, variable]) =>
+          _set(
+            result,
+            [key],
+            getVariable(
+              variable,
+              record,
+              _get(mixedTypes, [`variables.${key}.initial`])
+            )
           ),
-        ];
-      }
-      case 'fetch': {
-        return [undefined, undefined];
-      }
-      case 'branch': {
-        return [undefined, undefined];
-      }
-      case 'iterate': {
-        return [undefined, undefined];
-      }
-      default:
-        return [undefined, undefined];
-    }
-  })();
+        {}
+      );
 
-  return (
-    nextTodo &&
-    execute(nextTodo, {
-      todos,
-      record: _set(record, ['output', id], output),
-    })
-  );
+      _set(record, ['output', id], output);
+
+      return nextTodo && execute(nextTodo, { todos, record });
+    }
+    case 'fetch': {
+      return undefined;
+    }
+    case 'branch': {
+      return undefined;
+    }
+    case 'iterate': {
+      return undefined;
+    }
+    default:
+      return undefined;
+  }
 }
 
 export const getEventHandler: Types.GetEventHandler =

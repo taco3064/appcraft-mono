@@ -3,7 +3,7 @@ import Head from 'next/head';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
-import { getProps, getTodoEventHandle } from '@appcraft/mui';
+import { getProps, getEventHandler } from '@appcraft/mui';
 import { useMemo } from 'react';
 import { useRouter } from 'next/router';
 import type * as Appcraft from '@appcraft/types';
@@ -30,7 +30,7 @@ export default function Detail() {
   const handleRun = useMemo(() => {
     const props = getProps(todo.content) as Appcraft.WidgetTodo;
 
-    return getTodoEventHandle({ [props.id]: props });
+    return getEventHandler({ [props.id]: props });
   }, [todo]);
 
   return (

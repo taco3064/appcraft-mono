@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { getOrderSeq } from './useTypeItem.utils';
+import { getPropOrderSeq } from '../../utils';
 import { useEditorContext } from '../../contexts';
 import type * as Types from './useTypeItem.types';
 
@@ -19,7 +19,7 @@ const useTypeItem: Types.TypeItemHook = (
         : `${collectionPath ? `${collectionPath}.` : ''}${propName}`,
 
     category: useMemo<Types.Category | null>(() => {
-      switch (getOrderSeq(type)) {
+      switch (getPropOrderSeq(type)) {
         case 0:
           return 'Node';
         case 1:

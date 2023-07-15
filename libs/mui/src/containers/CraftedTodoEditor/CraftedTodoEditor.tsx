@@ -9,6 +9,7 @@ import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
 
 const exclude: string[] = [
   'category',
+  'mixedTypes',
   'defaultNextTodo',
   'metTodo',
   'iterateTodo',

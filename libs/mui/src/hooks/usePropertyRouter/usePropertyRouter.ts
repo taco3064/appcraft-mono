@@ -2,7 +2,7 @@ import _get from 'lodash/get';
 import _topath from 'lodash/topath';
 import { useCallback, useMemo } from 'react';
 
-import { getPropPathBySource } from './usePropertyRouter.utils';
+import { getPropPathBySource } from '../../utils';
 import { useCollection } from '../useCollection';
 import type { PropertyRouterHook } from './usePropertyRouter.types';
 

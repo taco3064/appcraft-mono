@@ -1,6 +1,8 @@
 import type * as Appcraft from '@appcraft/types';
-import type { FixedT, PropPaths } from '../../contexts';
+
+import type { FixedT } from '../../contexts';
 import type { PathsChangeHandler } from '../../hooks';
+import type { PropPaths } from '../../utils';
 
 export interface WidgetNodeProps<I extends Appcraft.WidgetOptions> {
   ct: FixedT;

@@ -2,7 +2,7 @@ import _topath from 'lodash/topath';
 import { startTransition, useState } from 'react';
 import type { PropTypesDef, StructureProp } from '@appcraft/types';
 
-import { getPropPath, getPropPathBySource } from '../usePropertyRouter';
+import { getPropPath, getPropPathBySource } from '../../utils';
 import { useCollection } from '../useCollection';
 import { usePropertiesSorting } from '../usePropertiesSorting';
 import type { ChangeHandler, OptionValues } from '../../contexts';

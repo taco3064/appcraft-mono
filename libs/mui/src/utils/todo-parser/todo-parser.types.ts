@@ -6,20 +6,6 @@ export type ExecuteRecord = {
   output: Record<string, unknown>;
 };
 
-export type ExecuteArgs = [
-  Appcraft.WidgetTodo,
-  {
-    todos: Record<string, Appcraft.WidgetTodo>;
-    record: ExecuteRecord;
-  }
-];
-
-export type GetVariableArgs = [
-  Appcraft.Variables,
-  ExecuteRecord,
-  string | undefined
-];
-
 //* Private
 export type GetVariable = (
   variable: Appcraft.Variables,

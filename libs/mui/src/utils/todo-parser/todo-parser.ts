@@ -1,85 +1,60 @@
 import _get from 'lodash/get';
 import _set from 'lodash/set';
 import _template from 'lodash/template';
+import axios from 'axios';
 import type * as Appcraft from '@appcraft/types';
+import type { TemplateOptions } from 'lodash';
 
 import type * as Types from './todo-parser.types';
 
 //* Private Methods
-function getVariable<V extends Appcraft.Definition>(
-  ...args: Types.GetVariableArgs
-): V | undefined {
-  const [variable, record, mixedType] = args;
-  const { mode, template, initial } = variable;
+const TEMPLATE_OPTS: TemplateOptions = { interpolate: /{{([\s\S]+?)}}/g };
 
-  switch (mode) {
-    case 'extract': {
-      const { source, path } = initial;
-      const { [source as keyof typeof record]: src } = record;
+function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
+  variables: Record<keyof R, Appcraft.Variables>,
+  record: Types.ExecuteRecord,
+  mixedTypes?: Appcraft.TypesMapping
+): R {
+  return Object.entries(variables || {}).reduce<R>(
+    (result, [key, variable]) => {
+      const { mode, template, initial } = variable;
+      const mixedType = _get(mixedTypes, [`variables.${key}.initial`]);
+      let value;
 
-      return _get(src, path as string) as V;
-    }
-    case 'define': {
-      if (initial) {
-        return initial as V;
+      if (mode === 'extract') {
+        const { source, path } = initial;
+        const { [source as keyof typeof record]: src } = record;
+
+        value = !path ? src : _get(src, path as string);
+      } else if (initial) {
+        value = initial;
       } else if (mixedType === 'Date') {
-        return new Date() as V;
+        value = new Date();
       } else if (mixedType === 'boolean') {
-        return false as V;
+        value = false;
       } else if (mixedType === 'number') {
-        return 0 as V;
+        value = 0;
       } else if (mixedType === 'string') {
-        return '' as V;
+        value = '';
       }
 
-      return undefined;
-    }
-    default:
-      return undefined;
-  }
+      return {
+        ...result,
+        [key]: ((!template
+          ? value
+          : _template(
+              template,
+              TEMPLATE_OPTS
+            )({
+              $0: value,
+            })) || undefined) as R[typeof key],
+      };
+    },
+    {} as R
+  );
 }
 
-async function execute(...args: Types.ExecuteArgs): Promise<void> {
-  const [todo, { todos, record }] = args;
-  const { id, category, defaultNextTodo, mixedTypes } = todo;
-
-  switch (category) {
-    case 'variable': {
-      const { [defaultNextTodo as string]: nextTodo } = todos;
-      const { variables = {} } = todo;
-
-      const output = Object.entries(variables).reduce(
-        (result, [key, variable]) =>
-          _set(
-            result,
-            [key],
-            getVariable(
-              variable,
-              record,
-              _get(mixedTypes, [`variables.${key}.initial`])
-            )
-          ),
-        {}
-      );
-
-      _set(record, ['output', id], output);
-
-      return nextTodo && execute(nextTodo, { todos, record });
-    }
-    case 'fetch': {
-      return undefined;
-    }
-    case 'branch': {
-      return undefined;
-    }
-    case 'iterate': {
-      return undefined;
-    }
-    default:
-      return undefined;
-  }
-}
-
+//* Methods
 export const getEventHandler: Types.GetEventHandler =
   (options) =>
   async (...event) => {
@@ -100,10 +75,76 @@ export const getEventHandler: Types.GetEventHandler =
       })
     );
 
-    for (const start of starts) {
-      await execute(start, {
-        todos: options,
-        record: { event, output: {} as Record<string, unknown> },
-      });
+    for (let todo of starts) {
+      const record = { event, output: {} as Record<string, unknown> };
+
+      while (todo) {
+        const { id, category, defaultNextTodo, mixedTypes } = todo;
+        const { [defaultNextTodo as string]: next } = options;
+
+        console.log('====', todo);
+
+        todo = next;
+
+        switch (category) {
+          case 'variable': {
+            const { variables } = todo;
+
+            _set(
+              record,
+              ['output', id],
+              getVariableOutput(variables, record, mixedTypes)
+            );
+
+            break;
+          }
+          case 'branch': {
+            const { sources, template, metTodo } = todo;
+            const { [metTodo as string]: correct } = options;
+
+            const isCorrect = JSON.parse(
+              _template(
+                template,
+                TEMPLATE_OPTS
+              )(
+                getVariableOutput(
+                  Object.fromEntries(
+                    sources?.map((source, i) => [`$${i}`, source]) || []
+                  ),
+                  record
+                )
+              ) || 'false'
+            );
+
+            todo = isCorrect ? correct : next;
+
+            break;
+          }
+          case 'fetch': {
+            const { url, method, headers, data } = todo;
+            const { source, path } = data || {};
+            const { [source as keyof typeof record]: src } = record;
+            const params = !path ? src : _get(src, path as string);
+
+            const output = await axios({
+              url,
+              method,
+              headers,
+              ...(params && { data: params }),
+            })
+              .then(({ data }) => data)
+              .catch((err) => {
+                console.error(err);
+
+                return undefined;
+              });
+
+            _set(record, ['output', id], output);
+
+            break;
+          }
+          default:
+        }
+      }
     }
   };

@@ -82,24 +82,18 @@ export const getEventHandler: Types.GetEventHandler =
         const { id, category, defaultNextTodo, mixedTypes } = todo;
         const { [defaultNextTodo as string]: next } = options;
 
-        console.log('====', todo);
-
-        todo = next;
-
         switch (category) {
           case 'variable': {
             const { variables } = todo;
+            const output = getVariableOutput(variables, record, mixedTypes);
 
-            _set(
-              record,
-              ['output', id],
-              getVariableOutput(variables, record, mixedTypes)
-            );
+            todo = next;
+            _set(record, ['output', id], output);
 
             break;
           }
           case 'branch': {
-            const { sources, template, metTodo } = todo;
+            const { sources = [], template, metTodo } = todo;
             const { [metTodo as string]: correct } = options;
 
             const isCorrect = JSON.parse(
@@ -109,7 +103,7 @@ export const getEventHandler: Types.GetEventHandler =
               )(
                 getVariableOutput(
                   Object.fromEntries(
-                    sources?.map((source, i) => [`$${i}`, source]) || []
+                    sources.map((source, i) => [`$${i}`, source])
                   ),
                   record
                 )
@@ -139,6 +133,7 @@ export const getEventHandler: Types.GetEventHandler =
                 return undefined;
               });
 
+            todo = next;
             _set(record, ['output', id], output);
 
             break;

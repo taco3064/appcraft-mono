@@ -17,7 +17,6 @@ import type { TypeItemPureProps } from './TypeItemPure.types';
 
 export default function TypeItemPure({
   action,
-  description,
   disabled = false,
   label,
   options,
@@ -32,7 +31,6 @@ export default function TypeItemPure({
 
       <ListItemText
         disableTypography
-        secondary={description}
         primary={
           <>
             {options.type === 'string' && (

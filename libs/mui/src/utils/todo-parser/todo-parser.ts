@@ -43,14 +43,11 @@ function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
 
       return {
         ...result,
-        [key]: ((!template
+        [key]: (!template?.trim() || template?.trim() === '$0'
           ? value
-          : _template(
-              template,
-              TEMPLATE_OPTS
-            )({
-              $0: value,
-            })) || undefined) as R[typeof key],
+          : JSON.parse(
+              _template(`{{${template}}}`, TEMPLATE_OPTS)({ $0: value })
+            ) || 'undefined') as R[typeof key],
       };
     },
     {} as R
@@ -83,16 +80,20 @@ async function execute(
         const { sources = [], template, metTodo } = todo;
         const { [metTodo as string]: correct } = todos;
 
-        const isCorrect = JSON.parse(
-          _template(
-            template,
-            TEMPLATE_OPTS
-          )(
-            getVariableOutput(
-              Object.fromEntries(sources.map((source, i) => [`$${i}`, source])),
-              record
-            )
-          ) || 'false'
+        const isCorrect = Boolean(
+          JSON.parse(
+            _template(
+              `{{${template}}}`,
+              TEMPLATE_OPTS
+            )(
+              getVariableOutput(
+                Object.fromEntries(
+                  sources.map((source, i) => [`$${i}`, source])
+                ),
+                record
+              )
+            ) || 'false'
+          )
         );
 
         todo = isCorrect ? correct : next;

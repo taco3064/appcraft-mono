@@ -1,5 +1,7 @@
 import type * as Appcraft from '@appcraft/types';
+
 import type { CraftedTypeEditorProps } from '../CraftedTypeEditor';
+import type { TodoChangeHandler } from '../../hooks';
 
 export interface CraftedTodoEditorProps
   extends Pick<
@@ -9,5 +11,5 @@ export interface CraftedTodoEditorProps
   todoPath?: string;
   typeFile?: string;
   values?: Record<string, Appcraft.WidgetTodo>;
-  onChange: (values: Record<string, Appcraft.WidgetTodo>) => void;
+  onChange: TodoChangeHandler;
 }

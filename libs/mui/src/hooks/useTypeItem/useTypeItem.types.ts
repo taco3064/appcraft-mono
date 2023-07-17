@@ -8,8 +8,6 @@ enum Categories {
 }
 
 export type Category = keyof typeof Categories;
-export type GetOrderSeqUtil = (type: Appcraft.PropTypesDef['type']) => number;
-export type GetDisplayPropNameUtil = (propName?: string) => string;
 
 export type TypeItemHook = (
   collectionType: Appcraft.CollectionType,

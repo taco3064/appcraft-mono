@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import type * as Types from './useStructure.types';
-import type { PropPaths } from '../../contexts';
+import type { PropPaths } from '../../utils';
 
 const useStructure: Types.StructureHook = (() => {
   function convertToBreadcrumb(

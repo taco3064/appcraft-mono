@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import { getProps } from './useWidgetGenerator.utils';
+import { getProps } from '../../utils';
 import type * as Types from './useWidgetGenerator.types';
 
 const LazyPlainText = lazy<Types.PlainTextComponent>(async () => ({

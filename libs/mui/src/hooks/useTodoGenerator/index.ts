@@ -1,2 +1,2 @@
 export { default as useTodoGenerator } from './useTodoGenerator';
-export type { TodoEdge, TodoNode, TodoState } from './useTodoGenerator.types';
+export type { TodoChangeHandler } from './useTodoGenerator.types';

@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.63](https://github.com/taco3064/appcraft-mono/compare/v0.0.62...v0.0.63) (2023-07-17)
+
+
+### Features
+
+* **todo-parser:** support fetch and condition-branch process ([17b11dc](https://github.com/taco3064/appcraft-mono/commit/17b11dc33a8c336e024f51157bcafeb621c7a258))
+* **todo-parser:** support iterate process ([a5960de](https://github.com/taco3064/appcraft-mono/commit/a5960de7f3a753a927e6949f6b30075949ed1d58))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** fixed the bugs in todo-parser ([e8b9417](https://github.com/taco3064/appcraft-mono/commit/e8b9417e114f74d3b2e75388055f43588f766623))
+* fixed bugs ([0cb5639](https://github.com/taco3064/appcraft-mono/commit/0cb563926c613a22d69a80e37a8894eca4554d21))
+
 ### [0.0.62](https://github.com/taco3064/appcraft-mono/compare/v0.0.61...v0.0.62) (2023-07-14)
 
 

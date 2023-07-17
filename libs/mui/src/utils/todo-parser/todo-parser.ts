@@ -1,10 +1,13 @@
 import _get from 'lodash/get';
+import _isPlainObject from 'lodash/isplainobject';
+import _omit from 'lodash/omit';
 import _set from 'lodash/set';
 import _template from 'lodash/template';
 import axios from 'axios';
 import type * as Appcraft from '@appcraft/types';
 import type { TemplateOptions } from 'lodash';
 
+import { getPropPath } from '../prop-path';
 import type * as Types from './todo-parser.types';
 
 //* Private Methods
@@ -54,6 +57,124 @@ function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
   );
 }
 
+async function execute(
+  todos: Record<string, Appcraft.WidgetTodo>,
+  todo: Appcraft.WidgetTodo,
+  record: Types.ExecuteRecord
+): Promise<Types.ExecuteRecord> {
+  while (todo) {
+    const { id, category, defaultNextTodo, mixedTypes } = todo;
+    const { [defaultNextTodo as string]: next } = todos;
+
+    switch (category) {
+      //* Create Variables
+      case 'variable': {
+        const { variables } = todo;
+        const output = getVariableOutput(variables, record, mixedTypes);
+
+        todo = next;
+        _set(record, ['output', id], output);
+
+        break;
+      }
+
+      //* Condition Branch
+      case 'branch': {
+        const { sources = [], template, metTodo } = todo;
+        const { [metTodo as string]: correct } = todos;
+
+        const isCorrect = JSON.parse(
+          _template(
+            template,
+            TEMPLATE_OPTS
+          )(
+            getVariableOutput(
+              Object.fromEntries(sources.map((source, i) => [`$${i}`, source])),
+              record
+            )
+          ) || 'false'
+        );
+
+        todo = isCorrect ? correct : next;
+
+        break;
+      }
+
+      //* Fetch Data
+      case 'fetch': {
+        const { url, method, headers, data } = todo;
+        const { source, path } = data || {};
+        const { [source as keyof typeof record]: src } = record;
+        const params = !path ? src : _get(src, path as string);
+
+        const output = await axios({
+          url,
+          method,
+          headers,
+          ...(params && { data: params }),
+        })
+          .then(({ data }) => data)
+          .catch((err) => {
+            console.error(err);
+
+            return undefined;
+          });
+
+        todo = next;
+        _set(record, ['output', id], output);
+
+        break;
+      }
+
+      //* Iterate Data
+      case 'iterate': {
+        const { source, iterateTodo } = todo;
+        const { [iterateTodo as string]: iterate } = todos;
+
+        const { target } = !source
+          ? { target: null }
+          : getVariableOutput({ target: source }, record);
+
+        if (Array.isArray(target) || _isPlainObject(target)) {
+          const output = Array.isArray(target) ? [] : {};
+          const keys = Object.keys(record.output);
+
+          const list: [string | number, unknown][] = Array.isArray(target)
+            ? target.map((item, i) => [i, item])
+            : Object.entries(target || {});
+
+          for await (const [key, rec] of list.map<
+            Promise<[string | number, Types.ExecuteRecord]>
+          >(async ([key, item]) => [
+            key,
+            await execute(todos, iterate, {
+              event: record.event,
+              output: {
+                ...record.output,
+                [getPropPath([id, key])]: item,
+              },
+            }),
+          ])) {
+            const subOutput = _omit(rec.output, keys);
+
+            _set(output, key, Object.assign({}, ...Object.values(subOutput)));
+          }
+
+          _set(record, ['output', id], output);
+        }
+
+        todo = next;
+
+        break;
+      }
+
+      default:
+    }
+  }
+
+  return record;
+}
+
 //* Methods
 export const getEventHandler: Types.GetEventHandler =
   (options) =>
@@ -75,71 +196,9 @@ export const getEventHandler: Types.GetEventHandler =
       })
     );
 
-    for (let todo of starts) {
-      const record = { event, output: {} as Record<string, unknown> };
+    for (const todo of starts) {
+      const record = await execute(options, todo, { event, output: {} });
 
-      while (todo) {
-        const { id, category, defaultNextTodo, mixedTypes } = todo;
-        const { [defaultNextTodo as string]: next } = options;
-
-        switch (category) {
-          case 'variable': {
-            const { variables } = todo;
-            const output = getVariableOutput(variables, record, mixedTypes);
-
-            todo = next;
-            _set(record, ['output', id], output);
-
-            break;
-          }
-          case 'branch': {
-            const { sources = [], template, metTodo } = todo;
-            const { [metTodo as string]: correct } = options;
-
-            const isCorrect = JSON.parse(
-              _template(
-                template,
-                TEMPLATE_OPTS
-              )(
-                getVariableOutput(
-                  Object.fromEntries(
-                    sources.map((source, i) => [`$${i}`, source])
-                  ),
-                  record
-                )
-              ) || 'false'
-            );
-
-            todo = isCorrect ? correct : next;
-
-            break;
-          }
-          case 'fetch': {
-            const { url, method, headers, data } = todo;
-            const { source, path } = data || {};
-            const { [source as keyof typeof record]: src } = record;
-            const params = !path ? src : _get(src, path as string);
-
-            const output = await axios({
-              url,
-              method,
-              headers,
-              ...(params && { data: params }),
-            })
-              .then(({ data }) => data)
-              .catch((err) => {
-                console.error(err);
-
-                return undefined;
-              });
-
-            todo = next;
-            _set(record, ['output', id], output);
-
-            break;
-          }
-          default:
-        }
-      }
+      console.log(record);
     }
   };

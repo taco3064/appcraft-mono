@@ -1,3 +1,4 @@
+import _isPlainObject from 'lodash/isplainobject';
 import _set from 'lodash/set';
 import type * as Appcraft from '@appcraft/types';
 import type { Components } from '@mui/material/styles';
@@ -22,12 +23,8 @@ export const splitProps: Types.SplitProps = (target, paths = []) => {
       }),
       {}
     );
-  } else if (
-    !!target &&
-    typeof target === 'object' &&
-    target.constructor === Object
-  ) {
-    return Object.entries(target).reduce(
+  } else if (_isPlainObject(target)) {
+    return Object.entries(target as object).reduce(
       (result, [key, value]) => ({
         ...result,
         ...splitProps(value, [...paths, key]),

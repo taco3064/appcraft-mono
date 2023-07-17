@@ -12,7 +12,8 @@ import SyncIcon from '@mui/icons-material/Sync';
 import TuneIcon from '@mui/icons-material/Tune';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
-import { useEffect, useState } from 'react';
+import _throttle from 'lodash/throttle';
+import { useEffect, useMemo, useState } from 'react';
 import { useNodes, useReactFlow } from 'reactflow';
 
 import { CompositeIcon } from '../../styles';
@@ -23,6 +24,7 @@ export default function TodoFlowControls({
   onTodoAdd,
 }: TodoFlowControlsProps) {
   const { fitView, zoomIn, zoomOut } = useReactFlow();
+  const fitViewThrottle = useMemo(() => _throttle(fitView, 200), [fitView]);
   const nodes = useNodes();
 
   const [openStatus, setOpenStatus] = useState<'viewport' | 'toolbar' | null>(
@@ -36,8 +38,8 @@ export default function TodoFlowControls({
   };
 
   useEffect(() => {
-    fitView();
-  }, [fitView, nodes]);
+    fitViewThrottle({ duration: 400, nodes });
+  }, [fitViewThrottle, nodes]);
 
   return (
     <>

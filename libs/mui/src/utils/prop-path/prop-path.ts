@@ -1,7 +1,17 @@
 import _get from 'lodash/get';
-import type * as Types from './usePropertyRouter.types';
+import type * as Types from './prop-path.types';
 
-export const getPropPath: Types.GetPropPathUtil = (paths) =>
+const regs: RegExp[] = [
+  /^(node|element)$/,
+  /^(array|arrayOf|exact|object|objectOf)$/,
+  /^(oneOfType)$/,
+  /^(bool|instanceOf|number|oneOf|string)$/,
+];
+
+export const getPropOrderSeq: Types.GetPropOrderSeq = (type) =>
+  regs.findIndex((value) => value.test(type));
+
+export const getPropPath: Types.GetPropPath = (paths) =>
   paths.reduce<string>((result, propName) => {
     const isStructureArray = typeof propName === 'number';
 
@@ -10,10 +20,7 @@ export const getPropPath: Types.GetPropPathUtil = (paths) =>
       : `${result ? `${result}.` : ''}${propName}`;
   }, '');
 
-export const getPropPathBySource: Types.GetPropPathBySourceUtil = (
-  source,
-  paths
-) =>
+export const getPropPathBySource: Types.GetPropPathBySource = (source, paths) =>
   paths.reduce<string>((result, propName, i) => {
     const isStructureArray = Array.isArray(_get(source, paths.slice(0, i)));
 

@@ -1,5 +1,5 @@
 import type * as Appcraft from '@appcraft/types';
-import type { PropPaths } from '../../contexts';
+import type { PropPaths } from '../../utils';
 
 export type Breadcrumbs = {
   text: string;

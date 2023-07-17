@@ -7,11 +7,12 @@ import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { FullHeightCollapse, TodoBackground } from '../../styles';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
 
-const exclude: string[] = [
-  'category',
-  'defaultNextTodo',
-  'metTodo',
-  'iterateTodo',
+const exclude: RegExp[] = [
+  /^category$/,
+  /^mixedTypes$/,
+  /^defaultNextTodo$/,
+  /^metTodo$/,
+  /^iterateTodo$/,
 ];
 
 export default function CraftedTodoEditor({

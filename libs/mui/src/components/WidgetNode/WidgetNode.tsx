@@ -10,7 +10,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import * as Hooks from '../../hooks';
+import * as Utils from '../../utils';
 import * as Styles from '../../styles';
 import type { WidgetNodeProps } from './WidgetNode.types';
 
@@ -33,12 +33,12 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
   const [open, setOpen] = useState(false);
 
   const events: string[] = useMemo(
-    () => (Array.isArray(event) ? Hooks.sortPropPaths(event) : []),
+    () => (Array.isArray(event) ? Utils.sortPropPaths(event) : []),
     [event]
   );
 
   const structures = useMemo<[string, Appcraft.NodeType][]>(
-    () => Hooks.sortPropPaths(Object.entries(structure || {}), (e) => e[0]),
+    () => Utils.sortPropPaths(Object.entries(structure || {}), (e) => e[0]),
     [structure]
   );
 

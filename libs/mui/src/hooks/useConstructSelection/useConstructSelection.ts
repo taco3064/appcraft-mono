@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import _get from 'lodash/get';
 
-import { getPropPath } from '../usePropertyRouter';
+import { getPropPath } from '../../utils';
 import { useConstructContext, useEditorContext } from '../../contexts';
 import type * as Types from './useConstructSelection.types';
 

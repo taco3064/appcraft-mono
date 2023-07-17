@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { RootNodeWidget } from '@appcraft/types';
 
-export type PropPaths = (string | number)[];
+import type { PropPaths } from '../../utils';
 
 export interface ConstructContextValue {
   paths: PropPaths;

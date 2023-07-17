@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import type * as Appcraft from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
-import { getDefaultProps } from '../../hooks';
+import { getDefaultProps } from '../../utils';
 import type { MutationNewWidgetDialogProps } from './MutationNewWidgetDialog.types';
 
 export default function MutationNewWidgetDialog({

@@ -1,7 +1,8 @@
 import type { AxiosRequestConfig } from 'axios';
+import type { TypesMapping } from './prop-types-def.types';
 
 //* Variable Definition
-type Definition =
+export type Definition =
   | boolean
   | Date
   | number
@@ -10,8 +11,7 @@ type Definition =
   | { [key: string]: Definition };
 
 type ExtractTodoResult = {
-  sourceType: 'input' | 'superior' | 'todo';
-  key: string;
+  source: 'event' | 'output';
   path?: string;
 };
 
@@ -34,6 +34,7 @@ type BaseTodo<C extends Todos, P> = {
   id: string;
   description: string;
   defaultNextTodo?: string;
+  mixedTypes?: TypesMapping;
 } & P;
 
 export type VariableTodo = BaseTodo<

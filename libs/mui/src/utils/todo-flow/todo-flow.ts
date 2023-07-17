@@ -2,10 +2,10 @@ import { nanoid } from 'nanoid';
 import type * as Appcraft from '@appcraft/types';
 
 import { DEFAULT_SIZE } from '../../styles';
-import { splitProps } from '../useWidgetGenerator';
-import type * as Types from './useTodoGenerator.types';
+import { splitProps } from '../props-parser';
+import type * as Types from './todo-flow.types';
 
-export const getFlowNodes: Types.GetFlowNodesUtil = (todos, each) =>
+export const getFlowNodes: Types.GetFlowNodes = (todos, each) =>
   Object.values(todos).map<Types.TodoNode>((todo) => {
     const node: Types.TodoNode = {
       id: todo.id,
@@ -21,7 +21,7 @@ export const getFlowNodes: Types.GetFlowNodesUtil = (todos, each) =>
     return node;
   });
 
-export const getFlowEdges: Types.GetFlowEdgesUtil = (todos, each) =>
+export const getFlowEdges: Types.GetFlowEdges = (todos, each) =>
   Object.values(todos).reduce<Types.TodoEdge[]>((result, todo) => {
     const acc: Types.TodoEdge[] = [];
     const { id, category, defaultNextTodo } = todo;
@@ -63,13 +63,17 @@ export const getFlowEdges: Types.GetFlowEdgesUtil = (todos, each) =>
     return result;
   }, []);
 
-export const getTodoState: Types.GetTodoStateUtil = (typeFile, todo) => {
+export const getTodoState: Types.GetTodoState = (
+  typeFile,
+  { mixedTypes, ...todo }
+) => {
   switch (todo.category) {
     case 'variable':
       return {
         todo,
         config: {
           category: 'config',
+          mixedTypes,
           typeFile,
           typeName: 'VariableTodo',
           props: splitProps(todo),
@@ -81,6 +85,7 @@ export const getTodoState: Types.GetTodoStateUtil = (typeFile, todo) => {
         todo,
         config: {
           category: 'config',
+          mixedTypes,
           typeFile,
           typeName: 'FetchTodo',
           props: splitProps(todo),
@@ -92,6 +97,7 @@ export const getTodoState: Types.GetTodoStateUtil = (typeFile, todo) => {
         todo,
         config: {
           category: 'config',
+          mixedTypes,
           typeFile,
           typeName: 'ConditionBranchTodo',
           props: splitProps(todo),
@@ -103,6 +109,7 @@ export const getTodoState: Types.GetTodoStateUtil = (typeFile, todo) => {
         todo,
         config: {
           category: 'config',
+          mixedTypes,
           typeFile,
           typeName: 'IterateTodo',
           props: splitProps(todo),
@@ -114,10 +121,7 @@ export const getTodoState: Types.GetTodoStateUtil = (typeFile, todo) => {
   }
 };
 
-export const getInitialTodo: Types.GetInitialTodoUtil = (
-  typeFile,
-  category
-) => {
+export const getInitialTodo: Types.GetInitialTodo = (typeFile, category) => {
   const data: Pick<Appcraft.WidgetTodo, 'description' | 'id'> = {
     id: nanoid(4),
     description: '',
@@ -155,10 +159,7 @@ export const getInitialTodo: Types.GetInitialTodoUtil = (
         iterateTodo: '',
         source: {
           mode: 'extract',
-          initial: {
-            sourceType: 'input',
-            key: '',
-          },
+          initial: { source: 'output' },
         },
       });
 

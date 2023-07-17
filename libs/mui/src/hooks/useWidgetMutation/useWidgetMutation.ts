@@ -3,8 +3,8 @@ import _set from 'lodash/set';
 import { useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import { getPropPath } from '../../hooks';
-import type { PropPaths } from '../../contexts';
+import { getPropPath } from '../../utils';
+import type { PropPaths } from '../../utils';
 import type { WidgetMutationHook } from './useWidgetMutation.types';
 
 const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {

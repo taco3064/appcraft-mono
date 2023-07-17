@@ -2,7 +2,7 @@ import _topath from 'lodash/topath';
 import { startTransition, useState } from 'react';
 import type { PropTypesDef, StructureProp } from '@appcraft/types';
 
-import { getPropPath, getPropPathBySource } from '../usePropertyRouter';
+import { getPropPath, getPropPathBySource } from '../../utils';
 import { useCollection } from '../useCollection';
 import { usePropertiesSorting } from '../usePropertiesSorting';
 import type { ChangeHandler, OptionValues } from '../../contexts';
@@ -10,7 +10,7 @@ import type { TypeItem, TypeItemsHookResult } from './useTypeItems.types';
 
 const useTypeItems = <V extends OptionValues>(
   collection: StructureProp,
-  exclude: string[],
+  exclude: RegExp[],
   widgetValues: V,
   onChange: ChangeHandler<V>
 ): TypeItemsHookResult => {
@@ -38,7 +38,7 @@ const useTypeItems = <V extends OptionValues>(
       properties.reduce<TypeItem[]>((result, options) => {
         const propPath = getPropPath([...paths, options.propName as string]);
 
-        if (!exclude.includes(propPath)) {
+        if (exclude.every((e) => !e.test(propPath))) {
           result.push({
             key: options.propName as string,
             collectionType: 'object',
@@ -56,7 +56,7 @@ const useTypeItems = <V extends OptionValues>(
       collection.options.reduce<TypeItem[]>((result, options) => {
         const propPath = getPropPath([...paths, options.propName as string]);
 
-        if (!exclude.includes(propPath)) {
+        if (exclude.every((e) => !e.test(propPath))) {
           result.push({
             key: options.propName as string,
             collectionType: 'array',
@@ -77,7 +77,7 @@ const useTypeItems = <V extends OptionValues>(
       list.reduce<TypeItem[]>((result, propName) => {
         const propPath = getPropPath([...paths, propName]);
 
-        if (!exclude.includes(propPath)) {
+        if (exclude.every((e) => !e.test(propPath))) {
           const options: PropTypesDef = {
             ...(collection?.options as PropTypesDef),
             propName,
@@ -148,7 +148,7 @@ const useTypeItems = <V extends OptionValues>(
       Array.from({ length }).reduce<TypeItem[]>((result, _el, i) => {
         const propPath = getPropPath([...paths, i]);
 
-        if (!exclude.includes(propPath)) {
+        if (exclude.every((e) => !e.test(propPath))) {
           const options: PropTypesDef = {
             ...(collection?.options as PropTypesDef),
             propName: `[${i}]`,

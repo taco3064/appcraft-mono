@@ -4,7 +4,7 @@ import dagre from 'dagre';
 import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import * as Utils from './useTodoGenerator.utils';
+import * as Utils from '../../utils';
 import { DEFAULT_SIZE } from '../../styles';
 import type * as Types from './useTodoGenerator.types';
 
@@ -13,7 +13,7 @@ const useTodoGenerator: Types.TodoGeneratorHook = (
   todos,
   onChange
 ) => {
-  const [editing, setEditing] = useState<Types.TodoState>(null);
+  const [editing, setEditing] = useState<Utils.TodoState>(null);
 
   const { nodes, edges } = useMemo(() => {
     const dagreGraph = new dagre.graphlib.Graph()

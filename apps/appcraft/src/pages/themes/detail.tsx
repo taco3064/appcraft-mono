@@ -4,24 +4,24 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type { ConfigOptions } from '@appcraft/types';
 
-import * as Hooks from '~appcraft/hooks';
+import * as Hook from '~appcraft/hooks';
 import { CommonButton } from '~appcraft/components/common';
 import { ConfigDetail } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
 
 export default function Detail() {
-  const [, handleSetting] = Hooks.useSettingModified();
+  const [, handleSetting] = Hook.useSettingModified();
   const { pathname, query } = useRouter();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
 
-  const [at, tt] = Hooks.useFixedT('app', 'themes');
-  const [action, handleActionNodePick] = Hooks.useNodePickHandle([
+  const [at, tt] = Hook.useFixedT('app', 'themes');
+  const [action, handleActionNodePick] = Hook.useNodePickHandle([
     'reset',
     'save',
   ]);
-  const { superiors, breadcrumbs } = Hooks.useHierarchyFilter(category, id);
+  const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
 
   const { data: theme, refetch } = useQuery({
     queryKey: [id],

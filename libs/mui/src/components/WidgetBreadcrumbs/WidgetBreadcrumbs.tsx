@@ -1,7 +1,7 @@
 import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-import * as Styles from '../../styles';
+import * as Style from '../../styles';
 import { Breadcrumbs } from '../common/Breadcrumbs';
 import type { WidgetBreadcrumbsProps } from './WidgetBreadcrumbs.types';
 
@@ -13,37 +13,37 @@ export default function WidgetBreadcrumbs({
   onRedirect,
 }: WidgetBreadcrumbsProps) {
   return !breadcrumbs.length ? null : (
-    <Styles.ListToolbar>
-      <Styles.IconTipButton
+    <Style.ListToolbar>
+      <Style.IconTipButton
         title={ct('btn-back')}
         onClick={() =>
           onRedirect(breadcrumbs[breadcrumbs.length - 2]?.paths || [])
         }
       >
         <ArrowBackIcon />
-      </Styles.IconTipButton>
+      </Style.IconTipButton>
 
       <Breadcrumbs separator="›" maxItems={2} style={{ marginRight: 'auto' }}>
         {breadcrumbs.map(({ text, paths }, i, arr) => (
-          <Styles.Breadcrumb
+          <Style.Breadcrumb
             key={`breadcrumb_${i}`}
             brcVariant={i === arr.length - 1 ? 'text' : 'link'}
             onClick={() => onRedirect(paths)}
           >
             {text}
-          </Styles.Breadcrumb>
+          </Style.Breadcrumb>
         ))}
       </Breadcrumbs>
 
       {addable && (
-        <Styles.IconTipButton
+        <Style.IconTipButton
           title={ct('btn-new-widget')}
           size="small"
           onClick={onAdd}
         >
           <AddIcon />
-        </Styles.IconTipButton>
+        </Style.IconTipButton>
       )}
-    </Styles.ListToolbar>
+    </Style.ListToolbar>
   );
 }

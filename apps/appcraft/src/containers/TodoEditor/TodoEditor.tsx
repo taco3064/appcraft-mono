@@ -3,7 +3,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedTodoEditor } from '@appcraft/mui';
 
-import * as Hooks from '~appcraft/hooks';
+import * as Hook from '~appcraft/hooks';
 import { Breadcrumbs } from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
 import { Parser, getTypeDefinition } from '~appcraft/services';
@@ -17,10 +17,10 @@ export default function TodoEditor({
   onActionNodePick = (e) => e,
   onSave,
 }: TodoEditorProps) {
-  const [at, ct, tt] = Hooks.useFixedT('app', 'appcraft', 'todos');
-  const [todos, handleTodos] = Hooks.useTodoValues({ data, onSave });
+  const [at, ct, tt] = Hook.useFixedT('app', 'appcraft', 'todos');
+  const [todos, handleTodos] = Hook.useTodoValues({ data, onSave });
 
-  const actionNode = Hooks.useNodePicker(
+  const actionNode = Hook.useNodePicker(
     () =>
       onActionNodePick({
         run: (

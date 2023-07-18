@@ -2,8 +2,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import List from '@mui/material/List';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
-import * as Hooks from '../../hooks';
-import * as Styles from '../../styles';
+import * as Hook from '../../hooks';
+import * as Style from '../../styles';
 import { Breadcrumbs } from '../common';
 import { TypeItem } from '../TypeItem';
 import type { OptionValues } from '../../contexts';
@@ -16,12 +16,12 @@ export default function TypeList<V extends OptionValues>({
   onChange,
   onCollectionPathChange,
 }: TypeListProps<V>) {
-  const ct = Hooks.useFixedT();
+  const ct = Hook.useFixedT();
 
   const [breadcrumbs, { back: handleBack, to: handleTo }] =
-    Hooks.usePropertyRouter(onCollectionPathChange);
+    Hook.usePropertyRouter(onCollectionPathChange);
 
-  const [items, onItemAdd] = Hooks.useTypeItems<V>(
+  const [items, onItemAdd] = Hook.useTypeItems<V>(
     collection,
     exclude,
     values,
@@ -33,13 +33,13 @@ export default function TypeList<V extends OptionValues>({
       disablePadding
       subheader={
         breadcrumbs.length > 0 && (
-          <Styles.ListToolbar>
-            <Styles.IconTipButton
+          <Style.ListToolbar>
+            <Style.IconTipButton
               title={ct('btn-back')}
               onClick={() => handleBack()}
             >
               <ArrowBackIcon />
-            </Styles.IconTipButton>
+            </Style.IconTipButton>
 
             <Breadcrumbs
               separator="."
@@ -47,31 +47,31 @@ export default function TypeList<V extends OptionValues>({
               style={{ marginRight: 'auto' }}
             >
               {breadcrumbs.map(({ name, isStructureArray }, i, arr) => (
-                <Styles.Breadcrumb
+                <Style.Breadcrumb
                   key={`breadcrumb_${i}`}
                   brcVariant={i === arr.length - 1 ? 'text' : 'link'}
                   onClick={() => handleBack(i)}
                 >
                   {isStructureArray ? `[${name}]` : name}
-                </Styles.Breadcrumb>
+                </Style.Breadcrumb>
               ))}
             </Breadcrumbs>
 
             {onItemAdd instanceof Function && (
-              <Styles.IconTipButton
+              <Style.IconTipButton
                 title={ct('btn-add-prop')}
                 size="small"
                 onClick={onItemAdd}
               >
                 <PlaylistAddIcon />
-              </Styles.IconTipButton>
+              </Style.IconTipButton>
             )}
-          </Styles.ListToolbar>
+          </Style.ListToolbar>
         )
       }
     >
       {!items.length ? (
-        <Styles.ListPlaceholder message={ct('msg-no-properties')} />
+        <Style.ListPlaceholder message={ct('msg-no-properties')} />
       ) : (
         items.map(({ key, ...item }) => (
           <TypeItem key={key} {...item} onSubitemView={handleTo} />

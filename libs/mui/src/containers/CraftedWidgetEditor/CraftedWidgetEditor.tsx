@@ -10,8 +10,8 @@ import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Comp from '../../components';
-import * as Hooks from '../../hooks';
-import * as Styles from '../../styles';
+import * as Hook from '../../hooks';
+import * as Style from '../../styles';
 import { CraftedTodoEditor } from '../CraftedTodoEditor';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { getNodesAndEventsKey } from '../../utils';
@@ -28,24 +28,24 @@ export default function CraftedWidgetEditor({
   onFetchWidgetDefinition,
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
-  const ct = Hooks.useFixedT(fixedT);
+  const ct = Hook.useFixedT(fixedT);
   const [adding, setAdding] = useState(false);
 
   const [{ breadcrumbs, items, paths, type }, onPathsChange] =
-    Hooks.useStructure(widget as Appcraft.NodeWidget);
+    Hook.useStructure(widget as Appcraft.NodeWidget);
 
-  const [{ editedWidget, todoPath }, handleMutation] = Hooks.useWidgetMutation(
+  const [{ editedWidget, todoPath }, handleMutation] = Hook.useWidgetMutation(
     widget as Appcraft.RootNodeWidget,
     onWidgetChange
   );
 
-  const LazyWidgetNodes = Hooks.useLazyWidgetNodes<Types.LazyWidgetNodesProps>(
+  const LazyWidgetNodes = Hook.useLazyWidgetNodes<Types.LazyWidgetNodesProps>(
     items,
     version,
     onFetchNodesAndEvents,
     ({ fetchData: { events, nodes } = {}, widgets, ...props }) =>
       widgets.length === 0 ? (
-        <Styles.ListPlaceholder message={ct('msg-no-widgets')} />
+        <Style.ListPlaceholder message={ct('msg-no-widgets')} />
       ) : (
         <>
           {widgets.map((item, index) => {
@@ -113,7 +113,7 @@ export default function CraftedWidgetEditor({
         </>
       )}
 
-      <Styles.FullHeightCollapse
+      <Style.FullHeightCollapse
         aria-label="Widget Structure"
         fullHeight
         in={editedWidget?.category !== 'node'}
@@ -127,13 +127,13 @@ export default function CraftedWidgetEditor({
               {ct('ttl-structure')}
             </Typography>
 
-            <Styles.IconTipButton
+            <Style.IconTipButton
               size="large"
               color="primary"
               title={ct('btn-state-props-mgr')}
             >
               <StorageRoundedIcon />
-            </Styles.IconTipButton>
+            </Style.IconTipButton>
           </Toolbar>
         </AppBar>
 
@@ -149,7 +149,7 @@ export default function CraftedWidgetEditor({
           }
         >
           {!widget ? (
-            <Styles.ListPlaceholder
+            <Style.ListPlaceholder
               message={ct('msg-no-widget')}
               action={
                 <Button
@@ -184,7 +184,7 @@ export default function CraftedWidgetEditor({
             </Suspense>
           )}
         </List>
-      </Styles.FullHeightCollapse>
+      </Style.FullHeightCollapse>
     </>
   );
 }

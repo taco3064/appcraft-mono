@@ -2,9 +2,9 @@ import * as Rf from 'reactflow';
 import { useTheme } from '@mui/material/styles';
 
 import * as Comp from '../../components';
-import * as Hooks from '../../hooks';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { FullHeightCollapse, TodoBackground } from '../../styles';
+import { useFixedT, useTodoGenerator } from '../../hooks';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
 
 const exclude: RegExp[] = [
@@ -28,9 +28,9 @@ export default function CraftedTodoEditor({
   onFetchDefinition,
 }: CraftedTodoEditorProps) {
   const theme = useTheme();
-  const ct = Hooks.useFixedT(fixedT);
+  const ct = useFixedT(fixedT);
 
-  const [{ editing, nodes, edges }, handleTodo] = Hooks.useTodoGenerator(
+  const [{ editing, nodes, edges }, handleTodo] = useTodoGenerator(
     typeFile,
     values || {},
     onChange

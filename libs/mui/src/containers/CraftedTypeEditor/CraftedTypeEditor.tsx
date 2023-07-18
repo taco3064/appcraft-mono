@@ -2,7 +2,7 @@ import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 
 import * as Comp from '../../components';
-import * as Hooks from '../../hooks';
+import * as Hook from '../../hooks';
 import { EditorProvider, OptionValues } from '../../contexts';
 import { FullHeightCollapse, TypeListSkeleton } from '../../styles';
 import type * as Types from './CraftedTypeEditor.types';
@@ -17,10 +17,10 @@ export default function CraftedTypeEditor<V extends OptionValues>({
   onChange,
   onFetchDefinition,
 }: Types.CraftedTypeEditorProps<V>) {
-  const ct = Hooks.useFixedT(fixedT);
+  const ct = Hook.useFixedT(fixedT);
   const [collectionPath, setCollectionPath] = useState('');
 
-  const LazyTypeList = Hooks.useLazyTypeList<Types.LazyTypeListProps<V>>(
+  const LazyTypeList = Hook.useLazyTypeList<Types.LazyTypeListProps<V>>(
     { ...(values as V), collectionPath },
     onFetchDefinition,
     ({ fetchData, placeholder, ...props }) =>

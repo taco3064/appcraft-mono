@@ -5,8 +5,8 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { useCallback, useState } from 'react';
 
-import * as Component from '~appcraft/components';
-import * as Hooks from '~appcraft/hooks';
+import * as Comp from '~appcraft/components';
+import * as Hook from '~appcraft/hooks';
 import * as Service from '~appcraft/services';
 import { CommonButton, LazyMui, typeMap } from '~appcraft/components/common';
 import type { WidgetEditorProps } from './WidgetEditor.types';
@@ -18,20 +18,20 @@ export default function WidgetEditor({
   onActionNodePick = (e) => e,
   onSave,
 }: WidgetEditorProps) {
-  const [at, ct, wt] = Hooks.useFixedT('app', 'appcraft', 'widgets');
+  const [at, ct, wt] = Hook.useFixedT('app', 'appcraft', 'widgets');
   const [open, setOpen] = useState(true);
 
-  const [widget, handleWidget] = Hooks.useWidgetValues({
+  const [widget, handleWidget] = Hook.useWidgetValues({
     data,
     onSave,
   });
 
-  const width = Hooks.useWidth();
+  const width = Hook.useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
   const toLazy = useCallback((widgetType: string) => LazyMui[widgetType], []);
 
-  const actionNode = Hooks.useNodePicker(
+  const actionNode = Hook.useNodePicker(
     () =>
       onActionNodePick({
         expand: !isCollapsable ? null : (
@@ -64,7 +64,7 @@ export default function WidgetEditor({
 
   return (
     <>
-      <Component.Breadcrumbs
+      <Comp.Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
         action={actionNode}
         onCustomize={([index]) => [
@@ -74,7 +74,7 @@ export default function WidgetEditor({
         ]}
       />
 
-      <Component.PersistentDrawerContent
+      <Comp.PersistentDrawerContent
         {...PersistentDrawerContentProps}
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
@@ -95,7 +95,7 @@ export default function WidgetEditor({
               Service.getTypeDefinition(Service.Parser.Widget, ...e)
             }
             renderWidgetTypeSelection={({ onChange }) => (
-              <Component.WidgetSelect
+              <Comp.WidgetSelect
                 fullWidth
                 required
                 size="small"

@@ -1,14 +1,14 @@
 import _get from 'lodash/get';
-import _topath from 'lodash/topath';
+import _toPath from 'lodash/toPath';
 import { useCallback, useMemo } from 'react';
 
-import { getPropPathBySource } from '../../utils';
+import { getPropPath } from '../../utils';
 import { useCollection } from '../useCollection';
 import type { PropertyRouterHook } from './usePropertyRouter.types';
 
 const usePropertyRouter: PropertyRouterHook = (onCollectionPathChange) => {
   const { path, source } = useCollection();
-  const paths = useMemo<string[]>(() => _topath(path), [path]);
+  const paths = useMemo(() => _toPath(path), [path]);
 
   return [
     paths.map((name, i) => ({
@@ -19,18 +19,13 @@ const usePropertyRouter: PropertyRouterHook = (onCollectionPathChange) => {
     {
       back: (index) =>
         onCollectionPathChange(
-          getPropPathBySource(
-            source,
-            paths.slice(0, (index || paths.length - 2) + 1)
-          )
+          getPropPath(paths.slice(0, (index || paths.length - 2) + 1))
         ),
 
       to: useCallback(
         ({ propName }) =>
-          onCollectionPathChange(
-            getPropPathBySource(source, [...paths, propName] as string[])
-          ),
-        [source, paths, onCollectionPathChange]
+          onCollectionPathChange(getPropPath([...paths, propName] as string[])),
+        [paths, onCollectionPathChange]
       ),
     },
   ];

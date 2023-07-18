@@ -1,3 +1,4 @@
+import Typography from '@mui/material/Typography';
 import { Position, useReactFlow } from 'reactflow';
 
 import { TodoHandle, TodoNodeLabel } from '../../styles';
@@ -5,7 +6,7 @@ import type { TodoFlowNodeProps } from './TodoFlowNode.types';
 
 export default function TodoFlowNode({ data }: TodoFlowNodeProps) {
   const { id, category, description } = data;
-  const { deleteElements, getEdges } = useReactFlow();
+  const { deleteElements } = useReactFlow();
 
   return (
     <>
@@ -14,7 +15,15 @@ export default function TodoFlowNode({ data }: TodoFlowNodeProps) {
       <TodoNodeLabel
         category={category}
         primary={description}
-        secondary={category}
+        secondary={
+          <>
+            {category}
+
+            <Typography variant="caption" textTransform="none">
+              ({id})
+            </Typography>
+          </>
+        }
         onDelete={() => deleteElements({ nodes: [{ id }] })}
       />
 

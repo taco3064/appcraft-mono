@@ -116,7 +116,7 @@ export default function TypeItem({
                   action={matchedAction}
                   description={
                     <Typography variant="caption" color="text.secondary">
-                      {description}
+                      {description.replace(/import\s*\(.*?\)\s*;?\./g, '')}
                     </Typography>
                   }
                 />

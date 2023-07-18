@@ -111,7 +111,11 @@ export default function HierarchyList({
           {at('txt-no-data')}
         </Typography>
       ) : (
-        <ImageList gap={24} cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}>
+        <ImageList
+          gap={24}
+          cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}
+          style={{ overflow: 'hidden auto' }}
+        >
           {hierarchies.map((data) => (
             <Component.HierarchyItem
               key={data._id}

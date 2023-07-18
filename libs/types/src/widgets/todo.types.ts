@@ -27,7 +27,7 @@ export type Variables =
   | Variable<'extract', ExtractTodoResult>;
 
 //* Todo Events
-type Todos = 'variable' | 'fetch' | 'branch' | 'iterate';
+type Todos = 'variable' | 'fetch' | 'branch' | 'iterate' | 'wrap' | 'state';
 
 type BaseTodo<C extends Todos, P> = {
   category: C;
@@ -77,8 +77,27 @@ export type IterateTodo = BaseTodo<
   }
 >;
 
+export type WrapTodo = BaseTodo<
+  'wrap',
+  {
+    todosId: string;
+  }
+>;
+
+export type SetStateTodo = BaseTodo<
+  'state',
+  {
+    states: {
+      source: Omit<Variable<'extract', ExtractTodoResult>, 'template'>;
+      state: string;
+    }[];
+  }
+>;
+
 export type WidgetTodo =
   | VariableTodo
   | FetchTodo
   | ConditionBranchTodo
-  | IterateTodo;
+  | IterateTodo
+  | WrapTodo
+  | SetStateTodo;

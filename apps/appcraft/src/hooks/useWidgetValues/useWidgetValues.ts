@@ -8,12 +8,12 @@ import { useFixedT } from '~appcraft/hooks';
 import type { WidgetValuesHook } from './useWidgetValues.types';
 
 const useWidgetValues: WidgetValuesHook = ({ data, onSave }) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const [at] = useFixedT('app');
+
   const [widget, setWidget] = useState<RootNodeWidget>(
     () => data?.content?.type && JSON.parse(JSON.stringify(data.content || {}))
   );
-
-  const { enqueueSnackbar } = useSnackbar();
-  const [at] = useFixedT('app');
 
   const mutation = useMutation({
     mutationFn: upsertConfig<RootNodeWidget>,

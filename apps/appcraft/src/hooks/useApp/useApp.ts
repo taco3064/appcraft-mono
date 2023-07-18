@@ -3,6 +3,7 @@ import { PaletteOptions, createTheme } from '@mui/material/styles';
 import { getProps } from '@appcraft/mui';
 import { useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import type { ConfigOptions } from '@appcraft/types';
 
 import useAppStore from './useApp.zustand';
 import { FindConfigContext, findConfig } from '~appcraft/services';
@@ -90,7 +91,7 @@ export const useThemeStyle: Types.ThemeStyleHook = () => {
 
       if (!isDefaultOption) {
         try {
-          const { content } = await findConfig(ctx);
+          const { content } = await findConfig<ConfigOptions>(ctx);
 
           return getProps<PaletteOptions>(content);
         } catch (e) {

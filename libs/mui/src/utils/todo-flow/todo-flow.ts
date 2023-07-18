@@ -116,6 +116,30 @@ export const getTodoState: Types.GetTodoState = (
         },
       };
 
+    case 'wrap':
+      return {
+        todo,
+        config: {
+          category: 'config',
+          mixedTypes,
+          typeFile,
+          typeName: 'WrapTodo',
+          props: splitProps(todo),
+        },
+      };
+
+    case 'state':
+      return {
+        todo,
+        config: {
+          category: 'config',
+          mixedTypes,
+          typeFile,
+          typeName: 'SetStateTodo',
+          props: splitProps(todo),
+        },
+      };
+
     default:
       return null;
   }
@@ -161,6 +185,20 @@ export const getInitialTodo: Types.GetInitialTodo = (typeFile, category) => {
           mode: 'extract',
           initial: { source: 'output' },
         },
+      });
+
+    case 'wrap':
+      return getTodoState(typeFile, {
+        ...data,
+        category,
+        todosId: '',
+      });
+
+    case 'state':
+      return getTodoState(typeFile, {
+        ...data,
+        category,
+        states: [],
       });
 
     default:

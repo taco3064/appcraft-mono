@@ -13,6 +13,7 @@ export const FullHeightCollapse = (() => {
     (theme, { fullHeight, in: open }) => ({
       root: {
         ...(fullHeight && open && { height: '100% !important' }),
+        ...(open && { width: '100% !important' }),
       },
       wrapper: {
         height: '100% !important',

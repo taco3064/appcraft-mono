@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.65](https://github.com/taco3064/appcraft-mono/compare/v0.0.64...v0.0.65) (2023-07-18)
+
+
+### Features
+
+* **@appcraft/types:** add WrapTodo & SetStateTodo ([6f7545f](https://github.com/taco3064/appcraft-mono/commit/6f7545fd827745ea6e74de9056d4fc52bb9d330a))
+* **/pages/todos:** re-design todo detail page ([660c0f8](https://github.com/taco3064/appcraft-mono/commit/660c0f8415f26b7d2b0d77cf5f88809f31e99832))
+* **apps/appcraft:** add todo events detail editor page ([047b7e4](https://github.com/taco3064/appcraft-mono/commit/047b7e4434b6894a13d3348af3181a7a4fd438cc))
+
+
+### Bug Fixes
+
+* **app/appcraft:** update styles ([01d5934](https://github.com/taco3064/appcraft-mono/commit/01d5934c52364eff83678133e847c3751d39d32a))
+
 ### [0.0.64](https://github.com/taco3064/appcraft-mono/compare/v0.0.63...v0.0.64) (2023-07-18)
 
 

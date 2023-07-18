@@ -95,6 +95,8 @@ export const useThemeStyle: Types.ThemeStyleHook = () => {
           return getProps<PaletteOptions>(content);
         } catch (e) {
           console.warn(e);
+
+          return PALETTES.SPARKLING_CHAMPAGNE;
         }
       }
 

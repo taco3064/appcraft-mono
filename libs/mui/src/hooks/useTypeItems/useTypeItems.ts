@@ -1,4 +1,4 @@
-import _topath from 'lodash/topath';
+import _toPath from 'lodash/toPath';
 import { startTransition, useState } from 'react';
 import type { PropTypesDef, StructureProp } from '@appcraft/types';
 
@@ -20,7 +20,7 @@ const useTypeItems = <V extends OptionValues>(
 
   const [structure, setStructure] = useState(values);
   const properties = usePropertiesSorting(collection);
-  const paths = _topath(path);
+  const paths = _toPath(path);
 
   const handleDelete = (fn: () => string) =>
     startTransition(() => {
@@ -102,12 +102,12 @@ const useTypeItems = <V extends OptionValues>(
 
               handleDelete(() => {
                 const propPath = getPropPathBySource(source, [
-                  ..._topath(path),
+                  ..._toPath(path),
                   propName,
                 ]);
 
                 const newPropPath = getPropPathBySource(source, [
-                  ..._topath(path),
+                  ..._toPath(path),
                   newPropName,
                 ]);
 

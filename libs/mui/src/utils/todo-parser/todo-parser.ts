@@ -1,5 +1,5 @@
 import _get from 'lodash/get';
-import _isPlainObject from 'lodash/isplainobject';
+import _isPlainObject from 'lodash/isPlainObject';
 import _omit from 'lodash/omit';
 import _set from 'lodash/set';
 import _template from 'lodash/template';

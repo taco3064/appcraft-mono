@@ -1,4 +1,4 @@
-import _isPlainObject from 'lodash/isplainobject';
+import _isPlainObject from 'lodash/isPlainObject';
 import _set from 'lodash/set';
 import type * as Appcraft from '@appcraft/types';
 import type { Components } from '@mui/material/styles';

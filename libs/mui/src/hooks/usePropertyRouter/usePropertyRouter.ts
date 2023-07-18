@@ -1,5 +1,5 @@
 import _get from 'lodash/get';
-import _topath from 'lodash/topath';
+import _toPath from 'lodash/toPath';
 import { useCallback, useMemo } from 'react';
 
 import { getPropPathBySource } from '../../utils';
@@ -8,7 +8,7 @@ import type { PropertyRouterHook } from './usePropertyRouter.types';
 
 const usePropertyRouter: PropertyRouterHook = (onCollectionPathChange) => {
   const { path, source } = useCollection();
-  const paths = useMemo<string[]>(() => _topath(path), [path]);
+  const paths = useMemo<string[]>(() => _toPath(path), [path]);
 
   return [
     paths.map((name, i) => ({

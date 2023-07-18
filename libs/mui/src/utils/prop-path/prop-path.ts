@@ -1,4 +1,3 @@
-import _get from 'lodash/get';
 import type * as Types from './prop-path.types';
 
 const regs: RegExp[] = [
@@ -13,20 +12,13 @@ export const getPropOrderSeq: Types.GetPropOrderSeq = (type) =>
 
 export const getPropPath: Types.GetPropPath = (paths) =>
   paths.reduce<string>((result, propName) => {
-    const isStructureArray = typeof propName === 'number';
+    if (/^\d+$/.test(propName.toString())) {
+      return `${result}[${propName}]`;
+    } else if (/^\[\d+\]$/.test(propName.toString())) {
+      return `${result}${propName}`;
+    }
 
-    return isStructureArray
-      ? `${result}[${propName}]`
-      : `${result ? `${result}.` : ''}${propName}`;
-  }, '');
-
-export const getPropPathBySource: Types.GetPropPathBySource = (source, paths) =>
-  paths.reduce<string>((result, propName, i) => {
-    const isStructureArray = Array.isArray(_get(source, paths.slice(0, i)));
-
-    return isStructureArray
-      ? `${result}[${propName}]`
-      : `${result ? `${result}.` : ''}${propName}`;
+    return `${result ? `${result}.` : ''}${propName}`;
   }, '');
 
 export const sortPropPaths = <E = string>(

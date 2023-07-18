@@ -61,7 +61,7 @@ export default function TodoEditor({
 
       <Container
         disableGutters
-        maxWidth="sm"
+        maxWidth="lg"
         {...ContentProps}
         style={{
           display: 'flex',

@@ -52,7 +52,6 @@ export default function Detail() {
         onActionNodePick={handleActionNodePick}
         onSave={refetch}
         ContentProps={{
-          maxWidth: 'md',
           sx: {
             height: (theme) => `calc(${height} - ${theme.spacing(30.25)})`,
           },

@@ -10,8 +10,8 @@ import Tooltip from '@mui/material/Tooltip';
 import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import * as Utils from '../../utils';
-import * as Styles from '../../styles';
+import * as Style from '../../styles';
+import { sortPropPaths } from '../../utils';
 import type { WidgetNodeProps } from './WidgetNode.types';
 
 type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
@@ -33,12 +33,12 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
   const [open, setOpen] = useState(false);
 
   const events: string[] = useMemo(
-    () => (Array.isArray(event) ? Utils.sortPropPaths(event) : []),
+    () => (Array.isArray(event) ? sortPropPaths(event) : []),
     [event]
   );
 
   const structures = useMemo<[string, Appcraft.NodeType][]>(
-    () => Utils.sortPropPaths(Object.entries(structure || {}), (e) => e[0]),
+    () => sortPropPaths(Object.entries(structure || {}), (e) => e[0]),
     [structure]
   );
 
@@ -77,22 +77,22 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
             : { primary: ct('ttl-node-plain-text'), secondary: content })}
         />
 
-        <Styles.TypeItemAction>
+        <Style.TypeItemAction>
           {open && structures.length > 0 && events.length > 0 && (
             <Tooltip
               title={ct(`btn-${display === 'events' ? 'todos' : 'nodes'}`)}
             >
-              <Styles.WidgetNodeSwitch value={display} onChange={setDisplay} />
+              <Style.WidgetNodeSwitch value={display} onChange={setDisplay} />
             </Tooltip>
           )}
 
-          <Styles.IconTipButton
+          <Style.IconTipButton
             title={ct('btn-remove-widget')}
             onClick={() => onRemove(superiorNodeType === 'node' ? [index] : [])}
           >
             <CloseIcon />
-          </Styles.IconTipButton>
-        </Styles.TypeItemAction>
+          </Style.IconTipButton>
+        </Style.TypeItemAction>
       </ListItemButton>
 
       <Collapse in={open && structures.length > 0 && display === 'nodes'}>

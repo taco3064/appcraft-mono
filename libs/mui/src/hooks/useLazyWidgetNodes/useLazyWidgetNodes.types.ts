@@ -5,6 +5,11 @@ export type ParseOptions = Pick<
   'typeFile' | 'typeName'
 >;
 
+export type FetchNodesAndEvents = (
+  items: Appcraft.WidgetOptions[],
+  version?: string
+) => Promise<Appcraft.NodeAndEventProps>;
+
 export type RenderFn<D, R> = (
   options: R & {
     fetchData: D;

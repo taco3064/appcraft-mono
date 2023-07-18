@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 
 import * as Common from '../common';
-import * as Hooks from '../../hooks';
+import * as Hook from '../../hooks';
 import { IconTipButton } from '../../styles';
 import type * as Types from './TypeItem.types';
 
@@ -20,15 +20,15 @@ export default function TypeItem({
   onRename,
   onSubitemView,
 }: Types.TypeItemProps) {
-  const ct = Hooks.useFixedT();
+  const ct = Hook.useFixedT();
   const [naming, setNaming] = useState(!options.propName);
 
-  const { category, label, propPath } = Hooks.useTypeItem(
+  const { category, label, propPath } = Hook.useTypeItem(
     collectionType,
     options
   );
 
-  const [status, selection] = Hooks.useConstructSelection(
+  const [status, selection] = Hook.useConstructSelection(
     propPath,
     ({ status, onStatusChange }) => (
       <Common.TypeItemSelection

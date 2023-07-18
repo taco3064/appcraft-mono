@@ -7,8 +7,8 @@ import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import UndoIcon from '@mui/icons-material/Undo';
 import { useState } from 'react';
 
-import * as Hooks from '../../../hooks';
-import * as Styles from '../../../styles';
+import * as Hook from '../../../hooks';
+import * as Style from '../../../styles';
 import { MenuDialog } from '..';
 import type { TypeItemMixedProps } from './TypeItemMixed.types';
 
@@ -21,13 +21,13 @@ export default function TypeItemMixed({
   renderMatchedField,
   selection,
 }: TypeItemMixedProps) {
-  const [selected, setSelected] = Hooks.useMixedTypeMapping(
+  const [selected, setSelected] = Hook.useMixedTypeMapping(
     propPath,
     options.options || []
   );
 
   const [open, setOpen] = useState(false);
-  const ct = Hooks.useFixedT();
+  const ct = Hook.useFixedT();
   const matched = options.options?.find(({ text }) => text === selected);
 
   const types =
@@ -42,21 +42,21 @@ export default function TypeItemMixed({
           matched,
           selected as string,
           <>
-            <Styles.IconTipButton
+            <Style.IconTipButton
               disabled={disabled}
               title={ct('btn-clear-type')}
               onClick={() => setSelected()}
             >
               <UndoIcon />
-            </Styles.IconTipButton>
+            </Style.IconTipButton>
 
-            <Styles.IconTipButton
+            <Style.IconTipButton
               disabled={disabled}
               title={ct('btn-reset-type')}
               onClick={() => setOpen(true)}
             >
               <PlaylistAddCheckIcon />
-            </Styles.IconTipButton>
+            </Style.IconTipButton>
           </>
         )
       ) : (
@@ -70,8 +70,8 @@ export default function TypeItemMixed({
           <ListItemText
             disableTypography
             primary={
-              <Styles.GapTypography variant="subtitle1" color="text.primary">
-                <Styles.CompositeIcon
+              <Style.GapTypography variant="subtitle1" color="text.primary">
+                <Style.CompositeIcon
                   anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
                   primaryProps={{ color: 'secondary' }}
                   secondaryProps={{ color: 'warning' }}
@@ -80,11 +80,11 @@ export default function TypeItemMixed({
                 />
 
                 {label}
-              </Styles.GapTypography>
+              </Style.GapTypography>
             }
           />
 
-          {action && <Styles.TypeItemAction>{action}</Styles.TypeItemAction>}
+          {action && <Style.TypeItemAction>{action}</Style.TypeItemAction>}
         </ListItemButton>
       )}
 

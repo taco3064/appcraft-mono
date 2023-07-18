@@ -4,7 +4,7 @@ import dagre from 'dagre';
 import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import * as Utils from '../../utils';
+import * as Util from '../../utils';
 import { DEFAULT_SIZE } from '../../styles';
 import type * as Types from './useTodoGenerator.types';
 
@@ -13,18 +13,18 @@ const useTodoGenerator: Types.TodoGeneratorHook = (
   todos,
   onChange
 ) => {
-  const [editing, setEditing] = useState<Utils.TodoState>(null);
+  const [editing, setEditing] = useState<Util.TodoState>(null);
 
   const { nodes, edges } = useMemo(() => {
     const dagreGraph = new dagre.graphlib.Graph()
       .setDefaultEdgeLabel(() => ({}))
       .setGraph({ rankdir: 'TB', align: 'UL', ranker: 'longest-path' });
 
-    const nodes = Utils.getFlowNodes(todos || {}, ({ id }) =>
+    const nodes = Util.getFlowNodes(todos || {}, ({ id }) =>
       dagreGraph.setNode(id, { ...DEFAULT_SIZE.DAGRE })
     );
 
-    const edges = Utils.getFlowEdges(todos || {}, ({ source, target }) =>
+    const edges = Util.getFlowEdges(todos || {}, ({ source, target }) =>
       dagreGraph.setEdge(source, target)
     );
 
@@ -49,10 +49,9 @@ const useTodoGenerator: Types.TodoGeneratorHook = (
       change: (config) =>
         setEditing({ todo: editing?.todo as Appcraft.WidgetTodo, config }),
 
-      create: (category) =>
-        setEditing(Utils.getInitialTodo(typeFile, category)),
+      create: (category) => setEditing(Util.getInitialTodo(typeFile, category)),
 
-      select: (_e, { data }) => setEditing(Utils.getTodoState(typeFile, data)),
+      select: (_e, { data }) => setEditing(Util.getTodoState(typeFile, data)),
 
       connect: ({ source, sourceHandle, target }) => {
         if (source && todos[source] && source !== target) {

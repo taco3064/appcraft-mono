@@ -11,8 +11,8 @@ import dayjs from 'dayjs';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 
 import * as Common from '..';
-import * as Hooks from '../../../hooks';
 import { AdornmentTextField, TypeItemAction } from '../../../styles';
+import { usePropValue } from '../../../hooks';
 import type { TypeItemPureProps } from './TypeItemPure.types';
 
 export default function TypeItemPure({
@@ -23,7 +23,7 @@ export default function TypeItemPure({
   propPath,
   selection,
 }: TypeItemPureProps) {
-  const [value, onChange] = Hooks.usePropValue(propPath);
+  const [value, onChange] = usePropValue(propPath);
 
   return (
     <ListItem>

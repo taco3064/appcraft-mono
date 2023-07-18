@@ -7,6 +7,14 @@ import { getPropPath } from '../prop-path';
 import { getEventHandler } from '../todo-parser';
 import type * as Types from './props-parser.types';
 
+export const getNodesAndEventsKey: Types.GetNodesAndEventsKey = (
+  options,
+  defaultKey = ''
+) =>
+  options.category === 'node'
+    ? `${options.typeFile}#${options.typeName}`
+    : defaultKey;
+
 export const getDefaultProps: Types.GetDefaultProps = (theme, type) => {
   const defaultProps =
     theme.components?.[`Mui${type}` as keyof Components]?.defaultProps || {};

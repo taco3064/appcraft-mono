@@ -1,6 +1,5 @@
-import type * as Appcraft from '@appcraft/types';
-
 import type { EditorProviderProps, OptionValues } from '../../contexts';
+import type { FetchTypeDefinition } from '../../hooks';
 import type { TypeListProps } from '../../components';
 
 export type LazyTypeListProps<V extends OptionValues> = Omit<
@@ -15,6 +14,6 @@ export interface CraftedTypeEditorProps<V extends OptionValues>
     Omit<EditorProviderProps<V>, 'children' | 'collectionPath'> {
   fullHeight?: boolean;
   open?: boolean;
-  parser: Appcraft.FetchOptions;
   onBack?: () => void;
+  onFetchDefinition: FetchTypeDefinition;
 }

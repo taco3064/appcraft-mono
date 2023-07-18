@@ -25,7 +25,7 @@ export default function Detail() {
 
   const { data: todos, refetch } = useQuery({
     queryKey: [id],
-    queryFn: findConfig<Appcraft.ConfigOptions>,
+    queryFn: findConfig<Record<string, Appcraft.WidgetTodo>>,
     refetchOnWindowFocus: false,
   });
 

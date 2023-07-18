@@ -18,6 +18,7 @@ export default function TodoEditor({
   onSave,
 }: TodoEditorProps) {
   const [at, ct, tt] = Hooks.useFixedT('app', 'appcraft', 'todos');
+  const [todos, handleTodos] = Hooks.useTodoValues({ data, onSave });
 
   const actionNode = Hooks.useNodePicker(
     () =>
@@ -27,6 +28,7 @@ export default function TodoEditor({
             btnVariant="icon"
             icon={PlayTodoIcon}
             text={tt('btn-run')}
+            onClick={handleTodos.run}
           />
         ),
         reset: (
@@ -34,6 +36,7 @@ export default function TodoEditor({
             btnVariant="icon"
             icon={RestartAltIcon}
             text={at('btn-reset')}
+            onClick={handleTodos.reset}
           />
         ),
         save: (
@@ -41,10 +44,11 @@ export default function TodoEditor({
             btnVariant="icon"
             icon={SaveAltIcon}
             text={at('btn-save')}
+            onClick={handleTodos.save}
           />
         ),
       }),
-    []
+    [todos]
   );
 
   return (
@@ -74,8 +78,8 @@ export default function TodoEditor({
           fixedT={ct}
           parser={FETCH_OPTIONS.CONFIGS_PARSER}
           typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
-          values={{}}
-          onChange={console.log}
+          values={todos}
+          onChange={handleTodos.change}
         />
       </Container>
     </>

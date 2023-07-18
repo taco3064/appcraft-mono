@@ -75,6 +75,7 @@ export default function TodoEditor({
       >
         <CraftedTodoEditor
           fullHeight
+          disableCategories={['wrap', 'state']}
           fixedT={ct}
           parser={FETCH_OPTIONS.CONFIGS_PARSER}
           typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}

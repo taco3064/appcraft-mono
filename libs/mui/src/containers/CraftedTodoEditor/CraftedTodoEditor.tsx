@@ -16,6 +16,7 @@ const exclude: RegExp[] = [
 ];
 
 export default function CraftedTodoEditor({
+  disableCategories,
   fixedT,
   fullHeight,
   open = true,
@@ -92,7 +93,10 @@ export default function CraftedTodoEditor({
               <Rf.Background color={theme.palette.text.secondary} gap={16} />
             </Rf.ReactFlow>
 
-            <Comp.TodoFlowControls ct={ct} onTodoAdd={handleTodo.create} />
+            <Comp.TodoFlowControls
+              {...{ ct, disableCategories }}
+              onTodoAdd={handleTodo.create}
+            />
           </Rf.ReactFlowProvider>
         </TodoBackground>
       </FullHeightCollapse>

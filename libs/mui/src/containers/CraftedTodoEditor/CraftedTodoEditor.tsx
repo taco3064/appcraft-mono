@@ -20,12 +20,12 @@ export default function CraftedTodoEditor({
   fixedT,
   fullHeight,
   open = true,
-  parser,
   todoPath,
   typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts',
   values,
   onBack,
   onChange,
+  onFetchDefinition,
 }: CraftedTodoEditorProps) {
   const theme = useTheme();
   const ct = Hooks.useFixedT(fixedT);
@@ -46,7 +46,7 @@ export default function CraftedTodoEditor({
         onConfirm={(todo) => onChange({ ...values, [todo.id]: todo })}
         renderEditor={(todoConfig) => (
           <CraftedTypeEditor
-            {...{ exclude, fixedT, parser }}
+            {...{ exclude, fixedT, onFetchDefinition }}
             values={todoConfig}
             onChange={handleTodo.change}
           />

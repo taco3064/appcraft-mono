@@ -13,6 +13,11 @@ export type GetDefaultProps = (
   type: string
 ) => Record<string, unknown>;
 
+export type GetNodesAndEventsKey = (
+  options: Appcraft.WidgetOptions,
+  defaultKey?: string
+) => string;
+
 export type SplitProps = (
   target: unknown,
   paths?: (string | number)[]

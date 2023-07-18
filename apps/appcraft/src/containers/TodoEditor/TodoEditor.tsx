@@ -4,9 +4,9 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedTodoEditor } from '@appcraft/mui';
 
 import * as Hooks from '~appcraft/hooks';
-import FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
 import { Breadcrumbs } from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
+import { Parser, getTypeDefinition } from '~appcraft/services';
 import { PlayTodoIcon } from '~appcraft/styles';
 import type { TodoEditorProps } from './TodoEditor.types';
 
@@ -77,10 +77,10 @@ export default function TodoEditor({
           fullHeight
           disableCategories={['wrap', 'state']}
           fixedT={ct}
-          parser={FETCH_OPTIONS.CONFIGS_PARSER}
           typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
           values={todos}
           onChange={handleTodos.change}
+          onFetchDefinition={(...e) => getTypeDefinition(Parser.Config, ...e)}
         />
       </Container>
     </>

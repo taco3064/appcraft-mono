@@ -1,6 +1,5 @@
 import type * as Appcraft from '@appcraft/types';
 
-export type GetTypeDefinitionService = (
-  fetchOptions: Appcraft.FetchOptions,
+export type FetchTypeDefinition = (
   options: Appcraft.TypesParseOptions
 ) => Promise<Appcraft.StructureProp>;

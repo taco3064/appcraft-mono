@@ -14,16 +14,18 @@ import * as Hooks from '../../hooks';
 import * as Styles from '../../styles';
 import { CraftedTodoEditor } from '../CraftedTodoEditor';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { getNodesAndEventsKey } from '../../services';
+import { getNodesAndEventsKey } from '../../utils';
 import type * as Types from './CraftedWidgetEditor.types';
 
 export default function CraftedWidgetEditor({
-  fetchOptions,
   fixedT,
   renderWidgetTypeSelection,
   todoTypeFile,
   version,
   widget,
+  onFetchNodesAndEvents,
+  onFetchConfigDefinition,
+  onFetchWidgetDefinition,
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
   const ct = Hooks.useFixedT(fixedT);
@@ -38,9 +40,9 @@ export default function CraftedWidgetEditor({
   );
 
   const LazyWidgetNodes = Hooks.useLazyWidgetNodes<Types.LazyWidgetNodesProps>(
-    fetchOptions.getNodesAndEvents,
     items,
     version,
+    onFetchNodesAndEvents,
     ({ fetchData: { events, nodes } = {}, widgets, ...props }) =>
       widgets.length === 0 ? (
         <Styles.ListPlaceholder message={ct('msg-no-widgets')} />
@@ -86,10 +88,10 @@ export default function CraftedWidgetEditor({
             fullHeight
             fixedT={fixedT}
             open={Boolean(!todoPath)}
-            parser={fetchOptions.propsParser}
             values={editedWidget}
             onBack={() => handleMutation.editing(null)}
             onChange={handleMutation.modify}
+            onFetchDefinition={onFetchWidgetDefinition}
           />
 
           <CraftedTodoEditor
@@ -97,10 +99,10 @@ export default function CraftedWidgetEditor({
             fullHeight
             fixedT={fixedT}
             open={Boolean(todoPath)}
-            parser={fetchOptions.configParser}
             typeFile={todoTypeFile}
             values={editedWidget.todos?.[todoPath as string]}
             onBack={() => handleMutation.editing(null)}
+            onFetchDefinition={onFetchConfigDefinition}
             onChange={(todo) =>
               handleMutation.modify({
                 ...editedWidget,

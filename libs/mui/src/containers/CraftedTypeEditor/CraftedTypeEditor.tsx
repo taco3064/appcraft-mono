@@ -12,17 +12,17 @@ export default function CraftedTypeEditor<V extends OptionValues>({
   fixedT,
   fullHeight,
   open = true,
-  parser,
   values,
   onBack,
   onChange,
+  onFetchDefinition,
 }: Types.CraftedTypeEditorProps<V>) {
   const ct = Hooks.useFixedT(fixedT);
   const [collectionPath, setCollectionPath] = useState('');
 
   const LazyTypeList = Hooks.useLazyTypeList<Types.LazyTypeListProps<V>>(
-    parser,
     { ...(values as V), collectionPath },
+    onFetchDefinition,
     ({ fetchData, placeholder, ...props }) =>
       fetchData ? (
         <Comp.TypeList {...props} collection={fetchData} />

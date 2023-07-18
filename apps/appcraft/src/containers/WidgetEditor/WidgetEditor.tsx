@@ -7,7 +7,7 @@ import { useCallback, useState } from 'react';
 
 import * as Component from '~appcraft/components';
 import * as Hooks from '~appcraft/hooks';
-import FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
+import * as Service from '~appcraft/services';
 import { CommonButton, LazyMui, typeMap } from '~appcraft/components/common';
 import type { WidgetEditorProps } from './WidgetEditor.types';
 
@@ -87,11 +87,13 @@ export default function WidgetEditor({
             version={__WEBPACK_DEFINE__.VERSION}
             widget={widget}
             onWidgetChange={handleWidget.change}
-            fetchOptions={{
-              configParser: FETCH_OPTIONS.CONFIGS_PARSER,
-              propsParser: FETCH_OPTIONS.PROPS_PARSER,
-              getNodesAndEvents: FETCH_OPTIONS.GET_NODES_AND_EVENTS,
-            }}
+            onFetchNodesAndEvents={Service.getNodesAndEvents}
+            onFetchConfigDefinition={(...e) =>
+              Service.getTypeDefinition(Service.Parser.Config, ...e)
+            }
+            onFetchWidgetDefinition={(...e) =>
+              Service.getTypeDefinition(Service.Parser.Widget, ...e)
+            }
             renderWidgetTypeSelection={({ onChange }) => (
               <Component.WidgetSelect
                 fullWidth

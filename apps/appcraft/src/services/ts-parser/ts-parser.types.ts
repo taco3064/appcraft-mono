@@ -1,17 +1,23 @@
 import type * as Appcraft from '@appcraft/types';
 
+//* Variables
+export enum Parser {
+  Config = 'parseConfigs',
+  Widget = 'parseWidget',
+}
+
 export type ParseOptions = Pick<
   Appcraft.TypesParseOptions,
   'typeFile' | 'typeName'
 >;
 
-export type GetNodesAndEventsKeyUtil = (
-  options: Appcraft.WidgetOptions,
-  defaultKey?: string
-) => string;
+//* Methods
+export type GetTypeDefinitionService = (
+  parser: Parser,
+  options: Appcraft.TypesParseOptions
+) => Promise<Appcraft.StructureProp>;
 
 export type GetNodesAndEventsService = (
-  fetchOptions: Appcraft.FetchOptions,
   items: Appcraft.WidgetOptions[],
   version?: string
 ) => Promise<Appcraft.NodeAndEventProps>;

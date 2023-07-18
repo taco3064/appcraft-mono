@@ -1,6 +1,7 @@
 import type * as Appcraft from '@appcraft/types';
 
 import type * as Comp from '../../components';
+import type * as Hook from '../../hooks';
 import type { FixedT } from '../../contexts';
 
 export interface NodeSelectEvent {
@@ -21,10 +22,8 @@ export interface CraftedWidgetEditorProps
   todoTypeFile?: string;
   version?: string;
   widget?: Appcraft.RootNodeWidget;
+  onFetchNodesAndEvents: Hook.FetchNodesAndEvents;
+  onFetchConfigDefinition: Hook.FetchTypeDefinition;
+  onFetchWidgetDefinition: Hook.FetchTypeDefinition;
   onWidgetChange: (e: Appcraft.RootNodeWidget | null) => void;
-
-  fetchOptions: Record<
-    'configParser' | 'propsParser' | 'getNodesAndEvents',
-    Appcraft.FetchOptions
-  >;
 }

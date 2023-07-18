@@ -2,7 +2,7 @@ import _toPath from 'lodash/toPath';
 import { startTransition, useState } from 'react';
 import type { PropTypesDef, StructureProp } from '@appcraft/types';
 
-import { getPropPath, getPropPathBySource } from '../../utils';
+import { getPropPath } from '../../utils';
 import { useCollection } from '../useCollection';
 import { usePropertiesSorting } from '../usePropertiesSorting';
 import type { ChangeHandler, OptionValues } from '../../contexts';
@@ -14,7 +14,7 @@ const useTypeItems = <V extends OptionValues>(
   widgetValues: V,
   onChange: ChangeHandler<V>
 ): TypeItemsHookResult => {
-  const { path, source, values } = useCollection(
+  const { path, values } = useCollection(
     collection.type.startsWith('array') ? [] : {}
   );
 
@@ -24,11 +24,16 @@ const useTypeItems = <V extends OptionValues>(
 
   const handleDelete = (fn: () => string) =>
     startTransition(() => {
-      const propPath = getPropPathBySource(source, [...paths, fn()]);
+      const propPath = getPropPath([...paths, fn()]);
       const { mixedTypes, props } = widgetValues;
 
       delete mixedTypes?.[propPath];
-      delete props?.[propPath];
+
+      for (const key of Object.keys(props || {})) {
+        if (key.startsWith(propPath)) {
+          delete props?.[key];
+        }
+      }
 
       onChange({ ...widgetValues } as V);
     });
@@ -101,12 +106,9 @@ const useTypeItems = <V extends OptionValues>(
               }
 
               handleDelete(() => {
-                const propPath = getPropPathBySource(source, [
-                  ..._toPath(path),
-                  propName,
-                ]);
+                const propPath = getPropPath([..._toPath(path), propName]);
 
-                const newPropPath = getPropPathBySource(source, [
+                const newPropPath = getPropPath([
                   ..._toPath(path),
                   newPropName,
                 ]);

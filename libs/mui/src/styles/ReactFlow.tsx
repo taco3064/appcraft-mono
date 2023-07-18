@@ -13,12 +13,13 @@ import cx from 'clsx';
 import { Handle, HandleProps } from 'reactflow';
 import { withStyles } from 'tss-react/mui';
 import type * as Appcraft from '@appcraft/types';
+import type { ReactNode } from 'react';
 
 import { CompositeIcon } from './MuiIcon';
 import { TypeItemAction } from './MuiListItemSecondaryAction';
 
 export const DEFAULT_SIZE = {
-  DAGRE: { width: 260, height: 80 },
+  DAGRE: { width: 240, height: 80 },
   NODE: { width: 220, height: 60 },
 };
 
@@ -70,8 +71,8 @@ export const TodoHandle = (() => {
 
 export const TodoNodeLabel = (() => {
   interface TodoNodeLabelProps extends Pick<Appcraft.WidgetTodo, 'category'> {
-    primary: string;
-    secondary?: string;
+    primary: ReactNode;
+    secondary?: ReactNode;
     onDelete: () => void;
 
     classes?: {
@@ -133,6 +134,7 @@ export const TodoNodeLabel = (() => {
               color: 'text.secondary',
               variant: 'caption',
               textTransform: 'capitalize',
+              display: 'flex',
             }}
           />
 

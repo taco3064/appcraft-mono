@@ -24,6 +24,7 @@ function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
       const mixedType = _get(mixedTypes, [`variables.${key}.initial`]);
       let value;
 
+      //* Generate Value
       if (mode === 'extract') {
         const { source, path } = initial;
         const { [source as keyof typeof record]: src } = record;
@@ -41,14 +42,21 @@ function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
         value = '';
       }
 
-      return {
-        ...result,
-        [key]: (!template?.trim() || template?.trim() === '$0'
-          ? value
-          : JSON.parse(
-              _template(`{{${template}}}`, TEMPLATE_OPTS)({ $0: value })
-            ) || 'undefined') as R[typeof key],
-      };
+      //* Calculate by Template
+      if (template?.trim() && template.trim() !== '$0') {
+        const compiled = _template(
+          TEMPLATE_OPTS.interpolate?.test(template)
+            ? template
+            : `{{${template}}}`,
+          TEMPLATE_OPTS
+        );
+
+        value = JSON.parse(
+          compiled({ $0: JSON.stringify(value) }) || 'undefined'
+        );
+      }
+
+      return { ...result, [key]: value as R[typeof key] };
     },
     {} as R
   );

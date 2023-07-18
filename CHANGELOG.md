@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.64](https://github.com/taco3064/appcraft-mono/compare/v0.0.63...v0.0.64) (2023-07-18)
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** add replace to match type ([daf46eb](https://github.com/taco3064/appcraft-mono/commit/daf46eb081eff1189470d50537a950f948ddbc99))
+* **@appcraft/mui:** fixed bugs ([4f2b8bc](https://github.com/taco3064/appcraft-mono/commit/4f2b8bc5f0e2f79edf91c1504307a7b690cfdfc0))
+* fixed the invalid import path of lodash ([fd4c29c](https://github.com/taco3064/appcraft-mono/commit/fd4c29c8f1b4349b88e13bbf0ef2db3a97a84426))
+
 ### [0.0.63](https://github.com/taco3064/appcraft-mono/compare/v0.0.62...v0.0.63) (2023-07-17)
 
 

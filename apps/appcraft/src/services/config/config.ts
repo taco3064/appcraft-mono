@@ -3,7 +3,7 @@ import type { ConfigData } from '@appcraft/types';
 
 import type * as Types from './config.types';
 
-export async function findConfig<C extends Types.ConfigValues>({
+export async function findConfig<C>({
   queryKey: [id],
 }: Types.FindConfigContext) {
   const { data } =
@@ -20,7 +20,7 @@ export async function findConfig<C extends Types.ConfigValues>({
   }) as ConfigData<C, string>;
 }
 
-export function upsertConfig<C extends Types.ConfigValues>(
+export function upsertConfig<C>(
   data: Omit<ConfigData<C, string>, 'timestamp'>
 ) {
   return axios

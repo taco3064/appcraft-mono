@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField';
 import TitleIcon from '@mui/icons-material/Title';
 import dayjs from 'dayjs';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
+import { useEffect } from 'react';
 
 import * as Common from '..';
 import { AdornmentTextField, TypeItemAction } from '../../../styles';
@@ -25,16 +26,30 @@ export default function TypeItemPure({
 }: TypeItemPureProps) {
   const [value, handlePure] = usePropValue(propPath);
 
-  const override = handlePure.renderOverride?.({
-    disabled,
-    label,
-    options,
-    propPath,
-    value,
-    onChange: handlePure.change,
-  });
+  const hidden =
+    options.type === 'oneOf' &&
+    options.required &&
+    options.options?.length === 1;
 
-  return override === false ? null : (
+  const override =
+    !hidden &&
+    handlePure.renderOverride?.({
+      disabled,
+      label,
+      options,
+      propPath,
+      value,
+      onChange: handlePure.change,
+    });
+
+  useEffect(() => {
+    if (hidden) {
+      handlePure.change(options.options?.[0]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hidden]);
+
+  return hidden || override === false ? null : (
     <ListItem>
       {selection}
 

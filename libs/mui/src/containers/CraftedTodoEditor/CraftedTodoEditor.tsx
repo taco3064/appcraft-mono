@@ -23,6 +23,7 @@ export default function CraftedTodoEditor({
   todoPath,
   typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts',
   values,
+  renderOverridePureItem,
   onBack,
   onChange,
   onFetchDefinition,
@@ -46,7 +47,7 @@ export default function CraftedTodoEditor({
         onConfirm={(todo) => onChange({ ...values, [todo.id]: todo })}
         renderEditor={(todoConfig) => (
           <CraftedTypeEditor
-            {...{ exclude, fixedT, onFetchDefinition }}
+            {...{ exclude, fixedT, renderOverridePureItem, onFetchDefinition }}
             values={todoConfig}
             onChange={handleTodo.change}
           />

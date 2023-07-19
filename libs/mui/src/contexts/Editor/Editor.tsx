@@ -10,13 +10,13 @@ const EditorContext = (<V extends Types.OptionValues>() =>
   }))();
 
 export const useEditorContext = <V extends Types.OptionValues>() => {
-  const { handleChangeRef, ...value } = React.useContext(
-    EditorContext
-  ) as Required<Types.EditorContextValue<V>>;
+  const { handleChangeRef, renderOverridePureItemRef, ...value } =
+    React.useContext(EditorContext) as Required<Types.EditorContextValue<V>>;
 
   return {
     ...value,
     onChange: handleChangeRef?.current || (() => null),
+    renderOverridePureItem: renderOverridePureItemRef?.current,
   };
 };
 
@@ -25,9 +25,11 @@ export function EditorProvider<V extends Types.OptionValues>({
   collectionPath,
   fixedT,
   values,
+  renderOverridePureItem,
   onChange,
 }: Types.EditorProviderProps<V>) {
   const handleChangeRef = React.useRef(onChange);
+  const renderOverridePureItemRef = React.useRef(renderOverridePureItem);
 
   const value = React.useMemo<Types.EditorContextValue<V>>(
     () => ({
@@ -35,11 +37,18 @@ export function EditorProvider<V extends Types.OptionValues>({
       collectionPath,
       values,
       handleChangeRef,
+      renderOverridePureItemRef,
     }),
     [fixedT, collectionPath, values]
   );
 
   React.useImperativeHandle(handleChangeRef, () => onChange, [onChange]);
+
+  React.useImperativeHandle(
+    renderOverridePureItemRef,
+    () => renderOverridePureItem,
+    [renderOverridePureItem]
+  );
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

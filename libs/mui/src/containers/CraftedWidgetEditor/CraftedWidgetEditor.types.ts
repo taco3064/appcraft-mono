@@ -2,6 +2,7 @@ import type * as Appcraft from '@appcraft/types';
 
 import type * as Comp from '../../components';
 import type * as Hook from '../../hooks';
+import type { RenderOverridePureItem } from '../../contexts';
 import type { FixedT } from '../../contexts';
 
 export interface NodeSelectEvent {
@@ -22,6 +23,7 @@ export interface CraftedWidgetEditorProps
   todoTypeFile?: string;
   version?: string;
   widget?: Appcraft.RootNodeWidget;
+  renderOverridePureItem?: RenderOverridePureItem;
   onFetchNodesAndEvents: Hook.FetchNodesAndEvents;
   onFetchConfigDefinition: Hook.FetchTypeDefinition;
   onFetchWidgetDefinition: Hook.FetchTypeDefinition;

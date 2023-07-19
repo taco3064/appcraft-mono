@@ -23,127 +23,138 @@ export default function TypeItemPure({
   propPath,
   selection,
 }: TypeItemPureProps) {
-  const [value, onChange] = usePropValue(propPath);
+  const [value, handlePure] = usePropValue(propPath);
 
-  return (
+  const override = handlePure.renderOverride?.({
+    disabled,
+    label,
+    options,
+    propPath,
+    value,
+    onChange: handlePure.change,
+  });
+
+  return override === false ? null : (
     <ListItem>
       {selection}
 
       <ListItemText
         disableTypography
         primary={
-          <>
-            {options.type === 'string' && (
-              <AdornmentTextField
-                fullWidth
-                size="small"
-                variant="outlined"
-                icon={TitleIcon}
-                disabled={disabled}
-                required={options.required}
-                label={label}
-                defaultValue={value || ''}
-                onChange={(e) => onChange(e.target.value)}
-              />
-            )}
+          override || (
+            <>
+              {options.type === 'string' && (
+                <AdornmentTextField
+                  fullWidth
+                  size="small"
+                  variant="outlined"
+                  icon={TitleIcon}
+                  disabled={disabled}
+                  required={options.required}
+                  label={label}
+                  defaultValue={value || ''}
+                  onChange={(e) => handlePure.change(e.target.value)}
+                />
+              )}
 
-            {options.type === 'bool' && (
-              <AdornmentTextField
-                fullWidth
-                size="small"
-                variant="outlined"
-                disabled={disabled}
-                required={options.required}
-                icon={SwipeIcon}
-                InputProps={
-                  {
-                    inputComponent: Common.BoolInput,
-                    inputProps: {
-                      label,
-                      checked: Boolean(value),
-                      onChange: (e: { target: { checked: boolean } }) =>
-                        onChange(e.target.checked),
-                    },
-                  } as object
-                }
-              />
-            )}
+              {options.type === 'bool' && (
+                <AdornmentTextField
+                  fullWidth
+                  size="small"
+                  variant="outlined"
+                  disabled={disabled}
+                  required={options.required}
+                  icon={SwipeIcon}
+                  InputProps={
+                    {
+                      inputComponent: Common.BoolInput,
+                      inputProps: {
+                        label,
+                        checked: Boolean(value),
+                        onChange: (e: { target: { checked: boolean } }) =>
+                          handlePure.change(e.target.checked),
+                      },
+                    } as object
+                  }
+                />
+              )}
 
-            {options.type === 'number' && (
-              <AdornmentTextField
-                fullWidth
-                size="small"
-                variant="outlined"
-                disabled={disabled}
-                required={options.required}
-                icon={DialpadIcon}
-                label={label}
-                InputProps={
-                  {
-                    inputComponent: Common.NumberInput,
-                    inputProps: {
-                      defaultValue: value as number,
-                      onChange: (e: { target: { value: string } }) =>
-                        onChange(
-                          !e.target.value
-                            ? undefined
-                            : Number.parseFloat(
-                                e.target.value.replace(/,/g, '')
-                              )
-                        ),
-                    },
-                  } as object
-                }
-              />
-            )}
+              {options.type === 'number' && (
+                <AdornmentTextField
+                  fullWidth
+                  size="small"
+                  variant="outlined"
+                  disabled={disabled}
+                  required={options.required}
+                  icon={DialpadIcon}
+                  label={label}
+                  InputProps={
+                    {
+                      inputComponent: Common.NumberInput,
+                      inputProps: {
+                        defaultValue: value as number,
+                        onChange: (e: { target: { value: string } }) =>
+                          handlePure.change(
+                            !e.target.value
+                              ? undefined
+                              : Number.parseFloat(
+                                  e.target.value.replace(/,/g, '')
+                                )
+                          ),
+                      },
+                    } as object
+                  }
+                />
+              )}
 
-            {options.type === 'instanceOf' && options.options === 'Date' && (
-              <MobileDateTimePicker
-                ampm={false}
-                label={label}
-                value={value ? dayjs(value as string) : null}
-                onChange={(e) => onChange(e?.toDate().toISOString())}
-                slots={{
-                  textField: AdornmentTextField as typeof TextField,
-                }}
-                slotProps={{
-                  textField: {
-                    fullWidth: true,
-                    required: options.required,
-                    size: 'small',
-                    variant: 'outlined',
-                    icon: CalendarMonthIcon,
-                  } as object,
-                }}
-              />
-            )}
+              {options.type === 'instanceOf' && options.options === 'Date' && (
+                <MobileDateTimePicker
+                  ampm={false}
+                  label={label}
+                  value={value ? dayjs(value as string) : null}
+                  onChange={(e) => handlePure.change(e?.toDate().toISOString())}
+                  slots={{
+                    textField: AdornmentTextField as typeof TextField,
+                  }}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      required: options.required,
+                      size: 'small',
+                      variant: 'outlined',
+                      icon: CalendarMonthIcon,
+                    } as object,
+                  }}
+                />
+              )}
 
-            {options.type === 'oneOf' && (
-              <AdornmentTextField
-                SelectProps={{ displayEmpty: options.required }}
-                select
-                fullWidth
-                size="small"
-                variant="outlined"
-                required={options.required}
-                icon={MenuOpenIcon}
-                label={label}
-                value={value || ''}
-                onChange={(e) => onChange(e.target.value)}
-                disabled={
-                  disabled || Boolean(options.options?.length === 1 && value)
-                }
-              >
-                {!options.required && <MenuItem value="">&nbsp;</MenuItem>}
+              {options.type === 'oneOf' && (
+                <AdornmentTextField
+                  SelectProps={{ displayEmpty: options.required }}
+                  select
+                  fullWidth
+                  size="small"
+                  variant="outlined"
+                  required={options.required}
+                  icon={MenuOpenIcon}
+                  label={label}
+                  value={value || ''}
+                  onChange={(e) => handlePure.change(e.target.value)}
+                  disabled={
+                    disabled || Boolean(options.options?.length === 1 && value)
+                  }
+                >
+                  {!options.required && <MenuItem value="">&nbsp;</MenuItem>}
 
-                {options.options?.map((option) => (
-                  <MenuItem key={option.toString()} value={option as string}>
-                    {option.toString()}
-                  </MenuItem>
-                ))}
-              </AdornmentTextField>
-            )}
-          </>
+                  {options.options?.map((option) => (
+                    <MenuItem key={option.toString()} value={option as string}>
+                      {option.toString()}
+                    </MenuItem>
+                  ))}
+                </AdornmentTextField>
+              )}
+            </>
+          )
         }
       />
 

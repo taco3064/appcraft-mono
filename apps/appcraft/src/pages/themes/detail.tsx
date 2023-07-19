@@ -1,5 +1,8 @@
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
+import Avatar from '@mui/material/Avatar';
 import Head from 'next/head';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type { ConfigOptions } from '@appcraft/types';
@@ -11,17 +14,17 @@ import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
 
 export default function Detail() {
+  const [at, tt] = Hook.useFixedT('app', 'themes');
   const [, handleSetting] = Hook.useSettingModified();
   const { pathname, query } = useRouter();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
+  const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
 
-  const [at, tt] = Hook.useFixedT('app', 'themes');
   const [action, handleActionNodePick] = Hook.useNodePickHandle([
     'reset',
     'save',
   ]);
-  const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
 
   const { data: theme, refetch } = useQuery({
     queryKey: [id],
@@ -62,6 +65,42 @@ export default function Detail() {
         superiors={{ names: superiors, breadcrumbs }}
         onSave={refetch}
         onActionNodePick={handleActionNodePick}
+        renderOverridePureItem={({
+          propPath,
+          options,
+          disabled,
+          label,
+          value,
+          onChange,
+        }) => {
+          if (options.type === 'string' && propPath !== 'mode') {
+            return (
+              <TextField
+                {...{ disabled, label }}
+                fullWidth
+                size="small"
+                variant="outlined"
+                defaultValue={value}
+                onChange={(e) => onChange(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Avatar
+                        sx={{
+                          width: 24,
+                          height: 24,
+                          background: value || 'none',
+                        }}
+                      >
+                        &nbsp;
+                      </Avatar>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            );
+          }
+        }}
       />
     </PageContainer>
   );

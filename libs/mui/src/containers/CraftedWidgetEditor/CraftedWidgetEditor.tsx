@@ -23,6 +23,7 @@ export default function CraftedWidgetEditor({
   todoTypeFile,
   version,
   widget,
+  renderOverridePureItem,
   onFetchNodesAndEvents,
   onFetchConfigDefinition,
   onFetchWidgetDefinition,
@@ -89,6 +90,7 @@ export default function CraftedWidgetEditor({
             fixedT={fixedT}
             open={Boolean(!todoPath)}
             values={editedWidget}
+            renderOverridePureItem={renderOverridePureItem}
             onBack={() => handleMutation.editing(null)}
             onChange={handleMutation.modify}
             onFetchDefinition={onFetchWidgetDefinition}
@@ -101,6 +103,7 @@ export default function CraftedWidgetEditor({
             open={Boolean(todoPath)}
             typeFile={todoTypeFile}
             values={editedWidget.todos?.[todoPath as string]}
+            renderOverridePureItem={renderOverridePureItem}
             onBack={() => handleMutation.editing(null)}
             onFetchDefinition={onFetchConfigDefinition}
             onChange={(todo) =>

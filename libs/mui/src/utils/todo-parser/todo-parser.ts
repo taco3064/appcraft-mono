@@ -44,12 +44,7 @@ function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
 
       //* Calculate by Template
       if (template?.trim() && template.trim() !== '$0') {
-        const compiled = _template(
-          TEMPLATE_OPTS.interpolate?.test(template)
-            ? template
-            : `{{${template}}}`,
-          TEMPLATE_OPTS
-        );
+        const compiled = _template(`{{ ${template} }}`, TEMPLATE_OPTS);
 
         value = JSON.parse(
           compiled({ $0: JSON.stringify(value) }) || 'undefined'

@@ -88,6 +88,8 @@ export default function CraftedTodoEditor({
                 fetch: Comp.TodoFlowNode,
                 branch: Comp.TodoFlowNode,
                 iterate: Comp.TodoFlowNode,
+                wrap: Comp.TodoFlowNode,
+                state: Comp.TodoFlowNode,
               }}
             >
               <Rf.Background color={theme.palette.text.secondary} gap={16} />

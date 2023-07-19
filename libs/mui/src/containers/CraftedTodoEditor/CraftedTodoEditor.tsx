@@ -78,33 +78,35 @@ export default function CraftedTodoEditor({
           />
         )}
 
-        <TodoBackground elevation={0}>
-          <Rf.ReactFlowProvider>
-            <Rf.ReactFlow
-              fitView
-              connectionLineType={Rf.ConnectionLineType.SmoothStep}
-              nodes={nodes}
-              edges={edges}
-              nodeTypes={NODE_TYPES}
-              onConnect={handleTodo.connect}
-              onEdgeDoubleClick={handleTodo.deleteEdge}
-              onNodeClick={handleTodo.select}
-              onNodesDelete={handleTodo.deleteNode}
-              defaultEdgeOptions={{
-                type: Rf.ConnectionLineType.SmoothStep,
-                markerEnd: { type: Rf.MarkerType.ArrowClosed },
-                style: { strokeWidth: 2 },
-              }}
-            >
-              <Rf.Background color={theme.palette.text.secondary} gap={16} />
-            </Rf.ReactFlow>
+        {open && (
+          <TodoBackground elevation={0}>
+            <Rf.ReactFlowProvider>
+              <Rf.ReactFlow
+                fitView
+                connectionLineType={Rf.ConnectionLineType.SmoothStep}
+                nodes={nodes}
+                edges={edges}
+                nodeTypes={NODE_TYPES}
+                onConnect={handleTodo.connect}
+                onEdgeDoubleClick={handleTodo.deleteEdge}
+                onNodeClick={handleTodo.select}
+                onNodesDelete={handleTodo.deleteNode}
+                defaultEdgeOptions={{
+                  type: Rf.ConnectionLineType.SmoothStep,
+                  markerEnd: { type: Rf.MarkerType.ArrowClosed },
+                  style: { strokeWidth: 2 },
+                }}
+              >
+                <Rf.Background color={theme.palette.text.secondary} gap={16} />
+              </Rf.ReactFlow>
 
-            <Comp.TodoFlowControls
-              {...{ ct, disableCategories }}
-              onTodoAdd={handleTodo.create}
-            />
-          </Rf.ReactFlowProvider>
-        </TodoBackground>
+              <Comp.TodoFlowControls
+                {...{ ct, disableCategories }}
+                onTodoAdd={handleTodo.create}
+              />
+            </Rf.ReactFlowProvider>
+          </TodoBackground>
+        )}
       </FullHeightCollapse>
     </>
   );

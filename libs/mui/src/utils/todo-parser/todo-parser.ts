@@ -16,7 +16,6 @@ const TEMPLATE_OPTS: TemplateOptions = {
   interpolate: /{{([\s\S]+?)}}/g,
   imports: {
     dayjs,
-    $: JSON.stringify,
   },
 };
 
@@ -52,9 +51,9 @@ function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
       //* Calculate by Template
       value = JSON.parse(
         _template(
-          `{{ ${template?.trim() ? template : '$0'} }}`,
+          `{{ JSON.stringify(${template?.trim() ? template : '$0'}) }}`,
           TEMPLATE_OPTS
-        )({ $0: JSON.stringify(value), $$0: value }) || 'undefined'
+        )({ $0: value || undefined })
       );
 
       return { ...result, [key]: value as R[typeof key] };

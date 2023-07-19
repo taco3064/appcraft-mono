@@ -1,6 +1,4 @@
 import Container from '@mui/material/Container';
-import { nanoid } from 'nanoid';
-import { useRef } from 'react';
 
 import { SizedDrawer } from '~appcraft/styles';
 import type { PersistentDrawerContentProps } from './PersistentDrawerContent.types';
@@ -15,12 +13,9 @@ export default function PersistentDrawerContent({
   open,
   ...props
 }: PersistentDrawerContentProps) {
-  const { current: id } = useRef(nanoid(5));
-
   return (
     <Container
       {...props}
-      id={id}
       sx={(theme) => ({
         position: 'relative',
         display: 'flex',
@@ -31,9 +26,6 @@ export default function PersistentDrawerContent({
     >
       <SizedDrawer
         {...DrawerProps}
-        {...(global.document && {
-          container: () => global.document.getElementById(id),
-        })}
         variant="persistent"
         open={open}
         PaperProps={{

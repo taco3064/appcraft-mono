@@ -35,11 +35,6 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>Appcraft</title>
-
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
-        />
       </Head>
 
       <NoSsr>

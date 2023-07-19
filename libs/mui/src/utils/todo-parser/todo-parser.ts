@@ -4,6 +4,7 @@ import _omit from 'lodash/omit';
 import _set from 'lodash/set';
 import _template from 'lodash/template';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import type * as Appcraft from '@appcraft/types';
 import type { TemplateOptions } from 'lodash';
 
@@ -11,7 +12,13 @@ import { getPropPath } from '../prop-path';
 import type * as Types from './todo-parser.types';
 
 //* Private Methods
-const TEMPLATE_OPTS: TemplateOptions = { interpolate: /{{([\s\S]+?)}}/g };
+const TEMPLATE_OPTS: TemplateOptions = {
+  interpolate: /{{([\s\S]+?)}}/g,
+  imports: {
+    dayjs,
+    $: JSON.stringify,
+  },
+};
 
 function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
   variables: Record<keyof R, Appcraft.Variables>,
@@ -43,13 +50,12 @@ function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
       }
 
       //* Calculate by Template
-      if (template?.trim() && template.trim() !== '$0') {
-        const compiled = _template(`{{ ${template} }}`, TEMPLATE_OPTS);
-
-        value = JSON.parse(
-          compiled({ $0: JSON.stringify(value) }) || 'undefined'
-        );
-      }
+      value = JSON.parse(
+        _template(
+          `{{ ${template?.trim() ? template : '$0'} }}`,
+          TEMPLATE_OPTS
+        )({ $0: JSON.stringify(value), $$0: value }) || 'undefined'
+      );
 
       return { ...result, [key]: value as R[typeof key] };
     },
@@ -60,7 +66,8 @@ function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
 async function execute(
   todos: Record<string, Appcraft.WidgetTodo>,
   todo: Appcraft.WidgetTodo,
-  record: Types.ExecuteRecord
+  record: Types.ExecuteRecord,
+  fetchTodoWrap?: Types.FetchTodoWrap
 ): Promise<Types.ExecuteRecord> {
   while (todo) {
     const { id, category, defaultNextTodo, mixedTypes } = todo;
@@ -74,6 +81,19 @@ async function execute(
 
         todo = next;
         _set(record, ['output', id], output);
+
+        break;
+      }
+
+      //* Execute Wrap Todos
+      case 'wrap': {
+        const { event } = record;
+        const { todosId } = todo;
+        const options = (await fetchTodoWrap?.(todosId)) || {};
+        const output = await getEventHandler(options, fetchTodoWrap)(...event);
+
+        todo = next;
+        _set(record, ['output', id], Object.assign({}, output));
 
         break;
       }
@@ -181,8 +201,10 @@ async function execute(
 
 //* Methods
 export const getEventHandler: Types.GetEventHandler =
-  (options) =>
+  (options, fetchTodoWrap) =>
   async (...event) => {
+    const result: Types.ExecuteRecord['output'] = {};
+
     const starts = Object.values(options).filter(({ id }, _i, todos) =>
       todos.every((todo) => {
         const { category, defaultNextTodo } = todo;
@@ -201,8 +223,17 @@ export const getEventHandler: Types.GetEventHandler =
     );
 
     for (const todo of starts) {
-      const record = await execute(options, todo, { event, output: {} });
+      const record = await execute(
+        options,
+        todo,
+        { event, output: {} },
+        fetchTodoWrap
+      );
 
-      console.log(record);
+      Object.assign(result, ...Object.values(record.output));
     }
+
+    console.log(result);
+
+    return result;
   };

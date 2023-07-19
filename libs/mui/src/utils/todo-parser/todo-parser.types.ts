@@ -6,6 +6,10 @@ export type ExecuteRecord = {
   output: Record<string, unknown>;
 };
 
+export type FetchTodoWrap = (
+  todosId: string
+) => Promise<Record<string, Appcraft.WidgetTodo>>;
+
 //* Private
 export type GetVariable = (
   variable: Appcraft.Variables,
@@ -15,5 +19,6 @@ export type GetVariable = (
 
 //* Methods
 export type GetEventHandler = (
-  options: Record<string, Appcraft.WidgetTodo>
-) => (...event: unknown[]) => Promise<void>;
+  options: Record<string, Appcraft.WidgetTodo>,
+  fetchTodoWrap?: FetchTodoWrap
+) => (...event: unknown[]) => Promise<ExecuteRecord['output']>;

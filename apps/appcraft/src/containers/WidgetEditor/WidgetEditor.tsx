@@ -4,6 +4,7 @@ import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { useCallback, useState } from 'react';
+import type { WidgetTodo } from '@appcraft/types';
 
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
@@ -79,7 +80,19 @@ export default function WidgetEditor({
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
-        content={<Appcraft.CraftedRenderer lazy={toLazy} options={widget} />}
+        content={
+          <Appcraft.CraftedRenderer
+            lazy={toLazy}
+            options={widget}
+            fetchTodoWrap={async (id) => {
+              const { content } = await Service.getConfigById<
+                Record<string, WidgetTodo>
+              >(id);
+
+              return content;
+            }}
+          />
+        }
         drawer={
           <Appcraft.CraftedWidgetEditor
             fixedT={ct}

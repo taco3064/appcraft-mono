@@ -1,24 +1,31 @@
 import type * as Appcraft from '@appcraft/types';
 
 //* Variables
-export type ExecuteRecord = {
-  event: unknown[];
-  output: Record<string, unknown>;
-};
-
 export type FetchTodoWrap = (
   todosId: string
 ) => Promise<Record<string, Appcraft.WidgetTodo>>;
 
-//* Private
-export type GetVariable = (
-  variable: Appcraft.Variables,
-  record: ExecuteRecord,
-  mixedType?: string
-) => unknown;
+export type OuputData = { id: string; output: object };
+
+export type ExecuteOptions = {
+  event: unknown[];
+  outputs: OuputData[];
+  fetchTodoWrap?: FetchTodoWrap;
+};
+
+export type IteratePrepare = {
+  key: string | number;
+  outputs: OuputData[];
+};
+
+export type IterateResult = Promise<[string | number, OuputData[]]>;
+
+export type VariableOptions = Omit<ExecuteOptions, 'fetchTodoWrap'> & {
+  mixedTypes?: Appcraft.TypesMapping;
+};
 
 //* Methods
 export type GetEventHandler = (
   options: Record<string, Appcraft.WidgetTodo>,
   fetchTodoWrap?: FetchTodoWrap
-) => (...event: unknown[]) => Promise<ExecuteRecord['output']>;
+) => (...event: unknown[]) => Promise<OuputData[][]>;

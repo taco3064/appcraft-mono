@@ -46,10 +46,7 @@ export const splitProps: Types.SplitProps = (target, paths = []) => {
 
 export const getProps = <P extends object>(
   options: Appcraft.NodeWidget | Appcraft.ConfigOptions,
-  {
-    renderer,
-    fetchTodoWrap,
-  }: { renderer?: Types.GeneratorFn; fetchTodoWrap?: FetchTodoWrap } = {}
+  { renderer, fetchTodoWrap }: Types.GetPropsOptions = {}
 ) => {
   const fields: Appcraft.WidgetField[] = ['nodes', 'props', 'todos'];
 

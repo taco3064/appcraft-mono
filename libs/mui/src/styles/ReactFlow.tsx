@@ -117,8 +117,8 @@ export const TodoNodeLabel = (() => {
     variable = 'palette.info.main',
     fetch = 'palette.secondary.main',
     branch = 'palette.success.main',
-    iterate = 'palette.success.dark',
-    wrap = 'palette.info.dark',
+    iterate = 'palette.success.main',
+    wrap = 'palette.info.main',
     state = 'palette.grey.700',
   }
 

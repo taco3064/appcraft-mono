@@ -125,6 +125,20 @@ export default function WidgetEditor({
                 }
               />
             )}
+            renderOverridePureItem={({ typeName, propPath, ...props }) => {
+              if (typeName === 'WrapTodo' && propPath === 'todosId') {
+                const { disabled, label, value, onChange } = props;
+
+                return (
+                  <Comp.WrapTodoSelect
+                    {...{ disabled, label, onChange }}
+                    value={value as string}
+                  />
+                );
+              }
+
+              return null;
+            }}
           />
         }
       />

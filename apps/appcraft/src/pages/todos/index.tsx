@@ -1,5 +1,5 @@
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
-import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
+import AssignmentTwoToneIcon from '@mui/icons-material/AssignmentTwoTone';
 import Container from '@mui/material/Container';
 import Head from 'next/head';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
@@ -50,7 +50,7 @@ export default function Todos() {
 
         <HierarchyList
           category={pathname.replace(/^\//, '')}
-          icon={AssignmentRoundedIcon}
+          icon={AssignmentTwoToneIcon}
           onActionNodePick={handleActionNodePick}
           onItemActionRender={(data) => (
             <CommonButton

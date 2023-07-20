@@ -18,7 +18,8 @@ export type LazyWidgetNodesProps = Omit<
 >;
 
 export interface CraftedWidgetEditorProps
-  extends Pick<Comp.MutationNewWidgetDialogProps, 'renderWidgetTypeSelection'> {
+  extends Pick<Comp.MutationNewWidgetDialogProps, 'renderWidgetTypeSelection'>,
+    Pick<Comp.TodoFlowControlsProps, 'disableCategories'> {
   fixedT?: FixedT;
   todoTypeFile?: string;
   version?: string;

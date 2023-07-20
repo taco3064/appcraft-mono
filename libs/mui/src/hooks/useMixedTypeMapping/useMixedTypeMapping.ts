@@ -11,8 +11,9 @@ const useMixedTypeMapping: Types.MixedTypeMappingHook = (propPath, options) => {
     mixedTypes?.[propPath] || null,
 
     (mixedText) => {
+      const { props } = values;
+
       if (mixedText) {
-        const { props } = values;
         const matched = options.find(({ text }) => text === mixedText);
 
         const isOnlyOne =
@@ -29,8 +30,6 @@ const useMixedTypeMapping: Types.MixedTypeMappingHook = (propPath, options) => {
           },
         });
       } else {
-        const { props } = values;
-
         delete mixedTypes?.[propPath];
 
         Object.keys(props || {}).forEach((path) => {

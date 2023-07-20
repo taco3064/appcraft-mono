@@ -1,4 +1,3 @@
-export * from './MuiAvatar';
 export * from './MuiBreadcrumbs';
 export * from './MuiCollapse';
 export * from './MuiDialog';

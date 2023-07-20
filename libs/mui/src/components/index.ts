@@ -1,5 +1,6 @@
 export * from './MutationNewWidgetDialog';
 export * from './MutationPlainTextDialog';
+export * from './MutationStateDialog';
 export * from './MutationTodoNodeDialog';
 export * from './TodoFlowControls';
 export * from './TodoFlowNode';

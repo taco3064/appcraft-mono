@@ -9,10 +9,10 @@ enum EditorMode {
 export type Mode = keyof typeof EditorMode;
 
 interface BaseProps<T extends keyof typeof EditorMode, D>
-  extends Partial<Pick<CommonButtonProps, 'IconProps' | 'btnVariant'>> {
+  extends Partial<Pick<CommonButtonProps, 'btnVariant'>> {
   CommonButtonProps?: Omit<
     CommonButtonProps,
-    'IconProps' | 'btnVariant' | 'icon' | 'text' | 'onClick'
+    'btnVariant' | 'icon' | 'text' | 'onClick'
   >;
 
   mode: T;

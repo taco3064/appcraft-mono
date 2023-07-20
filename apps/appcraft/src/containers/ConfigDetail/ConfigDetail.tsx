@@ -13,6 +13,7 @@ import type { ConfigDetailProps } from './ConfigDetail.types';
 export default function ConfigDetail({
   header,
   superiors: { names, breadcrumbs },
+  renderOverridePureItem,
   onActionNodePick = (e) => e,
   ...props
 }: ConfigDetailProps) {
@@ -26,7 +27,7 @@ export default function ConfigDetail({
         reset: (
           <CommonButton
             btnVariant="icon"
-            icon={ReplayIcon}
+            icon={<ReplayIcon />}
             text={at('btn-reset')}
             onClick={handleConfig.reset}
           />
@@ -34,7 +35,7 @@ export default function ConfigDetail({
         save: (
           <CommonButton
             btnVariant="icon"
-            icon={SaveAltIcon}
+            icon={<SaveAltIcon />}
             text={at('btn-save')}
             onClick={handleConfig.save}
           />
@@ -61,6 +62,7 @@ export default function ConfigDetail({
         <CraftedTypeEditor
           fixedT={ct}
           values={values}
+          renderOverridePureItem={renderOverridePureItem}
           onChange={handleConfig.change}
           onFetchDefinition={(...e) => getTypeDefinition(Parser.Config, ...e)}
         />

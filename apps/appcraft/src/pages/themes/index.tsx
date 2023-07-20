@@ -43,7 +43,7 @@ export default function Themes() {
           <CommonButton
             btnVariant="icon"
             color="default"
-            icon={AutoAwesomeOutlinedIcon}
+            icon={<AutoAwesomeOutlinedIcon />}
             text={at('btn-apply')}
             onClick={() => handleSetting.theme(theme._id)}
           />

@@ -12,7 +12,7 @@ export type Definition =
 
 type ExtractTodoResult = {
   source: 'event' | 'output';
-  path?: string;
+  path: string;
 };
 
 type VariableInitialMode = 'define' | 'extract';

@@ -3,24 +3,21 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import Button from '@mui/material/Button';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import TextField from '@mui/material/TextField';
-import { FlexDialog } from '@appcraft/mui';
 import { FormEvent, useState } from 'react';
+import { Style } from '@appcraft/mui';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 
-import { CommonButton, CommonButtonProps } from '../common';
+import { CommonButton } from '../common';
 import { addHierarchy, updateHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './HierarchyEditorButton.types';
 
 export default function HierarchyEditorButton({
   CommonButtonProps,
-  IconProps,
-
   btnVariant = 'icon',
   mode,
   data,
-
   onCancel,
   onConfirm,
 }: Types.HierarchyEditorButtonProps) {
@@ -57,23 +54,22 @@ export default function HierarchyEditorButton({
   return (
     <>
       <CommonButton
-        {...({
-          ...CommonButtonProps,
-          IconProps,
-          btnVariant,
-        } as CommonButtonProps)}
+        {...(CommonButtonProps as object)}
+        btnVariant={btnVariant}
         text={at(`btn-${mode}-${data.type}`)}
         onClick={() => setOpen(true)}
         icon={
-          mode === 'update'
-            ? EditOutlinedIcon
-            : data.type === 'item'
-            ? AddIcon
-            : BookmarkAddIcon
+          mode === 'update' ? (
+            <EditOutlinedIcon />
+          ) : data.type === 'item' ? (
+            <AddIcon />
+          ) : (
+            <BookmarkAddIcon />
+          )
         }
       />
 
-      <FlexDialog
+      <Style.FlexDialog
         fullWidth
         direction="column"
         maxWidth="xs"
@@ -110,7 +106,7 @@ export default function HierarchyEditorButton({
           label={at('lbl-description')}
           defaultValue={data.description}
         />
-      </FlexDialog>
+      </Style.FlexDialog>
     </>
   );
 }

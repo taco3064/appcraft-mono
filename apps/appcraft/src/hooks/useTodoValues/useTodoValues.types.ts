@@ -1,11 +1,16 @@
 import type { ConfigData, WidgetTodo } from '@appcraft/types';
-import type { CraftedTodoEditorProps } from '@appcraft/mui';
+import type { CraftedTodoEditorProps, OutputData } from '@appcraft/mui';
 
 export type TodoValuesHook = (options: {
   data: ConfigData<Record<string, WidgetTodo>, string>;
   onSave?: () => void;
+  onOpen: () => void;
 }) => [
-  Record<string, WidgetTodo>,
+  {
+    duration: number;
+    logs: OutputData[][];
+    todos: Record<string, WidgetTodo>;
+  },
   {
     change: CraftedTodoEditorProps['onChange'];
     run: () => void;

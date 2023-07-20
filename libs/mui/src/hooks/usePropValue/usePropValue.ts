@@ -1,26 +1,34 @@
 import _get from 'lodash/get';
-import { useEditorContext } from '../../contexts';
 
-const usePropValue = <P = unknown>(propPath: string) => {
-  const { values, onChange } = useEditorContext();
+import { useEditorContext } from '../../contexts';
+import type { PropValueHookResult } from './usePropValue.types';
+
+const usePropValue = <P = unknown>(
+  propPath: string
+): PropValueHookResult<P> => {
+  const { values, renderOverridePureItem, onChange } = useEditorContext();
 
   return [
     (_get(values, ['props', propPath]) as P) || null,
 
-    (value: P | null) => {
-      const { props: target } = values;
+    {
+      renderOverride: renderOverridePureItem,
 
-      delete (target as Record<string, unknown>)?.[propPath];
+      change: (value: P | null) => {
+        const { props: target } = values;
 
-      onChange({
-        ...values,
-        props: {
-          ...target,
-          ...(value != null && { [propPath]: value }),
-        },
-      });
+        delete (target as Record<string, unknown>)?.[propPath];
+
+        onChange({
+          ...values,
+          props: {
+            ...target,
+            ...(value != null && { [propPath]: value }),
+          },
+        });
+      },
     },
-  ] as [P | null, (value: P | null) => void];
+  ];
 };
 
 export default usePropValue;

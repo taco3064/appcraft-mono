@@ -3,9 +3,7 @@ import type { ConfigData } from '@appcraft/types';
 
 import type * as Types from './config.types';
 
-export async function findConfig<C>({
-  queryKey: [id],
-}: Types.FindConfigContext) {
+export async function getConfigById<C>(id: string) {
   const { data } =
     !id || typeof id !== 'string'
       ? { data: null }
@@ -18,6 +16,10 @@ export async function findConfig<C>({
     content: {},
     timestamp: new Date().toISOString(),
   }) as ConfigData<C, string>;
+}
+
+export function findConfig<C>({ queryKey: [id] }: Types.FindConfigContext) {
+  return getConfigById<C>(id);
 }
 
 export function upsertConfig<C>(

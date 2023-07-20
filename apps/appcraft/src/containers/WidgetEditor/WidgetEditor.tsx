@@ -1,9 +1,10 @@
-import * as Appcraft from '@appcraft/mui';
+import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { useCallback, useState } from 'react';
+import type { WidgetTodo } from '@appcraft/types';
 
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
@@ -37,7 +38,7 @@ export default function WidgetEditor({
         expand: !isCollapsable ? null : (
           <CommonButton
             btnVariant="icon"
-            icon={open ? AutoFixOffIcon : AutoFixHighIcon}
+            icon={open ? <AutoFixOffIcon /> : <AutoFixHighIcon />}
             text={wt(`btn-expand-${isSettingOpen ? 'off' : 'on'}`)}
             onClick={() => setOpen(!open)}
           />
@@ -45,7 +46,7 @@ export default function WidgetEditor({
         reset: (
           <CommonButton
             btnVariant="icon"
-            icon={RestartAltIcon}
+            icon={<RestartAltIcon />}
             text={at('btn-reset')}
             onClick={handleWidget.reset}
           />
@@ -53,7 +54,7 @@ export default function WidgetEditor({
         save: (
           <CommonButton
             btnVariant="icon"
-            icon={SaveAltIcon}
+            icon={<SaveAltIcon />}
             text={at('btn-save')}
             onClick={handleWidget.save}
           />
@@ -79,9 +80,21 @@ export default function WidgetEditor({
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
-        content={<Appcraft.CraftedRenderer lazy={toLazy} options={widget} />}
+        content={
+          <CraftedRenderer
+            lazy={toLazy}
+            options={widget}
+            fetchTodoWrap={async (id) => {
+              const { content } = await Service.getConfigById<
+                Record<string, WidgetTodo>
+              >(id);
+
+              return content;
+            }}
+          />
+        }
         drawer={
-          <Appcraft.CraftedWidgetEditor
+          <CraftedWidgetEditor
             fixedT={ct}
             todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             version={__WEBPACK_DEFINE__.VERSION}

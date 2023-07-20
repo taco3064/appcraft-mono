@@ -1,35 +1,49 @@
 import _get from 'lodash/get';
 import _isPlainObject from 'lodash/isPlainObject';
-import _omit from 'lodash/omit';
 import _set from 'lodash/set';
 import _template from 'lodash/template';
+import _toPath from 'lodash/toPath';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import type * as Appcraft from '@appcraft/types';
-import type { TemplateOptions } from 'lodash';
 
-import { getPropPath } from '../prop-path';
 import type * as Types from './todo-parser.types';
 
 //* Private Methods
-const TEMPLATE_OPTS: TemplateOptions = { interpolate: /{{([\s\S]+?)}}/g };
+function compiled<R>(template: string, data: object): R {
+  const compiledFn = _template(
+    `{{ JSON.stringify(${template.trim() ? template : '$0'}) }}`,
+    {
+      interpolate: /{{([\s\S]+?)}}/g,
+      imports: { dayjs },
+    }
+  );
+
+  return JSON.parse(compiledFn(data));
+}
 
 function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
   variables: Record<keyof R, Appcraft.Variables>,
-  record: Types.ExecuteRecord,
-  mixedTypes?: Appcraft.TypesMapping
+  { mixedTypes, event, outputs }: Types.VariableOptions
 ): R {
   return Object.entries(variables || {}).reduce<R>(
     (result, [key, variable]) => {
-      const { mode, template, initial } = variable;
+      const { mode, template = '', initial } = variable;
       const mixedType = _get(mixedTypes, [`variables.${key}.initial`]);
-      let value;
+      let value = undefined;
 
       //* Generate Value
       if (mode === 'extract') {
         const { source, path } = initial;
-        const { [source as keyof typeof record]: src } = record;
 
-        value = !path ? src : _get(src, path as string);
+        if (source === 'event') {
+          value = _get(event, path as string);
+        } else {
+          const [id, ...paths] = _toPath(path as string);
+          const { output } = outputs.find(({ id: $id }) => id === $id) || {};
+
+          value = paths.length === 0 ? output : _get(output, paths);
+        }
       } else if (initial) {
         value = initial;
       } else if (mixedType === 'Date') {
@@ -42,21 +56,10 @@ function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
         value = '';
       }
 
-      //* Calculate by Template
-      if (template?.trim() && template.trim() !== '$0') {
-        const compiled = _template(
-          TEMPLATE_OPTS.interpolate?.test(template)
-            ? template
-            : `{{${template}}}`,
-          TEMPLATE_OPTS
-        );
-
-        value = JSON.parse(
-          compiled({ $0: JSON.stringify(value) }) || 'undefined'
-        );
-      }
-
-      return { ...result, [key]: value as R[typeof key] };
+      return {
+        ...result,
+        [key]: compiled<R[typeof key]>(template, { $0: value }),
+      };
     },
     {} as R
   );
@@ -65,8 +68,8 @@ function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
 async function execute(
   todos: Record<string, Appcraft.WidgetTodo>,
   todo: Appcraft.WidgetTodo,
-  record: Types.ExecuteRecord
-): Promise<Types.ExecuteRecord> {
+  { event, fetchTodoWrap, outputs }: Types.ExecuteOptions
+): Promise<Types.OutputData[]> {
   while (todo) {
     const { id, category, defaultNextTodo, mixedTypes } = todo;
     const { [defaultNextTodo as string]: next } = todos;
@@ -75,10 +78,37 @@ async function execute(
       //* Create Variables
       case 'variable': {
         const { variables } = todo;
-        const output = getVariableOutput(variables, record, mixedTypes);
+
+        const output = getVariableOutput(variables, {
+          event,
+          mixedTypes,
+          outputs,
+        });
 
         todo = next;
-        _set(record, ['output', id], output);
+        outputs.push({ id, output });
+
+        break;
+      }
+
+      //* Execute Wrap Todos
+      case 'wrap': {
+        const { todosId } = todo;
+        const options = (await fetchTodoWrap?.(todosId)) || {};
+
+        //* 因為不確定 wrap todos 的起始事項是哪個，所以呼叫 getEventHandler
+        const $outputs = await getEventHandler(options)(...event);
+
+        todo = next;
+
+        outputs.push({
+          id,
+          output: $outputs.reduce(
+            (result, outputs) =>
+              Object.assign(result, ...outputs.map(({ output }) => output)),
+            {}
+          ),
+        });
 
         break;
       }
@@ -86,41 +116,35 @@ async function execute(
       //* Condition Branch
       case 'branch': {
         const { sources = [], template, metTodo } = todo;
-        const { [metTodo as string]: correct } = todos;
+        const { [metTodo as string]: met } = todos;
 
-        const isCorrect = Boolean(
-          JSON.parse(
-            _template(
-              `{{${template}}}`,
-              TEMPLATE_OPTS
-            )(
-              getVariableOutput(
-                Object.fromEntries(
-                  sources.map((source, i) => [`$${i}`, source])
-                ),
-                record
-              )
-            ) || 'false'
+        const isTrue = compiled(
+          template,
+          getVariableOutput(
+            Object.fromEntries(sources.map((source, i) => [`$${i}`, source])),
+            { event, outputs }
           )
         );
 
-        todo = isCorrect ? correct : next;
+        todo = isTrue ? met : next;
 
         break;
       }
 
       //* Fetch Data
       case 'fetch': {
-        const { url, method, headers, data } = todo;
-        const { source, path } = data || {};
-        const { [source as keyof typeof record]: src } = record;
-        const params = !path ? src : _get(src, path as string);
+        const { url, method, headers, data: initial } = todo;
+
+        const { data } = getVariableOutput(
+          !initial ? {} : { data: { mode: 'extract', initial } },
+          { event, outputs }
+        );
 
         const output = await axios({
           url,
           method,
           headers,
-          ...(params && { data: params }),
+          ...(data && { data }),
         })
           .then(({ data }) => data)
           .catch((err) => {
@@ -130,7 +154,7 @@ async function execute(
           });
 
         todo = next;
-        _set(record, ['output', id], output);
+        outputs.push({ id, output });
 
         break;
       }
@@ -142,34 +166,40 @@ async function execute(
 
         const { target } = !source
           ? { target: null }
-          : getVariableOutput({ target: source }, record);
+          : getVariableOutput({ target: source }, { event, outputs });
 
         if (Array.isArray(target) || _isPlainObject(target)) {
+          const keys = new Set(Object.keys(outputs));
           const output = Array.isArray(target) ? [] : {};
-          const keys = Object.keys(record.output);
 
-          const list: [string | number, unknown][] = Array.isArray(target)
-            ? target.map((item, i) => [i, item])
-            : Object.entries(target || {});
+          const list: Types.IteratePrepare[] = Array.isArray(target)
+            ? target.map((item, key) => ({
+                key,
+                outputs: [...outputs, { id: '$el', output: item as object }],
+              }))
+            : Object.entries(target as object).map(([key, item]) => ({
+                key,
+                outputs: [...outputs, { id: '$el', output: item as object }],
+              }));
 
-          for await (const [key, rec] of list.map<
-            Promise<[string | number, Types.ExecuteRecord]>
-          >(async ([key, item]) => [
-            key,
-            await execute(todos, iterate, {
-              event: record.event,
-              output: {
-                ...record.output,
-                [getPropPath([id, key])]: item,
-              },
-            }),
-          ])) {
-            const subOutput = _omit(rec.output, keys);
+          for await (const [key, outputs] of list.map<Types.IterateResult>(
+            async ({ key, outputs }) => [
+              key,
 
-            _set(output, key, Object.assign({}, ...Object.values(subOutput)));
+              //* 因為明確知道 iterate 是起始事項，所以可以直接呼叫 execute
+              await execute(todos, iterate, { event, fetchTodoWrap, outputs }),
+            ]
+          )) {
+            const $outputs = outputs.filter(({ id }) => !keys.has(id));
+
+            _set(
+              output,
+              key,
+              Object.assign({}, ...$outputs.map(({ output }) => output))
+            );
           }
 
-          _set(record, ['output', id], output);
+          outputs.push({ id, output });
         }
 
         todo = next;
@@ -181,13 +211,15 @@ async function execute(
     }
   }
 
-  return record;
+  return outputs;
 }
 
 //* Methods
 export const getEventHandler: Types.GetEventHandler =
-  (options) =>
+  (options, fetchTodoWrap) =>
   async (...event) => {
+    const result: Types.OutputData[][] = [];
+
     const starts = Object.values(options).filter(({ id }, _i, todos) =>
       todos.every((todo) => {
         const { category, defaultNextTodo } = todo;
@@ -206,8 +238,16 @@ export const getEventHandler: Types.GetEventHandler =
     );
 
     for (const todo of starts) {
-      const record = await execute(options, todo, { event, output: {} });
+      const outputs = await execute(options, todo, {
+        event,
+        fetchTodoWrap,
+        outputs: [],
+      });
 
-      console.log(record);
+      result.push(outputs);
     }
+
+    console.log('=== Result: ', result);
+
+    return result;
   };

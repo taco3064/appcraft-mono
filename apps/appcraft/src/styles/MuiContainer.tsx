@@ -16,55 +16,63 @@ export const MainContainer = withStyles(
   { name: 'MainContainer' }
 );
 
-interface PageContainerProps extends Omit<ContainerProps, 'disableGutters'> {
-  ContentProps?: Omit<ContainerProps, 'role' | 'children' | 'component'>;
-  action?: ReactNode;
-  title: string;
-}
+export const PageContainer = (() => {
+  interface PageContainerProps extends Omit<ContainerProps, 'disableGutters'> {
+    ContentProps?: Omit<ContainerProps, 'role' | 'children' | 'component'>;
+    action?: ReactNode;
+    title: string;
+  }
 
-export const PageContainer = withStyles(
-  ({ ContentProps, title, action, children, ...props }: PageContainerProps) => (
-    <Container {...props} disableGutters>
-      <Toolbar role="toolbar" disableGutters variant="dense">
-        <Typography
-          fontWeight="bolder"
-          variant="h5"
-          color="secondary"
-          style={{ marginRight: 'auto' }}
+  return withStyles(
+    ({
+      ContentProps,
+      title,
+      action,
+      children,
+      ...props
+    }: PageContainerProps) => (
+      <Container {...props} disableGutters>
+        <Toolbar role="toolbar" disableGutters variant="dense">
+          <Typography
+            fontWeight="bolder"
+            variant="h5"
+            color="secondary"
+            style={{ marginRight: 'auto' }}
+          >
+            {title}
+          </Typography>
+
+          {action}
+        </Toolbar>
+
+        <Paper
+          role="contentinfo"
+          elevation={0}
+          component={Container}
+          maxWidth={false}
+          {...ContentProps}
         >
-          {title}
-        </Typography>
-
-        {action}
-      </Toolbar>
-
-      <Paper
-        role="contentinfo"
-        elevation={0}
-        component={Container}
-        maxWidth={false}
-        {...ContentProps}
-      >
-        {children}
-      </Paper>
-    </Container>
-  ),
-  (theme, { ContentProps }) => ({
-    root: {
-      '& > [role=toolbar]': {
-        position: 'sticky',
-        background: theme.palette.background.default,
-        borderRadius: theme.shape.borderRadius,
-        top: theme.spacing(9),
-        zIndex: theme.zIndex.appBar,
+          {children}
+        </Paper>
+      </Container>
+    ),
+    (theme, { ContentProps }) => ({
+      root: {
+        '& > [role=toolbar]': {
+          position: 'sticky',
+          background: theme.palette.background.default,
+          borderRadius: theme.shape.borderRadius,
+          top: theme.spacing(9),
+          zIndex: theme.zIndex.appBar,
+        },
+        '& > [role=contentinfo]': {
+          background: ContentProps?.disableGutters ? 'transparent' : null,
+          borderRadius: theme.spacing(2),
+          paddingTop: theme.spacing(ContentProps?.disableGutters ? 0 : 2),
+          paddingBottom: theme.spacing(ContentProps?.disableGutters ? 0 : 2),
+        },
       },
-      '& > [role=contentinfo]': {
-        background: ContentProps?.disableGutters ? 'transparent' : null,
-        borderRadius: theme.spacing(2),
-        paddingTop: theme.spacing(ContentProps?.disableGutters ? 0 : 2),
-        paddingBottom: theme.spacing(ContentProps?.disableGutters ? 0 : 2),
-      },
-    },
-  }),
-  { name: 'PageContainer' }
-);
+    }),
+    { name: 'PageContainer' }
+  );
+})();

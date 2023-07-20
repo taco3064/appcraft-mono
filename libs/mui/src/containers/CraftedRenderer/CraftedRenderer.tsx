@@ -4,12 +4,15 @@ import { useWidgetGenerator } from '../../hooks';
 import type { CraftedRendererProps } from './CraftedRenderer.types';
 
 export default function CraftedRenderer({
+  fetchTodoWrap,
   lazy,
   options,
 }: CraftedRendererProps) {
-  const generator = useWidgetGenerator(lazy, (Widget, props, i) => (
-    <Widget key={`widget_${i}`} {...props} />
-  ));
+  const generator = useWidgetGenerator(
+    lazy,
+    fetchTodoWrap,
+    (Widget, props, i) => <Widget key={`widget_${i}`} {...props} />
+  );
 
   return !options ? null : (
     <Suspense>

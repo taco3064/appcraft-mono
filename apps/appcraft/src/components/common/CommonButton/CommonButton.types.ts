@@ -1,7 +1,7 @@
-import SvgIcon, { SvgIconProps } from '@mui/material/SvgIcon';
 import type { ButtonProps } from '@mui/material/Button';
 import type { IconButtonProps } from '@mui/material/IconButton';
 import type { MenuItemProps } from '@mui/material/MenuItem';
+import type { ReactNode } from 'react';
 
 enum BtnVariant {
   icon,
@@ -19,16 +19,14 @@ interface BaseProps<
     ? Omit<MenuItemProps, 'children'>
     : Omit<IconButtonProps, 'children'>
 > {
-  IconProps?: SvgIconProps;
   btnVariant: T;
   text: string;
-  icon: typeof SvgIcon;
+  icon: ReactNode;
   props: P;
 }
 
 export type CommonGenericProps<T extends CommonButtonVariant> =
-  BaseProps<T>['props'] &
-    Pick<BaseProps<T>, 'IconProps' | 'btnVariant' | 'text' | 'icon'>;
+  BaseProps<T>['props'] & Pick<BaseProps<T>, 'btnVariant' | 'text' | 'icon'>;
 
 export type CommonButtonProps =
   | CommonGenericProps<'text'>

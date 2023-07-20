@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import type { WidgetTodo } from '@appcraft/types';
 
 export interface TodoStepperProps {
+  fullHeight?: boolean;
   title?: ReactNode;
   duration: number;
   logs: OutputData[][];

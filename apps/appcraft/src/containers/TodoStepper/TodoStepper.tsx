@@ -14,6 +14,7 @@ import * as Hook from '~appcraft/hooks';
 import type { TodoStepperProps } from './TodoStepper.types';
 
 export default function TodoStepper({
+  fullHeight = false,
   title,
   duration,
   logs,
@@ -21,7 +22,7 @@ export default function TodoStepper({
 }: TodoStepperProps) {
   const [tt] = Hook.useFixedT('todos');
   const [active, setActive] = useState<number[]>(
-    new Array(logs.length).fill(0)
+    new Array(logs?.length || 0).fill(0)
   );
 
   return (
@@ -32,8 +33,12 @@ export default function TodoStepper({
         </AppBar>
       )}
 
-      <Container style={{ height: '100%', overflow: 'hidden auto' }}>
-        {logs.length === 0 && (
+      <Container
+        {...(fullHeight && {
+          style: { height: '100%', overflow: 'hidden auto' },
+        })}
+      >
+        {!logs?.length && (
           <Typography
             variant="h6"
             color="text.secondary"
@@ -44,7 +49,7 @@ export default function TodoStepper({
           </Typography>
         )}
 
-        {logs.map((outputs, i) => (
+        {logs?.map((outputs, i) => (
           <Stepper
             key={`log-${i}`}
             nonLinear
@@ -54,7 +59,11 @@ export default function TodoStepper({
             {outputs.map(({ id, output }, ii) => (
               <Step key={id}>
                 <StepButton
-                  optional={<Typography variant="caption">{id}</Typography>}
+                  optional={
+                    <Typography variant="caption" color="text.secondary">
+                      {id}
+                    </Typography>
+                  }
                   onClick={() =>
                     setActive((prev) => {
                       prev[i] = ii;
@@ -68,7 +77,7 @@ export default function TodoStepper({
 
                 <StepContent>
                   <Collapse in={active[i] === ii}>
-                    <JSONTree data={output} />
+                    <JSONTree hideRoot theme="monokai" data={output} />
                   </Collapse>
                 </StepContent>
               </Step>
@@ -77,10 +86,15 @@ export default function TodoStepper({
         ))}
       </Container>
 
-      <AppBar color="transparent" position="static">
+      <AppBar
+        color="transparent"
+        position="static"
+        elevation={0}
+        style={{ marginTop: 'auto' }}
+      >
         <Toolbar variant="dense">
           <Typography
-            variant="subtitle1"
+            variant="h6"
             fontWeight="bolder"
             color="secondary"
             marginLeft="auto"

@@ -1,10 +1,13 @@
+import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import Head from 'next/head';
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import { Style } from '@appcraft/mui';
 import { useRouter } from 'next/router';
 
 import { CommonButton } from '~appcraft/components/common';
 import { HierarchyList } from '~appcraft/containers';
-import { PageContainer, PlayTodoIcon } from '~appcraft/styles';
+import { PageContainer } from '~appcraft/styles';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
 
 export default function Todos() {
@@ -41,7 +44,12 @@ export default function Todos() {
         onItemActionRender={(data) => (
           <CommonButton
             btnVariant="icon"
-            icon={PlayTodoIcon}
+            icon={
+              <Style.CompositeIcon
+                primary={AssignmentOutlinedIcon}
+                secondary={PlayCircleIcon}
+              />
+            }
             text={tt('btn-run')}
             onClick={() => console.log('test')}
           />

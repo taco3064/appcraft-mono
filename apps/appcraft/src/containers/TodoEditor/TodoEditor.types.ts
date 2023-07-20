@@ -1,16 +1,20 @@
 import type { ConfigData, WidgetTodo } from '@appcraft/types';
-import type { ContainerProps } from '@mui/material/Container';
 
 import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
+import type { PersistentDrawerContentProps } from '~appcraft/components';
 
 export interface TodoEditorProps {
-  ContentProps?: Omit<ContainerProps, 'children' | 'disableGutters' | 'style'>;
   data: ConfigData<Record<string, WidgetTodo>, string>;
-  onActionNodePick?: NodePickerFn<'run' | 'reset' | 'save'>;
+  onActionNodePick?: NodePickerFn<'expand' | 'run' | 'reset' | 'save'>;
   onSave?: () => void;
 
   superiors: {
     names: Record<string, string>;
     breadcrumbs: Breadcrumb[];
   };
+
+  PersistentDrawerContentProps?: Omit<
+    PersistentDrawerContentProps,
+    'ContentProps' | 'DrawerProps' | 'content' | 'drawer' | 'open' | 'onClose'
+  >;
 }

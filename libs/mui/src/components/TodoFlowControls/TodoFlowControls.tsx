@@ -36,7 +36,12 @@ export default function TodoFlowControls({
   };
 
   useEffect(() => {
-    fitViewDebounce({ duration: 400, nodes });
+    const handleResize = () => fitViewDebounce({ duration: 400, nodes });
+
+    handleResize();
+    global.window?.addEventListener('resize', handleResize);
+
+    return () => global.window?.removeEventListener('resize', handleResize);
   }, [fitViewDebounce, nodes]);
 
   return (

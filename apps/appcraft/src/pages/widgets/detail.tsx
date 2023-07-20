@@ -9,12 +9,11 @@ import { WidgetEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 
 export default function Detail() {
+  const [wt] = Hook.useFixedT('widgets');
   const { pathname, query } = useRouter();
   const height = Hook.useHeight();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
-
-  const [wt] = Hook.useFixedT('widgets');
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
 
   const [action, handleActionNodePick] = Hook.useNodePickHandle([
@@ -32,8 +31,7 @@ export default function Detail() {
   return (
     <PageContainer
       ContentProps={{ disableGutters: true }}
-      id={id}
-      maxWidth={false}
+      maxWidth="lg"
       title={wt('ttl-detail', { name: superiors[id] })}
       action={
         <>

@@ -30,8 +30,8 @@ export default function Breadcrumbs({
       <CommonButton
         btnVariant="icon"
         color="secondary"
+        icon={<ArrowBackIcon />}
         text={at('btn-back')}
-        icon={ArrowBackIcon}
         onClick={() => back()}
       />
 

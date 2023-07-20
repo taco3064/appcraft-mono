@@ -27,7 +27,7 @@ export default function ConfigDetail({
         reset: (
           <CommonButton
             btnVariant="icon"
-            icon={ReplayIcon}
+            icon={<ReplayIcon />}
             text={at('btn-reset')}
             onClick={handleConfig.reset}
           />
@@ -35,7 +35,7 @@ export default function ConfigDetail({
         save: (
           <CommonButton
             btnVariant="icon"
-            icon={SaveAltIcon}
+            icon={<SaveAltIcon />}
             text={at('btn-save')}
             onClick={handleConfig.save}
           />

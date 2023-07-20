@@ -3,7 +3,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Divider from '@mui/material/Divider';
 import GoogleIcon from '@mui/icons-material/Google';
 import LoginIcon from '@mui/icons-material/Login';
-import { FlexDialog } from '@appcraft/mui';
+import { Style } from '@appcraft/mui';
 import { useState } from 'react';
 
 import { CommonButton } from '../common';
@@ -21,12 +21,12 @@ export default function SigninButton({
     <>
       <CommonButton
         btnVariant="icon"
-        icon={LoginIcon}
+        icon={<LoginIcon />}
         text={at('btn-signin')}
         onClick={() => setOpen(true)}
       />
 
-      <FlexDialog
+      <Style.FlexDialog
         fullWidth
         maxWidth="xs"
         direction="column"
@@ -61,7 +61,7 @@ export default function SigninButton({
         >
           {at('btn-cancel')}
         </Button>
-      </FlexDialog>
+      </Style.FlexDialog>
     </>
   );
 }

@@ -118,7 +118,7 @@ async function execute(
         const { sources = [], template, metTodo } = todo;
         const { [metTodo as string]: met } = todos;
 
-        const correct = compiled(
+        const isTrue = compiled(
           template,
           getVariableOutput(
             Object.fromEntries(sources.map((source, i) => [`$${i}`, source])),
@@ -126,7 +126,7 @@ async function execute(
           )
         );
 
-        todo = correct ? met : next;
+        todo = isTrue ? met : next;
 
         break;
       }

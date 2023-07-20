@@ -8,16 +8,15 @@ import Tooltip from '@mui/material/Tooltip';
 import type * as Types from './CommonButton.types';
 
 export default function CommonButton({
-  IconProps,
   btnVariant,
   text,
-  icon: Icon,
+  icon,
   ...props
 }: Types.CommonButtonProps) {
   switch (btnVariant) {
     case 'text':
       return (
-        <Button {...(props as ButtonProps)} startIcon={<Icon {...IconProps} />}>
+        <Button {...(props as ButtonProps)} startIcon={icon}>
           {text}
         </Button>
       );
@@ -25,9 +24,7 @@ export default function CommonButton({
     case 'icon': {
       return (
         <Tooltip title={text}>
-          <IconButton {...(props as IconButtonProps)}>
-            <Icon {...IconProps} />
-          </IconButton>
+          <IconButton {...(props as IconButtonProps)}>{icon}</IconButton>
         </Tooltip>
       );
     }
@@ -35,9 +32,7 @@ export default function CommonButton({
     case 'menu': {
       return (
         <MenuItem {...(props as MenuItemProps)}>
-          <ListItemIcon>
-            <Icon {...IconProps} />
-          </ListItemIcon>
+          <ListItemIcon>{icon}</ListItemIcon>
 
           <ListItemText primary={text} />
         </MenuItem>

@@ -43,7 +43,7 @@ export default function Widgets() {
           <CommonButton
             btnVariant="icon"
             color="default"
-            icon={VisibilityOutlinedIcon}
+            icon={<VisibilityOutlinedIcon />}
             text={at('btn-preview')}
             onClick={() => console.log(theme._id)} //! 待實作 preview 功能
           />

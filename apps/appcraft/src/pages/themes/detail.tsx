@@ -42,7 +42,7 @@ export default function Detail() {
           {theme && (
             <CommonButton
               btnVariant="icon"
-              icon={AutoAwesomeOutlinedIcon}
+              icon={<AutoAwesomeOutlinedIcon />}
               text={at('btn-apply')}
               onClick={() => handleSetting.theme(theme._id, theme.timestamp)}
             />

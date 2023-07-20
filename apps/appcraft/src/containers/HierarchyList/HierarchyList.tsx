@@ -64,7 +64,7 @@ export default function HierarchyList({
             <div>
               <CommonButton
                 btnVariant="icon"
-                icon={FilterListIcon}
+                icon={<FilterListIcon />}
                 text={at('btn-filter')}
                 onClick={() => setCollapsed(false)}
               />

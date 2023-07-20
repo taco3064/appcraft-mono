@@ -1,4 +1,4 @@
-import * as Appcraft from '@appcraft/mui';
+import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
@@ -38,7 +38,7 @@ export default function WidgetEditor({
         expand: !isCollapsable ? null : (
           <CommonButton
             btnVariant="icon"
-            icon={open ? AutoFixOffIcon : AutoFixHighIcon}
+            icon={open ? <AutoFixOffIcon /> : <AutoFixHighIcon />}
             text={wt(`btn-expand-${isSettingOpen ? 'off' : 'on'}`)}
             onClick={() => setOpen(!open)}
           />
@@ -46,7 +46,7 @@ export default function WidgetEditor({
         reset: (
           <CommonButton
             btnVariant="icon"
-            icon={RestartAltIcon}
+            icon={<RestartAltIcon />}
             text={at('btn-reset')}
             onClick={handleWidget.reset}
           />
@@ -54,7 +54,7 @@ export default function WidgetEditor({
         save: (
           <CommonButton
             btnVariant="icon"
-            icon={SaveAltIcon}
+            icon={<SaveAltIcon />}
             text={at('btn-save')}
             onClick={handleWidget.save}
           />
@@ -81,7 +81,7 @@ export default function WidgetEditor({
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
         content={
-          <Appcraft.CraftedRenderer
+          <CraftedRenderer
             lazy={toLazy}
             options={widget}
             fetchTodoWrap={async (id) => {
@@ -94,7 +94,7 @@ export default function WidgetEditor({
           />
         }
         drawer={
-          <Appcraft.CraftedWidgetEditor
+          <CraftedWidgetEditor
             fixedT={ct}
             todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             version={__WEBPACK_DEFINE__.VERSION}

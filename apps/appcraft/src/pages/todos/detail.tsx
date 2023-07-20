@@ -9,15 +9,15 @@ import { TodoEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 
 export default function Detail() {
+  const [tt] = Hook.useFixedT('todos');
   const { pathname, query } = useRouter();
   const height = Hook.useHeight();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
-
-  const [tt] = Hook.useFixedT('todos');
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
 
   const [action, handleActionNodePick] = Hook.useNodePickHandle([
+    'expand',
     'run',
     'reset',
     'save',
@@ -36,6 +36,7 @@ export default function Detail() {
       title={tt('ttl-detail', { name: superiors[id] })}
       action={
         <>
+          {action?.expand}
           {action?.run}
           {action?.reset}
           {action?.save}
@@ -51,10 +52,10 @@ export default function Detail() {
         superiors={{ names: superiors, breadcrumbs }}
         onActionNodePick={handleActionNodePick}
         onSave={refetch}
-        ContentProps={{
-          sx: {
-            height: (theme) => `calc(${height} - ${theme.spacing(30.25)})`,
-          },
+        PersistentDrawerContentProps={{
+          disableGutters: true,
+          maxWidth: false,
+          height: (theme) => `calc(${height} - ${theme.spacing(30.25)})`,
         }}
       />
     </PageContainer>

@@ -1,26 +1,31 @@
 import Container from '@mui/material/Container';
 
 import { SizedDrawer } from '~appcraft/styles';
+import { useWidth } from '~appcraft/hooks';
 import type { PersistentDrawerContentProps } from './PersistentDrawerContent.types';
 
 export default function PersistentDrawerContent({
   ContentProps,
   DrawerProps,
   content,
-  disablePadding = false,
   drawer,
   height,
   open,
   ...props
 }: PersistentDrawerContentProps) {
+  const width = useWidth();
+
   return (
     <Container
       {...props}
       sx={(theme) => ({
         position: 'relative',
         display: 'flex',
+        flexWrap: 'nowrap',
         flexDirection: DrawerProps.anchor === 'right' ? 'row' : 'row-reverse',
         height: height?.(theme) || '100%',
+        borderRadius: `${theme.spacing(2)} !important`,
+        gap: theme.spacing(1.5),
         overflowX: 'hidden',
       })}
     >
@@ -48,34 +53,22 @@ export default function PersistentDrawerContent({
       </SizedDrawer>
 
       <Container
-        disableGutters
         {...ContentProps}
+        disableGutters
         maxWidth={false}
         sx={(theme) => ({
           display: 'flex',
           flexDirection: 'column',
-
-          [theme.breakpoints.up('md')]: {
-            marginRight: theme.spacing(1.5),
-          },
+          flexGrow: 1,
+          width: 'auto !important',
+          borderRadius: `${theme.spacing(2)} !important`,
         })}
       >
         {content}
       </Container>
 
-      {open && !disablePadding && (
-        <Container
-          disableGutters
-          maxWidth={DrawerProps.maxWidth}
-          sx={(theme) => ({
-            [theme.breakpoints.up('sm')]: {
-              visibility: 'hidden',
-            },
-            [theme.breakpoints.down('md')]: {
-              display: 'none',
-            },
-          })}
-        />
+      {open && !/^(xs|sm)$/.test(width) && (
+        <Container disableGutters maxWidth={DrawerProps.maxWidth} />
       )}
     </Container>
   );

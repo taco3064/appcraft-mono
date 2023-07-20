@@ -1,4 +1,6 @@
 {
+  "btn-expand-off": "關閉測試紀錄",
+  "btn-expand-on": "開啟測試紀錄",
   "btn-run": "執行測試",
   "lbl-variant": "事項類型",
   "opt-convert": "轉換陣列元素",

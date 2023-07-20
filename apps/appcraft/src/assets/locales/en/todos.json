@@ -1,4 +1,6 @@
 {
+  "btn-expand-off": "Close Logs",
+  "btn-expand-on": "Open Logs",
   "btn-run": "Run Test",
   "lbl-variant": "Todo Variant",
   "opt-convert": "Transform Array Values",

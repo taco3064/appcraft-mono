@@ -1,9 +1,4 @@
 import type * as Appcraft from '@appcraft/types';
+import type { PureProp } from '../../../contexts';
 
-export type TypeItemPureProps = Appcraft.BaseField<
-  | Appcraft.BoolProp
-  | Appcraft.InstanceOfProp
-  | Appcraft.NumberProp
-  | Appcraft.OneOfProp
-  | Appcraft.StringProp
->;
+export type TypeItemPureProps = Appcraft.BaseField<PureProp>;

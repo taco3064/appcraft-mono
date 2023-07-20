@@ -1,6 +1,6 @@
 import type * as React from 'react';
 
-import type { GeneratorFn } from '../../utils';
+import type { FetchTodoWrap, GeneratorFn } from '../../utils';
 
 //* Variables
 export type PlainTextProps = { children?: React.ReactNode };
@@ -22,5 +22,6 @@ export type Renderer = (
 //* Custom Hooks
 export type WidgetGeneratorHook = (
   externalLazy: ExternalLazy,
+  fetchTodoWrap: FetchTodoWrap,
   renderer: Renderer
 ) => GeneratorFn;

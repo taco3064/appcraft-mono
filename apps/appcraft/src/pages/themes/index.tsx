@@ -3,17 +3,17 @@ import Head from 'next/head';
 import PaletteTwoToneIcon from '@mui/icons-material/PaletteTwoTone';
 import { useRouter } from 'next/router';
 
-import * as Hooks from '~appcraft/hooks';
+import * as Hook from '~appcraft/hooks';
 import { CommonButton } from '~appcraft/components/common';
 import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 
 export default function Themes() {
   const { pathname } = useRouter();
-  const [, handleSetting] = Hooks.useSettingModified();
-  const [at, nt] = Hooks.useFixedT('app', 'nav');
+  const [, handleSetting] = Hook.useSettingModified();
+  const [at, nt] = Hook.useFixedT('app', 'nav');
 
-  const [action, handleActionNodePick] = Hooks.useNodePickHandle([
+  const [action, handleActionNodePick] = Hook.useNodePickHandle([
     'search',
     'addItem',
   ]);
@@ -43,7 +43,7 @@ export default function Themes() {
           <CommonButton
             btnVariant="icon"
             color="default"
-            icon={AutoAwesomeOutlinedIcon}
+            icon={<AutoAwesomeOutlinedIcon />}
             text={at('btn-apply')}
             onClick={() => handleSetting.theme(theme._id)}
           />

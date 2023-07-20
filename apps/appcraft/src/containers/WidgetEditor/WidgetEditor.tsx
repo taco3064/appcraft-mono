@@ -1,13 +1,14 @@
-import * as Appcraft from '@appcraft/mui';
+import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { useCallback, useState } from 'react';
+import type { WidgetTodo } from '@appcraft/types';
 
-import * as Component from '~appcraft/components';
-import * as Hooks from '~appcraft/hooks';
-import FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
+import * as Comp from '~appcraft/components';
+import * as Hook from '~appcraft/hooks';
+import * as Service from '~appcraft/services';
 import { CommonButton, LazyMui, typeMap } from '~appcraft/components/common';
 import type { WidgetEditorProps } from './WidgetEditor.types';
 
@@ -18,26 +19,26 @@ export default function WidgetEditor({
   onActionNodePick = (e) => e,
   onSave,
 }: WidgetEditorProps) {
-  const [at, ct, wt] = Hooks.useFixedT('app', 'appcraft', 'widgets');
+  const [at, ct, wt] = Hook.useFixedT('app', 'appcraft', 'widgets');
   const [open, setOpen] = useState(true);
 
-  const [widget, handleWidget] = Hooks.useWidgetValues({
+  const [widget, handleWidget] = Hook.useWidgetValues({
     data,
     onSave,
   });
 
-  const width = Hooks.useWidth();
+  const width = Hook.useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
   const toLazy = useCallback((widgetType: string) => LazyMui[widgetType], []);
 
-  const actionNode = Hooks.useNodePicker(
+  const actionNode = Hook.useNodePicker(
     () =>
       onActionNodePick({
         expand: !isCollapsable ? null : (
           <CommonButton
             btnVariant="icon"
-            icon={open ? AutoFixOffIcon : AutoFixHighIcon}
+            icon={open ? <AutoFixOffIcon /> : <AutoFixHighIcon />}
             text={wt(`btn-expand-${isSettingOpen ? 'off' : 'on'}`)}
             onClick={() => setOpen(!open)}
           />
@@ -45,7 +46,7 @@ export default function WidgetEditor({
         reset: (
           <CommonButton
             btnVariant="icon"
-            icon={RestartAltIcon}
+            icon={<RestartAltIcon />}
             text={at('btn-reset')}
             onClick={handleWidget.reset}
           />
@@ -53,7 +54,7 @@ export default function WidgetEditor({
         save: (
           <CommonButton
             btnVariant="icon"
-            icon={SaveAltIcon}
+            icon={<SaveAltIcon />}
             text={at('btn-save')}
             onClick={handleWidget.save}
           />
@@ -64,7 +65,7 @@ export default function WidgetEditor({
 
   return (
     <>
-      <Component.Breadcrumbs
+      <Comp.Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
         action={actionNode}
         onCustomize={([index]) => [
@@ -74,26 +75,40 @@ export default function WidgetEditor({
         ]}
       />
 
-      <Component.PersistentDrawerContent
+      <Comp.PersistentDrawerContent
         {...PersistentDrawerContentProps}
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
-        content={<Appcraft.CraftedRenderer lazy={toLazy} options={widget} />}
+        content={
+          <CraftedRenderer
+            lazy={toLazy}
+            options={widget}
+            fetchTodoWrap={async (id) => {
+              const { content } = await Service.getConfigById<
+                Record<string, WidgetTodo>
+              >(id);
+
+              return content;
+            }}
+          />
+        }
         drawer={
-          <Appcraft.CraftedWidgetEditor
+          <CraftedWidgetEditor
             fixedT={ct}
             todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             version={__WEBPACK_DEFINE__.VERSION}
             widget={widget}
             onWidgetChange={handleWidget.change}
-            fetchOptions={{
-              configParser: FETCH_OPTIONS.CONFIGS_PARSER,
-              propsParser: FETCH_OPTIONS.PROPS_PARSER,
-              getNodesAndEvents: FETCH_OPTIONS.GET_NODES_AND_EVENTS,
-            }}
+            onFetchNodesAndEvents={Service.getNodesAndEvents}
+            onFetchConfigDefinition={(...e) =>
+              Service.getTypeDefinition(Service.Parser.Config, ...e)
+            }
+            onFetchWidgetDefinition={(...e) =>
+              Service.getTypeDefinition(Service.Parser.Widget, ...e)
+            }
             renderWidgetTypeSelection={({ onChange }) => (
-              <Component.WidgetSelect
+              <Comp.WidgetSelect
                 fullWidth
                 required
                 size="small"

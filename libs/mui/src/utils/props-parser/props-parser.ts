@@ -4,8 +4,16 @@ import type * as Appcraft from '@appcraft/types';
 import type { Components } from '@mui/material/styles';
 
 import { getPropPath } from '../prop-path';
-import { getEventHandler } from '../todo-parser';
+import { FetchTodoWrap, getEventHandler } from '../todo-parser';
 import type * as Types from './props-parser.types';
+
+export const getNodesAndEventsKey: Types.GetNodesAndEventsKey = (
+  options,
+  defaultKey = ''
+) =>
+  options.category === 'node'
+    ? `${options.typeFile}#${options.typeName}`
+    : defaultKey;
 
 export const getDefaultProps: Types.GetDefaultProps = (theme, type) => {
   const defaultProps =
@@ -38,7 +46,7 @@ export const splitProps: Types.SplitProps = (target, paths = []) => {
 
 export const getProps = <P extends object>(
   options: Appcraft.NodeWidget | Appcraft.ConfigOptions,
-  renderer?: Types.GeneratorFn
+  { renderer, fetchTodoWrap }: Types.GetPropsOptions = {}
 ) => {
   const fields: Appcraft.WidgetField[] = ['nodes', 'props', 'todos'];
 
@@ -52,7 +60,10 @@ export const getProps = <P extends object>(
         _set(
           result,
           propPath,
-          getEventHandler(value as Record<string, Appcraft.WidgetTodo>)
+          getEventHandler(
+            value as Record<string, Appcraft.WidgetTodo>,
+            fetchTodoWrap
+          )
         );
       } else if (renderer instanceof Function && widgetField === 'nodes') {
         _set(

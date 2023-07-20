@@ -1,13 +1,6 @@
 import type * as Appcraft from '@appcraft/types';
 
-enum Categories {
-  Display,
-  Mixed,
-  Node,
-  Pure,
-}
-
-export type Category = keyof typeof Categories;
+export type Category = 'Display' | 'Mixed' | 'Node' | 'Pure';
 
 export type TypeItemHook = (
   collectionType: Appcraft.CollectionType,

@@ -10,6 +10,7 @@ const LazyPlainText = lazy<Types.PlainTextComponent>(async () => ({
 
 const useWidgetGenerator: Types.WidgetGeneratorHook = (
   externalLazy,
+  fetchTodoWrap,
   renderer
 ) =>
   function generator(options, index) {
@@ -26,7 +27,10 @@ const useWidgetGenerator: Types.WidgetGeneratorHook = (
         )
       : renderer(
           externalLazy(type),
-          getProps(options as Appcraft.NodeWidget, generator),
+          getProps(options as Appcraft.NodeWidget, {
+            fetchTodoWrap,
+            renderer: generator,
+          }),
           index
         );
   };

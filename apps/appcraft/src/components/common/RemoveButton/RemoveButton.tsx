@@ -22,7 +22,7 @@ export default function RemoveButton({
     <>
       <CommonButton
         {...(props as CommonButtonProps)}
-        icon={icon || DeleteForeverOutlinedIcon}
+        icon={icon || <DeleteForeverOutlinedIcon />}
         text={text || at('btn-remove')}
         onClick={() => setOpen(true)}
       />

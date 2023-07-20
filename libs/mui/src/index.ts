@@ -1,3 +1,5 @@
+export * as Style from './styles';
 export * from './containers';
-export * from './styles';
-export { getProps, getEventHandler } from './utils';
+export type { OutputData } from './utils';
+
+export { getNodesAndEventsKey, getProps, getEventHandler } from './utils';

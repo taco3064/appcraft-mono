@@ -72,7 +72,7 @@ export default function CollapseKeyword({
               <CommonButton
                 btnVariant="icon"
                 size="small"
-                icon={FilterListOffIcon}
+                icon={<FilterListOffIcon />}
                 text={at('btn-filter-clear')}
                 onClick={() => {
                   keywordRef.current.value = '';
@@ -85,9 +85,9 @@ export default function CollapseKeyword({
                 <CommonButton
                   btnVariant="icon"
                   size="small"
-                  onClick={onCollapse}
-                  icon={CloseIcon}
+                  icon={<CloseIcon />}
                   text={at('btn-close')}
+                  onClick={onCollapse}
                 />
               )}
             </InputAdornment>

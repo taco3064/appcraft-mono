@@ -2,12 +2,12 @@ import * as Rf from 'reactflow';
 import { useTheme } from '@mui/material/styles';
 
 import * as Comp from '../../components';
-import * as Hooks from '../../hooks';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { FullHeightCollapse, TodoBackground } from '../../styles';
+import { useFixedT, useTodoGenerator } from '../../hooks';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
 
-const exclude: RegExp[] = [
+const EXCLUDE: RegExp[] = [
   /^category$/,
   /^mixedTypes$/,
   /^defaultNextTodo$/,
@@ -15,22 +15,32 @@ const exclude: RegExp[] = [
   /^iterateTodo$/,
 ];
 
+const NODE_TYPES: Rf.NodeTypes = {
+  variable: Comp.TodoFlowNode,
+  fetch: Comp.TodoFlowNode,
+  branch: Comp.TodoFlowNode,
+  iterate: Comp.TodoFlowNode,
+  wrap: Comp.TodoFlowNode,
+  state: Comp.TodoFlowNode,
+};
+
 export default function CraftedTodoEditor({
   disableCategories,
   fixedT,
   fullHeight,
   open = true,
-  parser,
   todoPath,
   typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts',
   values,
+  renderOverridePureItem,
   onBack,
   onChange,
+  onFetchDefinition,
 }: CraftedTodoEditorProps) {
   const theme = useTheme();
-  const ct = Hooks.useFixedT(fixedT);
+  const ct = useFixedT(fixedT);
 
-  const [{ editing, nodes, edges }, handleTodo] = Hooks.useTodoGenerator(
+  const [{ editing, nodes, edges }, handleTodo] = useTodoGenerator(
     typeFile,
     values || {},
     onChange
@@ -46,7 +56,8 @@ export default function CraftedTodoEditor({
         onConfirm={(todo) => onChange({ ...values, [todo.id]: todo })}
         renderEditor={(todoConfig) => (
           <CraftedTypeEditor
-            {...{ exclude, fixedT, parser }}
+            {...{ fixedT, renderOverridePureItem, onFetchDefinition }}
+            exclude={EXCLUDE}
             values={todoConfig}
             onChange={handleTodo.change}
           />
@@ -67,38 +78,35 @@ export default function CraftedTodoEditor({
           />
         )}
 
-        <TodoBackground elevation={0}>
-          <Rf.ReactFlowProvider>
-            <Rf.ReactFlow
-              fitView
-              connectionLineType={Rf.ConnectionLineType.SmoothStep}
-              nodes={nodes}
-              edges={edges}
-              onConnect={handleTodo.connect}
-              onEdgeDoubleClick={handleTodo.deleteEdge}
-              onNodeClick={handleTodo.select}
-              onNodesDelete={handleTodo.deleteNode}
-              defaultEdgeOptions={{
-                type: Rf.ConnectionLineType.SmoothStep,
-                markerEnd: { type: Rf.MarkerType.ArrowClosed },
-                style: { strokeWidth: 2 },
-              }}
-              nodeTypes={{
-                variable: Comp.TodoFlowNode,
-                fetch: Comp.TodoFlowNode,
-                branch: Comp.TodoFlowNode,
-                iterate: Comp.TodoFlowNode,
-              }}
-            >
-              <Rf.Background color={theme.palette.text.secondary} gap={16} />
-            </Rf.ReactFlow>
+        {open && (
+          <TodoBackground elevation={0}>
+            <Rf.ReactFlowProvider>
+              <Rf.ReactFlow
+                fitView
+                connectionLineType={Rf.ConnectionLineType.SmoothStep}
+                nodes={nodes}
+                edges={edges}
+                nodeTypes={NODE_TYPES}
+                onConnect={handleTodo.connect}
+                onEdgeDoubleClick={handleTodo.deleteEdge}
+                onNodeClick={handleTodo.select}
+                onNodesDelete={handleTodo.deleteNode}
+                defaultEdgeOptions={{
+                  type: Rf.ConnectionLineType.SmoothStep,
+                  markerEnd: { type: Rf.MarkerType.ArrowClosed },
+                  style: { strokeWidth: 2 },
+                }}
+              >
+                <Rf.Background color={theme.palette.text.secondary} gap={16} />
+              </Rf.ReactFlow>
 
-            <Comp.TodoFlowControls
-              {...{ ct, disableCategories }}
-              onTodoAdd={handleTodo.create}
-            />
-          </Rf.ReactFlowProvider>
-        </TodoBackground>
+              <Comp.TodoFlowControls
+                {...{ ct, disableCategories }}
+                onTodoAdd={handleTodo.create}
+              />
+            </Rf.ReactFlowProvider>
+          </TodoBackground>
+        )}
       </FullHeightCollapse>
     </>
   );

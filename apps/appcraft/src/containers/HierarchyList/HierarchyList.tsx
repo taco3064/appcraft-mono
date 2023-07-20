@@ -6,8 +6,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import * as Component from '~appcraft/components';
-import * as Hooks from '~appcraft/hooks';
+import * as Comp from '~appcraft/components';
+import * as Hook from '~appcraft/hooks';
 import { CommonButton } from '~appcraft/components/common';
 import { searchHierarchy } from '~appcraft/services';
 import type * as Types from './HierarchyList.types';
@@ -19,15 +19,13 @@ export default function HierarchyList({
   onActionNodePick = (e) => e,
   onItemActionRender,
 }: Types.HierarchyListProps) {
-  const { breadcrumbs, keyword, superiors } =
-    Hooks.useHierarchyFilter(category);
-
+  const { breadcrumbs, keyword, superiors } = Hook.useHierarchyFilter(category);
   const { pathname, push } = useRouter();
   const superiorList = Object.keys(superiors);
   const superior = superiorList[superiorList.length - 1] || null;
-  const width = Hooks.useWidth();
+  const width = Hook.useWidth();
 
-  const [at] = Hooks.useFixedT('app');
+  const [at] = Hook.useFixedT('app');
   const [collapsed, setCollapsed] = useState(Boolean(!keyword));
 
   const { data: hierarchies, refetch } = useQuery({
@@ -36,11 +34,11 @@ export default function HierarchyList({
     queryKey: [category, keyword ? { keyword } : { superior }],
   });
 
-  const actionNode = Hooks.useNodePicker(
+  const actionNode = Hook.useNodePicker(
     () =>
       onActionNodePick({
         addGroup: !disableGroup && (
-          <Component.HierarchyEditorButton
+          <Comp.HierarchyEditorButton
             mode="add"
             data={{
               category,
@@ -51,7 +49,7 @@ export default function HierarchyList({
           />
         ),
         addItem: (
-          <Component.HierarchyEditorButton
+          <Comp.HierarchyEditorButton
             mode="add"
             data={{
               category,
@@ -66,7 +64,7 @@ export default function HierarchyList({
             <div>
               <CommonButton
                 btnVariant="icon"
-                icon={FilterListIcon}
+                icon={<FilterListIcon />}
                 text={at('btn-filter')}
                 onClick={() => setCollapsed(false)}
               />
@@ -79,7 +77,7 @@ export default function HierarchyList({
 
   return (
     <>
-      <Component.Breadcrumbs
+      <Comp.Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
         onCustomize={($breadcrumbs) => [
           ...$breadcrumbs,
@@ -90,7 +88,7 @@ export default function HierarchyList({
         action={actionNode}
       />
 
-      <Component.CollapseKeyword
+      <Comp.CollapseKeyword
         key={keyword}
         in={!collapsed}
         defaultValue={keyword}
@@ -117,7 +115,7 @@ export default function HierarchyList({
           style={{ overflow: 'hidden auto' }}
         >
           {hierarchies.map((data) => (
-            <Component.HierarchyItem
+            <Comp.HierarchyItem
               key={data._id}
               data={data}
               icon={icon}

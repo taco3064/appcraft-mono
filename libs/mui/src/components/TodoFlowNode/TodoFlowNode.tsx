@@ -4,7 +4,7 @@ import { Position, useReactFlow } from 'reactflow';
 import { TodoHandle, TodoNodeLabel } from '../../styles';
 import type { TodoFlowNodeProps } from './TodoFlowNode.types';
 
-export default function TodoFlowNode({ data }: TodoFlowNodeProps) {
+export default function TodoFlowNode({ type, data }: TodoFlowNodeProps) {
   const { id, category, description } = data;
   const { deleteElements } = useReactFlow();
 

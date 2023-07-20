@@ -1,8 +1,12 @@
 {
+  "btn-logs": "View Logs",
   "btn-run": "Run Test",
+  "lbl-duration": "Duration: {{ duration }} s",
   "lbl-variant": "Todo Variant",
+  "msg-no-logs": "No Logs Available",
   "opt-convert": "Transform Array Values",
   "opt-define": "Define Variable",
   "opt-fetch": "Fetch/Send Data",
-  "ttl-detail": "Todo Events - {{ name }}"
+  "ttl-detail": "Todo Events - {{ name }}",
+  "ttl-logs": "Output Logs"
 }

@@ -3,6 +3,7 @@ import type { PaletteOptions } from '@mui/material/styles';
 export const SPARKLING_CHAMPAGNE: PaletteOptions = {
   mode: 'dark',
   divider: 'rgba(255, 255, 255, 0.12)',
+  contrastThreshold: 1,
   background: {
     paper: '#232021',
     default: '#181616',

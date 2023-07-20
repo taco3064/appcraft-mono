@@ -10,7 +10,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import * as Styles from '~appcraft/styles';
+import * as Style from '~appcraft/styles';
 import NAVS from '~appcraft/assets/json/navs.json';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './MenuDrawer.types';
@@ -23,7 +23,7 @@ export default function MenuDrawer({
   const [nt] = useFixedT('nav');
 
   return (
-    <Styles.SizedDrawer
+    <Style.SizedDrawer
       {...props}
       maxWidth="xs"
       anchor="left"
@@ -55,10 +55,10 @@ export default function MenuDrawer({
             key={url}
             disableGap
             href={url}
-            component={Styles.Link}
+            component={Style.Link}
             onClick={(e) => onClose(e, 'escapeKeyDown')}
           >
-            <Styles.SizedListItemIcon>
+            <Style.SizedListItemIcon>
               <Icon
                 color="info"
                 fontSize="large"
@@ -66,7 +66,7 @@ export default function MenuDrawer({
               >
                 {icon}
               </Icon>
-            </Styles.SizedListItemIcon>
+            </Style.SizedListItemIcon>
 
             <ListItemText
               primaryTypographyProps={{
@@ -79,6 +79,6 @@ export default function MenuDrawer({
           </ListItemButton>
         ))}
       </List>
-    </Styles.SizedDrawer>
+    </Style.SizedDrawer>
   );
 }

@@ -1,32 +1,64 @@
-import Container from '@mui/material/Container';
+import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
+import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { CraftedTodoEditor } from '@appcraft/mui';
+import { CraftedTodoEditor, Style } from '@appcraft/mui';
+import { nanoid } from 'nanoid';
+import { useEffect, useMemo, useState } from 'react';
 
-import * as Hooks from '~appcraft/hooks';
-import FETCH_OPTIONS from '~appcraft/assets/json/types-fetch-options.json';
-import { Breadcrumbs } from '~appcraft/components';
+import * as Hook from '~appcraft/hooks';
+import { Breadcrumbs, PersistentDrawerContent } from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
-import { PlayTodoIcon } from '~appcraft/styles';
+import { Parser, getTypeDefinition } from '~appcraft/services';
+import { TodoStepper } from '../TodoStepper';
 import type { TodoEditorProps } from './TodoEditor.types';
 
 export default function TodoEditor({
-  ContentProps,
+  PersistentDrawerContentProps,
   data,
   superiors: { names, breadcrumbs },
   onActionNodePick = (e) => e,
   onSave,
 }: TodoEditorProps) {
-  const [at, ct, tt] = Hooks.useFixedT('app', 'appcraft', 'todos');
-  const [todos, handleTodos] = Hooks.useTodoValues({ data, onSave });
+  const [at, ct, tt] = Hook.useFixedT('app', 'appcraft', 'todos');
+  const [open, setOpen] = useState(true);
 
-  const actionNode = Hooks.useNodePicker(
+  const [{ duration, logs, todos }, handleTodos] = Hook.useTodoValues({
+    data,
+    onSave,
+    onOpen: () => setOpen(true),
+  });
+
+  const width = Hook.useWidth();
+  const isCollapsable = /^(xs|sm)$/.test(width) && logs.length > 0;
+  const isLogsOpen = (!isCollapsable || open) && logs.length > 0;
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const refresh = useMemo(() => nanoid(4), [logs]);
+
+  const actionNode = Hook.useNodePicker(
     () =>
       onActionNodePick({
+        expand:
+          !isCollapsable || open ? null : (
+            <CommonButton
+              btnVariant="icon"
+              icon={<AccountTreeOutlinedIcon />}
+              text={tt('btn-logs')}
+              onClick={() => setOpen(!open)}
+            />
+          ),
         run: (
           <CommonButton
             btnVariant="icon"
-            icon={PlayTodoIcon}
+            icon={
+              <Style.CompositeIcon
+                primary={AssignmentOutlinedIcon}
+                secondary={PlayCircleIcon}
+              />
+            }
             text={tt('btn-run')}
             onClick={handleTodos.run}
           />
@@ -34,7 +66,7 @@ export default function TodoEditor({
         reset: (
           <CommonButton
             btnVariant="icon"
-            icon={RestartAltIcon}
+            icon={<RestartAltIcon />}
             text={at('btn-reset')}
             onClick={handleTodos.reset}
           />
@@ -42,14 +74,18 @@ export default function TodoEditor({
         save: (
           <CommonButton
             btnVariant="icon"
-            icon={SaveAltIcon}
+            icon={<SaveAltIcon />}
             text={at('btn-save')}
             onClick={handleTodos.save}
           />
         ),
       }),
-    [todos]
+    [open, todos, isCollapsable]
   );
+
+  useEffect(() => {
+    window.dispatchEvent(new Event('resize'));
+  }, [isLogsOpen]);
 
   return (
     <>
@@ -63,26 +99,49 @@ export default function TodoEditor({
         ]}
       />
 
-      <Container
-        disableGutters
-        maxWidth="lg"
-        {...ContentProps}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <CraftedTodoEditor
-          fullHeight
-          disableCategories={['wrap', 'state']}
-          fixedT={ct}
-          parser={FETCH_OPTIONS.CONFIGS_PARSER}
-          typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
-          values={todos}
-          onChange={handleTodos.change}
-        />
-      </Container>
+      <PersistentDrawerContent
+        {...PersistentDrawerContentProps}
+        ContentProps={{ style: { alignItems: 'center' } }}
+        DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
+        open={isLogsOpen}
+        content={
+          <CraftedTodoEditor
+            fullHeight
+            disableCategories={['wrap', 'state']}
+            fixedT={ct}
+            typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
+            values={todos}
+            onChange={handleTodos.change}
+            onFetchDefinition={(...e) => getTypeDefinition(Parser.Config, ...e)}
+          />
+        }
+        drawer={
+          <TodoStepper
+            {...{ duration, logs, todos }}
+            key={refresh}
+            title={
+              <>
+                {isCollapsable && (
+                  <CommonButton
+                    btnVariant="icon"
+                    icon={<ChevronRightIcon />}
+                    text={at('btn-close')}
+                    onClick={() => setOpen(false)}
+                  />
+                )}
+
+                <Style.GapTypography
+                  variant="subtitle1"
+                  fontWeight="bolder"
+                  color="primary"
+                >
+                  {tt('ttl-logs')}
+                </Style.GapTypography>
+              </>
+            }
+          />
+        }
+      />
     </>
   );
 }

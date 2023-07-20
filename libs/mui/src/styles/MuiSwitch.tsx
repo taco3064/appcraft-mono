@@ -1,4 +1,5 @@
 import Switch, { SwitchProps } from '@mui/material/Switch';
+import { forwardRef } from 'react';
 import { withStyles } from 'tss-react/mui';
 
 export const WidgetNodeSwitch = (() => {
@@ -9,14 +10,15 @@ export const WidgetNodeSwitch = (() => {
   }
 
   return withStyles(
-    ({ value, onChange, ...props }: WidgetNodeSwitchProps) => (
-      <span>
+    forwardRef<HTMLButtonElement, WidgetNodeSwitchProps>(
+      ({ value, onChange, ...props }, ref) => (
         <Switch
           {...props}
+          ref={ref}
           checked={value === 'events'}
           onChange={(e) => onChange(e.target.checked ? 'events' : 'nodes')}
         />
-      </span>
+      )
     ),
     (theme, { value }) => {
       const color = theme.palette[value === 'events' ? 'success' : 'info'];

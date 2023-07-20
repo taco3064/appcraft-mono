@@ -2,7 +2,7 @@ import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 
 import * as Comp from '../../components';
-import * as Hooks from '../../hooks';
+import * as Hook from '../../hooks';
 import { EditorProvider, OptionValues } from '../../contexts';
 import { FullHeightCollapse, TypeListSkeleton } from '../../styles';
 import type * as Types from './CraftedTypeEditor.types';
@@ -12,17 +12,18 @@ export default function CraftedTypeEditor<V extends OptionValues>({
   fixedT,
   fullHeight,
   open = true,
-  parser,
   values,
+  renderOverridePureItem,
   onBack,
   onChange,
+  onFetchDefinition,
 }: Types.CraftedTypeEditorProps<V>) {
-  const ct = Hooks.useFixedT(fixedT);
+  const ct = Hook.useFixedT(fixedT);
   const [collectionPath, setCollectionPath] = useState('');
 
-  const LazyTypeList = Hooks.useLazyTypeList<Types.LazyTypeListProps<V>>(
-    parser,
+  const LazyTypeList = Hook.useLazyTypeList<Types.LazyTypeListProps<V>>(
     { ...(values as V), collectionPath },
+    onFetchDefinition,
     ({ fetchData, placeholder, ...props }) =>
       fetchData ? (
         <Comp.TypeList {...props} collection={fetchData} />
@@ -39,7 +40,9 @@ export default function CraftedTypeEditor<V extends OptionValues>({
   );
 
   return (
-    <EditorProvider {...{ fixedT, collectionPath, values, onChange }}>
+    <EditorProvider
+      {...{ fixedT, collectionPath, values, renderOverridePureItem, onChange }}
+    >
       <FullHeightCollapse
         aria-label="Properties Editor"
         fullHeight={fullHeight}

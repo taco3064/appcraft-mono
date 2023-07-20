@@ -7,9 +7,14 @@ const usePropValue = <P = unknown>(
   propPath: string
 ): PropValueHookResult<P> => {
   const { values, renderOverridePureItem, onChange } = useEditorContext();
+  const { typeFile, typeName } = values;
 
   return [
-    (_get(values, ['props', propPath]) as P) || null,
+    {
+      value: (_get(values, ['props', propPath]) as P) || null,
+      typeFile,
+      typeName,
+    },
 
     {
       renderOverride: renderOverridePureItem,

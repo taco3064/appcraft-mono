@@ -9,6 +9,7 @@ export type WidgetMutationHook = (
 ) => [
   {
     editedWidget: Appcraft.WidgetOptions | null;
+    widgetPath: string;
     todoPath: string | null;
   },
   {

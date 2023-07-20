@@ -1,5 +1,9 @@
-import MenuItem from '@mui/material/MenuItem';
+import IconButton from '@mui/material/IconButton';
+import InputAdorment from '@mui/material/InputAdornment';
+import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
+import LinkIcon from '@mui/icons-material/Link';
 import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import { useQuery } from '@tanstack/react-query';
 
@@ -27,6 +31,23 @@ export default function WidgetEditor({
       size="small"
       variant="outlined"
       onChange={(e) => onChange(e.target.value)}
+      InputProps={{
+        startAdornment: (
+          <InputAdorment position="start">
+            {!value ? (
+              <Inventory2OutlinedIcon fontSize="small" color="disabled" />
+            ) : (
+              <IconButton
+                size="small"
+                target="_blank"
+                href={`/todos/detail?id=${value}`}
+              >
+                <LinkIcon fontSize="small" />
+              </IconButton>
+            )}
+          </InputAdorment>
+        ),
+      }}
     >
       {options?.map(({ _id, name, description }) => (
         <MenuItem

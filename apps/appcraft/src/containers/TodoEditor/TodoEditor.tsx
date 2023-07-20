@@ -6,7 +6,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedTodoEditor, Style } from '@appcraft/mui';
 import { nanoid } from 'nanoid';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
 import { Breadcrumbs, PersistentDrawerContent } from '~appcraft/components';
@@ -34,6 +34,8 @@ export default function TodoEditor({
   const width = Hook.useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width) && logs.length > 0;
   const isLogsOpen = (!isCollapsable || open) && logs.length > 0;
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const refresh = useMemo(() => nanoid(4), [logs]);
 
   const actionNode = Hook.useNodePicker(
@@ -80,6 +82,10 @@ export default function TodoEditor({
       }),
     [open, todos, isCollapsable]
   );
+
+  useEffect(() => {
+    window.dispatchEvent(new Event('resize'));
+  }, [isLogsOpen]);
 
   return (
     <>

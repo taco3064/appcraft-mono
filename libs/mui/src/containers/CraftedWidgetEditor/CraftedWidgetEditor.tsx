@@ -31,7 +31,8 @@ export default function CraftedWidgetEditor({
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
   const ct = Hook.useFixedT(fixedT);
-  const [adding, setAdding] = useState(false);
+  const [newWidgetOpen, setNewWidgetOpen] = useState(false);
+  const [stateMgrOpen, setStateMgrOpen] = useState(false);
 
   const [{ breadcrumbs, items, paths, type }, onPathsChange] =
     Hook.useStructure(widget as Appcraft.NodeWidget);
@@ -69,8 +70,8 @@ export default function CraftedWidgetEditor({
       <Comp.MutationNewWidgetDialog
         {...{ ct, renderWidgetTypeSelection }}
         disablePlaintext={paths.length === 0}
-        open={adding}
-        onClose={() => setAdding(false)}
+        open={newWidgetOpen}
+        onClose={() => setNewWidgetOpen(false)}
         onConfirm={(e) => handleMutation.add(e, type, paths)}
       />
 
@@ -80,6 +81,14 @@ export default function CraftedWidgetEditor({
         values={editedWidget as Appcraft.PlainTextWidget}
         onClose={() => handleMutation.editing(null)}
         onConfirm={handleMutation.modify}
+      />
+
+      <Comp.MutationStateDialog
+        ct={ct}
+        open={stateMgrOpen}
+        values={widget}
+        onClose={() => setStateMgrOpen(false)}
+        onConfirm={onWidgetChange}
       />
 
       <StateProvider
@@ -141,7 +150,7 @@ export default function CraftedWidgetEditor({
               <Style.IconTipButton
                 size="large"
                 title={ct('btn-state-mgr')}
-                onClick={() => console.log(widget?.state)}
+                onClick={() => setStateMgrOpen(true)}
               >
                 <StorageRoundedIcon />
               </Style.IconTipButton>
@@ -154,7 +163,7 @@ export default function CraftedWidgetEditor({
               <Comp.WidgetBreadcrumbs
                 {...{ breadcrumbs, ct }}
                 addable={type === 'node' || items.length < 1}
-                onAdd={() => setAdding(true)}
+                onAdd={() => setNewWidgetOpen(true)}
                 onRedirect={onPathsChange}
               />
             }
@@ -168,7 +177,7 @@ export default function CraftedWidgetEditor({
                     size="large"
                     variant="contained"
                     startIcon={<AddIcon />}
-                    onClick={() => setAdding(true)}
+                    onClick={() => setNewWidgetOpen(true)}
                   >
                     {ct('btn-new-widget')}
                   </Button>

@@ -22,13 +22,7 @@ export default function WidgetAppBar({
         <GapTypography variant="subtitle1" fontWeight="bolder" color="primary">
           {ct(`ttl-${type}`)}
 
-          <Divider
-            flexItem
-            orientation="vertical"
-            sx={(theme) => ({
-              borderColor: theme.palette.primary.main,
-            })}
-          />
+          <Divider flexItem orientation="vertical" />
 
           {description}
         </GapTypography>

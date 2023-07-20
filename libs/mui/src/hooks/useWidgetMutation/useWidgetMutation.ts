@@ -19,6 +19,7 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
         ? _get(widget, editedPaths)
         : widget,
 
+      widgetPath: getPropPath(editedPaths || []),
       todoPath,
     },
 
@@ -30,7 +31,7 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
 
       add: (e, type, paths) => {
         if (!paths.length) {
-          onWidgetChange({ ...e, construct: {} } as Appcraft.RootNodeWidget);
+          onWidgetChange({ ...e, state: {} } as Appcraft.RootNodeWidget);
         } else if (type === 'element') {
           onWidgetChange({ ..._set(widget, paths, e) });
         } else {

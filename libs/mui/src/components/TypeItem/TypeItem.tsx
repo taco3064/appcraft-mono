@@ -28,15 +28,9 @@ export default function TypeItem({
     options
   );
 
-  const [status, selection] = Hook.useConstructSelection(
-    propPath,
-    ({ status, onStatusChange }) => (
-      <Common.TypeItemSelection
-        status={status}
-        onStatusChange={onStatusChange}
-      />
-    )
-  );
+  const [isState, selection] = Hook.useStateSelection(propPath, (props) => (
+    <Common.TypeItemSelection {...props} />
+  ));
 
   const actions =
     !action && !onDelete ? null : (
@@ -79,7 +73,7 @@ export default function TypeItem({
             <Common.TypeItemDisplay
               action={actions}
               description={description}
-              disabled={disabled || Boolean(status)}
+              disabled={disabled || isState}
               label={label}
               options={options as Common.TypeItemDisplayProps['options']}
               propPath={propPath}
@@ -92,7 +86,7 @@ export default function TypeItem({
             <Common.TypeItemPure
               action={actions}
               description={description}
-              disabled={disabled || Boolean(status)}
+              disabled={disabled || isState}
               label={label}
               options={options as Common.TypeItemPureProps['options']}
               propPath={propPath}
@@ -103,7 +97,7 @@ export default function TypeItem({
           {category === 'Mixed' && (
             <Common.TypeItemMixed
               action={actions}
-              disabled={disabled || Boolean(status) || !options.propName}
+              disabled={disabled || isState || !options.propName}
               label={label}
               propPath={propPath}
               options={options as Common.TypeItemMixedProps['options']}
@@ -111,7 +105,7 @@ export default function TypeItem({
               renderMatchedField={(matched, description, matchedAction) => (
                 <TypeItem
                   {...{ collectionType, onDelete, onSubitemView }}
-                  disabled={disabled || Boolean(status)}
+                  disabled={disabled || isState}
                   options={{ ...matched, propName: options.propName }}
                   action={matchedAction}
                   description={

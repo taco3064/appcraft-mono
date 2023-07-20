@@ -1,5 +1,4 @@
 export * from './useCollection';
-export * from './useConstructSelection';
 export * from './useFixedT';
 export * from './useLazyTypeList';
 export * from './useLazyWidgetNodes';
@@ -7,6 +6,7 @@ export * from './useMixedTypeMapping';
 export * from './usePropValue';
 export * from './usePropertiesSorting';
 export * from './usePropertyRouter';
+export * from './useStateSelection';
 export * from './useStructure';
 export * from './useTodoGenerator';
 export * from './useTypeItem';

@@ -42,7 +42,7 @@ export type NodeWidget = BaseOptions<
 >;
 
 export interface RootNodeWidget extends NodeWidget {
-  construct: Record<'state' | 'props', Record<string, string>>;
+  state: Record<string, unknown>;
 }
 
 export type WidgetOptions = PlainTextWidget | NodeWidget;

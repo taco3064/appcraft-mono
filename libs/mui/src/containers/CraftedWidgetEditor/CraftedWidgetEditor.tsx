@@ -140,8 +140,8 @@ export default function CraftedWidgetEditor({
 
               <Style.IconTipButton
                 size="large"
-                color="primary"
-                title={ct('btn-state-props-mgr')}
+                title={ct('btn-state-mgr')}
+                onClick={() => console.log(widget?.state)}
               >
                 <StorageRoundedIcon />
               </Style.IconTipButton>

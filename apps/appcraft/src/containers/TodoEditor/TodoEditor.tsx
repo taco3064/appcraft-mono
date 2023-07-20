@@ -1,16 +1,18 @@
+import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
-import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedTodoEditor, Style } from '@appcraft/mui';
-import { useState } from 'react';
+import { nanoid } from 'nanoid';
+import { useMemo, useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
 import { Breadcrumbs, PersistentDrawerContent } from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
 import { Parser, getTypeDefinition } from '~appcraft/services';
+import { TodoStepper } from '../TodoStepper';
 import type { TodoEditorProps } from './TodoEditor.types';
 
 export default function TodoEditor({
@@ -22,23 +24,30 @@ export default function TodoEditor({
 }: TodoEditorProps) {
   const [at, ct, tt] = Hook.useFixedT('app', 'appcraft', 'todos');
   const [open, setOpen] = useState(true);
-  const [todos, handleTodos] = Hook.useTodoValues({ data, onSave });
+
+  const [{ duration, logs, todos }, handleTodos] = Hook.useTodoValues({
+    data,
+    onSave,
+    onOpen: () => setOpen(true),
+  });
 
   const width = Hook.useWidth();
-  const isCollapsable = /^(xs|sm)$/.test(width);
-  const isSettingOpen = !isCollapsable || open;
+  const isCollapsable = /^(xs|sm)$/.test(width) && logs.length > 0;
+  const isLogsOpen = (!isCollapsable || open) && logs.length > 0;
+  const refresh = useMemo(() => nanoid(4), [logs]);
 
   const actionNode = Hook.useNodePicker(
     () =>
       onActionNodePick({
-        expand: !isCollapsable ? null : (
-          <CommonButton
-            btnVariant="icon"
-            icon={open ? <AutoFixOffIcon /> : <AutoFixHighIcon />}
-            text={tt(`btn-expand-${isSettingOpen ? 'off' : 'on'}`)}
-            onClick={() => setOpen(!open)}
-          />
-        ),
+        expand:
+          !isCollapsable || open ? null : (
+            <CommonButton
+              btnVariant="icon"
+              icon={<AccountTreeOutlinedIcon />}
+              text={tt('btn-logs')}
+              onClick={() => setOpen(!open)}
+            />
+          ),
         run: (
           <CommonButton
             btnVariant="icon"
@@ -69,7 +78,7 @@ export default function TodoEditor({
           />
         ),
       }),
-    [open, todos, isCollapsable, isSettingOpen]
+    [open, todos, isCollapsable]
   );
 
   return (
@@ -88,7 +97,7 @@ export default function TodoEditor({
         {...PersistentDrawerContentProps}
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
-        open={isSettingOpen}
+        open={isLogsOpen}
         content={
           <CraftedTodoEditor
             fullHeight
@@ -100,7 +109,32 @@ export default function TodoEditor({
             onFetchDefinition={(...e) => getTypeDefinition(Parser.Config, ...e)}
           />
         }
-        drawer={<div>Drawer</div>}
+        drawer={
+          <TodoStepper
+            {...{ duration, logs, todos }}
+            key={refresh}
+            title={
+              <>
+                {isCollapsable && (
+                  <CommonButton
+                    btnVariant="icon"
+                    icon={<ChevronRightIcon />}
+                    text={at('btn-close')}
+                    onClick={() => setOpen(false)}
+                  />
+                )}
+
+                <Style.GapTypography
+                  variant="subtitle1"
+                  fontWeight="bolder"
+                  color="primary"
+                >
+                  {tt('ttl-logs')}
+                </Style.GapTypography>
+              </>
+            }
+          />
+        }
       />
     </>
   );

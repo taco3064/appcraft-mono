@@ -69,7 +69,7 @@ async function execute(
   todos: Record<string, Appcraft.WidgetTodo>,
   todo: Appcraft.WidgetTodo,
   { event, fetchTodoWrap, outputs }: Types.ExecuteOptions
-): Promise<Types.OuputData[]> {
+): Promise<Types.OutputData[]> {
   while (todo) {
     const { id, category, defaultNextTodo, mixedTypes } = todo;
     const { [defaultNextTodo as string]: next } = todos;
@@ -218,7 +218,7 @@ async function execute(
 export const getEventHandler: Types.GetEventHandler =
   (options, fetchTodoWrap) =>
   async (...event) => {
-    const result: Types.OuputData[][] = [];
+    const result: Types.OutputData[][] = [];
 
     const starts = Object.values(options).filter(({ id }, _i, todos) =>
       todos.every((todo) => {

@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.67](https://github.com/taco3064/appcraft-mono/compare/v0.0.66...v0.0.67) (2023-07-20)
+
+
+### Features
+
+* **@appcraft/mui:** add state selection ([a98481c](https://github.com/taco3064/appcraft-mono/commit/a98481cb314251b78f3634a147d8b7fc9e173505))
+* **apps/appcraft:** add override wrap todo id select in todo editor ([de5435b](https://github.com/taco3064/appcraft-mono/commit/de5435be988c3b4ef9f345f610943c4773169bab))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** fixed invalid state path ([8b933ab](https://github.com/taco3064/appcraft-mono/commit/8b933ab6a44d8caadb73c07702de562f2894613b))
+
 ### [0.0.66](https://github.com/taco3064/appcraft-mono/compare/v0.0.65...v0.0.66) (2023-07-20)
 
 

@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.66](https://github.com/taco3064/appcraft-mono/compare/v0.0.65...v0.0.66) (2023-07-20)
+
+
+### Features
+
+* **@appcraft/mui:** implement todo wrap process ([b899da0](https://github.com/taco3064/appcraft-mono/commit/b899da04654e25502b78741d3a037049f04be630))
+* **@appcraft/mui:** support override render of pure item ([45387c2](https://github.com/taco3064/appcraft-mono/commit/45387c2fd13086a7a4174d2bf16ac654cebe9c55))
+* **/pages/todos:** add run test feature ([b8914a5](https://github.com/taco3064/appcraft-mono/commit/b8914a5a498f7ebbee26829e89eae5c9c6cb5c66))
+* **todo-editor:** add execute output logs ([00bc4bd](https://github.com/taco3064/appcraft-mono/commit/00bc4bdb77e7b1a4aa0985b879bae5e6644f7436))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** fixed reactflow warning ([79bdbee](https://github.com/taco3064/appcraft-mono/commit/79bdbee13fb4488547c49e4a5709026e1e1acb4e))
+* **todo-editor:** fixed bugs ([ef52dd7](https://github.com/taco3064/appcraft-mono/commit/ef52dd729fcf9d6c6f00105d58ad4e7d1ee36da5))
+* **todo-parser:** fixed todo parser bugs ([b8fc7b6](https://github.com/taco3064/appcraft-mono/commit/b8fc7b68526a0e80d4badd3aa4bee95045c43503))
+* **type-item-pure:** if type is oneOf and there's only 1 options, comp will auto set value ([a11c0ef](https://github.com/taco3064/appcraft-mono/commit/a11c0ef0f8ccd22efe09b73eb131e26d4fb22977))
+
 ### [0.0.65](https://github.com/taco3064/appcraft-mono/compare/v0.0.64...v0.0.65) (2023-07-18)
 
 

@@ -24,7 +24,7 @@ export default function TypeItemPure({
   propPath,
   selection,
 }: TypeItemPureProps) {
-  const [value, handlePure] = usePropValue(propPath);
+  const [{ value, typeFile, typeName }, handlePure] = usePropValue(propPath);
 
   const hidden =
     options.type === 'oneOf' &&
@@ -38,6 +38,8 @@ export default function TypeItemPure({
       label,
       options,
       propPath,
+      typeFile,
+      typeName,
       value,
       onChange: handlePure.change,
     });

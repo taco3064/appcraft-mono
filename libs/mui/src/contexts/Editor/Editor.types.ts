@@ -18,6 +18,8 @@ export type RenderOverridePureItem = (props: {
   propPath: string;
   label: string;
   options: PureProp;
+  typeFile: string;
+  typeName: string;
   value: unknown;
   onChange: (e: unknown) => void;
 }) => ReactNode;

@@ -19,6 +19,7 @@ import { getNodesAndEventsKey } from '../../utils';
 import type * as Types from './CraftedWidgetEditor.types';
 
 export default function CraftedWidgetEditor({
+  disableCategories,
   fixedT,
   renderWidgetTypeSelection,
   todoTypeFile,
@@ -112,6 +113,7 @@ export default function CraftedWidgetEditor({
             <CraftedTodoEditor
               {...(todoPath && { todoPath })}
               fullHeight
+              disableCategories={disableCategories}
               fixedT={fixedT}
               open={Boolean(todoPath)}
               typeFile={todoTypeFile}

@@ -1,6 +1,7 @@
 export interface HierarchyParams {
   keyword?: string;
   superior?: string;
+  type?: 'group' | 'item';
 }
 
 export interface HierarchyData<U = undefined> {

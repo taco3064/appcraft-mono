@@ -47,7 +47,7 @@ export type NodeWidget = BaseOptions<
 >;
 
 export interface RootNodeWidget extends NodeWidget {
-  state: Record<string, WidgetState>;
+  state: Record<'props' | 'nodes' | 'todos', Record<string, WidgetState>>;
 }
 
 export type WidgetOptions = PlainTextWidget | NodeWidget;

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import * as Common from '../common';
 import * as Hook from '../../hooks';
 import { IconTipButton } from '../../styles';
+import { getPropPath } from '../../utils';
 import type * as Types from './TypeItem.types';
 
 export default function TypeItem({
@@ -15,6 +16,7 @@ export default function TypeItem({
   collectionType,
   description,
   disabled = false,
+  elementName,
   options,
   onDelete,
   onRename,
@@ -28,9 +30,12 @@ export default function TypeItem({
     options
   );
 
-  const [isState, selection] = Hook.useStateSelection(propPath, (props) => (
-    <Common.TypeItemSelection {...props} />
-  ));
+  const [isState, selection] = Hook.useStateSelection(
+    'props',
+    getPropPath([elementName as string, propPath]),
+    propPath,
+    (props) => <Common.TypeItemSelection {...props} />
+  );
 
   const actions =
     !action && !onDelete ? null : (
@@ -104,7 +109,7 @@ export default function TypeItem({
               selection={selection}
               renderMatchedField={(matched, description, matchedAction) => (
                 <TypeItem
-                  {...{ collectionType, onDelete, onSubitemView }}
+                  {...{ collectionType, elementName, onDelete, onSubitemView }}
                   disabled={disabled || isState}
                   options={{ ...matched, propName: options.propName }}
                   action={matchedAction}

@@ -11,12 +11,14 @@ import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Style from '../../styles';
+import { WidgetEvent, WidgetNode } from '../common';
 import { sortPropPaths } from '../../utils';
-import type { WidgetNodeProps } from './WidgetNode.types';
+import type { WidgetElementProps } from './WidgetElement.types';
 
 type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
 
-export default function WidgetNode<I extends Appcraft.WidgetOptions>({
+export default function WidgetElement<I extends Appcraft.WidgetOptions>({
+  basePaths,
   ct,
   event,
   index,
@@ -27,7 +29,7 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
   onEventActive,
   onNodeActive,
   onRemove,
-}: WidgetNodeProps<I>) {
+}: WidgetElementProps<I>) {
   const { category, description, type, content } = item as MixedWidget;
   const isNode = category === 'node';
   const [open, setOpen] = useState(false);
@@ -50,7 +52,12 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
     <>
       <ListItemButton
         selected={open}
-        onClick={() => onClick(superiorNodeType === 'node' ? [index] : [])}
+        onClick={() =>
+          onClick([
+            ...basePaths,
+            ...(superiorNodeType === 'node' ? [index] : []),
+          ])
+        }
       >
         <ListItemIcon>
           {structures.length > 0 && (
@@ -88,7 +95,12 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
 
           <Style.IconTipButton
             title={ct('btn-remove-widget')}
-            onClick={() => onRemove(superiorNodeType === 'node' ? [index] : [])}
+            onClick={() =>
+              onRemove([
+                ...basePaths,
+                ...(superiorNodeType === 'node' ? [index] : []),
+              ])
+            }
           >
             <CloseIcon />
           </Style.IconTipButton>
@@ -97,60 +109,35 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
 
       <Collapse in={open && structures.length > 0 && display === 'nodes'}>
         {structures.map(([path, type]) => (
-          <ListItemButton
+          <WidgetNode
+            {...{ path, type }}
             key={path}
-            onClick={() =>
-              onNodeActive(
-                [
-                  ...(superiorNodeType === 'node' ? [index] : []),
-                  'nodes',
-                  path,
-                ],
-                type
-              )
-            }
-          >
-            <ListItemIcon />
-
-            <ListItemText
-              primary={path}
-              secondary={type}
-              primaryTypographyProps={{
-                variant: 'subtitle2',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
-              secondaryTypographyProps={{ variant: 'caption' }}
-            />
-          </ListItemButton>
+            elementName={type}
+            onActive={onNodeActive}
+            completePaths={[
+              ...basePaths,
+              ...(superiorNodeType === 'node' ? [index] : []),
+              'nodes',
+              path,
+            ]}
+          />
         ))}
       </Collapse>
 
       <Collapse in={open && events.length > 0 && display === 'events'}>
         {events.map((path) => (
-          <ListItemButton
+          <WidgetEvent
             key={path}
-            onClick={() =>
-              onEventActive([
-                ...(superiorNodeType === 'node' ? [index] : []),
-                'events',
-                path,
-              ])
-            }
-          >
-            <ListItemIcon />
-
-            <ListItemText
-              primary={path}
-              primaryTypographyProps={{
-                variant: 'subtitle2',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
-            />
-          </ListItemButton>
+            elementName={type}
+            path={path}
+            onActive={onEventActive}
+            completePaths={[
+              ...basePaths,
+              ...(superiorNodeType === 'node' ? [index] : []),
+              'events',
+              path,
+            ]}
+          />
         ))}
       </Collapse>
     </>

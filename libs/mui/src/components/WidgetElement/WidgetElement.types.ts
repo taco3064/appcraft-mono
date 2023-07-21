@@ -4,7 +4,8 @@ import type { FixedT } from '../../contexts';
 import type { PathsChangeHandler } from '../../hooks';
 import type { PropPaths } from '../../utils';
 
-export interface WidgetNodeProps<I extends Appcraft.WidgetOptions> {
+export interface WidgetElementProps<I extends Appcraft.WidgetOptions> {
+  basePaths: PropPaths;
   ct: FixedT;
   index: number;
   item: I;

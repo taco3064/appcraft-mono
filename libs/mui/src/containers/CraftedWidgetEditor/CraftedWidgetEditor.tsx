@@ -33,35 +33,36 @@ export default function CraftedWidgetEditor({
   const [stateMgrOpen, setStateMgrOpen] = useState(false);
 
   const [{ breadcrumbs, items, paths, type }, onPathsChange] =
-    Hook.useStructure(widget as Appcraft.NodeWidget);
+    Hook.useStructure(widget as Appcraft.RootNodeWidget);
 
   const [{ editedWidget, widgetPath, todoPath }, handleMutation] =
     Hook.useWidgetMutation(widget as Appcraft.RootNodeWidget, onWidgetChange);
 
-  const LazyWidgetNodes = Hook.useLazyWidgetNodes<Types.LazyWidgetNodesProps>(
-    items,
-    version,
-    onFetchNodesAndEvents,
-    ({ fetchData: { events, nodes } = {}, widgets, ...props }) =>
-      widgets.length === 0 ? (
-        <Style.ListPlaceholder message={ct('msg-no-widgets')} />
-      ) : (
-        <>
-          {widgets.map((item, index) => {
-            const key = getNodesAndEventsKey(item, `item_${index}`);
-            const event = events?.[key];
-            const structure = nodes?.[key];
+  const LazyWidgetElements =
+    Hook.useLazyWidgetElements<Types.LazyWidgetElementsProps>(
+      items,
+      version,
+      onFetchNodesAndEvents,
+      ({ fetchData: { events, nodes } = {}, widgets, ...props }) =>
+        widgets.length === 0 ? (
+          <Style.ListPlaceholder message={ct('msg-no-widgets')} />
+        ) : (
+          <>
+            {widgets.map((item, index) => {
+              const key = getNodesAndEventsKey(item, `item_${index}`);
+              const event = events?.[key];
+              const structure = nodes?.[key];
 
-            return (
-              <Comp.WidgetNode
-                {...props}
-                {...{ key, index, item, event, structure }}
-              />
-            );
-          })}
-        </>
-      )
-  );
+              return (
+                <Comp.WidgetElement
+                  {...props}
+                  {...{ key, index, item, event, structure }}
+                />
+              );
+            })}
+          </>
+        )
+    );
 
   return (
     <>
@@ -174,21 +175,14 @@ export default function CraftedWidgetEditor({
               />
             ) : (
               <Suspense fallback={<LinearProgress />}>
-                <LazyWidgetNodes
+                <LazyWidgetElements
+                  basePaths={paths}
                   ct={ct}
                   superiorNodeType={type}
-                  onClick={(editedPaths) =>
-                    handleMutation.editing([...paths, ...editedPaths])
-                  }
-                  onEventActive={(activePaths) =>
-                    handleMutation.todo([...paths, ...activePaths])
-                  }
-                  onNodeActive={(activePaths, activeNodeType) =>
-                    onPathsChange([...paths, ...activePaths], activeNodeType)
-                  }
-                  onRemove={(removedPaths) =>
-                    handleMutation.remove([...paths, ...removedPaths])
-                  }
+                  onClick={handleMutation.editing}
+                  onEventActive={handleMutation.todo}
+                  onNodeActive={onPathsChange}
+                  onRemove={handleMutation.remove}
                 />
               </Suspense>
             )}

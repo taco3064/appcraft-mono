@@ -7,3 +7,5 @@ export * from './TypeItemPure';
 export * from './TypeItemSelection';
 export * from './MenuDialog';
 export * from './NumberInput';
+export * from './WidgetEvent';
+export * from './WidgetNode';

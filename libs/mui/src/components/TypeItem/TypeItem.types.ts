@@ -11,5 +11,6 @@ export interface TypeItemProps
   action?: ReactNode;
   disabled?: boolean;
   options: PropTypesDef;
+  elementName?: string;
   onSubitemView: PropPathRouterHandler;
 }

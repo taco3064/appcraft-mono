@@ -7,4 +7,4 @@ export * from './TodoFlowNode';
 export * from './TypeItem';
 export * from './TypeList';
 export * from './WidgetBreadcrumbs';
-export * from './WidgetNode';
+export * from './WidgetElement';

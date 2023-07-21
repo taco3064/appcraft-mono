@@ -12,8 +12,8 @@ export interface NodeSelectEvent {
   index: number;
 }
 
-export type LazyWidgetNodesProps = Omit<
-  Comp.WidgetNodeProps<Appcraft.WidgetOptions>,
+export type LazyWidgetElementsProps = Omit<
+  Comp.WidgetElementProps<Appcraft.WidgetOptions>,
   'index' | 'item' | 'event' | 'structure'
 >;
 

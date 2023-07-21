@@ -43,8 +43,6 @@ export default function Detail() {
     refetchOnWindowFocus: false,
   });
 
-  console.log(wrapAction);
-
   return (
     <>
       <PageContainer
@@ -83,27 +81,17 @@ export default function Detail() {
         direction="column"
         open={Boolean(wrapId)}
         onClose={() => setWrapId(undefined)}
-        action={Object.entries(wrapAction || {}).map(([key, action]) => {
-          if (
-            !/^(reset|expand)$/.test(key) &&
-            typeof action === 'object' &&
-            'props' in action
-          ) {
-            const { props } = action;
-
-            return (
-              <CommonButton
-                {...props}
-                key={key}
-                btnVariant="text"
-                size="large"
-                color={key === 'save' ? 'secondary' : 'inherit'}
-              />
-            );
-          }
-
-          return null;
-        })}
+        action={Object.entries(wrapAction || {}).map(([key, action]) =>
+          !action || /^(reset|expand)$/.test(key) ? null : (
+            <CommonButton
+              {...action.props}
+              key={key}
+              btnVariant="text"
+              size="large"
+              color={key === 'save' ? 'secondary' : 'inherit'}
+            />
+          )
+        )}
       >
         {wrapId && (
           <TodoEditor

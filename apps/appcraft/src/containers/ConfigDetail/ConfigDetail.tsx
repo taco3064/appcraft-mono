@@ -12,7 +12,7 @@ import type { ConfigDetailProps } from './ConfigDetail.types';
 
 export default function ConfigDetail({
   header,
-  superiors: { names, breadcrumbs },
+  superiors,
   renderOverridePureItem,
   onActionNodePick = (e) => e,
   ...props
@@ -46,15 +46,17 @@ export default function ConfigDetail({
 
   return (
     <>
-      <Breadcrumbs
-        ToolbarProps={{ disableGutters: true }}
-        action={actionNode}
-        onCustomize={([index]) => [
-          index,
-          ...breadcrumbs,
-          { text: names[data._id] },
-        ]}
-      />
+      {superiors && (
+        <Breadcrumbs
+          ToolbarProps={{ disableGutters: true }}
+          action={actionNode}
+          onCustomize={([index]) => [
+            index,
+            ...superiors.breadcrumbs,
+            { text: superiors.names[data._id] },
+          ]}
+        />
+      )}
 
       <Container maxWidth="sm">
         {header}

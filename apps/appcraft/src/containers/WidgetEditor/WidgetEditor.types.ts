@@ -9,13 +9,13 @@ export interface WidgetEditorProps {
   onWrapTodoView?: (id: string) => void;
   onSave?: () => void;
 
+  superiors?: {
+    names: Record<string, string>;
+    breadcrumbs: Breadcrumb[];
+  };
+
   PersistentDrawerContentProps?: Omit<
     PersistentDrawerContentProps,
     'ContentProps' | 'DrawerProps' | 'content' | 'drawer' | 'open' | 'onClose'
   >;
-
-  superiors: {
-    names: Record<string, string>;
-    breadcrumbs: Breadcrumb[];
-  };
 }

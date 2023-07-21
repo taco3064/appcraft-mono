@@ -15,7 +15,7 @@ import type { WidgetEditorProps } from './WidgetEditor.types';
 export default function WidgetEditor({
   PersistentDrawerContentProps,
   data,
-  superiors: { names, breadcrumbs },
+  superiors,
   onActionNodePick = (e) => e,
   onSave,
   onWrapTodoView,
@@ -66,15 +66,17 @@ export default function WidgetEditor({
 
   return (
     <>
-      <Comp.Breadcrumbs
-        ToolbarProps={{ disableGutters: true }}
-        action={actionNode}
-        onCustomize={([index]) => [
-          index,
-          ...breadcrumbs,
-          { text: names[data._id] },
-        ]}
-      />
+      {superiors && (
+        <Comp.Breadcrumbs
+          ToolbarProps={{ disableGutters: true }}
+          action={actionNode}
+          onCustomize={([index]) => [
+            index,
+            ...superiors.breadcrumbs,
+            { text: superiors.names[data._id] },
+          ]}
+        />
+      )}
 
       <Comp.PersistentDrawerContent
         {...PersistentDrawerContentProps}

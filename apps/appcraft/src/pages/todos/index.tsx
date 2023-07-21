@@ -15,6 +15,8 @@ import { PageContainer } from '~appcraft/styles';
 import { getConfigById } from '~appcraft/services';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
 
+const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
+
 export default function Todos() {
   const { pathname } = useRouter();
   const [nt, tt] = useFixedT('nav', 'todos');
@@ -22,13 +24,12 @@ export default function Todos() {
   const [steperProps, setStepperProps] =
     useState<ComponentProps<typeof TodoStepper>>();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const refresh = useMemo(() => nanoid(4), [steperProps]);
 
-  const [action, handleActionNodePick] = useNodePickHandle([
-    'search',
-    'addGroup',
-    'addItem',
-  ]);
+  const [action, handleActionNodePick] = useNodePickHandle(
+    HIERARCHY_LIST_ACTIONS
+  );
 
   return (
     <>

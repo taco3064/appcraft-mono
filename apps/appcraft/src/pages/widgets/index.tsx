@@ -8,15 +8,15 @@ import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
 
+const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
+
 export default function Widgets() {
   const { pathname } = useRouter();
   const [at, nt] = useFixedT('app', 'nav');
 
-  const [action, handleActionNodePick] = useNodePickHandle([
-    'search',
-    'addGroup',
-    'addItem',
-  ]);
+  const [action, handleActionNodePick] = useNodePickHandle(
+    HIERARCHY_LIST_ACTIONS
+  );
 
   return (
     <PageContainer

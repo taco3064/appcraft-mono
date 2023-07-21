@@ -8,20 +8,19 @@ import { PageContainer } from '~appcraft/styles';
 import { TodoEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 
+const TODO_EDITOR_ACTIONS = ['expand', 'run', 'reset', 'save'];
+
 export default function Detail() {
   const [tt] = Hook.useFixedT('todos');
   const { pathname, query } = useRouter();
+
   const height = Hook.useHeight();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
 
-  const [action, handleActionNodePick] = Hook.useNodePickHandle([
-    'expand',
-    'run',
-    'reset',
-    'save',
-  ]);
+  const [action, handleActionNodePick] =
+    Hook.useNodePickHandle(TODO_EDITOR_ACTIONS);
 
   const { data: todos, refetch } = useQuery({
     queryKey: [id],

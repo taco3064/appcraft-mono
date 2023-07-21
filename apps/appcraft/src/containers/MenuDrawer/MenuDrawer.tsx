@@ -69,12 +69,12 @@ export default function MenuDrawer({
             </Style.SizedListItemIcon>
 
             <ListItemText
+              primary={nt(title)}
+              secondary={nt(description)}
               primaryTypographyProps={{
                 variant: 'subtitle1',
                 fontWeight: 'bolder',
               }}
-              primary={nt(title)}
-              secondary={nt(description)}
             />
           </ListItemButton>
         ))}

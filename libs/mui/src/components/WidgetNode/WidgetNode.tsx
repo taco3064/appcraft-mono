@@ -66,15 +66,15 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
         </ListItemIcon>
 
         <ListItemText
+          {...(isNode
+            ? { primary: type, secondary: description }
+            : { primary: ct('ttl-node-plain-text'), secondary: content })}
           primaryTypographyProps={{
             fontWeight: 'bolder',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
           }}
-          {...(isNode
-            ? { primary: type, secondary: description }
-            : { primary: ct('ttl-node-plain-text'), secondary: content })}
         />
 
         <Style.TypeItemAction>
@@ -113,6 +113,8 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
             <ListItemIcon />
 
             <ListItemText
+              primary={path}
+              secondary={type}
               primaryTypographyProps={{
                 variant: 'subtitle2',
                 overflow: 'hidden',
@@ -120,8 +122,6 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
                 whiteSpace: 'nowrap',
               }}
               secondaryTypographyProps={{ variant: 'caption' }}
-              primary={path}
-              secondary={type}
             />
           </ListItemButton>
         ))}
@@ -142,13 +142,13 @@ export default function WidgetNode<I extends Appcraft.WidgetOptions>({
             <ListItemIcon />
 
             <ListItemText
+              primary={path}
               primaryTypographyProps={{
                 variant: 'subtitle2',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
               }}
-              primary={path}
             />
           </ListItemButton>
         ))}

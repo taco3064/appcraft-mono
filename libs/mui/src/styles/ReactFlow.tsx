@@ -137,7 +137,6 @@ export const TodoNodeLabel = (() => {
 
         <ListItemText
           {...{ primary, secondary }}
-          style={{ width: '100%' }}
           primaryTypographyProps={{
             color: 'text.secondary',
             fontWeight: 'bolder',

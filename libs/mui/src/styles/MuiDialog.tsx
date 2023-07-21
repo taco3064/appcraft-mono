@@ -14,6 +14,7 @@ import { GapTypography } from './MuiTypography';
 
 export const FlexDialog = (() => {
   interface FlexDialogProps extends Omit<DialogProps, 'onSubmit'> {
+    disableContentGutter?: boolean;
     icon?: ReactNode;
     title?: string;
     action?: ReactNode;
@@ -31,7 +32,6 @@ export const FlexDialog = (() => {
       children,
       onClose,
       onSubmit,
-      direction: _direction,
       ...props
     }: FlexDialogProps) => (
       <Dialog
@@ -113,7 +113,10 @@ export const FlexDialog = (() => {
         )}
       </Dialog>
     ),
-    (theme, { direction = 'row', fullScreen }) => ({
+    (
+      theme,
+      { direction = 'row', disableContentGutter = false, fullScreen }
+    ) => ({
       paper: {
         ...(fullScreen && {
           overflow: 'hidden',
@@ -128,6 +131,10 @@ export const FlexDialog = (() => {
 
           ...(fullScreen && {
             overflow: 'hidden auto',
+          }),
+          ...(disableContentGutter && {
+            paddingLeft: 0,
+            paddingRight: 0,
           }),
         },
         '& > [role=toolbar]': {

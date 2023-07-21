@@ -34,6 +34,7 @@ export default function MutationStateDialog({
   return (
     <FlexDialog
       {...{ open, onClose }}
+      disableContentJustifyCenter
       fullWidth
       maxWidth="xs"
       direction="column"

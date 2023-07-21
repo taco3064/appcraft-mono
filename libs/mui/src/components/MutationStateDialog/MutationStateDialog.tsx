@@ -19,7 +19,7 @@ export default function MutationStateDialog({
   onClose,
   onConfirm,
 }: Types.MutationStateDialogProps) {
-  const { state } = values;
+  const { state } = values || {};
   const [, setTransition] = React.useTransition();
   const [active, setActive] = React.useState<Types.TabValue>(TABS[0]);
 

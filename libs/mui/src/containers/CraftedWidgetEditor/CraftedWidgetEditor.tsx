@@ -1,3 +1,4 @@
+import _sum from 'lodash/sum';
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -139,6 +140,13 @@ export default function CraftedWidgetEditor({
               <Style.IconTipButton
                 title={ct('btn-state')}
                 onClick={() => setStateMgrOpen(true)}
+                disabled={
+                  !_sum(
+                    Object.values(widget?.state || {}).map(
+                      (state) => Object.keys(state).length
+                    )
+                  )
+                }
               >
                 <StorageRoundedIcon />
               </Style.IconTipButton>

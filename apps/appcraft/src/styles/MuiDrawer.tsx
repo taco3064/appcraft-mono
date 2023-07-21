@@ -5,12 +5,12 @@ import type { PaperProps } from '@mui/material/Paper';
 
 export const SizedDrawer = (() => {
   interface SizedDrawerProps extends Omit<DrawerProps, 'PaperProps'> {
+    maxWidth: ContainerProps['maxWidth'];
+
     PaperProps?: Omit<
       DrawerProps['PaperProps'],
       'component' | 'disableGutters' | 'elevation' | 'maxWidth'
     >;
-
-    maxWidth: ContainerProps['maxWidth'];
   }
 
   return withStyles(

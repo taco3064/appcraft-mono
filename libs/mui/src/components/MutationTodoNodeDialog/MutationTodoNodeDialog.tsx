@@ -18,7 +18,6 @@ export default function MutationTodoNodeDialog({
       {...{ open, onClose }}
       disableContentGutter
       disableContentJustifyCenter
-      disableContentPadding
       fullWidth
       maxWidth="xs"
       direction="column"

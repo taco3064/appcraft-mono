@@ -1,7 +1,8 @@
+import type { ComponentProps } from 'react';
 import type { ConfigData, RootNodeWidget } from '@appcraft/types';
 
+import { PersistentDrawerContent } from '~appcraft/styles';
 import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
-import type { PersistentDrawerContentProps } from '~appcraft/components';
 
 export interface WidgetEditorProps {
   data: ConfigData<RootNodeWidget, string>;
@@ -15,7 +16,7 @@ export interface WidgetEditorProps {
   };
 
   PersistentDrawerContentProps?: Omit<
-    PersistentDrawerContentProps,
+    ComponentProps<typeof PersistentDrawerContent>,
     'ContentProps' | 'DrawerProps' | 'content' | 'drawer' | 'open' | 'onClose'
   >;
 }

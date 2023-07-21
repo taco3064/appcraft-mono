@@ -71,7 +71,7 @@ export default function CraftedTodoEditor({
         in={open}
       >
         {onBack && (
-          <Style.WidgetAppBar ct={ct} onBackToStructure={onBack}>
+          <Style.WidgetAppBar ct={ct} onBack={onBack}>
             {ct('ttl-events')}
 
             <Divider flexItem orientation="vertical" />

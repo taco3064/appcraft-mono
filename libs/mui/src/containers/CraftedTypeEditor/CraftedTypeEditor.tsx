@@ -52,7 +52,7 @@ export default function CraftedTypeEditor<V extends OptionValues>({
         {values?.category === 'node' && onBack && (
           <Style.WidgetAppBar
             ct={ct}
-            onBackToStructure={() => {
+            onBack={() => {
               onBack();
               setCollectionPath('');
             }}

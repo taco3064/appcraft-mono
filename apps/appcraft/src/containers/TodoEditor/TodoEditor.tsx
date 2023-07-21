@@ -9,9 +9,10 @@ import { nanoid } from 'nanoid';
 import { useEffect, useMemo, useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
-import { Breadcrumbs, PersistentDrawerContent } from '~appcraft/components';
+import { Breadcrumbs } from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
 import { Parser, getTypeDefinition } from '~appcraft/services';
+import { PersistentDrawerContent } from '~appcraft/styles';
 import { TodoStepper } from '../TodoStepper';
 import type { TodoEditorProps } from './TodoEditor.types';
 

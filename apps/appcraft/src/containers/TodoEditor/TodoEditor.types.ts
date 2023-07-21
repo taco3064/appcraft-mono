@@ -1,7 +1,8 @@
+import type { ComponentProps } from 'react';
 import type { ConfigData, WidgetTodo } from '@appcraft/types';
 
+import { PersistentDrawerContent } from '~appcraft/styles';
 import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
-import type { PersistentDrawerContentProps } from '~appcraft/components';
 
 export interface TodoEditorProps {
   data: ConfigData<Record<string, WidgetTodo>, string>;
@@ -14,7 +15,7 @@ export interface TodoEditorProps {
   };
 
   PersistentDrawerContentProps?: Omit<
-    PersistentDrawerContentProps,
+    ComponentProps<typeof PersistentDrawerContent>,
     'ContentProps' | 'DrawerProps' | 'content' | 'drawer' | 'open' | 'onClose'
   >;
 }

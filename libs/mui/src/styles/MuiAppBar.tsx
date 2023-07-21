@@ -1,5 +1,6 @@
 import AppBar from '@mui/material/AppBar';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Toolbar from '@mui/material/Toolbar';
 import { withStyles } from 'tss-react/mui';
 import type { MouseEventHandler, ReactNode } from 'react';
@@ -12,8 +13,9 @@ export const WidgetAppBar = (() => {
   type BackProps<P> =
     | P
     | (P & {
+        backArrow?: 'left' | 'right';
         ct: FixedT;
-        onBackToStructure: MouseEventHandler<HTMLButtonElement>;
+        onBack: MouseEventHandler<HTMLButtonElement>;
       });
 
   type WidgetAppBarProps = BackProps<{
@@ -35,13 +37,17 @@ export const WidgetAppBar = (() => {
             fontWeight="bolder"
             color="primary"
           >
-            {'ct' in props && (
+            {'ct' in props && props.onBack && (
               <IconTipButton
                 className={classes?.back}
                 title={props.ct('btn-back')}
-                onClick={props.onBackToStructure}
+                onClick={props.onBack}
               >
-                <ChevronLeftIcon />
+                {props.backArrow === 'right' ? (
+                  <ChevronRightIcon />
+                ) : (
+                  <ChevronLeftIcon />
+                )}
               </IconTipButton>
             )}
 

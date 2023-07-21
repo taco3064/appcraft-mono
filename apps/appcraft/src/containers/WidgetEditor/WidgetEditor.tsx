@@ -1,8 +1,7 @@
-import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
-import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
 import { useCallback, useState } from 'react';
 import type { WidgetTodo } from '@appcraft/types';
 
@@ -10,6 +9,7 @@ import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Service from '~appcraft/services';
 import { CommonButton, LazyMui, typeMap } from '~appcraft/components/common';
+import { PersistentDrawerContent } from '~appcraft/styles';
 import type { WidgetEditorProps } from './WidgetEditor.types';
 
 export default function WidgetEditor({
@@ -36,14 +36,15 @@ export default function WidgetEditor({
   const actionNode = Hook.useNodePicker(
     () =>
       onActionNodePick({
-        expand: !isCollapsable ? null : (
-          <CommonButton
-            btnVariant="icon"
-            icon={open ? <AutoFixOffIcon /> : <AutoFixHighIcon />}
-            text={wt(`btn-expand-${isSettingOpen ? 'off' : 'on'}`)}
-            onClick={() => setOpen(!open)}
-          />
-        ),
+        expand:
+          !isCollapsable || isSettingOpen ? null : (
+            <CommonButton
+              btnVariant="icon"
+              icon={<SettingsOutlinedIcon />}
+              text={wt(`btn-expand-${isSettingOpen ? 'off' : 'on'}`)}
+              onClick={() => setOpen(!open)}
+            />
+          ),
         reset: (
           <CommonButton
             btnVariant="icon"
@@ -78,7 +79,7 @@ export default function WidgetEditor({
         />
       )}
 
-      <Comp.PersistentDrawerContent
+      <PersistentDrawerContent
         {...PersistentDrawerContentProps}
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
@@ -98,6 +99,10 @@ export default function WidgetEditor({
         }
         drawer={
           <CraftedWidgetEditor
+            {...(isCollapsable && {
+              backButtonArrow: 'right',
+              onBack: () => setOpen(false),
+            })}
             fixedT={ct}
             todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             version={__WEBPACK_DEFINE__.VERSION}

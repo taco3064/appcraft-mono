@@ -20,11 +20,13 @@ export type LazyWidgetElementsProps = Omit<
 export interface CraftedWidgetEditorProps
   extends Pick<Comp.MutationNewWidgetDialogProps, 'renderWidgetTypeSelection'>,
     Pick<Comp.TodoFlowControlsProps, 'disableCategories'> {
+  backButtonArrow?: 'left' | 'right';
   fixedT?: FixedT;
   todoTypeFile?: string;
   version?: string;
   widget?: Appcraft.RootNodeWidget;
   renderOverridePureItem?: RenderOverridePureItem;
+  onBack?: () => void;
   onFetchNodesAndEvents: Hook.FetchNodesAndEvents;
   onFetchConfigDefinition: Hook.FetchTypeDefinition;
   onFetchWidgetDefinition: Hook.FetchTypeDefinition;

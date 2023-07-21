@@ -22,6 +22,7 @@ export const WidgetAppBar = (() => {
 
     classes?: {
       action?: string;
+      back?: string;
     };
   }>;
 
@@ -36,6 +37,7 @@ export const WidgetAppBar = (() => {
           >
             {'ct' in props && (
               <IconTipButton
+                className={classes?.back}
                 title={props.ct('btn-back')}
                 onClick={props.onBackToStructure}
               >
@@ -56,6 +58,9 @@ export const WidgetAppBar = (() => {
       action: {
         marginLeft: 'auto',
         transform: `translateX(${theme.spacing(1)})`,
+      },
+      back: {
+        transform: `translateX(${theme.spacing(-1)})`,
       },
     }),
     { name: 'WidgetAppBar' }

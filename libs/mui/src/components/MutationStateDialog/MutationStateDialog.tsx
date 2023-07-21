@@ -70,14 +70,15 @@ export default function MutationStateDialog({
         ))}
       </Tabs>
 
-      {TABS.map((type) => (
-        <StateList
-          key={type}
-          ref={refs[type]}
-          open={active === type}
-          state={state?.[type]}
-        />
-      ))}
+      {open &&
+        TABS.map((type) => (
+          <StateList
+            key={type}
+            ref={refs[type]}
+            open={active === type}
+            state={state?.[type]}
+          />
+        ))}
     </FlexDialog>
   );
 }

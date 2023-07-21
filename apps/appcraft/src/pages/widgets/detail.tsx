@@ -3,6 +3,7 @@ import { Style } from '@appcraft/mui';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useTheme } from '@mui/material/styles';
 import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
@@ -20,6 +21,7 @@ export default function Detail() {
   const { pathname, query } = useRouter();
   const [wrapId, setWrapId] = useState<string>();
 
+  const theme = useTheme();
   const height = Hook.useHeight();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
@@ -98,6 +100,7 @@ export default function Detail() {
         {wrapId && (
           <TodoEditor
             data={wrapTodo}
+            logZIndex={theme.zIndex.modal + 1}
             onActionNodePick={handleWrapActionPick}
             onSave={() => setWrapId(undefined)}
             PersistentDrawerContentProps={{

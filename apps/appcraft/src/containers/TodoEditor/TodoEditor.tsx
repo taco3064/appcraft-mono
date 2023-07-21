@@ -19,6 +19,7 @@ import type { TodoEditorProps } from './TodoEditor.types';
 export default function TodoEditor({
   PersistentDrawerContentProps,
   data,
+  logZIndex,
   superiors,
   onActionNodePick = (e) => e,
   onSave,
@@ -96,7 +97,11 @@ export default function TodoEditor({
       <PersistentDrawerContent
         {...PersistentDrawerContentProps}
         ContentProps={{ style: { alignItems: 'center' } }}
-        DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
+        DrawerProps={{
+          anchor: 'right',
+          maxWidth: 'xs',
+          sx: { zIndex: logZIndex },
+        }}
         open={isLogsOpen}
         content={
           <CraftedTodoEditor

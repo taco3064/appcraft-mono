@@ -63,7 +63,7 @@ export const PersistentDrawerContent = (() => {
 
     ContentProps?: Omit<ContainerProps, 'children' | 'disableGutters' | 'sx'>;
 
-    DrawerProps: {
+    DrawerProps: Omit<DrawerProps, 'anchor' | 'maxWidth'> & {
       anchor: 'right' | 'left';
       maxWidth: ContainerProps['maxWidth'];
     };

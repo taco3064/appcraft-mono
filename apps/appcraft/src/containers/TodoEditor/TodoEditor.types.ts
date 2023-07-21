@@ -6,6 +6,7 @@ import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
 
 export interface TodoEditorProps {
   data: ConfigData<Record<string, WidgetTodo>, string>;
+  logZIndex?: number;
   onActionNodePick?: NodePickerFn<'run' | 'reset' | 'save'>;
   onSave?: () => void;
 

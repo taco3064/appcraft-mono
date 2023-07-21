@@ -1,3 +1,4 @@
+export * from './MuiAppBar';
 export * from './MuiBreadcrumbs';
 export * from './MuiCollapse';
 export * from './MuiDialog';

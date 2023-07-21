@@ -1,9 +1,10 @@
 import * as Rf from 'reactflow';
+import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 
 import * as Comp from '../../components';
+import * as Style from '../../styles';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { FullHeightCollapse, TodoBackground } from '../../styles';
 import { useFixedT, useTodoGenerator } from '../../hooks';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
 
@@ -64,22 +65,23 @@ export default function CraftedTodoEditor({
         )}
       />
 
-      <FullHeightCollapse
+      <Style.FullHeightCollapse
         aria-label="Todo Editor"
         fullHeight={fullHeight}
         in={open}
       >
         {onBack && (
-          <Comp.WidgetAppBar
-            type="events"
-            ct={ct}
-            description={todoPath}
-            onBackToStructure={onBack}
-          />
+          <Style.WidgetAppBar ct={ct} onBackToStructure={onBack}>
+            {ct('ttl-events')}
+
+            <Divider flexItem orientation="vertical" />
+
+            {todoPath}
+          </Style.WidgetAppBar>
         )}
 
         {open && (
-          <TodoBackground elevation={0}>
+          <Style.TodoBackground elevation={0}>
             <Rf.ReactFlowProvider>
               <Rf.ReactFlow
                 fitView
@@ -105,9 +107,9 @@ export default function CraftedTodoEditor({
                 onTodoAdd={handleTodo.create}
               />
             </Rf.ReactFlowProvider>
-          </TodoBackground>
+          </Style.TodoBackground>
         )}
-      </FullHeightCollapse>
+      </Style.FullHeightCollapse>
     </>
   );
 }

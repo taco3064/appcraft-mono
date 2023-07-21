@@ -6,6 +6,5 @@ export * from './TodoFlowControls';
 export * from './TodoFlowNode';
 export * from './TypeItem';
 export * from './TypeList';
-export * from './WidgetAppBar';
 export * from './WidgetBreadcrumbs';
 export * from './WidgetNode';

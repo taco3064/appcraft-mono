@@ -1,11 +1,8 @@
 import AddIcon from '@mui/icons-material/Add';
-import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
@@ -136,28 +133,18 @@ export default function CraftedWidgetEditor({
           fullHeight
           in={editedWidget?.category !== 'node'}
         >
-          <AppBar color="default" position="sticky">
-            <Toolbar
-              variant="regular"
-              style={{ justifyContent: 'space-between' }}
-            >
-              <Typography
-                variant="subtitle1"
-                fontWeight="bolder"
-                color="primary"
-              >
-                {ct('ttl-structure')}
-              </Typography>
-
+          <Style.WidgetAppBar
+            action={
               <Style.IconTipButton
-                size="large"
                 title={ct('btn-state-mgr')}
                 onClick={() => setStateMgrOpen(true)}
               >
                 <StorageRoundedIcon />
               </Style.IconTipButton>
-            </Toolbar>
-          </AppBar>
+            }
+          >
+            {ct('ttl-structure')}
+          </Style.WidgetAppBar>
 
           <List
             disablePadding

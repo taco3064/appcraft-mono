@@ -1,10 +1,11 @@
+import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 
 import * as Comp from '../../components';
 import * as Hook from '../../hooks';
+import * as Style from '../../styles';
 import { EditorProvider, OptionValues } from '../../contexts';
-import { FullHeightCollapse, TypeListSkeleton } from '../../styles';
 import type * as Types from './CraftedTypeEditor.types';
 
 export default function CraftedTypeEditor<V extends OptionValues>({
@@ -43,24 +44,28 @@ export default function CraftedTypeEditor<V extends OptionValues>({
     <EditorProvider
       {...{ fixedT, collectionPath, values, renderOverridePureItem, onChange }}
     >
-      <FullHeightCollapse
+      <Style.FullHeightCollapse
         aria-label="Properties Editor"
         fullHeight={fullHeight}
         in={open}
       >
         {values?.category === 'node' && onBack && (
-          <Comp.WidgetAppBar
-            type="props"
+          <Style.WidgetAppBar
             ct={ct}
-            description={values.type.replace(/([A-Z])/g, ' $1')}
             onBackToStructure={() => {
               onBack();
               setCollectionPath('');
             }}
-          />
+          >
+            {ct('ttl-props')}
+
+            <Divider flexItem orientation="vertical" />
+
+            {values.type.replace(/([A-Z])/g, ' $1')}
+          </Style.WidgetAppBar>
         )}
 
-        <Suspense fallback={<TypeListSkeleton />}>
+        <Suspense fallback={<Style.TypeListSkeleton />}>
           <LazyTypeList
             placeholder={ct('msg-select-widget-type-first')}
             exclude={exclude}
@@ -69,7 +74,7 @@ export default function CraftedTypeEditor<V extends OptionValues>({
             onCollectionPathChange={setCollectionPath}
           />
         </Suspense>
-      </FullHeightCollapse>
+      </Style.FullHeightCollapse>
     </EditorProvider>
   );
 }

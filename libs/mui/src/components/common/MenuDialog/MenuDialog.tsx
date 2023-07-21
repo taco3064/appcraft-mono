@@ -9,6 +9,7 @@ import type { MenuDialogProps } from './MenuDialog.types';
 export default function MenuDialog<V extends { toString(): string }>({
   options,
   open,
+  title,
   value: selected = null,
   onChange,
   onClose,
@@ -19,7 +20,7 @@ export default function MenuDialog<V extends { toString(): string }>({
   };
 
   return (
-    <FlexDialog {...{ open, onClose }} fullWidth maxWidth="xs">
+    <FlexDialog {...{ title, open, onClose }} fullWidth maxWidth="xs">
       <MenuList
         sx={{
           display: 'flex',

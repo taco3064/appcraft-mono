@@ -4,6 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import { FormEventHandler, ReactNode } from 'react';
@@ -87,6 +88,12 @@ export const FlexDialog = (() => {
                 </IconButton>
               )}
             </Toolbar>
+
+            <Divider
+              sx={(theme) => ({
+                margin: theme.spacing(0, 3),
+              })}
+            />
           </AppBar>
         )}
 

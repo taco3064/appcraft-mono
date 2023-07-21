@@ -136,7 +136,7 @@ export default function CraftedWidgetEditor({
           <Style.WidgetAppBar
             action={
               <Style.IconTipButton
-                title={ct('btn-state-mgr')}
+                title={ct('ttl-state-management')}
                 onClick={() => setStateMgrOpen(true)}
               >
                 <StorageRoundedIcon />

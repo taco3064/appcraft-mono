@@ -19,6 +19,7 @@ export default function MutationStateDialog({
       fullWidth
       maxWidth="xs"
       direction="column"
+      title={ct('ttl-state-management')}
       onSubmit={(e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 

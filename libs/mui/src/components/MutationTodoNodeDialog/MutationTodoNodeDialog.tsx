@@ -19,6 +19,7 @@ export default function MutationTodoNodeDialog({
       fullWidth
       maxWidth="xs"
       direction="column"
+      title={values?.todo.description || ct('ttl-events')}
       action={
         <>
           <Button onClick={(e) => onClose(e, 'escapeKeyDown')}>

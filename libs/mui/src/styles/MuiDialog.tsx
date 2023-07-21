@@ -18,6 +18,7 @@ export const FlexDialog = (() => {
   interface FlexDialogProps
     extends Omit<DialogProps, 'classes' | 'scroll' | 'onSubmit'> {
     disableContentGutter?: boolean;
+    disableContentJustifyCenter?: boolean;
     disableContentPadding?: boolean;
     icon?: ReactNode;
     title?: string;
@@ -129,6 +130,7 @@ export const FlexDialog = (() => {
       {
         direction = 'row',
         disableContentGutter = false,
+        disableContentJustifyCenter = false,
         disableContentPadding = false,
         fullScreen,
       }
@@ -137,6 +139,7 @@ export const FlexDialog = (() => {
         display: 'inline-flex',
         flexDirection: 'column' as never,
         overflow: 'hidden',
+        borderRadius: theme.spacing(2),
       },
       header: {
         background: !fullScreen ? 'transparent' : theme.palette.secondary.dark,
@@ -165,18 +168,18 @@ export const FlexDialog = (() => {
       content: {
         display: 'flex',
         flexDirection: direction,
+        justifyContent: disableContentJustifyCenter ? 'flex-start' : 'center',
         gap: theme.spacing(2),
+        background: 'inherit',
         padding: theme.spacing(
           disableContentPadding ? 0 : 3,
           disableContentGutter ? 0 : 3
         ),
 
         [theme.breakpoints.only('xs')]: {
-          justifyContent: 'center',
           overflow: 'hidden auto',
         },
         ...(fullScreen && {
-          justifyContent: 'center',
           overflow: 'hidden auto',
         }),
       },

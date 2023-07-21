@@ -8,7 +8,7 @@ import { PageContainer } from '~appcraft/styles';
 import { TodoEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 
-const TODO_EDITOR_ACTIONS = ['expand', 'run', 'reset', 'save'];
+const TODO_EDITOR_ACTIONS = ['run', 'reset', 'save'];
 
 export default function Detail() {
   const [tt] = Hook.useFixedT('todos');

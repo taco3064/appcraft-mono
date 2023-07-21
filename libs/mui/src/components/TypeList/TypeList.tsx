@@ -31,6 +31,7 @@ export default function TypeList<V extends OptionValues>({
   return (
     <List
       disablePadding
+      style={{ background: 'inherit' }}
       subheader={
         breadcrumbs.length > 0 && (
           <Style.ListToolbar>

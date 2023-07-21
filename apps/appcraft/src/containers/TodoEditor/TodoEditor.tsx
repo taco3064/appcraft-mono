@@ -41,15 +41,6 @@ export default function TodoEditor({
   const actionNode = Hook.useNodePicker(
     () =>
       onActionNodePick({
-        expand:
-          !isCollapsable || open ? null : (
-            <CommonButton
-              btnVariant="icon"
-              icon={<AccountTreeOutlinedIcon />}
-              text={tt('btn-logs')}
-              onClick={() => setOpen(!open)}
-            />
-          ),
         run: (
           <CommonButton
             btnVariant="icon"

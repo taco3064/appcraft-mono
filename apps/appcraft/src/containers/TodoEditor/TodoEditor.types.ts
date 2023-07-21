@@ -5,7 +5,7 @@ import type { PersistentDrawerContentProps } from '~appcraft/components';
 
 export interface TodoEditorProps {
   data: ConfigData<Record<string, WidgetTodo>, string>;
-  onActionNodePick?: NodePickerFn<'expand' | 'run' | 'reset' | 'save'>;
+  onActionNodePick?: NodePickerFn<'run' | 'reset' | 'save'>;
   onSave?: () => void;
 
   superiors?: {

@@ -17,6 +17,8 @@ export default function MutationTodoNodeDialog({
     <FlexDialog
       {...{ open, onClose }}
       disableContentGutter
+      disableContentJustifyCenter
+      disableContentPadding
       fullWidth
       maxWidth="xs"
       direction="column"

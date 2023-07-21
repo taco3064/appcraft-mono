@@ -86,7 +86,6 @@ export default function Todos() {
       <Style.FlexDialog
         fullWidth
         maxWidth="xs"
-        scroll="body"
         open={Boolean(steperProps)}
         onClose={() => setStepperProps(undefined)}
       >

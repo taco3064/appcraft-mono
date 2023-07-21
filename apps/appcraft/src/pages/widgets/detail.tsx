@@ -76,6 +76,8 @@ export default function Detail() {
       </PageContainer>
 
       <Style.FlexDialog
+        disableContentGutter
+        disableContentPadding
         fullScreen
         title="Title"
         direction="column"

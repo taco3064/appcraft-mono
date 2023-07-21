@@ -7,143 +7,192 @@ import DialogContent from '@mui/material/DialogContent';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { FormEventHandler, ReactNode } from 'react';
+import { useTheme } from '@mui/material/styles';
 import { withStyles } from 'tss-react/mui';
 
 import { GapTypography } from './MuiTypography';
 
 export const FlexDialog = (() => {
-  interface FlexDialogProps extends Omit<DialogProps, 'onSubmit'> {
+  interface FlexDialogProps
+    extends Omit<DialogProps, 'classes' | 'scroll' | 'onSubmit'> {
     disableContentGutter?: boolean;
+    disableContentPadding?: boolean;
     icon?: ReactNode;
     title?: string;
     action?: ReactNode;
     children: ReactNode;
     direction?: 'row' | 'column';
     onSubmit?: FormEventHandler<HTMLFormElement>;
+
+    classes?: DialogProps['classes'] & {
+      header?: string;
+      closeButton?: string;
+      content?: string;
+      footer?: string;
+    };
   }
 
   return withStyles(
     ({
       PaperProps,
-      icon,
-      title,
       action,
       children,
+      classes = {},
+      fullScreen = false,
+      icon,
+      title,
       onClose,
       onSubmit,
       ...props
-    }: FlexDialogProps) => (
-      <Dialog
-        {...props}
-        onClose={onClose}
-        PaperProps={{
-          elevation: 0,
-          ...PaperProps,
-          ...(onSubmit &&
-            ({
-              component: 'form',
-              onSubmit,
-            } as object)),
-        }}
-      >
-        {(title || icon) && (
-          <AppBar
-            enableColorOnDark
-            position="static"
-            elevation={0}
-            sx={{
-              background: !props.fullScreen
-                ? 'transparent'
-                : (theme) => theme.palette.secondary.dark,
-            }}
-          >
-            <Toolbar
-              variant="regular"
-              sx={(theme) => ({ color: theme.palette.common.white })}
+    }: FlexDialogProps) => {
+      const theme = useTheme();
+
+      const isFullScreen =
+        useMediaQuery(theme.breakpoints.only('xs')) || fullScreen;
+
+      const {
+        header: headerClassName,
+        closeButton: closeButtonClassName,
+        content: contentClassName,
+        footer: footerClassName,
+        ...dialogClasses
+      } = classes;
+
+      return (
+        <Dialog
+          {...props}
+          scroll="body"
+          classes={dialogClasses}
+          fullScreen={isFullScreen}
+          onClose={onClose}
+          PaperProps={{
+            elevation: 0,
+            ...PaperProps,
+            ...(onSubmit && ({ component: 'form', onSubmit } as object)),
+          }}
+        >
+          {(title || icon) && (
+            <AppBar
+              enableColorOnDark
+              position="static"
+              className={headerClassName}
+              elevation={0}
             >
-              <GapTypography
-                {...(!props.fullScreen && { marginX: 'auto' })}
-                variant="h5"
-                color={props.fullScreen ? 'inherit' : 'primary'}
-                fontWeight="bolder"
-              >
-                {icon}
-                {title}
-              </GapTypography>
-
-              {props.fullScreen && onClose && (
-                <IconButton
-                  size="small"
-                  color="inherit"
-                  onClick={(e) => onClose(e, 'escapeKeyDown')}
-                  sx={(theme) => ({
-                    position: 'absolute',
-                    right: theme.spacing(2),
-                    top: '50%',
-                    transform: 'translate(0, -50%)',
-                  })}
+              <Toolbar variant="regular">
+                <GapTypography
+                  {...(!fullScreen && { marginX: 'auto' })}
+                  variant="h5"
+                  fontWeight="bolder"
+                  color={fullScreen ? 'inherit' : 'primary'}
                 >
-                  <CloseIcon />
-                </IconButton>
-              )}
-            </Toolbar>
+                  {icon}
+                  {title}
+                </GapTypography>
 
-            <Divider
-              sx={(theme) => ({
-                margin: theme.spacing(0, 3),
-              })}
-            />
-          </AppBar>
-        )}
+                {isFullScreen && onClose && (
+                  <IconButton
+                    size="small"
+                    color="inherit"
+                    className={closeButtonClassName}
+                    onClick={(e) => onClose(e, 'escapeKeyDown')}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                )}
+              </Toolbar>
 
-        <DialogContent role="contentinfo">{children}</DialogContent>
+              <Divider />
+            </AppBar>
+          )}
 
-        {action && (
-          <ButtonGroup
-            role="toolbar"
-            fullWidth
-            color="inherit"
-            size="large"
-            variant="contained"
-            component={DialogActions}
-          >
-            {action}
-          </ButtonGroup>
-        )}
-      </Dialog>
-    ),
+          <DialogContent className={contentClassName}>{children}</DialogContent>
+
+          {action && (
+            <ButtonGroup
+              fullWidth
+              color="inherit"
+              size="large"
+              variant="contained"
+              className={footerClassName}
+              component={DialogActions}
+            >
+              {action}
+            </ButtonGroup>
+          )}
+        </Dialog>
+      );
+    },
     (
       theme,
-      { direction = 'row', disableContentGutter = false, fullScreen }
+      {
+        direction = 'row',
+        disableContentGutter = false,
+        disableContentPadding = false,
+        fullScreen,
+      }
     ) => ({
       paper: {
-        ...(fullScreen && {
-          overflow: 'hidden',
-        }),
+        display: 'inline-flex',
+        flexDirection: 'column' as never,
+        overflow: 'hidden',
+      },
+      header: {
+        background: !fullScreen ? 'transparent' : theme.palette.secondary.dark,
 
-        '& > [role=contentinfo]': {
-          display: 'flex',
-          flexDirection: direction,
-          gap: theme.spacing(2),
-          paddingTop: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
-
-          ...(fullScreen && {
-            overflow: 'hidden auto',
-          }),
-          ...(disableContentGutter && {
-            paddingLeft: 0,
-            paddingRight: 0,
-          }),
+        [theme.breakpoints.only('xs')]: {
+          borderTopLeftRadius: theme.spacing(2),
+          borderTopRightRadius: theme.spacing(2),
         },
-        '& > [role=toolbar]': {
-          padding: 0,
+        ...(fullScreen && {
+          borderTopLeftRadius: theme.spacing(2),
+          borderTopRightRadius: theme.spacing(2),
+        }),
+        '& > div': {
+          color: theme.palette.common.white,
+        },
+        '& > hr': {
+          margin: theme.spacing(0, 3),
+        },
+      },
+      closeButton: {
+        position: 'absolute' as never,
+        right: theme.spacing(2),
+        top: '50%',
+        transform: 'translate(0, -50%)',
+      },
+      content: {
+        display: 'flex',
+        flexDirection: direction,
+        gap: theme.spacing(2),
+        padding: theme.spacing(
+          disableContentPadding ? 0 : 3,
+          disableContentGutter ? 0 : 3
+        ),
 
-          '& > *': {
-            borderTopLeftRadius: 0,
-            borderTopRightRadius: 0,
-            margin: '0 !important',
+        [theme.breakpoints.only('xs')]: {
+          justifyContent: 'center',
+          overflow: 'hidden auto',
+        },
+        ...(fullScreen && {
+          justifyContent: 'center',
+          overflow: 'hidden auto',
+        }),
+      },
+      footer: {
+        padding: 0,
+
+        '& > button': {
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
+          margin: '0 !important',
+
+          '&:first-child': {
+            borderBottomLeftRadius: theme.spacing(2),
+          },
+          '&:last-child': {
+            borderBottomRightRadius: theme.spacing(2),
           },
         },
       },

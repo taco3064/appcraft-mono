@@ -5,10 +5,14 @@ import LabelOutlinedIcon from '@mui/icons-material/LabelOutlined';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 
-import * as Common from '../common';
-import * as Hook from '../../hooks';
-import { IconTipButton } from '../../styles';
-import { getPropPath } from '../../utils';
+import * as Hook from '../../../hooks';
+import { IconTipButton } from '../../../styles';
+import { TypeItemDisplay, TypeItemDisplayProps } from '../TypeItemDisplay';
+import { TypeItemMixed, TypeItemMixedProps } from '../TypeItemMixed';
+import { TypeItemNaming } from '../TypeItemNaming';
+import { TypeItemPure, TypeItemPureProps } from '../TypeItemPure';
+import { TypeItemSelection } from '../TypeItemSelection';
+import { getPropPath } from '../../../utils';
 import type * as Types from './TypeItem.types';
 
 export default function TypeItem({
@@ -34,7 +38,7 @@ export default function TypeItem({
     'props',
     getPropPath([elementName as string, propPath]),
     propPath,
-    (props) => <Common.TypeItemSelection {...props} />
+    (props) => <TypeItemSelection {...props} />
   );
 
   const actions =
@@ -63,7 +67,7 @@ export default function TypeItem({
   return (
     <>
       <Collapse in={naming}>
-        <Common.TypeItemNaming
+        <TypeItemNaming
           open={naming}
           propName={options.propName}
           selectable={Boolean(selection)}
@@ -75,12 +79,12 @@ export default function TypeItem({
       <Collapse in={!naming}>
         <>
           {category === 'Display' && (
-            <Common.TypeItemDisplay
+            <TypeItemDisplay
               action={actions}
               description={description}
               disabled={disabled || isState}
               label={label}
-              options={options as Common.TypeItemDisplayProps['options']}
+              options={options as TypeItemDisplayProps['options']}
               propPath={propPath}
               selection={selection}
               onClick={onSubitemView}
@@ -88,24 +92,24 @@ export default function TypeItem({
           )}
 
           {category === 'Pure' && (
-            <Common.TypeItemPure
+            <TypeItemPure
               action={actions}
               description={description}
               disabled={disabled || isState}
               label={label}
-              options={options as Common.TypeItemPureProps['options']}
+              options={options as TypeItemPureProps['options']}
               propPath={propPath}
               selection={selection}
             />
           )}
 
           {category === 'Mixed' && (
-            <Common.TypeItemMixed
+            <TypeItemMixed
               action={actions}
               disabled={disabled || isState || !options.propName}
               label={label}
               propPath={propPath}
-              options={options as Common.TypeItemMixedProps['options']}
+              options={options as TypeItemMixedProps['options']}
               selection={selection}
               renderMatchedField={(matched, description, matchedAction) => (
                 <TypeItem

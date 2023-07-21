@@ -5,8 +5,7 @@ import type { NodeWidget } from '@appcraft/types';
 
 import * as Hook from '../../hooks';
 import * as Style from '../../styles';
-import { Breadcrumbs } from '../common';
-import { TypeItem } from '../TypeItem';
+import { Breadcrumbs, TypeItem } from '../common';
 import type { OptionValues } from '../../contexts';
 import type { TypeListProps } from './TypeList.types';
 

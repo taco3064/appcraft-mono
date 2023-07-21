@@ -84,8 +84,8 @@ export default function CraftedWidgetEditor({
 
       <Comp.MutationStateDialog
         ct={ct}
-        open={stateMgrOpen}
-        values={widget}
+        open={Boolean(widget && stateMgrOpen)}
+        values={widget as Appcraft.RootNodeWidget}
         onClose={() => setStateMgrOpen(false)}
         onConfirm={onWidgetChange}
       />
@@ -137,7 +137,7 @@ export default function CraftedWidgetEditor({
           <Style.WidgetAppBar
             action={
               <Style.IconTipButton
-                title={ct('ttl-state-management')}
+                title={ct('btn-state')}
                 onClick={() => setStateMgrOpen(true)}
               >
                 <StorageRoundedIcon />

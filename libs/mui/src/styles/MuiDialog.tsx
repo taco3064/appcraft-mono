@@ -1,13 +1,15 @@
+import AppBar from '@mui/material/AppBar';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import CloseIcon from '@mui/icons-material/Close';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import Toolbar from '@mui/material/Toolbar';
 import { FormEventHandler, ReactNode } from 'react';
 import { withStyles } from 'tss-react/mui';
+
+import { GapTypography } from './MuiTypography';
 
 export const FlexDialog = (() => {
   interface FlexDialogProps extends Omit<DialogProps, 'onSubmit'> {
@@ -45,32 +47,47 @@ export const FlexDialog = (() => {
         }}
       >
         {(title || icon) && (
-          <DialogTitle
-            align="center"
-            color="primary"
-            fontWeight="bolder"
-            variant="h5"
-            style={{ position: 'relative', justifyContent: 'center' }}
-            {...(icon && { component: Typography })}
+          <AppBar
+            enableColorOnDark
+            position="static"
+            elevation={0}
+            sx={{
+              background: !props.fullScreen
+                ? 'transparent'
+                : (theme) => theme.palette.secondary.dark,
+            }}
           >
-            {icon}
-            {title}
-
-            {onClose && (
-              <IconButton
-                size="small"
-                onClick={(e) => onClose(e, 'escapeKeyDown')}
-                sx={(theme) => ({
-                  position: 'absolute',
-                  right: theme.spacing(2),
-                  top: '50%',
-                  transform: 'translate(0, -50%)',
-                })}
+            <Toolbar
+              variant="regular"
+              sx={(theme) => ({ color: theme.palette.common.white })}
+            >
+              <GapTypography
+                {...(!props.fullScreen && { marginX: 'auto' })}
+                variant="h5"
+                color={props.fullScreen ? 'inherit' : 'primary'}
+                fontWeight="bolder"
               >
-                <CloseIcon />
-              </IconButton>
-            )}
-          </DialogTitle>
+                {icon}
+                {title}
+              </GapTypography>
+
+              {props.fullScreen && onClose && (
+                <IconButton
+                  size="small"
+                  color="inherit"
+                  onClick={(e) => onClose(e, 'escapeKeyDown')}
+                  sx={(theme) => ({
+                    position: 'absolute',
+                    right: theme.spacing(2),
+                    top: '50%',
+                    transform: 'translate(0, -50%)',
+                  })}
+                >
+                  <CloseIcon />
+                </IconButton>
+              )}
+            </Toolbar>
+          </AppBar>
         )}
 
         <DialogContent role="contentinfo">{children}</DialogContent>
@@ -89,14 +106,22 @@ export const FlexDialog = (() => {
         )}
       </Dialog>
     ),
-    (theme, { direction = 'row' }) => ({
+    (theme, { direction = 'row', fullScreen }) => ({
       paper: {
+        ...(fullScreen && {
+          overflow: 'hidden',
+        }),
+
         '& > [role=contentinfo]': {
           display: 'flex',
           flexDirection: direction,
           gap: theme.spacing(2),
           paddingTop: theme.spacing(2),
           paddingBottom: theme.spacing(2),
+
+          ...(fullScreen && {
+            overflow: 'hidden auto',
+          }),
         },
         '& > [role=toolbar]': {
           padding: 0,

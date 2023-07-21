@@ -18,7 +18,7 @@ import type { TodoEditorProps } from './TodoEditor.types';
 export default function TodoEditor({
   PersistentDrawerContentProps,
   data,
-  superiors: { names, breadcrumbs },
+  superiors,
   onActionNodePick = (e) => e,
   onSave,
 }: TodoEditorProps) {
@@ -89,15 +89,17 @@ export default function TodoEditor({
 
   return (
     <>
-      <Breadcrumbs
-        ToolbarProps={{ disableGutters: true }}
-        action={actionNode}
-        onCustomize={([index]) => [
-          index,
-          ...breadcrumbs,
-          { text: names[data._id] },
-        ]}
-      />
+      {superiors && (
+        <Breadcrumbs
+          ToolbarProps={{ disableGutters: true }}
+          action={actionNode}
+          onCustomize={([index]) => [
+            index,
+            ...superiors.breadcrumbs,
+            { text: superiors.names[data._id] },
+          ]}
+        />
+      )}
 
       <PersistentDrawerContent
         {...PersistentDrawerContentProps}

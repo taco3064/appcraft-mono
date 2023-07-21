@@ -8,7 +8,7 @@ export interface TodoEditorProps {
   onActionNodePick?: NodePickerFn<'expand' | 'run' | 'reset' | 'save'>;
   onSave?: () => void;
 
-  superiors: {
+  superiors?: {
     names: Record<string, string>;
     breadcrumbs: Breadcrumb[];
   };

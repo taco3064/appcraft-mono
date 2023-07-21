@@ -21,7 +21,7 @@ const useLazyWidgetNodes = <R>(
 
         return {
           default: (props: R) =>
-            renderRef.current({ ...props, fetchData, widgets: items }),
+            renderRef.current?.({ ...props, fetchData, widgets: items }),
         };
       }),
     [items, version]

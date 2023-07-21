@@ -18,6 +18,7 @@ export default function WidgetEditor({
   superiors: { names, breadcrumbs },
   onActionNodePick = (e) => e,
   onSave,
+  onWrapTodoView,
 }: WidgetEditorProps) {
   const [at, ct, wt] = Hook.useFixedT('app', 'appcraft', 'widgets');
   const [open, setOpen] = useState(true);
@@ -133,6 +134,7 @@ export default function WidgetEditor({
                   <Comp.WrapTodoSelect
                     {...{ disabled, label, onChange }}
                     value={value as string}
+                    onTodoView={onWrapTodoView}
                   />
                 );
               }

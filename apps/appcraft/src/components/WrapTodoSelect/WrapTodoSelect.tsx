@@ -15,6 +15,7 @@ export default function WidgetEditor({
   label,
   value,
   onChange,
+  onTodoView,
 }: WrapTodoSelectProps) {
   const { data: options } = useQuery({
     refetchOnWindowFocus: false,
@@ -34,14 +35,12 @@ export default function WidgetEditor({
       InputProps={{
         startAdornment: (
           <InputAdorment position="start">
-            {!value ? (
+            {(!value || !onTodoView) && (
               <Inventory2OutlinedIcon fontSize="small" color="disabled" />
-            ) : (
-              <IconButton
-                size="small"
-                target="_blank"
-                href={`/todos/detail?id=${value}`}
-              >
+            )}
+
+            {value && onTodoView && (
+              <IconButton size="small" onClick={() => onTodoView(value)}>
                 <LinkIcon fontSize="small" />
               </IconButton>
             )}

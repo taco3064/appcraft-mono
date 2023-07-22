@@ -1,3 +1,4 @@
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
@@ -99,10 +100,13 @@ export default function WidgetEditor({
         }
         drawer={
           <CraftedWidgetEditor
-            {...(isCollapsable && {
-              backButtonArrow: 'right',
-              onBack: () => setOpen(false),
-            })}
+            BackButtonProps={
+              isCollapsable && {
+                icon: <ChevronRightIcon />,
+                text: at('btn-back'),
+                onClick: () => setOpen(false),
+              }
+            }
             fixedT={ct}
             todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             version={__WEBPACK_DEFINE__.VERSION}

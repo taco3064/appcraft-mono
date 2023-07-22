@@ -1,9 +1,11 @@
 import type * as Appcraft from '@appcraft/types';
+import type { ComponentProps } from 'react';
 
+import { WidgetAppBar } from '../../styles';
 import type * as Comp from '../../components';
 import type * as Hook from '../../hooks';
-import type { RenderOverridePureItem } from '../../contexts';
 import type { FixedT } from '../../contexts';
+import type { RenderOverridePureItem } from '../../contexts';
 
 export interface NodeSelectEvent {
   item: Appcraft.WidgetOptions;
@@ -17,16 +19,15 @@ export type LazyWidgetElementsProps = Omit<
   'index' | 'item' | 'event' | 'structure'
 >;
 
-export interface CraftedWidgetEditorProps
-  extends Pick<Comp.MutationNewWidgetDialogProps, 'renderWidgetTypeSelection'>,
-    Pick<Comp.TodoFlowControlsProps, 'disableCategories'> {
-  backButtonArrow?: 'left' | 'right';
+export interface CraftedWidgetEditorProps {
+  BackButtonProps?: ComponentProps<typeof WidgetAppBar>['BackButtonProps'];
+  disableCategories?: Comp.TodoFlowControlsProps['disableCategories'];
   fixedT?: FixedT;
   todoTypeFile?: string;
   version?: string;
   widget?: Appcraft.RootNodeWidget;
   renderOverridePureItem?: RenderOverridePureItem;
-  onBack?: () => void;
+  renderWidgetTypeSelection: Comp.MutationNewWidgetDialogProps['renderWidgetTypeSelection'];
   onFetchNodesAndEvents: Hook.FetchNodesAndEvents;
   onFetchConfigDefinition: Hook.FetchTypeDefinition;
   onFetchWidgetDefinition: Hook.FetchTypeDefinition;

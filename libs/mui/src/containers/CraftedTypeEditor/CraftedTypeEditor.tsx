@@ -1,3 +1,4 @@
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
@@ -51,10 +52,13 @@ export default function CraftedTypeEditor<V extends OptionValues>({
       >
         {values?.category === 'node' && onBack && (
           <Style.WidgetAppBar
-            ct={ct}
-            onBack={() => {
-              onBack();
-              setCollectionPath('');
+            BackButtonProps={{
+              icon: <ArrowBackIcon />,
+              text: ct('btn-back'),
+              onClick: () => {
+                onBack();
+                setCollectionPath('');
+              },
             }}
           >
             {ct('ttl-props')}

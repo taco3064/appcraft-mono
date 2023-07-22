@@ -17,7 +17,7 @@ import { getNodesAndEventsKey } from '../../utils';
 import type * as Types from './CraftedWidgetEditor.types';
 
 export default function CraftedWidgetEditor({
-  backButtonArrow,
+  BackButtonProps,
   disableCategories,
   fixedT,
   renderWidgetTypeSelection,
@@ -25,7 +25,6 @@ export default function CraftedWidgetEditor({
   version,
   widget,
   renderOverridePureItem,
-  onBack,
   onFetchNodesAndEvents,
   onFetchConfigDefinition,
   onFetchWidgetDefinition,
@@ -138,9 +137,7 @@ export default function CraftedWidgetEditor({
           in={editedWidget?.category !== 'node'}
         >
           <Style.WidgetAppBar
-            backArrow={backButtonArrow}
-            ct={ct}
-            onBack={onBack}
+            BackButtonProps={BackButtonProps}
             action={
               <Style.IconTipButton
                 title={ct('btn-state')}

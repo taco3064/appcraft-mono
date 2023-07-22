@@ -10,44 +10,40 @@ import { IconTipButton } from './MuiIconButton';
 import type { FixedT } from '../contexts';
 
 export const WidgetAppBar = (() => {
-  type BackProps<P> =
-    | P
-    | (P & {
-        backArrow?: 'left' | 'right';
-        ct: FixedT;
-        onBack: MouseEventHandler<HTMLButtonElement>;
-      });
-
-  type WidgetAppBarProps = BackProps<{
+  interface WidgetAppBarProps {
     action?: ReactNode;
     children: ReactNode;
 
     classes?: {
+      root?: string;
       action?: string;
       back?: string;
+      toolbar?: string;
     };
-  }>;
+
+    BackButtonProps?: {
+      icon: ReactNode;
+      text: string;
+      onClick: MouseEventHandler<HTMLButtonElement>;
+    };
+  }
 
   return withStyles(
-    ({ classes, action, children, ...props }: WidgetAppBarProps) => (
-      <AppBar color="default" position="sticky">
-        <Toolbar variant="regular">
+    ({ BackButtonProps, classes, action, children }: WidgetAppBarProps) => (
+      <AppBar color="default" position="sticky" className={classes?.root}>
+        <Toolbar variant="regular" className={classes?.toolbar}>
           <GapTypography
             variant="subtitle1"
             fontWeight="bolder"
             color="primary"
           >
-            {'ct' in props && props.onBack && (
+            {BackButtonProps && ( // ct('btn-back')
               <IconTipButton
                 className={classes?.back}
-                title={props.ct('btn-back')}
-                onClick={props.onBack}
+                title={BackButtonProps.text}
+                onClick={BackButtonProps.onClick}
               >
-                {props.backArrow === 'right' ? (
-                  <ChevronRightIcon />
-                ) : (
-                  <ChevronLeftIcon />
-                )}
+                {BackButtonProps.icon}
               </IconTipButton>
             )}
 
@@ -63,10 +59,9 @@ export const WidgetAppBar = (() => {
     (theme) => ({
       action: {
         marginLeft: 'auto',
-        transform: `translateX(${theme.spacing(1)})`,
       },
-      back: {
-        transform: `translateX(${theme.spacing(-1)})`,
+      toolbar: {
+        padding: `${theme.spacing(0, 2)} !important`,
       },
     }),
     { name: 'WidgetAppBar' }

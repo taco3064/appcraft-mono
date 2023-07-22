@@ -1,4 +1,5 @@
 import * as Rf from 'reactflow';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 
@@ -71,7 +72,13 @@ export default function CraftedTodoEditor({
         in={open}
       >
         {onBack && (
-          <Style.WidgetAppBar ct={ct} onBack={onBack}>
+          <Style.WidgetAppBar
+            BackButtonProps={{
+              icon: <ArrowBackIcon />,
+              text: ct('btn-back'),
+              onClick: onBack,
+            }}
+          >
             {ct('ttl-events')}
 
             <Divider flexItem orientation="vertical" />

@@ -41,7 +41,7 @@ export const FlexDialog = (() => {
       action,
       children,
       classes = {},
-      fullScreen = false,
+      fullScreen: fs = false,
       icon,
       title,
       onClose,
@@ -49,9 +49,7 @@ export const FlexDialog = (() => {
       ...props
     }: FlexDialogProps) => {
       const theme = useTheme();
-
-      const isFullScreen =
-        useMediaQuery(theme.breakpoints.only('xs')) || fullScreen;
+      const fullScreen = useMediaQuery(theme.breakpoints.only('xs')) || fs;
 
       const {
         header: headerClassName,
@@ -66,7 +64,7 @@ export const FlexDialog = (() => {
           {...props}
           scroll="body"
           classes={dialogClasses}
-          fullScreen={isFullScreen}
+          fullScreen={fullScreen}
           onClose={onClose}
           PaperProps={{
             elevation: 0,
@@ -92,7 +90,7 @@ export const FlexDialog = (() => {
                   {title}
                 </GapTypography>
 
-                {isFullScreen && onClose && (
+                {fullScreen && onClose && (
                   <IconButton
                     size="small"
                     color="inherit"
@@ -142,7 +140,7 @@ export const FlexDialog = (() => {
         borderRadius: theme.spacing(2),
       },
       header: {
-        background: !fullScreen ? 'transparent' : theme.palette.secondary.dark,
+        background: 'transparent',
 
         [theme.breakpoints.only('xs')]: {
           borderTopLeftRadius: theme.spacing(2),

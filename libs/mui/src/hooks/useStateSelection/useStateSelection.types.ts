@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
-import type { PropPaths } from '../../utils';
+import type { PropPaths, StateGenerator } from '../../utils';
 
 export type StateSelectionHook = (
-  type: 'props' | 'nodes' | 'todos',
+  generator: StateGenerator,
   alias: string,
   propPath: PropPaths | string,
   renderFn: (options: {

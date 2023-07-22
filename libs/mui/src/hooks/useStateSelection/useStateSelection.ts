@@ -2,24 +2,25 @@ import _get from 'lodash/get';
 import _set from 'lodash/set';
 import { useTransition } from 'react';
 
-import { getPropPath } from '../../utils';
+import * as Util from '../../utils';
 import { useStateContext } from '../../contexts';
 import type { StateSelectionHook } from './useStateSelection.types';
 
 const useStateSelection: StateSelectionHook = (
-  type,
+  generator,
   alias,
   propPath,
   renderFn
 ) => {
   const { basePath, values, onChange } = useStateContext();
   const [, startTransition] = useTransition();
+  const category = Util.getStateCategory(generator);
 
-  const path = getPropPath(
+  const path = Util.getPropPath(
     Array.isArray(propPath) ? propPath : [basePath, 'props', propPath]
   );
 
-  const checked = Boolean(_get(values, ['state', type, path]));
+  const checked = Boolean(_get(values, ['state', category, path]));
 
   return [
     checked,
@@ -29,20 +30,16 @@ const useStateSelection: StateSelectionHook = (
       : renderFn({
           checked,
           onSelect: (newChecked) => {
-            const state = _get(values, ['state', type]) || {};
+            const state = _get(values, ['state', category]) || {};
 
             if (!newChecked) {
               delete state[path];
             } else {
-              state[path] = {
-                alias,
-                description: '',
-                defaultValue: undefined,
-              };
+              state[path] = Util.getInitialState(generator, alias);
             }
 
             startTransition(() =>
-              onChange(_set(values, ['state', type], { ...state }))
+              onChange(_set(values, ['state', category], { ...state }))
             );
           },
         }),

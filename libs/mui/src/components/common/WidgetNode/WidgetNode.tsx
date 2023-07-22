@@ -16,7 +16,7 @@ export default function WidgetNode({
   onActive,
 }: WidgetNodeProps) {
   const [isState, selection] = useStateSelection(
-    'nodes',
+    type,
     getPropPath([elementName, path]),
     completePaths,
     (props) => (defined ? null : <TypeItemSelection {...props} />)

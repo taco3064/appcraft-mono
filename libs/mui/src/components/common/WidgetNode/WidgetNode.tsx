@@ -9,6 +9,7 @@ import type { WidgetNodeProps } from './WidgetNode.types';
 
 export default function WidgetNode({
   completePaths,
+  defined,
   elementName,
   path,
   type,
@@ -18,23 +19,26 @@ export default function WidgetNode({
     'nodes',
     getPropPath([elementName, path]),
     completePaths,
-    (props) => <TypeItemSelection {...props} />
+    (props) => (defined ? null : <TypeItemSelection {...props} />)
   );
 
   return (
-    <ListItemButton onClick={() => onActive(completePaths)}>
+    <ListItemButton
+      disableRipple={isState}
+      onClick={() => !isState && onActive(completePaths)}
+    >
       {selection || <ListItemIcon />}
 
       <ListItemText
         primary={path}
         secondary={type}
+        secondaryTypographyProps={{ variant: 'caption' }}
         primaryTypographyProps={{
           variant: 'subtitle2',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
         }}
-        secondaryTypographyProps={{ variant: 'caption' }}
       />
     </ListItemButton>
   );

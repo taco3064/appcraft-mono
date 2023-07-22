@@ -53,12 +53,12 @@ export default function CraftedWidgetEditor({
             {widgets.map((item, index) => {
               const key = getNodesAndEventsKey(item, `item_${index}`);
               const event = events?.[key];
-              const structure = nodes?.[key];
+              const node = nodes?.[key];
 
               return (
                 <Comp.WidgetElement
                   {...props}
-                  {...{ key, index, item, event, structure }}
+                  {...{ key, index, item, event, node }}
                 />
               );
             })}

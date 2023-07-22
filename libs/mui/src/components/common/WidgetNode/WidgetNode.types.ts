@@ -5,6 +5,7 @@ import type { PropPaths } from '../../../utils';
 
 export interface WidgetNodeProps {
   completePaths: PropPaths;
+  defined: boolean;
   elementName: string;
   path: string;
   type: NodeType;

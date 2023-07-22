@@ -1,5 +1,5 @@
-import CloseIcon from '@mui/icons-material/Close';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CloseIcon from '@mui/icons-material/Close';
 import Collapse from '@mui/material/Collapse';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import IconButton from '@mui/material/IconButton';
@@ -7,6 +7,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
+import _get from 'lodash/get';
 import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
@@ -23,7 +24,7 @@ export default function WidgetElement<I extends Appcraft.WidgetOptions>({
   event,
   index,
   item,
-  structure,
+  node,
   superiorNodeType,
   onClick,
   onEventActive,
@@ -39,13 +40,13 @@ export default function WidgetElement<I extends Appcraft.WidgetOptions>({
     [event]
   );
 
-  const structures = useMemo<[string, Appcraft.NodeType][]>(
-    () => sortPropPaths(Object.entries(structure || {}), (e) => e[0]),
-    [structure]
+  const nodes = useMemo<[string, Appcraft.NodeType][]>(
+    () => sortPropPaths(Object.entries(node || {}), (e) => e[0]),
+    [node]
   );
 
   const [display, setDisplay] = useState<'events' | 'nodes'>(() =>
-    structures.length > 0 ? 'nodes' : 'events'
+    nodes.length > 0 ? 'nodes' : 'events'
   );
 
   return (
@@ -60,7 +61,7 @@ export default function WidgetElement<I extends Appcraft.WidgetOptions>({
         }
       >
         <ListItemIcon>
-          {structures.length > 0 && (
+          {nodes.length > 0 && (
             <IconButton
               onClick={(e) => {
                 e.stopPropagation();
@@ -85,7 +86,7 @@ export default function WidgetElement<I extends Appcraft.WidgetOptions>({
         />
 
         <Style.TypeItemAction>
-          {open && structures.length > 0 && events.length > 0 && (
+          {open && nodes.length > 0 && events.length > 0 && (
             <Tooltip
               title={ct(`btn-${display === 'events' ? 'todos' : 'nodes'}`)}
             >
@@ -107,11 +108,12 @@ export default function WidgetElement<I extends Appcraft.WidgetOptions>({
         </Style.TypeItemAction>
       </ListItemButton>
 
-      <Collapse in={open && structures.length > 0 && display === 'nodes'}>
-        {structures.map(([path, type]) => (
+      <Collapse in={open && nodes.length > 0 && display === 'nodes'}>
+        {nodes.map(([path, type]) => (
           <WidgetNode
             {...{ path, type }}
             key={path}
+            defined={Boolean(_get(item, ['nodes', path]))}
             elementName={type}
             onActive={onNodeActive}
             completePaths={[

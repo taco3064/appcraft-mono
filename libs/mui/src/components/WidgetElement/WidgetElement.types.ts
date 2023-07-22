@@ -10,7 +10,7 @@ export interface WidgetElementProps<I extends Appcraft.WidgetOptions> {
   index: number;
   item: I;
   event: I extends Appcraft.NodeWidget ? string[] : undefined;
-  structure: I extends Appcraft.NodeWidget ? Appcraft.ChildNodes : undefined;
+  node: I extends Appcraft.NodeWidget ? Appcraft.ChildNodes : undefined;
   superiorNodeType: Appcraft.NodeType;
 
   onClick: (paths: PropPaths) => void;

@@ -34,6 +34,22 @@ export default function CraftedWidgetEditor({
   const [newWidgetOpen, setNewWidgetOpen] = useState(false);
   const [stateMgrOpen, setStateMgrOpen] = useState(false);
 
+  const stateToggle = (
+    <Style.IconTipButton
+      title={ct('btn-state')}
+      onClick={() => setStateMgrOpen(true)}
+      disabled={
+        !_sum(
+          Object.values(widget?.state || {}).map(
+            (state) => Object.keys(state).length
+          )
+        )
+      }
+    >
+      <StorageRoundedIcon />
+    </Style.IconTipButton>
+  );
+
   const [{ breadcrumbs, items, paths, type }, onPathsChange] =
     Hook.useStructure(widget as Appcraft.RootNodeWidget);
 
@@ -59,6 +75,7 @@ export default function CraftedWidgetEditor({
                 <Comp.WidgetElement
                   {...props}
                   {...{ key, index, item, event, node }}
+                  defaultOpen={item === widget}
                 />
               );
             })}
@@ -94,6 +111,7 @@ export default function CraftedWidgetEditor({
 
       <StateProvider
         basePath={widgetPath}
+        toggle={stateToggle}
         values={widget}
         onChange={onWidgetChange}
       >
@@ -138,21 +156,7 @@ export default function CraftedWidgetEditor({
         >
           <Style.WidgetAppBar
             BackButtonProps={BackButtonProps}
-            action={
-              <Style.IconTipButton
-                title={ct('btn-state')}
-                onClick={() => setStateMgrOpen(true)}
-                disabled={
-                  !_sum(
-                    Object.values(widget?.state || {}).map(
-                      (state) => Object.keys(state).length
-                    )
-                  )
-                }
-              >
-                <StorageRoundedIcon />
-              </Style.IconTipButton>
-            }
+            action={stateToggle}
           >
             {ct('ttl-structure')}
           </Style.WidgetAppBar>

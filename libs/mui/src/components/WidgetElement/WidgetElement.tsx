@@ -21,6 +21,7 @@ type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
 export default function WidgetElement<I extends Appcraft.WidgetOptions>({
   basePaths,
   ct,
+  defaultOpen,
   event,
   index,
   item,
@@ -33,7 +34,7 @@ export default function WidgetElement<I extends Appcraft.WidgetOptions>({
 }: WidgetElementProps<I>) {
   const { category, description, type, content } = item as MixedWidget;
   const isNode = category === 'node';
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
 
   const events: string[] = useMemo(
     () => (Array.isArray(event) ? sortPropPaths(event) : []),

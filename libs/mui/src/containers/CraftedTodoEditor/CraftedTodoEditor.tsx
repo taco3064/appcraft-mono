@@ -7,6 +7,7 @@ import * as Comp from '../../components';
 import * as Style from '../../styles';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { useFixedT, useTodoGenerator } from '../../hooks';
+import { useStateContext } from '../../contexts';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
 
 const EXCLUDE: RegExp[] = [
@@ -41,6 +42,7 @@ export default function CraftedTodoEditor({
 }: CraftedTodoEditorProps) {
   const theme = useTheme();
   const ct = useFixedT(fixedT);
+  const { toggle } = useStateContext();
 
   const [{ editing, nodes, edges }, handleTodo] = useTodoGenerator(
     typeFile,
@@ -73,6 +75,7 @@ export default function CraftedTodoEditor({
       >
         {onBack && (
           <Style.WidgetAppBar
+            action={toggle}
             BackButtonProps={{
               icon: <ArrowBackIcon />,
               text: ct('btn-back'),

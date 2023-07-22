@@ -38,9 +38,7 @@ const useStateSelection: StateSelectionHook = (
               state[path] = Util.getInitialState(generator, alias);
             }
 
-            startTransition(() =>
-              onChange(_set(values, ['state', category], { ...state }))
-            );
+            onChange({ ..._set(values, ['state', category], { ...state }) });
           },
         }),
   ];

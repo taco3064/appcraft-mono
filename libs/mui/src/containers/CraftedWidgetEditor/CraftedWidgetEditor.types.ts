@@ -16,7 +16,7 @@ export interface NodeSelectEvent {
 
 export type LazyWidgetElementsProps = Omit<
   Comp.WidgetElementProps<Appcraft.WidgetOptions>,
-  'index' | 'item' | 'event' | 'node'
+  'index' | 'item' | 'event' | 'node' | 'defaultOpen'
 >;
 
 export interface CraftedWidgetEditorProps {

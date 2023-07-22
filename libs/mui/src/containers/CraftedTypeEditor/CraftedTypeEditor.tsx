@@ -6,7 +6,7 @@ import { Suspense, useState } from 'react';
 import * as Comp from '../../components';
 import * as Hook from '../../hooks';
 import * as Style from '../../styles';
-import { EditorProvider, OptionValues } from '../../contexts';
+import { EditorProvider, OptionValues, useStateContext } from '../../contexts';
 import type * as Types from './CraftedTypeEditor.types';
 
 export default function CraftedTypeEditor<V extends OptionValues>({
@@ -21,6 +21,7 @@ export default function CraftedTypeEditor<V extends OptionValues>({
   onFetchDefinition,
 }: Types.CraftedTypeEditorProps<V>) {
   const ct = Hook.useFixedT(fixedT);
+  const { toggle } = useStateContext();
   const [collectionPath, setCollectionPath] = useState('');
 
   const LazyTypeList = Hook.useLazyTypeList<Types.LazyTypeListProps<V>>(
@@ -52,6 +53,7 @@ export default function CraftedTypeEditor<V extends OptionValues>({
       >
         {values?.category === 'node' && onBack && (
           <Style.WidgetAppBar
+            action={toggle}
             BackButtonProps={{
               icon: <ArrowBackIcon />,
               text: ct('btn-back'),

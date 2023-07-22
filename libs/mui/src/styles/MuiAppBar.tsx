@@ -1,13 +1,10 @@
 import AppBar from '@mui/material/AppBar';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Toolbar from '@mui/material/Toolbar';
 import { withStyles } from 'tss-react/mui';
 import type { MouseEventHandler, ReactNode } from 'react';
 
 import { GapTypography } from './MuiTypography';
 import { IconTipButton } from './MuiIconButton';
-import type { FixedT } from '../contexts';
 
 export const WidgetAppBar = (() => {
   interface WidgetAppBarProps {

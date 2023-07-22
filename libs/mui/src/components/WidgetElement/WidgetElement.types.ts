@@ -7,6 +7,7 @@ import type { PropPaths } from '../../utils';
 export interface WidgetElementProps<I extends Appcraft.WidgetOptions> {
   basePaths: PropPaths;
   ct: FixedT;
+  defaultOpen: boolean;
   index: number;
   item: I;
   event: I extends Appcraft.NodeWidget ? string[] : undefined;

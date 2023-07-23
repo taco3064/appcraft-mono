@@ -24,7 +24,6 @@ export const ListPlaceholder = (() => {
               color="text.secondary"
               align="center"
               className={classes?.primary}
-              sx={{ marginTop: (theme) => theme.spacing(2) }}
             >
               {message}
             </Typography>

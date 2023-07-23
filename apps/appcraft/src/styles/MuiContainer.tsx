@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography';
 import { ReactNode } from 'react';
 import { withStyles } from 'tss-react/mui';
 
+import { useWidth } from '~appcraft/hooks';
+
 export const MainContainer = withStyles(
   Container,
   (theme) => ({
@@ -17,45 +19,55 @@ export const MainContainer = withStyles(
 );
 
 export const PageContainer = (() => {
-  interface PageContainerProps extends Omit<ContainerProps, 'disableGutters'> {
+  interface PageContainerProps
+    extends Omit<ContainerProps, 'classes' | 'disableGutters'> {
     ContentProps?: Omit<ContainerProps, 'role' | 'children' | 'component'>;
     action?: ReactNode;
     title: string;
+
+    classes?: ContainerProps['classes'] & {
+      title?: string;
+    };
   }
 
   return withStyles(
     ({
       ContentProps,
+      classes: { title: titleClassName, ...containerClasses },
       title,
       action,
       children,
       ...props
-    }: PageContainerProps) => (
-      <Container {...props} disableGutters>
-        <Toolbar role="toolbar" disableGutters variant="dense">
-          <Typography
-            fontWeight="bolder"
-            variant="h5"
-            color="secondary"
-            style={{ marginRight: 'auto' }}
+    }: PageContainerProps) => {
+      const width = useWidth();
+
+      return (
+        <Container {...props} disableGutters classes={containerClasses}>
+          <Toolbar role="toolbar" disableGutters variant="dense">
+            <Typography
+              fontWeight="bolder"
+              variant="h5"
+              color="secondary"
+              className={titleClassName}
+            >
+              {width === 'xs' ? title : title.replace(/\n/, '-')}
+            </Typography>
+
+            {action}
+          </Toolbar>
+
+          <Paper
+            role="contentinfo"
+            elevation={0}
+            component={Container}
+            maxWidth={false}
+            {...ContentProps}
           >
-            {title}
-          </Typography>
-
-          {action}
-        </Toolbar>
-
-        <Paper
-          role="contentinfo"
-          elevation={0}
-          component={Container}
-          maxWidth={false}
-          {...ContentProps}
-        >
-          {children}
-        </Paper>
-      </Container>
-    ),
+            {children}
+          </Paper>
+        </Container>
+      );
+    },
     (theme, { ContentProps }) => ({
       root: {
         '& > [role=toolbar]': {
@@ -70,6 +82,14 @@ export const PageContainer = (() => {
           borderRadius: theme.spacing(2),
           paddingTop: theme.spacing(ContentProps?.disableGutters ? 0 : 2),
           paddingBottom: theme.spacing(ContentProps?.disableGutters ? 0 : 2),
+        },
+      },
+      title: {
+        marginRight: 'auto',
+
+        [theme.breakpoints.only('xs')]: {
+          fontSize: theme.typography.h6.fontSize,
+          whiteSpace: 'pre-line' as never,
         },
       },
     }),

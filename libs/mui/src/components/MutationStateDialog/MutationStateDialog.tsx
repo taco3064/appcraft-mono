@@ -1,10 +1,16 @@
+import * as React from 'react';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
+import _set from 'lodash/set';
 import { FormEvent } from 'react';
-import type { RootNodeWidget } from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
-import type { MutationStateDialogProps } from './MutationStateDialog.types';
+import { StateList, StateValues } from '../common';
+import type * as Types from './MutationStateDialog.types';
+
+const TABS: Types.TabValue[] = ['props', 'nodes', 'todos'];
 
 export default function MutationStateDialog({
   ct,
@@ -12,18 +18,36 @@ export default function MutationStateDialog({
   values,
   onClose,
   onConfirm,
-}: MutationStateDialogProps) {
+}: Types.MutationStateDialogProps) {
+  const { state } = values || {};
+  const [, setTransition] = React.useTransition();
+  const [active, setActive] = React.useState<Types.TabValue>(TABS[0]);
+
+  const refs = React.useMemo(
+    () =>
+      Object.fromEntries(
+        TABS.map((type) => [type, React.createRef<StateValues>()])
+      ) as Record<Types.TabValue, React.RefObject<StateValues>>,
+    []
+  );
+
   return (
     <FlexDialog
       {...{ open, onClose }}
+      disableContentJustifyCenter
       fullWidth
       maxWidth="xs"
       direction="column"
       onSubmit={(e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        onConfirm({ ...values } as RootNodeWidget);
-        onClose(e, 'escapeKeyDown');
+        setTransition(() => {
+          onClose(e, 'escapeKeyDown');
+
+          onConfirm(
+            _set(values, 'state', { ...state }) as Appcraft.RootNodeWidget
+          );
+        });
       }}
       action={
         <>
@@ -37,7 +61,25 @@ export default function MutationStateDialog({
         </>
       }
     >
-      TEST
+      <Tabs
+        variant="fullWidth"
+        value={active}
+        onChange={(_e, newActive) => setActive(newActive)}
+      >
+        {TABS.map((value) => (
+          <Tab key={value} label={ct(`ttl-state-${value}`)} value={value} />
+        ))}
+      </Tabs>
+
+      {open &&
+        TABS.map((type) => (
+          <StateList
+            key={type}
+            ref={refs[type]}
+            open={active === type}
+            state={state?.[type]}
+          />
+        ))}
     </FlexDialog>
   );
 }

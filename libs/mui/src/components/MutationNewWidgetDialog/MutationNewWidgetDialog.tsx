@@ -32,6 +32,7 @@ export default function MutationNewWidgetDialog({
 
   return (
     <FlexDialog
+      disableContentJustifyCenter
       fullWidth
       maxWidth="xs"
       direction="column"

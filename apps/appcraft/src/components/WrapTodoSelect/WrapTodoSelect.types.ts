@@ -3,4 +3,5 @@ export interface WrapTodoSelectProps {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  onTodoView?: (id: string) => void;
 }

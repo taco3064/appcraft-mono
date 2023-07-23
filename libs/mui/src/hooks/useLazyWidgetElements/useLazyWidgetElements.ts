@@ -1,9 +1,9 @@
 import { lazy, useImperativeHandle, useMemo, useRef } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import type * as Types from './useLazyWidgetNodes.types';
+import type * as Types from './useLazyWidgetElements.types';
 
-const useLazyWidgetNodes = <R>(
+const useLazyWidgetElements = <R>(
   items: Appcraft.WidgetOptions[],
   version: string | undefined,
   fetchNodesAndEvents: Types.FetchNodesAndEvents,
@@ -21,11 +21,11 @@ const useLazyWidgetNodes = <R>(
 
         return {
           default: (props: R) =>
-            renderRef.current({ ...props, fetchData, widgets: items }),
+            renderRef.current?.({ ...props, fetchData, widgets: items }),
         };
       }),
     [items, version]
   );
 };
 
-export default useLazyWidgetNodes;
+export default useLazyWidgetElements;

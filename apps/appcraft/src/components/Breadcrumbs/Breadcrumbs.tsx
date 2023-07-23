@@ -29,7 +29,7 @@ export default function Breadcrumbs({
     <Toolbar variant="dense" {...ToolbarProps}>
       <CommonButton
         btnVariant="icon"
-        color="secondary"
+        color="primary"
         icon={<ArrowBackIcon />}
         text={at('btn-back')}
         onClick={() => back()}

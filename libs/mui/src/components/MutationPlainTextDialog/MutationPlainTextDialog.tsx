@@ -19,6 +19,7 @@ export default function MutationPlainTextDialog({
       fullWidth
       maxWidth="xs"
       direction="column"
+      title={ct('ttl-node-plain-text')}
       onSubmit={(e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 

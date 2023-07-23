@@ -73,34 +73,36 @@ export const TodoHandle = (() => {
   );
 })();
 
-export function TodoIcon({
-  variant,
-}: {
-  variant: Appcraft.WidgetTodo['category'];
-}) {
-  switch (variant) {
-    case 'variable':
-      return <AutoFixHighIcon />;
+export const TodoIcon = (() => {
+  type TodoIconProps = {
+    variant: Appcraft.WidgetTodo['category'];
+  };
 
-    case 'fetch':
-      return <CompositeIcon primary={CloudQueueIcon} secondary={SyncIcon} />;
+  return ({ variant }: TodoIconProps) => {
+    switch (variant) {
+      case 'variable':
+        return <AutoFixHighIcon />;
 
-    case 'branch':
-      return <CallSplitIcon />;
+      case 'fetch':
+        return <CompositeIcon primary={CloudQueueIcon} secondary={SyncIcon} />;
 
-    case 'iterate':
-      return <CompositeIcon primary={MenuIcon} secondary={SyncIcon} />;
+      case 'branch':
+        return <CallSplitIcon />;
 
-    case 'wrap':
-      return <Inventory2OutlinedIcon />;
+      case 'iterate':
+        return <CompositeIcon primary={MenuIcon} secondary={SyncIcon} />;
 
-    case 'state':
-      return <CompositeIcon primary={StorageIcon} secondary={SaveAltIcon} />;
+      case 'wrap':
+        return <Inventory2OutlinedIcon />;
 
-    default:
-      return null;
-  }
-}
+      case 'state':
+        return <CompositeIcon primary={StorageIcon} secondary={SaveAltIcon} />;
+
+      default:
+        return null;
+    }
+  };
+})();
 
 export const TodoNodeLabel = (() => {
   interface TodoNodeLabelProps extends Pick<Appcraft.WidgetTodo, 'category'> {
@@ -137,7 +139,6 @@ export const TodoNodeLabel = (() => {
 
         <ListItemText
           {...{ primary, secondary }}
-          style={{ width: '100%' }}
           primaryTypographyProps={{
             color: 'text.secondary',
             fontWeight: 'bolder',

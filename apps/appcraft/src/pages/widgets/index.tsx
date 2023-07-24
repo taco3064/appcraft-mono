@@ -27,7 +27,7 @@ export default function Widgets() {
       <PageContainer
         ContentProps={{ disableGutters: true }}
         maxWidth="lg"
-        title={nt('ttl-widgets')}
+        primary={nt('ttl-widgets')}
         action={
           <>
             {action?.search}
@@ -59,7 +59,7 @@ export default function Widgets() {
       <Style.FlexDialog
         fullWidth
         maxWidth="sm"
-        title={wt('ttl-preview', { name: preview?.name })}
+        title={{ primary: wt('ttl-preview'), secondary: preview?.name }}
         open={Boolean(preview?.id)}
         onClose={() => setPreview(undefined)}
       >

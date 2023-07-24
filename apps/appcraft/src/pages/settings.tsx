@@ -24,7 +24,7 @@ export default function Settings() {
   return (
     <PageContainer
       maxWidth="xs"
-      title={nt('ttl-settings')}
+      primary={nt('ttl-settings')}
       ContentProps={{
         sx: (theme) => ({
           display: 'flex',

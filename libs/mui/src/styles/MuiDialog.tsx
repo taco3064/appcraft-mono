@@ -12,16 +12,16 @@ import { FormEventHandler, ReactNode } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { withStyles } from 'tss-react/mui';
 
-import { GapTypography } from './MuiTypography';
+import { AutoBreakTypography, GapTypography } from './MuiTypography';
 
 export const FlexDialog = (() => {
   interface FlexDialogProps
-    extends Omit<DialogProps, 'classes' | 'scroll' | 'onSubmit'> {
+    extends Omit<DialogProps, 'classes' | 'scroll' | 'title' | 'onSubmit'> {
     disableContentGutter?: boolean;
     disableContentJustifyCenter?: boolean;
     disableContentPadding?: boolean;
     icon?: ReactNode;
-    title?: string;
+    title?: string | { primary: string; secondary?: string };
     action?: ReactNode;
     children: ReactNode;
     direction?: 'row' | 'column';
@@ -87,7 +87,19 @@ export const FlexDialog = (() => {
                   color={fullScreen ? 'inherit' : 'primary'}
                 >
                   {icon}
-                  {title}
+
+                  {title && (
+                    <AutoBreakTypography
+                      primaryTypographyProps={{
+                        variant: 'inherit',
+                        fontWeight: 'inherit',
+                        color: 'inherit',
+                      }}
+                      {...(typeof title === 'string'
+                        ? { primary: title }
+                        : title)}
+                    />
+                  )}
                 </GapTypography>
 
                 {fullScreen && onClose && (

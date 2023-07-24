@@ -37,7 +37,8 @@ export default function Detail() {
     <PageContainer
       ContentProps={{ disableGutters: true }}
       maxWidth="lg"
-      title={tt('ttl-detail', { name: superiors[id] })}
+      primary={tt('ttl-detail')}
+      secondary={superiors[id]}
       action={
         <>
           {theme && (

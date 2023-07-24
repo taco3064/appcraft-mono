@@ -36,7 +36,7 @@ export default function Todos() {
       <PageContainer
         ContentProps={{ disableGutters: true }}
         maxWidth="lg"
-        title={nt('ttl-todos')}
+        primary={nt('ttl-todos')}
         action={
           <>
             {action?.search}

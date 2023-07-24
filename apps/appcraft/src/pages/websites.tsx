@@ -8,7 +8,7 @@ export default function WebSites() {
     <PageContainer
       ContentProps={{ disableGutters: true }}
       maxWidth="lg"
-      title={nt('ttl-websites')}
+      primary={nt('ttl-websites')}
     >
       Websites
     </PageContainer>

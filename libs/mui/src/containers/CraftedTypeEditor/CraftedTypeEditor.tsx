@@ -63,11 +63,10 @@ export default function CraftedTypeEditor<V extends OptionValues>({
               },
             }}
           >
-            {ct('ttl-props')}
-
-            <Divider flexItem orientation="vertical" />
-
-            {values.type.replace(/([A-Z])/g, ' $1')}
+            <Style.AutoBreakTypography
+              primary={ct('ttl-props')}
+              secondary={values.type.replace(/([A-Z])/g, ' $1')}
+            />
           </Style.WidgetAppBar>
         )}
 

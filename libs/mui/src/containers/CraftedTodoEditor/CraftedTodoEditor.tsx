@@ -82,11 +82,10 @@ export default function CraftedTodoEditor({
               onClick: onBack,
             }}
           >
-            {ct('ttl-events')}
-
-            <Divider flexItem orientation="vertical" />
-
-            {todoPath}
+            <Style.AutoBreakTypography
+              primary={ct('ttl-events')}
+              secondary={todoPath}
+            />
           </Style.WidgetAppBar>
         )}
 

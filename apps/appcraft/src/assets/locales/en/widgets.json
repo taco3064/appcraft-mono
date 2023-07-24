@@ -7,5 +7,6 @@
   "ttl-category-layout": "Layout",
   "ttl-category-navigation": "Navigation",
   "ttl-category-tool": "Tool",
-  "ttl-detail": "Widget \n {{ name }}"
+  "ttl-detail": "Widget \n {{ name }}",
+  "ttl-preview": "Preview - {{ name }}"
 }

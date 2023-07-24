@@ -6,3 +6,4 @@ export * from './ThemeProvider';
 export * from './TodoEditor';
 export * from './TodoStepper';
 export * from './WidgetEditor';
+export * from './WidgetPreview';

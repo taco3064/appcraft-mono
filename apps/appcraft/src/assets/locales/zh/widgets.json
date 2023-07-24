@@ -7,5 +7,6 @@
   "ttl-category-layout": "排版布局",
   "ttl-category-navigation": "網站導航",
   "ttl-category-tool": "工具",
-  "ttl-detail": "組件管理 - {{ name }}"
+  "ttl-detail": "組件管理 \n {{ name }}",
+  "ttl-preview": "預覽 - {{ name }}"
 }

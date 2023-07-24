@@ -108,6 +108,7 @@ export default function WidgetEditor({
               }
             }
             fixedT={ct}
+            stateTypeFile={__WEBPACK_DEFINE__.STATE_TYPE_FILE}
             todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             version={__WEBPACK_DEFINE__.VERSION}
             widget={widget}

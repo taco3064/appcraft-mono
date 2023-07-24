@@ -7,6 +7,7 @@ declare module '@alienfast/i18next-loader?relativePathAsNamespace=true!*' {
 declare const __WEBPACK_DEFINE__: {
   ENV: 'development' | 'production';
   LANGUAGES: string[];
+  STATE_TYPE_FILE: string;
   TODO_TYPE_FILE: string;
   VERSION: string;
 };

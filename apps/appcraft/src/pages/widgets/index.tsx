@@ -1,9 +1,10 @@
 import ExtensionTwoToneIcon from '@mui/icons-material/ExtensionTwoTone';
 import Head from 'next/head';
+import LinearProgress from '@mui/material/LinearProgress';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { Style } from '@appcraft/mui';
+import { Suspense, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import { CommonButton } from '~appcraft/components/common';
 import { HierarchyList, WidgetPreview } from '~appcraft/containers';
@@ -62,7 +63,9 @@ export default function Widgets() {
         open={Boolean(preview?.id)}
         onClose={() => setPreview(undefined)}
       >
-        {preview && <WidgetPreview id={preview.id} />}
+        <Suspense fallback={<LinearProgress />}>
+          {preview && <WidgetPreview id={preview.id} />}
+        </Suspense>
       </Style.FlexDialog>
     </>
   );

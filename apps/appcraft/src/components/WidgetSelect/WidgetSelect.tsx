@@ -18,11 +18,11 @@ export default function WidgetSelect(props: WidgetSelectProps) {
         options.push(
           <ListItemButton key={category} disabled>
             <ListItemText
+              primary={wt(`ttl-category-${category}`)}
               primaryTypographyProps={{
                 variant: 'caption',
                 color: 'primary',
               }}
-              primary={wt(`ttl-category-${category}`)}
             />
           </ListItemButton>,
 
@@ -33,13 +33,13 @@ export default function WidgetSelect(props: WidgetSelectProps) {
               sx={(theme) => ({ paddingLeft: theme.spacing(2) })}
             >
               <ListItemText
+                primary={typeName}
                 primaryTypographyProps={{
                   variant: 'subtitle1',
                   color: 'text.primary',
                   lineHeight: 1.5,
                   style: { margin: 0 },
                 }}
-                primary={typeName}
               />
             </MenuItem>
           ))

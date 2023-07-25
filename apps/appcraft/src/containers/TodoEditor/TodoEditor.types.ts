@@ -1,20 +1,22 @@
+import type { ComponentProps } from 'react';
 import type { ConfigData, WidgetTodo } from '@appcraft/types';
 
+import { PersistentDrawerContent } from '~appcraft/styles';
 import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
-import type { PersistentDrawerContentProps } from '~appcraft/components';
 
 export interface TodoEditorProps {
   data: ConfigData<Record<string, WidgetTodo>, string>;
-  onActionNodePick?: NodePickerFn<'expand' | 'run' | 'reset' | 'save'>;
+  logZIndex?: number;
+  onActionNodePick?: NodePickerFn<'run' | 'reset' | 'save'>;
   onSave?: () => void;
 
-  superiors: {
+  superiors?: {
     names: Record<string, string>;
     breadcrumbs: Breadcrumb[];
   };
 
   PersistentDrawerContentProps?: Omit<
-    PersistentDrawerContentProps,
+    ComponentProps<typeof PersistentDrawerContent>,
     'ContentProps' | 'DrawerProps' | 'content' | 'drawer' | 'open' | 'onClose'
   >;
 }

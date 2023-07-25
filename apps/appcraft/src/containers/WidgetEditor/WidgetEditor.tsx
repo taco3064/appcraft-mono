@@ -1,8 +1,8 @@
-import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
-import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-import AutoFixOffIcon from '@mui/icons-material/AutoFixOff';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
 import { useCallback, useState } from 'react';
 import type { WidgetTodo } from '@appcraft/types';
 
@@ -10,17 +10,19 @@ import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Service from '~appcraft/services';
 import { CommonButton, LazyMui, typeMap } from '~appcraft/components/common';
+import { PersistentDrawerContent } from '~appcraft/styles';
 import type { WidgetEditorProps } from './WidgetEditor.types';
 
 export default function WidgetEditor({
   PersistentDrawerContentProps,
   data,
-  superiors: { names, breadcrumbs },
+  superiors,
   onActionNodePick = (e) => e,
   onSave,
+  onWrapTodoView,
 }: WidgetEditorProps) {
   const [at, ct, wt] = Hook.useFixedT('app', 'appcraft', 'widgets');
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const [widget, handleWidget] = Hook.useWidgetValues({
     data,
@@ -35,14 +37,15 @@ export default function WidgetEditor({
   const actionNode = Hook.useNodePicker(
     () =>
       onActionNodePick({
-        expand: !isCollapsable ? null : (
-          <CommonButton
-            btnVariant="icon"
-            icon={open ? <AutoFixOffIcon /> : <AutoFixHighIcon />}
-            text={wt(`btn-expand-${isSettingOpen ? 'off' : 'on'}`)}
-            onClick={() => setOpen(!open)}
-          />
-        ),
+        expand:
+          !isCollapsable || isSettingOpen ? null : (
+            <CommonButton
+              btnVariant="icon"
+              icon={<SettingsOutlinedIcon />}
+              text={wt(`btn-expand-${isSettingOpen ? 'off' : 'on'}`)}
+              onClick={() => setOpen(!open)}
+            />
+          ),
         reset: (
           <CommonButton
             btnVariant="icon"
@@ -65,17 +68,19 @@ export default function WidgetEditor({
 
   return (
     <>
-      <Comp.Breadcrumbs
-        ToolbarProps={{ disableGutters: true }}
-        action={actionNode}
-        onCustomize={([index]) => [
-          index,
-          ...breadcrumbs,
-          { text: names[data._id] },
-        ]}
-      />
+      {superiors && (
+        <Comp.Breadcrumbs
+          ToolbarProps={{ disableGutters: true }}
+          action={actionNode}
+          onCustomize={([index]) => [
+            index,
+            ...superiors.breadcrumbs,
+            { text: superiors.names[data._id] },
+          ]}
+        />
+      )}
 
-      <Comp.PersistentDrawerContent
+      <PersistentDrawerContent
         {...PersistentDrawerContentProps}
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
@@ -95,7 +100,15 @@ export default function WidgetEditor({
         }
         drawer={
           <CraftedWidgetEditor
+            BackButtonProps={
+              isCollapsable && {
+                icon: <ChevronRightIcon />,
+                text: at('btn-back'),
+                onClick: () => setOpen(false),
+              }
+            }
             fixedT={ct}
+            stateTypeFile={__WEBPACK_DEFINE__.STATE_TYPE_FILE}
             todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             version={__WEBPACK_DEFINE__.VERSION}
             widget={widget}
@@ -133,6 +146,7 @@ export default function WidgetEditor({
                   <Comp.WrapTodoSelect
                     {...{ disabled, label, onChange }}
                     value={value as string}
+                    onTodoView={onWrapTodoView}
                   />
                 );
               }

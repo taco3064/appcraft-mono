@@ -1,4 +1,5 @@
-import type { TypesParseOptions } from './prop-types-def.types';
+import type * as State from './state.types';
+import type { TypesMapping, TypesParseOptions } from './prop-types-def.types';
 import type { WidgetTodo } from './todo.types';
 
 //* Variables
@@ -8,14 +9,7 @@ enum OptionCategory {
   plainText,
 }
 
-export type NodeType = 'element' | 'node';
-export type ChildNodes = Record<string, NodeType>;
-
-export type WidgetState = {
-  alias: string;
-  description?: string;
-  defaultValue?: unknown;
-};
+export type ChildNodes = Record<string, State.NodeType>;
 
 export type NodeAndEventProps = {
   nodes: Record<string, ChildNodes>;
@@ -47,7 +41,12 @@ export type NodeWidget = BaseOptions<
 >;
 
 export interface RootNodeWidget extends NodeWidget {
-  state: Record<string, WidgetState>;
+  state: {
+    mixedTypes?: TypesMapping;
+    nodes?: State.WidgetNodesState;
+    props?: State.WidgetPropsState;
+    todos?: State.WidgetTodosState;
+  };
 }
 
 export type WidgetOptions = PlainTextWidget | NodeWidget;

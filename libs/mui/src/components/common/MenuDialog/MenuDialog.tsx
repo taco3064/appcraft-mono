@@ -1,9 +1,9 @@
+import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import type { MouseEvent } from 'react';
 
-import { FlexDialog } from '../../../styles';
 import type { MenuDialogProps } from './MenuDialog.types';
 
 export default function MenuDialog<V extends { toString(): string }>({
@@ -19,7 +19,7 @@ export default function MenuDialog<V extends { toString(): string }>({
   };
 
   return (
-    <FlexDialog {...{ open, onClose }} fullWidth maxWidth="xs">
+    <Dialog {...{ open, onClose }} fullWidth maxWidth="xs">
       <MenuList
         sx={{
           display: 'flex',
@@ -48,6 +48,6 @@ export default function MenuDialog<V extends { toString(): string }>({
           </MenuItem>
         ))}
       </MenuList>
-    </FlexDialog>
+    </Dialog>
   );
 }

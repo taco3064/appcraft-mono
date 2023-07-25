@@ -3,7 +3,7 @@ import type { ReactFlowProps } from 'reactflow';
 import type { MouseEvent } from 'react';
 
 import type { ChangeHandler } from '../../contexts';
-import type { TodoEdge, TodoNode, TodoState } from '../../utils';
+import type { EditingTodo, TodoEdge, TodoNode } from '../../utils';
 
 export type TodoChangeHandler = (
   values: Record<string, Appcraft.WidgetTodo>
@@ -14,7 +14,7 @@ export type TodoGeneratorHook = (
   todos: Record<string, Appcraft.WidgetTodo>,
   onChange: TodoChangeHandler
 ) => [
-  { editing: TodoState; edges: TodoEdge[]; nodes: TodoNode[] },
+  { editing: EditingTodo; edges: TodoEdge[]; nodes: TodoNode[] },
   {
     cancel: () => void;
     change: ChangeHandler<Appcraft.ConfigOptions>;

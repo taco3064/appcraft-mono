@@ -9,16 +9,18 @@ import { nanoid } from 'nanoid';
 import { useEffect, useMemo, useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
-import { Breadcrumbs, PersistentDrawerContent } from '~appcraft/components';
+import { Breadcrumbs } from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
 import { Parser, getTypeDefinition } from '~appcraft/services';
+import { PersistentDrawerContent } from '~appcraft/styles';
 import { TodoStepper } from '../TodoStepper';
 import type { TodoEditorProps } from './TodoEditor.types';
 
 export default function TodoEditor({
   PersistentDrawerContentProps,
   data,
-  superiors: { names, breadcrumbs },
+  logZIndex,
+  superiors,
   onActionNodePick = (e) => e,
   onSave,
 }: TodoEditorProps) {
@@ -41,15 +43,6 @@ export default function TodoEditor({
   const actionNode = Hook.useNodePicker(
     () =>
       onActionNodePick({
-        expand:
-          !isCollapsable || open ? null : (
-            <CommonButton
-              btnVariant="icon"
-              icon={<AccountTreeOutlinedIcon />}
-              text={tt('btn-logs')}
-              onClick={() => setOpen(!open)}
-            />
-          ),
         run: (
           <CommonButton
             btnVariant="icon"
@@ -89,20 +82,26 @@ export default function TodoEditor({
 
   return (
     <>
-      <Breadcrumbs
-        ToolbarProps={{ disableGutters: true }}
-        action={actionNode}
-        onCustomize={([index]) => [
-          index,
-          ...breadcrumbs,
-          { text: names[data._id] },
-        ]}
-      />
+      {superiors && (
+        <Breadcrumbs
+          ToolbarProps={{ disableGutters: true }}
+          action={actionNode}
+          onCustomize={([index]) => [
+            index,
+            ...superiors.breadcrumbs,
+            { text: superiors.names[data._id] },
+          ]}
+        />
+      )}
 
       <PersistentDrawerContent
         {...PersistentDrawerContentProps}
         ContentProps={{ style: { alignItems: 'center' } }}
-        DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
+        DrawerProps={{
+          anchor: 'right',
+          maxWidth: 'xs',
+          sx: { zIndex: logZIndex },
+        }}
         open={isLogsOpen}
         content={
           <CraftedTodoEditor

@@ -16,9 +16,12 @@ export default function MutationTodoNodeDialog({
   return (
     <FlexDialog
       {...{ open, onClose }}
+      disableContentGutter
+      disableContentJustifyCenter
       fullWidth
       maxWidth="xs"
       direction="column"
+      title={values?.todo.description || ct('ttl-events')}
       action={
         <>
           <Button onClick={(e) => onClose(e, 'escapeKeyDown')}>

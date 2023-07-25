@@ -1,11 +1,11 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import List from '@mui/material/List';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
+import type { NodeWidget } from '@appcraft/types';
 
 import * as Hook from '../../hooks';
 import * as Style from '../../styles';
-import { Breadcrumbs } from '../common';
-import { TypeItem } from '../TypeItem';
+import { Breadcrumbs, TypeItem } from '../common';
 import type { OptionValues } from '../../contexts';
 import type { TypeListProps } from './TypeList.types';
 
@@ -31,6 +31,7 @@ export default function TypeList<V extends OptionValues>({
   return (
     <List
       disablePadding
+      style={{ background: 'inherit' }}
       subheader={
         breadcrumbs.length > 0 && (
           <Style.ListToolbar>
@@ -74,7 +75,12 @@ export default function TypeList<V extends OptionValues>({
         <Style.ListPlaceholder message={ct('msg-no-properties')} />
       ) : (
         items.map(({ key, ...item }) => (
-          <TypeItem key={key} {...item} onSubitemView={handleTo} />
+          <TypeItem
+            key={key}
+            {...item}
+            elementName={(values as NodeWidget).typeName}
+            onSubitemView={handleTo}
+          />
         ))
       )}
     </List>

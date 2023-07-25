@@ -4,7 +4,7 @@ import type * as Appcraft from '@appcraft/types';
 import type { Components } from '@mui/material/styles';
 
 import { getPropPath } from '../prop-path';
-import { FetchTodoWrap, getEventHandler } from '../todo-parser';
+import { getEventHandler } from '../todo-parser';
 import type * as Types from './props-parser.types';
 
 export const getNodesAndEventsKey: Types.GetNodesAndEventsKey = (

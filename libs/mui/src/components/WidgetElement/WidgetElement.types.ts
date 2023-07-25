@@ -4,12 +4,14 @@ import type { FixedT } from '../../contexts';
 import type { PathsChangeHandler } from '../../hooks';
 import type { PropPaths } from '../../utils';
 
-export interface WidgetNodeProps<I extends Appcraft.WidgetOptions> {
+export interface WidgetElementProps<I extends Appcraft.WidgetOptions> {
+  basePaths: PropPaths;
   ct: FixedT;
+  defaultOpen: boolean;
   index: number;
   item: I;
   event: I extends Appcraft.NodeWidget ? string[] : undefined;
-  structure: I extends Appcraft.NodeWidget ? Appcraft.ChildNodes : undefined;
+  node: I extends Appcraft.NodeWidget ? Appcraft.ChildNodes : undefined;
   superiorNodeType: Appcraft.NodeType;
 
   onClick: (paths: PropPaths) => void;

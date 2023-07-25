@@ -1,11 +1,9 @@
+import _sum from 'lodash/sum';
 import AddIcon from '@mui/icons-material/Add';
-import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
@@ -18,14 +16,18 @@ import { StateProvider } from '../../contexts';
 import { getNodesAndEventsKey } from '../../utils';
 import type * as Types from './CraftedWidgetEditor.types';
 
+const STATE_EXCLUDE: RegExp[] = [];
+
 export default function CraftedWidgetEditor({
+  BackButtonProps,
   disableCategories,
   fixedT,
-  renderWidgetTypeSelection,
+  stateTypeFile,
   todoTypeFile,
   version,
   widget,
   renderOverridePureItem,
+  renderWidgetTypeSelection,
   onFetchNodesAndEvents,
   onFetchConfigDefinition,
   onFetchWidgetDefinition,
@@ -35,36 +37,54 @@ export default function CraftedWidgetEditor({
   const [newWidgetOpen, setNewWidgetOpen] = useState(false);
   const [stateMgrOpen, setStateMgrOpen] = useState(false);
 
+  const stateToggle = (
+    <Style.IconTipButton
+      title={ct('btn-state')}
+      onClick={() => setStateMgrOpen(true)}
+      disabled={
+        !_sum(
+          Object.values(widget?.state || {}).map(
+            (state) => Object.keys(state).length
+          )
+        )
+      }
+    >
+      <StorageRoundedIcon />
+    </Style.IconTipButton>
+  );
+
   const [{ breadcrumbs, items, paths, type }, onPathsChange] =
-    Hook.useStructure(widget as Appcraft.NodeWidget);
+    Hook.useStructure(widget as Appcraft.RootNodeWidget);
 
   const [{ editedWidget, widgetPath, todoPath }, handleMutation] =
     Hook.useWidgetMutation(widget as Appcraft.RootNodeWidget, onWidgetChange);
 
-  const LazyWidgetNodes = Hook.useLazyWidgetNodes<Types.LazyWidgetNodesProps>(
-    items,
-    version,
-    onFetchNodesAndEvents,
-    ({ fetchData: { events, nodes } = {}, widgets, ...props }) =>
-      widgets.length === 0 ? (
-        <Style.ListPlaceholder message={ct('msg-no-widgets')} />
-      ) : (
-        <>
-          {widgets.map((item, index) => {
-            const key = getNodesAndEventsKey(item, `item_${index}`);
-            const event = events?.[key];
-            const structure = nodes?.[key];
+  const LazyWidgetElements =
+    Hook.useLazyWidgetElements<Types.LazyWidgetElementsProps>(
+      items,
+      version,
+      onFetchNodesAndEvents,
+      ({ fetchData: { events, nodes } = {}, widgets, ...props }) =>
+        widgets.length === 0 ? (
+          <Style.ListPlaceholder message={ct('msg-no-widgets')} />
+        ) : (
+          <>
+            {widgets.map((item, index) => {
+              const key = getNodesAndEventsKey(item, `item_${index}`);
+              const event = events?.[key];
+              const node = nodes?.[key];
 
-            return (
-              <Comp.WidgetNode
-                {...props}
-                {...{ key, index, item, event, structure }}
-              />
-            );
-          })}
-        </>
-      )
-  );
+              return (
+                <Comp.WidgetElement
+                  {...props}
+                  {...{ key, index, item, event, node }}
+                  defaultOpen={item === widget}
+                />
+              );
+            })}
+          </>
+        )
+    );
 
   return (
     <>
@@ -86,14 +106,25 @@ export default function CraftedWidgetEditor({
 
       <Comp.MutationStateDialog
         ct={ct}
-        open={stateMgrOpen}
-        values={widget}
+        open={Boolean(widget && stateMgrOpen)}
+        typeFile={stateTypeFile}
+        values={widget as Appcraft.RootNodeWidget}
         onClose={() => setStateMgrOpen(false)}
         onConfirm={onWidgetChange}
+        renderEditor={(stateConfig, onStateChange) => (
+          <CraftedTypeEditor
+            {...{ fixedT, renderOverridePureItem }}
+            exclude={STATE_EXCLUDE}
+            values={stateConfig}
+            onChange={onStateChange}
+            onFetchDefinition={onFetchWidgetDefinition}
+          />
+        )}
       />
 
       <StateProvider
         basePath={widgetPath}
+        toggle={stateToggle}
         values={widget}
         onChange={onWidgetChange}
       >
@@ -136,28 +167,12 @@ export default function CraftedWidgetEditor({
           fullHeight
           in={editedWidget?.category !== 'node'}
         >
-          <AppBar color="default" position="sticky">
-            <Toolbar
-              variant="regular"
-              style={{ justifyContent: 'space-between' }}
-            >
-              <Typography
-                variant="subtitle1"
-                fontWeight="bolder"
-                color="primary"
-              >
-                {ct('ttl-structure')}
-              </Typography>
-
-              <Style.IconTipButton
-                size="large"
-                title={ct('btn-state-mgr')}
-                onClick={() => setStateMgrOpen(true)}
-              >
-                <StorageRoundedIcon />
-              </Style.IconTipButton>
-            </Toolbar>
-          </AppBar>
+          <Style.WidgetAppBar
+            BackButtonProps={BackButtonProps}
+            action={stateToggle}
+          >
+            {ct('ttl-structure')}
+          </Style.WidgetAppBar>
 
           <List
             disablePadding
@@ -187,21 +202,14 @@ export default function CraftedWidgetEditor({
               />
             ) : (
               <Suspense fallback={<LinearProgress />}>
-                <LazyWidgetNodes
+                <LazyWidgetElements
+                  basePaths={paths}
                   ct={ct}
                   superiorNodeType={type}
-                  onClick={(editedPaths) =>
-                    handleMutation.editing([...paths, ...editedPaths])
-                  }
-                  onEventActive={(activePaths) =>
-                    handleMutation.todo([...paths, ...activePaths])
-                  }
-                  onNodeActive={(activePaths, activeNodeType) =>
-                    onPathsChange([...paths, ...activePaths], activeNodeType)
-                  }
-                  onRemove={(removedPaths) =>
-                    handleMutation.remove([...paths, ...removedPaths])
-                  }
+                  onClick={handleMutation.editing}
+                  onEventActive={handleMutation.todo}
+                  onNodeActive={onPathsChange}
+                  onRemove={handleMutation.remove}
                 />
               </Suspense>
             )}

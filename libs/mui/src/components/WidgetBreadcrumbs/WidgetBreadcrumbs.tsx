@@ -36,11 +36,7 @@ export default function WidgetBreadcrumbs({
       </Breadcrumbs>
 
       {addable && (
-        <Style.IconTipButton
-          title={ct('btn-new-widget')}
-          size="small"
-          onClick={onAdd}
-        >
+        <Style.IconTipButton title={ct('btn-new-widget')} onClick={onAdd}>
           <AddIcon />
         </Style.IconTipButton>
       )}

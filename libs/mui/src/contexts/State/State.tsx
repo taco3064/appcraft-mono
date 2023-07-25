@@ -6,12 +6,13 @@ const StateContext = React.createContext<Types.StateContextValue>({
 });
 
 export const useStateContext = () => {
-  const { handleChangeRef, ...value } = React.useContext(
+  const { handleChangeRef, toggleRef, ...value } = React.useContext(
     StateContext
   ) as Required<Types.StateContextValue>;
 
   return {
     ...value,
+    toggle: toggleRef?.current || null,
     onChange: handleChangeRef?.current || (() => null),
   };
 };
@@ -19,16 +20,20 @@ export const useStateContext = () => {
 export function StateProvider({
   basePath,
   children,
+  toggle,
   values,
   onChange,
 }: Types.StateProviderProps) {
   const handleChangeRef = React.useRef(onChange);
+  const toggleRef = React.useRef(toggle);
+
   const value = React.useMemo(
-    () => ({ basePath, values, handleChangeRef }),
+    () => ({ basePath, values, handleChangeRef, toggleRef }),
     [basePath, values]
   );
 
   React.useImperativeHandle(handleChangeRef, () => onChange, [onChange]);
+  React.useImperativeHandle(toggleRef, () => toggle, [toggle]);
 
   return (
     <StateContext.Provider value={value}>{children}</StateContext.Provider>

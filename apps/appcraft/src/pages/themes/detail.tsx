@@ -13,6 +13,8 @@ import { ConfigDetail } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
 
+const CONFIG_DETAIL_ACTIONS = ['reset', 'save'];
+
 export default function Detail() {
   const [at, tt] = Hook.useFixedT('app', 'themes');
   const [, handleSetting] = Hook.useSettingModified();
@@ -21,10 +23,9 @@ export default function Detail() {
   const id = query.id as string;
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
 
-  const [action, handleActionNodePick] = Hook.useNodePickHandle([
-    'reset',
-    'save',
-  ]);
+  const [action, handleActionNodePick] = Hook.useNodePickHandle(
+    CONFIG_DETAIL_ACTIONS
+  );
 
   const { data: theme, refetch } = useQuery({
     queryKey: [id],
@@ -36,7 +37,8 @@ export default function Detail() {
     <PageContainer
       ContentProps={{ disableGutters: true }}
       maxWidth="lg"
-      title={tt('ttl-detail', { name: superiors[id] })}
+      primary={tt('ttl-detail')}
+      secondary={superiors[id]}
       action={
         <>
           {theme && (

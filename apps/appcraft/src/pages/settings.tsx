@@ -24,7 +24,7 @@ export default function Settings() {
   return (
     <PageContainer
       maxWidth="xs"
-      title={nt('ttl-settings')}
+      primary={nt('ttl-settings')}
       ContentProps={{
         sx: (theme) => ({
           display: 'flex',
@@ -60,13 +60,15 @@ export default function Settings() {
           </MenuItem>
         ))}
 
-        {palettes.length && <Divider />}
-
-        {palettes.map(({ _id: value, name }) => (
-          <MenuItem key={value} value={value}>
-            {name}
-          </MenuItem>
-        ))}
+        {!palettes?.length ? (
+          <Divider />
+        ) : (
+          palettes.map(({ _id: value, name }) => (
+            <MenuItem key={value} value={value}>
+              {name}
+            </MenuItem>
+          ))
+        )}
       </TextField>
 
       <Divider />

@@ -8,21 +8,22 @@ import { CommonButton } from '~appcraft/components/common';
 import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 
+const HIERARCHY_LIST_ACTIONS = ['search', 'addItem'];
+
 export default function Themes() {
   const { pathname } = useRouter();
   const [, handleSetting] = Hook.useSettingModified();
   const [at, nt] = Hook.useFixedT('app', 'nav');
 
-  const [action, handleActionNodePick] = Hook.useNodePickHandle([
-    'search',
-    'addItem',
-  ]);
+  const [action, handleActionNodePick] = Hook.useNodePickHandle(
+    HIERARCHY_LIST_ACTIONS
+  );
 
   return (
     <PageContainer
       ContentProps={{ disableGutters: true }}
       maxWidth="lg"
-      title={nt('ttl-themes')}
+      primary={nt('ttl-themes')}
       action={
         <>
           {action?.search}

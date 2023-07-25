@@ -10,7 +10,7 @@ export interface ConfigDetailProps
   header?: ReactNode;
   onActionNodePick?: Hooks.NodePickerFn<'reset' | 'save'>;
 
-  superiors: {
+  superiors?: {
     names: Record<string, string>;
     breadcrumbs: Hooks.Breadcrumb[];
   };

@@ -47,6 +47,9 @@ export const CompositeIcon = (() => {
       </Badge>
     ),
     (theme, { anchorOrigin }) => ({
+      badge: {
+        zIndex: 0,
+      },
       secondary: {
         backdropFilter: `blur(${theme.spacing(2)})`,
         borderRadius: '50%',

@@ -1,6 +1,5 @@
 import _get from 'lodash/get';
 import _set from 'lodash/set';
-import { useTransition } from 'react';
 
 import * as Util from '../../utils';
 import { useStateContext } from '../../contexts';
@@ -13,7 +12,6 @@ const useStateSelection: StateSelectionHook = (
   renderFn
 ) => {
   const { basePath, values, onChange } = useStateContext();
-  const [, startTransition] = useTransition();
   const category = Util.getStateCategory(generator);
 
   const path = Util.getPropPath(
@@ -30,15 +28,22 @@ const useStateSelection: StateSelectionHook = (
       : renderFn({
           checked,
           onSelect: (newChecked) => {
-            const state = _get(values, ['state', category]) || {};
+            const { state: { [category]: state = {}, ...$state } = {} } =
+              values;
 
-            if (!newChecked) {
-              delete state[path];
-            } else {
+            if (newChecked) {
               state[path] = Util.getInitialState(generator, alias);
+            } else {
+              delete state[path];
             }
 
-            onChange({ ..._set(values, ['state', category], { ...state }) });
+            onChange({
+              ...values,
+              state: {
+                ...$state,
+                [category]: state,
+              },
+            });
           },
         }),
   ];

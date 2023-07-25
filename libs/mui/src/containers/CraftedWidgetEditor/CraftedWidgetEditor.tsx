@@ -104,23 +104,25 @@ export default function CraftedWidgetEditor({
         onConfirm={handleMutation.modify}
       />
 
-      <Comp.MutationStateDialog
-        ct={ct}
-        open={Boolean(widget && stateOpen)}
-        typeFile={stateTypeFile}
-        values={widget as Appcraft.RootNodeWidget}
-        onClose={() => setStateOpen(false)}
-        onConfirm={onWidgetChange}
-        renderEditor={(stateConfig, onStateChange) => (
-          <CraftedTypeEditor
-            {...{ fixedT, renderOverridePureItem }}
-            exclude={STATE_EXCLUDE}
-            values={stateConfig}
-            onChange={onStateChange}
-            onFetchDefinition={onFetchConfigDefinition}
-          />
-        )}
-      />
+      {widget?.state && (
+        <Comp.MutationStateDialog
+          ct={ct}
+          open={Boolean(widget && stateOpen)}
+          typeFile={stateTypeFile}
+          values={widget}
+          onClose={() => setStateOpen(false)}
+          onConfirm={onWidgetChange}
+          renderEditor={(stateConfig, onStateChange) => (
+            <CraftedTypeEditor
+              {...{ fixedT, renderOverridePureItem }}
+              exclude={STATE_EXCLUDE}
+              values={stateConfig}
+              onChange={onStateChange}
+              onFetchDefinition={onFetchConfigDefinition}
+            />
+          )}
+        />
+      )}
 
       <StateProvider
         basePath={widgetPath}

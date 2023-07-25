@@ -24,7 +24,8 @@ const useCollection = <V extends OptionValues>(defaultValues?: Collection) => {
     path: collectionPath,
     source,
     values:
-      ((_get(source, collectionPath) || defaultValues) as Collection) || null,
+      (!collectionPath ? source : _get(source, collectionPath)) ||
+      defaultValues,
   };
 };
 

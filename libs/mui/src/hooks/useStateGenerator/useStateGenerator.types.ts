@@ -23,5 +23,6 @@ export type StateGeneratorHook = <C extends StateCategory>(
     clear: () => void;
     change: ChangeHandler<Appcraft.ConfigOptions>;
     edit: (path: string) => void;
+    remove: (path: string) => void;
   }
 ];

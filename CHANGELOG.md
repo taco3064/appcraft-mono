@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.68](https://github.com/taco3064/appcraft-mono/compare/v0.0.67...v0.0.68) (2023-07-25)
+
+
+### Features
+
+* **@appcraft/mui:** add state list ([5b4a63f](https://github.com/taco3064/appcraft-mono/commit/5b4a63f8f565ad3aeb04d42f4dd5cb21a8e01a44))
+* **@appcraft/mui:** add state selection ([b49f17a](https://github.com/taco3064/appcraft-mono/commit/b49f17a401b82df0d2fe5fd0ff38b179b7244834))
+* **@appcraft/mui:** make state context support to keep toggle element ([d5d14ad](https://github.com/taco3064/appcraft-mono/commit/d5d14ad0c35882278cabfcdba8db37c45ccc27a0))
+* **@appcraft/mui:** support to generate initial state options ([61c1a82](https://github.com/taco3064/appcraft-mono/commit/61c1a8293729e8089f58897e2cbe901ebc79e62c))
+* **apps/appcraft:** add widget preview feature ([4cbaef2](https://github.com/taco3064/appcraft-mono/commit/4cbaef2630956676c80a9056e3b09e2fcfde6a51))
+* **apps/appcraft:** change to use dialog to display wrap todo settings ([7fa6ad5](https://github.com/taco3064/appcraft-mono/commit/7fa6ad5dd55f271c7ff040948e03aa1d90ae3b3f))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** update types/locales ([dd9c5f6](https://github.com/taco3064/appcraft-mono/commit/dd9c5f621ca4fb74c40edc5372863dcf0087ca1c))
+* **@appcraft/types:** update types ([3ab7a39](https://github.com/taco3064/appcraft-mono/commit/3ab7a391f702fa72fb4365a028b5aada3958bcf9))
+* **apps/appcraft:** add suspense to widget preview ([d1410f9](https://github.com/taco3064/appcraft-mono/commit/d1410f93651b87ae71ab9b7514c2b6ffaf92c5cd))
+* **apps/appcraft:** make breadcrumbs support RWD ([6f21d9c](https://github.com/taco3064/appcraft-mono/commit/6f21d9c1dbd546ca089d12a5f66a759b5a2c911a))
+* fixed bugs ([ccfd700](https://github.com/taco3064/appcraft-mono/commit/ccfd70085c18aa431ddf19ad8cf0c40351bc4291))
+* **mutation-state-dialog:** fixed bugs ([f4e6fc7](https://github.com/taco3064/appcraft-mono/commit/f4e6fc7ba59438080e3b4a2023bd52f5905a1ed8))
+* update types ([f35a905](https://github.com/taco3064/appcraft-mono/commit/f35a905c6dc730eb3a848c9d5ef309e2f62c4da1))
+* **widget-element:** update state selection rule for widget node ([fab5c0a](https://github.com/taco3064/appcraft-mono/commit/fab5c0a6096620bb643587e008397e7a5f1698be))
+
 ### [0.0.67](https://github.com/taco3064/appcraft-mono/compare/v0.0.66...v0.0.67) (2023-07-20)
 
 

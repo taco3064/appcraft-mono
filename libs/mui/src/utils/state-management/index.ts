@@ -1,7 +1,7 @@
 export {
-  getEditingState,
+  getStateConfig,
   getInitialState,
   getStateCategory,
 } from './state-management';
 
-export type { EditingState, StateGenerator } from './state-management.types';
+export type { StateCategory, StateGenerator } from './state-management.types';

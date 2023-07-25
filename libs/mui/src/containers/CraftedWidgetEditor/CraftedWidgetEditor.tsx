@@ -35,12 +35,12 @@ export default function CraftedWidgetEditor({
 }: Types.CraftedWidgetEditorProps) {
   const ct = Hook.useFixedT(fixedT);
   const [newWidgetOpen, setNewWidgetOpen] = useState(false);
-  const [stateMgrOpen, setStateMgrOpen] = useState(false);
+  const [stateOpen, setStateOpen] = useState(false);
 
   const stateToggle = (
     <Style.IconTipButton
       title={ct('btn-state')}
-      onClick={() => setStateMgrOpen(true)}
+      onClick={() => setStateOpen(true)}
       disabled={
         !_sum(
           Object.values(widget?.state || {}).map(
@@ -106,10 +106,10 @@ export default function CraftedWidgetEditor({
 
       <Comp.MutationStateDialog
         ct={ct}
-        open={Boolean(widget && stateMgrOpen)}
+        open={Boolean(widget && stateOpen)}
         typeFile={stateTypeFile}
         values={widget as Appcraft.RootNodeWidget}
-        onClose={() => setStateMgrOpen(false)}
+        onClose={() => setStateOpen(false)}
         onConfirm={onWidgetChange}
         renderEditor={(stateConfig, onStateChange) => (
           <CraftedTypeEditor
@@ -117,7 +117,7 @@ export default function CraftedWidgetEditor({
             exclude={STATE_EXCLUDE}
             values={stateConfig}
             onChange={onStateChange}
-            onFetchDefinition={onFetchWidgetDefinition}
+            onFetchDefinition={onFetchConfigDefinition}
           />
         )}
       />

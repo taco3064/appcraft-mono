@@ -43,9 +43,9 @@ export type NodeWidget = BaseOptions<
 export interface RootNodeWidget extends NodeWidget {
   state: {
     mixedTypes?: TypesMapping;
-    nodes?: State.WidgetNodesState;
-    props?: State.WidgetPropsState;
-    todos?: State.WidgetTodosState;
+    nodes?: Record<string, State.ElementState | State.NodeState>;
+    props?: Record<string, State.PropsState>;
+    todos?: Record<string, State.TodosState>;
   };
 }
 

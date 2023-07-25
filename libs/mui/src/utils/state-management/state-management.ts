@@ -46,7 +46,7 @@ export const getInitialState: Types.GetInitailState = (generator, alias) => {
   }
 };
 
-export const getEditingState: Types.GetEditingState = (
+export const getStateConfig: Types.GetStateConfig = (
   typeFile,
   category,
   { mixedTypes = {}, [category]: state }
@@ -62,43 +62,31 @@ export const getEditingState: Types.GetEditingState = (
   }, {});
 
   switch (category) {
-    case 'props':
-      return {
-        state,
-        config: {
-          category: 'config',
-          mixedTypes: overrideMixedTypes,
-          typeFile,
-          typeName: 'WidgetPropsState',
-          props: splitProps(state),
-        },
-      };
-
     case 'nodes':
       return {
-        state,
-        config: {
-          category: 'config',
-          mixedTypes: overrideMixedTypes,
-          typeFile,
-          typeName: 'WidgetNodesState',
-          props: splitProps(state),
-        },
+        category: 'config',
+        mixedTypes: overrideMixedTypes,
+        typeFile,
+        typeName: 'WidgetNodesState',
+        props: splitProps(state),
       };
 
     case 'todos':
       return {
-        state,
-        config: {
-          category: 'config',
-          mixedTypes: overrideMixedTypes,
-          typeFile,
-          typeName: 'WidgetTodosState',
-          props: splitProps(state),
-        },
+        category: 'config',
+        mixedTypes: overrideMixedTypes,
+        typeFile,
+        typeName: 'WidgetTodosState',
+        props: splitProps(state),
       };
 
     default:
-      return null;
+      return {
+        category: 'config',
+        mixedTypes: overrideMixedTypes,
+        typeFile,
+        typeName: 'WidgetPropsState',
+        props: splitProps(state),
+      };
   }
 };

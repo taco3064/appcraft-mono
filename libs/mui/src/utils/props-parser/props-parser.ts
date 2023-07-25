@@ -44,7 +44,7 @@ export const splitProps: Types.SplitProps = (target, paths = []) => {
   return { [getPropPath(paths)]: target };
 };
 
-export const getProps = <P extends object>(
+export const getProps = <P>(
   options: Appcraft.NodeWidget | Appcraft.ConfigOptions,
   { renderer, fetchTodoWrap }: Types.GetPropsOptions = {}
 ) => {

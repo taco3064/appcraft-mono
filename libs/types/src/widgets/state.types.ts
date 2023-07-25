@@ -18,17 +18,6 @@ export type PropsState = BaseState<
   }
 >;
 
-export type NodesState<N extends NodeType> = BaseState<
-  'nodes',
-  {
-    nodeType: N;
-    templateWidgetId: string;
-    defaultValue?: N extends 'element'
-      ? { [key: string]: Definition }
-      : Definition[];
-  }
->;
-
 export type TodosState = BaseState<
   'todos',
   {
@@ -36,16 +25,22 @@ export type TodosState = BaseState<
   }
 >;
 
-export type WidgetPropsState = Record<string, PropsState>;
-export type WidgetTodosState = Record<string, TodosState>;
-
-export type WidgetNodesState = Record<
-  string,
-  NodesState<'element'> | NodesState<'node'>
+export type ElementState = BaseState<
+  'nodes',
+  {
+    nodeType: 'element';
+    templateWidgetId: string;
+    defaultValue?: { [key: string]: Definition };
+  }
 >;
 
-export type WidgetState =
-  | PropsState
-  | NodesState<'element'>
-  | NodesState<'node'>
-  | TodosState;
+export type NodeState = BaseState<
+  'nodes',
+  {
+    nodeType: 'node';
+    templateWidgetId: string;
+    defaultValue?: Definition[];
+  }
+>;
+
+export type WidgetState = ElementState | NodeState | PropsState | TodosState;

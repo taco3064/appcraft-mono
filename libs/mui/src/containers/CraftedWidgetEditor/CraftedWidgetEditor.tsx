@@ -1,10 +1,10 @@
-import _sum from 'lodash/sum';
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
-import { Suspense, useState } from 'react';
+import { Suspense, useMemo, useState } from 'react';
+import { nanoid } from 'nanoid';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Comp from '../../components';
@@ -34,6 +34,7 @@ export default function CraftedWidgetEditor({
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
   const ct = Hook.useFixedT(fixedT);
+  const stateKey = useMemo(() => nanoid(4), [widget?.state]);
   const [newWidgetOpen, setNewWidgetOpen] = useState(false);
   const [stateOpen, setStateOpen] = useState(false);
 
@@ -41,13 +42,6 @@ export default function CraftedWidgetEditor({
     <Style.IconTipButton
       title={ct('btn-state')}
       onClick={() => setStateOpen(true)}
-      disabled={
-        !_sum(
-          Object.values(widget?.state || {}).map(
-            (state) => Object.keys(state).length
-          )
-        )
-      }
     >
       <StorageRoundedIcon />
     </Style.IconTipButton>
@@ -104,24 +98,23 @@ export default function CraftedWidgetEditor({
         onConfirm={handleMutation.modify}
       />
 
-      {widget?.state && (
-        <Comp.MutationStateDialog
-          ct={ct}
-          open={Boolean(widget && stateOpen)}
-          typeFile={stateTypeFile}
-          values={widget}
-          onClose={() => setStateOpen(false)}
-          onConfirm={onWidgetChange}
-          renderEditor={(props) => (
-            <CraftedTypeEditor
-              {...props}
-              {...{ fixedT, renderOverridePureItem }}
-              exclude={STATE_EXCLUDE}
-              onFetchDefinition={onFetchConfigDefinition}
-            />
-          )}
-        />
-      )}
+      <Comp.MutationStateDialog
+        key={stateKey}
+        ct={ct}
+        open={Boolean(widget && stateOpen)}
+        typeFile={stateTypeFile}
+        values={widget as Appcraft.RootNodeWidget}
+        onClose={() => setStateOpen(false)}
+        onConfirm={onWidgetChange}
+        renderEditor={(props) => (
+          <CraftedTypeEditor
+            {...props}
+            {...{ fixedT, renderOverridePureItem }}
+            exclude={STATE_EXCLUDE}
+            onFetchDefinition={onFetchConfigDefinition}
+          />
+        )}
+      />
 
       <StateProvider
         basePath={widgetPath}

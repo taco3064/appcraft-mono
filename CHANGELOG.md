@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.69](https://github.com/taco3064/appcraft-mono/compare/v0.0.68...v0.0.69) (2023-07-25)
+
+
+### Features
+
+* **@appcraft/mui:** finish the feature of state editor ([e2048bb](https://github.com/taco3064/appcraft-mono/commit/e2048bbd908c22ae2144617bfba813cf8fbb9e4f))
+
+
+### Bug Fixes
+
+* **@appcraft/types:** update types ([bb1c114](https://github.com/taco3064/appcraft-mono/commit/bb1c114e18dc8f3ca8aa3fc85cdfcd7046bea311))
+
 ### [0.0.68](https://github.com/taco3064/appcraft-mono/compare/v0.0.67...v0.0.68) (2023-07-25)
 
 

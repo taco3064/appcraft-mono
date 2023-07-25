@@ -2,7 +2,7 @@ import type * as Appcraft from '@appcraft/types';
 import type { Edge, Node } from 'reactflow';
 
 //* Variables
-export type TodoState = {
+export type EditingTodo = {
   todo: Omit<Appcraft.WidgetTodo, 'mixedTypes'>;
   config: Appcraft.ConfigOptions;
 } | null;
@@ -14,12 +14,12 @@ export type TodoNode = Node<Appcraft.WidgetTodo>;
 export type GetInitialTodo = (
   typeFile: string,
   category: Appcraft.WidgetTodo['category']
-) => TodoState;
+) => EditingTodo;
 
-export type GetTodoState = (
+export type GetEditingTodo = (
   typeFile: string,
   todo: Appcraft.WidgetTodo
-) => TodoState;
+) => EditingTodo;
 
 export type GetFlowNodes = (
   todos: Record<string, Appcraft.WidgetTodo>,

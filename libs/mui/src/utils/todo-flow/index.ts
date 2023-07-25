@@ -1,2 +1,2 @@
 export * from './todo-flow';
-export type { TodoEdge, TodoNode, TodoState } from './todo-flow.types';
+export type { EditingTodo, TodoEdge, TodoNode } from './todo-flow.types';

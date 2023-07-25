@@ -3,6 +3,7 @@ import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { ReactNode } from 'react';
+import { Style } from '@appcraft/mui';
 import { withStyles } from 'tss-react/mui';
 
 import { useWidth } from '~appcraft/hooks';
@@ -20,10 +21,11 @@ export const MainContainer = withStyles(
 
 export const PageContainer = (() => {
   interface PageContainerProps
-    extends Omit<ContainerProps, 'classes' | 'disableGutters'> {
+    extends Omit<ContainerProps, 'classes' | 'disableGutters' | 'title'> {
     ContentProps?: Omit<ContainerProps, 'role' | 'children' | 'component'>;
     action?: ReactNode;
-    title: string;
+    primary: string;
+    secondary?: string;
 
     classes?: ContainerProps['classes'] & {
       title?: string;
@@ -34,40 +36,37 @@ export const PageContainer = (() => {
     ({
       ContentProps,
       classes: { title: titleClassName, ...containerClasses },
-      title,
       action,
       children,
+      primary,
+      secondary,
       ...props
-    }: PageContainerProps) => {
-      const width = useWidth();
+    }: PageContainerProps) => (
+      <Container {...props} disableGutters classes={containerClasses}>
+        <Toolbar role="toolbar" disableGutters variant="dense">
+          <Style.AutoBreakTypography
+            {...{ primary, secondary }}
+            classes={{ root: titleClassName }}
+            primaryTypographyProps={{
+              variant: 'h5',
+              color: 'secondary',
+            }}
+          />
 
-      return (
-        <Container {...props} disableGutters classes={containerClasses}>
-          <Toolbar role="toolbar" disableGutters variant="dense">
-            <Typography
-              fontWeight="bolder"
-              variant="h5"
-              color="secondary"
-              className={titleClassName}
-            >
-              {width === 'xs' ? title : title.replace(/\n/, '-')}
-            </Typography>
+          {action}
+        </Toolbar>
 
-            {action}
-          </Toolbar>
-
-          <Paper
-            role="contentinfo"
-            elevation={0}
-            component={Container}
-            maxWidth={false}
-            {...ContentProps}
-          >
-            {children}
-          </Paper>
-        </Container>
-      );
-    },
+        <Paper
+          role="contentinfo"
+          elevation={0}
+          component={Container}
+          maxWidth={false}
+          {...ContentProps}
+        >
+          {children}
+        </Paper>
+      </Container>
+    ),
     (theme, { ContentProps }) => ({
       root: {
         '& > [role=toolbar]': {

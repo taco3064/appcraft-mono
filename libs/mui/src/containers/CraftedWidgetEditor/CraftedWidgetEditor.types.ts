@@ -23,6 +23,7 @@ export interface CraftedWidgetEditorProps {
   BackButtonProps?: ComponentProps<typeof WidgetAppBar>['BackButtonProps'];
   disableCategories?: Comp.TodoFlowControlsProps['disableCategories'];
   fixedT?: FixedT;
+  stateTypeFile?: string;
   todoTypeFile?: string;
   version?: string;
   widget?: Appcraft.RootNodeWidget;

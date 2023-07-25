@@ -19,7 +19,7 @@ export default function Pages() {
     <PageContainer
       ContentProps={{ disableGutters: true }}
       maxWidth="lg"
-      title={nt('ttl-pages')}
+      primary={nt('ttl-pages')}
       action={
         <>
           {action?.search}

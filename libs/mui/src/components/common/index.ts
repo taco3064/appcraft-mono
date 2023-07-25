@@ -4,6 +4,5 @@ export * from './TypeItem';
 export * from './TypeItemSelection';
 export * from './MenuDialog';
 export * from './NumberInput';
-export * from './StateList';
 export * from './WidgetEvent';
 export * from './WidgetNode';

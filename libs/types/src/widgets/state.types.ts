@@ -36,6 +36,14 @@ export type TodosState = BaseState<
   }
 >;
 
+export type WidgetPropsState = Record<string, PropsState>;
+export type WidgetTodosState = Record<string, TodosState>;
+
+export type WidgetNodesState = Record<
+  string,
+  NodesState<'element'> | NodesState<'node'>
+>;
+
 export type WidgetState =
   | PropsState
   | NodesState<'element'>

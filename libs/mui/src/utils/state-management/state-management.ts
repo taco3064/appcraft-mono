@@ -1,3 +1,6 @@
+import type * as Appcraft from '@appcraft/types';
+
+import { splitProps } from '../props-parser';
 import type * as Types from './state-management.types';
 
 export const getStateCategory: Types.GetStateCategory = (generator) => {
@@ -40,5 +43,62 @@ export const getInitialState: Types.GetInitailState = (generator, alias) => {
         templateWidgetId: '',
         defaultValue: undefined,
       };
+  }
+};
+
+export const getEditingState: Types.GetEditingState = (
+  typeFile,
+  category,
+  { mixedTypes = {}, [category]: state }
+) => {
+  const overrideMixedTypes = Object.entries(mixedTypes).reduce<
+    typeof mixedTypes
+  >((result, [path, type]) => {
+    if (path.startsWith(`${category}.`)) {
+      result[path.replace(`${category}.`, '')] = type;
+    }
+
+    return result;
+  }, {});
+
+  switch (category) {
+    case 'props':
+      return {
+        state,
+        config: {
+          category: 'config',
+          mixedTypes: overrideMixedTypes,
+          typeFile,
+          typeName: 'WidgetPropsState',
+          props: splitProps(state),
+        },
+      };
+
+    case 'nodes':
+      return {
+        state,
+        config: {
+          category: 'config',
+          mixedTypes: overrideMixedTypes,
+          typeFile,
+          typeName: 'WidgetNodesState',
+          props: splitProps(state),
+        },
+      };
+
+    case 'todos':
+      return {
+        state,
+        config: {
+          category: 'config',
+          mixedTypes: overrideMixedTypes,
+          typeFile,
+          typeName: 'WidgetTodosState',
+          props: splitProps(state),
+        },
+      };
+
+    default:
+      return null;
   }
 };

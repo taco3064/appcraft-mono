@@ -50,7 +50,8 @@ export default function Detail() {
       <PageContainer
         ContentProps={{ disableGutters: true }}
         maxWidth="lg"
-        title={wt('ttl-detail', { name: superiors[id] })}
+        primary={wt('ttl-detail')}
+        secondary={superiors[id]}
         action={
           <>
             {widgetAction?.expand}

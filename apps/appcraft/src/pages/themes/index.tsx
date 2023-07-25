@@ -23,7 +23,7 @@ export default function Themes() {
     <PageContainer
       ContentProps={{ disableGutters: true }}
       maxWidth="lg"
-      title={nt('ttl-themes')}
+      primary={nt('ttl-themes')}
       action={
         <>
           {action?.search}

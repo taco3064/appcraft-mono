@@ -6,6 +6,7 @@ export * from './useMixedTypeMapping';
 export * from './usePropValue';
 export * from './usePropertiesSorting';
 export * from './usePropertyRouter';
+export * from './useStateGenerator';
 export * from './useStateSelection';
 export * from './useStructure';
 export * from './useTodoGenerator';

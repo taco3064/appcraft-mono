@@ -1,8 +1,8 @@
 import AppBar from '@mui/material/AppBar';
 import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 
 import { Link } from '~appcraft/styles';
@@ -22,7 +22,7 @@ export default function AppHeader({
       <Toolbar variant="regular">
         {authorized && onMenuToggle && (
           <IconButton onClick={onMenuToggle}>
-            <ChevronRightIcon />
+            <MenuIcon />
           </IconButton>
         )}
 

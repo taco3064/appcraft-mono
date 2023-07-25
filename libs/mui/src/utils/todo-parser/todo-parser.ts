@@ -247,7 +247,5 @@ export const getEventHandler: Types.GetEventHandler =
       result.push(outputs);
     }
 
-    console.log('=== Result: ', result);
-
     return result;
   };

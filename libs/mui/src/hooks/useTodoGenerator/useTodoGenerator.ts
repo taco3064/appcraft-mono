@@ -13,7 +13,7 @@ const useTodoGenerator: Types.TodoGeneratorHook = (
   todos,
   onChange
 ) => {
-  const [editing, setEditing] = useState<Util.TodoState>(null);
+  const [editing, setEditing] = useState<Util.EditingTodo>(null);
 
   const { nodes, edges } = useMemo(() => {
     const dagreGraph = new dagre.graphlib.Graph()
@@ -51,7 +51,7 @@ const useTodoGenerator: Types.TodoGeneratorHook = (
 
       create: (category) => setEditing(Util.getInitialTodo(typeFile, category)),
 
-      select: (_e, { data }) => setEditing(Util.getTodoState(typeFile, data)),
+      select: (_e, { data }) => setEditing(Util.getEditingTodo(typeFile, data)),
 
       connect: ({ source, sourceHandle, target }) => {
         if (source && todos[source] && source !== target) {

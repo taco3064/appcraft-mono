@@ -30,7 +30,7 @@ export default function MutationStateDialog({
   const [{ editing, stateValues }, handleState] = useStateGenerator(
     typeFile,
     active,
-    values?.state
+    open ? values?.state : undefined
   );
 
   const states: [string, Appcraft.WidgetState][] = Object.entries(

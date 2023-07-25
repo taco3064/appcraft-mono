@@ -13,7 +13,7 @@ export type EditingState = {
 export type StateGeneratorHook = <C extends StateCategory>(
   typeFile: string,
   category: C,
-  state: StateValues
+  state?: StateValues
 ) => [
   {
     editing: EditingState;

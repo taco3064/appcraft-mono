@@ -28,6 +28,7 @@ const NODE_TYPES: Rf.NodeTypes = {
 };
 
 export default function CraftedTodoEditor({
+  HeaderProps,
   disableCategories,
   fixedT,
   fullHeight,
@@ -36,7 +37,6 @@ export default function CraftedTodoEditor({
   typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts',
   values,
   renderOverridePureItem,
-  onBack,
   onChange,
   onFetchDefinition,
 }: CraftedTodoEditorProps) {
@@ -73,18 +73,18 @@ export default function CraftedTodoEditor({
         fullHeight={fullHeight}
         in={open}
       >
-        {onBack && (
+        {HeaderProps && (
           <Style.WidgetAppBar
             action={toggle}
             BackButtonProps={{
               icon: <ArrowBackIcon />,
               text: ct('btn-back'),
-              onClick: onBack,
+              onClick: HeaderProps.onBack,
             }}
           >
             <Style.AutoBreakTypography
-              primary={ct('ttl-events')}
-              secondary={todoPath}
+              primary={HeaderProps.primary}
+              secondary={HeaderProps.secondary}
             />
           </Style.WidgetAppBar>
         )}

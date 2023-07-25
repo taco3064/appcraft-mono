@@ -1,4 +1,3 @@
-import _sum from 'lodash/sum';
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -41,13 +40,6 @@ export default function CraftedWidgetEditor({
     <Style.IconTipButton
       title={ct('btn-state')}
       onClick={() => setStateOpen(true)}
-      disabled={
-        !_sum(
-          Object.values(widget?.state || {}).map(
-            (state) => Object.keys(state).length
-          )
-        )
-      }
     >
       <StorageRoundedIcon />
     </Style.IconTipButton>
@@ -111,12 +103,11 @@ export default function CraftedWidgetEditor({
         values={widget as Appcraft.RootNodeWidget}
         onClose={() => setStateOpen(false)}
         onConfirm={onWidgetChange}
-        renderEditor={(stateConfig, onStateChange) => (
+        renderEditor={(props) => (
           <CraftedTypeEditor
+            {...props}
             {...{ fixedT, renderOverridePureItem }}
             exclude={STATE_EXCLUDE}
-            values={stateConfig}
-            onChange={onStateChange}
             onFetchDefinition={onFetchConfigDefinition}
           />
         )}
@@ -136,9 +127,13 @@ export default function CraftedWidgetEditor({
               open={Boolean(!todoPath)}
               values={editedWidget}
               renderOverridePureItem={renderOverridePureItem}
-              onBack={() => handleMutation.editing(null)}
               onChange={handleMutation.modify}
               onFetchDefinition={onFetchWidgetDefinition}
+              HeaderProps={{
+                primary: ct('ttl-props'),
+                secondary: editedWidget.type.replace(/([A-Z])/g, ' $1'),
+                onBack: () => handleMutation.editing(null),
+              }}
             />
 
             <CraftedTodoEditor
@@ -150,7 +145,6 @@ export default function CraftedWidgetEditor({
               typeFile={todoTypeFile}
               values={editedWidget.todos?.[todoPath as string]}
               renderOverridePureItem={renderOverridePureItem}
-              onBack={() => handleMutation.editing(null)}
               onFetchDefinition={onFetchConfigDefinition}
               onChange={(todo) =>
                 handleMutation.modify({
@@ -158,6 +152,11 @@ export default function CraftedWidgetEditor({
                   todos: { ...editedWidget.todos, [todoPath as string]: todo },
                 })
               }
+              HeaderProps={{
+                primary: ct('ttl-events'),
+                secondary: todoPath || undefined,
+                onBack: () => handleMutation.editing(null),
+              }}
             />
           </>
         )}

@@ -10,13 +10,13 @@ import { EditorProvider, OptionValues, useStateContext } from '../../contexts';
 import type * as Types from './CraftedTypeEditor.types';
 
 export default function CraftedTypeEditor<V extends OptionValues>({
+  HeaderProps,
   exclude,
   fixedT,
   fullHeight,
   open = true,
   values,
   renderOverridePureItem,
-  onBack,
   onChange,
   onFetchDefinition,
 }: Types.CraftedTypeEditorProps<V>) {
@@ -51,21 +51,21 @@ export default function CraftedTypeEditor<V extends OptionValues>({
         fullHeight={fullHeight}
         in={open}
       >
-        {values?.category === 'node' && onBack && (
+        {HeaderProps && (
           <Style.WidgetAppBar
             action={toggle}
             BackButtonProps={{
               icon: <ArrowBackIcon />,
               text: ct('btn-back'),
               onClick: () => {
-                onBack();
+                HeaderProps.onBack();
                 setCollectionPath('');
               },
             }}
           >
             <Style.AutoBreakTypography
-              primary={ct('ttl-props')}
-              secondary={values.type.replace(/([A-Z])/g, ' $1')}
+              primary={HeaderProps.primary}
+              secondary={HeaderProps.secondary}
             />
           </Style.WidgetAppBar>
         )}

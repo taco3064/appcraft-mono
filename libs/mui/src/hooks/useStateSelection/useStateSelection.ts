@@ -29,17 +29,24 @@ const useStateSelection: StateSelectionHook = (
       ? null
       : renderFn({
           checked,
-          onSelect: (newChecked) => {
-            const state = _get(values, ['state', category]) || {};
+          onSelect: (newChecked) =>
+            startTransition(() => {
+              const { state: { [category]: state = {}, ...$state } = {} } =
+                values;
 
-            if (!newChecked) {
-              delete state[path];
-            } else {
-              state[path] = Util.getInitialState(generator, alias);
-            }
+              if (newChecked) {
+                state[path] = Util.getInitialState(generator, alias);
+              } else {
+                delete state[path];
+              }
 
-            onChange({ ..._set(values, ['state', category], { ...state }) });
-          },
+              onChange(
+                _set(values, 'state', {
+                  ...$state,
+                  [category]: state,
+                })
+              );
+            }),
         }),
   ];
 };

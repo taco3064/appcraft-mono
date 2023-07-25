@@ -1,4 +1,5 @@
-import { useImperativeHandle, useRef, useState } from 'react';
+import _get from 'lodash/get';
+import { useEffect, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Util from '../../utils';
@@ -9,50 +10,48 @@ const useStateGenerator: Types.StateGeneratorHook = (
   category,
   state
 ) => {
-  const stateRef = useRef<Types.StateValues>(state);
+  const [stateValues, setStateValues] = useState(state);
+  const [editing, setEditing] = useState<Types.EditingState>(null);
 
-  const [config, setConfig] = useState<Appcraft.ConfigOptions>(() =>
-    Util.getStateConfig(typeFile, category, state)
-  );
-
-  useImperativeHandle(
-    stateRef,
-    () => {
-      const { mixedTypes: overrideMixedTypes = {} } = config;
-      const edited = Util.getProps<Types.EditedState<typeof category>>(config);
-
-      const {
-        mixedTypes = {},
-        [category]: target,
-        ...result
-      } = stateRef.current || {};
-
-      return {
-        ...result,
-        [category]: edited,
-        mixedTypes: {
-          ...mixedTypes,
-          ...Object.entries(overrideMixedTypes).reduce<typeof mixedTypes>(
-            (acc, [path, type]) => ({
-              ...acc,
-              [`${category}.${path}`]: type,
-            }),
-            {}
-          ),
-        },
-      };
-    },
-    [category, config]
-  );
+  useEffect(() => {
+    console.log('====');
+    setStateValues(state || {});
+  }, [state]);
 
   return [
-    { config, valuesRef: stateRef },
+    { editing, stateValues },
 
     {
-      active: (newCategory) =>
-        setConfig(Util.getStateConfig(typeFile, newCategory, state)),
+      clear: () => setEditing(null),
 
-      change: (config) => setConfig(config),
+      edit: (path) => {
+        const { [category]: target } = stateValues;
+
+        console.log(category, path, stateValues);
+
+        setEditing({
+          path,
+          config: Util.getStateConfig(typeFile, _get(target, [path])),
+        });
+      },
+
+      change: (config) => {
+        if (editing) {
+          const { [category]: target, ...states } = stateValues;
+          const { mixedTypes } = config;
+          const newState = Util.getProps<Appcraft.WidgetState>(config);
+
+          setEditing({ path: editing?.path || '', config });
+
+          setStateValues({
+            ...states,
+            [category]: {
+              ...target,
+              [editing.path]: { ...newState, mixedTypes },
+            },
+          });
+        }
+      },
     },
   ];
 };

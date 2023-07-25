@@ -1,10 +1,14 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import { FormEvent } from 'react';
+import _get from 'lodash/get';
+import type * as Appcraft from '@appcraft/types';
 
-import { FlexDialog } from '../../styles';
+import { FlexDialog, ListPlaceholder } from '../../styles';
 import { useStateGenerator } from '../../hooks';
 import type { StateCategory } from '../../utils';
 import type * as Types from './MutationStateDialog.types';
@@ -22,11 +26,20 @@ export default function MutationStateDialog({
 }: Types.MutationStateDialogProps) {
   const [active, setActive] = React.useState<StateCategory>(TABS[0]);
 
-  const [{ config, valuesRef }, handleState] = useStateGenerator(
+  const [{ editing, stateValues }, handleState] = useStateGenerator(
     typeFile,
     active,
-    values?.state || {}
+    values?.state
   );
+
+  const states: [string, Appcraft.WidgetState][] = Object.entries(
+    _get(stateValues, [active]) || {}
+  );
+
+  const handleClose: typeof onClose = (...e) => {
+    onClose(...e);
+    handleState.clear();
+  };
 
   return (
     <FlexDialog
@@ -35,19 +48,20 @@ export default function MutationStateDialog({
       fullWidth
       maxWidth="xs"
       direction="column"
-      onSubmit={(e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        onClose(e, 'escapeKeyDown');
-        onConfirm({ ...values, state: valuesRef.current });
-      }}
+      onClose={handleClose}
       action={
         <>
-          <Button onClick={(e) => onClose(e, 'escapeKeyDown')}>
+          <Button onClick={(e) => handleClose(e, 'escapeKeyDown')}>
             {ct('btn-cancel')}
           </Button>
 
-          <Button type="submit" color="primary">
+          <Button
+            color="primary"
+            onClick={(e) => {
+              handleClose(e, 'escapeKeyDown');
+              onConfirm({ ...values, state: stateValues });
+            }}
+          >
             {ct('btn-confirm')}
           </Button>
         </>
@@ -58,7 +72,7 @@ export default function MutationStateDialog({
         value={active}
         onChange={(_e, newActive) => {
           setActive(newActive);
-          handleState.active(newActive);
+          handleState.clear();
         }}
       >
         {TABS.map((value) => (
@@ -66,7 +80,36 @@ export default function MutationStateDialog({
         ))}
       </Tabs>
 
-      {renderEditor(config, handleState.change)}
+      {editing ? (
+        renderEditor({
+          values: editing.config,
+          onChange: handleState.change,
+          HeaderProps: {
+            primary: ct(`ttl-state-${active}`),
+            secondary: editing.path,
+            onBack: () => handleState.clear(),
+          },
+        })
+      ) : (
+        <List disablePadding style={{ background: 'inherit' }}>
+          {!states.length ? (
+            <ListPlaceholder message={ct('msg-no-state')} />
+          ) : (
+            states.map(([path, { alias, description }]) => (
+              <ListItemButton key={path} onClick={() => handleState.edit(path)}>
+                <ListItemText
+                  primary={alias}
+                  secondary={description || path}
+                  secondaryTypographyProps={{
+                    variant: 'caption',
+                    color: 'text.secondary',
+                  }}
+                />
+              </ListItemButton>
+            ))
+          )}
+        </List>
+      )}
     </FlexDialog>
   );
 }

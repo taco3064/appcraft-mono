@@ -14,6 +14,11 @@ export interface CraftedTypeEditorProps<V extends OptionValues>
     Omit<EditorProviderProps<V>, 'children' | 'collectionPath'> {
   fullHeight?: boolean;
   open?: boolean;
-  onBack?: () => void;
   onFetchDefinition: FetchTypeDefinition;
+
+  HeaderProps?: {
+    primary: string;
+    secondary?: string;
+    onBack: () => void;
+  };
 }

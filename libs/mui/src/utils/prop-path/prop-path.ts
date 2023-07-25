@@ -12,12 +12,16 @@ export const getPropOrderSeq: Types.GetPropOrderSeq = (type) =>
 
 export const getPropPath: Types.GetPropPath = (paths) =>
   paths.reduce<string>((result, propName) => {
-    if (/^\d+$/.test(propName.toString())) {
+    const str = propName.toString();
+
+    //* For Array
+    if (/^\d+$/.test(str)) {
       return `${result}[${propName}]`;
-    } else if (/^\[\d+\]$/.test(propName.toString())) {
+    } else if (/^\[\d+\]$/.test(str)) {
       return `${result}${propName}`;
     }
 
+    //* For Object
     return `${result ? `${result}.` : ''}${propName}`;
   }, '');
 

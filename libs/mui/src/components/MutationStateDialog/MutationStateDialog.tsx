@@ -29,12 +29,17 @@ export default function MutationStateDialog({
   const [{ editing, stateValues }, handleState] = useStateGenerator(
     typeFile,
     active,
-    values?.state || {}
+    values?.state
   );
 
   const states: [string, Appcraft.WidgetState][] = Object.entries(
     _get(stateValues, [active]) || {}
   );
+
+  const handleClose: typeof onClose = (...e) => {
+    onClose(...e);
+    handleState.clear();
+  };
 
   return (
     <FlexDialog
@@ -43,16 +48,17 @@ export default function MutationStateDialog({
       fullWidth
       maxWidth="xs"
       direction="column"
+      onClose={handleClose}
       action={
         <>
-          <Button onClick={(e) => onClose(e, 'escapeKeyDown')}>
+          <Button onClick={(e) => handleClose(e, 'escapeKeyDown')}>
             {ct('btn-cancel')}
           </Button>
 
           <Button
             color="primary"
             onClick={(e) => {
-              onClose(e, 'escapeKeyDown');
+              handleClose(e, 'escapeKeyDown');
               onConfirm({ ...values, state: stateValues });
             }}
           >

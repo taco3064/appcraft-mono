@@ -1,5 +1,5 @@
 import _get from 'lodash/get';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Util from '../../utils';
@@ -12,6 +12,11 @@ const useStateGenerator: Types.StateGeneratorHook = (
 ) => {
   const [stateValues, setStateValues] = useState(state);
   const [editing, setEditing] = useState<Types.EditingState>(null);
+
+  useEffect(() => {
+    console.log('====');
+    setStateValues(state || {});
+  }, [state]);
 
   return [
     { editing, stateValues },

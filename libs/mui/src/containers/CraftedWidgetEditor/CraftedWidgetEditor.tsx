@@ -3,8 +3,7 @@ import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
-import { Suspense, useMemo, useState } from 'react';
-import { nanoid } from 'nanoid';
+import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Comp from '../../components';
@@ -34,7 +33,6 @@ export default function CraftedWidgetEditor({
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
   const ct = Hook.useFixedT(fixedT);
-  const stateKey = useMemo(() => nanoid(4), [widget?.state]);
   const [newWidgetOpen, setNewWidgetOpen] = useState(false);
   const [stateOpen, setStateOpen] = useState(false);
 
@@ -99,7 +97,6 @@ export default function CraftedWidgetEditor({
       />
 
       <Comp.MutationStateDialog
-        key={stateKey}
         ct={ct}
         open={Boolean(widget && stateOpen)}
         typeFile={stateTypeFile}

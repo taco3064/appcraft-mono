@@ -1,11 +1,14 @@
-import type { MutableRefObject } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import type { ChangeHandler } from '../../contexts';
 import type { StateCategory } from '../../utils';
 
 export type StateValues = Appcraft.RootNodeWidget['state'];
-export type EditedState<C extends StateCategory> = Required<StateValues>[C];
+
+export type EditingState = {
+  path: string;
+  config: Appcraft.ConfigOptions;
+} | null;
 
 export type StateGeneratorHook = <C extends StateCategory>(
   typeFile: string,
@@ -13,11 +16,12 @@ export type StateGeneratorHook = <C extends StateCategory>(
   state: StateValues
 ) => [
   {
-    config: Appcraft.ConfigOptions;
-    valuesRef: MutableRefObject<StateValues>;
+    editing: EditingState;
+    stateValues: StateValues;
   },
   {
-    active: (e: StateCategory) => void;
+    clear: () => void;
     change: ChangeHandler<Appcraft.ConfigOptions>;
+    edit: (path: string) => void;
   }
 ];

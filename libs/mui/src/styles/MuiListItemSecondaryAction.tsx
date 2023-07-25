@@ -10,6 +10,8 @@ export const TypeItemAction = withStyles(
   () => ({
     root: {
       position: 'static',
+      display: 'flex',
+      flexWrap: 'nowrap',
       transform: 'none',
     },
   }),

@@ -24,7 +24,7 @@ const usePropertyRouter: PropertyRouterHook = (onCollectionPathChange) => {
 
       to: useCallback(
         ({ propName }) =>
-          onCollectionPathChange(getPropPath([...paths, propName] as string[])),
+          onCollectionPathChange(getPropPath([...paths, propName as string])),
         [paths, onCollectionPathChange]
       ),
     },

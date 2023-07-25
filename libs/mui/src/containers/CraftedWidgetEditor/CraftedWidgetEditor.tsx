@@ -16,15 +16,18 @@ import { StateProvider } from '../../contexts';
 import { getNodesAndEventsKey } from '../../utils';
 import type * as Types from './CraftedWidgetEditor.types';
 
+const STATE_EXCLUDE: RegExp[] = [];
+
 export default function CraftedWidgetEditor({
   BackButtonProps,
   disableCategories,
   fixedT,
-  renderWidgetTypeSelection,
+  stateTypeFile,
   todoTypeFile,
   version,
   widget,
   renderOverridePureItem,
+  renderWidgetTypeSelection,
   onFetchNodesAndEvents,
   onFetchConfigDefinition,
   onFetchWidgetDefinition,
@@ -104,9 +107,19 @@ export default function CraftedWidgetEditor({
       <Comp.MutationStateDialog
         ct={ct}
         open={Boolean(widget && stateMgrOpen)}
+        typeFile={stateTypeFile}
         values={widget as Appcraft.RootNodeWidget}
         onClose={() => setStateMgrOpen(false)}
         onConfirm={onWidgetChange}
+        renderEditor={(stateConfig, onStateChange) => (
+          <CraftedTypeEditor
+            {...{ fixedT, renderOverridePureItem }}
+            exclude={STATE_EXCLUDE}
+            values={stateConfig}
+            onChange={onStateChange}
+            onFetchDefinition={onFetchWidgetDefinition}
+          />
+        )}
       />
 
       <StateProvider

@@ -1,5 +1,5 @@
 import type * as State from './state.types';
-import type { TypesParseOptions } from './prop-types-def.types';
+import type { TypesMapping, TypesParseOptions } from './prop-types-def.types';
 import type { WidgetTodo } from './todo.types';
 
 //* Variables
@@ -42,13 +42,10 @@ export type NodeWidget = BaseOptions<
 
 export interface RootNodeWidget extends NodeWidget {
   state: {
-    props: Record<string, State.PropsState>;
-    todos: Record<string, State.TodosState>;
-
-    nodes: Record<
-      string,
-      State.NodesState<'element'> | State.NodesState<'node'>
-    >;
+    mixedTypes?: TypesMapping;
+    nodes?: State.WidgetNodesState;
+    props?: State.WidgetPropsState;
+    todos?: State.WidgetTodosState;
   };
 }
 

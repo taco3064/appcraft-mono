@@ -1,5 +1,4 @@
 import type { Definition } from './todo.types';
-import type { TypesMapping } from './prop-types-def.types';
 
 type States = 'nodes' | 'props' | 'todos';
 type StateType = 'private' | 'public';
@@ -10,7 +9,6 @@ type BaseState<C extends States, P> = {
   type: StateType;
   alias: string;
   description?: string;
-  mixedTypes?: TypesMapping;
 } & P;
 
 export type PropsState = BaseState<
@@ -36,6 +34,14 @@ export type TodosState = BaseState<
   {
     type: 'public';
   }
+>;
+
+export type WidgetPropsState = Record<string, PropsState>;
+export type WidgetTodosState = Record<string, TodosState>;
+
+export type WidgetNodesState = Record<
+  string,
+  NodesState<'element'> | NodesState<'node'>
 >;
 
 export type WidgetState =

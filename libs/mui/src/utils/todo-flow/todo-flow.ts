@@ -63,7 +63,7 @@ export const getFlowEdges: Types.GetFlowEdges = (todos, each) =>
     return result;
   }, []);
 
-export const getTodoState: Types.GetTodoState = (
+export const getEditingTodo: Types.GetEditingTodo = (
   typeFile,
   { mixedTypes, ...todo }
 ) => {
@@ -153,14 +153,14 @@ export const getInitialTodo: Types.GetInitialTodo = (typeFile, category) => {
 
   switch (category) {
     case 'variable':
-      return getTodoState(typeFile, {
+      return getEditingTodo(typeFile, {
         ...data,
         category,
         variables: {},
       });
 
     case 'fetch':
-      return getTodoState(typeFile, {
+      return getEditingTodo(typeFile, {
         ...data,
         category,
         url: '',
@@ -168,7 +168,7 @@ export const getInitialTodo: Types.GetInitialTodo = (typeFile, category) => {
       });
 
     case 'branch':
-      return getTodoState(typeFile, {
+      return getEditingTodo(typeFile, {
         ...data,
         category,
         sources: [],
@@ -177,7 +177,7 @@ export const getInitialTodo: Types.GetInitialTodo = (typeFile, category) => {
       });
 
     case 'iterate':
-      return getTodoState(typeFile, {
+      return getEditingTodo(typeFile, {
         ...data,
         category,
         iterateTodo: '',
@@ -188,14 +188,14 @@ export const getInitialTodo: Types.GetInitialTodo = (typeFile, category) => {
       });
 
     case 'wrap':
-      return getTodoState(typeFile, {
+      return getEditingTodo(typeFile, {
         ...data,
         category,
         todosId: '',
       });
 
     case 'state':
-      return getTodoState(typeFile, {
+      return getEditingTodo(typeFile, {
         ...data,
         category,
         states: [],

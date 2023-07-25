@@ -2,24 +2,31 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import _set from 'lodash/set';
 import { FormEvent } from 'react';
+import type { WidgetState } from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
+import { useStateGenerator } from '../../hooks';
 import type * as Types from './MutationStateDialog.types';
 
-const TABS: Types.TabValue[] = ['props', 'nodes', 'todos'];
+const TABS: WidgetState['category'][] = ['props', 'nodes', 'todos'];
 
 export default function MutationStateDialog({
   ct,
   open,
+  typeFile = './node_modules/@appcraft/types/src/widgets/state.types.d.ts',
   values,
+  renderEditor,
   onClose,
   onConfirm,
 }: Types.MutationStateDialogProps) {
-  const { state } = values || {};
-  const [, setTransition] = React.useTransition();
-  const [active, setActive] = React.useState<Types.TabValue>(TABS[0]);
+  const [active, setActive] = React.useState<WidgetState['category']>(TABS[0]);
+
+  const [editing, handleState] = useStateGenerator(
+    typeFile,
+    active,
+    values?.state || {}
+  );
 
   return (
     <FlexDialog
@@ -31,10 +38,8 @@ export default function MutationStateDialog({
       onSubmit={(e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setTransition(() => {
-          onClose(e, 'escapeKeyDown');
-          onConfirm(_set(values, 'state', { ...state }));
-        });
+        onClose(e, 'escapeKeyDown');
+        //! onConfirm
       }}
       action={
         <>
@@ -57,6 +62,8 @@ export default function MutationStateDialog({
           <Tab key={value} label={ct(`ttl-state-${value}`)} value={value} />
         ))}
       </Tabs>
+
+      {editing && renderEditor(editing.config, handleState.change)}
     </FlexDialog>
   );
 }

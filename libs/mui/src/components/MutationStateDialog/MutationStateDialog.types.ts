@@ -11,8 +11,13 @@ export interface MutationStateDialogProps
   values: RootNodeWidget;
   onConfirm: (e: RootNodeWidget) => void;
 
-  renderEditor: (
-    stateConfig: ConfigOptions,
-    onStateChange: ChangeHandler<ConfigOptions>
-  ) => ReactNode;
+  renderEditor: (options: {
+    values: ConfigOptions;
+    onChange: ChangeHandler<ConfigOptions>;
+    HeaderProps: {
+      primary: string;
+      secondary?: string;
+      onBack: () => void;
+    };
+  }) => ReactNode;
 }

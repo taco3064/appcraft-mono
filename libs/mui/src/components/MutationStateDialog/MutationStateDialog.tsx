@@ -75,7 +75,15 @@ export default function MutationStateDialog({
       </Tabs>
 
       {editing ? (
-        renderEditor(editing.config, handleState.change)
+        renderEditor({
+          values: editing.config,
+          onChange: handleState.change,
+          HeaderProps: {
+            primary: ct(`ttl-state-${active}`),
+            secondary: editing.path,
+            onBack: () => handleState.clear(),
+          },
+        })
       ) : (
         <List disablePadding style={{ background: 'inherit' }}>
           {!states.length ? (

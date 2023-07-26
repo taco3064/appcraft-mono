@@ -11,15 +11,15 @@ import { JSONTree } from 'react-json-tree';
 import { useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
-import type { TodoStepperProps } from './TodoStepper.types';
+import type { TodoOutputStepperProps } from './TodoOutputStepper.types';
 
-export default function TodoStepper({
+export default function TodoOutputStepper({
   fullHeight = false,
   title,
   duration,
   logs,
   todos,
-}: TodoStepperProps) {
+}: TodoOutputStepperProps) {
   const [tt] = Hook.useFixedT('todos');
 
   const [active, setActive] = useState<number[]>(

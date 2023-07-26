@@ -20,6 +20,7 @@ export default function WidgetEditor({
   onActionNodePick = (e) => e,
   onSave,
   onWrapTodoView,
+  onWrapWidgetView,
 }: WidgetEditorProps) {
   const [at, ct, wt] = Hook.useFixedT('app', 'appcraft', 'widgets');
   const [open, setOpen] = useState(false);
@@ -144,13 +145,14 @@ export default function WidgetEditor({
                   <Common.WidgetSelect
                     {...(props as Common.WidgetSelectProps)}
                     exclude={[data._id]}
+                    onView={onWrapWidgetView}
                   />
                 );
               } else if (typeName === 'WrapTodo' && propPath === 'todosId') {
                 return (
                   <Common.WrapTodoSelect
                     {...(props as Common.WrapTodoSelectProps)}
-                    onTodoView={onWrapTodoView}
+                    onView={onWrapTodoView}
                   />
                 );
               }

@@ -17,7 +17,7 @@ export default function WidgetSelect({
   label,
   value,
   onChange,
-  onWidgetView,
+  onView,
 }: WidgetSelectProps) {
   const { data } = useQuery({
     refetchOnWindowFocus: false,
@@ -48,12 +48,15 @@ export default function WidgetSelect({
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            {(!value || !onWidgetView) && (
+            {(!value || !onView) && (
               <ExtensionOutlinedIcon fontSize="small" color="disabled" />
             )}
 
-            {value && onWidgetView && (
-              <IconButton size="small" onClick={() => onWidgetView(value)}>
+            {value && onView && (
+              <IconButton
+                size="small"
+                onClick={() => onView(data.find(({ _id }) => _id === value))}
+              >
                 <LinkIcon fontSize="small" />
               </IconButton>
             )}

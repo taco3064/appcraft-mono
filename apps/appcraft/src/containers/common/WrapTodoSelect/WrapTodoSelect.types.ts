@@ -5,5 +5,5 @@ export interface WrapTodoSelectProps {
   label: string;
   value: string;
   onChange: (value: string) => void;
-  onTodoView?: (data: HierarchyData<string>) => void;
+  onView?: (data: HierarchyData<string>) => void;
 }

@@ -16,7 +16,7 @@ export default function WidgetEditor({
   label,
   value,
   onChange,
-  onTodoView,
+  onView,
 }: WrapTodoSelectProps) {
   const [wt] = useFixedT('widgets');
 
@@ -46,16 +46,14 @@ export default function WidgetEditor({
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            {(!value || !onTodoView) && (
+            {(!value || !onView) && (
               <Inventory2OutlinedIcon fontSize="small" color="disabled" />
             )}
 
-            {value && onTodoView && (
+            {value && onView && (
               <IconButton
                 size="small"
-                onClick={() =>
-                  onTodoView(options.find(({ _id }) => _id === value))
-                }
+                onClick={() => onView(options.find(({ _id }) => _id === value))}
               >
                 <LinkIcon fontSize="small" />
               </IconButton>

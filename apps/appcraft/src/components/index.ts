@@ -5,5 +5,6 @@ export * from './HierarchyItem';
 export * from './LazyMui';
 export * from './RemoveButton';
 export * from './SigninButton';
+export * from './ThemeProvider';
 export * from './UserinfoMenuToggle';
 export * from './WidgetTypeSelect';

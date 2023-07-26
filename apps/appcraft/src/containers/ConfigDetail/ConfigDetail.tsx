@@ -3,7 +3,7 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedTypeEditor } from '@appcraft/mui';
 
-import { Breadcrumbs } from '../Breadcrumbs';
+import { Breadcrumbs } from '../common';
 import { CommonButton } from '~appcraft/components';
 import { Parser, getTypeDefinition } from '~appcraft/services';
 import { useConfigValues } from '~appcraft/hooks';

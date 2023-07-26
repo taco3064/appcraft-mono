@@ -9,7 +9,7 @@ import { Suspense, useState } from 'react';
 import * as Comp from '~appcraft/components';
 import IndexPage from './index';
 import { MainContainer } from '~appcraft/styles';
-import { MenuDrawer, ThemeProvider } from '~appcraft/containers';
+import { MenuDrawer } from '~appcraft/containers';
 import { useAuth } from '~appcraft/hooks';
 import 'reactflow/dist/style.css';
 
@@ -40,7 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
       <NoSsr>
         <QueryClientProvider client={client}>
-          <ThemeProvider>
+          <Comp.ThemeProvider>
             <SnackbarProvider anchorOrigin={origin}>
               <Comp.AppHeader
                 authorized={authorized}
@@ -78,7 +78,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 </Suspense>
               )}
             </SnackbarProvider>
-          </ThemeProvider>
+          </Comp.ThemeProvider>
         </QueryClientProvider>
       </NoSsr>
     </>

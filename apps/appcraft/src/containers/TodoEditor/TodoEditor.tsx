@@ -8,7 +8,7 @@ import { nanoid } from 'nanoid';
 import { useEffect, useMemo, useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
-import { Breadcrumbs } from '../Breadcrumbs';
+import { Breadcrumbs } from '../common';
 import { CommonButton } from '~appcraft/components';
 import { Parser, getTypeDefinition } from '~appcraft/services';
 import { PersistentDrawerContent } from '~appcraft/styles';

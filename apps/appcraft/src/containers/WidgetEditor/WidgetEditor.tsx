@@ -6,13 +6,11 @@ import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
 import { useCallback, useState } from 'react';
 import type { WidgetTodo } from '@appcraft/types';
 
+import * as Common from '../common';
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Service from '~appcraft/services';
-import { Breadcrumbs } from '../Breadcrumbs';
 import { PersistentDrawerContent } from '~appcraft/styles';
-import { WidgetSelect, WidgetSelectProps } from '../WidgetSelect';
-import { WrapTodoSelect, WrapTodoSelectProps } from '../WrapTodoSelect';
 import type { WidgetEditorProps } from './WidgetEditor.types';
 
 export default function WidgetEditor({
@@ -75,7 +73,7 @@ export default function WidgetEditor({
   return (
     <>
       {superiors && (
-        <Breadcrumbs
+        <Common.Breadcrumbs
           ToolbarProps={{ disableGutters: true }}
           action={actionNode}
           onCustomize={([index]) => [
@@ -143,15 +141,15 @@ export default function WidgetEditor({
                 propPath === 'templateWidgetId'
               ) {
                 return (
-                  <WidgetSelect
-                    {...(props as WidgetSelectProps)}
+                  <Common.WidgetSelect
+                    {...(props as Common.WidgetSelectProps)}
                     exclude={[data._id]}
                   />
                 );
               } else if (typeName === 'WrapTodo' && propPath === 'todosId') {
                 return (
-                  <WrapTodoSelect
-                    {...(props as WrapTodoSelectProps)}
+                  <Common.WrapTodoSelect
+                    {...(props as Common.WrapTodoSelectProps)}
                     onTodoView={onWrapTodoView}
                   />
                 );

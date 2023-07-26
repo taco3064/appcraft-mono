@@ -1,7 +1,7 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ConstructionIcon from '@mui/icons-material/Construction';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
 import { useCallback, useState } from 'react';
 import type { WidgetTodo } from '@appcraft/types';
@@ -45,7 +45,7 @@ export default function WidgetEditor({
           !isCollapsable || isSettingOpen ? null : (
             <Comp.CommonButton
               btnVariant="icon"
-              icon={<SettingsOutlinedIcon />}
+              icon={<ConstructionIcon />}
               text={wt(`btn-expand-${isSettingOpen ? 'off' : 'on'}`)}
               onClick={() => setOpen(!open)}
             />

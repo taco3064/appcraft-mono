@@ -7,10 +7,9 @@ import { useTheme } from '@mui/material/styles';
 import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
-import { CommonButton } from '~appcraft/components/common';
+import { CommonButton } from '~appcraft/components';
 import { PageContainer } from '~appcraft/styles';
-import { TodoEditor } from '~appcraft/containers';
-import { WidgetEditor } from '~appcraft/containers';
+import { TodoEditor, WidgetEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 
 const WIDGET_ACTIONS = ['expand', 'reset', 'save'];

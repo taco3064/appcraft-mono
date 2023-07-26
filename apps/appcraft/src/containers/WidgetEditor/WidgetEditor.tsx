@@ -9,7 +9,7 @@ import type { WidgetTodo } from '@appcraft/types';
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Service from '~appcraft/services';
-import { CommonButton, LazyMui, typeMap } from '~appcraft/components/common';
+import { Breadcrumbs } from '../Breadcrumbs';
 import { PersistentDrawerContent } from '~appcraft/styles';
 import { WidgetSelect, WidgetSelectProps } from '../WidgetSelect';
 import { WrapTodoSelect, WrapTodoSelectProps } from '../WrapTodoSelect';
@@ -34,14 +34,18 @@ export default function WidgetEditor({
   const width = Hook.useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
-  const toLazy = useCallback((widgetType: string) => LazyMui[widgetType], []);
+
+  const toLazy = useCallback(
+    (widgetType: string) => Comp.LazyMui[widgetType],
+    []
+  );
 
   const actionNode = Hook.useNodePicker(
     () =>
       onActionNodePick({
         expand:
           !isCollapsable || isSettingOpen ? null : (
-            <CommonButton
+            <Comp.CommonButton
               btnVariant="icon"
               icon={<SettingsOutlinedIcon />}
               text={wt(`btn-expand-${isSettingOpen ? 'off' : 'on'}`)}
@@ -49,7 +53,7 @@ export default function WidgetEditor({
             />
           ),
         reset: (
-          <CommonButton
+          <Comp.CommonButton
             btnVariant="icon"
             icon={<RestartAltIcon />}
             text={at('btn-reset')}
@@ -57,7 +61,7 @@ export default function WidgetEditor({
           />
         ),
         save: (
-          <CommonButton
+          <Comp.CommonButton
             btnVariant="icon"
             icon={<SaveAltIcon />}
             text={at('btn-save')}
@@ -71,7 +75,7 @@ export default function WidgetEditor({
   return (
     <>
       {superiors && (
-        <Comp.Breadcrumbs
+        <Breadcrumbs
           ToolbarProps={{ disableGutters: true }}
           action={actionNode}
           onCustomize={([index]) => [
@@ -128,7 +132,7 @@ export default function WidgetEditor({
                   onChange({
                     type: value,
                     typeName: value,
-                    typeFile: typeMap.get(value),
+                    typeFile: Comp.typeMap.get(value),
                   })
                 }
               />

@@ -6,9 +6,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SnackbarProvider, SnackbarOrigin } from 'notistack';
 import { Suspense, useState } from 'react';
 
+import * as Comp from '~appcraft/components';
 import IndexPage from './index';
-import { AppHeader, MenuDrawer, ThemeProvider } from '~appcraft/containers';
 import { MainContainer } from '~appcraft/styles';
+import { MenuDrawer, ThemeProvider } from '~appcraft/containers';
 import { useAuth } from '~appcraft/hooks';
 import 'reactflow/dist/style.css';
 
@@ -41,14 +42,24 @@ export default function App({ Component, pageProps }: AppProps) {
         <QueryClientProvider client={client}>
           <ThemeProvider>
             <SnackbarProvider anchorOrigin={origin}>
-              <AppHeader
+              <Comp.AppHeader
                 authorized={authorized}
-                oauth2={{ google: '/api/oauth2/google' }}
-                signoutURL={`/api/oauth2/signout?access=${encodeURIComponent(
-                  tokens.access
-                )}`}
                 onMenuToggle={() => setOpen(true)}
-                onSigninClick={onSigninPrepare}
+                action={
+                  authorized ? (
+                    <Comp.UserinfoMenuToggle
+                      signoutURL={`/api/oauth2/signout?access=${encodeURIComponent(
+                        tokens.access
+                      )}`}
+                      menuTransform="translate(12px, 10px)"
+                    />
+                  ) : (
+                    <Comp.SigninButton
+                      oauth2={{ google: '/api/oauth2/google' }}
+                      onSigninClick={onSigninPrepare}
+                    />
+                  )
+                }
               />
 
               {authorized && (

@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.71](https://github.com/taco3064/appcraft-mono/compare/v0.0.70...v0.0.71) (2023-07-26)
+
+
+### Features
+
+* **@appcraft/mui:** add remove button to state editor ([192533b](https://github.com/taco3064/appcraft-mono/commit/192533b91e90d691c87b0001c72f41781a52cca1))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** fixed bugs ([90161d8](https://github.com/taco3064/appcraft-mono/commit/90161d840fbe362296fe3675cf95a6ed162b374f))
+* fixed bugs ([5b983d3](https://github.com/taco3064/appcraft-mono/commit/5b983d3a91aabe33cf248bd7a8df6f36ba4f7c6a))
+* **state-editor:** add override field ([b04ef52](https://github.com/taco3064/appcraft-mono/commit/b04ef52f117bfc1c2b4b3e169444e48c4d09e1b3))
+
 ### [0.0.70](https://github.com/taco3064/appcraft-mono/compare/v0.0.69...v0.0.70) (2023-07-25)
 
 

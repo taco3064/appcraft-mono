@@ -38,6 +38,7 @@ export default function WidgetNode({
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
+          color: isState ? 'text.secondary' : 'text.primary',
         }}
       />
     </ListItemButton>

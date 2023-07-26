@@ -4,4 +4,5 @@ export interface WidgetSelectProps {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  onWidgetView?: (id: string) => void;
 }

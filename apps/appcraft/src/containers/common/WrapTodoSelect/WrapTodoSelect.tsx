@@ -1,5 +1,5 @@
 import IconButton from '@mui/material/IconButton';
-import InputAdorment from '@mui/material/InputAdornment';
+import InputAdornment from '@mui/material/InputAdornment';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import LinkIcon from '@mui/icons-material/Link';
 import ListItemText from '@mui/material/ListItemText';
@@ -45,7 +45,7 @@ export default function WidgetEditor({
       }
       InputProps={{
         startAdornment: (
-          <InputAdorment position="start">
+          <InputAdornment position="start">
             {(!value || !onTodoView) && (
               <Inventory2OutlinedIcon fontSize="small" color="disabled" />
             )}
@@ -55,7 +55,7 @@ export default function WidgetEditor({
                 <LinkIcon fontSize="small" />
               </IconButton>
             )}
-          </InputAdorment>
+          </InputAdornment>
         ),
       }}
     >

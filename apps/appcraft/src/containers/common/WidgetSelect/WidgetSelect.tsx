@@ -1,3 +1,7 @@
+import ExtensionOutlinedIcon from '@mui/icons-material/ExtensionOutlined';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import LinkIcon from '@mui/icons-material/Link';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
@@ -13,6 +17,7 @@ export default function WidgetSelect({
   label,
   value,
   onChange,
+  onWidgetView,
 }: WidgetSelectProps) {
   const { data } = useQuery({
     refetchOnWindowFocus: false,
@@ -40,6 +45,21 @@ export default function WidgetSelect({
           ? wt('msg-required')
           : undefined
       }
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            {(!value || !onWidgetView) && (
+              <ExtensionOutlinedIcon fontSize="small" color="disabled" />
+            )}
+
+            {value && onWidgetView && (
+              <IconButton size="small" onClick={() => onWidgetView(value)}>
+                <LinkIcon fontSize="small" />
+              </IconButton>
+            )}
+          </InputAdornment>
+        ),
+      }}
     >
       {options.map(({ _id, name, description }) => (
         <MenuItem key={_id} value={_id}>

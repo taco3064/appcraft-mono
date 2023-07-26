@@ -9,6 +9,7 @@ import { Suspense, useState } from 'react';
 import * as Comp from '~appcraft/components';
 import IndexPage from './index';
 import { MainContainer } from '~appcraft/styles';
+import { UserinfoMenuToggle } from '~appcraft/containers';
 import { useAuth } from '~appcraft/hooks';
 import 'reactflow/dist/style.css';
 
@@ -46,11 +47,11 @@ export default function App({ Component, pageProps }: AppProps) {
                 onMenuToggle={() => setOpen(true)}
                 action={
                   authorized ? (
-                    <Comp.UserinfoMenuToggle
+                    <UserinfoMenuToggle
+                      menuTransform="translate(12px, 10px)"
                       signoutURL={`/api/oauth2/signout?access=${encodeURIComponent(
                         tokens.access
                       )}`}
-                      menuTransform="translate(12px, 10px)"
                     />
                   ) : (
                     <Comp.SigninButton

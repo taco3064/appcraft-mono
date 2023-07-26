@@ -23,6 +23,8 @@ export default function WidgetSelect({
   const [wt] = useFixedT('widgets');
   const options = data?.filter(({ _id }) => !exclude.includes(_id)) || [];
 
+  console.log(data, exclude);
+
   return (
     <TextField
       {...{ disabled, label, value }}

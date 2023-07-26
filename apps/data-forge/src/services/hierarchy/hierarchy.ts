@@ -17,14 +17,16 @@ export const search: Types.SearchService = async (
     userid: { $eq: userid },
     ...(category && { category: { $eq: category } }),
     ...(type && { type: { $eq: type } }),
-    ...(!keyword
-      ? { superior: superior ? { $eq: superior } : null }
-      : {
-          $or: [
-            { name: { $regex: keyword, $options: 'i' } },
-            { description: { $regex: keyword, $options: 'i' } },
-          ],
-        }),
+    ...(!keyword &&
+      superior !== undefined && {
+        superior: superior ? { $eq: superior } : null,
+      }),
+    ...(keyword && {
+      $or: [
+        { name: { $regex: keyword, $options: 'i' } },
+        { description: { $regex: keyword, $options: 'i' } },
+      ],
+    }),
   });
 
   return cursor.sort(['category', 'type', 'name']).toArray();

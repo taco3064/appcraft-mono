@@ -59,8 +59,32 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
         } else if (!isTargetNodes) {
           onWidgetChange({ ..._set(widget, e, undefined) });
         } else {
-          const index = e.pop();
-          const target = _get(widget, e);
+          const index = Number.parseInt(e.pop() as string, 10);
+          const basePath = getPropPath(e);
+          const state = _get(widget, 'state.nodes') || {};
+          const target: Appcraft.NodeWidget[] = _get(widget, e) || [];
+
+          Object.keys(state).forEach((key) => {
+            if (key.startsWith(`${basePath}[${index}]`)) {
+              delete state[key];
+            }
+          });
+
+          Object.keys(state).forEach((key) => {
+            const matches = key
+              .replace(new RegExp(`^${basePath}`), '')
+              .match(/^\[(\d+)\]/);
+
+            const i = Number.parseInt(matches?.[1] as string, 10);
+
+            if (i > index) {
+              const regexp = new RegExp(`^${basePath}\\[${i}\\]`);
+              const newKey = key.replace(regexp, `${basePath}[${i - 1}]`);
+
+              state[newKey] = state[key];
+              delete state[key];
+            }
+          });
 
           target.splice(index, 1);
           onWidgetChange({ ..._set(widget, e, target) });

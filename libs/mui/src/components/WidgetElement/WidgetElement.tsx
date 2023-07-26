@@ -88,9 +88,7 @@ export default function WidgetElement<I extends Appcraft.WidgetOptions>({
 
         <Style.TypeItemAction>
           {open && nodes.length > 0 && events.length > 0 && (
-            <Tooltip
-              title={ct(`btn-${display === 'events' ? 'todos' : 'nodes'}`)}
-            >
+            <Tooltip title={ct(`btn-${display}`)}>
               <Style.WidgetNodeSwitch value={display} onChange={setDisplay} />
             </Tooltip>
           )}

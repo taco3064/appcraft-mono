@@ -45,7 +45,9 @@ export const splitProps: Types.SplitProps = (target, paths = []) => {
 };
 
 export const getProps = <P>(
-  options: Appcraft.NodeWidget | Appcraft.ConfigOptions,
+  options:
+    | Pick<Appcraft.NodeWidget, Appcraft.WidgetField>
+    | Pick<Appcraft.ConfigOptions, 'props'>,
   { renderer, fetchTodoWrap }: Types.GetPropsOptions = {}
 ) => {
   const fields: Appcraft.WidgetField[] = ['nodes', 'props', 'todos'];

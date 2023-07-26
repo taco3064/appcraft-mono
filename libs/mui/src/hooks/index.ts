@@ -1,4 +1,5 @@
 export * from './useCollection';
+export * from './useDnd';
 export * from './useFixedT';
 export * from './useLazyTypeList';
 export * from './useLazyWidgetElements';

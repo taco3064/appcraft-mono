@@ -22,6 +22,7 @@ export type WidgetMutationHook = (
     editing: (e: PropPaths | null) => void;
     modify: <E extends ModifyEvent>(e: E) => void;
     remove: (e: PropPaths) => void;
+    resort: (paths: PropPaths, dragIndex: number, hoverIndex: number) => void;
     todo: (e: PropPaths) => void;
   }
 ];

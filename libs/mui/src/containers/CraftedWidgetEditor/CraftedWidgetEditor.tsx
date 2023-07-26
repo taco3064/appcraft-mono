@@ -3,6 +3,8 @@ import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
@@ -45,8 +47,9 @@ export default function CraftedWidgetEditor({
     </Style.IconTipButton>
   );
 
-  const [{ breadcrumbs, items, paths, type }, onPathsChange] =
-    Hook.useStructure(widget as Appcraft.RootNodeWidget);
+  const [{ breadcrumbs, items, paths, type }, onRedirect] = Hook.useStructure(
+    widget as Appcraft.RootNodeWidget
+  );
 
   const [{ editedWidget, widgetPath, todoPath }, handleMutation] =
     Hook.useWidgetMutation(widget as Appcraft.RootNodeWidget, onWidgetChange);
@@ -180,7 +183,7 @@ export default function CraftedWidgetEditor({
                 {...{ breadcrumbs, ct }}
                 addable={type === 'node' || items.length < 1}
                 onAdd={() => setNewWidgetOpen(true)}
-                onRedirect={onPathsChange}
+                onRedirect={onRedirect}
               />
             }
           >
@@ -201,15 +204,18 @@ export default function CraftedWidgetEditor({
               />
             ) : (
               <Suspense fallback={<LinearProgress />}>
-                <LazyWidgetElements
-                  basePaths={paths}
-                  ct={ct}
-                  superiorNodeType={type}
-                  onClick={handleMutation.editing}
-                  onEventActive={handleMutation.todo}
-                  onNodeActive={onPathsChange}
-                  onRemove={handleMutation.remove}
-                />
+                <DndProvider backend={HTML5Backend}>
+                  <LazyWidgetElements
+                    basePaths={paths}
+                    ct={ct}
+                    superiorNodeType={type}
+                    onClick={handleMutation.editing}
+                    onDndMove={(...e) => handleMutation.resort(paths, ...e)}
+                    onEventActive={handleMutation.todo}
+                    onNodeActive={onRedirect}
+                    onRemove={handleMutation.remove}
+                  />
+                </DndProvider>
               </Suspense>
             )}
           </List>

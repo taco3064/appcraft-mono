@@ -3,7 +3,7 @@ import _set from 'lodash/set';
 import { useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import { getPropPath } from '../../utils';
+import { getPropPath, removeState, resortState } from '../../utils';
 import type { PropPaths } from '../../utils';
 import type { WidgetMutationHook } from './useWidgetMutation.types';
 
@@ -24,11 +24,6 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
     },
 
     {
-      editing: (e) => {
-        setEditedPaths(e);
-        setTodoPath(null);
-      },
-
       add: (e, type, paths) => {
         if (!paths.length) {
           onWidgetChange({ ...e, state: {} } as Appcraft.RootNodeWidget);
@@ -39,6 +34,11 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
 
           onWidgetChange({ ..._set(widget, paths, [...target, e]) });
         }
+      },
+
+      editing: (e) => {
+        setEditedPaths(e);
+        setTodoPath(null);
       },
 
       modify: (e) => {
@@ -61,33 +61,39 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
         } else {
           const index = Number.parseInt(e.pop() as string, 10);
           const basePath = getPropPath(e);
-          const state = _get(widget, 'state.nodes') || {};
           const target: Appcraft.NodeWidget[] = _get(widget, e) || [];
 
-          Object.keys(state).forEach((key) => {
-            if (key.startsWith(`${basePath}[${index}]`)) {
-              delete state[key];
-            }
-          });
-
-          Object.keys(state).forEach((key) => {
-            const matches = key
-              .replace(new RegExp(`^${basePath}`), '')
-              .match(/^\[(\d+)\]/);
-
-            const i = Number.parseInt(matches?.[1] as string, 10);
-
-            if (i > index) {
-              const regexp = new RegExp(`^${basePath}\\[${i}\\]`);
-              const newKey = key.replace(regexp, `${basePath}[${i - 1}]`);
-
-              state[newKey] = state[key];
-              delete state[key];
-            }
-          });
-
           target.splice(index, 1);
-          onWidgetChange({ ..._set(widget, e, target) });
+
+          onWidgetChange({
+            ..._set(widget, e, target),
+            state: removeState('nodes', widget.state || {}, basePath, index),
+          });
+        }
+      },
+
+      resort: (paths, dragIndex, hoverIndex) => {
+        const target = _get(widget, paths);
+
+        if (Array.isArray(target)) {
+          const dragItem = target[dragIndex];
+          const hoverItem = target[hoverIndex];
+          const offset = dragIndex < hoverIndex ? 1 : 0;
+          let to = -1;
+
+          target.splice(dragIndex, 1);
+          to = target.indexOf(hoverItem) + offset;
+          target.splice(to, 0, dragItem);
+
+          onWidgetChange({
+            ..._set(widget, paths, [...target]),
+            state: resortState(
+              'nodes',
+              widget.state || {},
+              getPropPath(paths),
+              [dragIndex, to]
+            ),
+          });
         }
       },
 

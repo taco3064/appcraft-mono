@@ -51,7 +51,12 @@ export default function WidgetEditor({
             )}
 
             {value && onTodoView && (
-              <IconButton size="small" onClick={() => onTodoView(value)}>
+              <IconButton
+                size="small"
+                onClick={() =>
+                  onTodoView(options.find(({ _id }) => _id === value))
+                }
+              >
                 <LinkIcon fontSize="small" />
               </IconButton>
             )}

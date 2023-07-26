@@ -11,6 +11,7 @@ import { CommonButton } from '~appcraft/components';
 import { PageContainer } from '~appcraft/styles';
 import { TodoEditor, WidgetEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
+import type { HierarchyData } from '~appcraft/services';
 
 const WIDGET_ACTIONS = ['expand', 'reset', 'save'];
 const WRAP_ACTIONS = ['expand', 'run', 'reset', 'save'];
@@ -18,7 +19,7 @@ const WRAP_ACTIONS = ['expand', 'run', 'reset', 'save'];
 export default function Detail() {
   const [wt] = Hook.useFixedT('widgets');
   const { pathname, query } = useRouter();
-  const [wrapId, setWrapId] = useState<string>();
+  const [todo, setTodo] = useState<HierarchyData<string>>();
 
   const theme = useTheme();
   const height = Hook.useHeight();
@@ -39,7 +40,7 @@ export default function Detail() {
   });
 
   const { data: wrapTodo } = useQuery({
-    queryKey: [wrapId],
+    queryKey: [todo?._id],
     queryFn: findConfig<Record<string, WidgetTodo>>,
     refetchOnWindowFocus: false,
   });
@@ -68,7 +69,7 @@ export default function Detail() {
           superiors={{ names: superiors, breadcrumbs }}
           onActionNodePick={handleWidgetActionPick}
           onSave={refetch}
-          onWrapTodoView={setWrapId}
+          onWrapTodoView={setTodo}
           PersistentDrawerContentProps={{
             disableGutters: true,
             maxWidth: false,
@@ -81,10 +82,10 @@ export default function Detail() {
         disableContentGutter
         disableContentPadding
         fullScreen
-        title="Title"
+        title={{ primary: todo?.name, secondary: todo?.description }}
         direction="column"
-        open={Boolean(wrapId)}
-        onClose={() => setWrapId(undefined)}
+        open={Boolean(todo)}
+        onClose={() => setTodo(undefined)}
         action={Object.entries(wrapAction || {}).map(([key, action]) =>
           !action || /^(reset|expand)$/.test(key) ? null : (
             <CommonButton
@@ -97,12 +98,12 @@ export default function Detail() {
           )
         )}
       >
-        {wrapId && (
+        {todo && (
           <TodoEditor
             data={wrapTodo}
             logZIndex={theme.zIndex.modal + 1}
             onActionNodePick={handleWrapActionPick}
-            onSave={() => setWrapId(undefined)}
+            onSave={() => setTodo(undefined)}
             PersistentDrawerContentProps={{
               disableGutters: true,
               maxWidth: false,

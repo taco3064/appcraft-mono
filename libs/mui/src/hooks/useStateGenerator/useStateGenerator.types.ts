@@ -13,7 +13,7 @@ export type EditingState = {
 export type StateGeneratorHook = <C extends StateCategory>(
   typeFile: string,
   category: C,
-  state: StateValues
+  state?: StateValues
 ) => [
   {
     editing: EditingState;
@@ -23,5 +23,6 @@ export type StateGeneratorHook = <C extends StateCategory>(
     clear: () => void;
     change: ChangeHandler<Appcraft.ConfigOptions>;
     edit: (path: string) => void;
+    remove: (path: string) => void;
   }
 ];

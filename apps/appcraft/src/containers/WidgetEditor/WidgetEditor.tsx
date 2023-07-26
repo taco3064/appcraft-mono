@@ -6,10 +6,10 @@ import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
 import { useCallback, useState } from 'react';
 import type { WidgetTodo } from '@appcraft/types';
 
+import * as Common from '../common';
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Service from '~appcraft/services';
-import { CommonButton, LazyMui, typeMap } from '~appcraft/components/common';
 import { PersistentDrawerContent } from '~appcraft/styles';
 import type { WidgetEditorProps } from './WidgetEditor.types';
 
@@ -32,14 +32,18 @@ export default function WidgetEditor({
   const width = Hook.useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
-  const toLazy = useCallback((widgetType: string) => LazyMui[widgetType], []);
+
+  const toLazy = useCallback(
+    (widgetType: string) => Comp.LazyMui[widgetType],
+    []
+  );
 
   const actionNode = Hook.useNodePicker(
     () =>
       onActionNodePick({
         expand:
           !isCollapsable || isSettingOpen ? null : (
-            <CommonButton
+            <Comp.CommonButton
               btnVariant="icon"
               icon={<SettingsOutlinedIcon />}
               text={wt(`btn-expand-${isSettingOpen ? 'off' : 'on'}`)}
@@ -47,7 +51,7 @@ export default function WidgetEditor({
             />
           ),
         reset: (
-          <CommonButton
+          <Comp.CommonButton
             btnVariant="icon"
             icon={<RestartAltIcon />}
             text={at('btn-reset')}
@@ -55,7 +59,7 @@ export default function WidgetEditor({
           />
         ),
         save: (
-          <CommonButton
+          <Comp.CommonButton
             btnVariant="icon"
             icon={<SaveAltIcon />}
             text={at('btn-save')}
@@ -69,7 +73,7 @@ export default function WidgetEditor({
   return (
     <>
       {superiors && (
-        <Comp.Breadcrumbs
+        <Common.Breadcrumbs
           ToolbarProps={{ disableGutters: true }}
           action={actionNode}
           onCustomize={([index]) => [
@@ -100,13 +104,6 @@ export default function WidgetEditor({
         }
         drawer={
           <CraftedWidgetEditor
-            BackButtonProps={
-              isCollapsable && {
-                icon: <ChevronRightIcon />,
-                text: at('btn-back'),
-                onClick: () => setOpen(false),
-              }
-            }
             fixedT={ct}
             stateTypeFile={__WEBPACK_DEFINE__.STATE_TYPE_FILE}
             todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
@@ -121,7 +118,7 @@ export default function WidgetEditor({
               Service.getTypeDefinition(Service.Parser.Widget, ...e)
             }
             renderWidgetTypeSelection={({ onChange }) => (
-              <Comp.WidgetSelect
+              <Comp.WidgetTypeSelect
                 fullWidth
                 required
                 size="small"
@@ -133,19 +130,26 @@ export default function WidgetEditor({
                   onChange({
                     type: value,
                     typeName: value,
-                    typeFile: typeMap.get(value),
+                    typeFile: Comp.typeMap.get(value),
                   })
                 }
               />
             )}
             renderOverridePureItem={({ typeName, propPath, ...props }) => {
-              if (typeName === 'WrapTodo' && propPath === 'todosId') {
-                const { disabled, label, value, onChange } = props;
-
+              if (
+                /^(ElementState|NodeState)$/.test(typeName) &&
+                propPath === 'templateWidgetId'
+              ) {
                 return (
-                  <Comp.WrapTodoSelect
-                    {...{ disabled, label, onChange }}
-                    value={value as string}
+                  <Common.WidgetSelect
+                    {...(props as Common.WidgetSelectProps)}
+                    exclude={[data._id]}
+                  />
+                );
+              } else if (typeName === 'WrapTodo' && propPath === 'todosId') {
+                return (
+                  <Common.WrapTodoSelect
+                    {...(props as Common.WrapTodoSelectProps)}
                     onTodoView={onWrapTodoView}
                   />
                 );
@@ -153,6 +157,13 @@ export default function WidgetEditor({
 
               return null;
             }}
+            BackButtonProps={
+              isCollapsable && {
+                icon: <ChevronRightIcon />,
+                text: at('btn-back'),
+                onClick: () => setOpen(false),
+              }
+            }
           />
         }
       />

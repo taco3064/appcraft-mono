@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import type { ConfigOptions } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
-import { CommonButton } from '~appcraft/components/common';
+import { CommonButton } from '~appcraft/components';
 import { ConfigDetail } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';

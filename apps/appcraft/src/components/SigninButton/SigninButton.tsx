@@ -6,7 +6,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import { Style } from '@appcraft/mui';
 import { useState } from 'react';
 
-import { CommonButton } from '../common';
+import { CommonButton } from '../CommonButton';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './SigninButton.types';
 

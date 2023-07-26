@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
+import CloseIcon from '@mui/icons-material/Close';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
@@ -8,7 +9,7 @@ import Tabs from '@mui/material/Tabs';
 import _get from 'lodash/get';
 import type * as Appcraft from '@appcraft/types';
 
-import { FlexDialog, ListPlaceholder } from '../../styles';
+import * as Style from '../../styles';
 import { useStateGenerator } from '../../hooks';
 import type { StateCategory } from '../../utils';
 import type * as Types from './MutationStateDialog.types';
@@ -29,7 +30,7 @@ export default function MutationStateDialog({
   const [{ editing, stateValues }, handleState] = useStateGenerator(
     typeFile,
     active,
-    values?.state
+    open ? values?.state : undefined
   );
 
   const states: [string, Appcraft.WidgetState][] = Object.entries(
@@ -42,7 +43,7 @@ export default function MutationStateDialog({
   };
 
   return (
-    <FlexDialog
+    <Style.FlexDialog
       {...{ open, onClose }}
       disableContentJustifyCenter
       fullWidth
@@ -93,7 +94,7 @@ export default function MutationStateDialog({
       ) : (
         <List disablePadding style={{ background: 'inherit' }}>
           {!states.length ? (
-            <ListPlaceholder message={ct('msg-no-state')} />
+            <Style.ListPlaceholder message={ct('msg-no-state')} />
           ) : (
             states.map(([path, { alias, description }]) => (
               <ListItemButton key={path} onClick={() => handleState.edit(path)}>
@@ -105,11 +106,20 @@ export default function MutationStateDialog({
                     color: 'text.secondary',
                   }}
                 />
+
+                <Style.TypeItemAction>
+                  <Style.IconTipButton
+                    title={ct('btn-remove-prop')}
+                    onClick={() => handleState.remove(path)}
+                  >
+                    <CloseIcon />
+                  </Style.IconTipButton>
+                </Style.TypeItemAction>
               </ListItemButton>
             ))
           )}
         </List>
       )}
-    </FlexDialog>
+    </Style.FlexDialog>
   );
 }

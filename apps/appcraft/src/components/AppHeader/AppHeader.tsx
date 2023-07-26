@@ -11,11 +11,9 @@ import { UserinfoMenuToggle } from '~appcraft/components/UserinfoMenuToggle';
 import type * as Types from './AppHeader.types';
 
 export default function AppHeader({
+  action,
   authorized,
-  oauth2,
-  signoutURL,
   onMenuToggle,
-  onSigninClick,
 }: Types.AppHeaderProps) {
   return (
     <AppBar position="sticky" color="inherit" elevation={0}>
@@ -36,14 +34,7 @@ export default function AppHeader({
           Appcraft
         </Link>
 
-        {authorized ? (
-          <UserinfoMenuToggle
-            signoutURL={signoutURL}
-            menuTransform="translate(12px, 10px)"
-          />
-        ) : (
-          <SigninButton oauth2={oauth2} onSigninClick={onSigninClick} />
-        )}
+        {action}
       </Toolbar>
 
       <Divider />

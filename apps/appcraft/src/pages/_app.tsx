@@ -9,7 +9,6 @@ import { Suspense, useState } from 'react';
 import * as Comp from '~appcraft/components';
 import IndexPage from './index';
 import { MainContainer } from '~appcraft/styles';
-import { MenuDrawer } from '~appcraft/containers';
 import { useAuth } from '~appcraft/hooks';
 import 'reactflow/dist/style.css';
 
@@ -63,7 +62,7 @@ export default function App({ Component, pageProps }: AppProps) {
               />
 
               {authorized && (
-                <MenuDrawer open={open} onClose={() => setOpen(false)} />
+                <Comp.MenuDrawer open={open} onClose={() => setOpen(false)} />
               )}
 
               {!isCallbackPending && (

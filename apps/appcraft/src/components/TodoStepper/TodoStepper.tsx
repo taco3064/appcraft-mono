@@ -21,6 +21,7 @@ export default function TodoStepper({
   todos,
 }: TodoStepperProps) {
   const [tt] = Hook.useFixedT('todos');
+
   const [active, setActive] = useState<number[]>(
     new Array(logs?.length || 0).fill(0)
   );

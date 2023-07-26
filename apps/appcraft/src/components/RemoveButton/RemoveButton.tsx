@@ -35,7 +35,10 @@ export default function RemoveButton({
           <Button
             color="inherit"
             variant="text"
-            onClick={() => onConfirm().finally(() => setOpen(false))}
+            onClick={async () => {
+              await onConfirm();
+              setOpen(false);
+            }}
           >
             {at('btn-confirm')}
           </Button>

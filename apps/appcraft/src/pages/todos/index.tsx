@@ -9,8 +9,8 @@ import { ComponentProps, useMemo, useState } from 'react';
 import { nanoid } from 'nanoid';
 import type { WidgetTodo } from '@appcraft/types';
 
-import { CommonButton } from '~appcraft/components';
-import { HierarchyList, TodoStepper } from '~appcraft/containers';
+import { CommonButton, TodoStepper } from '~appcraft/components';
+import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { getConfigById } from '~appcraft/services';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';

@@ -4,5 +4,4 @@ export * from './HierarchyEditorButton';
 export * from './HierarchyItem';
 export * from './SigninButton';
 export * from './UserinfoMenuToggle';
-export * from './WidgetSelect';
-export * from './WrapTodoSelect';
+export * from './WidgetTypeSelect';

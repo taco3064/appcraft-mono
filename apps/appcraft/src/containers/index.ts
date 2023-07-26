@@ -7,3 +7,5 @@ export * from './TodoEditor';
 export * from './TodoStepper';
 export * from './WidgetEditor';
 export * from './WidgetPreview';
+export * from './WidgetSelect';
+export * from './WrapTodoSelect';

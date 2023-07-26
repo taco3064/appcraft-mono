@@ -15,7 +15,7 @@ import { StateProvider } from '../../contexts';
 import { getNodesAndEventsKey } from '../../utils';
 import type * as Types from './CraftedWidgetEditor.types';
 
-const STATE_EXCLUDE: RegExp[] = [];
+const STATE_EXCLUDE: RegExp[] = [/^mixedTypes$/];
 
 export default function CraftedWidgetEditor({
   BackButtonProps,

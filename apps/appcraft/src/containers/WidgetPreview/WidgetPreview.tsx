@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Service from '~appcraft/services';
-import { LazyMui } from '~appcraft/components/common';
+import { LazyMui } from '~appcraft/components';
 import type { WidgetPreviewProps } from './WidgetPreview.types';
 
 export default function WidgetPreview({ id }: WidgetPreviewProps) {

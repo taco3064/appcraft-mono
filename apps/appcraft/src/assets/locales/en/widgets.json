@@ -2,6 +2,8 @@
   "btn-expand-off": "Close Editor",
   "btn-expand-on": "Open Editor",
   "lbl-widget-type": "Widget Type",
+  "msg-no-options": "No Options Available.",
+  "msg-required": "Required",
   "ttl-category-data-display": "Data Display",
   "ttl-category-input": "Input",
   "ttl-category-layout": "Layout",

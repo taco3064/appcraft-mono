@@ -6,9 +6,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import * as Common from '../common';
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
-import { CommonButton } from '~appcraft/components/common';
 import { searchHierarchy } from '~appcraft/services';
 import type * as Types from './HierarchyList.types';
 
@@ -21,6 +21,7 @@ export default function HierarchyList({
 }: Types.HierarchyListProps) {
   const { breadcrumbs, keyword, superiors } = Hook.useHierarchyFilter(category);
   const { pathname, push } = useRouter();
+
   const superiorList = Object.keys(superiors);
   const superior = superiorList[superiorList.length - 1] || null;
   const width = Hook.useWidth();
@@ -38,7 +39,7 @@ export default function HierarchyList({
     () =>
       onActionNodePick({
         addGroup: !disableGroup && (
-          <Comp.HierarchyEditorButton
+          <Common.HierarchyEditorButton
             mode="add"
             data={{
               category,
@@ -49,7 +50,7 @@ export default function HierarchyList({
           />
         ),
         addItem: (
-          <Comp.HierarchyEditorButton
+          <Common.HierarchyEditorButton
             mode="add"
             data={{
               category,
@@ -62,7 +63,7 @@ export default function HierarchyList({
         search: (
           <Fade in={collapsed}>
             <div>
-              <CommonButton
+              <Comp.CommonButton
                 btnVariant="icon"
                 icon={<FilterListIcon />}
                 text={at('btn-filter')}
@@ -75,17 +76,37 @@ export default function HierarchyList({
     [collapsed, disableGroup, superior]
   );
 
+  const handleItemClick: Comp.HierarchyItemProps['onClick'] = (data) =>
+    push(
+      data.type === 'group'
+        ? {
+            pathname,
+            query: {
+              superiors: [...superiorList, data._id].join('-'),
+            },
+          }
+        : {
+            pathname: `${pathname}/detail`,
+            query: {
+              id: data._id,
+              ...(superiorList.length && {
+                superiors: superiorList.join('-'),
+              }),
+            },
+          }
+    );
+
   return (
     <>
-      <Comp.Breadcrumbs
+      <Common.Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
+        action={actionNode}
         onCustomize={($breadcrumbs) => [
           ...$breadcrumbs,
           ...(!keyword
             ? breadcrumbs
             : [{ text: `${at('btn-filter')}: ${keyword}` }]),
         ]}
-        action={actionNode}
       />
 
       <Comp.CollapseKeyword
@@ -120,26 +141,12 @@ export default function HierarchyList({
               data={data}
               icon={icon}
               onActionRender={onItemActionRender}
-              onDataModify={() => refetch()}
-              onClick={(data) =>
-                push(
-                  data.type === 'group'
-                    ? {
-                        pathname,
-                        query: {
-                          superiors: [...superiorList, data._id].join('-'),
-                        },
-                      }
-                    : {
-                        pathname: `${pathname}/detail`,
-                        query: {
-                          id: data._id,
-                          ...(superiorList.length && {
-                            superiors: superiorList.join('-'),
-                          }),
-                        },
-                      }
-                )
+              onClick={handleItemClick}
+              mutation={
+                <Common.HierarchyMutation
+                  data={data}
+                  onSuccess={() => refetch()}
+                />
               }
             />
           ))}

@@ -8,7 +8,7 @@ import { Style } from '@appcraft/mui';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 
-import { CommonButton } from '../common';
+import { CommonButton } from '~appcraft/components';
 import { addHierarchy, updateHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './HierarchyEditorButton.types';

@@ -3,11 +3,11 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 
-import { muiWidgets } from '../common';
+import { muiWidgets } from '../LazyMui';
 import { useFixedT } from '~appcraft/hooks';
-import type { WidgetSelectProps } from './WidgetSelect.types';
+import type { WidgetTypeSelectProps } from './WidgetTypeSelect.types';
 
-export default function WidgetSelect(props: WidgetSelectProps) {
+export default function WidgetTypeSelect(props: WidgetTypeSelectProps) {
   const [wt] = useFixedT('widgets');
 
   return (

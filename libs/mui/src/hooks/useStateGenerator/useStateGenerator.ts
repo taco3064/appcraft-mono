@@ -10,12 +10,14 @@ const useStateGenerator: Types.StateGeneratorHook = (
   category,
   state
 ) => {
-  const [stateValues, setStateValues] = useState(state);
   const [editing, setEditing] = useState<Types.EditingState>(null);
 
+  const [stateValues, setStateValues] = useState(() =>
+    JSON.parse(JSON.stringify(state || {}))
+  );
+
   useEffect(() => {
-    console.log('====');
-    setStateValues(state || {});
+    setStateValues(JSON.parse(JSON.stringify(state || {})));
   }, [state]);
 
   return [
@@ -23,17 +25,6 @@ const useStateGenerator: Types.StateGeneratorHook = (
 
     {
       clear: () => setEditing(null),
-
-      edit: (path) => {
-        const { [category]: target } = stateValues;
-
-        console.log(category, path, stateValues);
-
-        setEditing({
-          path,
-          config: Util.getStateConfig(typeFile, _get(target, [path])),
-        });
-      },
 
       change: (config) => {
         if (editing) {
@@ -51,6 +42,22 @@ const useStateGenerator: Types.StateGeneratorHook = (
             },
           });
         }
+      },
+
+      edit: (path) => {
+        const { [category]: target } = stateValues;
+
+        setEditing({
+          path,
+          config: Util.getStateConfig(typeFile, _get(target, [path])),
+        });
+      },
+
+      remove: (path) => {
+        const { [category]: target, ...states } = stateValues;
+
+        delete target[path];
+        setStateValues({ ...states, [category]: target });
       },
     },
   ];

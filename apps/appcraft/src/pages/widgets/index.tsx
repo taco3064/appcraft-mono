@@ -6,7 +6,7 @@ import { Style } from '@appcraft/mui';
 import { Suspense, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { CommonButton } from '~appcraft/components/common';
+import { CommonButton } from '~appcraft/components';
 import { HierarchyList, WidgetPreview } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';

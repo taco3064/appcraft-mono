@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import { useQuery } from '@tanstack/react-query';
 
 import { searchHierarchy } from '~appcraft/services';
+import { useFixedT } from '~appcraft/hooks';
 import type { WrapTodoSelectProps } from './WrapTodoSelect.types';
 
 export default function WidgetEditor({
@@ -17,6 +18,8 @@ export default function WidgetEditor({
   onChange,
   onTodoView,
 }: WrapTodoSelectProps) {
+  const [wt] = useFixedT('widgets');
+
   const { data: options } = useQuery({
     refetchOnWindowFocus: false,
     queryFn: searchHierarchy,
@@ -31,7 +34,15 @@ export default function WidgetEditor({
       select
       size="small"
       variant="outlined"
+      error={!options.length || !value}
       onChange={(e) => onChange(e.target.value)}
+      helperText={
+        !options.length
+          ? wt('msg-no-options')
+          : !value
+          ? wt('msg-required')
+          : undefined
+      }
       InputProps={{
         startAdornment: (
           <InputAdorment position="start">

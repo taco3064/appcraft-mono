@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
-import { CommonButton } from '~appcraft/components';
+import { CommonButton, WidgetPropList } from '~appcraft/components';
 import { PageContainer } from '~appcraft/styles';
 import { TodoEditor, WidgetEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
@@ -19,7 +19,6 @@ const WRAP_ACTIONS = ['expand', 'run', 'reset', 'save'];
 export default function Detail() {
   const [wt] = Hook.useFixedT('widgets');
   const { pathname, query } = useRouter();
-  const [todo, setTodo] = useState<HierarchyData<string>>();
 
   const theme = useTheme();
   const height = Hook.useHeight();
@@ -27,10 +26,15 @@ export default function Detail() {
   const id = query.id as string;
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
 
+  const [view, setView] = useState<{
+    type: 'widget' | 'todo';
+    data: HierarchyData<string>;
+  }>();
+
   const [widgetAction, handleWidgetActionPick] =
     Hook.useNodePickHandle(WIDGET_ACTIONS);
 
-  const [wrapAction, handleWrapActionPick] =
+  const [todoEditorAction, handleTodoEditorActionPick] =
     Hook.useNodePickHandle(WRAP_ACTIONS);
 
   const { data: widget, refetch } = useQuery({
@@ -39,8 +43,14 @@ export default function Detail() {
     refetchOnWindowFocus: false,
   });
 
+  const { data: widgetWrapper } = useQuery({
+    queryKey: [view?.type === 'widget' && view.data._id],
+    queryFn: findConfig<RootNodeWidget>,
+    refetchOnWindowFocus: false,
+  });
+
   const { data: todoWrapper } = useQuery({
-    queryKey: [todo?._id],
+    queryKey: [view?.type === 'todo' && view.data._id],
     queryFn: findConfig<Record<string, WidgetTodo>>,
     refetchOnWindowFocus: false,
   });
@@ -69,7 +79,8 @@ export default function Detail() {
           superiors={{ names: superiors, breadcrumbs }}
           onActionNodePick={handleWidgetActionPick}
           onSave={refetch}
-          onWrapTodoView={setTodo}
+          onWrapTodoView={(data) => setView({ type: 'todo', data })}
+          onWrapWidgetView={(data) => setView({ type: 'widget', data })}
           PersistentDrawerContentProps={{
             disableGutters: true,
             maxWidth: false,
@@ -82,28 +93,38 @@ export default function Detail() {
         disableContentGutter
         disableContentPadding
         fullScreen
-        title={{ primary: todo?.name, secondary: todo?.description }}
         direction="column"
-        open={Boolean(todo)}
-        onClose={() => setTodo(undefined)}
-        action={Object.entries(wrapAction || {}).map(([key, action]) =>
-          !action || /^(reset|expand)$/.test(key) ? null : (
-            <CommonButton
-              {...action.props}
-              key={key}
-              btnVariant="text"
-              size="large"
-              color={key === 'save' ? 'secondary' : 'inherit'}
-            />
+        open={Boolean(view)}
+        onClose={() => setView(undefined)}
+        title={{
+          primary: view?.data?.name,
+          secondary: view?.data?.description,
+        }}
+        action={
+          view?.type === 'todo' &&
+          Object.entries(todoEditorAction || {}).map(([key, action]) =>
+            !action || /^(reset|expand)$/.test(key) ? null : (
+              <CommonButton
+                {...action.props}
+                key={key}
+                btnVariant="text"
+                size="large"
+                color={key === 'save' ? 'secondary' : 'inherit'}
+              />
+            )
           )
-        )}
+        }
       >
-        {todo && (
+        {view?.type === 'widget' && widgetWrapper && (
+          <WidgetPropList widget={widgetWrapper.content} />
+        )}
+
+        {view?.type === 'todo' && todoWrapper && (
           <TodoEditor
             data={todoWrapper}
             logZIndex={theme.zIndex.modal + 1}
-            onActionNodePick={handleWrapActionPick}
-            onSave={() => setTodo(undefined)}
+            onActionNodePick={handleTodoEditorActionPick}
+            onSave={() => setView(undefined)}
             PersistentDrawerContentProps={{
               disableGutters: true,
               maxWidth: false,

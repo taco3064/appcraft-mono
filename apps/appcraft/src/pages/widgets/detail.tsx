@@ -39,7 +39,7 @@ export default function Detail() {
     refetchOnWindowFocus: false,
   });
 
-  const { data: wrapTodo } = useQuery({
+  const { data: todoWrapper } = useQuery({
     queryKey: [todo?._id],
     queryFn: findConfig<Record<string, WidgetTodo>>,
     refetchOnWindowFocus: false,
@@ -100,7 +100,7 @@ export default function Detail() {
       >
         {todo && (
           <TodoEditor
-            data={wrapTodo}
+            data={todoWrapper}
             logZIndex={theme.zIndex.modal + 1}
             onActionNodePick={handleWrapActionPick}
             onSave={() => setTodo(undefined)}

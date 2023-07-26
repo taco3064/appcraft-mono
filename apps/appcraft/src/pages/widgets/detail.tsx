@@ -116,7 +116,7 @@ export default function Detail() {
         }
       >
         {view?.type === 'widget' && widgetWrapper && (
-          <WidgetPropList widget={widgetWrapper.content} />
+          <WidgetPropList widget={widgetWrapper} />
         )}
 
         {view?.type === 'todo' && todoWrapper && (

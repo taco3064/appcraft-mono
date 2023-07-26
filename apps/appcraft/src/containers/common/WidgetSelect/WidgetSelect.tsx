@@ -8,7 +8,6 @@ import TextField from '@mui/material/TextField';
 import { useQuery } from '@tanstack/react-query';
 
 import { searchHierarchy } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks';
 import type { WidgetSelectProps } from './WidgetSelect.types';
 
 export default function WidgetSelect({
@@ -25,26 +24,18 @@ export default function WidgetSelect({
     queryKey: ['widgets', { type: 'item' }],
   });
 
-  const [wt] = useFixedT('widgets');
   const options = data?.filter(({ _id }) => !exclude.includes(_id)) || [];
 
   return (
     <TextField
-      {...{ disabled, label, value }}
+      {...{ disabled, label }}
+      SelectProps={{ displayEmpty: true }}
       fullWidth
-      required
       select
       size="small"
       variant="outlined"
-      error={!options.length || !value}
+      value={value || ''}
       onChange={(e) => onChange(e.target.value)}
-      helperText={
-        !options.length
-          ? wt('msg-no-options')
-          : !value
-          ? wt('msg-required')
-          : undefined
-      }
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
@@ -64,6 +55,8 @@ export default function WidgetSelect({
         ),
       }}
     >
+      <MenuItem value="">&nbsp;</MenuItem>
+
       {options.map(({ _id, name, description }) => (
         <MenuItem key={_id} value={_id}>
           <ListItemText

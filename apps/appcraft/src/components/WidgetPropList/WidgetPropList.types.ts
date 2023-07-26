@@ -1,5 +1,5 @@
-import type { RootNodeWidget } from '@appcraft/types';
+import type { ConfigData, RootNodeWidget } from '@appcraft/types';
 
 export interface WidgetPropListProps {
-  widget: RootNodeWidget;
+  widget: ConfigData<RootNodeWidget, string>;
 }

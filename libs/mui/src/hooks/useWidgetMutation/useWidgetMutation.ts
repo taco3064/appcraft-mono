@@ -13,14 +13,14 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
 
   return [
     {
+      todoPath,
+      widgetPath: getPropPath(editedPaths || []),
+
       editedWidget: !editedPaths
         ? null
         : editedPaths.length
         ? _get(widget, editedPaths)
         : widget,
-
-      widgetPath: getPropPath(editedPaths || []),
-      todoPath,
     },
 
     {

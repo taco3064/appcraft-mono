@@ -40,7 +40,7 @@ export type NodeState = BaseState<
   'nodes',
   {
     nodeType: 'node';
-    templateWidgetId: string;
+    templateWidgetId?: string;
     defaultValue?: Definition[];
   }
 >;

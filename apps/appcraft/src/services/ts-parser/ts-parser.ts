@@ -22,30 +22,28 @@ export const getTypeDefinition: Types.GetTypeDefinitionService = async (
 };
 
 export const getNodesAndEvents: Types.GetNodesAndEventsService = async (
-  items,
+  options,
   version
 ) => {
   const db = await getDB(version);
   const targets: Types.ParseOptions[] = [];
   const data: NodeAndEventProps = { nodes: {}, events: {} };
 
-  for await (const item of items) {
-    if (item.category === 'node') {
-      const key = getNodesAndEventsKey(item);
-      const node = await db?.get('nodes', key);
-      const event = await db?.get('events', key);
+  for await (const { typeFile, typeName } of options) {
+    const key = getNodesAndEventsKey({ category: 'node', typeFile, typeName });
+    const node = await db?.get('nodes', key);
+    const event = await db?.get('events', key);
 
-      if (node) {
-        data.nodes[key] = node;
-      }
+    if (node) {
+      data.nodes[key] = node;
+    }
 
-      if (event) {
-        data.events[key] = event;
-      }
+    if (event) {
+      data.events[key] = event;
+    }
 
-      if (!node && !event) {
-        targets.push({ typeFile: item.typeFile, typeName: item.typeName });
-      }
+    if (!node && !event) {
+      targets.push({ typeFile, typeName });
     }
   }
 

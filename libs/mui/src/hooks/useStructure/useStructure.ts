@@ -1,7 +1,9 @@
 import _get from 'lodash/get';
+import _toPath from 'lodash/toPath';
 import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
+import { getForceArray, getPropPath } from '../../utils';
 import type * as Types from './useStructure.types';
 import type { PropPaths } from '../../utils';
 
@@ -31,22 +33,21 @@ const useStructure: Types.StructureHook = (() => {
   return (widget) => {
     const [type, setType] = useState<Appcraft.NodeType>('element');
     const [paths, setPaths] = useState<PropPaths>([]);
+    const path = getPropPath(paths);
 
     return [
       {
         paths,
         type,
-        ...useMemo(() => {
-          const target = (!paths.length ? widget : _get(widget, paths)) || [];
 
-          return {
-            breadcrumbs: convertToBreadcrumb(paths, widget),
+        breadcrumbs: useMemo(
+          () => convertToBreadcrumb(_toPath(path), widget),
+          [path, widget]
+        ),
 
-            items: (Array.isArray(target)
-              ? target
-              : [target]) as Appcraft.WidgetOptions[],
-          };
-        }, [paths, widget]),
+        childrenCound: getForceArray(
+          (!paths.length ? widget : _get(widget, paths)) || []
+        ).length,
       },
 
       (activePaths, activeType) => {

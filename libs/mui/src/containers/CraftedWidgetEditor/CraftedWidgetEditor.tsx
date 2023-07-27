@@ -3,6 +3,9 @@ import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
+import _get from 'lodash/get';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Suspense, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
@@ -12,7 +15,7 @@ import * as Style from '../../styles';
 import { CraftedTodoEditor } from '../CraftedTodoEditor';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { StateProvider } from '../../contexts';
-import { getNodesAndEventsKey } from '../../utils';
+import { getForceArray, getNodesAndEventsKey } from '../../utils';
 import type * as Types from './CraftedWidgetEditor.types';
 
 const STATE_EXCLUDE: RegExp[] = [/^mixedTypes$/];
@@ -45,7 +48,7 @@ export default function CraftedWidgetEditor({
     </Style.IconTipButton>
   );
 
-  const [{ breadcrumbs, items, paths, type }, onPathsChange] =
+  const [{ breadcrumbs, childrenCound, paths, type }, onRedirect] =
     Hook.useStructure(widget as Appcraft.RootNodeWidget);
 
   const [{ editedWidget, widgetPath, todoPath }, handleMutation] =
@@ -53,7 +56,8 @@ export default function CraftedWidgetEditor({
 
   const LazyWidgetElements =
     Hook.useLazyWidgetElements<Types.LazyWidgetElementsProps>(
-      items,
+      widget as Appcraft.RootNodeWidget,
+      paths,
       version,
       onFetchNodesAndEvents,
       ({ fetchData: { events, nodes } = {}, widgets, ...props }) =>
@@ -69,7 +73,8 @@ export default function CraftedWidgetEditor({
               return (
                 <Comp.WidgetElement
                   {...props}
-                  {...{ key, index, item, event, node }}
+                  {...{ index, item, event, node }}
+                  key={item.id}
                   defaultOpen={item === widget}
                 />
               );
@@ -178,9 +183,9 @@ export default function CraftedWidgetEditor({
             subheader={
               <Comp.WidgetBreadcrumbs
                 {...{ breadcrumbs, ct }}
-                addable={type === 'node' || items.length < 1}
+                addable={type === 'node' || childrenCound < 1}
                 onAdd={() => setNewWidgetOpen(true)}
-                onRedirect={onPathsChange}
+                onRedirect={onRedirect}
               />
             }
           >
@@ -201,15 +206,21 @@ export default function CraftedWidgetEditor({
               />
             ) : (
               <Suspense fallback={<LinearProgress />}>
-                <LazyWidgetElements
-                  basePaths={paths}
-                  ct={ct}
-                  superiorNodeType={type}
-                  onClick={handleMutation.editing}
-                  onEventActive={handleMutation.todo}
-                  onNodeActive={onPathsChange}
-                  onRemove={handleMutation.remove}
-                />
+                <DndProvider backend={HTML5Backend}>
+                  <LazyWidgetElements
+                    basePaths={paths}
+                    ct={ct}
+                    superiorNodeType={type}
+                    onClick={handleMutation.editing}
+                    onDndMove={(...e) => handleMutation.resort(paths, ...e)}
+                    onEventActive={handleMutation.todo}
+                    onNodeActive={onRedirect}
+                    onRemove={handleMutation.remove}
+                    widgets={getForceArray(
+                      !paths.length ? widget : _get(widget, paths)
+                    )}
+                  />
+                </DndProvider>
               </Suspense>
             )}
           </List>

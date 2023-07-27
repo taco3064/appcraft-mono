@@ -18,6 +18,6 @@ export type GetTypeDefinitionService = (
 ) => Promise<Appcraft.StructureProp>;
 
 export type GetNodesAndEventsService = (
-  items: Appcraft.WidgetOptions[],
+  options: ParseOptions[],
   version?: string
 ) => Promise<Appcraft.NodeAndEventProps>;

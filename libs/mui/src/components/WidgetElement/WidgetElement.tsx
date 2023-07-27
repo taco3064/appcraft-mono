@@ -14,9 +14,10 @@ import type * as Appcraft from '@appcraft/types';
 import * as Style from '../../styles';
 import { WidgetEvent, WidgetNode } from '../common';
 import { sortPropPaths } from '../../utils';
-import type { WidgetElementProps } from './WidgetElement.types';
+import { useSortableDnd } from '../../hooks';
+import type { MixedWidget, WidgetElementProps } from './WidgetElement.types';
 
-type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
+const DND_TYPE = Symbol('widget');
 
 export default function WidgetElement<I extends Appcraft.WidgetOptions>({
   basePaths,
@@ -28,6 +29,7 @@ export default function WidgetElement<I extends Appcraft.WidgetOptions>({
   node,
   superiorNodeType,
   onClick,
+  onDndMove,
   onEventActive,
   onNodeActive,
   onRemove,
@@ -35,6 +37,13 @@ export default function WidgetElement<I extends Appcraft.WidgetOptions>({
   const { category, description, type, content } = item as MixedWidget;
   const isNode = category === 'node';
   const [open, setOpen] = useState(defaultOpen);
+
+  const { ref, handlerId, isDragging } = useSortableDnd<HTMLDivElement>(
+    DND_TYPE,
+    item.id,
+    index,
+    onDndMove
+  );
 
   const events: string[] = useMemo(
     () => (Array.isArray(event) ? sortPropPaths(event) : []),
@@ -53,7 +62,10 @@ export default function WidgetElement<I extends Appcraft.WidgetOptions>({
   return (
     <>
       <ListItemButton
+        ref={ref}
         selected={open}
+        data-handler-id={handlerId}
+        style={{ opacity: isDragging ? 0 : 1 }}
         onClick={() =>
           onClick([
             ...basePaths,
@@ -88,9 +100,7 @@ export default function WidgetElement<I extends Appcraft.WidgetOptions>({
 
         <Style.TypeItemAction>
           {open && nodes.length > 0 && events.length > 0 && (
-            <Tooltip
-              title={ct(`btn-${display === 'events' ? 'todos' : 'nodes'}`)}
-            >
+            <Tooltip title={ct(`btn-${display}`)}>
               <Style.WidgetNodeSwitch value={display} onChange={setDisplay} />
             </Tooltip>
           )}

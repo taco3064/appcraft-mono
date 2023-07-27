@@ -17,7 +17,9 @@ export interface NodeSelectEvent {
 export type LazyWidgetElementsProps = Omit<
   Comp.WidgetElementProps<Appcraft.WidgetOptions>,
   'index' | 'item' | 'event' | 'node' | 'defaultOpen'
->;
+> & {
+  widgets: Appcraft.WidgetOptions[];
+};
 
 export interface CraftedWidgetEditorProps {
   BackButtonProps?: ComponentProps<typeof WidgetAppBar>['BackButtonProps'];

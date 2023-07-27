@@ -22,7 +22,10 @@ type BaseOptions<C extends keyof typeof OptionCategory, P> = {
   description?: string;
 } & P;
 
-export type PlainTextWidget = BaseOptions<'plainText', { content: string }>;
+export type PlainTextWidget = BaseOptions<
+  'plainText',
+  { id: string; content: string }
+>;
 
 export type ConfigOptions = BaseOptions<
   'config',
@@ -34,6 +37,7 @@ export type ConfigOptions = BaseOptions<
 export type NodeWidget = BaseOptions<
   'node',
   Omit<ConfigOptions, 'category'> & {
+    id: string;
     type: string;
     nodes?: Record<string, WidgetOptions | WidgetOptions[]>;
     todos?: Record<string, Record<string, WidgetTodo>>;

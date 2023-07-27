@@ -39,7 +39,7 @@ export default function HierarchyEditorButton({
     onCancel?.();
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     const formdata = new FormData(e.target as HTMLFormElement);
 
     e.preventDefault();

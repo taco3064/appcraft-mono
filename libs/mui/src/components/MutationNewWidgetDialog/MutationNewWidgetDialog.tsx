@@ -3,6 +3,7 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import TextField from '@mui/material/TextField';
 import { FormEvent, useState } from 'react';
+import { nanoid } from 'nanoid';
 import { useTheme } from '@mui/material/styles';
 import type * as Appcraft from '@appcraft/types';
 
@@ -41,7 +42,7 @@ export default function MutationNewWidgetDialog({
       onSubmit={(e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        onConfirm(data as Appcraft.NodeWidget);
+        onConfirm({ ...(data as Appcraft.WidgetOptions), id: nanoid(4) });
         handleClose(e, 'escapeKeyDown');
       }}
       action={
@@ -76,7 +77,7 @@ export default function MutationNewWidgetDialog({
         renderWidgetTypeSelection({
           onChange: (e) =>
             setData({
-              ...e,
+              ...(e as Appcraft.NodeWidget),
               category: 'node',
               description: data?.description,
               props: getDefaultProps(theme, e.type),

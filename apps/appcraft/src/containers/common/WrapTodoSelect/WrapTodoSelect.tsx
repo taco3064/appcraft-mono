@@ -1,5 +1,5 @@
 import IconButton from '@mui/material/IconButton';
-import InputAdorment from '@mui/material/InputAdornment';
+import InputAdornment from '@mui/material/InputAdornment';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import LinkIcon from '@mui/icons-material/Link';
 import ListItemText from '@mui/material/ListItemText';
@@ -16,7 +16,7 @@ export default function WidgetEditor({
   label,
   value,
   onChange,
-  onTodoView,
+  onView,
 }: WrapTodoSelectProps) {
   const [wt] = useFixedT('widgets');
 
@@ -45,17 +45,20 @@ export default function WidgetEditor({
       }
       InputProps={{
         startAdornment: (
-          <InputAdorment position="start">
-            {(!value || !onTodoView) && (
+          <InputAdornment position="start">
+            {(!value || !onView) && (
               <Inventory2OutlinedIcon fontSize="small" color="disabled" />
             )}
 
-            {value && onTodoView && (
-              <IconButton size="small" onClick={() => onTodoView(value)}>
+            {value && onView && (
+              <IconButton
+                size="small"
+                onClick={() => onView(options.find(({ _id }) => _id === value))}
+              >
                 <LinkIcon fontSize="small" />
               </IconButton>
             )}
-          </InputAdorment>
+          </InputAdornment>
         ),
       }}
     >

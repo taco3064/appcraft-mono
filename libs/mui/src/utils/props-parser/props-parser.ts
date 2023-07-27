@@ -7,6 +7,9 @@ import { getPropPath } from '../prop-path';
 import { getEventHandler } from '../todo-parser';
 import type * as Types from './props-parser.types';
 
+export const getForceArray = <T>(target: T | T[]) =>
+  (Array.isArray(target) ? target : [target]).filter((item) => !!item);
+
 export const getNodesAndEventsKey: Types.GetNodesAndEventsKey = (
   options,
   defaultKey = ''
@@ -45,7 +48,9 @@ export const splitProps: Types.SplitProps = (target, paths = []) => {
 };
 
 export const getProps = <P>(
-  options: Appcraft.NodeWidget | Appcraft.ConfigOptions,
+  options:
+    | Pick<Appcraft.NodeWidget, Appcraft.WidgetField>
+    | Pick<Appcraft.ConfigOptions, 'props'>,
   { renderer, fetchTodoWrap }: Types.GetPropsOptions = {}
 ) => {
   const fields: Appcraft.WidgetField[] = ['nodes', 'props', 'todos'];

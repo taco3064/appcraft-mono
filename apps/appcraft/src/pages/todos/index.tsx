@@ -4,25 +4,24 @@ import Container from '@mui/material/Container';
 import Head from 'next/head';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import { Style, getEventHandler } from '@appcraft/mui';
-import { useRouter } from 'next/router';
-import { ComponentProps, useMemo, useState } from 'react';
 import { nanoid } from 'nanoid';
+import { useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
 import type { WidgetTodo } from '@appcraft/types';
 
-import { CommonButton } from '~appcraft/components';
-import { HierarchyList, TodoStepper } from '~appcraft/containers';
+import { CommonButton, TodoOutputStepper } from '~appcraft/components';
+import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { getConfigById } from '~appcraft/services';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
+import type { TodoOutputStepperProps } from '~appcraft/components';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
 
 export default function Todos() {
   const { pathname } = useRouter();
   const [nt, tt] = useFixedT('nav', 'todos');
-
-  const [steperProps, setStepperProps] =
-    useState<ComponentProps<typeof TodoStepper>>();
+  const [steperProps, setStepperProps] = useState<TodoOutputStepperProps>();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const refresh = useMemo(() => nanoid(4), [steperProps]);
@@ -90,7 +89,7 @@ export default function Todos() {
         onClose={() => setStepperProps(undefined)}
       >
         <Container disableGutters>
-          <TodoStepper {...steperProps} key={refresh} />
+          <TodoOutputStepper {...steperProps} key={refresh} />
         </Container>
       </Style.FlexDialog>
     </>

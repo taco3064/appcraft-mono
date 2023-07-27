@@ -2,6 +2,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 
@@ -18,6 +19,18 @@ export default function HierarchyMutation({
   const { enqueueSnackbar } = useSnackbar();
   const [at] = useFixedT('app');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
+
+  const mutation = useMutation({
+    mutationFn: removeHierarchy,
+    onSuccess: () => {
+      setAnchorEl(null);
+      onSuccess?.();
+
+      enqueueSnackbar(at('txt-succeed-remove'), {
+        variant: 'success',
+      });
+    },
+  });
 
   return (
     <>
@@ -53,15 +66,7 @@ export default function HierarchyMutation({
         <RemoveButton
           btnVariant="menu"
           onCancel={() => setAnchorEl(null)}
-          onConfirm={async () => {
-            await removeHierarchy(data._id);
-            setAnchorEl(null);
-            onSuccess?.();
-
-            enqueueSnackbar(at('txt-succeed-remove'), {
-              variant: 'success',
-            });
-          }}
+          onConfirm={() => mutation.mutate(data._id)}
         />
       </Menu>
     </>

@@ -25,7 +25,7 @@ export default function WidgetNode({
   return (
     <ListItemButton
       disableRipple={isState}
-      onClick={() => !isState && onActive(completePaths)}
+      onClick={() => !isState && onActive(completePaths, type)}
     >
       {selection || <ListItemIcon />}
 
@@ -38,6 +38,7 @@ export default function WidgetNode({
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
+          color: isState ? 'text.secondary' : 'text.primary',
         }}
       />
     </ListItemButton>

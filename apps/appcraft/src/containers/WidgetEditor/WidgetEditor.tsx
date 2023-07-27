@@ -1,7 +1,7 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ConstructionIcon from '@mui/icons-material/Construction';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
 import { useCallback, useState } from 'react';
 import type { WidgetTodo } from '@appcraft/types';
@@ -20,6 +20,7 @@ export default function WidgetEditor({
   onActionNodePick = (e) => e,
   onSave,
   onWrapTodoView,
+  onWrapWidgetView,
 }: WidgetEditorProps) {
   const [at, ct, wt] = Hook.useFixedT('app', 'appcraft', 'widgets');
   const [open, setOpen] = useState(false);
@@ -45,7 +46,7 @@ export default function WidgetEditor({
           !isCollapsable || isSettingOpen ? null : (
             <Comp.CommonButton
               btnVariant="icon"
-              icon={<SettingsOutlinedIcon />}
+              icon={<ConstructionIcon />}
               text={wt(`btn-expand-${isSettingOpen ? 'off' : 'on'}`)}
               onClick={() => setOpen(!open)}
             />
@@ -144,13 +145,14 @@ export default function WidgetEditor({
                   <Common.WidgetSelect
                     {...(props as Common.WidgetSelectProps)}
                     exclude={[data._id]}
+                    onView={onWrapWidgetView}
                   />
                 );
               } else if (typeName === 'WrapTodo' && propPath === 'todosId') {
                 return (
                   <Common.WrapTodoSelect
                     {...(props as Common.WrapTodoSelectProps)}
-                    onTodoView={onWrapTodoView}
+                    onView={onWrapTodoView}
                   />
                 );
               }

@@ -6,8 +6,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 
 import { Link } from '~appcraft/styles';
-import { SigninButton } from '~appcraft/components/SigninButton';
-import { UserinfoMenuToggle } from '~appcraft/components/UserinfoMenuToggle';
 import type * as Types from './AppHeader.types';
 
 export default function AppHeader({

@@ -3,12 +3,14 @@ import type { ConfigData, RootNodeWidget } from '@appcraft/types';
 
 import { PersistentDrawerContent } from '~appcraft/styles';
 import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
+import type { WidgetSelectProps, WrapTodoSelectProps } from '../common';
 
 export interface WidgetEditorProps {
   data: ConfigData<RootNodeWidget, string>;
   onActionNodePick?: NodePickerFn<'expand' | 'reset' | 'save'>;
-  onWrapTodoView?: (id: string) => void;
   onSave?: () => void;
+  onWrapTodoView?: WrapTodoSelectProps['onView'];
+  onWrapWidgetView?: WidgetSelectProps['onView'];
 
   superiors?: {
     names: Record<string, string>;

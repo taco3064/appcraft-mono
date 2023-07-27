@@ -6,13 +6,12 @@ export type ParseOptions = Pick<
 >;
 
 export type FetchNodesAndEvents = (
-  items: Appcraft.WidgetOptions[],
+  options: ParseOptions[],
   version?: string
 ) => Promise<Appcraft.NodeAndEventProps>;
 
 export type RenderFn<D, R> = (
   options: R & {
     fetchData: D;
-    widgets: Appcraft.WidgetOptions[];
   }
 ) => JSX.Element;

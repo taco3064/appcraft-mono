@@ -14,7 +14,7 @@ import type * as Appcraft from '@appcraft/types';
 import * as Style from '../../styles';
 import { WidgetEvent, WidgetNode } from '../common';
 import { sortPropPaths } from '../../utils';
-import { useDnd } from '../../hooks';
+import { useSortableDnd } from '../../hooks';
 import type { MixedWidget, WidgetElementProps } from './WidgetElement.types';
 
 const DND_TYPE = Symbol('widget');
@@ -38,8 +38,9 @@ export default function WidgetElement<I extends Appcraft.WidgetOptions>({
   const isNode = category === 'node';
   const [open, setOpen] = useState(defaultOpen);
 
-  const { ref, handlerId, isDragging } = useDnd<HTMLDivElement>(
+  const { ref, handlerId, isDragging } = useSortableDnd<HTMLDivElement>(
     DND_TYPE,
+    item.id,
     index,
     onDndMove
   );

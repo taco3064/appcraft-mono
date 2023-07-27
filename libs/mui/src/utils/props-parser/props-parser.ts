@@ -7,6 +7,9 @@ import { getPropPath } from '../prop-path';
 import { getEventHandler } from '../todo-parser';
 import type * as Types from './props-parser.types';
 
+export const getForceArray = <T>(target: T | T[]) =>
+  (Array.isArray(target) ? target : [target]).filter((item) => !!item);
+
 export const getNodesAndEventsKey: Types.GetNodesAndEventsKey = (
   options,
   defaultKey = ''

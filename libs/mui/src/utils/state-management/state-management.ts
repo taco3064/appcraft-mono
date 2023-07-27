@@ -13,7 +13,11 @@ const convert2State: Types.Convert2State = (arr, basePath, state) =>
     return result;
   }, state);
 
-const convert2StateArray: Types.Convert2StateArray = (state, basePath) =>
+const convert2StateArray: Types.Convert2StateArray = (
+  state,
+  basePath,
+  length
+) =>
   Object.entries(state).reduce<Appcraft.WidgetState[]>(
     (result, [key, value]) => {
       if (key.startsWith(basePath)) {
@@ -34,7 +38,7 @@ const convert2StateArray: Types.Convert2StateArray = (state, basePath) =>
 
       return result;
     },
-    []
+    new Array(length).fill(undefined)
   );
 
 export const getStateCategory: Types.GetStateCategory = (generator) => {
@@ -105,9 +109,10 @@ export const removeState: Types.RemoveState = (
   category,
   { [category]: state = {}, ...states },
   basePath,
-  index
+  index,
+  length
 ) => {
-  const target = convert2StateArray(state, basePath);
+  const target = convert2StateArray(state, basePath, length);
 
   target.splice(index, 1);
 
@@ -118,13 +123,14 @@ export const resortState: Types.ResortState = (
   category,
   { [category]: state = {}, ...states },
   basePath,
-  [fm, to]
+  [fm, to],
+  length
 ) => {
-  const target = convert2StateArray(state, basePath);
+  const target = convert2StateArray(state, basePath, length);
   const dragItem = target[fm];
 
   target.splice(fm, 1);
-  _set(target, to, dragItem);
+  target.splice(to, 0, dragItem);
 
   return { ...states, [category]: convert2State(target, basePath, state) };
 };

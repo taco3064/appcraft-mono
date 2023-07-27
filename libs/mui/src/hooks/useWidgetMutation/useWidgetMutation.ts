@@ -67,7 +67,13 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
 
           onWidgetChange({
             ..._set(widget, e, target),
-            state: removeState('nodes', widget.state || {}, basePath, index),
+            state: removeState(
+              'nodes',
+              widget.state || {},
+              basePath,
+              index,
+              target.length
+            ),
           });
         }
       },
@@ -77,13 +83,9 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
 
         if (Array.isArray(target)) {
           const dragItem = target[dragIndex];
-          const hoverItem = target[hoverIndex];
-          const offset = dragIndex < hoverIndex ? 1 : 0;
-          let to = -1;
 
           target.splice(dragIndex, 1);
-          to = target.indexOf(hoverItem) + offset;
-          target.splice(to, 0, dragItem);
+          target.splice(hoverIndex, 0, dragItem);
 
           onWidgetChange({
             ..._set(widget, paths, [...target]),
@@ -91,7 +93,8 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
               'nodes',
               widget.state || {},
               getPropPath(paths),
-              [dragIndex, to]
+              [dragIndex, hoverIndex],
+              target.length
             ),
           });
         }

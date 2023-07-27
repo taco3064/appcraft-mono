@@ -1,5 +1,4 @@
 export * from './useCollection';
-export * from './useDnd';
 export * from './useFixedT';
 export * from './useLazyTypeList';
 export * from './useLazyWidgetElements';
@@ -7,6 +6,7 @@ export * from './useMixedTypeMapping';
 export * from './usePropValue';
 export * from './usePropertiesSorting';
 export * from './usePropertyRouter';
+export * from './useSortableDnd';
 export * from './useStateGenerator';
 export * from './useStateSelection';
 export * from './useStructure';

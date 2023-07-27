@@ -10,7 +10,8 @@ export type GetStateTypeName = (state: Appcraft.WidgetState) => string;
 
 export type Convert2StateArray = (
   state: Required<StateRecord>[StateCategory],
-  basePath: string
+  basePath: string,
+  length: number
 ) => Appcraft.WidgetState[];
 
 export type Convert2State = (
@@ -36,12 +37,14 @@ export type RemoveState = (
   category: StateCategory,
   state: StateRecord,
   basePath: string,
-  index: number
+  index: number,
+  length: number
 ) => StateRecord;
 
 export type ResortState = (
   category: StateCategory,
   state: StateRecord,
   basePath: string,
-  indexes: [number, number]
+  indexes: [number, number],
+  length: number
 ) => StateRecord;

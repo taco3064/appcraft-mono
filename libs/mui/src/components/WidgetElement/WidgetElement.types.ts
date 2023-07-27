@@ -1,7 +1,7 @@
 import type * as Appcraft from '@appcraft/types';
 
-import type { DndMoveHandler, PathsChangeHandler } from '../../hooks';
 import type { FixedT } from '../../contexts';
+import type { PathsChangeHandler, SortableDndMoveHandler } from '../../hooks';
 import type { PropPaths } from '../../utils';
 
 export type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
@@ -17,7 +17,7 @@ export interface WidgetElementProps<I extends Appcraft.WidgetOptions> {
   superiorNodeType: Appcraft.NodeType;
 
   onClick: (paths: PropPaths) => void;
-  onDndMove: DndMoveHandler;
+  onDndMove: SortableDndMoveHandler;
   onEventActive: (paths: PropPaths) => void;
   onNodeActive: PathsChangeHandler;
   onRemove: (paths: PropPaths) => void;

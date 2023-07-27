@@ -97,6 +97,8 @@ export default function Detail() {
       </PageContainer>
 
       <Style.FlexDialog
+        disableContentGutter
+        disableContentJustifyCenter
         fullWidth
         maxWidth="xs"
         direction="column"

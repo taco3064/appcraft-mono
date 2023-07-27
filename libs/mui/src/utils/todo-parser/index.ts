@@ -1,2 +1,8 @@
 export * from './todo-parser';
-export type { FetchTodoWrap, OutputData } from './todo-parser.types';
+
+export type {
+  FetchTodoWrap,
+  OutputCollectEvent,
+  OutputCollectHandler,
+  OutputData,
+} from './todo-parser.types';

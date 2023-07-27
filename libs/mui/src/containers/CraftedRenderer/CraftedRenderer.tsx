@@ -7,11 +7,13 @@ export default function CraftedRenderer({
   fetchTodoWrap,
   lazy,
   options,
+  onOutputCollect,
 }: CraftedRendererProps) {
   const generator = useWidgetGenerator(
     lazy,
     fetchTodoWrap,
-    (Widget, props, i) => <Widget key={`widget_${i}`} {...props} />
+    (Widget, props, i) => <Widget key={`widget_${i}`} {...props} />,
+    onOutputCollect
   );
 
   return !options ? null : (

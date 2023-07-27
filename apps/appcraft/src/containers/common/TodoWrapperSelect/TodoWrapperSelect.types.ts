@@ -1,6 +1,6 @@
 import type { HierarchyData } from '~appcraft/services';
 
-export interface WrapTodoSelectProps {
+export interface TodoWrapperSelectProps {
   disabled?: boolean;
   label: string;
   value: string;

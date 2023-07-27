@@ -1,5 +1,5 @@
 {
-  "btn-logs": "View Logs",
+  "btn-output": "View Outputs",
   "btn-run": "Run Test",
   "lbl-duration": "Duration: {{ duration }} s",
   "lbl-variant": "Todo Variant",
@@ -8,5 +8,5 @@
   "opt-define": "Define Variable",
   "opt-fetch": "Fetch/Send Data",
   "ttl-detail": "Todo",
-  "ttl-logs": "Output Logs"
+  "ttl-output": "Output Details"
 }

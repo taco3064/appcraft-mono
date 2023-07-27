@@ -17,13 +17,13 @@ export default function TodoOutputStepper({
   fullHeight = false,
   title,
   duration,
-  logs,
+  outputs,
   todos,
 }: TodoOutputStepperProps) {
   const [tt] = Hook.useFixedT('todos');
 
   const [active, setActive] = useState<number[]>(
-    new Array(logs?.length || 0).fill(0)
+    new Array(outputs?.length || 0).fill(0)
   );
 
   return (
@@ -39,7 +39,7 @@ export default function TodoOutputStepper({
           style: { height: '100%', overflow: 'hidden auto' },
         })}
       >
-        {!logs?.length && (
+        {!outputs?.length && (
           <Typography
             variant="h6"
             color="text.secondary"
@@ -50,7 +50,7 @@ export default function TodoOutputStepper({
           </Typography>
         )}
 
-        {logs?.map((outputs, i) => (
+        {outputs?.map((outputs, i) => (
           <Stepper
             key={`log-${i}`}
             nonLinear

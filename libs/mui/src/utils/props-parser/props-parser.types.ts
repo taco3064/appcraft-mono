@@ -1,7 +1,7 @@
 import type * as Appcraft from '@appcraft/types';
 import type { Theme } from '@mui/material/styles';
 
-import type { FetchTodoWrap } from '../todo-parser';
+import type { FetchTodoWrap, OutputCollectHandler } from '../todo-parser';
 
 //* Variables
 export type GeneratorFn = (
@@ -12,6 +12,7 @@ export type GeneratorFn = (
 export type GetPropsOptions = {
   renderer?: GeneratorFn;
   fetchTodoWrap?: FetchTodoWrap;
+  onOutputCollect?: OutputCollectHandler;
 };
 
 //* Methods

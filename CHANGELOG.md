@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.72](https://github.com/taco3064/appcraft-mono/compare/v0.0.71...v0.0.72) (2023-07-27)
+
+
+### Features
+
+* **detail:** make widget editor could show template widget props list ([37547ed](https://github.com/taco3064/appcraft-mono/commit/37547edd93b2b12f750513e5df2743add742f793))
+* **widget-select:** add adornment to show icon/link ([de70ab9](https://github.com/taco3064/appcraft-mono/commit/de70ab9fa3166cab6dfd522547926c359d78c91e))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** fixed bugs ([9c99c5d](https://github.com/taco3064/appcraft-mono/commit/9c99c5d4187d47c6334f69f9d8c467540e0e819d))
+* **@appcraft/mui:** fixed resort widget bugs ([f73ef2b](https://github.com/taco3064/appcraft-mono/commit/f73ef2b9ae5d095df0da5ea617eb551dc8d9bc47))
+* **@appcraft/mui:** fixed state bugs ([2c70856](https://github.com/taco3064/appcraft-mono/commit/2c7085634c44a89cfaab9b263be52db5f93446cb))
+* fixed bugs ([d6bc551](https://github.com/taco3064/appcraft-mono/commit/d6bc5515a00983e624611a758d2c09c21ead6f52))
+* fixed bugs ([088454a](https://github.com/taco3064/appcraft-mono/commit/088454a7b13144d615c4c25cd26934d565e0d12a))
+* update props ([e3e9a87](https://github.com/taco3064/appcraft-mono/commit/e3e9a8751fd31577823dbdecb1e63d670768ee18))
+* **use-widget-mutation:** fixed the invalid state error when remove node ([ce3db44](https://github.com/taco3064/appcraft-mono/commit/ce3db446d725bc7873a99985c86818288c5c8ede))
+* **widget-editor:** update icon ([e7fc885](https://github.com/taco3064/appcraft-mono/commit/e7fc885ecbe4e07b8da4eeae4d4bb597a058d5a1))
+
 ### [0.0.71](https://github.com/taco3064/appcraft-mono/compare/v0.0.70...v0.0.71) (2023-07-26)
 
 

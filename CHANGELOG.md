@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.73](https://github.com/taco3064/appcraft-mono/compare/v0.0.72...v0.0.73) (2023-07-28)
+
+
+### Features
+
+* **@appcraft/mui:** add alias option to todo ([97f7553](https://github.com/taco3064/appcraft-mono/commit/97f75533a349ee3086520cf5667eccdab2c71aed))
+
+
+### Bug Fixes
+
+* fixed bugs ([77baaf4](https://github.com/taco3064/appcraft-mono/commit/77baaf4c49675ae3e107e26cff470fe8f1b294fc))
+* fixed bugs ([9f5986f](https://github.com/taco3064/appcraft-mono/commit/9f5986f0bdd7658648e23a83b777501a4298ea25))
+* fixed bugs ([0933061](https://github.com/taco3064/appcraft-mono/commit/0933061083b6e737ce0e5d18f33219916228af30))
+
 ### [0.0.72](https://github.com/taco3064/appcraft-mono/compare/v0.0.71...v0.0.72) (2023-07-27)
 
 

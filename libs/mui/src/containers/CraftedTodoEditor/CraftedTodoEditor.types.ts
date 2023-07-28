@@ -15,7 +15,6 @@ export interface CraftedTodoEditorProps
       | 'renderOverridePureItem'
       | 'onFetchDefinition'
     > {
-  todoPath?: string;
   typeFile?: string;
   values?: Record<string, Appcraft.WidgetTodo>;
   onChange: TodoChangeHandler;

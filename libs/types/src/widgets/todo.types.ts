@@ -32,6 +32,7 @@ type Todos = 'variable' | 'fetch' | 'branch' | 'iterate' | 'wrap' | 'state';
 type BaseTodo<C extends Todos, P> = {
   category: C;
   id: string;
+  alias: string;
   description: string;
   defaultNextTodo?: string;
   mixedTypes?: TypesMapping;

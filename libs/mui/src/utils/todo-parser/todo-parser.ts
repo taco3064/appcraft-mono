@@ -71,7 +71,7 @@ async function execute(
   { event, fetchTodoWrap, outputs }: Types.ExecuteOptions
 ): Promise<Types.OutputData[]> {
   while (todo) {
-    const { id, category, defaultNextTodo, mixedTypes } = todo;
+    const { id, alias = id, category, defaultNextTodo, mixedTypes } = todo;
     const { [defaultNextTodo as string]: next } = todos;
 
     switch (category) {
@@ -86,7 +86,7 @@ async function execute(
         });
 
         todo = next;
-        outputs.push({ id, output });
+        outputs.push({ id: alias, output });
 
         break;
       }
@@ -102,7 +102,7 @@ async function execute(
         todo = next;
 
         outputs.push({
-          id,
+          id: alias,
           output: $outputs.flat().reduce(
             (acc, { id, output }) => ({
               ...acc,
@@ -156,7 +156,7 @@ async function execute(
           });
 
         todo = next;
-        outputs.push({ id, output });
+        outputs.push({ id: alias, output });
 
         break;
       }
@@ -201,7 +201,7 @@ async function execute(
             );
           }
 
-          outputs.push({ id, output });
+          outputs.push({ id: alias, output });
         }
 
         todo = next;

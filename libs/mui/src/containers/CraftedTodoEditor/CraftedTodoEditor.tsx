@@ -33,7 +33,6 @@ export default function CraftedTodoEditor({
   fixedT,
   fullHeight,
   open = true,
-  todoPath,
   typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts',
   values,
   renderOverridePureItem,

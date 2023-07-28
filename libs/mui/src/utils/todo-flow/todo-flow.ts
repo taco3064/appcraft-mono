@@ -146,8 +146,11 @@ export const getEditingTodo: Types.GetEditingTodo = (
 };
 
 export const getInitialTodo: Types.GetInitialTodo = (typeFile, category) => {
-  const data: Pick<Appcraft.WidgetTodo, 'description' | 'id'> = {
-    id: nanoid(4),
+  const id = nanoid(4);
+
+  const data: Pick<Appcraft.WidgetTodo, 'description' | 'id' | 'alias'> = {
+    id,
+    alias: id,
     description: '',
   };
 

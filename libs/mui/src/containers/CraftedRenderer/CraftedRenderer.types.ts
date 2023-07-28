@@ -1,15 +1,9 @@
-import type { RootNodeWidget } from '@appcraft/types';
-
-import type { ExternalLazy } from '../../hooks';
-import type { FetchTodoWrap, OutputCollectHandler } from '../../utils';
-
-type WidgetLayout = {
-  widget: RootNodeWidget;
-};
+import type * as Util from '../../utils';
+import type { ExternalLazy, RendererOptions } from '../../hooks';
 
 export interface CraftedRendererProps {
-  fetchTodoWrap: FetchTodoWrap;
   lazy: ExternalLazy;
-  options?: RootNodeWidget | WidgetLayout[];
-  onOutputCollect?: OutputCollectHandler;
+  options?: RendererOptions;
+  onFetchTodoWrapper: Util.FetchTodoWrapperHandler;
+  onOutputCollect?: Util.OutputCollectHandler;
 }

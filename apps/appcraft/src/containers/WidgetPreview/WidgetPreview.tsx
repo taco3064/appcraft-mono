@@ -20,7 +20,7 @@ export default function WidgetPreview({ id }: WidgetPreviewProps) {
     <CraftedRenderer
       lazy={toLazy}
       options={data?.content}
-      fetchTodoWrap={async (id) => {
+      onFetchTodoWrapper={async (id) => {
         const { content } = await Service.getConfigById<
           Record<string, WidgetTodo>
         >(id);

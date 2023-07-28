@@ -51,7 +51,7 @@ export const getProps = <P>(
   options:
     | Pick<Appcraft.NodeWidget, Appcraft.WidgetField>
     | Pick<Appcraft.ConfigOptions, 'props'>,
-  { renderer, fetchTodoWrap, onOutputCollect }: Types.GetPropsOptions = {}
+  { renderer, onFetchTodoWrapper, onOutputCollect }: Types.GetPropsOptions = {}
 ) => {
   const fields: Appcraft.WidgetField[] = ['nodes', 'props', 'todos'];
 
@@ -67,17 +67,17 @@ export const getProps = <P>(
           propPath,
           getEventHandler(value as Record<string, Appcraft.WidgetTodo>, {
             eventName: propPath,
-            fetchTodoWrap,
+            onFetchTodoWrapper,
             onOutputCollect,
           })
         );
       } else if (renderer instanceof Function && widgetField === 'nodes') {
+        const widgets = getForceArray(value as Appcraft.WidgetOptions);
+
         _set(
           result,
           propPath,
-          Array.isArray(value)
-            ? value.map(renderer)
-            : renderer(value as Appcraft.WidgetOptions, 0)
+          widgets.map((widget) => renderer(widget))
         );
       }
     });

@@ -9,32 +9,28 @@ const LazyPlainText = lazy<Types.PlainTextComponent>(async () => ({
 }));
 
 const useWidgetGenerator: Types.WidgetGeneratorHook = (
-  externalLazy,
-  fetchTodoWrap,
-  renderer,
-  onOutputCollect
+  { externalLazy, onFetchTodoWrapper, onOutputCollect },
+  renderer
 ) =>
-  function generator(options, index) {
-    const { type, content } = options as Appcraft.NodeWidget &
+  function generator(widget, index) {
+    const key = index === undefined ? `${widget.id}` : `${widget.id}-${index}`;
+
+    const { type, content } = widget as Appcraft.NodeWidget &
       Appcraft.PlainTextWidget;
 
     return !type
-      ? renderer(
-          LazyPlainText,
-          {
-            children: content || '',
-          } as Types.PlainTextProps,
-          index
-        )
-      : renderer(
-          externalLazy(type),
-          getProps(options as Appcraft.NodeWidget, {
-            fetchTodoWrap,
+      ? renderer(LazyPlainText, {
+          key,
+          props: { children: content || '' } as Types.PlainTextProps,
+        })
+      : renderer(externalLazy(type), {
+          key,
+          props: getProps(widget as Appcraft.NodeWidget, {
+            onFetchTodoWrapper,
             onOutputCollect,
             renderer: generator,
           }),
-          index
-        );
+        });
   };
 
 export default useWidgetGenerator;

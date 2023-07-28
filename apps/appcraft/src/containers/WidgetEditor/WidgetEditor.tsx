@@ -97,7 +97,7 @@ export default function WidgetEditor({
             lazy={toLazy}
             options={widget}
             onOutputCollect={onOutputCollect}
-            fetchTodoWrap={async (id) => {
+            onFetchTodoWrapper={async (id) => {
               const { content } = await Service.getConfigById<
                 Record<string, WidgetTodo>
               >(id);

@@ -1,10 +1,5 @@
 import type * as React from 'react';
-
-import type {
-  FetchTodoWrap,
-  GeneratorFn,
-  OutputCollectHandler,
-} from '../../utils';
+import type * as Util from '../../utils';
 
 //* Variables
 export type PlainTextProps = { children?: React.ReactNode };
@@ -19,14 +14,18 @@ export type Renderer = (
   WidgetElement:
     | React.LazyExoticComponent<React.ComponentType>
     | React.LazyExoticComponent<PlainTextComponent>,
-  props: React.ComponentProps<typeof WidgetElement>,
-  index: number
+  options: {
+    key: string;
+    props: React.ComponentProps<typeof WidgetElement>;
+  }
 ) => JSX.Element;
 
 //* Custom Hooks
 export type WidgetGeneratorHook = (
-  externalLazy: ExternalLazy,
-  fetchTodoWrap: FetchTodoWrap,
-  renderer: Renderer,
-  onOutputCollect?: OutputCollectHandler
-) => GeneratorFn;
+  options: {
+    externalLazy: ExternalLazy;
+    onFetchTodoWrapper: Util.FetchTodoWrapperHandler;
+    onOutputCollect?: Util.OutputCollectHandler;
+  },
+  renderer: Renderer
+) => Util.GeneratorFn;

@@ -261,7 +261,15 @@ export const getEventHandler: Types.GetEventHandler =
         outputs: [],
       });
 
-      result.push(outputs);
+      result.push(
+        outputs.filter(({ todo }) => {
+          const {
+            [todo]: { ignoreOutput = false },
+          } = todos;
+
+          return ignoreOutput;
+        })
+      );
     }
 
     onOutputCollect?.(

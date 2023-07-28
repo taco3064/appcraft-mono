@@ -14,14 +14,14 @@ export type OutputCollectHandler = (
   name?: string
 ) => void;
 
-export type FetchTodoWrap = (
+export type FetchTodoWrapperHandler = (
   todosId: string
 ) => Promise<Record<string, Appcraft.WidgetTodo>>;
 
 export type ExecuteOptions = {
   event: unknown[];
   outputs: OutputData[];
-  fetchTodoWrap?: FetchTodoWrap;
+  onFetchTodoWrapper?: FetchTodoWrapperHandler;
 };
 
 export type IteratePrepare = {
@@ -31,7 +31,7 @@ export type IteratePrepare = {
 
 export type IterateResult = Promise<[string | number, OutputData[]]>;
 
-export type VariableOptions = Omit<ExecuteOptions, 'fetchTodoWrap'> & {
+export type VariableOptions = Omit<ExecuteOptions, 'onFetchTodoWrapper'> & {
   mixedTypes?: Appcraft.TypesMapping;
 };
 
@@ -40,7 +40,7 @@ export type GetEventHandler = (
   todos: Record<string, Appcraft.WidgetTodo>,
   options?: {
     eventName?: string;
-    fetchTodoWrap?: FetchTodoWrap;
+    onFetchTodoWrapper?: FetchTodoWrapperHandler;
     onOutputCollect?: OutputCollectHandler;
   }
 ) => (...event: unknown[]) => Promise<OutputData[][]>;

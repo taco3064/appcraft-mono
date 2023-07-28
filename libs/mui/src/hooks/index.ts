@@ -1,5 +1,6 @@
 export * from './useCollection';
 export * from './useFixedT';
+export * from './useGlobalState';
 export * from './useLazyTypeList';
 export * from './useLazyWidgetElements';
 export * from './useMixedTypeMapping';

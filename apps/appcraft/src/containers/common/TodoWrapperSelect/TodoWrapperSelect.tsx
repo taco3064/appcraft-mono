@@ -9,15 +9,15 @@ import { useQuery } from '@tanstack/react-query';
 
 import { searchHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
-import type { WrapTodoSelectProps } from './WrapTodoSelect.types';
+import type { TodoWrapperSelectProps } from './TodoWrapperSelect.types';
 
-export default function WidgetEditor({
+export default function TodoWrapperSelect({
   disabled = false,
   label,
   value,
   onChange,
   onView,
-}: WrapTodoSelectProps) {
+}: TodoWrapperSelectProps) {
   const [wt] = useFixedT('widgets');
 
   const { data: options } = useQuery({

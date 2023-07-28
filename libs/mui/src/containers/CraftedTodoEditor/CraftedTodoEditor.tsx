@@ -1,6 +1,5 @@
 import * as Rf from 'reactflow';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 
 import * as Comp from '../../components';
@@ -11,6 +10,7 @@ import { useStateContext } from '../../contexts';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
 
 const EXCLUDE: RegExp[] = [
+  /^id$/,
   /^category$/,
   /^mixedTypes$/,
   /^defaultNextTodo$/,
@@ -33,7 +33,6 @@ export default function CraftedTodoEditor({
   fixedT,
   fullHeight,
   open = true,
-  todoPath,
   typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts',
   values,
   renderOverridePureItem,

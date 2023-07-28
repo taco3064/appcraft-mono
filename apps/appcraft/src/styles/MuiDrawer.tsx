@@ -60,10 +60,14 @@ export const PersistentDrawerContent = (() => {
     content: ReactNode;
     height?: (theme: Theme) => number | string;
     open: boolean;
+    onClose: DrawerProps['onClose'];
 
     ContentProps?: Omit<ContainerProps, 'children' | 'disableGutters' | 'sx'>;
 
-    DrawerProps: Omit<DrawerProps, 'anchor' | 'maxWidth'> & {
+    DrawerProps: Omit<
+      DrawerProps,
+      'anchor' | 'maxWidth' | 'open' | 'onClose'
+    > & {
       anchor: 'right' | 'left';
       maxWidth: ContainerProps['maxWidth'];
     };
@@ -78,15 +82,18 @@ export const PersistentDrawerContent = (() => {
       drawer,
       height,
       open,
+      onClose,
       ...props
     }: PersistentDrawerContentProps) => {
       const width = useWidth();
+      const isTemporary = /^(xs|sm)$/.test(width);
 
       return (
         <Container {...props} className={classes.root}>
           <SizedDrawer
             {...DrawerProps}
-            variant={/^(xs|sm)$/.test(width) ? 'temporary' : 'persistent'}
+            {...(isTemporary && { onClose })}
+            variant={isTemporary ? 'temporary' : 'persistent'}
             open={open}
             PaperProps={{ className: classes.paper }}
           >
@@ -135,8 +142,7 @@ export const PersistentDrawerContent = (() => {
         }),
       },
       content: {
-        display: 'flex',
-        flexDirection: 'column' as never,
+        display: 'block',
         flexGrow: 1,
         width: 'auto !important',
         borderRadius: `${theme.spacing(2)} !important`,

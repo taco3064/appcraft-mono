@@ -4,8 +4,7 @@ import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedTodoEditor, Style } from '@appcraft/mui';
-import { nanoid } from 'nanoid';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
 import { Breadcrumbs } from '../common';
@@ -25,18 +24,15 @@ export default function TodoEditor({
   const [at, ct, tt] = Hook.useFixedT('app', 'appcraft', 'todos');
   const [open, setOpen] = useState(true);
 
-  const [{ duration, logs, todos }, handleTodos] = Hook.useTodoValues({
+  const [{ duration, outputs, todos }, handleTodos] = Hook.useTodoValues({
     data,
     onSave,
     onOpen: () => setOpen(true),
   });
 
   const width = Hook.useWidth();
-  const isCollapsable = /^(xs|sm)$/.test(width) && logs.length > 0;
-  const isLogsOpen = (!isCollapsable || open) && logs.length > 0;
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const refresh = useMemo(() => nanoid(4), [logs]);
+  const isCollapsable = /^(xs|sm)$/.test(width) && outputs.length > 0;
+  const isLogsOpen = (!isCollapsable || open) && outputs.length > 0;
 
   const actionNode = Hook.useNodePicker(
     () =>
@@ -101,6 +97,7 @@ export default function TodoEditor({
           sx: { zIndex: logZIndex },
         }}
         open={isLogsOpen}
+        onClose={() => setOpen(false)}
         content={
           <CraftedTodoEditor
             fullHeight
@@ -114,8 +111,7 @@ export default function TodoEditor({
         }
         drawer={
           <TodoOutputStepper
-            {...{ duration, logs, todos }}
-            key={refresh}
+            {...{ duration, outputs, todos }}
             title={
               <>
                 {isCollapsable && (
@@ -132,7 +128,7 @@ export default function TodoEditor({
                   fontWeight="bolder"
                   color="primary"
                 >
-                  {tt('ttl-logs')}
+                  {tt('ttl-output')}
                 </Style.GapTypography>
               </>
             }

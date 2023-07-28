@@ -13,7 +13,7 @@ const useTodoValues: TodoValuesHook = ({ data, onOpen, onSave }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [at] = useFixedT('app');
   const [duration, setDuration] = useState(0);
-  const [logs, setLogs] = useState<OutputData[][]>([]);
+  const [outputs, setOutputs] = useState<OutputData[][]>([]);
 
   const [todos, setTodos] = useState<Record<string, WidgetTodo>>(() =>
     JSON.parse(JSON.stringify(data?.content || {}))
@@ -28,7 +28,7 @@ const useTodoValues: TodoValuesHook = ({ data, onOpen, onSave }) => {
   });
 
   return [
-    { duration, logs, todos },
+    { duration, outputs, todos },
 
     {
       change: setTodos,
@@ -36,12 +36,14 @@ const useTodoValues: TodoValuesHook = ({ data, onOpen, onSave }) => {
       save: () => mutation.mutate({ ...data, content: todos }),
 
       run: async () => {
-        const start = Date.now();
-        const handleFn = getEventHandler(todos);
-        const outputs = await handleFn();
+        const handleFn = getEventHandler(todos, {
+          onOutputCollect: ({ duration, outputs }) => {
+            setDuration(duration);
+            setOutputs(outputs);
+          },
+        });
 
-        setDuration((Date.now() - start) / 1000);
-        setLogs(outputs);
+        await handleFn();
         onOpen();
       },
     },

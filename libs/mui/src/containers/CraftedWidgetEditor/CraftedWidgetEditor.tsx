@@ -118,6 +118,31 @@ export default function CraftedWidgetEditor({
         )}
       />
 
+      {editedWidget?.category === 'node' && (
+        <CraftedTodoEditor
+          {...(todoPath && { todoPath })}
+          fullHeight
+          disableCategories={disableCategories}
+          fixedT={fixedT}
+          open={Boolean(todoPath)}
+          typeFile={todoTypeFile}
+          values={editedWidget.todos?.[todoPath as string]}
+          renderOverridePureItem={renderOverridePureItem}
+          onFetchDefinition={onFetchConfigDefinition}
+          onChange={(todo) =>
+            handleMutation.modify({
+              ...editedWidget,
+              todos: { ...editedWidget.todos, [todoPath as string]: todo },
+            })
+          }
+          HeaderProps={{
+            primary: ct('ttl-events'),
+            secondary: todoPath || undefined,
+            onBack: () => handleMutation.editing(null),
+          }}
+        />
+      )}
+
       <StateProvider
         basePath={widgetPath}
         toggle={stateToggle}
@@ -125,45 +150,20 @@ export default function CraftedWidgetEditor({
         onChange={onWidgetChange}
       >
         {editedWidget?.category === 'node' && (
-          <>
-            <CraftedTypeEditor
-              fullHeight
-              fixedT={fixedT}
-              open={Boolean(!todoPath)}
-              values={editedWidget}
-              renderOverridePureItem={renderOverridePureItem}
-              onChange={handleMutation.modify}
-              onFetchDefinition={onFetchWidgetDefinition}
-              HeaderProps={{
-                primary: ct('ttl-props'),
-                secondary: editedWidget.type.replace(/([A-Z])/g, ' $1'),
-                onBack: () => handleMutation.editing(null),
-              }}
-            />
-
-            <CraftedTodoEditor
-              {...(todoPath && { todoPath })}
-              fullHeight
-              disableCategories={disableCategories}
-              fixedT={fixedT}
-              open={Boolean(todoPath)}
-              typeFile={todoTypeFile}
-              values={editedWidget.todos?.[todoPath as string]}
-              renderOverridePureItem={renderOverridePureItem}
-              onFetchDefinition={onFetchConfigDefinition}
-              onChange={(todo) =>
-                handleMutation.modify({
-                  ...editedWidget,
-                  todos: { ...editedWidget.todos, [todoPath as string]: todo },
-                })
-              }
-              HeaderProps={{
-                primary: ct('ttl-events'),
-                secondary: todoPath || undefined,
-                onBack: () => handleMutation.editing(null),
-              }}
-            />
-          </>
+          <CraftedTypeEditor
+            fullHeight
+            fixedT={fixedT}
+            open={Boolean(!todoPath)}
+            values={editedWidget}
+            renderOverridePureItem={renderOverridePureItem}
+            onChange={handleMutation.modify}
+            onFetchDefinition={onFetchWidgetDefinition}
+            HeaderProps={{
+              primary: ct('ttl-props'),
+              secondary: editedWidget.type.replace(/([A-Z])/g, ' $1'),
+              onBack: () => handleMutation.editing(null),
+            }}
+          />
         )}
 
         <Style.FullHeightCollapse

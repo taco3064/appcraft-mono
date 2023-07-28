@@ -1,11 +1,22 @@
 import type * as Appcraft from '@appcraft/types';
 
 //* Variables
+export type OutputData = { id: string; output: object };
+
+export type OutputCollectEvent = {
+  duration: number;
+  outputs: OutputData[][];
+  todos: Record<string, Appcraft.WidgetTodo>;
+};
+
+export type OutputCollectHandler = (
+  e: OutputCollectEvent,
+  name?: string
+) => void;
+
 export type FetchTodoWrap = (
   todosId: string
 ) => Promise<Record<string, Appcraft.WidgetTodo>>;
-
-export type OutputData = { id: string; output: object };
 
 export type ExecuteOptions = {
   event: unknown[];
@@ -26,6 +37,10 @@ export type VariableOptions = Omit<ExecuteOptions, 'fetchTodoWrap'> & {
 
 //* Methods
 export type GetEventHandler = (
-  options: Record<string, Appcraft.WidgetTodo>,
-  fetchTodoWrap?: FetchTodoWrap
+  todos: Record<string, Appcraft.WidgetTodo>,
+  options?: {
+    eventName?: string;
+    fetchTodoWrap?: FetchTodoWrap;
+    onOutputCollect?: OutputCollectHandler;
+  }
 ) => (...event: unknown[]) => Promise<OutputData[][]>;

@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField';
 import TitleIcon from '@mui/icons-material/Title';
 import dayjs from 'dayjs';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
-import { useEffect } from 'react';
+import { useEffect, useImperativeHandle, useRef } from 'react';
 
 import * as Common from '..';
 import { AdornmentTextField, TypeItemAction } from '../../../styles';
@@ -25,6 +25,10 @@ export default function TypeItemPure({
   selection,
 }: TypeItemPureProps) {
   const [{ value, typeFile, typeName }, handlePure] = usePropValue(propPath);
+
+  const initialRef = useRef<() => void>(() =>
+    handlePure.change(options.options?.[0])
+  );
 
   const hidden =
     options.type === 'oneOf' &&
@@ -46,9 +50,8 @@ export default function TypeItemPure({
 
   useEffect(() => {
     if (hidden) {
-      handlePure.change(options.options?.[0]);
+      initialRef.current?.();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hidden]);
 
   return hidden || override === false ? null : (

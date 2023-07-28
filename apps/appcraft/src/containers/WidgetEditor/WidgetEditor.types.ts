@@ -1,16 +1,19 @@
 import type { ComponentProps } from 'react';
 import type { ConfigData, RootNodeWidget } from '@appcraft/types';
+import type { OutputCollectHandler } from '@appcraft/mui';
 
 import { PersistentDrawerContent } from '~appcraft/styles';
 import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
-import type { WidgetSelectProps, WrapTodoSelectProps } from '../common';
+import type { TodoWrapperSelectProps, WidgetSelectProps } from '../common';
 
 export interface WidgetEditorProps {
   data: ConfigData<RootNodeWidget, string>;
+
   onActionNodePick?: NodePickerFn<'expand' | 'reset' | 'save'>;
+  onOutputCollect?: OutputCollectHandler;
   onSave?: () => void;
-  onWrapTodoView?: WrapTodoSelectProps['onView'];
-  onWrapWidgetView?: WidgetSelectProps['onView'];
+  onTodoWrapperView?: TodoWrapperSelectProps['onView'];
+  onWidgetWrapperView?: WidgetSelectProps['onView'];
 
   superiors?: {
     names: Record<string, string>;

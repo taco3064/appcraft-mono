@@ -5,7 +5,7 @@ import { TodoHandle, TodoNodeLabel } from '../../styles';
 import type { TodoFlowNodeProps } from './TodoFlowNode.types';
 
 export default function TodoFlowNode({ type, data }: TodoFlowNodeProps) {
-  const { id, category, description } = data;
+  const { id, alias = id, category, description } = data;
   const { deleteElements } = useReactFlow();
 
   return (
@@ -20,7 +20,7 @@ export default function TodoFlowNode({ type, data }: TodoFlowNodeProps) {
             {category}
 
             <Typography variant="caption" textTransform="none">
-              ({id})
+              ({alias})
             </Typography>
           </>
         }

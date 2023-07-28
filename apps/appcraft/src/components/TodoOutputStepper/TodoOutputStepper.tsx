@@ -57,12 +57,12 @@ export default function TodoOutputStepper({
             orientation="vertical"
             activeStep={active[i]}
           >
-            {outputs.map(({ id, output }, ii) => (
+            {outputs.map(({ todo: id, alias = id, output }, ii) => (
               <Step key={id}>
                 <StepButton
                   optional={
                     <Typography variant="caption" color="text.secondary">
-                      {id}
+                      {alias}
                     </Typography>
                   }
                   onClick={() =>
@@ -100,7 +100,7 @@ export default function TodoOutputStepper({
             color="secondary"
             marginLeft="auto"
           >
-            {tt('lbl-duration', { duration })}
+            {tt('lbl-duration', { duration: duration / 1000 })}
           </Typography>
         </Toolbar>
       </AppBar>

@@ -9,7 +9,10 @@ export type OutputCollectEvent = {
   todos: Record<string, Appcraft.WidgetTodo>;
 };
 
-export type OutputCollectHandler = (e: OutputCollectEvent) => void;
+export type OutputCollectHandler = (
+  e: OutputCollectEvent,
+  name?: string
+) => void;
 
 export type FetchTodoWrap = (
   todosId: string
@@ -36,6 +39,7 @@ export type VariableOptions = Omit<ExecuteOptions, 'fetchTodoWrap'> & {
 export type GetEventHandler = (
   todos: Record<string, Appcraft.WidgetTodo>,
   options?: {
+    eventName?: string;
     fetchTodoWrap?: FetchTodoWrap;
     onOutputCollect?: OutputCollectHandler;
   }

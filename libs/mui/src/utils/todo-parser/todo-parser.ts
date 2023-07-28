@@ -218,7 +218,7 @@ async function execute(
 
 //* Methods
 export const getEventHandler: Types.GetEventHandler =
-  (todos, { fetchTodoWrap, onOutputCollect } = {}) =>
+  (todos, { eventName, fetchTodoWrap, onOutputCollect } = {}) =>
   async (...event) => {
     const start = Date.now();
     const result: Types.OutputData[][] = [];
@@ -250,11 +250,14 @@ export const getEventHandler: Types.GetEventHandler =
       result.push(outputs);
     }
 
-    onOutputCollect?.({
-      duration: Date.now() - start,
-      outputs: result,
-      todos,
-    });
+    onOutputCollect?.(
+      {
+        duration: Date.now() - start,
+        outputs: result,
+        todos,
+      },
+      eventName
+    );
 
     return result;
   };

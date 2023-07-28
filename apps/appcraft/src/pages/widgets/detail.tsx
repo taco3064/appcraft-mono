@@ -78,9 +78,10 @@ export default function Detail() {
           onWidgetWrapperView={(data) =>
             global.window?.open(`/widgets/detail?id=${data._id}`, '_blank')
           }
-          onOutputCollect={(e) =>
-            enqueueSnackbar(tt('btn-output'), {
+          onOutputCollect={(e, eventName) =>
+            enqueueSnackbar(tt('msg-event-outputs', { name: eventName }), {
               variant: 'info',
+              style: { whiteSpace: 'pre-line' },
               action: () => (
                 <Button color="inherit" onClick={() => setOutput(e)}>
                   {at('btn-confirm')}

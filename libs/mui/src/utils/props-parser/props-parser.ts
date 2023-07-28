@@ -66,6 +66,7 @@ export const getProps = <P>(
           result,
           propPath,
           getEventHandler(value as Record<string, Appcraft.WidgetTodo>, {
+            eventName: propPath,
             fetchTodoWrap,
             onOutputCollect,
           })

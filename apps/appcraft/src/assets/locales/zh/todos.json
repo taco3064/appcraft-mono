@@ -3,6 +3,7 @@
   "btn-run": "執行測試",
   "lbl-variant": "事項類型",
   "msg-no-logs": "無執行紀錄",
+  "msg-event-outputs": "查看事件執行結果\n{{ name }}",
   "opt-convert": "轉換陣列元素",
   "opt-define": "建立變量",
   "opt-fetch": "獲取/傳送數據",

@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.74](https://github.com/taco3064/appcraft-mono/compare/v0.0.73...v0.0.74) (2023-07-28)
+
+
+### Features
+
+* **@appcraft/mui:** add ignoreOutput to WidgetTodo Config ([d26ec65](https://github.com/taco3064/appcraft-mono/commit/d26ec650d898b1b61e36d73532bba702bfa81f18))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** fixed the todo output bugs ([030b0c1](https://github.com/taco3064/appcraft-mono/commit/030b0c1afca0e2f5fb769c2958d2be7456b5113c))
+
 ### [0.0.73](https://github.com/taco3064/appcraft-mono/compare/v0.0.72...v0.0.73) (2023-07-28)
 
 

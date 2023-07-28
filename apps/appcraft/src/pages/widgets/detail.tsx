@@ -81,7 +81,6 @@ export default function Detail() {
           onOutputCollect={(e, eventName) =>
             enqueueSnackbar(tt('msg-event-outputs', { name: eventName }), {
               variant: 'info',
-              style: { whiteSpace: 'pre-line' },
               action: () => (
                 <Button color="inherit" onClick={() => setOutput(e)}>
                   {at('btn-confirm')}

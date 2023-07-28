@@ -3,12 +3,11 @@ import LinearProgress from '@mui/material/LinearProgress';
 import NoSsr from '@mui/material/NoSsr';
 import { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { SnackbarProvider, SnackbarOrigin } from 'notistack';
 import { Suspense, useState } from 'react';
 
 import * as Comp from '~appcraft/components';
 import IndexPage from './index';
-import { MainContainer } from '~appcraft/styles';
+import { MainContainer, MuiSnackbarProvider } from '~appcraft/styles';
 import { UserinfoMenuToggle } from '~appcraft/containers';
 import { useAuth } from '~appcraft/hooks';
 import 'reactflow/dist/style.css';
@@ -20,11 +19,6 @@ const client = new QueryClient({
     },
   },
 });
-
-const origin: SnackbarOrigin = {
-  horizontal: 'center',
-  vertical: 'bottom',
-};
 
 export default function App({ Component, pageProps }: AppProps) {
   const [open, setOpen] = useState(false);
@@ -41,7 +35,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <NoSsr>
         <QueryClientProvider client={client}>
           <Comp.ThemeProvider>
-            <SnackbarProvider anchorOrigin={origin}>
+            <MuiSnackbarProvider>
               <Comp.AppHeader
                 authorized={authorized}
                 onMenuToggle={() => setOpen(true)}
@@ -77,7 +71,7 @@ export default function App({ Component, pageProps }: AppProps) {
                   </MainContainer>
                 </Suspense>
               )}
-            </SnackbarProvider>
+            </MuiSnackbarProvider>
           </Comp.ThemeProvider>
         </QueryClientProvider>
       </NoSsr>

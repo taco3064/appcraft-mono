@@ -1,7 +1,7 @@
 import type * as Appcraft from '@appcraft/types';
 
 //* Variables
-export type OutputData = { id: string; output: object };
+export type OutputData = { todo: string; alias: string; output: object };
 
 export type OutputCollectEvent = {
   duration: number;

@@ -40,7 +40,8 @@ function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
           value = _get(event, path as string);
         } else {
           const [id, ...paths] = _toPath(path as string);
-          const { output } = outputs.find(({ id: $id }) => id === $id) || {};
+          const { output } =
+            outputs.find(({ todo, alias = todo }) => id === alias) || {};
 
           value = paths.length === 0 ? output : _get(output, paths);
         }
@@ -86,7 +87,7 @@ async function execute(
         });
 
         todo = next;
-        outputs.push({ id: alias, output });
+        outputs.push({ todo: id, alias, output });
 
         break;
       }
@@ -102,11 +103,12 @@ async function execute(
         todo = next;
 
         outputs.push({
-          id: alias,
+          todo: id,
+          alias,
           output: $outputs.flat().reduce(
-            (acc, { id, output }) => ({
+            (acc, { todo, alias = todo, output }) => ({
               ...acc,
-              [id]: output,
+              [alias]: output,
             }),
             {}
           ),
@@ -156,7 +158,7 @@ async function execute(
           });
 
         todo = next;
-        outputs.push({ id: alias, output });
+        outputs.push({ todo: id, alias, output });
 
         break;
       }
@@ -171,17 +173,27 @@ async function execute(
           : getVariableOutput({ target: source }, { event, outputs });
 
         if (Array.isArray(target) || _isPlainObject(target)) {
-          const keys = new Set(['$el', ...outputs.map(({ id }) => id)]);
           const output = Array.isArray(target) ? [] : {};
+
+          const keys = new Set([
+            '$el',
+            ...outputs.map(({ todo, alias = todo }) => alias),
+          ]);
 
           const list: Types.IteratePrepare[] = Array.isArray(target)
             ? target.map((item, key) => ({
                 key,
-                outputs: [...outputs, { id: '$el', output: item as object }],
+                outputs: [
+                  ...outputs,
+                  { todo: id, alias: '$el', output: item as object },
+                ],
               }))
             : Object.entries(target as object).map(([key, item]) => ({
                 key,
-                outputs: [...outputs, { id: '$el', output: item as object }],
+                outputs: [
+                  ...outputs,
+                  { todo: id, alias: '$el', output: item as object },
+                ],
               }));
 
           for await (const [key, outputs] of list.map<Types.IterateResult>(
@@ -192,7 +204,9 @@ async function execute(
               await execute(todos, iterate, { event, fetchTodoWrap, outputs }),
             ]
           )) {
-            const $outputs = outputs.filter(({ id }) => !keys.has(id));
+            const $outputs = outputs.filter(
+              ({ todo, alias = todo }) => !keys.has(alias)
+            );
 
             _set(
               output,
@@ -201,7 +215,7 @@ async function execute(
             );
           }
 
-          outputs.push({ id: alias, output });
+          outputs.push({ todo: id, alias, output });
         }
 
         todo = next;

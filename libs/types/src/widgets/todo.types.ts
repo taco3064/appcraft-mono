@@ -35,6 +35,7 @@ type BaseTodo<C extends Todos, P> = {
   alias: string;
   description: string;
   defaultNextTodo?: string;
+  ignoreOutput?: boolean;
   mixedTypes?: TypesMapping;
 } & P;
 

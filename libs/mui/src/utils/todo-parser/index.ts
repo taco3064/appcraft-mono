@@ -1,7 +1,7 @@
 export * from './todo-parser';
 
 export type {
-  FetchTodoWrap,
+  FetchTodoWrapperHandler,
   OutputCollectEvent,
   OutputCollectHandler,
   OutputData,

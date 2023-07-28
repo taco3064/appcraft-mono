@@ -69,7 +69,7 @@ function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
 async function execute(
   todos: Record<string, Appcraft.WidgetTodo>,
   todo: Appcraft.WidgetTodo,
-  { event, fetchTodoWrap, outputs }: Types.ExecuteOptions
+  { event, outputs, onFetchTodoWrapper }: Types.ExecuteOptions
 ): Promise<Types.OutputData[]> {
   while (todo) {
     const { id, alias = id, category, defaultNextTodo, mixedTypes } = todo;
@@ -95,7 +95,7 @@ async function execute(
       //* Execute Wrap Todos
       case 'wrap': {
         const { todosId } = todo;
-        const options = (await fetchTodoWrap?.(todosId)) || {};
+        const options = (await onFetchTodoWrapper?.(todosId)) || {};
 
         //* 因為不確定 wrap todos 的起始事項是哪個，所以呼叫 getEventHandler
         const $outputs = await getEventHandler(options)(...event);
@@ -125,7 +125,12 @@ async function execute(
         const isTrue = compiled(
           template,
           getVariableOutput(
-            Object.fromEntries(sources.map((source, i) => [`$${i}`, source])),
+            Object.fromEntries(
+              sources.map<[string, Appcraft.ExtractVariable]>((initial, i) => [
+                `$${i}`,
+                { mode: 'extract', initial },
+              ])
+            ),
             { event, outputs }
           )
         );
@@ -170,7 +175,10 @@ async function execute(
 
         const { target } = !source
           ? { target: null }
-          : getVariableOutput({ target: source }, { event, outputs });
+          : getVariableOutput(
+              { target: { mode: 'extract', initial: source } },
+              { event, outputs }
+            );
 
         if (Array.isArray(target) || _isPlainObject(target)) {
           const output = Array.isArray(target) ? [] : {};
@@ -201,7 +209,11 @@ async function execute(
               key,
 
               //* 因為明確知道 iterate 是起始事項，所以可以直接呼叫 execute
-              await execute(todos, iterate, { event, fetchTodoWrap, outputs }),
+              await execute(todos, iterate, {
+                event,
+                onFetchTodoWrapper,
+                outputs,
+              }),
             ]
           )) {
             const $outputs = outputs.filter(
@@ -232,7 +244,7 @@ async function execute(
 
 //* Methods
 export const getEventHandler: Types.GetEventHandler =
-  (todos, { eventName, fetchTodoWrap, onOutputCollect } = {}) =>
+  (todos, { eventName, onFetchTodoWrapper, onOutputCollect } = {}) =>
   async (...event) => {
     const start = Date.now();
     const result: Types.OutputData[][] = [];
@@ -257,19 +269,21 @@ export const getEventHandler: Types.GetEventHandler =
     for (const todo of starts) {
       const outputs = await execute(todos, todo, {
         event,
-        fetchTodoWrap,
+        onFetchTodoWrapper,
         outputs: [],
       });
 
-      result.push(
-        outputs.filter(({ todo }) => {
-          const {
-            [todo]: { ignoreOutput = false },
-          } = todos;
+      const visibled = outputs.filter(({ todo }) => {
+        const {
+          [todo]: { ignoreOutput = false },
+        } = todos;
 
-          return ignoreOutput;
-        })
-      );
+        return !ignoreOutput;
+      });
+
+      if (visibled.length) {
+        result.push(visibled);
+      }
     }
 
     onOutputCollect?.(

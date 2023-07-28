@@ -22,9 +22,9 @@ type Variable<M extends VariableInitialMode, I> = {
   template?: string; //* 使用 lodash template 讀取 inputs 建立初始值
 } & (M extends 'extract' ? { initial: I } : { initial?: I });
 
-export type Variables =
-  | Variable<'define', Definition>
-  | Variable<'extract', ExtractTodoResult>;
+export type DefineVariable = Variable<'define', Definition>;
+export type ExtractVariable = Variable<'extract', ExtractTodoResult>;
+export type Variables = DefineVariable | ExtractVariable;
 
 //* Todo Events
 type Todos = 'variable' | 'fetch' | 'branch' | 'iterate' | 'wrap' | 'state';
@@ -65,7 +65,7 @@ export type FetchTodo = BaseTodo<
 export type ConditionBranchTodo = BaseTodo<
   'branch',
   {
-    sources: Omit<Variable<'extract', ExtractTodoResult>, 'template'>[];
+    sources: ExtractTodoResult[];
     template: string; //* 使用 lodash template 進行判斷
     metTodo: string;
   }
@@ -74,7 +74,7 @@ export type ConditionBranchTodo = BaseTodo<
 export type IterateTodo = BaseTodo<
   'iterate',
   {
-    source: Omit<Variable<'extract', ExtractTodoResult>, 'template'>;
+    source: ExtractTodoResult;
     iterateTodo: string;
   }
 >;
@@ -90,7 +90,7 @@ export type SetStateTodo = BaseTodo<
   'state',
   {
     states: {
-      source: Omit<Variable<'extract', ExtractTodoResult>, 'template'>;
+      source: ExtractTodoResult;
       state: string;
     }[];
   }

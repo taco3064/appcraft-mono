@@ -184,10 +184,7 @@ export const getInitialTodo: Types.GetInitialTodo = (typeFile, category) => {
         ...data,
         category,
         iterateTodo: '',
-        source: {
-          mode: 'extract',
-          initial: { source: 'output', path: '' },
-        },
+        source: { source: 'output', path: '' },
       });
 
     case 'wrap':

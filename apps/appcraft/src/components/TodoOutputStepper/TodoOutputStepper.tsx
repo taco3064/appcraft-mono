@@ -29,7 +29,7 @@ export default function TodoOutputStepper({
   return (
     <>
       {title && (
-        <AppBar color="default" position="static">
+        <AppBar color="default" position="sticky">
           <Toolbar variant="regular">{title}</Toolbar>
         </AppBar>
       )}

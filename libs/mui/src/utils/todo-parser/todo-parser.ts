@@ -71,7 +71,7 @@ async function execute(
   { event, fetchTodoWrap, outputs }: Types.ExecuteOptions
 ): Promise<Types.OutputData[]> {
   while (todo) {
-    const { id, category, defaultNextTodo, mixedTypes } = todo;
+    const { id, alias = id, category, defaultNextTodo, mixedTypes } = todo;
     const { [defaultNextTodo as string]: next } = todos;
 
     switch (category) {
@@ -86,7 +86,7 @@ async function execute(
         });
 
         todo = next;
-        outputs.push({ id, output });
+        outputs.push({ id: alias, output });
 
         break;
       }
@@ -102,10 +102,12 @@ async function execute(
         todo = next;
 
         outputs.push({
-          id,
-          output: $outputs.reduce(
-            (result, outputs) =>
-              Object.assign(result, ...outputs.map(({ output }) => output)),
+          id: alias,
+          output: $outputs.flat().reduce(
+            (acc, { id, output }) => ({
+              ...acc,
+              [id]: output,
+            }),
             {}
           ),
         });
@@ -154,7 +156,7 @@ async function execute(
           });
 
         todo = next;
-        outputs.push({ id, output });
+        outputs.push({ id: alias, output });
 
         break;
       }
@@ -169,7 +171,7 @@ async function execute(
           : getVariableOutput({ target: source }, { event, outputs });
 
         if (Array.isArray(target) || _isPlainObject(target)) {
-          const keys = new Set(Object.keys(outputs));
+          const keys = new Set(['$el', ...outputs.map(({ id }) => id)]);
           const output = Array.isArray(target) ? [] : {};
 
           const list: Types.IteratePrepare[] = Array.isArray(target)
@@ -199,7 +201,7 @@ async function execute(
             );
           }
 
-          outputs.push({ id, output });
+          outputs.push({ id: alias, output });
         }
 
         todo = next;
@@ -216,11 +218,12 @@ async function execute(
 
 //* Methods
 export const getEventHandler: Types.GetEventHandler =
-  (options, fetchTodoWrap) =>
+  (todos, { eventName, fetchTodoWrap, onOutputCollect } = {}) =>
   async (...event) => {
+    const start = Date.now();
     const result: Types.OutputData[][] = [];
 
-    const starts = Object.values(options).filter(({ id }, _i, todos) =>
+    const starts = Object.values(todos).filter(({ id }, _i, todos) =>
       todos.every((todo) => {
         const { category, defaultNextTodo } = todo;
 
@@ -238,7 +241,7 @@ export const getEventHandler: Types.GetEventHandler =
     );
 
     for (const todo of starts) {
-      const outputs = await execute(options, todo, {
+      const outputs = await execute(todos, todo, {
         event,
         fetchTodoWrap,
         outputs: [],
@@ -246,6 +249,15 @@ export const getEventHandler: Types.GetEventHandler =
 
       result.push(outputs);
     }
+
+    onOutputCollect?.(
+      {
+        duration: Date.now() - start,
+        outputs: result,
+        todos,
+      },
+      eventName
+    );
 
     return result;
   };

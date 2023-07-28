@@ -4,9 +4,9 @@ import Container from '@mui/material/Container';
 import Head from 'next/head';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import { Style, getEventHandler } from '@appcraft/mui';
-import { nanoid } from 'nanoid';
-import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import type { OutputCollectEvent } from '@appcraft/mui';
 import type { WidgetTodo } from '@appcraft/types';
 
 import { CommonButton, TodoOutputStepper } from '~appcraft/components';
@@ -14,17 +14,13 @@ import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { getConfigById } from '~appcraft/services';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
-import type { TodoOutputStepperProps } from '~appcraft/components';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
 
 export default function Todos() {
   const { pathname } = useRouter();
   const [nt, tt] = useFixedT('nav', 'todos');
-  const [steperProps, setStepperProps] = useState<TodoOutputStepperProps>();
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const refresh = useMemo(() => nanoid(4), [steperProps]);
+  const [steperProps, setStepperProps] = useState<OutputCollectEvent>();
 
   const [action, handleActionNodePick] = useNodePickHandle(
     HIERARCHY_LIST_ACTIONS
@@ -67,15 +63,11 @@ export default function Todos() {
                   Record<string, WidgetTodo>
                 >(data._id);
 
-                const start = Date.now();
-                const handleFn = getEventHandler(todos);
-                const outputs = await handleFn();
-
-                setStepperProps({
-                  duration: Date.now() - start,
-                  todos,
-                  logs: outputs,
+                const handleFn = getEventHandler(todos, {
+                  onOutputCollect: (e) => setStepperProps(e),
                 });
+
+                await handleFn();
               }}
             />
           )}
@@ -89,7 +81,7 @@ export default function Todos() {
         onClose={() => setStepperProps(undefined)}
       >
         <Container disableGutters>
-          <TodoOutputStepper {...steperProps} key={refresh} />
+          <TodoOutputStepper {...steperProps} />
         </Container>
       </Style.FlexDialog>
     </>

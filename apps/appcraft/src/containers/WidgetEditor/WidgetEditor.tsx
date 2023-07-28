@@ -18,9 +18,10 @@ export default function WidgetEditor({
   data,
   superiors,
   onActionNodePick = (e) => e,
+  onOutputCollect,
   onSave,
-  onWrapTodoView,
-  onWrapWidgetView,
+  onTodoWrapperView,
+  onWidgetWrapperView,
 }: WidgetEditorProps) {
   const [at, ct, wt] = Hook.useFixedT('app', 'appcraft', 'widgets');
   const [open, setOpen] = useState(false);
@@ -90,10 +91,12 @@ export default function WidgetEditor({
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
+        onClose={() => setOpen(false)}
         content={
           <CraftedRenderer
             lazy={toLazy}
             options={widget}
+            onOutputCollect={onOutputCollect}
             fetchTodoWrap={async (id) => {
               const { content } = await Service.getConfigById<
                 Record<string, WidgetTodo>
@@ -145,14 +148,14 @@ export default function WidgetEditor({
                   <Common.WidgetSelect
                     {...(props as Common.WidgetSelectProps)}
                     exclude={[data._id]}
-                    onView={onWrapWidgetView}
+                    onView={onWidgetWrapperView}
                   />
                 );
               } else if (typeName === 'WrapTodo' && propPath === 'todosId') {
                 return (
-                  <Common.WrapTodoSelect
-                    {...(props as Common.WrapTodoSelectProps)}
-                    onView={onWrapTodoView}
+                  <Common.TodoWrapperSelect
+                    {...(props as Common.TodoWrapperSelectProps)}
+                    onView={onTodoWrapperView}
                   />
                 );
               }

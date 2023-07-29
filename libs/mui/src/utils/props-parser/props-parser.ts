@@ -49,19 +49,19 @@ export const splitProps: Types.SplitProps = (target, paths = []) => {
 
 export const getProps = <P>(
   options:
-    | Pick<Appcraft.NodeWidget, Appcraft.WidgetField>
+    | Pick<Appcraft.NodeWidget, Appcraft.StateCategory>
     | Pick<Appcraft.ConfigOptions, 'props'>,
   { renderer, onFetchTodoWrapper, onOutputCollect }: Types.GetPropsOptions = {}
 ) => {
-  const fields: Appcraft.WidgetField[] = ['nodes', 'props', 'todos'];
+  const fields: Appcraft.StateCategory[] = ['nodes', 'props', 'todos'];
 
-  return fields.reduce((result, widgetField) => {
-    const { [widgetField as keyof typeof options]: props = {} } = options;
+  return fields.reduce((result, category) => {
+    const { [category as keyof typeof options]: props = {} } = options;
 
     Object.entries(props).forEach(([propPath, value]) => {
-      if (widgetField === 'props') {
+      if (category === 'props') {
         _set(result, propPath, value);
-      } else if (widgetField === 'todos') {
+      } else if (category === 'todos') {
         _set(
           result,
           propPath,
@@ -71,7 +71,7 @@ export const getProps = <P>(
             onOutputCollect,
           })
         );
-      } else if (renderer instanceof Function && widgetField === 'nodes') {
+      } else if (renderer instanceof Function && category === 'nodes') {
         const widgets = getForceArray(value as Appcraft.WidgetOptions);
 
         _set(

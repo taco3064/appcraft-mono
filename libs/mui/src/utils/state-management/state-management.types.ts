@@ -2,14 +2,13 @@ import type * as Appcraft from '@appcraft/types';
 
 //* Variables
 type StateRecord = Required<Appcraft.RootNodeWidget>['state'];
-export type StateCategory = Appcraft.WidgetState['category'];
 export type StateGenerator = 'props' | 'todos' | 'node' | 'element';
 
 //* Private
 export type GetStateTypeName = (state: Appcraft.WidgetState) => string;
 
 export type Convert2StateArray = (
-  state: Required<StateRecord>[StateCategory],
+  state: Required<StateRecord>[Appcraft.StateCategory],
   basePath: string,
   length: number
 ) => Appcraft.WidgetState[];
@@ -17,11 +16,13 @@ export type Convert2StateArray = (
 export type Convert2State = (
   arr: Appcraft.WidgetState[],
   basePath: string,
-  state: Required<StateRecord>[StateCategory]
-) => Required<StateRecord>[StateCategory];
+  state: Required<StateRecord>[Appcraft.StateCategory]
+) => Required<StateRecord>[Appcraft.StateCategory];
 
 //* Methods
-export type GetStateCategory = (generator: StateGenerator) => StateCategory;
+export type GetStateCategory = (
+  generator: StateGenerator
+) => Appcraft.StateCategory;
 
 export type GetInitailState = (
   generator: StateGenerator,
@@ -34,7 +35,7 @@ export type GetStateConfig = (
 ) => Appcraft.ConfigOptions;
 
 export type RemoveState = (
-  category: StateCategory,
+  category: Appcraft.StateCategory,
   state: StateRecord,
   basePath: string,
   index: number,
@@ -42,7 +43,7 @@ export type RemoveState = (
 ) => StateRecord;
 
 export type ResortState = (
-  category: StateCategory,
+  category: Appcraft.StateCategory,
   state: StateRecord,
   basePath: string,
   indexes: [number, number],

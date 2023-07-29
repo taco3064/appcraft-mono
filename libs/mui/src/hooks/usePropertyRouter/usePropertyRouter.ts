@@ -3,7 +3,7 @@ import _toPath from 'lodash/toPath';
 import { useCallback, useMemo } from 'react';
 
 import { getPropPath } from '../../utils';
-import { useCollection } from '../useCollection';
+import { useCollection } from '../common';
 import type { PropertyRouterHook } from './usePropertyRouter.types';
 
 const usePropertyRouter: PropertyRouterHook = (onCollectionPathChange) => {

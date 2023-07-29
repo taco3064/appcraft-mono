@@ -1,7 +1,10 @@
 import type * as React from 'react';
+
 import type * as Util from '../../utils';
+import type { RendererOptions } from '../common';
 
 //* Variables
+export { RendererOptions };
 export type PlainTextProps = { children?: React.ReactNode };
 export type PlainTextComponent = React.ComponentType<PlainTextProps>;
 
@@ -22,7 +25,8 @@ export type Renderer = (
 
 //* Custom Hooks
 export type WidgetGeneratorHook = (
-  options: {
+  options: RendererOptions,
+  handlers: {
     externalLazy: ExternalLazy;
     onFetchTodoWrapper: Util.FetchTodoWrapperHandler;
     onOutputCollect?: Util.OutputCollectHandler;

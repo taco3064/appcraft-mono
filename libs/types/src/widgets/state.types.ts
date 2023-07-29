@@ -46,3 +46,4 @@ export type NodeState = BaseState<
 >;
 
 export type WidgetState = ElementState | NodeState | PropsState | TodosState;
+export type StateCategory = WidgetState['category'];

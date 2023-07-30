@@ -10,6 +10,7 @@ export default function CraftedRenderer({
   onOutputCollect,
 }: CraftedRendererProps) {
   const generator = useWidgetGenerator(
+    options,
     { externalLazy: lazy, onFetchTodoWrapper, onOutputCollect },
     (Widget, { key, props }) => <Widget key={key} {...props} />
   );

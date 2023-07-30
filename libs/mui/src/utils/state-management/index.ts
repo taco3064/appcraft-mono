@@ -6,4 +6,4 @@ export {
   resortState,
 } from './state-management';
 
-export type { StateCategory, StateGenerator } from './state-management.types';
+export type { StateGenerator } from './state-management.types';

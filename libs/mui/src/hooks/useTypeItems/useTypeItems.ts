@@ -3,8 +3,7 @@ import { startTransition, useState } from 'react';
 import type { PropTypesDef, StructureProp } from '@appcraft/types';
 
 import { getPropPath } from '../../utils';
-import { useCollection } from '../useCollection';
-import { usePropertiesSorting } from '../usePropertiesSorting';
+import { useCollection, usePropertiesSorting } from '../common';
 import type { ChangeHandler, OptionValues } from '../../contexts';
 import type { TypeItem, TypeItemsHookResult } from './useTypeItems.types';
 

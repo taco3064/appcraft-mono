@@ -1,5 +1,6 @@
 import type { Definition } from './todo.types';
 import type { TypesMapping } from './prop-types-def.types';
+import type { WidgetTodo } from './todo.types';
 
 type States = 'nodes' | 'props' | 'todos';
 type StateType = 'private' | 'public';
@@ -31,8 +32,11 @@ export type ElementState = BaseState<
   'nodes',
   {
     nodeType: 'element';
-    templateWidgetId: string;
-    defaultValue?: { [key: string]: Definition };
+    defaultValue?: { [key: string]: Definition }; //* Props
+    template?: {
+      id: string;
+      todos?: Record<string, Record<string, WidgetTodo>>;
+    };
   }
 >;
 
@@ -40,8 +44,11 @@ export type NodeState = BaseState<
   'nodes',
   {
     nodeType: 'node';
-    templateWidgetId?: string;
     defaultValue?: Definition[];
+    template?: {
+      id: string;
+      todos?: Record<string, Record<string, WidgetTodo>>;
+    };
   }
 >;
 

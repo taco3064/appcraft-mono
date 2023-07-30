@@ -7,6 +7,7 @@ enum OptionCategory {
   config,
   node,
   plainText,
+  template,
 }
 
 export type ChildNodes = Record<string, State.NodeType>;

@@ -11,10 +11,9 @@ import type * as Appcraft from '@appcraft/types';
 
 import * as Style from '../../styles';
 import { useStateGenerator } from '../../hooks';
-import type { StateCategory } from '../../utils';
 import type * as Types from './MutationStateDialog.types';
 
-const TABS: StateCategory[] = ['props', 'nodes', 'todos'];
+const TABS: Appcraft.StateCategory[] = ['props', 'nodes', 'todos'];
 
 export default function MutationStateDialog({
   ct,
@@ -25,7 +24,7 @@ export default function MutationStateDialog({
   onClose,
   onConfirm,
 }: Types.MutationStateDialogProps) {
-  const [active, setActive] = React.useState<StateCategory>(TABS[0]);
+  const [active, setActive] = React.useState<Appcraft.StateCategory>(TABS[0]);
 
   const [{ editing, stateValues }, handleState] = useStateGenerator(
     typeFile,

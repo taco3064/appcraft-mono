@@ -2,6 +2,7 @@ import { lazy } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import { getProps } from '../../utils';
+import { useStateReducer } from '../common';
 import type * as Types from './useWidgetGenerator.types';
 
 const LazyPlainText = lazy<Types.PlainTextComponent>(async () => ({
@@ -9,10 +10,13 @@ const LazyPlainText = lazy<Types.PlainTextComponent>(async () => ({
 }));
 
 const useWidgetGenerator: Types.WidgetGeneratorHook = (
+  options,
   { externalLazy, onFetchTodoWrapper, onOutputCollect },
   renderer
-) =>
-  function generator(widget, index) {
+) => {
+  const [state, dispatch] = useStateReducer(options);
+
+  return function generator(widget, index) {
     const key = index === undefined ? `${widget.id}` : `${widget.id}-${index}`;
 
     const { type, content } = widget as Appcraft.NodeWidget &
@@ -32,5 +36,6 @@ const useWidgetGenerator: Types.WidgetGeneratorHook = (
           }),
         });
   };
+};
 
 export default useWidgetGenerator;

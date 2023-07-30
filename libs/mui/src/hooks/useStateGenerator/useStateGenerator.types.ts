@@ -1,7 +1,6 @@
 import type * as Appcraft from '@appcraft/types';
 
 import type { ChangeHandler } from '../../contexts';
-import type { StateCategory } from '../../utils';
 
 export type StateValues = Appcraft.RootNodeWidget['state'];
 
@@ -10,7 +9,7 @@ export type EditingState = {
   config: Appcraft.ConfigOptions;
 } | null;
 
-export type StateGeneratorHook = <C extends StateCategory>(
+export type StateGeneratorHook = <C extends Appcraft.StateCategory>(
   typeFile: string,
   category: C,
   state?: StateValues

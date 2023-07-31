@@ -1,9 +1,10 @@
 import type * as Appcraft from '@appcraft/types';
 import type { LazyExoticComponent } from 'react';
 
+import type { Templates } from '../common';
+
 //* Variables
-export type Template = Map<string, Appcraft.RootNodeWidget>;
-type LazyProps = { children: (templates: Template) => JSX.Element };
+type LazyProps = { children: JSX.Element };
 
 export type RendererOptions =
   | Appcraft.RootNodeWidget
@@ -17,11 +18,14 @@ export type FetchWidgetHandler = (
 export type FetchWidgets = (
   widgets: Appcraft.RootNodeWidget[],
   onFetchWidget: FetchWidgetHandler,
-  tempaltes?: Template
-) => Promise<Template>;
+  tempaltes?: Templates
+) => Promise<Templates>;
 
 //* Custom Hooks
 export type LazyRendererHook = (
   options: RendererOptions,
   onFetchWidget: FetchWidgetHandler
-) => LazyExoticComponent<(props: LazyProps) => JSX.Element>;
+) => {
+  LazyRenderer: LazyExoticComponent<(props: LazyProps) => JSX.Element>;
+  templates: Templates;
+};

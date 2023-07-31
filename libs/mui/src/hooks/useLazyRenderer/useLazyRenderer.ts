@@ -1,9 +1,10 @@
 import _get from 'lodash/get';
-import { lazy, useMemo, useRef } from 'react';
+import { lazy, useMemo, useRef, useState, useTransition } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import { getForceArray } from '../../utils';
 import type * as Types from './useLazyRenderer.types';
+import type { Templates } from '../common';
 
 const useLazyRenderer: Types.LazyRendererHook = (() => {
   const fetchWidgets: Types.FetchWidgets = async (
@@ -40,6 +41,8 @@ const useLazyRenderer: Types.LazyRendererHook = (() => {
 
   return (options, onFetchWidget) => {
     const fetchRef = useRef(onFetchWidget);
+    const [, startTransition] = useTransition();
+    const [templates, setTemplates] = useState<Templates>(new Map());
 
     const widgets = useMemo(
       () =>
@@ -53,18 +56,24 @@ const useLazyRenderer: Types.LazyRendererHook = (() => {
       [options]
     );
 
-    return useMemo(
-      () =>
-        lazy(async () => {
-          const templates = await fetchWidgets(
-            Array.from(widgets.values()),
-            fetchRef.current
-          );
+    return {
+      templates,
 
-          return { default: ({ children }) => children(templates) };
-        }),
-      [widgets]
-    );
+      LazyRenderer: useMemo(
+        () =>
+          lazy(async () => {
+            const templates = await fetchWidgets(
+              Array.from(widgets.values()),
+              fetchRef.current
+            );
+
+            startTransition(() => setTemplates(templates));
+
+            return { default: ({ children }) => children };
+          }),
+        [widgets]
+      ),
+    };
   };
 })();
 

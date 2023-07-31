@@ -4,4 +4,5 @@ export type {
   FetchWidgetHandler,
   GeneratorSuperior,
   RendererOptions,
+  Templates,
 } from './useGlobalState.types';

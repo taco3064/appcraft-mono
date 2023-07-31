@@ -14,11 +14,15 @@ const LazyPlainText = lazy<Types.PlainTextComponent>(async () => ({
 
 const useWidgetGenerator: Types.WidgetGeneratorHook = (
   options,
-  { lazy: externalLazy, renderer, onFetchTodoWrapper, onOutputCollect }
+  templates,
+  { lazy: externalLazy, renderer, ...todoOptions }
 ) => {
-  const handleState = useGlobalState(options);
+  const handleState = useGlobalState(options, templates);
 
-  return function generator(widget, { templates, superiors = [], index }) {
+  return function generator(
+    widget,
+    { superiors = [], index, defaultProps = {} } = {}
+  ) {
     const key = index === undefined ? `${widget.id}` : `${widget.id}-${index}`;
 
     switch (widget.category) {
@@ -30,16 +34,14 @@ const useWidgetGenerator: Types.WidgetGeneratorHook = (
           props: CATEGORIES.reduce((acc, category) => {
             switch (category) {
               case 'props':
-                return Util.getProps(
-                  handleState.getProps(widget, superiors),
-                  acc
-                );
+                return Util.getProps(handleState.getProps(widget), acc);
 
               case 'todos': {
-                const props = handleState.getTodos(widget, superiors, {
-                  onFetchTodoWrapper,
-                  onOutputCollect,
-                });
+                const props = handleState.getTodos(
+                  widget,
+                  superiors,
+                  todoOptions
+                );
 
                 return Object.entries(props).reduce(
                   (result, [propPath, handleFn]) =>
@@ -48,23 +50,50 @@ const useWidgetGenerator: Types.WidgetGeneratorHook = (
                 );
               }
               case 'nodes': {
-                Object.entries(widget.nodes || {}).forEach(([path, nodes]) => {
-                  const children = Util.getForceArray(nodes).map((child) =>
-                    generator(child, {
-                      templates,
-                      superiors: [{ id: child.id, path }, ...superiors],
-                    })
-                  );
+                const props = handleState.getNodes(widget, superiors, index);
 
-                  _set(acc, path, children);
-                });
+                return Object.entries(props).reduce(
+                  (result, [propPath, children]) => {
+                    if (!Array.isArray(children)) {
+                      const { widget, defaultProps } = children;
 
-                return acc;
+                      _set(
+                        result,
+                        propPath,
+                        generator(widget, {
+                          defaultProps,
+                          superiors: [
+                            { id: widget.id, path: propPath },
+                            ...superiors,
+                          ],
+                        })
+                      );
+                    } else {
+                      _set(
+                        result,
+                        propPath,
+                        children.map(({ widget, defaultProps }, i) =>
+                          generator(widget, {
+                            defaultProps,
+                            index: i,
+                            superiors: [
+                              { id: widget.id, path: propPath },
+                              ...superiors,
+                            ],
+                          })
+                        )
+                      );
+                    }
+
+                    return result;
+                  },
+                  acc
+                );
               }
               default:
                 return acc;
             }
-          }, {}),
+          }, defaultProps),
         });
       }
       default:

@@ -10,9 +10,12 @@ export default function CraftedRenderer({
   onFetchWidget,
   onOutputCollect,
 }: CraftedRendererProps) {
-  const LazyRenderer = Hook.useLazyRenderer(options, onFetchWidget);
+  const { LazyRenderer, templates } = Hook.useLazyRenderer(
+    options,
+    onFetchWidget
+  );
 
-  const generator = Hook.useWidgetGenerator(options, {
+  const generator = Hook.useWidgetGenerator(options, templates, {
     lazy,
     onFetchTodoWrapper,
     onOutputCollect,
@@ -22,17 +25,15 @@ export default function CraftedRenderer({
   return !options ? null : (
     <Suspense>
       <LazyRenderer>
-        {(templates) =>
-          !Array.isArray(options) ? (
-            generator(options, { templates })
-          ) : (
-            <>
-              {options.map((layout) => (
-                <>Layout</>
-              ))}
-            </>
-          )
-        }
+        {!Array.isArray(options) ? (
+          generator(options)
+        ) : (
+          <>
+            {options.map((layout) => (
+              <>Layout</>
+            ))}
+          </>
+        )}
       </LazyRenderer>
     </Suspense>
   );

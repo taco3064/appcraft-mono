@@ -1,23 +1,56 @@
 import _get from 'lodash/get';
+import _isPlainObject from 'lodash/isPlainObject';
 import _set from 'lodash/set';
-import { useMemo, useReducer } from 'react';
+import { useEffect, useMemo, useReducer } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Util from '../../../utils';
 import type * as Types from './useGlobalState.types';
 
 const useGlobalState: Types.GlobalStateHook = (() => {
-  const getSuperiorProps: Types.GetSuperiorProps = (state, superiors) => {
+  const generateReducerState: Types.GenerateReducerState = (widgets) =>
+    Array.from(widgets.values()).reduce<Types.ReducerState>(
+      (result, { id, state = {} }) => {
+        Object.entries(state).forEach(([category, value]) =>
+          Object.entries(value).forEach(([path, options]) => {
+            _set(result, [id, path], {
+              category,
+              options,
+              value: _get(options, 'defaultValue'),
+            });
+          })
+        );
+
+        return result;
+      },
+      {}
+    );
+
+  const getSuperiorProps: Types.GetSuperiorProps = (
+    state,
+    superiors,
+    index
+  ) => {
+    const nodeType: Appcraft.NodeType =
+      typeof index === 'number' ? 'node' : 'element';
+
     const target = superiors.find((superior) => {
       const $state = _get(state, [superior.id, superior.path]);
 
       return (
         $state?.options.type === 'private' &&
-        $state?.options.category === 'nodes'
+        $state?.options.category === 'nodes' &&
+        $state?.options.nodeType === nodeType
       );
     });
 
-    return ((target && _get(state, [target.id, target.path, 'value'])) ||
+    return ((target &&
+      _get(
+        state,
+        nodeType === 'element'
+          ? [target.id, target.path, 'value']
+          : [target.id, target.path, 'value', index as number]
+      )) ||
       {}) as ReturnType<Types.GetSuperiorProps>;
   };
 
@@ -42,64 +75,59 @@ const useGlobalState: Types.GlobalStateHook = (() => {
       return result;
     }, {});
 
-  return (options) => {
-    const widgets = useMemo(
+  return (options, templates) => {
+    const widgets = useMemo<Types.Templates>(
       () =>
-        new Map<string, Appcraft.RootNodeWidget>(
-          Util.getForceArray(
-            !Array.isArray(options)
-              ? options
-              : options.map(({ widget }) => widget)
-          ).map((widget) => [widget.id, widget])
+        new Map(
+          [
+            ...Util.getForceArray(
+              !Array.isArray(options)
+                ? options
+                : options.map(({ widget }) => widget)
+            ),
+            ...Array.from(templates.values()),
+          ].map((widget) => [widget.id, widget])
         ),
-      [options]
+      [options, templates]
     );
 
     const initial: Types.ReducerState = useMemo(
-      () =>
-        Array.from(widgets.values()).reduce<Types.ReducerState>(
-          (result, { id, state = {} }) => {
-            Object.entries(state).forEach(([category, value]) =>
-              Object.entries(value).forEach(([path, options]) => {
-                _set(result, [id, path], {
-                  category,
-                  options,
-                  value: _get(options, 'defaultValue'),
-                });
-              })
-            );
-
-            return result;
-          },
-          {}
-        ),
+      () => generateReducerState(widgets),
       [widgets]
     );
 
-    const [state, dispatch] = useReducer<Types.Reducer>(
-      (state, { id, path, value }) => ({ ..._set(state, [id, path], value) }),
-      initial
-    );
+    const [state, dispatch] = useReducer<Types.Reducer>((state, action) => {
+      if (action instanceof Map) {
+        const appended = generateReducerState(
+          new Map(Array.from(action.entries()).filter(([id]) => !state[id]))
+        );
+
+        return !Object.keys(appended).length
+          ? state
+          : { ...state, ...appended };
+      }
+
+      return { ..._set(state, [action.id, action.path], action.value) };
+    }, initial);
+
+    useEffect(() => {
+      dispatch(widgets);
+    }, [widgets, dispatch]);
 
     return {
       change: dispatch,
 
-      getProps: (widget, superiors) => {
+      getProps: (widget) => {
         const implement = _get(state, [widget.id]) || {};
-        const props = getSuperiorProps(state, superiors);
 
         return {
           ...widget.props,
           ...Object.entries(implement).reduce<Types.HookReturn<'getProps'>>(
-            (result, [propPath, { category, value, options }]) => {
-              if (category === 'props') {
-                if (options.type === 'private') {
-                  _set(result, [propPath], value);
-                } else if (options.type === 'public' && options.alias) {
-                  const value = _get(props, [options.alias]);
+            (result, [propPath, { value, options }]) => {
+              const { category, type } = options;
 
-                  _set(result, [propPath], value);
-                }
+              if (category === 'props' && type === 'private') {
+                _set(result, [propPath], value);
               }
 
               return result;
@@ -108,6 +136,7 @@ const useGlobalState: Types.GlobalStateHook = (() => {
           ),
         };
       },
+
       getTodos: (
         widget,
         superiors,
@@ -118,13 +147,11 @@ const useGlobalState: Types.GlobalStateHook = (() => {
 
         const props = Object.entries(implement).reduce<
           ReturnType<Types.GetSuperiorTodos>
-        >((result, [propPath, { category, options }]) => {
-          if (
-            category === 'todos' &&
-            options.type === 'public' &&
-            options.alias
-          ) {
-            const todoQueue = _get(handlers, [options.alias]) || [];
+        >((result, [propPath, { options }]) => {
+          const { category, type, alias } = options;
+
+          if (category === 'todos' && type === 'public' && alias) {
+            const todoQueue = _get(handlers, [alias]) || [];
 
             _set(result, [propPath], todoQueue);
           }
@@ -163,6 +190,68 @@ const useGlobalState: Types.GlobalStateHook = (() => {
             );
           });
         }, {});
+      },
+
+      getNodes: (widget, superiors, index) => {
+        const implement = _get(state, [widget.id]) || {};
+        const props = getSuperiorProps(state, superiors, index);
+
+        return Object.entries(implement).reduce<Types.HookReturn<'getNodes'>>(
+          (result, [propPath, { value, options }]) => {
+            if (options.category === 'nodes') {
+              const { type, alias, nodeType, template } = options;
+              const values = type === 'private' ? value : _get(props, [alias]);
+
+              const data =
+                nodeType === 'node' && Array.isArray(values) ? values : [];
+
+              if (!template) {
+                const node: Types.NodeResult | Types.NodeResult[] =
+                  nodeType === 'element'
+                    ? {
+                        widget: {
+                          category: 'plainText',
+                          id: propPath,
+                          content: values?.toString() || '',
+                        },
+                      }
+                    : data.map((content) => ({
+                        widget: {
+                          category: 'plainText',
+                          id: propPath,
+                          content: content?.toString() || '',
+                        },
+                      }));
+
+                _set(result, [propPath], node);
+              } else if (nodeType === 'element' && templates.has(template.id)) {
+                _set(result, [propPath], {
+                  widget: templates.get(template.id),
+                  defaultProps: values as object,
+                });
+              } else if (nodeType === 'node' && templates.has(template.id)) {
+                _set(
+                  result,
+                  [propPath],
+                  data.map((defaultProps) => ({
+                    widget: templates.get(template.id),
+                    defaultProps: defaultProps as object,
+                  }))
+                );
+              }
+            }
+
+            return result;
+          },
+          Object.fromEntries(
+            Object.entries(widget.nodes || {}).map(([propPath, nodes]) => [
+              propPath,
+              !Array.isArray(nodes)
+                ? { widget: nodes }
+                : nodes.map((node) => ({ widget: node })),
+            ])
+          )
+        );
       },
     };
   };

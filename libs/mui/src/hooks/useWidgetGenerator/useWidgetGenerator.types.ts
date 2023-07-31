@@ -1,7 +1,27 @@
+import type * as Appcraft from '@appcraft/types';
 import type * as React from 'react';
 
 import type * as Util from '../../utils';
-import type { RendererOptions } from '../common';
+import type { GeneratorSuperior, RendererOptions } from '../common';
+
+//* 暫存
+type GeneratorFn = (
+  widget: Appcraft.WidgetOptions,
+  options: {
+    templates: Map<string, Appcraft.RootNodeWidget>;
+    superiors?: GeneratorSuperior[];
+    index?: number;
+  }
+) => JSX.Element;
+
+// export type GetPropsOptions<P extends object> = {
+//   defaultProps?: P;
+//   superiors?: GeneratorSuperior[];
+//   templates?: Map<string, Appcraft.RootNodeWidget>;
+//   generator?: GeneratorFn;
+//   onFetchTodoWrapper?: FetchTodoWrapperHandler;
+//   onOutputCollect?: OutputCollectHandler;
+// };
 
 //* Variables
 export { RendererOptions };
@@ -9,11 +29,9 @@ export type PlainTextProps = { children?: React.ReactNode };
 export type PlainTextComponent = React.ComponentType<PlainTextProps>;
 
 //* Mehtods
-export type ExternalLazy = (
-  widgetType: string
-) => React.LazyExoticComponent<React.ComponentType>;
+type ExternalLazy = (widgetType: string) => Util.LazyWidget;
 
-export type Renderer = (
+type Renderer = (
   WidgetElement:
     | React.LazyExoticComponent<React.ComponentType>
     | React.LazyExoticComponent<PlainTextComponent>,
@@ -23,13 +41,15 @@ export type Renderer = (
   }
 ) => JSX.Element;
 
+export type GeneratorHandlers = {
+  lazy: ExternalLazy;
+  onFetchTodoWrapper: Util.FetchTodoWrapperHandler;
+  onOutputCollect?: Util.OutputCollectHandler;
+  renderer: Renderer;
+};
+
 //* Custom Hooks
 export type WidgetGeneratorHook = (
   options: RendererOptions,
-  handlers: {
-    externalLazy: ExternalLazy;
-    onFetchTodoWrapper: Util.FetchTodoWrapperHandler;
-    onOutputCollect?: Util.OutputCollectHandler;
-  },
-  renderer: Renderer
-) => Util.GeneratorFn;
+  handlers: GeneratorHandlers
+) => GeneratorFn;

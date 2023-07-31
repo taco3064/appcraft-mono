@@ -7,7 +7,7 @@ import type { ThemeProviderProps } from './ThemeProvider.types';
 export default function ThemeProvider({ children }: ThemeProviderProps) {
   const theme = useThemeStyle();
 
-  return !theme ? null : (
+  return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
 

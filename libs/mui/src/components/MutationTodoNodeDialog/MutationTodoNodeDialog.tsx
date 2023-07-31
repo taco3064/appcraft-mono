@@ -32,10 +32,7 @@ export default function MutationTodoNodeDialog({
             color="primary"
             onClick={(e) => {
               const { mixedTypes } = values?.config || {};
-
-              const todo = getProps<Appcraft.WidgetTodo>(
-                values?.config as Appcraft.ConfigOptions
-              );
+              const todo = getProps<Appcraft.WidgetTodo>(values?.config?.props);
 
               onClose(e, 'escapeKeyDown');
               onConfirm(!mixedTypes ? todo : { ...todo, mixedTypes });

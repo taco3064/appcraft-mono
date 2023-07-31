@@ -1,9 +1,7 @@
-import type * as Util from '../../utils';
-import type { ExternalLazy, RendererOptions } from '../../hooks';
+import type * as Hook from '../../hooks';
 
-export interface CraftedRendererProps {
-  lazy: ExternalLazy;
-  options?: RendererOptions;
-  onFetchTodoWrapper: Util.FetchTodoWrapperHandler;
-  onOutputCollect?: Util.OutputCollectHandler;
+export interface CraftedRendererProps
+  extends Omit<Hook.GeneratorHandlers, 'renderer'> {
+  options?: Hook.RendererOptions;
+  onFetchWidget: Hook.FetchWidgetHandler;
 }

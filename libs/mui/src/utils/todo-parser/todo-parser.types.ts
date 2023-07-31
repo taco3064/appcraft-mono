@@ -2,21 +2,7 @@ import type * as Appcraft from '@appcraft/types';
 
 //* Variables
 export type OutputData = { todo: string; alias: string; output: object };
-
-export type OutputCollectEvent = {
-  duration: number;
-  outputs: OutputData[][];
-  todos: Record<string, Appcraft.WidgetTodo>;
-};
-
-export type OutputCollectHandler = (
-  e: OutputCollectEvent,
-  name?: string
-) => void;
-
-export type FetchTodoWrapperHandler = (
-  todosId: string
-) => Promise<Record<string, Appcraft.WidgetTodo>>;
+export type OutputCollectEvent = Parameters<OutputCollectHandler>[0];
 
 export type ExecuteOptions = {
   event: unknown[];
@@ -39,8 +25,25 @@ export type VariableOptions = Omit<ExecuteOptions, 'onFetchTodoWrapper'> & {
 export type GetEventHandler = (
   todos: Record<string, Appcraft.WidgetTodo>,
   options?: {
+    defaultOutputs?: OutputData[];
     eventName?: string;
     onFetchTodoWrapper?: FetchTodoWrapperHandler;
-    onOutputCollect?: OutputCollectHandler;
+
+    onOutputCollect?: (
+      e: {
+        duration: number;
+        outputs: OutputData[];
+        todos: Record<string, Appcraft.WidgetTodo>;
+      },
+      name?: string
+    ) => void;
   }
-) => (...event: unknown[]) => Promise<OutputData[][]>;
+) => (...event: unknown[]) => Promise<OutputData[]>;
+
+export type OutputCollectHandler = Required<
+  Required<Parameters<GetEventHandler>>[1]
+>['onOutputCollect'];
+
+export type FetchTodoWrapperHandler = (
+  todosId: string
+) => Promise<Record<string, Appcraft.WidgetTodo>>;

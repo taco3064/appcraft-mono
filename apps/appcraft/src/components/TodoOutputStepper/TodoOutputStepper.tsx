@@ -21,10 +21,7 @@ export default function TodoOutputStepper({
   todos,
 }: TodoOutputStepperProps) {
   const [tt] = Hook.useFixedT('todos');
-
-  const [active, setActive] = useState<number[]>(
-    new Array(outputs?.length || 0).fill(0)
-  );
+  const [active, setActive] = useState<number>(0);
 
   return (
     <>
@@ -50,41 +47,28 @@ export default function TodoOutputStepper({
           </Typography>
         )}
 
-        {outputs?.map((outputs, i) => (
-          <Stepper
-            key={`log-${i}`}
-            nonLinear
-            orientation="vertical"
-            activeStep={active[i]}
-          >
-            {outputs.map(({ todo: id, alias = id, output }, ii) => (
-              <Step key={id}>
-                <StepButton
-                  optional={
-                    <Typography variant="caption" color="text.secondary">
-                      {alias}
-                    </Typography>
-                  }
-                  onClick={() =>
-                    setActive((prev) => {
-                      prev[i] = ii;
+        <Stepper nonLinear orientation="vertical" activeStep={active}>
+          {outputs?.map(({ todo: id, alias = id, output }, i) => (
+            <Step key={id}>
+              <StepButton
+                optional={
+                  <Typography variant="caption" color="text.secondary">
+                    {alias}
+                  </Typography>
+                }
+                onClick={() => setActive(i)}
+              >
+                {todos[id].description}
+              </StepButton>
 
-                      return [...prev];
-                    })
-                  }
-                >
-                  {todos[id].description}
-                </StepButton>
-
-                <StepContent>
-                  <Collapse in={active[i] === ii}>
-                    <JSONTree hideRoot theme="monokai" data={output} />
-                  </Collapse>
-                </StepContent>
-              </Step>
-            ))}
-          </Stepper>
-        ))}
+              <StepContent>
+                <Collapse in={active === i}>
+                  <JSONTree hideRoot theme="monokai" data={output} />
+                </Collapse>
+              </StepContent>
+            </Step>
+          ))}
+        </Stepper>
       </Container>
 
       <AppBar

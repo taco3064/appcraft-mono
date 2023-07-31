@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { ConfigOptions } from '@appcraft/types';
 
 import useAppStore from './useApp.zustand';
-import { FindConfigContext, findConfig } from '~appcraft/services';
+import { FindConfigContext, getConfigById } from '~appcraft/services';
 import type * as Types from './useApp.types';
 
 export const useFixedT: Types.FixedTHook = (...namespaces) => {
@@ -85,15 +85,16 @@ export const useThemeStyle: Types.ThemeStyleHook = () => {
   const { data: palette } = useQuery<PaletteOptions>({
     refetchOnWindowFocus: false,
     suspense: false,
+    enabled: true,
     queryKey: [id, timestamp],
-    queryFn: async (ctx: FindConfigContext) => {
-      const isDefaultOption = ctx.queryKey[0] in PALETTES;
+    queryFn: async ({ queryKey: [id] }: FindConfigContext) => {
+      const isDefaultOption = id in PALETTES;
 
       if (!isDefaultOption) {
         try {
-          const { content } = await findConfig<ConfigOptions>(ctx);
+          const { content } = await getConfigById<ConfigOptions>(id);
 
-          return getProps<PaletteOptions>(content);
+          return getProps<PaletteOptions>(content.props);
         } catch (e) {
           console.warn(e);
 
@@ -101,7 +102,7 @@ export const useThemeStyle: Types.ThemeStyleHook = () => {
         }
       }
 
-      return PALETTES[ctx.queryKey[0]];
+      return PALETTES[id];
     },
   });
 

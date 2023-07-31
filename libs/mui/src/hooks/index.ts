@@ -1,4 +1,5 @@
 export * from './useFixedT';
+export * from './useLazyRenderer';
 export * from './useLazyTypeList';
 export * from './useLazyWidgetElements';
 export * from './useMixedTypeMapping';

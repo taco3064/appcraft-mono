@@ -27,6 +27,11 @@ export default function WidgetPreview({ id }: WidgetPreviewProps) {
 
         return content;
       }}
+      onFetchWidget={async (id) => {
+        const { content } = await Service.getConfigById<RootNodeWidget>(id);
+
+        return content;
+      }}
     />
   );
 }

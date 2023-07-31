@@ -9,6 +9,9 @@ import type * as Appcraft from '@appcraft/types';
 
 import type * as Types from './todo-parser.types';
 
+//* Variables
+export const OUTPUTS_SYMBOL = Symbol('outputs');
+
 //* Private Methods
 function compiled<R>(template: string, data: object): R {
   const compiledFn = _template(
@@ -247,7 +250,8 @@ export const getEventHandler: Types.GetEventHandler =
   (todos, { eventName, onFetchTodoWrapper, onOutputCollect } = {}) =>
   async (...event) => {
     const start = Date.now();
-    const result: Types.OutputData[][] = [];
+    const hasDefaultOutputs = Array.isArray(_get(event, [0, OUTPUTS_SYMBOL]));
+    const result: Types.OutputData[] = [];
 
     const starts = Object.values(todos).filter(({ id }, _i, todos) =>
       todos.every((todo) => {
@@ -268,9 +272,9 @@ export const getEventHandler: Types.GetEventHandler =
 
     for (const todo of starts) {
       const outputs = await execute(todos, todo, {
-        event,
+        event: event.slice(hasDefaultOutputs ? 1 : 0),
         onFetchTodoWrapper,
-        outputs: [],
+        outputs: [...(_get(event, [0, OUTPUTS_SYMBOL]) || [])],
       });
 
       const visibled = outputs.filter(({ todo }) => {
@@ -282,7 +286,7 @@ export const getEventHandler: Types.GetEventHandler =
       });
 
       if (visibled.length) {
-        result.push(visibled);
+        result.push(...visibled);
       }
     }
 

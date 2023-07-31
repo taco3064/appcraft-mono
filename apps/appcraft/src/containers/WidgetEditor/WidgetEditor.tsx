@@ -4,7 +4,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
 import { useCallback, useState } from 'react';
-import type { WidgetTodo } from '@appcraft/types';
+import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Common from '../common';
 import * as Comp from '~appcraft/components';
@@ -101,6 +101,13 @@ export default function WidgetEditor({
               const { content } = await Service.getConfigById<
                 Record<string, WidgetTodo>
               >(id);
+
+              return content;
+            }}
+            onFetchWidget={async (id) => {
+              const { content } = await Service.getConfigById<RootNodeWidget>(
+                id
+              );
 
               return content;
             }}

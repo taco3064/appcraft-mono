@@ -32,7 +32,7 @@ const MuiSnackbarContent = (() => {
       const background =
         variant === 'default'
           ? theme.palette.background.paper
-          : theme.palette[variant].main;
+          : theme.palette[variant].dark;
 
       return {
         root: {

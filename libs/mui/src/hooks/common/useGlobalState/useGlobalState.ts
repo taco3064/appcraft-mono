@@ -205,39 +205,52 @@ const useGlobalState: Types.GlobalStateHook = (() => {
               const data =
                 nodeType === 'node' && Array.isArray(values) ? values : [];
 
-              if (!template) {
-                const node: Types.NodeResult | Types.NodeResult[] =
-                  nodeType === 'element'
-                    ? {
-                        widget: {
-                          category: 'plainText',
-                          id: propPath,
-                          content: values?.toString() || '',
-                        },
-                      }
-                    : data.map((content) => ({
+              switch (nodeType) {
+                case 'element': {
+                  if (!template) {
+                    _set(result, [propPath], {
+                      widget: {
+                        category: 'plainText',
+                        id: propPath,
+                        content: values?.toString() || '',
+                      },
+                    });
+                  } else if (templates.has(template.id)) {
+                    _set(result, [propPath], {
+                      widget: templates.get(template.id),
+                      defaultProps: values as object,
+                    });
+                  }
+
+                  break;
+                }
+                case 'node': {
+                  if (!template) {
+                    _set(
+                      result,
+                      [propPath],
+                      data.map((content) => ({
                         widget: {
                           category: 'plainText',
                           id: propPath,
                           content: content?.toString() || '',
                         },
-                      }));
+                      }))
+                    );
+                  } else if (templates.has(template.id)) {
+                    _set(
+                      result,
+                      [propPath],
+                      data.map((content) => ({
+                        widget: templates.get(template.id),
+                        defaultProps: content as object,
+                      }))
+                    );
+                  }
 
-                _set(result, [propPath], node);
-              } else if (nodeType === 'element' && templates.has(template.id)) {
-                _set(result, [propPath], {
-                  widget: templates.get(template.id),
-                  defaultProps: values as object,
-                });
-              } else if (nodeType === 'node' && templates.has(template.id)) {
-                _set(
-                  result,
-                  [propPath],
-                  data.map((defaultProps) => ({
-                    widget: templates.get(template.id),
-                    defaultProps: defaultProps as object,
-                  }))
-                );
+                  break;
+                }
+                default:
               }
             }
 

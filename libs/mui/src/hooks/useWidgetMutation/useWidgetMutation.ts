@@ -101,7 +101,7 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
       },
 
       todo: (e) => {
-        const index = e.lastIndexOf('events');
+        const index = e.lastIndexOf('todos');
         const widgetPaths = e.slice(0, index);
 
         setEditedPaths(widgetPaths);

@@ -1,25 +1,55 @@
+import LinearProgress from '@mui/material/LinearProgress';
 import { Suspense } from 'react';
 
-import { useWidgetGenerator } from '../../hooks';
-import type { CraftedRendererProps } from './CraftedRenderer.types';
+import * as Hook from '../../hooks';
+import type * as Types from './CraftedRenderer.types';
 
-export default function CraftedRenderer({
-  lazy,
-  options = [],
-  onFetchTodoWrapper,
-  onOutputCollect,
-}: CraftedRendererProps) {
-  const generator = useWidgetGenerator(
-    options,
-    { externalLazy: lazy, onFetchTodoWrapper, onOutputCollect },
+function RendererContent({
+  fetchData,
+  options,
+  ...props
+}: Types.RendererContentProps) {
+  const [isPrepared, handleState] = Hook.useRendererState(options, fetchData);
+
+  const render = Hook.useRender(
+    props,
+    handleState,
     (Widget, { key, props }) => <Widget key={key} {...props} />
   );
 
-  return !options ? null : (
-    <Suspense>
+  return !isPrepared ? null : (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
       {!Array.isArray(options)
-        ? generator(options)
-        : options.map((layout) => <>Layout</>)}
+        ? render(options, { state: { id: options.id } })
+        : options.map(({ widget }) =>
+            render(widget, { state: { id: widget.id } })
+          )}
+    </>
+  );
+}
+
+export default function CraftedRenderer({
+  options,
+  onFetchWrapper,
+  onLazyRetrieve,
+  onOutputCollect,
+}: Types.CraftedRendererProps) {
+  const LazyRenderer = Hook.useLazyRenderer<Types.LazyRendererProps>(
+    options as Parameters<typeof Hook.useLazyRenderer>[0],
+    onFetchWrapper,
+    (props) => <RendererContent {...(props as Types.RendererContentProps)} />
+  );
+
+  return (
+    <Suspense fallback={<LinearProgress />}>
+      {options && (
+        <LazyRenderer
+          {...{ onLazyRetrieve, onOutputCollect }}
+          options={options}
+          onFetchTodoWrapper={onFetchWrapper}
+        />
+      )}
     </Suspense>
   );
 }

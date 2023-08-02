@@ -46,6 +46,7 @@ export type NodeWidget = BaseOptions<
 >;
 
 export interface RootNodeWidget extends NodeWidget {
+  template?: { index?: number };
   state: {
     nodes?: Record<string, State.ElementState | State.NodeState>;
     props?: Record<string, State.PropsState>;
@@ -58,6 +59,6 @@ export type WidgetOptions = PlainTextWidget | NodeWidget;
 //* Lazy Renderer Fn
 export type LazyRenderer<D, R = Record<string, never>> = (
   options: R & {
-    fetchData: D | null;
+    fetchData?: D;
   }
 ) => JSX.Element;

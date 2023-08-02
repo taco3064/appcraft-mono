@@ -13,7 +13,7 @@ const useTodoValues: TodoValuesHook = ({ data, onOpen, onSave }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [at] = useFixedT('app');
   const [duration, setDuration] = useState(0);
-  const [outputs, setOutputs] = useState<OutputData[][]>([]);
+  const [outputs, setOutputs] = useState<OutputData[]>([]);
 
   const [todos, setTodos] = useState<Record<string, WidgetTodo>>(() =>
     JSON.parse(JSON.stringify(data?.content || {}))

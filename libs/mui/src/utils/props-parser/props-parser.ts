@@ -4,7 +4,6 @@ import type * as Appcraft from '@appcraft/types';
 import type { Components } from '@mui/material/styles';
 
 import { getPropPath } from '../prop-path';
-import { getEventHandler } from '../todo-parser';
 import type * as Types from './props-parser.types';
 
 export const getForceArray = <T>(target: T | T[]) =>
@@ -47,41 +46,11 @@ export const splitProps: Types.SplitProps = (target, paths = []) => {
   return { [getPropPath(paths)]: target };
 };
 
-export const getProps = <P>(
-  options:
-    | Pick<Appcraft.NodeWidget, Appcraft.StateCategory>
-    | Pick<Appcraft.ConfigOptions, 'props'>,
-  { renderer, onFetchTodoWrapper, onOutputCollect }: Types.GetPropsOptions = {}
-) => {
-  const fields: Appcraft.StateCategory[] = ['nodes', 'props', 'todos'];
-
-  return fields.reduce((result, category) => {
-    const { [category as keyof typeof options]: props = {} } = options;
-
-    Object.entries(props).forEach(([propPath, value]) => {
-      if (category === 'props') {
-        _set(result, propPath, value);
-      } else if (category === 'todos') {
-        _set(
-          result,
-          propPath,
-          getEventHandler(value as Record<string, Appcraft.WidgetTodo>, {
-            eventName: propPath,
-            onFetchTodoWrapper,
-            onOutputCollect,
-          })
-        );
-      } else if (renderer instanceof Function && category === 'nodes') {
-        const widgets = getForceArray(value as Appcraft.WidgetOptions);
-
-        _set(
-          result,
-          propPath,
-          widgets.map((widget) => renderer(widget))
-        );
-      }
-    });
-
-    return result;
-  }, {}) as P;
-};
+export const getProps = <P extends object>(
+  props: Appcraft.ConfigOptions['props'],
+  defaultProps?: P
+) =>
+  Object.entries(props || {}).reduce<P>(
+    (result, [propPath, value]) => _set(result, propPath, value),
+    (defaultProps || {}) as P
+  );

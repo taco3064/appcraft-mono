@@ -1,9 +1,16 @@
-import type * as Util from '../../utils';
-import type { ExternalLazy, RendererOptions } from '../../hooks';
+import { useRender } from '../../hooks';
+import type * as Hook from '../../hooks';
 
-export interface CraftedRendererProps {
-  lazy: ExternalLazy;
-  options?: RendererOptions;
-  onFetchTodoWrapper: Util.FetchTodoWrapperHandler;
-  onOutputCollect?: Util.OutputCollectHandler;
+export type LazyRendererProps = Parameters<typeof useRender>[0] & {
+  options: Hook.RendererOptions;
+};
+
+export type RendererContentProps = LazyRendererProps & {
+  fetchData: Hook.WidgetMap;
+};
+
+export interface CraftedRendererProps
+  extends Omit<LazyRendererProps, 'options' | 'onFetchTodoWrapper'> {
+  options?: Hook.RendererOptions;
+  onFetchWrapper: Hook.FetchWrapperHandler<'todo' | 'widget'>;
 }

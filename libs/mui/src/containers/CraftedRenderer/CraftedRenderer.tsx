@@ -31,6 +31,7 @@ function RendererContent({
 
 export default function CraftedRenderer({
   options,
+  onFetchData,
   onFetchWrapper,
   onLazyRetrieve,
   onOutputCollect,
@@ -45,7 +46,7 @@ export default function CraftedRenderer({
     <Suspense fallback={<LinearProgress />}>
       {options && (
         <LazyRenderer
-          {...{ onLazyRetrieve, onOutputCollect }}
+          {...{ onFetchData, onLazyRetrieve, onOutputCollect }}
           options={options}
           onFetchTodoWrapper={onFetchWrapper}
         />

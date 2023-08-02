@@ -13,7 +13,7 @@ export type IterateResult = Promise<[string | number, OutputData[]]>;
 
 export type VariableOptions = Omit<
   Parameters<Execute>[2],
-  'onFetchTodoWrapper' | 'onStateChange'
+  'onFetchData' | 'onFetchTodoWrapper' | 'onStateChange'
 > & {
   mixedTypes?: Appcraft.TypesMapping;
 };
@@ -21,11 +21,21 @@ export type VariableOptions = Omit<
 //* Methods
 export type GetEventHandler = (
   todos: Record<string, Appcraft.WidgetTodo>,
-  options?: {
+  options: {
     defaultOutputs?: OutputData[];
     eventName?: string;
-    onFetchTodoWrapper?: FetchTodoWrapperHandler;
+
     onStateChange?: (e: Record<string, unknown>) => void;
+
+    onFetchData: <R>(
+      options: Pick<Appcraft.FetchTodo, 'url' | 'method' | 'headers'> & {
+        data?: unknown;
+      }
+    ) => Promise<R>;
+
+    onFetchTodoWrapper?: (
+      todosId: string
+    ) => Promise<Record<string, Appcraft.WidgetTodo>>;
 
     onOutputCollect?: (
       e: {
@@ -38,16 +48,20 @@ export type GetEventHandler = (
   }
 ) => (...event: unknown[]) => Promise<OutputData[]>;
 
-export type FetchTodoWrapperHandler = (
-  todosId: string
-) => Promise<Record<string, Appcraft.WidgetTodo>>;
+export type FetchDataHandler = Required<
+  Parameters<GetEventHandler>[1]
+>['onFetchData'];
+
+export type FetchTodoWrapperHandler = Required<
+  Parameters<GetEventHandler>[1]
+>['onFetchTodoWrapper'];
 
 export type OutputCollectHandler = Required<
-  Required<Parameters<GetEventHandler>>[1]
+  Parameters<GetEventHandler>[1]
 >['onOutputCollect'];
 
 export type StateChangeHandler = Required<
-  Required<Parameters<GetEventHandler>>[1]
+  Parameters<GetEventHandler>[1]
 >['onStateChange'];
 
 export type Execute = (
@@ -56,6 +70,7 @@ export type Execute = (
   options: {
     event: unknown[];
     outputs: OutputData[];
+    onFetchData: FetchDataHandler;
     onFetchTodoWrapper?: FetchTodoWrapperHandler;
     onStateChange?: StateChangeHandler;
   }

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { getEventHandler } from '@appcraft/mui';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
@@ -40,6 +41,16 @@ const useTodoValues: TodoValuesHook = ({ data, onOpen, onSave }) => {
           onOutputCollect: ({ duration, outputs }) => {
             setDuration(duration);
             setOutputs(outputs);
+          },
+          onFetchData: async ({ url, method, headers, data }) => {
+            const { data: result } = await axios({
+              url,
+              method,
+              headers,
+              ...(data && { data }),
+            });
+
+            return result;
           },
         });
 

@@ -4,7 +4,7 @@ import _toPath from 'lodash/toPath';
 import { useEffect, useMemo, useReducer } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import { getEventHandler, getPropPath } from '../../utils';
+import { getEventHandler } from '../../utils';
 import type * as Types from './useRendererState.types';
 
 const getSuperiorProps: Types.GetSuperiorProps = (states, superiors = []) => {
@@ -28,7 +28,7 @@ const getSuperiorProps: Types.GetSuperiorProps = (states, superiors = []) => {
 const getSuperiorTodos: Types.GetSuperiorTodos = (
   states,
   { state, superiors = [] },
-  { onFetchTodoWrapper, onStateChange }
+  { onFetchData, onFetchTodoWrapper, onStateChange }
 ) =>
   Object.entries(_get(states, [state.id]) || {}).reduce<Types.TodosReturn>(
     (result, [stateKey, { category, propPath, options }]) => {
@@ -56,6 +56,7 @@ const getSuperiorTodos: Types.GetSuperiorTodos = (
               todos: { ...acc, ...todos },
               handlers: [
                 getEventHandler(todos, {
+                  onFetchData,
                   onFetchTodoWrapper,
                   onStateChange: (values) =>
                     onStateChange({
@@ -168,9 +169,9 @@ const useRendererState: Types.RendererStateHook = (
         );
       },
 
-      todos: (widget, queue, onFetchTodoWrapper) => {
+      todos: (widget, queue, options) => {
         const superiorProps = getSuperiorTodos(states, queue, {
-          onFetchTodoWrapper,
+          ...options,
           onStateChange: dispatch,
         });
 
@@ -192,7 +193,7 @@ const useRendererState: Types.RendererStateHook = (
               ? handlers
               : [
                   getEventHandler(internal, {
-                    onFetchTodoWrapper,
+                    ...options,
                     onStateChange: (values) =>
                       dispatch({ id: queue.state.id, values }),
                   }),

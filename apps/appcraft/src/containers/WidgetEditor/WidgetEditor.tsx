@@ -2,9 +2,9 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import axios from 'axios';
 import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
 import { useDeferredValue, useState } from 'react';
-import type { CraftedRendererProps } from '@appcraft/mui';
 import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Common from '../common';
@@ -102,6 +102,16 @@ export default function WidgetEditor({
               >(id);
 
               return content;
+            }}
+            onFetchData={async ({ url, method, headers, data }) => {
+              const { data: result } = await axios({
+                url,
+                method,
+                headers,
+                ...(data && { data }),
+              });
+
+              return result;
             }}
           />
         }

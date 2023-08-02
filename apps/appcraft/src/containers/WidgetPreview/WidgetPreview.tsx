@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { CraftedRenderer } from '@appcraft/mui';
 import { useQuery } from '@tanstack/react-query';
 import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
@@ -25,6 +26,16 @@ export default function WidgetPreview({ id }: WidgetPreviewProps) {
         >(id);
 
         return content;
+      }}
+      onFetchData={async ({ url, method, headers, data }) => {
+        const { data: result } = await axios({
+          url,
+          method,
+          headers,
+          ...(data && { data }),
+        });
+
+        return result;
       }}
     />
   );

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.77](https://github.com/taco3064/appcraft-mono/compare/v0.0.76...v0.0.77) (2023-08-02)
+
+
+### Features
+
+* **@appcraft/mui:** support render template widgets ([96a5eef](https://github.com/taco3064/appcraft-mono/commit/96a5eef500c76f1637be871da1c907b6629be6ae))
+* **crafted-renderer:** support state node render ([e55f061](https://github.com/taco3064/appcraft-mono/commit/e55f061890179c2babbc5cbb294be775d9ab45e4))
+* **use-global-state:** support generate widget props by useGlobalState ([0cfcb91](https://github.com/taco3064/appcraft-mono/commit/0cfcb917262937a37166f3fe99e29abc42f89439))
+
 ### [0.0.76](https://github.com/taco3064/appcraft-mono/compare/v0.0.75...v0.0.76) (2023-07-30)
 
 

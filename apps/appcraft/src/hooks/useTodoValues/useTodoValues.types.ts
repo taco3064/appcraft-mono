@@ -8,7 +8,7 @@ export type TodoValuesHook = (options: {
 }) => [
   {
     duration: number;
-    outputs: OutputData[][];
+    outputs: OutputData[];
     todos: Record<string, WidgetTodo>;
   },
   {

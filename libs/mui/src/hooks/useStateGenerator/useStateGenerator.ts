@@ -30,7 +30,7 @@ const useStateGenerator: Types.StateGeneratorHook = (
         if (editing) {
           const { [category]: target, ...states } = stateValues;
           const { mixedTypes } = config;
-          const newState = Util.getProps<Appcraft.WidgetState>(config);
+          const newState = Util.getProps<Appcraft.WidgetState>(config.props);
 
           setEditing({ path: editing?.path || '', config });
 

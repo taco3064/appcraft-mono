@@ -1,2 +1,2 @@
 export * from './props-parser';
-export type { GeneratorFn } from './props-parser.types';
+export type { LazyWidget } from './props-parser.types';

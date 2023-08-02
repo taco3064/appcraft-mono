@@ -1,22 +1,9 @@
 import type * as Appcraft from '@appcraft/types';
+import type { ComponentType, LazyExoticComponent } from 'react';
 import type { Theme } from '@mui/material/styles';
 
-import type {
-  FetchTodoWrapperHandler,
-  OutputCollectHandler,
-} from '../todo-parser';
-
 //* Variables
-export type GeneratorFn = (
-  widget: Appcraft.WidgetOptions,
-  index?: number
-) => JSX.Element;
-
-export type GetPropsOptions = {
-  renderer?: GeneratorFn;
-  onFetchTodoWrapper?: FetchTodoWrapperHandler;
-  onOutputCollect?: OutputCollectHandler;
-};
+export type LazyWidget = LazyExoticComponent<ComponentType>;
 
 //* Methods
 export type GetDefaultProps = (

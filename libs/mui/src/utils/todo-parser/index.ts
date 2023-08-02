@@ -5,4 +5,5 @@ export type {
   OutputCollectEvent,
   OutputCollectHandler,
   OutputData,
+  StateChangeHandler,
 } from './todo-parser.types';

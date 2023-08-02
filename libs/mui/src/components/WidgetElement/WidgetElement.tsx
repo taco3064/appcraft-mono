@@ -147,7 +147,7 @@ export default function WidgetElement<I extends Appcraft.WidgetOptions>({
             completePaths={[
               ...basePaths,
               ...(superiorNodeType === 'node' ? [index] : []),
-              'events',
+              'todos',
               path,
             ]}
           />

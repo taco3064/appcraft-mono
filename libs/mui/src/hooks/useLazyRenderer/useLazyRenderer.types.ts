@@ -1,31 +1,15 @@
 import type * as Appcraft from '@appcraft/types';
-import type { LazyExoticComponent } from 'react';
 
-import type { Templates } from '../common';
+import type { FetchWrapperHandler } from '../useRender';
+import type { WidgetMap } from '../useRendererState';
 
-//* Variables
-type LazyProps = { children: JSX.Element };
+export type WidgetInfo = {
+  id: string;
+  widget: Appcraft.RootNodeWidget;
+};
 
-export type RendererOptions =
-  | Appcraft.RootNodeWidget
-  | { widget: Appcraft.RootNodeWidget }[];
-
-export type FetchWidgetHandler = (
-  id: string
-) => Promise<Appcraft.RootNodeWidget>;
-
-//* Methods
 export type FetchWidgets = (
   widgets: Appcraft.RootNodeWidget[],
-  onFetchWidget: FetchWidgetHandler,
-  tempaltes?: Templates
-) => Promise<Templates>;
-
-//* Custom Hooks
-export type LazyRendererHook = (
-  options: RendererOptions,
-  onFetchWidget: FetchWidgetHandler
-) => {
-  LazyRenderer: LazyExoticComponent<(props: LazyProps) => JSX.Element>;
-  templates: Templates;
-};
+  onFetchWidget: FetchWrapperHandler<'widget'>,
+  tempaltes?: WidgetMap
+) => Promise<WidgetMap>;

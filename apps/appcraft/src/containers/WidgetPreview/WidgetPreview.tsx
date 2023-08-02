@@ -1,5 +1,4 @@
 import { CraftedRenderer } from '@appcraft/mui';
-import { useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
 
@@ -8,8 +7,6 @@ import { LazyMui } from '~appcraft/components';
 import type { WidgetPreviewProps } from './WidgetPreview.types';
 
 export default function WidgetPreview({ id }: WidgetPreviewProps) {
-  const toLazy = useCallback((widgetType: string) => LazyMui[widgetType], []);
-
   const { data } = useQuery({
     queryKey: [id],
     queryFn: Service.findConfig<RootNodeWidget>,
@@ -18,17 +15,14 @@ export default function WidgetPreview({ id }: WidgetPreviewProps) {
 
   return (
     <CraftedRenderer
-      lazy={toLazy}
       options={data?.content}
-      onFetchTodoWrapper={async (id) => {
+      onLazyRetrieve={(type: string) => LazyMui[type]}
+      onFetchWrapper={async (category, id) => {
         const { content } = await Service.getConfigById<
-          Record<string, WidgetTodo>
+          typeof category extends 'widget'
+            ? RootNodeWidget
+            : Record<string, WidgetTodo>
         >(id);
-
-        return content;
-      }}
-      onFetchWidget={async (id) => {
-        const { content } = await Service.getConfigById<RootNodeWidget>(id);
 
         return content;
       }}

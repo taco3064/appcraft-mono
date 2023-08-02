@@ -4,12 +4,6 @@ import type * as Appcraft from '@appcraft/types';
 export type OutputData = { todo: string; alias: string; output: object };
 export type OutputCollectEvent = Parameters<OutputCollectHandler>[0];
 
-export type ExecuteOptions = {
-  event: unknown[];
-  outputs: OutputData[];
-  onFetchTodoWrapper?: FetchTodoWrapperHandler;
-};
-
 export type IteratePrepare = {
   key: string | number;
   outputs: OutputData[];
@@ -17,7 +11,10 @@ export type IteratePrepare = {
 
 export type IterateResult = Promise<[string | number, OutputData[]]>;
 
-export type VariableOptions = Omit<ExecuteOptions, 'onFetchTodoWrapper'> & {
+export type VariableOptions = Omit<
+  Parameters<Execute>[2],
+  'onFetchTodoWrapper' | 'onStateChange'
+> & {
   mixedTypes?: Appcraft.TypesMapping;
 };
 
@@ -28,6 +25,7 @@ export type GetEventHandler = (
     defaultOutputs?: OutputData[];
     eventName?: string;
     onFetchTodoWrapper?: FetchTodoWrapperHandler;
+    onStateChange?: (e: Record<string, unknown>) => void;
 
     onOutputCollect?: (
       e: {
@@ -40,10 +38,25 @@ export type GetEventHandler = (
   }
 ) => (...event: unknown[]) => Promise<OutputData[]>;
 
+export type FetchTodoWrapperHandler = (
+  todosId: string
+) => Promise<Record<string, Appcraft.WidgetTodo>>;
+
 export type OutputCollectHandler = Required<
   Required<Parameters<GetEventHandler>>[1]
 >['onOutputCollect'];
 
-export type FetchTodoWrapperHandler = (
-  todosId: string
-) => Promise<Record<string, Appcraft.WidgetTodo>>;
+export type StateChangeHandler = Required<
+  Required<Parameters<GetEventHandler>>[1]
+>['onStateChange'];
+
+export type Execute = (
+  todos: Record<string, Appcraft.WidgetTodo>,
+  todo: Appcraft.WidgetTodo,
+  options: {
+    event: unknown[];
+    outputs: OutputData[];
+    onFetchTodoWrapper?: FetchTodoWrapperHandler;
+    onStateChange?: StateChangeHandler;
+  }
+) => Promise<OutputData[]>;

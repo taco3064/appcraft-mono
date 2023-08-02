@@ -69,16 +69,38 @@ function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
   );
 }
 
-async function execute(
-  todos: Record<string, Appcraft.WidgetTodo>,
-  todo: Appcraft.WidgetTodo,
-  { event, outputs, onFetchTodoWrapper }: Types.ExecuteOptions
-): Promise<Types.OutputData[]> {
+const execute: Types.Execute = async (
+  todos,
+  todo,
+  { event, outputs, onFetchTodoWrapper, onStateChange }
+) => {
   while (todo) {
     const { id, alias = id, category, defaultNextTodo, mixedTypes } = todo;
     const { [defaultNextTodo as string]: next } = todos;
 
     switch (category) {
+      case 'state': {
+        const { states } = todo;
+
+        todo = next;
+
+        onStateChange?.(
+          getVariableOutput(
+            Object.fromEntries(
+              states.map<[string, Appcraft.ExtractVariable]>(
+                ({ source, state }) => [
+                  state,
+                  { mode: 'extract', initial: source },
+                ]
+              )
+            ),
+            { event, outputs }
+          )
+        );
+
+        break;
+      }
+
       //* Create Variables
       case 'variable': {
         const { variables } = todo;
@@ -243,12 +265,14 @@ async function execute(
   }
 
   return outputs;
-}
+};
 
 //* Methods
-export const getEventHandler: Types.GetEventHandler =
-  (todos, { eventName, onFetchTodoWrapper, onOutputCollect } = {}) =>
-  async (...event) => {
+export const getEventHandler: Types.GetEventHandler = (todos, options = {}) => {
+  const { eventName, onFetchTodoWrapper, onOutputCollect, onStateChange } =
+    options;
+
+  return async (...event) => {
     const start = Date.now();
     const hasDefaultOutputs = Array.isArray(_get(event, [0, OUTPUTS_SYMBOL]));
     const result: Types.OutputData[] = [];
@@ -273,8 +297,9 @@ export const getEventHandler: Types.GetEventHandler =
     for (const todo of starts) {
       const outputs = await execute(todos, todo, {
         event: event.slice(hasDefaultOutputs ? 1 : 0),
-        onFetchTodoWrapper,
         outputs: [...(_get(event, [0, OUTPUTS_SYMBOL]) || [])],
+        onFetchTodoWrapper,
+        onStateChange,
       });
 
       const visibled = outputs.filter(({ todo }) => {
@@ -301,3 +326,4 @@ export const getEventHandler: Types.GetEventHandler =
 
     return result;
   };
+};

@@ -1,40 +1,55 @@
+import LinearProgress from '@mui/material/LinearProgress';
 import { Suspense } from 'react';
 
 import * as Hook from '../../hooks';
-import type { CraftedRendererProps } from './CraftedRenderer.types';
+import type * as Types from './CraftedRenderer.types';
 
-export default function CraftedRenderer({
-  lazy,
-  options = [],
-  onFetchTodoWrapper,
-  onFetchWidget,
-  onOutputCollect,
-}: CraftedRendererProps) {
-  const { LazyRenderer, templates } = Hook.useLazyRenderer(
-    options,
-    onFetchWidget
+function RendererContent({
+  fetchData,
+  options,
+  ...props
+}: Types.RendererContentProps) {
+  const [isPrepared, handleState] = Hook.useRendererState(options, fetchData);
+
+  const render = Hook.useRender(
+    props,
+    handleState,
+    (Widget, { key, props }) => <Widget key={key} {...props} />
   );
 
-  const generator = Hook.useWidgetGenerator(options, templates, {
-    lazy,
-    onFetchTodoWrapper,
-    onOutputCollect,
-    renderer: (Widget, { key, props }) => <Widget key={key} {...props} />,
-  });
+  return !isPrepared ? null : (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
+      {!Array.isArray(options)
+        ? render(options, { state: { id: options.id } })
+        : options.map(({ widget }) =>
+            render(widget, { state: { id: widget.id } })
+          )}
+    </>
+  );
+}
 
-  return !options ? null : (
-    <Suspense>
-      <LazyRenderer>
-        {!Array.isArray(options) ? (
-          generator(options)
-        ) : (
-          <>
-            {options.map((layout) => (
-              <>Layout</>
-            ))}
-          </>
-        )}
-      </LazyRenderer>
+export default function CraftedRenderer({
+  options,
+  onFetchWrapper,
+  onLazyRetrieve,
+  onOutputCollect,
+}: Types.CraftedRendererProps) {
+  const LazyRenderer = Hook.useLazyRenderer<Types.LazyRendererProps>(
+    options as Parameters<typeof Hook.useLazyRenderer>[0],
+    onFetchWrapper,
+    (props) => <RendererContent {...(props as Types.RendererContentProps)} />
+  );
+
+  return (
+    <Suspense fallback={<LinearProgress />}>
+      {options && (
+        <LazyRenderer
+          {...{ onLazyRetrieve, onOutputCollect }}
+          options={options}
+          onFetchTodoWrapper={onFetchWrapper}
+        />
+      )}
     </Suspense>
   );
 }

@@ -3,7 +3,8 @@ import ConstructionIcon from '@mui/icons-material/Construction';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
-import { useCallback, useState } from 'react';
+import { useDeferredValue, useState } from 'react';
+import type { CraftedRendererProps } from '@appcraft/mui';
 import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Common from '../common';
@@ -32,13 +33,9 @@ export default function WidgetEditor({
   });
 
   const width = Hook.useWidth();
+  const renderer = useDeferredValue(widget);
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
-
-  const toLazy = useCallback(
-    (widgetType: string) => Comp.LazyMui[widgetType],
-    []
-  );
 
   const actionNode = Hook.useNodePicker(
     () =>
@@ -94,20 +91,15 @@ export default function WidgetEditor({
         onClose={() => setOpen(false)}
         content={
           <CraftedRenderer
-            lazy={toLazy}
-            options={widget}
+            options={renderer}
             onOutputCollect={onOutputCollect}
-            onFetchTodoWrapper={async (id) => {
+            onLazyRetrieve={(type: string) => Comp.LazyMui[type]}
+            onFetchWrapper={async (category, id) => {
               const { content } = await Service.getConfigById<
-                Record<string, WidgetTodo>
+                typeof category extends 'widget'
+                  ? RootNodeWidget
+                  : Record<string, WidgetTodo>
               >(id);
-
-              return content;
-            }}
-            onFetchWidget={async (id) => {
-              const { content } = await Service.getConfigById<RootNodeWidget>(
-                id
-              );
 
               return content;
             }}

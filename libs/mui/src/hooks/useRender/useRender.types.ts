@@ -30,6 +30,7 @@ export type GetGeneratorOptions = (
 //* Custom Hook
 export type RenderHook = (
   options: {
+    onFetchData: Util.FetchDataHandler;
     onFetchTodoWrapper: FetchWrapperHandler<'todo'>;
     onLazyRetrieve: (type: string) => Util.LazyWidget;
     onOutputCollect?: Util.OutputCollectHandler;

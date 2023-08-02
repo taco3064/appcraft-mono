@@ -3,7 +3,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import NoSsr from '@mui/material/NoSsr';
 import { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Suspense, useState } from 'react';
+import { Suspense, useMemo, useState } from 'react';
 
 import * as Comp from '~appcraft/components';
 import IndexPage from './index';
@@ -12,19 +12,24 @@ import { UserinfoMenuToggle } from '~appcraft/containers';
 import { useAuth } from '~appcraft/hooks';
 import 'reactflow/dist/style.css';
 
-const client = new QueryClient({
-  defaultOptions: {
-    queries: {
-      suspense: true,
-    },
-  },
-});
-
 export default function App({ Component, pageProps }: AppProps) {
   const [open, setOpen] = useState(false);
 
   const [{ authorized, isCallbackPending, tokens }, onSigninPrepare] =
     useAuth();
+
+  const client = useMemo(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            enabled: authorized,
+            suspense: true,
+          },
+        },
+      }),
+    [authorized]
+  );
 
   return (
     <>

@@ -44,7 +44,7 @@ const getGeneratorOptions: Types.GetGeneratorOptions = (
 };
 
 const useRender: Types.RenderHook = (
-  { onFetchTodoWrapper, onLazyRetrieve, onOutputCollect },
+  { onFetchData, onFetchTodoWrapper, onLazyRetrieve, onOutputCollect },
   globalState,
   render
 ) =>
@@ -59,9 +59,10 @@ const useRender: Types.RenderHook = (
             return Util.getProps(globalState.props(widget, queue), props);
           } else if (type === 'todos') {
             Object.entries(
-              globalState.todos(widget, queue, (id) =>
-                onFetchTodoWrapper('todo', id)
-              )
+              globalState.todos(widget, queue, {
+                onFetchData,
+                onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
+              })
             ).forEach(([propPath, { todos, handlers }]) =>
               _set(props, propPath, async (...e: unknown[]) => {
                 const start = Date.now();

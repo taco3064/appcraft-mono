@@ -32,7 +32,7 @@ export type ElementState = BaseState<
   'nodes',
   {
     nodeType: 'element';
-    defaultValue?: { [key: string]: Definition }; //* Props
+    defaultValue?: string | { [key: string]: Definition }; //* Props
     template?: {
       id: string;
       todos?: Record<string, Record<string, WidgetTodo>>;
@@ -44,7 +44,7 @@ export type NodeState = BaseState<
   'nodes',
   {
     nodeType: 'node';
-    defaultValue?: Definition[];
+    defaultValue?: string | Definition[];
     template?: {
       id: string;
       todos?: Record<string, Record<string, WidgetTodo>>;

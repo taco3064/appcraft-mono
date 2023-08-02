@@ -72,7 +72,7 @@ function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
 const execute: Types.Execute = async (
   todos,
   todo,
-  { event, outputs, onFetchTodoWrapper, onStateChange }
+  { event, outputs, onFetchData, onFetchTodoWrapper, onStateChange }
 ) => {
   while (todo) {
     const { id, alias = id, category, defaultNextTodo, mixedTypes } = todo;
@@ -123,7 +123,9 @@ const execute: Types.Execute = async (
         const options = (await onFetchTodoWrapper?.(todosId)) || {};
 
         //* 因為不確定 wrap todos 的起始事項是哪個，所以呼叫 getEventHandler
-        const $outputs = await getEventHandler(options)(...event);
+        const $outputs = await getEventHandler(options, { onFetchData })(
+          ...event
+        );
 
         todo = next;
 
@@ -169,26 +171,22 @@ const execute: Types.Execute = async (
       case 'fetch': {
         const { url, method, headers, data: initial } = todo;
 
-        const { data } = getVariableOutput(
-          !initial ? {} : { data: { mode: 'extract', initial } },
-          { event, outputs }
-        );
-
-        const output = await axios({
+        const output = await onFetchData({
           url,
           method,
           headers,
-          ...(data && { data }),
-        })
-          .then(({ data }) => data)
-          .catch((err) => {
-            console.error(err);
+          data: getVariableOutput(
+            !initial ? {} : { data: { mode: 'extract', initial } },
+            { event, outputs }
+          ),
+        }).catch((err) => {
+          console.error(err);
 
-            return undefined;
-          });
+          return undefined;
+        });
 
         todo = next;
-        outputs.push({ todo: id, alias, output });
+        outputs.push({ todo: id, alias, output: output as object });
 
         break;
       }
@@ -236,8 +234,9 @@ const execute: Types.Execute = async (
               //* 因為明確知道 iterate 是起始事項，所以可以直接呼叫 execute
               await execute(todos, iterate, {
                 event,
-                onFetchTodoWrapper,
                 outputs,
+                onFetchData,
+                onFetchTodoWrapper,
               }),
             ]
           )) {
@@ -268,9 +267,14 @@ const execute: Types.Execute = async (
 };
 
 //* Methods
-export const getEventHandler: Types.GetEventHandler = (todos, options = {}) => {
-  const { eventName, onFetchTodoWrapper, onOutputCollect, onStateChange } =
-    options;
+export const getEventHandler: Types.GetEventHandler = (todos, options) => {
+  const {
+    eventName,
+    onFetchData,
+    onFetchTodoWrapper,
+    onOutputCollect,
+    onStateChange,
+  } = options;
 
   return async (...event) => {
     const start = Date.now();
@@ -298,6 +302,7 @@ export const getEventHandler: Types.GetEventHandler = (todos, options = {}) => {
       const outputs = await execute(todos, todo, {
         event: event.slice(hasDefaultOutputs ? 1 : 0),
         outputs: [...(_get(event, [0, OUTPUTS_SYMBOL]) || [])],
+        onFetchData,
         onFetchTodoWrapper,
         onStateChange,
       });

@@ -2,7 +2,7 @@ import type * as Appcraft from '@appcraft/types';
 import type { Dispatch } from 'react';
 
 import { getEventHandler } from '../../utils';
-import type { FetchTodoWrapperHandler, StateChangeHandler } from '../../utils';
+import type * as Util from '../../utils';
 
 //* Variables
 type Queue = { id: string; path?: string };
@@ -27,7 +27,8 @@ export type GetSuperiorTodos = (
   state: ReducerState,
   queue: StateQueue,
   handlers: {
-    onFetchTodoWrapper: FetchTodoWrapperHandler;
+    onFetchData: Util.FetchDataHandler;
+    onFetchTodoWrapper: Util.FetchTodoWrapperHandler;
     onStateChange: Dispatch<ReducerAction>;
   }
 ) => TodosReturn;
@@ -47,7 +48,7 @@ export type ReducerState = Record<
 
 export type ReducerAction = {
   id: string;
-  values: Parameters<StateChangeHandler>[0];
+  values: Parameters<Util.StateChangeHandler>[0];
 };
 
 export type RendererStateHook = (
@@ -64,7 +65,10 @@ export type RendererStateHook = (
     todos: (
       widget: Appcraft.NodeWidget,
       queue: StateQueue,
-      onFetchTodoWrapper: FetchTodoWrapperHandler
+      options: {
+        onFetchData: Util.FetchDataHandler;
+        onFetchTodoWrapper: Util.FetchTodoWrapperHandler;
+      }
     ) => Record<
       string,
       {

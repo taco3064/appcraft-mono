@@ -3,6 +3,7 @@ import AssignmentTwoToneIcon from '@mui/icons-material/AssignmentTwoTone';
 import Container from '@mui/material/Container';
 import Head from 'next/head';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import axios from 'axios';
 import { Style, getEventHandler } from '@appcraft/mui';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -65,6 +66,16 @@ export default function Todos() {
 
                 const handleFn = getEventHandler(todos, {
                   onOutputCollect: (e) => setStepperProps(e),
+                  onFetchData: async ({ url, method, headers, data }) => {
+                    const { data: result } = await axios({
+                      url,
+                      method,
+                      headers,
+                      ...(data && { data }),
+                    });
+
+                    return result;
+                  },
                 });
 
                 await handleFn();

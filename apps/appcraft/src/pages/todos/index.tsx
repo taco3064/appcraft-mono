@@ -15,6 +15,7 @@ import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { getConfigById } from '~appcraft/services';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
+import type { HierarchyData } from '~appcraft/services';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
 
@@ -26,6 +27,28 @@ export default function Todos() {
   const [action, handleActionNodePick] = useNodePickHandle(
     HIERARCHY_LIST_ACTIONS
   );
+
+  const handleRun = async (data: HierarchyData<string>) => {
+    const { content: todos } = await getConfigById<Record<string, WidgetTodo>>(
+      data._id
+    );
+
+    const handleFn = getEventHandler(todos, {
+      onOutputCollect: (e) => setStepperProps(e),
+      onFetchData: async ({ url, method, headers, data }) => {
+        const { data: result } = await axios({
+          url,
+          method,
+          headers,
+          ...(data && { data }),
+        });
+
+        return result;
+      },
+    });
+
+    await handleFn();
+  };
 
   return (
     <>
@@ -52,34 +75,14 @@ export default function Todos() {
           onItemActionRender={(data) => (
             <CommonButton
               btnVariant="icon"
+              text={tt('btn-run')}
+              onClick={() => handleRun(data)}
               icon={
                 <Style.CompositeIcon
                   primary={AssignmentOutlinedIcon}
                   secondary={PlayCircleIcon}
                 />
               }
-              text={tt('btn-run')}
-              onClick={async () => {
-                const { content: todos } = await getConfigById<
-                  Record<string, WidgetTodo>
-                >(data._id);
-
-                const handleFn = getEventHandler(todos, {
-                  onOutputCollect: (e) => setStepperProps(e),
-                  onFetchData: async ({ url, method, headers, data }) => {
-                    const { data: result } = await axios({
-                      url,
-                      method,
-                      headers,
-                      ...(data && { data }),
-                    });
-
-                    return result;
-                  },
-                });
-
-                await handleFn();
-              }}
             />
           )}
         />

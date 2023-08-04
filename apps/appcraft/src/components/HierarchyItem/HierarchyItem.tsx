@@ -5,22 +5,41 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT, useHierarchyDnd } from '~appcraft/hooks';
 import type * as Types from './HierarchyItem.types';
 
 export default function HierarchyItem({
   mutation,
   data,
+  disableGroupChange = false,
   icon: MuiIcon,
   onActionRender,
   onClick,
+  onGroupChange,
 }: Types.HierarchyItemProps) {
   const [at] = useFixedT('app');
   const { type, name, description } = data;
   const action = (type === 'item' && onActionRender?.(data)) || null;
 
+  const { ref, status } = useHierarchyDnd<HTMLDivElement>(
+    disableGroupChange,
+    data,
+    onGroupChange
+  );
+
   return (
-    <ImageListItem component={Paper} elevation={4}>
+    <ImageListItem
+      ref={ref}
+      component={Paper}
+      elevation={4}
+      sx={(theme) => ({
+        ...(status === 'dragging' && { opacity: 0 }),
+        ...(status === 'over' && {
+          border: `1px solid ${theme.palette.divider}`,
+          opacity: 0.8,
+        }),
+      })}
+    >
       <ListItemButton
         disableGutters
         color="info"

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.79](https://github.com/taco3064/appcraft-mono/compare/v0.0.78...v0.0.79) (2023-08-04)
+
+
+### Features
+
+* **hierarchy-list:** support update superior group by dnd ([0570993](https://github.com/taco3064/appcraft-mono/commit/0570993304abc3c5151ee60a69b35f15313e2ee5))
+
 ### [0.0.78](https://github.com/taco3064/appcraft-mono/compare/v0.0.77...v0.0.78) (2023-08-02)
 
 ### [0.0.77](https://github.com/taco3064/appcraft-mono/compare/v0.0.76...v0.0.77) (2023-08-02)

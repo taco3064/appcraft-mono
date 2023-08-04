@@ -1,3 +1,4 @@
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -7,13 +8,14 @@ import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 
 import { HierarchyEditorButton } from '../HierarchyEditorButton';
-import { RemoveButton } from '~appcraft/components';
+import { CommonButton, RemoveButton } from '~appcraft/components';
 import { removeHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type { HierarchyMutationProps } from './HierarchyMutation.types';
 
 export default function HierarchyMutation({
   data,
+  onMoveToSuperiorGroup,
   onSuccess,
 }: HierarchyMutationProps) {
   const { enqueueSnackbar } = useSnackbar();
@@ -26,7 +28,7 @@ export default function HierarchyMutation({
       setAnchorEl(null);
       onSuccess?.();
 
-      enqueueSnackbar(at('txt-succeed-remove'), {
+      enqueueSnackbar(at('msg-succeed-remove'), {
         variant: 'success',
       });
     },
@@ -50,6 +52,18 @@ export default function HierarchyMutation({
           }),
         }}
       >
+        {onMoveToSuperiorGroup && (
+          <CommonButton
+            btnVariant="menu"
+            icon={<ArrowOutwardIcon />}
+            text={at('btn-move-to-superior-group')}
+            onClick={() => {
+              setAnchorEl(null);
+              onMoveToSuperiorGroup();
+            }}
+          />
+        )}
+
         <HierarchyEditorButton
           btnVariant="menu"
           mode="update"

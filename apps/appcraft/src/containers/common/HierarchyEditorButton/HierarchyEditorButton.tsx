@@ -30,7 +30,7 @@ export default function HierarchyEditorButton({
     onSuccess: (modified) => {
       onConfirm?.(modified);
       setOpen(false);
-      enqueueSnackbar(at(`txt-succeed-${mode}`), { variant: 'success' });
+      enqueueSnackbar(at(`msg-succeed-${mode}`), { variant: 'success' });
     },
   });
 

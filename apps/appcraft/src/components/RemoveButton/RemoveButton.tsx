@@ -48,7 +48,7 @@ export default function RemoveButton({
           onCancel?.();
         }}
       >
-        {at('txt-remove-content')}
+        {at('msg-remove-content')}
       </ArcAlert>
     </>
   );

@@ -18,7 +18,7 @@ const useWidgetValues: WidgetValuesHook = ({ data, onSave }) => {
   const mutation = useMutation({
     mutationFn: upsertConfig<RootNodeWidget>,
     onSuccess: () => {
-      enqueueSnackbar(at('txt-succeed-update'), { variant: 'success' });
+      enqueueSnackbar(at('msg-succeed-update'), { variant: 'success' });
       onSave?.();
     },
   });

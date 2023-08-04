@@ -2,15 +2,20 @@ import Fade from '@mui/material/Fade';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import ImageList from '@mui/material/ImageList';
 import Typography from '@mui/material/Typography';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useMutation } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 
 import * as Common from '../common';
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
-import { searchHierarchy } from '~appcraft/services';
+import { searchHierarchy, updateHierarchy } from '~appcraft/services';
 import type * as Types from './HierarchyList.types';
+import type { HierarchyData } from '~appcraft/services';
 
 export default function HierarchyList({
   category,
@@ -21,6 +26,7 @@ export default function HierarchyList({
 }: Types.HierarchyListProps) {
   const { breadcrumbs, keyword, superiors } = Hook.useHierarchyFilter(category);
   const { pathname, push } = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   const superiorList = Object.keys(superiors);
   const superior = superiorList[superiorList.length - 1] || null;
@@ -33,6 +39,16 @@ export default function HierarchyList({
     refetchOnWindowFocus: false,
     queryFn: searchHierarchy,
     queryKey: [category, keyword ? { keyword } : { superior }],
+  });
+
+  const disableGroupChange = hierarchies.every(({ type }) => type === 'item');
+
+  const mutation = useMutation({
+    mutationFn: updateHierarchy,
+    onSuccess: (modified) => {
+      enqueueSnackbar(at('msg-succeed-dnd', modified), { variant: 'success' });
+      refetch();
+    },
   });
 
   const actionNode = Hook.useNodePicker(
@@ -76,6 +92,7 @@ export default function HierarchyList({
     [collapsed, disableGroup, superior]
   );
 
+  //* Event Handlers
   const handleItemClick: Comp.HierarchyItemProps['onClick'] = (data) =>
     push(
       data.type === 'group'
@@ -95,6 +112,13 @@ export default function HierarchyList({
             },
           }
     );
+
+  const handleGroupChange = (item: HierarchyData<string>, group?: string) => {
+    mutation.mutate({
+      ...item,
+      superior: group || null,
+    });
+  };
 
   return (
     <>
@@ -135,21 +159,32 @@ export default function HierarchyList({
           cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}
           style={{ overflow: 'hidden auto' }}
         >
-          {hierarchies.map((data) => (
-            <Comp.HierarchyItem
-              key={data._id}
-              data={data}
-              icon={icon}
-              onActionRender={onItemActionRender}
-              onClick={handleItemClick}
-              mutation={
-                <Common.HierarchyMutation
-                  data={data}
-                  onSuccess={() => refetch()}
-                />
-              }
-            />
-          ))}
+          <DndProvider backend={HTML5Backend}>
+            {hierarchies.map((data) => (
+              <Comp.HierarchyItem
+                key={data._id}
+                data={data}
+                disableGroupChange={disableGroupChange}
+                icon={icon}
+                onActionRender={onItemActionRender}
+                onClick={handleItemClick}
+                onGroupChange={handleGroupChange}
+                mutation={
+                  <Common.HierarchyMutation
+                    data={data}
+                    onSuccess={() => refetch()}
+                    {...(superior && {
+                      onMoveToSuperiorGroup: () =>
+                        handleGroupChange(
+                          data,
+                          superiorList[superiorList.length - 2]
+                        ),
+                    })}
+                  />
+                }
+              />
+            ))}
+          </DndProvider>
         </ImageList>
       )}
     </>

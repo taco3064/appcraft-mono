@@ -19,7 +19,7 @@ const useConfigValues: ConfigValuesHook = ({
   const mutation = useMutation({
     mutationFn: upsertConfig<ConfigOptions>,
     onSuccess: () => {
-      enqueueSnackbar(at('txt-succeed-update'), { variant: 'success' });
+      enqueueSnackbar(at('msg-succeed-update'), { variant: 'success' });
       onSave?.();
     },
   });

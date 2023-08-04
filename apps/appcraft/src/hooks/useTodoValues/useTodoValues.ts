@@ -23,7 +23,7 @@ const useTodoValues: TodoValuesHook = ({ data, onOpen, onSave }) => {
   const mutation = useMutation({
     mutationFn: upsertConfig<Record<string, WidgetTodo>>,
     onSuccess: () => {
-      enqueueSnackbar(at('txt-succeed-update'), { variant: 'success' });
+      enqueueSnackbar(at('msg-succeed-update'), { variant: 'success' });
       onSave?.();
     },
   });

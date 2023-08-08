@@ -5,13 +5,15 @@ import type { NodeAndEventProps } from '@appcraft/types';
 import { getDB } from '../common';
 import type * as Types from './ts-parser.types';
 
-export const getTypeDefinition: Types.GetTypeDefinitionService = async (
-  parser,
-  { typeFile, typeName, mixedTypes, collectionPath }
-) => {
+export const getTypeDefinition: Types.GetTypeDefinitionService = async ({
+  typeFile,
+  typeName,
+  mixedTypes,
+  collectionPath,
+}) => {
   const { data: fetchData } = !(typeFile && typeName)
     ? { data: null }
-    : await axios.post(`/api/ts2-props/types-resolve/${parser}`, {
+    : await axios.post('/api/ts2-props/types-resolve/parse', {
         typeFile,
         typeName,
         mixedTypes,

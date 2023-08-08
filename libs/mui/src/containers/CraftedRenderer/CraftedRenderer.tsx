@@ -2,6 +2,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { Suspense } from 'react';
 
 import * as Hook from '../../hooks';
+import { LazyWidget } from '../../widgets';
 import type * as Types from './CraftedRenderer.types';
 
 function RendererContent({
@@ -33,7 +34,6 @@ export default function CraftedRenderer({
   options,
   onFetchData,
   onFetchWrapper,
-  onLazyRetrieve,
   onOutputCollect,
 }: Types.CraftedRendererProps) {
   const LazyRenderer = Hook.useLazyRenderer<Types.LazyRendererProps>(
@@ -46,9 +46,10 @@ export default function CraftedRenderer({
     <Suspense fallback={<LinearProgress />}>
       {options && (
         <LazyRenderer
-          {...{ onFetchData, onLazyRetrieve, onOutputCollect }}
+          {...{ onFetchData, onOutputCollect }}
           options={options}
           onFetchTodoWrapper={onFetchWrapper}
+          onLazyRetrieve={(type) => LazyWidget[type]}
         />
       )}
     </Suspense>

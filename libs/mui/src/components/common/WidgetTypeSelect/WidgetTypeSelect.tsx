@@ -2,23 +2,24 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
+import type { ReactNode } from 'react';
 
-import { muiWidgets } from '../LazyMui';
-import { useFixedT } from '~appcraft/hooks';
+import { MUI_WIDGETS } from '../../../widgets';
 import type { WidgetTypeSelectProps } from './WidgetTypeSelect.types';
 
-export default function WidgetTypeSelect(props: WidgetTypeSelectProps) {
-  const [wt] = useFixedT('widgets');
-
+export default function WidgetTypeSelect({
+  ct,
+  ...props
+}: WidgetTypeSelectProps) {
   return (
     <TextField SelectProps={{ displayEmpty: true }} select {...props}>
       <MenuItem value="">&nbsp;</MenuItem>
 
-      {muiWidgets.reduce((options, { category, widgets }) => {
+      {MUI_WIDGETS.reduce<ReactNode[]>((options, { category, widgets }) => {
         options.push(
           <ListItemButton key={category} disabled>
             <ListItemText
-              primary={wt(`ttl-category-${category}`)}
+              primary={ct(`ttl-category-${category}`)}
               primaryTypographyProps={{
                 variant: 'caption',
                 color: 'primary',

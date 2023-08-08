@@ -30,9 +30,7 @@ export interface CraftedWidgetEditorProps {
   version?: string;
   widget?: Appcraft.RootNodeWidget;
   renderOverridePureItem?: RenderOverridePureItem;
-  renderWidgetTypeSelection: Comp.MutationNewWidgetDialogProps['renderWidgetTypeSelection'];
   onFetchNodesAndEvents: Hook.FetchNodesAndEvents;
-  onFetchConfigDefinition: Hook.FetchTypeDefinition;
-  onFetchWidgetDefinition: Hook.FetchTypeDefinition;
+  onFetchDefinition: Hook.FetchTypeDefinition;
   onWidgetChange: (e: Appcraft.RootNodeWidget | null) => void;
 }

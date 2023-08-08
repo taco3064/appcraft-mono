@@ -5,7 +5,7 @@ import { CraftedTypeEditor } from '@appcraft/mui';
 
 import { Breadcrumbs } from '../common';
 import { CommonButton } from '~appcraft/components';
-import { Parser, getTypeDefinition } from '~appcraft/services';
+import { getTypeDefinition } from '~appcraft/services';
 import { useConfigValues } from '~appcraft/hooks';
 import { useFixedT, useNodePicker } from '~appcraft/hooks';
 import type { ConfigDetailProps } from './ConfigDetail.types';
@@ -66,7 +66,7 @@ export default function ConfigDetail({
           values={values}
           renderOverridePureItem={renderOverridePureItem}
           onChange={handleConfig.change}
-          onFetchDefinition={(...e) => getTypeDefinition(Parser.Config, ...e)}
+          onFetchDefinition={getTypeDefinition}
         />
       </Container>
     </>

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.81](https://github.com/taco3064/appcraft-mono/compare/v0.0.80...v0.0.81) (2023-08-08)
+
+
+### Bug Fixes
+
+* **npm-mui.yml:** update action configs ([ae8abf4](https://github.com/taco3064/appcraft-mono/commit/ae8abf4879f8790f4f4b81b268e0ee5e1bfabc18))
+
 ### [0.0.80](https://github.com/taco3064/appcraft-mono/compare/v0.0.79...v0.0.80) (2023-08-08)
 
 

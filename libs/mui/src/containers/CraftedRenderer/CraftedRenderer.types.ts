@@ -11,7 +11,10 @@ export type RendererContentProps = LazyRendererProps & {
 };
 
 export interface CraftedRendererProps
-  extends Omit<LazyRendererProps, 'options' | 'onFetchTodoWrapper'> {
+  extends Omit<
+    LazyRendererProps,
+    'options' | 'onFetchTodoWrapper' | 'onLazyRetrieve'
+  > {
   options?: Hook.RendererOptions;
   onFetchData: FetchDataHandler;
   onFetchWrapper: Hook.FetchWrapperHandler<'todo' | 'widget'>;

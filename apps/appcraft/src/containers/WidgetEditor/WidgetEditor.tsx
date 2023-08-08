@@ -93,7 +93,6 @@ export default function WidgetEditor({
           <CraftedRenderer
             options={renderer}
             onOutputCollect={onOutputCollect}
-            onLazyRetrieve={(type: string) => Comp.LazyMui[type]}
             onFetchWrapper={async (category, id) => {
               const { content } = await Service.getConfigById<
                 typeof category extends 'widget'
@@ -125,24 +124,6 @@ export default function WidgetEditor({
             onWidgetChange={handleWidget.change}
             onFetchDefinition={Service.getTypeDefinition}
             onFetchNodesAndEvents={Service.getNodesAndEvents}
-            renderWidgetTypeSelection={({ onChange }) => (
-              <Comp.WidgetTypeSelect
-                fullWidth
-                required
-                size="small"
-                margin="dense"
-                variant="outlined"
-                label={wt('lbl-widget-type')}
-                defaultValue=""
-                onChange={({ target: { value } }) =>
-                  onChange({
-                    type: value,
-                    typeName: value,
-                    typeFile: Comp.typeMap.get(value),
-                  })
-                }
-              />
-            )}
             renderOverridePureItem={({ typeName, propPath, ...props }) => {
               if (
                 /^(ElementState|NodeState)$/.test(typeName) &&

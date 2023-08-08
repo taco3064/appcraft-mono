@@ -29,7 +29,6 @@ export default function CraftedWidgetEditor({
   version,
   widget,
   renderOverridePureItem,
-  renderWidgetTypeSelection,
   onFetchDefinition,
   onFetchNodesAndEvents,
   onWidgetChange,
@@ -85,7 +84,7 @@ export default function CraftedWidgetEditor({
   return (
     <>
       <Comp.MutationNewWidgetDialog
-        {...{ ct, renderWidgetTypeSelection }}
+        ct={ct}
         disablePlaintext={paths.length === 0}
         open={newWidgetOpen}
         onClose={() => setNewWidgetOpen(false)}

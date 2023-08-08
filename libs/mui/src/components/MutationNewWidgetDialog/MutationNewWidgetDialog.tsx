@@ -8,14 +8,15 @@ import { useTheme } from '@mui/material/styles';
 import type * as Appcraft from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
+import { WidgetTypeSelect } from '../common';
 import { getDefaultProps } from '../../utils';
+import { typeMap } from '../../widgets';
 import type { MutationNewWidgetDialogProps } from './MutationNewWidgetDialog.types';
 
 export default function MutationNewWidgetDialog({
   ct,
   disablePlaintext = false,
   open,
-  renderWidgetTypeSelection,
   onClose,
   onConfirm,
 }: MutationNewWidgetDialogProps) {
@@ -74,15 +75,26 @@ export default function MutationNewWidgetDialog({
       )}
 
       {active === 'node' ? (
-        renderWidgetTypeSelection({
-          onChange: (e) =>
+        <WidgetTypeSelect
+          fullWidth
+          required
+          size="small"
+          margin="dense"
+          variant="outlined"
+          ct={ct}
+          label={ct('lbl-widget-type')}
+          defaultValue=""
+          onChange={({ target: { value } }) =>
             setData({
-              ...(e as Appcraft.NodeWidget),
               category: 'node',
               description: data?.description,
-              props: getDefaultProps(theme, e.type),
-            }),
-        })
+              props: getDefaultProps(theme, value),
+              type: value,
+              typeName: value,
+              typeFile: typeMap.get(value) as string,
+            } as typeof data)
+          }
+        />
       ) : (
         <TextField
           autoFocus

@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.88](https://github.com/taco3064/appcraft-mono/compare/v0.0.87...v0.0.88) (2023-08-08)
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** <WidgetEvent/> could be clicked always ([747538b](https://github.com/taco3064/appcraft-mono/commit/747538b7d85a790c0c932b175ad9da92d70aab9d))
+* **@appcraft/mui:** omit the children of TypographyProps ([d6e5aaf](https://github.com/taco3064/appcraft-mono/commit/d6e5aafd55a527fe1175a81bda215bb9cbfcc215))
+* **use-hierarchy-filter:** fixed breadcrumb errors ([f4b94ef](https://github.com/taco3064/appcraft-mono/commit/f4b94efa10280523e37f423513e388dfb2bc6697))
+* **use-renderer-state:** changed getSuperiorProps to get all superiors props ([0b608ad](https://github.com/taco3064/appcraft-mono/commit/0b608ad7cb03fa7a1fd605476b860bf551b520e9))
+* **use-renderer-state:** use default props value when it hasn't been set ([528c742](https://github.com/taco3064/appcraft-mono/commit/528c74201c344545ab8e0e514fe410de0e749979))
+
 ### [0.0.87](https://github.com/taco3064/appcraft-mono/compare/v0.0.86...v0.0.87) (2023-08-08)
 
 

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.86](https://github.com/taco3064/appcraft-mono/compare/v0.0.85...v0.0.86) (2023-08-08)
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** fixed the invalid parameters ([64e2183](https://github.com/taco3064/appcraft-mono/commit/64e218340ae28791fd65a28bd4352313f887e758))
+* **@appcraft/mui:** remove unused props ([4e999db](https://github.com/taco3064/appcraft-mono/commit/4e999dbb30b42e6fbd1d7189af3f605990ff86f3))
+
 ### [0.0.85](https://github.com/taco3064/appcraft-mono/compare/v0.0.84...v0.0.85) (2023-08-08)
 
 

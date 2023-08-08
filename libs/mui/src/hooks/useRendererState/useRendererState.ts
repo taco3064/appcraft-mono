@@ -19,10 +19,7 @@ const getSuperiorProps: Types.GetSuperiorProps = (states, superiors = []) =>
         ? [id, path, 'value']
         : [id, statePath, 'value', index];
 
-      const props = (_get(states, paths as string[]) ||
-        {}) as ReturnType<Types.GetSuperiorProps>;
-
-      return { ...props, ...result };
+      return { ...(_get(states, paths as string[]) || {}), ...result };
     }
 
     return result;

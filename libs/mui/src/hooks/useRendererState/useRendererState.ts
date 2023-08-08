@@ -7,23 +7,23 @@ import type * as Appcraft from '@appcraft/types';
 import { getEventHandler } from '../../utils';
 import type * as Types from './useRendererState.types';
 
-const getSuperiorProps: Types.GetSuperiorProps = (states, superiors = []) => {
-  const target = superiors.find(({ id, path }) => {
+const getSuperiorProps: Types.GetSuperiorProps = (states, superiors = []) =>
+  superiors.reduce((result, { id, path }) => {
     const state = _get(states, [id, path?.replace(/\[\d+\]$/, '') as string]);
 
-    return state?.category === 'nodes' && state?.options.type === 'private';
-  });
+    if (state?.category === 'nodes' && state?.options.type === 'private') {
+      const index = Number.parseInt(_toPath(path || '').pop() || '', 10);
+      const statePath = path?.replace(/\[\d+\]$/, '');
 
-  const index = Number.parseInt(_toPath(target?.path || '').pop() || '', 10);
-  const statePath = target?.path?.replace(/\[\d+\]$/, '');
+      const paths = Number.isNaN(index)
+        ? [id, path, 'value']
+        : [id, statePath, 'value', index];
 
-  const path = Number.isNaN(index)
-    ? [target?.id, target?.path, 'value']
-    : [target?.id, statePath, 'value', index];
+      return { ...(_get(states, paths as string[]) || {}), ...result };
+    }
 
-  return (_get(states, path as string[]) ||
-    {}) as ReturnType<Types.GetSuperiorProps>;
-};
+    return result;
+  }, {});
 
 const getSuperiorTodos: Types.GetSuperiorTodos = (
   states,
@@ -158,7 +158,9 @@ const useRendererState: Types.RendererStateHook = (
                 state.path
             ) {
               const { alias, type } = options as Appcraft.PropsState;
-              const source = type === 'private' ? value : _get(props, [alias]);
+
+              const source =
+                type === 'private' ? value : _get(props, [alias]) || value;
 
               _set(result, [propPath], source);
             }
@@ -218,7 +220,9 @@ const useRendererState: Types.RendererStateHook = (
                 | Appcraft.NodeState;
 
               const template = templates.get(_get(options, ['template', 'id']));
-              const source = type === 'private' ? value : _get(props, [alias]);
+
+              const source =
+                type === 'private' ? value : _get(props, [alias]) || value;
 
               if (nodeType === 'node' && Array.isArray(source)) {
                 _set(

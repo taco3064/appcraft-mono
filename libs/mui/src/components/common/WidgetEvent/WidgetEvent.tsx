@@ -21,10 +21,7 @@ export default function WidgetEvent({
   );
 
   return (
-    <ListItemButton
-      disableRipple={isState}
-      onClick={() => !isState && onActive(completePaths)}
-    >
+    <ListItemButton onClick={() => onActive(completePaths)}>
       {selection || <ListItemIcon />}
 
       <ListItemText
@@ -34,7 +31,7 @@ export default function WidgetEvent({
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
-          color: isState ? 'text.secondary' : 'text.primary',
+          color: 'text.primary',
         }}
       />
     </ListItemButton>

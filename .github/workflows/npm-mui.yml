@@ -15,7 +15,7 @@ on:
 
 jobs:
   publish-to-npm:
-    name: Publish types to NPM
+    name: Publish mui to NPM
     runs-on: ubuntu-latest
     environment: production
     strategy:
@@ -45,6 +45,6 @@ jobs:
 
       - uses: JS-DevTools/npm-publish@v1
         with:
-          package: ./dist/libs/types/package.json
+          package: ./dist/libs/mui/package.json
           access: public
           token: ${{ secrets.NPM_TOKEN }}

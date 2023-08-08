@@ -9,6 +9,6 @@ export type CardHeaderProps = Pick<
   ComponentProps<typeof CardHeader>,
   'action' | 'avatar' | 'disableTypography' | 'subheader' | 'title'
 > & {
-  subheaderTypographyProps?: Partial<TypographyProps>;
-  titleTypographyProps?: Partial<TypographyProps>;
+  subheaderTypographyProps?: Omit<Partial<TypographyProps>, 'children'>;
+  titleTypographyProps?: Omit<Partial<TypographyProps>, 'children'>;
 };

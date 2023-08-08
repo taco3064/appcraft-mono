@@ -30,9 +30,8 @@ export default function CraftedWidgetEditor({
   widget,
   renderOverridePureItem,
   renderWidgetTypeSelection,
+  onFetchDefinition,
   onFetchNodesAndEvents,
-  onFetchConfigDefinition,
-  onFetchWidgetDefinition,
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
   const ct = Hook.useFixedT(fixedT);
@@ -111,9 +110,8 @@ export default function CraftedWidgetEditor({
         renderEditor={(props) => (
           <CraftedTypeEditor
             {...props}
-            {...{ fixedT, renderOverridePureItem }}
+            {...{ fixedT, renderOverridePureItem, onFetchDefinition }}
             exclude={STATE_EXCLUDE}
-            onFetchDefinition={onFetchConfigDefinition}
           />
         )}
       />
@@ -128,7 +126,7 @@ export default function CraftedWidgetEditor({
           typeFile={todoTypeFile}
           values={editedWidget.todos?.[todoPath as string]}
           renderOverridePureItem={renderOverridePureItem}
-          onFetchDefinition={onFetchConfigDefinition}
+          onFetchDefinition={onFetchDefinition}
           onChange={(todo) =>
             handleMutation.modify({
               ...editedWidget,
@@ -157,7 +155,7 @@ export default function CraftedWidgetEditor({
             values={editedWidget}
             renderOverridePureItem={renderOverridePureItem}
             onChange={handleMutation.modify}
-            onFetchDefinition={onFetchWidgetDefinition}
+            onFetchDefinition={onFetchDefinition}
             HeaderProps={{
               primary: ct('ttl-props'),
               secondary: editedWidget.type.replace(/([A-Z])/g, ' $1'),

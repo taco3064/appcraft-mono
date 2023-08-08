@@ -5,7 +5,7 @@ import { findNodesAndEventsProps, getProptype } from './types-resolve.utils';
 import type * as Types from './types-resolve.types';
 
 //* Service Methods
-export const parseConfigs: Types.ParseConfigService = ({
+export const parse: Types.ParseService = ({
   collectionPath = '',
   mixedTypes = {},
   ...options
@@ -22,27 +22,10 @@ export const parseConfigs: Types.ParseConfigService = ({
   return (types && getProptype(...types, source)) || null;
 };
 
-export const parseWidget: Types.ParseWidgetService = ({
-  collectionPath = '',
-  mixedTypes = {},
-  ...options
-}) => {
-  const [source, root] = Common.getWidgetSourceAndType(options);
-
-  const types = Common.getTypeByPath(root, {
-    info: { required: true },
-    paths: _topath(collectionPath),
-    mixedTypes,
-    source,
-  });
-
-  return (types && getProptype(...types, source)) || null;
-};
-
 export const getNodesAndEvents: Types.GetNodesAndEvents = (options) =>
   options.reduce(
     (result, opts) => {
-      const sourceType = Common.getWidgetSourceAndType(opts);
+      const sourceType = Common.getSourceAndType(opts);
 
       if (!(opts.typeName in result)) {
         const key = `${opts.typeFile}#${opts.typeName}`;

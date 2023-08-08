@@ -35,11 +35,7 @@ export type FindNodesAndEventsPropsUtil = (
   events?: string[];
 };
 
-export type ParseConfigService = (
-  options: Appcraft.TypesParseOptions
-) => Appcraft.PropTypesDef | null;
-
-export type ParseWidgetService = (
+export type ParseService = (
   options: Appcraft.TypesParseOptions
 ) => Appcraft.PropTypesDef | null;
 

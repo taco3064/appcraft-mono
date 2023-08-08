@@ -123,13 +123,8 @@ export default function WidgetEditor({
             version={__WEBPACK_DEFINE__.VERSION}
             widget={widget}
             onWidgetChange={handleWidget.change}
+            onFetchDefinition={Service.getTypeDefinition}
             onFetchNodesAndEvents={Service.getNodesAndEvents}
-            onFetchConfigDefinition={(...e) =>
-              Service.getTypeDefinition(Service.Parser.Config, ...e)
-            }
-            onFetchWidgetDefinition={(...e) =>
-              Service.getTypeDefinition(Service.Parser.Widget, ...e)
-            }
             renderWidgetTypeSelection={({ onChange }) => (
               <Comp.WidgetTypeSelect
                 fullWidth

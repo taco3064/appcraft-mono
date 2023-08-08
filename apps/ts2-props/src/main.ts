@@ -1,7 +1,6 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import type { DefaultImplement } from '@appcraft/server';
-import '@appcraft/mui';
 
 import * as endpoints from './endpoints';
 

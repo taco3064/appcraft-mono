@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.80](https://github.com/taco3064/appcraft-mono/compare/v0.0.79...v0.0.80) (2023-08-08)
+
+
+### Features
+
+* **@appcraft/mui:** support to release @appcraft/mui ([411d66a](https://github.com/taco3064/appcraft-mono/commit/411d66ac61f00c33ce708de9b67c2f73d89fe734))
+
 ### [0.0.79](https://github.com/taco3064/appcraft-mono/compare/v0.0.78...v0.0.79) (2023-08-04)
 
 

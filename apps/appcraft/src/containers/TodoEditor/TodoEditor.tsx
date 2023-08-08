@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import * as Hook from '~appcraft/hooks';
 import { Breadcrumbs } from '../common';
 import { CommonButton, TodoOutputStepper } from '~appcraft/components';
-import { Parser, getTypeDefinition } from '~appcraft/services';
+import { getTypeDefinition } from '~appcraft/services';
 import { PersistentDrawerContent } from '~appcraft/styles';
 import type { TodoEditorProps } from './TodoEditor.types';
 
@@ -106,7 +106,7 @@ export default function TodoEditor({
             typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             values={todos}
             onChange={handleTodos.change}
-            onFetchDefinition={(...e) => getTypeDefinition(Parser.Config, ...e)}
+            onFetchDefinition={getTypeDefinition}
           />
         }
         drawer={

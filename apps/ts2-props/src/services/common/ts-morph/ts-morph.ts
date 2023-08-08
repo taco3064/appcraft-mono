@@ -45,49 +45,6 @@ export const getSourceAndType: Types.GetSourceAndType = ({
   ];
 };
 
-export const getWidgetSourceAndType: Types.GetSourceAndType = (() => {
-  [
-    './node_modules/@types/react/index.d.ts',
-    './node_modules/@types/react/ts5.0/index.d.ts',
-  ].forEach((override) => {
-    const source = project.addSourceFileAtPath(
-      path.resolve(process.cwd(), override)
-    );
-
-    const aria = source.getModule('React').getInterface('AriaAttributes');
-
-    source.replaceText(
-      [aria.getStart(), aria.getEnd()],
-      `type AriaAttributes = {};`
-    );
-
-    const attr = source.getModule('React').getInterface('HTMLAttributes');
-
-    source.replaceText(
-      [attr.getStart(), attr.getEnd()],
-      `type HTMLAttributes<T> = {
-        onClick?: MouseEventHandler<T>;
-      };`
-    );
-  });
-
-  return ({ typeFile, typeName }) => {
-    const filePath = path.resolve(process.cwd(), typeFile);
-
-    const source =
-      project.getSourceFile(filePath) || project.addSourceFileAtPath(filePath);
-
-    source.replaceText([0, 0], "import { ComponentProps } from 'react';");
-
-    source.replaceText(
-      [source.getEnd(), source.getEnd()],
-      `type Pseudo_${typeName}Props = ComponentProps<typeof ${typeName}>;`
-    );
-
-    return [source, source.getTypeAlias(`Pseudo_${typeName}Props`).getType()];
-  };
-})();
-
 //* 依照指定路徑取得目標 Type
 export const getTypeByPath: Types.GetTypeByPath = (
   type,

@@ -1,11 +1,6 @@
 import type * as Appcraft from '@appcraft/types';
 
 //* Variables
-export enum Parser {
-  Config = 'parseConfigs',
-  Widget = 'parseWidget',
-}
-
 export type ParseOptions = Pick<
   Appcraft.TypesParseOptions,
   'typeFile' | 'typeName'
@@ -13,7 +8,6 @@ export type ParseOptions = Pick<
 
 //* Methods
 export type GetTypeDefinitionService = (
-  parser: Parser,
   options: Appcraft.TypesParseOptions
 ) => Promise<Appcraft.StructureProp>;
 

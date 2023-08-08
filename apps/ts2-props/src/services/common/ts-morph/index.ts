@@ -1,5 +1,1 @@
-export {
-  getSourceAndType,
-  getWidgetSourceAndType,
-  getTypeByPath,
-} from './ts-morph';
+export { getSourceAndType, getTypeByPath } from './ts-morph';

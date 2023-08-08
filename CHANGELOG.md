@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.83](https://github.com/taco3064/appcraft-mono/compare/v0.0.82...v0.0.83) (2023-08-08)
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** add widget type selection component ([b6213ce](https://github.com/taco3064/appcraft-mono/commit/b6213cee9a83da4abaff1aa279fa048b5c5fb6a2))
+* **ts2-props:** fixed type-parser to no longer differentiate between config and widget processing ([28cc94b](https://github.com/taco3064/appcraft-mono/commit/28cc94bb9b4ae5268de786e2814b0a6a373e3417))
+* **ts2-props:** make ts2-props be dependence on @appcraft/mui ([b67dd01](https://github.com/taco3064/appcraft-mono/commit/b67dd01c487deb96abcccffae658b08157ea6017))
+
 ### [0.0.82](https://github.com/taco3064/appcraft-mono/compare/v0.0.81...v0.0.82) (2023-08-08)
 
 ### [0.0.81](https://github.com/taco3064/appcraft-mono/compare/v0.0.80...v0.0.81) (2023-08-08)

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.87](https://github.com/taco3064/appcraft-mono/compare/v0.0.86...v0.0.87) (2023-08-08)
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** fixed invalid typeFile path ([17a20e2](https://github.com/taco3064/appcraft-mono/commit/17a20e2874ee20d238ec68d3b29baa08b651df0c))
+
 ### [0.0.86](https://github.com/taco3064/appcraft-mono/compare/v0.0.85...v0.0.86) (2023-08-08)
 
 

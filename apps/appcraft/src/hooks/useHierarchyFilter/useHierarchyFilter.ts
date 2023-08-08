@@ -18,24 +18,23 @@ const useHierarchyFilter: Types.HierarchyFilterHook = (category, itemId) => {
     keyword: query.keyword as string | undefined,
     superiors,
 
-    breadcrumbs: Object.keys(superiors).reduce(
-      (result, id, i, arr) =>
-        id === itemId
-          ? result
-          : [
-              ...result,
-              {
-                text: superiors[id],
-                url: {
-                  pathname: `/${category}`,
-                  query: {
-                    superiors: arr.slice(0, i + 1).join('-'),
-                  },
-                },
+    breadcrumbs: Object.keys(superiors)
+      .filter((id) => id !== itemId)
+      .reduce(
+        (result, id, i, arr) => [
+          ...result,
+          {
+            text: superiors[id],
+            url: {
+              pathname: `/${category}`,
+              query: {
+                superiors: arr.slice(0, i + 1).join('-'),
               },
-            ],
-      []
-    ),
+            },
+          },
+        ],
+        []
+      ),
   };
 };
 

@@ -1,4 +1,4 @@
-name: GKE of ts2-proxy
+name: GKE of ts2-props
 
 on:
   workflow_dispatch:

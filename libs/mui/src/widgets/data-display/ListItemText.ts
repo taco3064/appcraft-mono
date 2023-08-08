@@ -9,6 +9,6 @@ export type ListItemTextProps = Pick<
   ComponentProps<typeof ListItemText>,
   'disableTypography' | 'inset' | 'primary' | 'secondary'
 > & {
-  primaryTypographyProps?: Partial<TypographyProps>;
-  secondaryTypographyProps?: Partial<TypographyProps>;
+  primaryTypographyProps?: Omit<Partial<TypographyProps>, 'children'>;
+  secondaryTypographyProps?: Omit<Partial<TypographyProps>, 'children'>;
 };

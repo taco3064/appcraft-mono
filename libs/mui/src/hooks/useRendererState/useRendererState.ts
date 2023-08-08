@@ -158,7 +158,9 @@ const useRendererState: Types.RendererStateHook = (
                 state.path
             ) {
               const { alias, type } = options as Appcraft.PropsState;
-              const source = type === 'private' ? value : _get(props, [alias]);
+
+              const source =
+                type === 'private' ? value : _get(props, [alias]) || value;
 
               _set(result, [propPath], source);
             }
@@ -218,7 +220,9 @@ const useRendererState: Types.RendererStateHook = (
                 | Appcraft.NodeState;
 
               const template = templates.get(_get(options, ['template', 'id']));
-              const source = type === 'private' ? value : _get(props, [alias]);
+
+              const source =
+                type === 'private' ? value : _get(props, [alias]) || value;
 
               if (nodeType === 'node' && Array.isArray(source)) {
                 _set(

@@ -20,7 +20,7 @@ export const MUI_WIDGETS: Widgets = Object.entries(importation).map(
     category: category as Category,
     widgets: Object.entries(target).map(([typeName, component]) => ({
       typeName,
-      typeFile: `./node_modules/@appcraft/mui/src/widgets/data-display/${typeName}.d.ts`,
+      typeFile: `./node_modules/@appcraft/mui/src/widgets/${category}/${typeName}.d.ts`,
       component: component,
     })),
   })

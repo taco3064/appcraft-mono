@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.85](https://github.com/taco3064/appcraft-mono/compare/v0.0.84...v0.0.85) (2023-08-08)
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** fixed the invalid config name ([958aa1f](https://github.com/taco3064/appcraft-mono/commit/958aa1f27b335de81330d7ff902bca33aff6acaf))
+* **locales:** update locales ([7b7a041](https://github.com/taco3064/appcraft-mono/commit/7b7a041637674cb4ff3c310cddabf34cdd18aeef))
+
 ### [0.0.84](https://github.com/taco3064/appcraft-mono/compare/v0.0.83...v0.0.84) (2023-08-08)
 
 ### [0.0.83](https://github.com/taco3064/appcraft-mono/compare/v0.0.82...v0.0.83) (2023-08-08)

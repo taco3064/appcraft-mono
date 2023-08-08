@@ -5,5 +5,5 @@ export { Avatar };
 
 export type AvatarProps = Pick<
   ComponentProps<typeof Avatar>,
-  'variant' | 'alt' | 'sizes' | 'src' | 'srcSet' | 'children' | 'imgProps'
+  'variant' | 'alt' | 'sizes' | 'src' | 'srcSet' | 'children'
 >;

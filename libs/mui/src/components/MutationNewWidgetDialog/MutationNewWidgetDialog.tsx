@@ -90,7 +90,7 @@ export default function MutationNewWidgetDialog({
               description: data?.description,
               props: getDefaultProps(theme, value),
               type: value,
-              typeName: value,
+              typeName: `${value}Props`,
               typeFile: typeMap.get(value) as string,
             } as typeof data)
           }

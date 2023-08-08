@@ -1,14 +1,8 @@
 {
   "btn-expand-off": "關閉編輯模式",
   "btn-expand-on": "開啟編輯模式",
-  "lbl-widget-type": "類型",
   "msg-no-options": "沒有可用的選項",
   "msg-required": "必填",
-  "ttl-category-data-display": "資料數據展示",
-  "ttl-category-input": "輸入",
-  "ttl-category-layout": "排版布局",
-  "ttl-category-navigation": "網站導航",
-  "ttl-category-tool": "工具",
   "ttl-detail": "組件管理",
   "ttl-preview": "組件預覽"
 }

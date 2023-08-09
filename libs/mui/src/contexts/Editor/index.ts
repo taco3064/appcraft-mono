@@ -2,10 +2,11 @@ export { EditorProvider, useEditorContext } from './Editor';
 
 export type {
   ChangeHandler,
+  DisplayProp,
   EditorContextValue,
   EditorProviderProps,
   FixedT,
   OptionValues,
   PureProp,
-  RenderOverridePureItem,
+  RenderOverrideItem,
 } from './Editor.types';

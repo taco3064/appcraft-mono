@@ -43,5 +43,6 @@
   "ttl-state-nodes": "Node",
   "ttl-state-props": "State",
   "ttl-state-todos": "Todo",
-  "ttl-structure": "Widget Structure"
+  "ttl-structure": "Widget Structure",
+  "txt-top": "Top"
 }

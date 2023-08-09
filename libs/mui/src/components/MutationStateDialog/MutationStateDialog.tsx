@@ -13,6 +13,7 @@ import * as Style from '../../styles';
 import { useStateGenerator } from '../../hooks';
 import type * as Types from './MutationStateDialog.types';
 
+const STATE_EXCLUDE: RegExp[] = [/^mixedTypes$/];
 const TABS: Appcraft.StateCategory[] = ['props', 'nodes', 'todos'];
 
 export default function MutationStateDialog({
@@ -23,6 +24,7 @@ export default function MutationStateDialog({
   renderEditor,
   onClose,
   onConfirm,
+  onFetchDefinition,
 }: Types.MutationStateDialogProps) {
   const [active, setActive] = React.useState<Appcraft.StateCategory>(TABS[0]);
 
@@ -82,8 +84,12 @@ export default function MutationStateDialog({
 
       {editing ? (
         renderEditor({
+          exclude: STATE_EXCLUDE,
+          fixedT: ct,
           values: editing.config,
           onChange: handleState.change,
+          onFetchDefinition,
+
           HeaderProps: {
             primary: ct(`ttl-state-${active}`),
             secondary: editing.path,

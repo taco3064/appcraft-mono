@@ -18,8 +18,6 @@ import { StateProvider } from '../../contexts';
 import { getForceArray, getNodesAndEventsKey } from '../../utils';
 import type * as Types from './CraftedWidgetEditor.types';
 
-const STATE_EXCLUDE: RegExp[] = [/^mixedTypes$/];
-
 export default function CraftedWidgetEditor({
   BackButtonProps,
   disableCategories,
@@ -28,7 +26,7 @@ export default function CraftedWidgetEditor({
   todoTypeFile,
   version,
   widget,
-  renderOverridePureItem,
+  renderOverrideItem,
   onFetchDefinition,
   onFetchNodesAndEvents,
   onWidgetChange,
@@ -73,7 +71,6 @@ export default function CraftedWidgetEditor({
                   {...props}
                   {...{ index, item, event, node }}
                   key={item.id}
-                  defaultOpen={index === 0}
                 />
               );
             })}
@@ -100,7 +97,7 @@ export default function CraftedWidgetEditor({
       />
 
       <Comp.MutationStateDialog
-        ct={ct}
+        {...{ ct, onFetchDefinition }}
         open={Boolean(widget && stateOpen)}
         typeFile={stateTypeFile}
         values={widget as Appcraft.RootNodeWidget}
@@ -109,8 +106,21 @@ export default function CraftedWidgetEditor({
         renderEditor={(props) => (
           <CraftedTypeEditor
             {...props}
-            {...{ fixedT, renderOverridePureItem, onFetchDefinition }}
-            exclude={STATE_EXCLUDE}
+            renderOverrideItem={(...args) => {
+              const [kind, { propPath, typeName, typeFile, ...opts }] = args;
+              const override = renderOverrideItem?.(...args);
+
+              if (override || override === false) {
+                return override;
+              } else if (
+                kind === 'display' &&
+                propPath === 'template.todos' &&
+                typeName === 'NodeState' &&
+                typeFile.includes('/@appcraft/types/src/widgets/state')
+              ) {
+                console.log(kind, { propPath, ...opts });
+              }
+            }}
           />
         )}
       />
@@ -118,14 +128,16 @@ export default function CraftedWidgetEditor({
       {editedWidget?.category === 'node' && (
         <CraftedTodoEditor
           {...(todoPath && { todoPath })}
+          {...{
+            fixedT,
+            disableCategories,
+            renderOverrideItem,
+            onFetchDefinition,
+          }}
           fullHeight
-          disableCategories={disableCategories}
-          fixedT={fixedT}
           open={Boolean(todoPath)}
           typeFile={todoTypeFile}
           values={editedWidget.todos?.[todoPath as string]}
-          renderOverridePureItem={renderOverridePureItem}
-          onFetchDefinition={onFetchDefinition}
           onChange={(todo) =>
             handleMutation.modify({
               ...editedWidget,
@@ -148,13 +160,11 @@ export default function CraftedWidgetEditor({
       >
         {editedWidget?.category === 'node' && (
           <CraftedTypeEditor
+            {...{ fixedT, renderOverrideItem, onFetchDefinition }}
             fullHeight
-            fixedT={fixedT}
             open={Boolean(!todoPath)}
             values={editedWidget}
-            renderOverridePureItem={renderOverridePureItem}
             onChange={handleMutation.modify}
-            onFetchDefinition={onFetchDefinition}
             HeaderProps={{
               primary: ct('ttl-props'),
               secondary: editedWidget.type.replace(/([A-Z])/g, ' $1'),

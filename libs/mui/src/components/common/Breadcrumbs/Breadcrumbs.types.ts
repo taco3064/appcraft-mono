@@ -3,6 +3,8 @@ import type { ComponentProps, ReactElement } from 'react';
 
 import { Breadcrumb } from '../../../styles';
 
+export type MenuOptions = { primary: string; value: () => void }[];
+
 export interface BreadcrumbsProps
   extends Omit<
     MuiBreadcrumbsProps,
@@ -10,4 +12,9 @@ export interface BreadcrumbsProps
   > {
   collapsedTitle?: string;
   children?: ReactElement<ComponentProps<typeof Breadcrumb>>[];
+
+  TopProps?: {
+    text: string;
+    onClick: () => void;
+  };
 }

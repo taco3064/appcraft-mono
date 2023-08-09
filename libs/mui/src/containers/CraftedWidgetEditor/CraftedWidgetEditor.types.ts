@@ -5,7 +5,7 @@ import { WidgetAppBar } from '../../styles';
 import type * as Comp from '../../components';
 import type * as Hook from '../../hooks';
 import type { FixedT } from '../../contexts';
-import type { RenderOverridePureItem } from '../../contexts';
+import type { RenderOverrideItem } from '../../contexts';
 
 export interface NodeSelectEvent {
   item: Appcraft.WidgetOptions;
@@ -29,7 +29,7 @@ export interface CraftedWidgetEditorProps {
   todoTypeFile?: string;
   version?: string;
   widget?: Appcraft.RootNodeWidget;
-  renderOverridePureItem?: RenderOverridePureItem;
+  renderOverrideItem?: RenderOverrideItem;
   onFetchNodesAndEvents: Hook.FetchNodesAndEvents;
   onFetchDefinition: Hook.FetchTypeDefinition;
   onWidgetChange: (e: Appcraft.RootNodeWidget | null) => void;

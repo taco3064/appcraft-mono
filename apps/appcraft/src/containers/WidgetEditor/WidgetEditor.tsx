@@ -124,8 +124,9 @@ export default function WidgetEditor({
             onWidgetChange={handleWidget.change}
             onFetchDefinition={Service.getTypeDefinition}
             onFetchNodesAndEvents={Service.getNodesAndEvents}
-            renderOverridePureItem={({ typeName, propPath, ...props }) => {
+            renderOverrideItem={(kind, { typeName, propPath, ...props }) => {
               if (
+                kind === 'pure' &&
                 /^(ElementState|NodeState)$/.test(typeName) &&
                 propPath === 'templateWidgetId'
               ) {
@@ -136,7 +137,11 @@ export default function WidgetEditor({
                     onView={onWidgetWrapperView}
                   />
                 );
-              } else if (typeName === 'WrapTodo' && propPath === 'todosId') {
+              } else if (
+                kind === 'pure' &&
+                typeName === 'WrapTodo' &&
+                propPath === 'todosId'
+              ) {
                 return (
                   <Common.TodoWrapperSelect
                     {...(props as Common.TodoWrapperSelectProps)}

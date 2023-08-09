@@ -6,7 +6,7 @@ import type { PropValueHookResult } from './usePropValue.types';
 const usePropValue = <P = unknown>(
   propPath: string
 ): PropValueHookResult<P> => {
-  const { values, renderOverridePureItem, onChange } = useEditorContext();
+  const { values, renderOverrideItem, onChange } = useEditorContext();
   const { typeFile, typeName } = values;
 
   return [
@@ -17,7 +17,7 @@ const usePropValue = <P = unknown>(
     },
 
     {
-      renderOverride: renderOverridePureItem,
+      renderOverride: renderOverrideItem,
 
       change: (value: P | null) => {
         const { props: target } = values;

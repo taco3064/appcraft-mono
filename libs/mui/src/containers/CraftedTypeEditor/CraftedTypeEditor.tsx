@@ -16,7 +16,7 @@ export default function CraftedTypeEditor<V extends OptionValues>({
   fullHeight,
   open = true,
   values,
-  renderOverridePureItem,
+  renderOverrideItem,
   onChange,
   onFetchDefinition,
 }: Types.CraftedTypeEditorProps<V>) {
@@ -44,7 +44,7 @@ export default function CraftedTypeEditor<V extends OptionValues>({
 
   return (
     <EditorProvider
-      {...{ fixedT, collectionPath, values, renderOverridePureItem, onChange }}
+      {...{ fixedT, collectionPath, values, renderOverrideItem, onChange }}
     >
       <Style.FullHeightCollapse
         aria-label="Properties Editor"

@@ -24,6 +24,7 @@ export default function WidgetBreadcrumbs({
       </Style.IconTipButton>
 
       <Breadcrumbs
+        TopProps={{ text: ct('txt-top'), onClick: () => onRedirect([]) }}
         collapsedTitle={ct('ttl-structure')}
         separator="›"
         maxItems={2}

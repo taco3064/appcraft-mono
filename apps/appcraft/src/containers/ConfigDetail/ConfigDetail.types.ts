@@ -6,7 +6,7 @@ import type * as Hooks from '~appcraft/hooks';
 
 export interface ConfigDetailProps
   extends Hooks.ConfigValueOptions,
-    Pick<CraftedTypeEditorProps<ConfigOptions>, 'renderOverridePureItem'> {
+    Pick<CraftedTypeEditorProps<ConfigOptions>, 'renderOverrideItem'> {
   header?: ReactNode;
   onActionNodePick?: Hooks.NodePickerFn<'reset' | 'save'>;
 

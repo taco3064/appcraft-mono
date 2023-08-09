@@ -1,4 +1,4 @@
-import type { RenderOverridePureItem } from '../../contexts';
+import type { RenderOverrideItem } from '../../contexts';
 
 export type PropValueHookResult<P> = [
   {
@@ -8,6 +8,6 @@ export type PropValueHookResult<P> = [
   },
   {
     change: (value: P | null) => void;
-    renderOverride?: RenderOverridePureItem;
+    renderOverride?: RenderOverrideItem;
   }
 ];

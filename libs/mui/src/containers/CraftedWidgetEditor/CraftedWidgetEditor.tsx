@@ -17,6 +17,7 @@ import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { StateProvider } from '../../contexts';
 import { getForceArray, getNodesAndEventsKey } from '../../utils';
 import type * as Types from './CraftedWidgetEditor.types';
+import type { RenderOverrideItem } from '../../contexts';
 
 export default function CraftedWidgetEditor({
   BackButtonProps,
@@ -34,15 +35,6 @@ export default function CraftedWidgetEditor({
   const ct = Hook.useFixedT(fixedT);
   const [newWidgetOpen, setNewWidgetOpen] = useState(false);
   const [stateOpen, setStateOpen] = useState(false);
-
-  const stateToggle = (
-    <Style.IconTipButton
-      title={ct('btn-state')}
-      onClick={() => setStateOpen(true)}
-    >
-      <StorageRoundedIcon />
-    </Style.IconTipButton>
-  );
 
   const [{ breadcrumbs, childrenCound, paths, type }, onRedirect] =
     Hook.useStructure(widget as Appcraft.RootNodeWidget);
@@ -78,6 +70,45 @@ export default function CraftedWidgetEditor({
         )
     );
 
+  const stateToggle = (
+    <Style.IconTipButton
+      title={ct('btn-state')}
+      onClick={() => setStateOpen(true)}
+    >
+      <StorageRoundedIcon />
+    </Style.IconTipButton>
+  );
+
+  const renderStateTypeOverride: RenderOverrideItem = (...args) => {
+    const [kind, opts] = args;
+    const { propPath, typeName, typeFile, value } = opts;
+    const override = renderOverrideItem?.(...args);
+
+    if (override || override === false) {
+      return override;
+    } else if (
+      kind === 'display' &&
+      /^template\.todos\..*$/.test(propPath) &&
+      typeName === 'NodeState' &&
+      typeFile.includes('/@appcraft/types/src/widgets/state')
+    ) {
+      return (
+        <Comp.TodoItem
+          {...opts}
+          ct={ct}
+          value={value as Record<string, Appcraft.WidgetTodo>}
+          renderTodoEditor={({ values, onChange }) => (
+            <CraftedTodoEditor
+              {...{ fixedT, values, onChange, onFetchDefinition }}
+              fullHeight
+              typeFile={todoTypeFile}
+            />
+          )}
+        />
+      );
+    }
+  };
+
   return (
     <>
       <Comp.MutationNewWidgetDialog
@@ -106,21 +137,7 @@ export default function CraftedWidgetEditor({
         renderEditor={(props) => (
           <CraftedTypeEditor
             {...props}
-            renderOverrideItem={(...args) => {
-              const [kind, { propPath, typeName, typeFile, ...opts }] = args;
-              const override = renderOverrideItem?.(...args);
-
-              if (override || override === false) {
-                return override;
-              } else if (
-                kind === 'display' &&
-                propPath === 'template.todos' &&
-                typeName === 'NodeState' &&
-                typeFile.includes('/@appcraft/types/src/widgets/state')
-              ) {
-                console.log(kind, { propPath, ...opts });
-              }
-            }}
+            renderOverrideItem={renderStateTypeOverride}
           />
         )}
       />

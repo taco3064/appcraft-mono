@@ -1,7 +1,7 @@
 import AppBar from '@mui/material/AppBar';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import CloseIcon from '@mui/icons-material/Close';
-import Dialog, { DialogProps } from '@mui/material/Dialog';
+import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import Divider from '@mui/material/Divider';
@@ -117,6 +117,7 @@ export const FlexDialog = withStyles(
   (
     theme,
     {
+      contentHeight,
       direction = 'row',
       disableContentGutter = false,
       disableContentJustifyCenter = false,
@@ -160,15 +161,23 @@ export const FlexDialog = withStyles(
       justifyContent: disableContentJustifyCenter ? 'flex-start' : 'center',
       gap: theme.spacing(2),
       background: 'inherit',
+
       padding: theme.spacing(
         disableContentPadding ? 0 : 3,
         disableContentGutter ? 0 : 3
       ),
-
       [theme.breakpoints.only('xs')]: {
         overflow: 'hidden auto',
       },
-      ...(fullScreen && {
+      [theme.breakpoints.not('xs')]: {
+        ...(contentHeight && {
+          height:
+            contentHeight instanceof Function
+              ? contentHeight(theme)
+              : contentHeight,
+        }),
+      },
+      ...((fullScreen || contentHeight) && {
         overflow: 'hidden auto',
       }),
     },

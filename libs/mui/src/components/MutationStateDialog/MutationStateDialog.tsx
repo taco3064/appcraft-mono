@@ -94,6 +94,9 @@ export default function MutationStateDialog({
             primary: ct(`ttl-state-${active}`),
             secondary: editing.path,
             onBack: () => handleState.clear(),
+            sx: {
+              borderRadius: (theme) => theme.spacing(3),
+            },
           },
         })
       ) : (

@@ -54,6 +54,7 @@ export default function CraftedTypeEditor<V extends OptionValues>({
         {HeaderProps && (
           <Style.WidgetAppBar
             action={toggle}
+            sx={HeaderProps.sx}
             BackButtonProps={{
               icon: <ArrowBackIcon />,
               text: ct('btn-back'),

@@ -128,7 +128,7 @@ export default function WidgetEditor({
               if (
                 kind === 'pure' &&
                 /^(ElementState|NodeState)$/.test(typeName) &&
-                propPath === 'templateWidgetId'
+                propPath === 'template.id'
               ) {
                 return (
                   <Common.WidgetSelect

@@ -7,8 +7,14 @@ import { IconTipButton } from '../MuiIconButton';
 import type * as Types from './MuiAppBar.types';
 
 export const WidgetAppBar = withStyles(
-  ({ BackButtonProps, classes, action, children }: Types.WidgetAppBarProps) => (
-    <AppBar color="default" position="sticky" className={classes?.root}>
+  ({
+    BackButtonProps,
+    classes,
+    action,
+    children,
+    sx,
+  }: Types.WidgetAppBarProps) => (
+    <AppBar color="default" position="sticky" className={classes?.root} sx={sx}>
       <Toolbar variant="regular" className={classes?.toolbar}>
         <GapTypography variant="subtitle1" fontWeight="bolder" color="primary">
           {BackButtonProps && ( // ct('btn-back')

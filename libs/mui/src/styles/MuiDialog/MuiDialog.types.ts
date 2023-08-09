@@ -1,8 +1,10 @@
 import type { DialogProps } from '@mui/material/Dialog';
 import type { FormEventHandler, ReactNode } from 'react';
+import type { Theme } from '@mui/material/styles';
 
 export interface FlexDialogProps
   extends Omit<DialogProps, 'classes' | 'scroll' | 'title' | 'onSubmit'> {
+  contentHeight?: string | number | ((theme: Theme) => string | number);
   disableContentGutter?: boolean;
   disableContentJustifyCenter?: boolean;
   disableContentPadding?: boolean;

@@ -1,6 +1,8 @@
 import type { MutableRefObject, ReactNode } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
+import type { PropPathRouterHandler } from '../../hooks';
+
 //* Variables
 export type ChangeHandler<E extends OptionValues> = (e: E) => void;
 export type FixedT = (key: string, options?: object) => string;
@@ -20,7 +22,7 @@ export type PureProp =
   | Appcraft.OneOfProp
   | Appcraft.StringProp;
 
-type RenderOverrideItemArgs<C extends 'display' | 'pure'> = [
+export type RenderOverrideItemArgs<C extends 'display' | 'pure'> = [
   C,
   {
     disabled: boolean;
@@ -31,6 +33,10 @@ type RenderOverrideItemArgs<C extends 'display' | 'pure'> = [
     value: unknown;
     onChange: (e: unknown) => void;
     options: C extends 'display' ? DisplayProp : PureProp;
+
+    displayRef?: C extends 'display'
+      ? MutableRefObject<PropPathRouterHandler>
+      : never;
   }
 ];
 

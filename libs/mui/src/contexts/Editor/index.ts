@@ -9,4 +9,5 @@ export type {
   OptionValues,
   PureProp,
   RenderOverrideItem,
+  RenderOverrideItemArgs,
 } from './Editor.types';

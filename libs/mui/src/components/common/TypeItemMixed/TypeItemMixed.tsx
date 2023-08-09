@@ -89,6 +89,7 @@ export default function TypeItemMixed({
       )}
 
       <MenuDialog
+        title={ct('ttl-select-type')}
         value={selected}
         open={open}
         onChange={setSelected}

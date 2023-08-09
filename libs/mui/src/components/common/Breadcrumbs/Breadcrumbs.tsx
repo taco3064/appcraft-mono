@@ -6,6 +6,7 @@ import type { BreadcrumbsProps } from './Breadcrumbs.types';
 
 export default function Breadcrumbs({
   children,
+  collapsedTitle,
   maxItems = 8,
   ...props
 }: BreadcrumbsProps) {
@@ -14,6 +15,7 @@ export default function Breadcrumbs({
   return (
     <>
       <MenuDialog
+        title={collapsedTitle}
         open={open}
         onClose={() => setOpen(false)}
         onChange={(value) => value()}

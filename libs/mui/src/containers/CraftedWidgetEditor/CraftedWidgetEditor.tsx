@@ -73,7 +73,7 @@ export default function CraftedWidgetEditor({
                   {...props}
                   {...{ index, item, event, node }}
                   key={item.id}
-                  defaultOpen={item === widget}
+                  defaultOpen={index === 0}
                 />
               );
             })}

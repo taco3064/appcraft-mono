@@ -36,17 +36,12 @@
   "ttl-category-navigation": "Navigation",
   "ttl-category-tool": "Tool",
   "ttl-events": "Widget Todo",
-  "ttl-node-array-map": "Array Map",
   "ttl-node-plain-text": "Plain Text",
   "ttl-node-widget": "Widget",
   "ttl-props": "Widget Properties",
+  "ttl-select-type": "Type Mapping",
   "ttl-state-nodes": "Node",
   "ttl-state-props": "State",
   "ttl-state-todos": "Todo",
-  "ttl-structure": "Widget Structure",
-  "txt-component-setting-off": "Close Options",
-  "txt-component-setting-on": "Open Options",
-  "txt-node-array-map": "Efficient and concise rendering of arrays with custom widget.",
-  "txt-node-plain-text": "A simple and straightforward way to display text-based information.",
-  "txt-node-widget": "To render a custom widget."
+  "ttl-structure": "Widget Structure"
 }

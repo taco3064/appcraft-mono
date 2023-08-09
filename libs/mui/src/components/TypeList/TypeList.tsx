@@ -43,6 +43,7 @@ export default function TypeList<V extends OptionValues>({
             </Style.IconTipButton>
 
             <Breadcrumbs
+              collapsedTitle={ct('ttl-props')}
               separator="."
               maxItems={2}
               style={{ marginRight: 'auto' }}

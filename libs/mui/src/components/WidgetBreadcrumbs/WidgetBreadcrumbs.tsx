@@ -23,7 +23,12 @@ export default function WidgetBreadcrumbs({
         <ArrowBackIcon />
       </Style.IconTipButton>
 
-      <Breadcrumbs separator="›" maxItems={2} style={{ marginRight: 'auto' }}>
+      <Breadcrumbs
+        collapsedTitle={ct('ttl-structure')}
+        separator="›"
+        maxItems={2}
+        style={{ marginRight: 'auto' }}
+      >
         {breadcrumbs.map(({ text, paths }, i, arr) => (
           <Style.Breadcrumb
             key={`breadcrumb_${i}`}

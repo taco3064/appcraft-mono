@@ -8,5 +8,6 @@ export interface BreadcrumbsProps
     MuiBreadcrumbsProps,
     'children' | 'itemsBeforeCollapse' | 'slotProps'
   > {
+  collapsedTitle?: string;
   children?: ReactElement<ComponentProps<typeof Breadcrumb>>[];
 }

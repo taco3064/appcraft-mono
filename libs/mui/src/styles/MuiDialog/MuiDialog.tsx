@@ -8,7 +8,6 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { FormEventHandler, ReactNode } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { withStyles } from 'tss-react/mui';
 

@@ -32,8 +32,14 @@ const useTemplateTodos: TemplateTodosHook = (
               ({ alias }) => alias
             )
           )
-        );
+        )
+        .catch((err) => {
+          console.error(err);
+          setTodos([]);
+        });
     }
+
+    return () => setTodos([]);
   }, [templateId]);
 
   return todos;

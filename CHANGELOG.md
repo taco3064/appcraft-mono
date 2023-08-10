@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.89](https://github.com/taco3064/appcraft-mono/compare/v0.0.88...v0.0.89) (2023-08-10)
+
+
+### Features
+
+* **@appcraft/mui:** add todo editor to state management dialog ([9bb4da5](https://github.com/taco3064/appcraft-mono/commit/9bb4da5860677684da61edf69fd81b1d1292e229))
+* **@appcraft/mui:** support to edit the todos of template ([b8c919f](https://github.com/taco3064/appcraft-mono/commit/b8c919f671102ac6c646cda9701d61dde85786c8))
+
+
+### Bug Fixes
+
+* **@appcraft/mui:** add error handle in useEffect(useTemplateTodos) ([d202f5c](https://github.com/taco3064/appcraft-mono/commit/d202f5cba840c54688d5385a478e54e5821650d6))
+* **@appcraft/mui:** fixed the issue of the breadcrumbs has no top item ([17af0ee](https://github.com/taco3064/appcraft-mono/commit/17af0eecd4bf7bb64d315472debf80fecd8c15e6))
+* **@appcraft/mui:** update locales ([bcc729d](https://github.com/taco3064/appcraft-mono/commit/bcc729d2cb9b1ba6fe71625d4a111c480dd5177a))
+
 ### [0.0.88](https://github.com/taco3064/appcraft-mono/compare/v0.0.87...v0.0.88) (2023-08-08)
 
 

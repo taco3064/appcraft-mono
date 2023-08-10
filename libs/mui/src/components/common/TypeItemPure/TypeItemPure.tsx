@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField';
 import TitleIcon from '@mui/icons-material/Title';
 import dayjs from 'dayjs';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
-import { useEffect, useImperativeHandle, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import * as Common from '..';
 import { AdornmentTextField, TypeItemAction } from '../../../styles';
@@ -37,7 +37,7 @@ export default function TypeItemPure({
 
   const override =
     !hidden &&
-    handlePure.renderOverride?.({
+    handlePure.renderOverride?.('pure', {
       disabled,
       label,
       options,

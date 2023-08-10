@@ -2,6 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
+import MenuItem from '@mui/material/MenuItem';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import _get from 'lodash/get';
 import { DndProvider } from 'react-dnd';
@@ -18,8 +19,6 @@ import { StateProvider } from '../../contexts';
 import { getForceArray, getNodesAndEventsKey } from '../../utils';
 import type * as Types from './CraftedWidgetEditor.types';
 
-const STATE_EXCLUDE: RegExp[] = [/^mixedTypes$/];
-
 export default function CraftedWidgetEditor({
   BackButtonProps,
   disableCategories,
@@ -28,22 +27,22 @@ export default function CraftedWidgetEditor({
   todoTypeFile,
   version,
   widget,
-  renderOverridePureItem,
+  overrideNamingProps,
+  renderOverrideItem,
   onFetchDefinition,
   onFetchNodesAndEvents,
+  onFetchWidgetWrapper,
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
   const ct = Hook.useFixedT(fixedT);
   const [newWidgetOpen, setNewWidgetOpen] = useState(false);
   const [stateOpen, setStateOpen] = useState(false);
+  const [editedState, setEditedState] = useState<Hook.EditedState>();
 
-  const stateToggle = (
-    <Style.IconTipButton
-      title={ct('btn-state')}
-      onClick={() => setStateOpen(true)}
-    >
-      <StorageRoundedIcon />
-    </Style.IconTipButton>
+  const todoNames = Hook.useTemplateTodos(
+    widget as Appcraft.RootNodeWidget,
+    editedState,
+    onFetchWidgetWrapper
   );
 
   const [{ breadcrumbs, childrenCound, paths, type }, onRedirect] =
@@ -73,13 +72,49 @@ export default function CraftedWidgetEditor({
                   {...props}
                   {...{ index, item, event, node }}
                   key={item.id}
-                  defaultOpen={item === widget}
                 />
               );
             })}
           </>
         )
     );
+
+  const stateEditorProps = Hook.useStateOverride(
+    widget as Appcraft.RootNodeWidget,
+    editedState,
+    { overrideNamingProps, renderOverrideItem },
+    {
+      TODO_EDITOR: ({ value, ...options }) => (
+        <Comp.TodoItem
+          {...options}
+          ct={ct}
+          value={value as Record<string, Appcraft.WidgetTodo>}
+          renderTodoEditor={({ values, onChange }) => (
+            <CraftedTodoEditor
+              {...{ fixedT, values, onChange, onFetchDefinition }}
+              fullHeight
+              typeFile={todoTypeFile}
+            />
+          )}
+        />
+      ),
+      TODO_NAMING: () =>
+        todoNames.map((todoName) => (
+          <MenuItem key={todoName} value={todoName}>
+            {todoName}
+          </MenuItem>
+        )),
+    }
+  );
+
+  const stateToggle = (
+    <Style.IconTipButton
+      title={ct('btn-state')}
+      onClick={() => setStateOpen(true)}
+    >
+      <StorageRoundedIcon />
+    </Style.IconTipButton>
+  );
 
   return (
     <>
@@ -100,32 +135,32 @@ export default function CraftedWidgetEditor({
       />
 
       <Comp.MutationStateDialog
-        ct={ct}
+        {...{ ct, onFetchDefinition }}
         open={Boolean(widget && stateOpen)}
         typeFile={stateTypeFile}
         values={widget as Appcraft.RootNodeWidget}
         onClose={() => setStateOpen(false)}
         onConfirm={onWidgetChange}
+        onStateEdit={setEditedState}
         renderEditor={(props) => (
-          <CraftedTypeEditor
-            {...props}
-            {...{ fixedT, renderOverridePureItem, onFetchDefinition }}
-            exclude={STATE_EXCLUDE}
-          />
+          <CraftedTypeEditor {...props} {...stateEditorProps} />
         )}
       />
 
       {editedWidget?.category === 'node' && (
         <CraftedTodoEditor
           {...(todoPath && { todoPath })}
+          {...{
+            fixedT,
+            disableCategories,
+            overrideNamingProps,
+            renderOverrideItem,
+            onFetchDefinition,
+          }}
           fullHeight
-          disableCategories={disableCategories}
-          fixedT={fixedT}
           open={Boolean(todoPath)}
           typeFile={todoTypeFile}
           values={editedWidget.todos?.[todoPath as string]}
-          renderOverridePureItem={renderOverridePureItem}
-          onFetchDefinition={onFetchDefinition}
           onChange={(todo) =>
             handleMutation.modify({
               ...editedWidget,
@@ -148,13 +183,16 @@ export default function CraftedWidgetEditor({
       >
         {editedWidget?.category === 'node' && (
           <CraftedTypeEditor
+            {...{
+              fixedT,
+              overrideNamingProps,
+              renderOverrideItem,
+              onFetchDefinition,
+            }}
             fullHeight
-            fixedT={fixedT}
             open={Boolean(!todoPath)}
             values={editedWidget}
-            renderOverridePureItem={renderOverridePureItem}
             onChange={handleMutation.modify}
-            onFetchDefinition={onFetchDefinition}
             HeaderProps={{
               primary: ct('ttl-props'),
               secondary: editedWidget.type.replace(/([A-Z])/g, ' $1'),

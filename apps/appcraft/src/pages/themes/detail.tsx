@@ -67,15 +67,15 @@ export default function Detail() {
         superiors={{ names: superiors, breadcrumbs }}
         onSave={refetch}
         onActionNodePick={handleActionNodePick}
-        renderOverridePureItem={({
-          propPath,
-          options,
-          disabled,
-          label,
-          value,
-          onChange,
-        }) => {
-          if (options.type === 'string' && propPath !== 'mode') {
+        renderOverrideItem={(
+          kind,
+          { propPath, options, disabled, label, value, onChange }
+        ) => {
+          if (
+            kind === 'pure' &&
+            options.type === 'string' &&
+            propPath !== 'mode'
+          ) {
             return (
               <TextField
                 {...{ disabled, label }}

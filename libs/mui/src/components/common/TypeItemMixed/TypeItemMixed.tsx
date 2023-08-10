@@ -70,7 +70,11 @@ export default function TypeItemMixed({
           <ListItemText
             disableTypography
             primary={
-              <Style.GapTypography variant="subtitle1" color="text.primary">
+              <Style.GapTypography
+                variant="subtitle1"
+                color="text.primary"
+                sx={(theme) => ({ paddingX: theme.spacing(1.5) })}
+              >
                 <Style.CompositeIcon
                   anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
                   primaryProps={{ color: 'secondary' }}
@@ -89,6 +93,7 @@ export default function TypeItemMixed({
       )}
 
       <MenuDialog
+        title={ct('ttl-select-type')}
         value={selected}
         open={open}
         onChange={setSelected}

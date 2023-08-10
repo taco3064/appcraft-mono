@@ -1,12 +1,13 @@
-import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import type { MouseEvent } from 'react';
 
+import { FlexDialog } from '../../../styles';
 import type { MenuDialogProps } from './MenuDialog.types';
 
 export default function MenuDialog<V extends { toString(): string }>({
+  title,
   options,
   open,
   value: selected = null,
@@ -19,21 +20,31 @@ export default function MenuDialog<V extends { toString(): string }>({
   };
 
   return (
-    <Dialog {...{ open, onClose }} fullWidth maxWidth="xs">
+    <FlexDialog
+      {...{ title, open, onClose }}
+      disableContentPadding
+      disableContentGutter
+      fullWidth
+      maxWidth="xs"
+    >
       <MenuList
-        sx={{
+        sx={(theme) => ({
           display: 'flex',
           flexDirection: 'column',
+          paddingY: theme.spacing(2),
           width: '100%',
-          gap: (theme) => theme.spacing(1),
-        }}
+          gap: theme.spacing(1),
+        })}
       >
         {options.map(({ primary, secondary, value }) => (
           <MenuItem
             key={`${primary}_${value.toString()}`}
             selected={value === selected}
             onClick={(e) => handleSelect(e, value)}
-            sx={{ borderRadius: (theme) => theme.spacing(1) }}
+            sx={(theme) => ({
+              // borderRadius: theme.spacing(1),
+              minHeight: `${theme.spacing(6)} !important`,
+            })}
           >
             <ListItemText
               {...{ primary, secondary }}
@@ -48,6 +59,6 @@ export default function MenuDialog<V extends { toString(): string }>({
           </MenuItem>
         ))}
       </MenuList>
-    </Dialog>
+    </FlexDialog>
   );
 }

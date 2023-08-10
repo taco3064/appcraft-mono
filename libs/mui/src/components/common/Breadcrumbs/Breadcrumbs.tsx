@@ -1,35 +1,51 @@
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
 import { useState } from 'react';
 
+import { Breadcrumb } from '../../../styles';
 import { MenuDialog } from '../MenuDialog';
-import type { BreadcrumbsProps } from './Breadcrumbs.types';
+import type * as Types from './Breadcrumbs.types';
 
 export default function Breadcrumbs({
+  TopProps,
   children,
+  collapsedTitle,
   maxItems = 8,
   ...props
-}: BreadcrumbsProps) {
+}: Types.BreadcrumbsProps) {
+  const hasBreadcrumbs = Boolean(children?.length);
+
   const [open, setOpen] = useState(false);
+
+  const options = children
+    ?.slice(0, children.length - 1)
+    .reverse()
+    .map((child) => {
+      const { children: primary, onClick } = child.props;
+
+      return {
+        primary,
+        value: onClick,
+      };
+    }) as Types.MenuOptions;
 
   return (
     <>
       <MenuDialog
+        title={collapsedTitle}
         open={open}
         onClose={() => setOpen(false)}
         onChange={(value) => value()}
-        options={
-          children
-            ?.slice(0, children.length - 1)
-            .reverse()
-            .map((child) => {
-              const { children: primary, onClick } = child.props;
-
-              return {
-                primary,
-                value: onClick,
-              };
-            }) as { primary: string; value: () => void }[]
-        }
+        options={[
+          ...options,
+          ...(!hasBreadcrumbs || !TopProps
+            ? []
+            : [
+                {
+                  primary: TopProps.text,
+                  value: TopProps.onClick,
+                },
+              ]),
+        ]}
       />
 
       <MuiBreadcrumbs
@@ -47,6 +63,12 @@ export default function Breadcrumbs({
           },
         }}
       >
+        {hasBreadcrumbs && TopProps && (
+          <Breadcrumb brcVariant="link" onClick={TopProps.onClick}>
+            {TopProps.text}
+          </Breadcrumb>
+        )}
+
         {children}
       </MuiBreadcrumbs>
     </>

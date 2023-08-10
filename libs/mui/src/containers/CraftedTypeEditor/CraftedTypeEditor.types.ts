@@ -15,7 +15,6 @@ export interface CraftedTypeEditorProps<V extends OptionValues>
   extends Pick<TypeListProps<V>, 'exclude'>,
     Omit<EditorProviderProps<V>, 'children' | 'collectionPath'> {
   fullHeight?: boolean;
-  open?: boolean;
   onFetchDefinition: FetchTypeDefinition;
 
   HeaderProps?: {

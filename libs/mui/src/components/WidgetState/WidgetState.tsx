@@ -1,97 +1,100 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
+import Toolbar from '@mui/material/Toolbar';
 import _get from 'lodash/get';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Style from '../../styles';
 import { useStateGenerator } from '../../hooks';
-import type * as Types from './MutationStateDialog.types';
+import type * as Types from './WidgetState.types';
 
 const STATE_EXCLUDE: RegExp[] = [/^mixedTypes$/];
 const TABS: Appcraft.StateCategory[] = ['props', 'nodes', 'todos'];
 
-export default function MutationStateDialog({
+export default function WidgetState({
   ct,
-  open,
   typeFile = './node_modules/@appcraft/types/src/widgets/state.types.d.ts',
   values,
   renderEditor,
-  onClose,
-  onConfirm,
+  onBack,
+  onChange,
   onFetchDefinition,
   onStateEdit,
-}: Types.MutationStateDialogProps) {
+}: Types.WidgetStateProps) {
   const [active, setActive] = React.useState<Appcraft.StateCategory>(TABS[0]);
 
-  const [{ editing, stateValues }, handleState] = useStateGenerator(
+  const [editing, handleState] = useStateGenerator(
     typeFile,
     active,
-    open ? values?.state : undefined
+    values,
+    onChange
   );
 
   const states: [string, Appcraft.WidgetState][] = Object.entries(
-    _get(stateValues, [active]) || {}
+    _get(values, ['state', active]) || {}
   );
 
-  const handleEditToggle: typeof onStateEdit = (target) => {
-    if (target) {
-      handleState.edit(target.path);
-      onStateEdit(target);
+  const handleEditToggle: Types.EditToggleHandler = (e) => {
+    if (e) {
+      handleState.edit(e.path);
+      onStateEdit(e);
     } else {
       handleState.clear();
       onStateEdit();
     }
   };
 
-  const handleClose: typeof onClose = (...e) => {
-    onClose(...e);
-    handleEditToggle();
-  };
-
   return (
-    <Style.FlexDialog
-      {...{ open, onClose }}
-      disableContentJustifyCenter
-      fullWidth
-      maxWidth="xs"
-      direction="column"
-      onClose={handleClose}
-      action={
-        <>
-          <Button onClick={(e) => handleClose(e, 'escapeKeyDown')}>
-            {ct('btn-cancel')}
-          </Button>
-
-          <Button
-            color="primary"
-            onClick={(e) => {
-              handleClose(e, 'escapeKeyDown');
-              onConfirm({ ...values, state: stateValues });
-            }}
-          >
-            {ct('btn-confirm')}
-          </Button>
-        </>
-      }
-    >
-      <Tabs
-        variant="fullWidth"
-        value={active}
-        onChange={(_e, newActive) => {
-          setActive(newActive);
-          handleEditToggle();
+    <>
+      <Style.WidgetAppBar
+        BackButtonProps={{
+          icon: <ArrowBackIcon />,
+          text: ct('btn-back'),
+          onClick: onBack,
         }}
       >
-        {TABS.map((value) => (
-          <Tab key={value} label={ct(`ttl-state-${value}`)} value={value} />
-        ))}
-      </Tabs>
+        <Style.AutoBreakTypography
+          primary={ct('btn-state')}
+          secondary={_get(values, [
+            'state',
+            active,
+            editing?.path as string,
+            'alias',
+          ])}
+        />
+      </Style.WidgetAppBar>
+
+      <Toolbar disableGutters variant="dense">
+        <Tabs
+          variant="fullWidth"
+          value={active}
+          sx={{ flexGrow: 1 }}
+          onChange={(_e, newActive) => {
+            setActive(newActive);
+            handleEditToggle();
+          }}
+        >
+          {TABS.map((value) => (
+            <Tab key={value} label={ct(`ttl-state-${value}`)} value={value} />
+          ))}
+        </Tabs>
+
+        <IconButton
+          color="primary"
+          disabled={!editing}
+          onClick={() => handleEditToggle()}
+          sx={{ marginRight: (theme) => theme.spacing(2) }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </Toolbar>
 
       {editing ? (
         renderEditor({
@@ -100,15 +103,6 @@ export default function MutationStateDialog({
           values: editing.config,
           onChange: handleState.change,
           onFetchDefinition,
-
-          HeaderProps: {
-            primary: ct(`ttl-state-${active}`),
-            secondary: editing.path,
-            onBack: () => handleEditToggle(),
-            sx: {
-              borderRadius: (theme) => theme.spacing(3),
-            },
-          },
         })
       ) : (
         <List disablePadding style={{ background: 'inherit' }}>
@@ -142,6 +136,6 @@ export default function MutationStateDialog({
           )}
         </List>
       )}
-    </Style.FlexDialog>
+    </>
   );
 }

@@ -1,2 +1,6 @@
 export { default as useTodoGenerator } from './useTodoGenerator';
-export type { TodoChangeHandler } from './useTodoGenerator.types';
+
+export type {
+  EditToggleHandler,
+  TodoChangeHandler,
+} from './useTodoGenerator.types';

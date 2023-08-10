@@ -12,12 +12,10 @@ export type EditingState = {
 export type StateGeneratorHook = <C extends Appcraft.StateCategory>(
   typeFile: string,
   category: C,
-  state?: StateValues
+  widget: Appcraft.RootNodeWidget,
+  onChange: (e: Appcraft.RootNodeWidget) => void
 ) => [
-  {
-    editing: EditingState;
-    stateValues: StateValues;
-  },
+  EditingState,
   {
     clear: () => void;
     change: ChangeHandler<Appcraft.ConfigOptions>;

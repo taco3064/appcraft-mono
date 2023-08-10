@@ -1,10 +1,15 @@
 import * as Rf from 'reactflow';
+import AppBar from '@mui/material/AppBar';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Button from '@mui/material/Button';
+import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
+import type { WidgetTodo } from '@appcraft/types';
 
 import * as Comp from '../../components';
 import * as Style from '../../styles';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
+import { getProps } from '../../utils';
 import { useFixedT, useTodoGenerator } from '../../hooks';
 import { useStateContext } from '../../contexts';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
@@ -29,14 +34,15 @@ const NODE_TYPES: Rf.NodeTypes = {
 
 export default function CraftedTodoEditor({
   HeaderProps,
+  variant = 'popup',
   disableCategories,
   fixedT,
   fullHeight,
-  open = true,
   typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts',
   values,
   renderOverrideItem,
   onChange,
+  onEditToggle,
   onFetchDefinition,
 }: CraftedTodoEditorProps) {
   const theme = useTheme();
@@ -46,32 +52,30 @@ export default function CraftedTodoEditor({
   const [{ editing, nodes, edges }, handleTodo] = useTodoGenerator(
     typeFile,
     values || {},
-    onChange
+    { onChange, onEditToggle }
   );
 
   return (
     <>
-      <Comp.MutationTodoNodeDialog
-        ct={ct}
-        open={Boolean(editing)}
-        values={editing}
-        onClose={handleTodo.cancel}
-        onConfirm={(todo) => onChange({ ...values, [todo.id]: todo })}
-        renderEditor={(todoConfig) => (
-          <CraftedTypeEditor
-            {...{ fixedT, renderOverrideItem, onFetchDefinition }}
-            exclude={EXCLUDE}
-            values={todoConfig}
-            onChange={handleTodo.change}
-          />
-        )}
-      />
+      {variant === 'popup' && (
+        <Comp.MutationTodoNodeDialog
+          ct={ct}
+          open={Boolean(editing)}
+          values={editing}
+          onClose={handleTodo.cancel}
+          onConfirm={(todo) => onChange({ ...values, [todo.id]: todo })}
+          renderEditor={(todoConfig) => (
+            <CraftedTypeEditor
+              {...{ fixedT, renderOverrideItem, onFetchDefinition }}
+              exclude={EXCLUDE}
+              values={todoConfig}
+              onChange={handleTodo.change}
+            />
+          )}
+        />
+      )}
 
-      <Style.FullHeightCollapse
-        aria-label="Todo Editor"
-        fullHeight={fullHeight}
-        in={open}
-      >
+      <Style.FlexContainer disableGutters fullHeight={fullHeight}>
         {HeaderProps && (
           <Style.WidgetAppBar
             action={toggle}
@@ -88,7 +92,45 @@ export default function CraftedTodoEditor({
           </Style.WidgetAppBar>
         )}
 
-        {open && (
+        {variant === 'normal' && editing && (
+          <>
+            <CraftedTypeEditor
+              {...{ fixedT, renderOverrideItem, onFetchDefinition }}
+              fullHeight
+              exclude={EXCLUDE}
+              values={editing.config}
+              onChange={handleTodo.change}
+            />
+
+            <AppBar
+              position="static"
+              color="transparent"
+              sx={(theme) => ({ padding: theme.spacing(1, 2) })}
+            >
+              <Toolbar disableGutters variant="dense">
+                <Button
+                  fullWidth
+                  startIcon={<ArrowBackIcon />}
+                  onClick={() => {
+                    const { mixedTypes } = values?.config || {};
+                    const todo = getProps<WidgetTodo>(editing.config?.props);
+
+                    handleTodo.cancel();
+
+                    onChange({
+                      ...values,
+                      [todo.id]: !mixedTypes ? todo : { ...todo, mixedTypes },
+                    });
+                  }}
+                >
+                  {ct('btn-back')}
+                </Button>
+              </Toolbar>
+            </AppBar>
+          </>
+        )}
+
+        {(variant === 'popup' || !editing) && (
           <Style.TodoBackground elevation={0}>
             <Rf.ReactFlowProvider>
               <Rf.ReactFlow
@@ -117,7 +159,7 @@ export default function CraftedTodoEditor({
             </Rf.ReactFlowProvider>
           </Style.TodoBackground>
         )}
-      </Style.FullHeightCollapse>
+      </Style.FlexContainer>
     </>
   );
 }

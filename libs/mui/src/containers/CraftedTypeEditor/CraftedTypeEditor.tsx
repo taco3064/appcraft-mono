@@ -1,5 +1,4 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 
@@ -14,7 +13,6 @@ export default function CraftedTypeEditor<V extends OptionValues>({
   exclude,
   fixedT,
   fullHeight,
-  open = true,
   values,
   overrideNamingProps,
   renderOverrideItem,
@@ -54,11 +52,7 @@ export default function CraftedTypeEditor<V extends OptionValues>({
         onChange,
       }}
     >
-      <Style.FullHeightCollapse
-        aria-label="Properties Editor"
-        fullHeight={fullHeight}
-        in={open}
-      >
+      <Style.FlexContainer disableGutters fullHeight={fullHeight}>
         {HeaderProps && (
           <Style.WidgetAppBar
             action={toggle}
@@ -88,7 +82,7 @@ export default function CraftedTypeEditor<V extends OptionValues>({
             onCollectionPathChange={setCollectionPath}
           />
         </Suspense>
-      </Style.FullHeightCollapse>
+      </Style.FlexContainer>
     </EditorProvider>
   );
 }

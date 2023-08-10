@@ -24,7 +24,10 @@ export default function TypeItemPure({
   propPath,
   selection,
 }: TypeItemPureProps) {
-  const [{ value, typeFile, typeName }, handlePure] = usePropValue(propPath);
+  const [{ value, typeFile, typeName }, handlePure] = usePropValue(
+    'pure',
+    propPath
+  );
 
   const initialRef = useRef<() => void>(() =>
     handlePure.change(options.options?.[0])

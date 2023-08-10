@@ -1,19 +1,39 @@
 import _get from 'lodash/get';
+import { useMemo } from 'react';
 
+import { getProps } from '../../utils';
 import { useEditorContext } from '../../contexts';
 import type { PropValueHookResult } from './usePropValue.types';
 
 const usePropValue = <P = unknown>(
+  type: 'display' | 'pure',
   propPath: string
 ): PropValueHookResult<P> => {
   const { values, renderOverrideItem, onChange } = useEditorContext();
-  const { typeFile, typeName } = values;
+  const { typeFile, typeName, props } = values;
+  const stringify = JSON.stringify(props || {});
 
   return [
     {
-      value: (_get(values, ['props', propPath]) as P) || null,
       typeFile,
       typeName,
+      value: useMemo<P>(() => {
+        if (type === 'pure') {
+          return _get(JSON.parse(stringify), [propPath]) || null;
+        }
+
+        const props = getProps(
+          Object.entries(JSON.parse(stringify)).reduce(
+            (result, [path, value]) => ({
+              ...result,
+              ...(path.startsWith(propPath) && { [path]: value }),
+            }),
+            {}
+          )
+        );
+
+        return _get(props, propPath) || null;
+      }, [type, stringify, propPath]),
     },
 
     {

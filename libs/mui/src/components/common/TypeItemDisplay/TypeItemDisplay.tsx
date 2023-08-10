@@ -20,7 +20,11 @@ export default function TypeItemDisplay({
   onClick,
 }: TypeItemDisplayProps) {
   const ref = useRef<typeof onClick>(onClick);
-  const [{ value, typeFile, typeName }, handlePure] = usePropValue(propPath);
+
+  const [{ value, typeFile, typeName }, handlePure] = usePropValue(
+    'display',
+    propPath
+  );
 
   const override = handlePure.renderOverride?.('display', {
     displayRef: ref,

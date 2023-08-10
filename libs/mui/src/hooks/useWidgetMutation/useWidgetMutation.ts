@@ -8,8 +8,8 @@ import type { PropPaths } from '../../utils';
 import type { WidgetMutationHook } from './useWidgetMutation.types';
 
 const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
-  const [editedPaths, setEditedPaths] = useState<PropPaths | null>(null);
-  const [todoPath, setTodoPath] = useState<string | null>(null);
+  const [editedPaths, setEditedPaths] = useState<PropPaths>();
+  const [todoPath, setTodoPath] = useState<string>();
 
   return [
     {
@@ -38,7 +38,7 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
 
       editing: (e) => {
         setEditedPaths(e);
-        setTodoPath(null);
+        setTodoPath(undefined);
       },
 
       modify: (e) => {

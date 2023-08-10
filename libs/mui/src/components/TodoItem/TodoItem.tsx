@@ -1,6 +1,6 @@
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import Button from '@mui/material/Button';
-import { useImperativeHandle, useState } from 'react';
+import { useEffect, useImperativeHandle, useState } from 'react';
 import type { MouseEventHandler } from 'react';
 
 import { FlexDialog, GapTypography } from '../../styles';
@@ -16,17 +16,25 @@ export default function TodoItem({
   onChange,
 }: TodoItemProps) {
   const disabled = defaultDisabled || Boolean(!label?.trim());
+  const [editing, setEditing] = useState(false);
   const [open, setOpen] = useState(false);
-  const [todos, setTodos] = useState(value || {});
+  const [todos, setTodos] = useState<typeof value>();
 
   const handleClose: MouseEventHandler = (e) => {
     e.stopPropagation();
     setOpen(false);
+    setEditing(false);
   };
 
   useImperativeHandle(displayRef, () => () => !disabled && setOpen(true), [
     disabled,
   ]);
+
+  useEffect(() => {
+    if (open) {
+      setTodos(JSON.parse(JSON.stringify(value)));
+    }
+  }, [open, value]);
 
   return (
     <>
@@ -41,6 +49,8 @@ export default function TodoItem({
 
       <FlexDialog
         disableContentJustifyCenter
+        disableContentGutter
+        disableContentPadding
         fullWidth
         maxWidth="xs"
         direction="column"
@@ -54,6 +64,7 @@ export default function TodoItem({
 
             <Button
               color="primary"
+              disabled={editing}
               onClick={(e) => {
                 handleClose(e);
                 onChange(todos);
@@ -64,7 +75,11 @@ export default function TodoItem({
           </>
         }
       >
-        {renderTodoEditor({ values: todos, onChange: setTodos })}
+        {renderTodoEditor({
+          values: todos,
+          onChange: setTodos,
+          onEditToggle: setEditing,
+        })}
       </FlexDialog>
     </>
   );

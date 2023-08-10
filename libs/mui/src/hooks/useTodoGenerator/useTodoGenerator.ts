@@ -11,7 +11,7 @@ import type * as Types from './useTodoGenerator.types';
 const useTodoGenerator: Types.TodoGeneratorHook = (
   typeFile,
   todos,
-  onChange
+  { onChange, onEditToggle }
 ) => {
   const [editing, setEditing] = useState<Util.EditingTodo>(null);
 
@@ -44,14 +44,20 @@ const useTodoGenerator: Types.TodoGeneratorHook = (
     { editing, nodes, edges },
 
     {
-      cancel: () => setEditing(null),
+      cancel: () => {
+        setEditing(null);
+        onEditToggle?.(false);
+      },
 
       change: (config) =>
         setEditing({ todo: editing?.todo as Appcraft.WidgetTodo, config }),
 
       create: (category) => setEditing(Util.getInitialTodo(typeFile, category)),
 
-      select: (_e, { data }) => setEditing(Util.getEditingTodo(typeFile, data)),
+      select: (_e, { data }) => {
+        setEditing(Util.getEditingTodo(typeFile, data));
+        onEditToggle?.(true);
+      },
 
       connect: ({ source, sourceHandle, target }) => {
         if (source && todos[source] && source !== target) {

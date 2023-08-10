@@ -4,7 +4,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import axios from 'axios';
 import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
-import { useDeferredValue, useState } from 'react';
+import { useState } from 'react';
 import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Common from '../common';
@@ -48,7 +48,6 @@ export default function WidgetEditor({
   const [widget, handleWidget] = Hook.useWidgetValues({ data, onSave });
 
   const width = Hook.useWidth();
-  const renderer = useDeferredValue(widget);
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
 
@@ -132,7 +131,7 @@ export default function WidgetEditor({
         onClose={() => setOpen(false)}
         content={
           <CraftedRenderer
-            options={renderer}
+            options={widget}
             onFetchData={handleFetchData}
             onFetchWrapper={handleFetchWrapper}
             onOutputCollect={onOutputCollect}

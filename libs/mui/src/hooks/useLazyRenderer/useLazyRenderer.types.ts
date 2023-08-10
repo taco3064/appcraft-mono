@@ -8,8 +8,12 @@ export type WidgetInfo = {
   widget: Appcraft.RootNodeWidget;
 };
 
+export type ExtractTemplateIds = (
+  widgets: Appcraft.RootNodeWidget[]
+) => string[];
+
 export type FetchWidgets = (
-  widgets: Appcraft.RootNodeWidget[],
+  templateIds: string[],
   onFetchWidget: FetchWrapperHandler<'widget'>,
   tempaltes?: WidgetMap
 ) => Promise<WidgetMap>;

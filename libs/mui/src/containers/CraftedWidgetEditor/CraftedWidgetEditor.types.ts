@@ -6,6 +6,14 @@ import type * as Comp from '../../components';
 import type * as Context from '../../contexts';
 import type * as Hook from '../../hooks';
 
+//* Methods
+export type GetActiveType = (options: {
+  editedWidgetCategory?: 'node' | 'plainText';
+  stateOpen: boolean;
+  todoPath?: string;
+}) => 'state' | 'todos' | 'props' | 'nodes';
+
+//* Component Props
 export type LazyWidgetElementsProps = Omit<
   Comp.WidgetElementProps<Appcraft.WidgetOptions>,
   'index' | 'item' | 'event' | 'node' | 'defaultOpen'

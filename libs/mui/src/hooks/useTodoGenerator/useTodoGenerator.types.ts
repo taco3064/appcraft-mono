@@ -5,6 +5,8 @@ import type { MouseEvent } from 'react';
 import type { ChangeHandler } from '../../contexts';
 import type { EditingTodo, TodoEdge, TodoNode } from '../../utils';
 
+export type EditToggleHandler = (toggle: boolean) => void;
+
 export type TodoChangeHandler = (
   values: Record<string, Appcraft.WidgetTodo>
 ) => void;
@@ -12,7 +14,10 @@ export type TodoChangeHandler = (
 export type TodoGeneratorHook = (
   typeFile: string,
   todos: Record<string, Appcraft.WidgetTodo>,
-  onChange: TodoChangeHandler
+  options: {
+    onChange: TodoChangeHandler;
+    onEditToggle?: EditToggleHandler;
+  }
 ) => [
   { editing: EditingTodo; edges: TodoEdge[]; nodes: TodoNode[] },
   {

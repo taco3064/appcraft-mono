@@ -1,8 +1,8 @@
 import type * as Appcraft from '@appcraft/types';
 
+import type * as Hook from '../../hooks';
 import type { CraftedTypeEditorProps } from '../CraftedTypeEditor';
 import type { TodoFlowControlsProps } from '../../components';
-import type { TodoChangeHandler } from '../../hooks';
 
 export interface CraftedTodoEditorProps
   extends Pick<TodoFlowControlsProps, 'disableCategories'>,
@@ -11,11 +11,12 @@ export interface CraftedTodoEditorProps
       | 'HeaderProps'
       | 'fixedT'
       | 'fullHeight'
-      | 'open'
       | 'renderOverrideItem'
       | 'onFetchDefinition'
     > {
   typeFile?: string;
   values?: Record<string, Appcraft.WidgetTodo>;
-  onChange: TodoChangeHandler;
+  variant?: 'normal' | 'popup';
+  onChange: Hook.TodoChangeHandler;
+  onEditToggle?: Hook.EditToggleHandler;
 }

@@ -5,6 +5,7 @@ import List from '@mui/material/List';
 import MenuItem from '@mui/material/MenuItem';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import _get from 'lodash/get';
+import _set from 'lodash/set';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Suspense, useState } from 'react';
@@ -115,10 +116,11 @@ export default function CraftedWidgetEditor({
           {...options}
           {...{ ct, editedState }}
           value={value as Record<string, Appcraft.WidgetTodo>}
-          renderTodoEditor={({ values, onChange }) => (
+          renderTodoEditor={({ values, onChange, onEditToggle }) => (
             <CraftedTodoEditor
-              {...{ fixedT, values, onChange, onFetchDefinition }}
+              {...{ fixedT, values, onChange, onEditToggle, onFetchDefinition }}
               fullHeight
+              variant="normal"
               typeFile={todoTypeFile}
             />
           )}
@@ -168,7 +170,7 @@ export default function CraftedWidgetEditor({
         />
       )}
 
-      {editedWidget?.category === 'node' && (
+      {active === 'todos' && (
         <CraftedTodoEditor
           {...(todoPath && { todoPath })}
           {...{
@@ -179,13 +181,15 @@ export default function CraftedWidgetEditor({
             onFetchDefinition,
           }}
           fullHeight
-          open={active === 'todos'}
           typeFile={todoTypeFile}
-          values={editedWidget.todos?.[todoPath as string]}
+          values={_get(editedWidget, ['todos', todoPath] as string[])}
           onChange={(todo) =>
             handleMutation.modify({
-              ...editedWidget,
-              todos: { ...editedWidget.todos, [todoPath as string]: todo },
+              ..._set(
+                editedWidget as Appcraft.WidgetOptions,
+                ['todos', todoPath] as string[],
+                todo
+              ),
             })
           }
           HeaderProps={{

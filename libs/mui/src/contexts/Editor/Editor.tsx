@@ -10,13 +10,17 @@ const EditorContext = (<V extends Types.OptionValues>() =>
   }))();
 
 export const useEditorContext = <V extends Types.OptionValues>() => {
-  const { handleChangeRef, renderOverrideItemRef, ...value } = React.useContext(
-    EditorContext
-  ) as Required<Types.EditorContextValue<V>>;
+  const {
+    handleChangeRef,
+    overrideNamingPropsRef,
+    renderOverrideItemRef,
+    ...value
+  } = React.useContext(EditorContext) as Required<Types.EditorContextValue<V>>;
 
   return {
     ...value,
     onChange: handleChangeRef?.current || (() => null),
+    overrideNamingProps: overrideNamingPropsRef?.current,
     renderOverrideItem: renderOverrideItemRef?.current,
   };
 };
@@ -26,10 +30,12 @@ export function EditorProvider<V extends Types.OptionValues>({
   collectionPath,
   fixedT,
   values,
+  overrideNamingProps,
   renderOverrideItem,
   onChange,
 }: Types.EditorProviderProps<V>) {
   const handleChangeRef = React.useRef(onChange);
+  const overrideNamingPropsRef = React.useRef(overrideNamingProps);
   const renderOverrideItemRef = React.useRef(renderOverrideItem);
 
   const value = React.useMemo<Types.EditorContextValue<V>>(
@@ -38,12 +44,17 @@ export function EditorProvider<V extends Types.OptionValues>({
       collectionPath,
       values,
       handleChangeRef,
+      overrideNamingPropsRef,
       renderOverrideItemRef,
     }),
     [fixedT, collectionPath, values]
   );
 
   React.useImperativeHandle(handleChangeRef, () => onChange, [onChange]);
+
+  React.useImperativeHandle(overrideNamingPropsRef, () => overrideNamingProps, [
+    overrideNamingProps,
+  ]);
 
   React.useImperativeHandle(renderOverrideItemRef, () => renderOverrideItem, [
     renderOverrideItem,

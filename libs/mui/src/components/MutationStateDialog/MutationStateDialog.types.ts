@@ -2,9 +2,10 @@ import type { AppBarProps } from '@mui/material/AppBar';
 import type { ConfigOptions, RootNodeWidget } from '@appcraft/types';
 import type { DialogProps } from '@mui/material/Dialog';
 import type { ReactNode } from 'react';
+import type * as Appcraft from '@appcraft/types';
 
 import type * as Context from '../../contexts';
-import type { FetchTypeDefinition } from '../../hooks';
+import type { EditedState, FetchTypeDefinition } from '../../hooks';
 
 export type HeaderProps = {
   primary: string;
@@ -20,6 +21,7 @@ export interface MutationStateDialogProps
   values: RootNodeWidget;
   onConfirm: (e: RootNodeWidget) => void;
   onFetchDefinition: FetchTypeDefinition;
+  onStateEdit: (target?: EditedState) => void;
 
   renderEditor: (options: {
     HeaderProps: HeaderProps;

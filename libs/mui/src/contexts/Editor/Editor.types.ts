@@ -1,5 +1,6 @@
-import type { MutableRefObject, ReactNode } from 'react';
+import TextField from '@mui/material/TextField';
 import type * as Appcraft from '@appcraft/types';
+import type { ComponentProps, MutableRefObject, ReactNode } from 'react';
 
 import type { PropPathRouterHandler } from '../../hooks';
 
@@ -44,12 +45,22 @@ export type RenderOverrideItem = (
   ...args: RenderOverrideItemArgs<'display'> | RenderOverrideItemArgs<'pure'>
 ) => ReactNode;
 
+export type OverrideNamingProps = (options: {
+  propPath: string;
+  typeFile: string;
+  typeName: string;
+}) => Pick<
+  ComponentProps<typeof TextField>,
+  'select' | 'children' | 'disabled'
+> | void;
+
 //* Context Value
 export interface EditorContextValue<V extends OptionValues> {
   collectionPath: string;
   fixedT?: FixedT;
   values?: V;
   handleChangeRef?: MutableRefObject<ChangeHandler<V>>;
+  overrideNamingPropsRef?: MutableRefObject<OverrideNamingProps | undefined>;
   renderOverrideItemRef?: MutableRefObject<RenderOverrideItem | undefined>;
 }
 
@@ -57,9 +68,10 @@ export interface EditorContextValue<V extends OptionValues> {
 export interface EditorProviderProps<V extends OptionValues>
   extends Omit<
     EditorContextValue<V>,
-    'handleChangeRef' | 'renderOverrideItemRef'
+    'handleChangeRef' | 'overrideNamingPropsRef' | 'renderOverrideItemRef'
   > {
   children: ReactNode;
+  overrideNamingProps?: OverrideNamingProps;
   renderOverrideItem?: RenderOverrideItem;
   onChange: ChangeHandler<V>;
 }

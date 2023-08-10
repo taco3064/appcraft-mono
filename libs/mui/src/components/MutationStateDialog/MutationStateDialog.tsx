@@ -25,6 +25,7 @@ export default function MutationStateDialog({
   onClose,
   onConfirm,
   onFetchDefinition,
+  onStateEdit,
 }: Types.MutationStateDialogProps) {
   const [active, setActive] = React.useState<Appcraft.StateCategory>(TABS[0]);
 
@@ -38,9 +39,19 @@ export default function MutationStateDialog({
     _get(stateValues, [active]) || {}
   );
 
+  const handleEditToggle: typeof onStateEdit = (target) => {
+    if (target) {
+      handleState.edit(target.path);
+      onStateEdit(target);
+    } else {
+      handleState.clear();
+      onStateEdit();
+    }
+  };
+
   const handleClose: typeof onClose = (...e) => {
     onClose(...e);
-    handleState.clear();
+    handleEditToggle();
   };
 
   return (
@@ -74,7 +85,7 @@ export default function MutationStateDialog({
         value={active}
         onChange={(_e, newActive) => {
           setActive(newActive);
-          handleState.clear();
+          handleEditToggle();
         }}
       >
         {TABS.map((value) => (
@@ -93,7 +104,7 @@ export default function MutationStateDialog({
           HeaderProps: {
             primary: ct(`ttl-state-${active}`),
             secondary: editing.path,
-            onBack: () => handleState.clear(),
+            onBack: () => handleEditToggle(),
             sx: {
               borderRadius: (theme) => theme.spacing(3),
             },
@@ -105,7 +116,10 @@ export default function MutationStateDialog({
             <Style.ListPlaceholder message={ct('msg-no-state')} />
           ) : (
             states.map(([path, { alias, description }]) => (
-              <ListItemButton key={path} onClick={() => handleState.edit(path)}>
+              <ListItemButton
+                key={path}
+                onClick={() => handleEditToggle({ category: active, path })}
+              >
                 <ListItemText
                   primary={alias}
                   secondary={description || path}

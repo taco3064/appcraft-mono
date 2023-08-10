@@ -7,6 +7,7 @@ export type {
   EditorProviderProps,
   FixedT,
   OptionValues,
+  OverrideNamingProps,
   PureProp,
   RenderOverrideItem,
   RenderOverrideItemArgs,

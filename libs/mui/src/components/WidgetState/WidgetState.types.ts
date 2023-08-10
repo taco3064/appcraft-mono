@@ -1,6 +1,5 @@
 import type { AppBarProps } from '@mui/material/AppBar';
 import type { ConfigOptions, RootNodeWidget } from '@appcraft/types';
-import type { DialogProps } from '@mui/material/Dialog';
 import type { ReactNode } from 'react';
 
 import type * as Context from '../../contexts';
@@ -13,12 +12,11 @@ export type HeaderProps = {
   sx?: AppBarProps['sx'];
 };
 
-export interface MutationStateDialogProps
-  extends Required<Pick<DialogProps, 'open' | 'onClose'>> {
+export interface WidgetStateProps {
   ct: Context.FixedT;
   typeFile?: string;
   values: RootNodeWidget;
-  onConfirm: (e: RootNodeWidget) => void;
+  onChange: (e: RootNodeWidget) => void;
   onFetchDefinition: FetchTypeDefinition;
   onStateEdit: (target?: EditedState) => void;
 

@@ -4,7 +4,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import TextField from '@mui/material/TextField';
 import UndoIcon from '@mui/icons-material/Undo';
-import type * as Appcraft from '@appcraft/types';
+import type { FormEventHandler } from 'react';
 
 import { IconTipButton, TypeItemAction } from '../../../styles';
 import { useEditorContext } from '../../../contexts';
@@ -22,19 +22,18 @@ export default function TypeItemNaming({
   const { collectionPath, values, overrideNamingProps } = useEditorContext();
   const { typeFile, typeName } = values;
 
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    const formdata = new FormData(e.currentTarget);
+
+    e.preventDefault();
+
+    if (onRename?.(formdata.get('propName') as string)) {
+      onClose();
+    }
+  };
+
   return (
-    <ListItem
-      component="form"
-      onSubmit={(e) => {
-        const formdata = new FormData(e.currentTarget);
-
-        e.preventDefault();
-
-        if (onRename?.(formdata.get('propName') as string)) {
-          onClose();
-        }
-      }}
-    >
+    <ListItem component="form" onSubmit={handleSubmit}>
       {selectable && <ListItemIcon />}
 
       <ListItemText

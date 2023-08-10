@@ -84,10 +84,16 @@ export default function CraftedWidgetEditor({
     editedState,
     { overrideNamingProps, renderOverrideItem },
     {
+      TODO_NAMING: () =>
+        todoNames.map((todoName) => (
+          <MenuItem key={todoName} value={todoName}>
+            {todoName}
+          </MenuItem>
+        )),
       TODO_EDITOR: ({ value, ...options }) => (
         <Comp.TodoItem
           {...options}
-          ct={ct}
+          {...{ ct, editedState }}
           value={value as Record<string, Appcraft.WidgetTodo>}
           renderTodoEditor={({ values, onChange }) => (
             <CraftedTodoEditor
@@ -98,12 +104,6 @@ export default function CraftedWidgetEditor({
           )}
         />
       ),
-      TODO_NAMING: () =>
-        todoNames.map((todoName) => (
-          <MenuItem key={todoName} value={todoName}>
-            {todoName}
-          </MenuItem>
-        )),
     }
   );
 

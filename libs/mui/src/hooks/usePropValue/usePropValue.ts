@@ -5,7 +5,8 @@ import { getProps } from '../../utils';
 import { useEditorContext } from '../../contexts';
 import type { PropValueHookResult } from './usePropValue.types';
 
-export const useDisplayValue = <P = unknown>(
+const usePropValue = <P = unknown>(
+  type: 'display' | 'pure',
   propPath: string
 ): PropValueHookResult<P> => {
   const { values, renderOverrideItem, onChange } = useEditorContext();
@@ -16,8 +17,11 @@ export const useDisplayValue = <P = unknown>(
     {
       typeFile,
       typeName,
-
       value: useMemo<P>(() => {
+        if (type === 'pure') {
+          return _get(JSON.parse(stringify), [propPath]) || null;
+        }
+
         const props = getProps(
           Object.entries(JSON.parse(stringify)).reduce(
             (result, [path, value]) => ({
@@ -29,7 +33,7 @@ export const useDisplayValue = <P = unknown>(
         );
 
         return _get(props, propPath) || null;
-      }, [stringify, propPath]),
+      }, [type, stringify, propPath]),
     },
 
     {
@@ -52,35 +56,4 @@ export const useDisplayValue = <P = unknown>(
   ];
 };
 
-export const usePropValue = <P = unknown>(
-  propPath: string
-): PropValueHookResult<P> => {
-  const { values, renderOverrideItem, onChange } = useEditorContext();
-  const { typeFile, typeName } = values;
-
-  return [
-    {
-      value: (_get(values, ['props', propPath]) as P) || null,
-      typeFile,
-      typeName,
-    },
-
-    {
-      renderOverride: renderOverrideItem,
-
-      change: (value: P | null) => {
-        const { props: target } = values;
-
-        delete (target as Record<string, unknown>)?.[propPath];
-
-        onChange({
-          ...values,
-          props: {
-            ...target,
-            ...(value != null && { [propPath]: value }),
-          },
-        });
-      },
-    },
-  ];
-};
+export default usePropValue;

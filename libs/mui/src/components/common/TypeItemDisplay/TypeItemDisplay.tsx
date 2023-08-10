@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { useRef } from 'react';
 
 import { GapTypography, TypeItemAction } from '../../../styles';
-import { useDisplayValue } from '../../../hooks';
+import { usePropValue } from '../../../hooks';
 import type { TypeItemDisplayProps } from './TypeItemDisplay.types';
 
 export default function TypeItemDisplay({
@@ -20,7 +20,11 @@ export default function TypeItemDisplay({
   onClick,
 }: TypeItemDisplayProps) {
   const ref = useRef<typeof onClick>(onClick);
-  const [{ value, typeFile, typeName }, handlePure] = useDisplayValue(propPath);
+
+  const [{ value, typeFile, typeName }, handlePure] = usePropValue(
+    'display',
+    propPath
+  );
 
   const override = handlePure.renderOverride?.('display', {
     displayRef: ref,

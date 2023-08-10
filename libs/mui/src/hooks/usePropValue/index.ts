@@ -1,1 +1,1 @@
-export { useDisplayValue, usePropValue } from './usePropValue';
+export { default as usePropValue } from './usePropValue';

@@ -13,7 +13,7 @@ import type { ConfigDetailProps } from './ConfigDetail.types';
 export default function ConfigDetail({
   header,
   superiors,
-  renderOverridePureItem,
+  renderOverrideItem,
   onActionNodePick = (e) => e,
   ...props
 }: ConfigDetailProps) {
@@ -64,7 +64,7 @@ export default function ConfigDetail({
         <CraftedTypeEditor
           fixedT={ct}
           values={values}
-          renderOverridePureItem={renderOverridePureItem}
+          renderOverrideItem={renderOverrideItem}
           onChange={handleConfig.change}
           onFetchDefinition={getTypeDefinition}
         />

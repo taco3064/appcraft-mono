@@ -16,7 +16,8 @@ export default function CraftedTypeEditor<V extends OptionValues>({
   fullHeight,
   open = true,
   values,
-  renderOverridePureItem,
+  overrideNamingProps,
+  renderOverrideItem,
   onChange,
   onFetchDefinition,
 }: Types.CraftedTypeEditorProps<V>) {
@@ -44,7 +45,14 @@ export default function CraftedTypeEditor<V extends OptionValues>({
 
   return (
     <EditorProvider
-      {...{ fixedT, collectionPath, values, renderOverridePureItem, onChange }}
+      {...{
+        fixedT,
+        collectionPath,
+        values,
+        overrideNamingProps,
+        renderOverrideItem,
+        onChange,
+      }}
     >
       <Style.FullHeightCollapse
         aria-label="Properties Editor"
@@ -54,6 +62,7 @@ export default function CraftedTypeEditor<V extends OptionValues>({
         {HeaderProps && (
           <Style.WidgetAppBar
             action={toggle}
+            sx={HeaderProps.sx}
             BackButtonProps={{
               icon: <ArrowBackIcon />,
               text: ct('btn-back'),

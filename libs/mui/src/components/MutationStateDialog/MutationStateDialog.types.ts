@@ -1,23 +1,34 @@
+import type { AppBarProps } from '@mui/material/AppBar';
 import type { ConfigOptions, RootNodeWidget } from '@appcraft/types';
 import type { DialogProps } from '@mui/material/Dialog';
 import type { ReactNode } from 'react';
+import type * as Appcraft from '@appcraft/types';
 
-import type { ChangeHandler, FixedT } from '../../contexts';
+import type * as Context from '../../contexts';
+import type { EditedState, FetchTypeDefinition } from '../../hooks';
+
+export type HeaderProps = {
+  primary: string;
+  secondary?: string;
+  onBack: () => void;
+  sx?: AppBarProps['sx'];
+};
 
 export interface MutationStateDialogProps
   extends Required<Pick<DialogProps, 'open' | 'onClose'>> {
-  ct: FixedT;
+  ct: Context.FixedT;
   typeFile?: string;
   values: RootNodeWidget;
   onConfirm: (e: RootNodeWidget) => void;
+  onFetchDefinition: FetchTypeDefinition;
+  onStateEdit: (target?: EditedState) => void;
 
   renderEditor: (options: {
+    HeaderProps: HeaderProps;
+    exclude: RegExp[];
+    fixedT: Context.FixedT;
     values: ConfigOptions;
-    onChange: ChangeHandler<ConfigOptions>;
-    HeaderProps: {
-      primary: string;
-      secondary?: string;
-      onBack: () => void;
-    };
+    onChange: Context.ChangeHandler<ConfigOptions>;
+    onFetchDefinition: FetchTypeDefinition;
   }) => ReactNode;
 }

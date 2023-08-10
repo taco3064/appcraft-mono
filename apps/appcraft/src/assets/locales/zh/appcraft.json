@@ -36,17 +36,13 @@
   "ttl-category-navigation": "網站導航",
   "ttl-category-tool": "工具",
   "ttl-events": "執行事項",
-  "ttl-node-array-map": "數組渲染",
   "ttl-node-plain-text": "純文本",
   "ttl-node-widget": "特定組件",
   "ttl-props": "組件設置",
+  "ttl-select-type": "選擇類型",
   "ttl-state-nodes": "組件",
   "ttl-state-props": "設置",
   "ttl-state-todos": "事項",
   "ttl-structure": "組件結構",
-  "txt-component-setting-off": "關閉組件基礎設定",
-  "txt-component-setting-on": "開啟組件基礎設定",
-  "txt-node-array-map": "使用特定組件高效簡潔地呈現數組",
-  "txt-node-plain-text": "簡易的文本訊息內容",
-  "txt-node-widget": "使用特定組件定制所需的內容"
+  "txt-top": "主目錄"
 }

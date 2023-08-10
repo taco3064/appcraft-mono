@@ -9,7 +9,6 @@ export type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
 export interface WidgetElementProps<I extends Appcraft.WidgetOptions> {
   basePaths: PropPaths;
   ct: FixedT;
-  defaultOpen: boolean;
   index: number;
   item: I;
   event: I extends Appcraft.NodeWidget ? string[] : undefined;

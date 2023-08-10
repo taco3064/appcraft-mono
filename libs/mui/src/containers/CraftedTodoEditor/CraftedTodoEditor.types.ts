@@ -12,7 +12,7 @@ export interface CraftedTodoEditorProps
       | 'fixedT'
       | 'fullHeight'
       | 'open'
-      | 'renderOverridePureItem'
+      | 'renderOverrideItem'
       | 'onFetchDefinition'
     > {
   typeFile?: string;

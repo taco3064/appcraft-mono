@@ -4,8 +4,10 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import TextField from '@mui/material/TextField';
 import UndoIcon from '@mui/icons-material/Undo';
+import type * as Appcraft from '@appcraft/types';
 
 import { IconTipButton, TypeItemAction } from '../../../styles';
+import { useEditorContext } from '../../../contexts';
 import { useFixedT } from '../../../hooks';
 import type { TypeItemNamingProps } from './TypeItemNaming.types';
 
@@ -17,6 +19,8 @@ export default function TypeItemNaming({
   onRename,
 }: TypeItemNamingProps) {
   const ct = useFixedT();
+  const { collectionPath, values, overrideNamingProps } = useEditorContext();
+  const { typeFile, typeName } = values;
 
   return (
     <ListItem
@@ -38,6 +42,11 @@ export default function TypeItemNaming({
         primary={
           open && (
             <TextField
+              {...overrideNamingProps?.({
+                propPath: collectionPath,
+                typeFile,
+                typeName,
+              })}
               autoFocus
               fullWidth
               required

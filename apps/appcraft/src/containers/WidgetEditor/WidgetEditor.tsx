@@ -12,7 +12,26 @@ import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Service from '~appcraft/services';
 import { PersistentDrawerContent } from '~appcraft/styles';
-import type { WidgetEditorProps } from './WidgetEditor.types';
+import type * as Types from './WidgetEditor.types';
+
+const getOverrideRenderType: Types.GetOverrideRenderType = (
+  kind,
+  { typeName, propPath }
+) => {
+  if (
+    kind === 'pure' &&
+    /^(ElementState|NodeState)$/.test(typeName) &&
+    propPath === 'template.id'
+  ) {
+    return 'WIDGET_PICKER';
+  } else if (
+    kind === 'pure' &&
+    typeName === 'WrapTodo' &&
+    propPath === 'todosId'
+  ) {
+    return 'TODO_PICKER';
+  }
+};
 
 export default function WidgetEditor({
   PersistentDrawerContentProps,
@@ -23,19 +42,41 @@ export default function WidgetEditor({
   onSave,
   onTodoWrapperView,
   onWidgetWrapperView,
-}: WidgetEditorProps) {
+}: Types.WidgetEditorProps) {
   const [at, ct, wt] = Hook.useFixedT('app', 'appcraft', 'widgets');
   const [open, setOpen] = useState(false);
-
-  const [widget, handleWidget] = Hook.useWidgetValues({
-    data,
-    onSave,
-  });
+  const [widget, handleWidget] = Hook.useWidgetValues({ data, onSave });
 
   const width = Hook.useWidth();
   const renderer = useDeferredValue(widget);
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
+
+  const handleFetchData: Types.HandleFetchData = async ({
+    url,
+    method,
+    headers,
+    data,
+  }) => {
+    const { data: result } = await axios({
+      url,
+      method,
+      headers,
+      ...(data && { data }),
+    });
+
+    return result;
+  };
+
+  const handleFetchWrapper: Types.HandleFetchWrapper = async (category, id) => {
+    const { content } = await Service.getConfigById<
+      typeof category extends 'widget'
+        ? RootNodeWidget
+        : Record<string, WidgetTodo>
+    >(id);
+
+    return content;
+  };
 
   const actionNode = Hook.useNodePicker(
     () =>
@@ -92,26 +133,9 @@ export default function WidgetEditor({
         content={
           <CraftedRenderer
             options={renderer}
+            onFetchData={handleFetchData}
+            onFetchWrapper={handleFetchWrapper}
             onOutputCollect={onOutputCollect}
-            onFetchWrapper={async (category, id) => {
-              const { content } = await Service.getConfigById<
-                typeof category extends 'widget'
-                  ? RootNodeWidget
-                  : Record<string, WidgetTodo>
-              >(id);
-
-              return content;
-            }}
-            onFetchData={async ({ url, method, headers, data }) => {
-              const { data: result } = await axios({
-                url,
-                method,
-                headers,
-                ...(data && { data }),
-              });
-
-              return result;
-            }}
           />
         }
         drawer={
@@ -124,28 +148,29 @@ export default function WidgetEditor({
             onWidgetChange={handleWidget.change}
             onFetchDefinition={Service.getTypeDefinition}
             onFetchNodesAndEvents={Service.getNodesAndEvents}
-            renderOverridePureItem={({ typeName, propPath, ...props }) => {
-              if (
-                /^(ElementState|NodeState)$/.test(typeName) &&
-                propPath === 'templateWidgetId'
-              ) {
-                return (
-                  <Common.WidgetSelect
-                    {...(props as Common.WidgetSelectProps)}
-                    exclude={[data._id]}
-                    onView={onWidgetWrapperView}
-                  />
-                );
-              } else if (typeName === 'WrapTodo' && propPath === 'todosId') {
-                return (
-                  <Common.TodoWrapperSelect
-                    {...(props as Common.TodoWrapperSelectProps)}
-                    onView={onTodoWrapperView}
-                  />
-                );
-              }
+            onFetchWidgetWrapper={handleFetchWrapper}
+            renderOverrideItem={(...args) => {
+              const [, props] = args;
 
-              return null;
+              switch (getOverrideRenderType(...args)) {
+                case 'TODO_PICKER':
+                  return (
+                    <Common.TodoWrapperSelect
+                      {...(props as Common.TodoWrapperSelectProps)}
+                      onView={onTodoWrapperView}
+                    />
+                  );
+
+                case 'WIDGET_PICKER':
+                  return (
+                    <Common.WidgetSelect
+                      {...(props as Common.WidgetSelectProps)}
+                      exclude={[data._id]}
+                      onView={onWidgetWrapperView}
+                    />
+                  );
+                default:
+              }
             }}
             BackButtonProps={
               isCollapsable && {

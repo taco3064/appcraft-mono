@@ -1,5 +1,4 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 

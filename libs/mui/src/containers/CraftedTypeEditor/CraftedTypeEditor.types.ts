@@ -1,6 +1,8 @@
+import type { AppBarProps } from '@mui/material/AppBar';
+
 import type { EditorProviderProps, OptionValues } from '../../contexts';
 import type { FetchTypeDefinition } from '../../hooks';
-import type { HeaderProps, TypeListProps } from '../../components';
+import type { TypeListProps } from '../../components';
 
 export type LazyTypeListProps<V extends OptionValues> = Omit<
   TypeListProps<V>,
@@ -12,8 +14,14 @@ export type LazyTypeListProps<V extends OptionValues> = Omit<
 export interface CraftedTypeEditorProps<V extends OptionValues>
   extends Pick<TypeListProps<V>, 'exclude'>,
     Omit<EditorProviderProps<V>, 'children' | 'collectionPath'> {
-  HeaderProps?: HeaderProps;
   fullHeight?: boolean;
   open?: boolean;
   onFetchDefinition: FetchTypeDefinition;
+
+  HeaderProps?: {
+    primary: string;
+    secondary?: string;
+    onBack: () => void;
+    sx?: AppBarProps['sx'];
+  };
 }

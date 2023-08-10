@@ -63,13 +63,15 @@ const useLazyRenderer = <R>(
   const fetchRef = useRef(fetchWidgetWrapper);
   const renderRef = useRef(renderer);
 
-  const templateIds = useMemo(
+  const stringify = useMemo(
     () =>
-      extractTemplateIds(
-        getForceArray(
-          !Array.isArray(options)
-            ? options
-            : options.map(({ widget }) => widget)
+      JSON.stringify(
+        extractTemplateIds(
+          getForceArray(
+            !Array.isArray(options)
+              ? options
+              : options.map(({ widget }) => widget)
+          )
         )
       ),
     [options]
@@ -78,13 +80,16 @@ const useLazyRenderer = <R>(
   return useMemo(
     () =>
       lazy(async () => {
-        const fetchData = await fetchWidgets(templateIds, fetchRef.current);
+        const fetchData = await fetchWidgets(
+          JSON.parse(stringify),
+          fetchRef.current
+        );
 
         return {
           default: (props: R) => renderRef.current({ ...props, fetchData }),
         };
       }),
-    [templateIds]
+    [stringify]
   );
 };
 

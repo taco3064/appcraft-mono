@@ -8,9 +8,9 @@ export type WidgetMutationHook = (
   onWidgetChange: (e: Appcraft.RootNodeWidget | null) => void
 ) => [
   {
-    editedWidget: Appcraft.WidgetOptions | null;
+    editedWidget?: Appcraft.WidgetOptions;
     widgetPath: string;
-    todoPath: string | null;
+    todoPath?: string;
   },
   {
     add: (
@@ -19,7 +19,7 @@ export type WidgetMutationHook = (
       paths: PropPaths
     ) => void;
 
-    editing: (e: PropPaths | null) => void;
+    editing: (e?: PropPaths) => void;
     modify: <E extends ModifyEvent>(e: E) => void;
     remove: (e: PropPaths) => void;
     resort: (paths: PropPaths, dragIndex: number, hoverIndex: number) => void;

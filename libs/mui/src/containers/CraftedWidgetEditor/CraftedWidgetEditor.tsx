@@ -19,6 +19,20 @@ import { StateProvider } from '../../contexts';
 import { getForceArray, getNodesAndEventsKey } from '../../utils';
 import type * as Types from './CraftedWidgetEditor.types';
 
+const getActiveType: Types.GetActiveType = ({
+  editedWidgetCategory,
+  stateOpen,
+  todoPath,
+}) => {
+  if (stateOpen) {
+    return 'state';
+  } else if (editedWidgetCategory !== 'node') {
+    return 'nodes';
+  }
+
+  return todoPath ? 'todos' : 'props';
+};
+
 export default function CraftedWidgetEditor({
   BackButtonProps,
   disableCategories,
@@ -79,6 +93,12 @@ export default function CraftedWidgetEditor({
         )
     );
 
+  const active = getActiveType({
+    editedWidgetCategory: editedWidget?.category,
+    stateOpen: Boolean(widget && stateOpen),
+    todoPath,
+  });
+
   const stateEditorProps = Hook.useStateOverride(
     widget as Appcraft.RootNodeWidget,
     editedState,
@@ -130,22 +150,23 @@ export default function CraftedWidgetEditor({
         ct={ct}
         open={editedWidget?.category === 'plainText'}
         values={editedWidget as Appcraft.PlainTextWidget}
-        onClose={() => handleMutation.editing(null)}
+        onClose={() => handleMutation.editing()}
         onConfirm={handleMutation.modify}
       />
 
-      <Comp.MutationStateDialog
-        {...{ ct, onFetchDefinition }}
-        open={Boolean(widget && stateOpen)}
-        typeFile={stateTypeFile}
-        values={widget as Appcraft.RootNodeWidget}
-        onClose={() => setStateOpen(false)}
-        onConfirm={onWidgetChange}
-        onStateEdit={setEditedState}
-        renderEditor={(props) => (
-          <CraftedTypeEditor {...props} {...stateEditorProps} />
-        )}
-      />
+      {active === 'state' && (
+        <Comp.WidgetState
+          {...{ ct, onFetchDefinition }}
+          typeFile={stateTypeFile}
+          values={widget as Appcraft.RootNodeWidget}
+          onBack={() => setStateOpen(false)}
+          onChange={onWidgetChange}
+          onStateEdit={setEditedState}
+          renderEditor={(props) => (
+            <CraftedTypeEditor {...props} {...stateEditorProps} fullHeight />
+          )}
+        />
+      )}
 
       {editedWidget?.category === 'node' && (
         <CraftedTodoEditor
@@ -158,7 +179,7 @@ export default function CraftedWidgetEditor({
             onFetchDefinition,
           }}
           fullHeight
-          open={Boolean(todoPath)}
+          open={active === 'todos'}
           typeFile={todoTypeFile}
           values={editedWidget.todos?.[todoPath as string]}
           onChange={(todo) =>
@@ -170,7 +191,7 @@ export default function CraftedWidgetEditor({
           HeaderProps={{
             primary: ct('ttl-events'),
             secondary: todoPath || undefined,
-            onBack: () => handleMutation.editing(null),
+            onBack: () => handleMutation.editing(),
           }}
         />
       )}
@@ -190,13 +211,13 @@ export default function CraftedWidgetEditor({
               onFetchDefinition,
             }}
             fullHeight
-            open={Boolean(!todoPath)}
+            open={active === 'props'}
             values={editedWidget}
             onChange={handleMutation.modify}
             HeaderProps={{
               primary: ct('ttl-props'),
               secondary: editedWidget.type.replace(/([A-Z])/g, ' $1'),
-              onBack: () => handleMutation.editing(null),
+              onBack: () => handleMutation.editing(),
             }}
           />
         )}
@@ -204,7 +225,7 @@ export default function CraftedWidgetEditor({
         <Style.FullHeightCollapse
           aria-label="Widget Structure"
           fullHeight
-          in={editedWidget?.category !== 'node'}
+          in={active === 'nodes'}
         >
           <Style.WidgetAppBar
             BackButtonProps={BackButtonProps}

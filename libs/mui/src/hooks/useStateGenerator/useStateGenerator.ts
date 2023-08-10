@@ -1,5 +1,5 @@
 import _get from 'lodash/get';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Util from '../../utils';
@@ -8,44 +8,42 @@ import type * as Types from './useStateGenerator.types';
 const useStateGenerator: Types.StateGeneratorHook = (
   typeFile,
   category,
-  state
+  widget,
+  onChange
 ) => {
   const [editing, setEditing] = useState<Types.EditingState>(null);
 
-  const [stateValues, setStateValues] = useState(() =>
-    JSON.parse(JSON.stringify(state || {}))
-  );
-
-  useEffect(() => {
-    setStateValues(JSON.parse(JSON.stringify(state || {})));
-  }, [state]);
-
   return [
-    { editing, stateValues },
+    editing,
 
     {
       clear: () => setEditing(null),
 
       change: (config) => {
         if (editing) {
-          const { [category]: target, ...states } = stateValues;
           const { mixedTypes } = config;
           const newState = Util.getProps<Appcraft.WidgetState>(config.props);
 
+          const { [category]: target, ...states } =
+            _get(widget, ['state']) || {};
+
           setEditing({ path: editing?.path || '', config });
 
-          setStateValues({
-            ...states,
-            [category]: {
-              ...target,
-              [editing.path]: { ...newState, mixedTypes },
+          onChange({
+            ...widget,
+            state: {
+              ...states,
+              [category]: {
+                ...target,
+                [editing.path]: { ...newState, mixedTypes },
+              },
             },
           });
         }
       },
 
       edit: (path) => {
-        const { [category]: target } = stateValues;
+        const { [category]: target } = _get(widget, ['state']) || {};
 
         setEditing({
           path,
@@ -54,10 +52,15 @@ const useStateGenerator: Types.StateGeneratorHook = (
       },
 
       remove: (path) => {
-        const { [category]: target, ...states } = stateValues;
+        const { [category]: target = {}, ...states } =
+          _get(widget, ['state']) || {};
 
         delete target[path];
-        setStateValues({ ...states, [category]: target });
+
+        onChange({
+          ...widget,
+          state: { ...states, [category]: target },
+        });
       },
     },
   ];

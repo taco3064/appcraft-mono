@@ -37,12 +37,12 @@ const useStateSelection: StateSelectionHook = (
               delete state[path];
             }
 
-            onChange(
-              _set(values, 'state', {
+            onChange({
+              ..._set(values, 'state', {
                 ...$state,
                 [category]: state,
-              })
-            );
+              }),
+            });
           },
         }),
   ];

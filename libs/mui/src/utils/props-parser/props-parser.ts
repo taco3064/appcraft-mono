@@ -33,7 +33,10 @@ export const splitProps: Types.SplitProps = (target, paths = []) => {
       }),
       {}
     );
-  } else if (_isPlainObject(target)) {
+  } else if (
+    _isPlainObject(target) &&
+    paths[paths.length - 1] !== 'mixedTypes'
+  ) {
     return Object.entries(target as object).reduce(
       (result, [key, value]) => ({
         ...result,

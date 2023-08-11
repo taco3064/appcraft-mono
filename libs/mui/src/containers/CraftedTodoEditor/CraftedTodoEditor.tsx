@@ -158,7 +158,10 @@ export default function CraftedTodoEditor({
 
               <Comp.TodoFlowControls
                 {...{ ct, disableCategories }}
-                onTodoAdd={handleTodo.create}
+                onTodoAdd={(...e) => {
+                  onEditToggle?.(true);
+                  handleTodo.create(...e);
+                }}
               />
             </Rf.ReactFlowProvider>
           </Style.TodoBackground>

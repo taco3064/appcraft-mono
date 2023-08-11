@@ -55,6 +55,20 @@ export default function CraftedTodoEditor({
     { onChange, onEditToggle }
   );
 
+  const handleNormalBack = () => {
+    if (editing) {
+      const { mixedTypes } = editing.config || {};
+      const todo = getProps<WidgetTodo>(editing.config?.props);
+
+      handleTodo.cancel();
+
+      onChange({
+        ...values,
+        [todo.id]: !mixedTypes ? todo : { ...todo, mixedTypes },
+      });
+    }
+  };
+
   return (
     <>
       {variant === 'popup' && (
@@ -111,17 +125,7 @@ export default function CraftedTodoEditor({
                 <Button
                   fullWidth
                   startIcon={<ArrowBackIcon />}
-                  onClick={() => {
-                    const { mixedTypes } = values?.config || {};
-                    const todo = getProps<WidgetTodo>(editing.config?.props);
-
-                    handleTodo.cancel();
-
-                    onChange({
-                      ...values,
-                      [todo.id]: !mixedTypes ? todo : { ...todo, mixedTypes },
-                    });
-                  }}
+                  onClick={handleNormalBack}
                 >
                   {ct('btn-back')}
                 </Button>

@@ -1,5 +1,5 @@
+import React from 'react';
 import _get from 'lodash/get';
-import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import type { TemplateTodosHook } from './useTemplateTodos.types';
 
@@ -8,9 +8,10 @@ const useTemplateTodos: TemplateTodosHook = (
   editedState,
   onFetchWidgetWrapper
 ) => {
-  const [todos, setTodos] = useState<string[]>([]);
+  const [, startTransition] = React.useTransition();
+  const [todos, setTodos] = React.useState<string[]>([]);
   const { category, path } = editedState || {};
-  const ref = useRef(onFetchWidgetWrapper);
+  const ref = React.useRef(onFetchWidgetWrapper);
 
   const templateId = _get(widget, [
     'state',
@@ -20,23 +21,28 @@ const useTemplateTodos: TemplateTodosHook = (
     'id',
   ] as string[]);
 
-  useImperativeHandle(ref, () => onFetchWidgetWrapper, [onFetchWidgetWrapper]);
+  React.useImperativeHandle(ref, () => onFetchWidgetWrapper, [
+    onFetchWidgetWrapper,
+  ]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (templateId) {
-      ref
-        .current('widget', templateId)
-        .then(({ state }) =>
-          setTodos(
-            Object.values(_get(state, ['todos']) || {}).map(
-              ({ alias }) => alias
-            )
-          )
-        )
-        .catch((err) => {
-          console.error(err);
-          setTodos([]);
-        });
+      startTransition(() => {
+        (async () => {
+          try {
+            const { state } = await ref.current('widget', templateId);
+
+            setTodos(
+              Object.values(_get(state, ['todos']) || {}).map(
+                ({ alias }) => alias
+              )
+            );
+          } catch (e) {
+            console.error(e);
+            setTodos([]);
+          }
+        })();
+      });
     }
 
     return () => setTodos([]);

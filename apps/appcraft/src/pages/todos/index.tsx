@@ -6,7 +6,7 @@ import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import axios from 'axios';
 import { Style, getEventHandler } from '@appcraft/mui';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import type { OutputCollectEvent } from '@appcraft/mui';
 import type { WidgetTodo } from '@appcraft/types';
 
@@ -23,32 +23,36 @@ export default function Todos() {
   const { pathname } = useRouter();
   const [nt, tt] = useFixedT('nav', 'todos');
   const [steperProps, setStepperProps] = useState<OutputCollectEvent>();
+  const [, startTransition] = useTransition();
 
   const [action, handleActionNodePick] = useNodePickHandle(
     HIERARCHY_LIST_ACTIONS
   );
 
-  const handleRun = async (data: HierarchyData<string>) => {
-    const { content: todos } = await getConfigById<Record<string, WidgetTodo>>(
-      data._id
-    );
+  const handleRun = (data: HierarchyData<string>) =>
+    startTransition(() => {
+      (async () => {
+        const { content: todos } = await getConfigById<
+          Record<string, WidgetTodo>
+        >(data._id);
 
-    const handleFn = getEventHandler(todos, {
-      onOutputCollect: (e) => setStepperProps(e),
-      onFetchData: async ({ url, method, headers, data }) => {
-        const { data: result } = await axios({
-          url,
-          method,
-          headers,
-          ...(data && { data }),
+        const handleFn = getEventHandler(todos, {
+          onOutputCollect: (e) => setStepperProps(e),
+          onFetchData: async ({ url, method, headers, data }) => {
+            const { data: result } = await axios({
+              url,
+              method,
+              headers,
+              ...(data && { data }),
+            });
+
+            return result;
+          },
         });
 
-        return result;
-      },
+        await handleFn();
+      })();
     });
-
-    await handleFn();
-  };
 
   return (
     <>

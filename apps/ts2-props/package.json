@@ -1,5 +1,5 @@
 {
   "devDependencies": {
-    "@appcraft/mui": "^0.0.83"
+    "@appcraft/widgets": "0.0.1"
   }
 }

@@ -27,7 +27,7 @@ const useWidgetValues: WidgetValuesHook = ({ data, onSave }) => {
     widget,
 
     {
-      change: useCallback((e) => setWidget(!e ? null : e), [setWidget]),
+      change: useCallback((e) => setWidget(!e ? null : e), []),
       save: () => mutation.mutate({ ...data, content: widget }),
 
       reset: () =>

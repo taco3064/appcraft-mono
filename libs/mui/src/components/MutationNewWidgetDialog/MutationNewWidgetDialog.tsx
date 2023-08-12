@@ -4,13 +4,13 @@ import Tabs from '@mui/material/Tabs';
 import TextField from '@mui/material/TextField';
 import { FormEvent, useState } from 'react';
 import { nanoid } from 'nanoid';
+import { typeMap } from '@appcraft/widgets';
 import { useTheme } from '@mui/material/styles';
 import type * as Appcraft from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
 import { WidgetTypeSelect } from '../common';
 import { getDefaultProps } from '../../utils';
-import { typeMap } from '../../widgets';
 import type { MutationNewWidgetDialogProps } from './MutationNewWidgetDialog.types';
 
 export default function MutationNewWidgetDialog({

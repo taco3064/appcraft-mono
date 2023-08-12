@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getEventHandler } from '@appcraft/mui';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import type { OutputData } from '@appcraft/mui';
 import type { WidgetTodo } from '@appcraft/types';
 
@@ -15,6 +15,7 @@ const useTodoValues: TodoValuesHook = ({ data, onOpen, onSave }) => {
   const [at] = useFixedT('app');
   const [duration, setDuration] = useState(0);
   const [outputs, setOutputs] = useState<OutputData[]>([]);
+  const [, startTransition] = useTransition();
 
   const [todos, setTodos] = useState<Record<string, WidgetTodo>>(() =>
     JSON.parse(JSON.stringify(data?.content || {}))
@@ -36,27 +37,27 @@ const useTodoValues: TodoValuesHook = ({ data, onOpen, onSave }) => {
       reset: () => setTodos(JSON.parse(JSON.stringify(data?.content || {}))),
       save: () => mutation.mutate({ ...data, content: todos }),
 
-      run: async () => {
-        const handleFn = getEventHandler(todos, {
-          onOutputCollect: ({ duration, outputs }) => {
-            setDuration(duration);
-            setOutputs(outputs);
-          },
-          onFetchData: async ({ url, method, headers, data }) => {
-            const { data: result } = await axios({
-              url,
-              method,
-              headers,
-              ...(data && { data }),
-            });
+      run: () =>
+        startTransition(() => {
+          const handleFn = getEventHandler(todos, {
+            onOutputCollect: ({ duration, outputs }) => {
+              setDuration(duration);
+              setOutputs(outputs);
+            },
+            onFetchData: async ({ url, method, headers, data }) => {
+              const { data: result } = await axios({
+                url,
+                method,
+                headers,
+                ...(data && { data }),
+              });
 
-            return result;
-          },
-        });
+              return result;
+            },
+          });
 
-        await handleFn();
-        onOpen();
-      },
+          handleFn().then(() => onOpen());
+        }),
     },
   ];
 };

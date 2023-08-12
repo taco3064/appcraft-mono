@@ -1,8 +1,8 @@
 import LinearProgress from '@mui/material/LinearProgress';
+import { LazyWidget } from '@appcraft/widgets';
 import { Suspense } from 'react';
 
 import * as Hook from '../../hooks';
-import { LazyWidget } from '../../widgets';
 import type * as Types from './CraftedRenderer.types';
 
 function RendererContent({

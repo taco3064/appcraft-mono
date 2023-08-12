@@ -1,5 +1,5 @@
 import _toPath from 'lodash/toPath';
-import { startTransition, useState } from 'react';
+import { useState } from 'react';
 import type { PropTypesDef, StructureProp } from '@appcraft/types';
 
 import { getPropPath } from '../../utils';
@@ -21,21 +21,20 @@ const useTypeItems = <V extends OptionValues>(
   const properties = usePropertiesSorting(collection);
   const paths = _toPath(path);
 
-  const handleDelete = (fn: () => string) =>
-    startTransition(() => {
-      const propPath = getPropPath([...paths, fn()]);
-      const { mixedTypes, props } = widgetValues;
+  const handleDelete = (fn: () => string) => {
+    const propPath = getPropPath([...paths, fn()]);
+    const { mixedTypes, props } = widgetValues;
 
-      delete mixedTypes?.[propPath];
+    delete mixedTypes?.[propPath];
 
-      for (const key of Object.keys(props || {})) {
-        if (key.startsWith(propPath)) {
-          delete props?.[key];
-        }
+    for (const key of Object.keys(props || {})) {
+      if (key.startsWith(propPath)) {
+        delete props?.[key];
       }
+    }
 
-      onChange({ ...widgetValues } as V);
-    });
+    onChange({ ...widgetValues } as V);
+  };
 
   if (collection.type === 'exact') {
     return [

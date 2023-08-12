@@ -78,7 +78,6 @@ export const getInitialState: Types.GetInitailState = (generator, alias) => {
         nodeType: generator,
         alias,
         description: '',
-        templateWidgetId: '',
         defaultValue: undefined,
       };
   }

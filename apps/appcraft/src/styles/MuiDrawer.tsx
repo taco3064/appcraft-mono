@@ -146,6 +146,7 @@ export const PersistentDrawerContent = (() => {
         flexGrow: 1,
         width: 'auto !important',
         borderRadius: `${theme.spacing(2)} !important`,
+        overflow: 'hidden auto',
       },
       space: {
         ...(!open && {

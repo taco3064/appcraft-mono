@@ -1,6 +1,6 @@
 import _get from 'lodash/get';
 import _set from 'lodash/set';
-import { lazy } from 'react';
+import { lazy, useTransition } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Util from '../../utils';
@@ -47,8 +47,10 @@ const useRender: Types.RenderHook = (
   { onFetchData, onFetchTodoWrapper, onLazyRetrieve, onOutputCollect },
   globalState,
   render
-) =>
-  function generate(widget, queue) {
+) => {
+  const [, startTransition] = useTransition();
+
+  return function generate(widget, queue) {
     if (widget.category === 'node') {
       const Widget = onLazyRetrieve(widget.type);
 
@@ -64,25 +66,29 @@ const useRender: Types.RenderHook = (
                 onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
               })
             ).forEach(([propPath, { todos, handlers }]) =>
-              _set(props, propPath, async (...e: unknown[]) => {
-                const start = Date.now();
-                const outputs: Util.OutputData[] = [];
+              _set(props, propPath, (...e: unknown[]) =>
+                startTransition(() => {
+                  (async () => {
+                    const start = Date.now();
+                    const outputs: Util.OutputData[] = [];
 
-                for (const handler of handlers) {
-                  const args = [{ [Util.OUTPUTS_SYMBOL]: outputs }, ...e];
+                    for (const handler of handlers) {
+                      const args = [{ [Util.OUTPUTS_SYMBOL]: outputs }, ...e];
 
-                  outputs.push(...(await handler(...args)));
-                }
+                      outputs.push(...(await handler(...args)));
+                    }
 
-                onOutputCollect?.(
-                  {
-                    duration: Date.now() - start,
-                    outputs,
-                    todos,
-                  },
-                  propPath
-                );
-              })
+                    onOutputCollect?.(
+                      {
+                        duration: Date.now() - start,
+                        outputs,
+                        todos,
+                      },
+                      propPath
+                    );
+                  })();
+                })
+              )
             );
           } else if (type === 'nodes') {
             Object.entries(globalState.nodes(widget, queue)).forEach(
@@ -115,5 +121,6 @@ const useRender: Types.RenderHook = (
       props: { children: widget.content || '' },
     });
   };
+};
 
 export default useRender;

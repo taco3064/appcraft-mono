@@ -3,7 +3,6 @@ import _isPlainObject from 'lodash/isPlainObject';
 import _set from 'lodash/set';
 import _template from 'lodash/template';
 import _toPath from 'lodash/toPath';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import type * as Appcraft from '@appcraft/types';
 

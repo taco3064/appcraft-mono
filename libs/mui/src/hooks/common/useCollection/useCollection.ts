@@ -11,7 +11,7 @@ const useCollection = <V extends OptionValues>(defaultValues?: Collection) => {
   const source = useMemo<object>(() => {
     const { props = {}, mixedTypes = {} } = values;
 
-    return Object.keys({ ...props, ...mixedTypes }).reduce((result, path) => {
+    return Object.keys({ ...mixedTypes, ...props }).reduce((result, path) => {
       if (path.startsWith(collectionPath)) {
         _set(result, path, _get(props, [path], null));
       }

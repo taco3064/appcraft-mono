@@ -2,9 +2,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
+import { MUI_WIDGETS } from '@appcraft/widgets';
 import type { ReactNode } from 'react';
 
-import { MUI_WIDGETS } from '../../../widgets';
 import type { WidgetTypeSelectProps } from './WidgetTypeSelect.types';
 
 export default function WidgetTypeSelect({

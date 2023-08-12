@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.93](https://github.com/taco3064/appcraft-mono/compare/v0.0.92...v0.0.93) (2023-08-12)
+
+
+### Bug Fixes
+
+* **@appcraft/widgets:** update type file path ([63667b4](https://github.com/taco3064/appcraft-mono/commit/63667b48c6ef79c1fc51293f43513098dec5b987))
+
 ### [0.0.92](https://github.com/taco3064/appcraft-mono/compare/v0.0.91...v0.0.92) (2023-08-12)
 
 ### [0.0.91](https://github.com/taco3064/appcraft-mono/compare/v0.0.90...v0.0.91) (2023-08-12)

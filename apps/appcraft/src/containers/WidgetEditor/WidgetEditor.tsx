@@ -5,7 +5,7 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import axios from 'axios';
 import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
 import { useState } from 'react';
-import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
+import type { RootNodeWidget, WidgetState, WidgetTodo } from '@appcraft/types';
 
 import * as Common from '../common';
 import * as Comp from '~appcraft/components';
@@ -30,6 +30,12 @@ const getOverrideRenderType: Types.GetOverrideRenderType = (
     propPath === 'todosId'
   ) {
     return 'TODO_PICKER';
+  } else if (
+    kind === 'pure' &&
+    typeName === 'SetStateTodo' &&
+    /^states\[\d+\]\.state$/.test(propPath)
+  ) {
+    return 'STATE_PICKER';
   }
 };
 
@@ -152,6 +158,24 @@ export default function WidgetEditor({
               const [, props] = args;
 
               switch (getOverrideRenderType(...args)) {
+                case 'STATE_PICKER': {
+                  const options: [string, WidgetState][] = Object.entries(
+                    Object.assign({}, ...Object.values(widget?.state || {}))
+                  );
+
+                  return (
+                    <Common.StateSelect
+                      {...(props as Omit<Common.StateSelectProps, 'options'>)}
+                      options={options.map(
+                        ([path, { alias, description }]) => ({
+                          value: path,
+                          primary: alias,
+                          secondary: description,
+                        })
+                      )}
+                    />
+                  );
+                }
                 case 'TODO_PICKER':
                   return (
                     <Common.TodoWrapperSelect

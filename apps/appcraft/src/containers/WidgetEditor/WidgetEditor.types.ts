@@ -7,7 +7,7 @@ import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
 import type { TodoWrapperSelectProps, WidgetSelectProps } from '../common';
 
 //* Variables
-type OverrideRenderType = 'WIDGET_PICKER' | 'TODO_PICKER';
+type OverrideRenderType = 'WIDGET_PICKER' | 'STATE_PICKER' | 'TODO_PICKER';
 
 export type HandleFetchData = Appcraft.CraftedRendererProps['onFetchData'];
 

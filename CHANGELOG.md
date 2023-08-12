@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.92](https://github.com/taco3064/appcraft-mono/compare/v0.0.91...v0.0.92) (2023-08-12)
+
 ### [0.0.91](https://github.com/taco3064/appcraft-mono/compare/v0.0.90...v0.0.91) (2023-08-12)
 
 

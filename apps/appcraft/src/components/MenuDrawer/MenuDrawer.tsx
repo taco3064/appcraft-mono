@@ -35,7 +35,13 @@ export default function MenuDrawer({
             component={Toolbar}
             sx={(theme) => ({ paddingX: `${theme.spacing(2)} !important` })}
           >
-            <Typography variant="h5" color="primary" marginRight="auto" gap={2}>
+            <Typography
+              variant="h5"
+              color="primary"
+              marginRight="auto"
+              gap={2}
+              fontFamily='"comic sans MS"'
+            >
               <Style.SquareLogo
                 sx={(theme) => ({ fontSize: theme.spacing(5) })}
               />

@@ -25,8 +25,8 @@ export default function AppHeader({
           underline="hover"
           variant="h5"
           href="/"
+          marginRight="auto"
           icon={<SquareLogo sx={(theme) => ({ fontSize: theme.spacing(5) })} />}
-          style={{ marginRight: 'auto' }}
         >
           Appcraft
         </Link>

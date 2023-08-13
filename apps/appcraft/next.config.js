@@ -23,7 +23,7 @@ const nextConfig = {
       destination: `${process.env.SERVICE_PROXY}/:path*`,
     },
   ],
-  webpack: ({ plugins, resolve, ...config }, context) => {
+  webpack: ({ module, plugins, resolve, ...config }, context) => {
     const base = webpackBase(context.buildId, __dirname);
 
     //* 取得 App 支援的 Languages
@@ -33,6 +33,16 @@ const nextConfig = {
 
     return {
       ...config,
+      module: {
+        ...module,
+        rules: [
+          ...module.rules,
+          {
+            test: /\.svg$/,
+            use: ['@svgr/webpack'],
+          },
+        ],
+      },
       resolve: {
         ...resolve,
         alias: {

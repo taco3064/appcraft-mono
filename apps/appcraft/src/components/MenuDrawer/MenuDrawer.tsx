@@ -1,4 +1,3 @@
-import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Divider from '@mui/material/Divider';
 import Icon from '@mui/material/Icon';
@@ -32,13 +31,14 @@ export default function MenuDrawer({
     >
       <List
         subheader={
-          <ListSubheader component={Toolbar}>
-            <Typography
-              variant="h5"
-              color="primary"
-              style={{ marginRight: 'auto' }}
-            >
-              <AutoAwesomeMosaicIcon />
+          <ListSubheader
+            component={Toolbar}
+            sx={(theme) => ({ paddingX: `${theme.spacing(2)} !important` })}
+          >
+            <Typography variant="h5" color="primary" marginRight="auto" gap={2}>
+              <Style.SquareLogo
+                sx={(theme) => ({ fontSize: theme.spacing(5) })}
+              />
               Appcraft
             </Typography>
 

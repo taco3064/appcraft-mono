@@ -1,11 +1,10 @@
 import AppBar from '@mui/material/AppBar';
-import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 
-import { Link } from '~appcraft/styles';
+import { Link, SquareLogo } from '~appcraft/styles';
 import type * as Types from './AppHeader.types';
 
 export default function AppHeader({
@@ -26,7 +25,7 @@ export default function AppHeader({
           underline="hover"
           variant="h5"
           href="/"
-          icon={<AutoAwesomeMosaicIcon />}
+          icon={<SquareLogo sx={(theme) => ({ fontSize: theme.spacing(5) })} />}
           style={{ marginRight: 'auto' }}
         >
           Appcraft

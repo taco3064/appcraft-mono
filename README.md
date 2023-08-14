@@ -5,7 +5,7 @@ Appcraft is a platform that allows you to create custom websites with a unique l
 ## Appcraft Features
 
 - **Theme Styles**<br/>
-  You can use Appcraft to build your own theme styles, so your website can look and feel unique. You can customize colors, fonts, layouts, and more.
+  You can use Appcraft to build your own theme styles, so your website can look and feel unique.
 - **Todo Events**<br/>
   You can use Appcraft to manage reusable todo event configurations. This is great for managing the content and functionality of your website.
 - **Widget Storage**<br/>

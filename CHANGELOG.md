@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.94](https://github.com/taco3064/appcraft-mono/compare/v0.0.93...v0.0.94) (2023-08-14)
+
+
+### Bug Fixes
+
+* fixed todos bugs ([8c528a0](https://github.com/taco3064/appcraft-mono/commit/8c528a06d8cc12fb95b32a95e0a8685dd8f13342))
+* udpate styles ([a54f2a4](https://github.com/taco3064/appcraft-mono/commit/a54f2a46af4ac83e01c54a5ca57b38df9172a792))
+
 ### [0.0.93](https://github.com/taco3064/appcraft-mono/compare/v0.0.92...v0.0.93) (2023-08-12)
 
 

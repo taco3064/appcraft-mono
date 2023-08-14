@@ -34,12 +34,16 @@ const getSuperiorTodos: Types.GetSuperiorTodos = (
     (result, [stateKey, { category, propPath, options }]) => {
       if (
         category === 'todos' &&
-        stateKey.replace(new RegExp(`.todos.${propPath}$`), '') === state.path
+        stateKey.replace(new RegExp(`.*todos.${propPath}$`), '') ===
+          (state.path || '')
       ) {
         const { alias } = options;
 
         superiors.forEach(({ id, path }) => {
-          const state = _get(states, [id, path as string]);
+          const state = _get(states, [
+            id,
+            path?.replace(/\[\d+\]$/, '') as string,
+          ]);
 
           const todos: Record<string, Appcraft.WidgetTodo> = _get(state, [
             'options',

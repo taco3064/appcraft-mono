@@ -2,6 +2,7 @@ import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Menu from '@mui/material/Menu';
@@ -12,7 +13,7 @@ import { Suspense, useState } from 'react';
 import type { Userinfo } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
-import { Link, SizedListItemIcon } from '~appcraft/styles';
+import { Link } from '~appcraft/styles';
 import type * as Types from './UserinfoMenuToggle.types';
 
 export default function UserinfoMenuToggle({
@@ -45,22 +46,34 @@ export default function UserinfoMenuToggle({
         onClick={() => setAnchorEl(null)}
         style={{ transform: menuTransform }}
       >
-        <ListItemButton dense disableGap href="/settings" component={Link}>
-          <SizedListItemIcon size="small">
+        <ListItemButton
+          dense
+          disableGap
+          disableGutters
+          href="/settings"
+          component={Link}
+        >
+          <ListItemIcon style={{ justifyContent: 'center' }}>
             <SettingsOutlinedIcon />
-          </SizedListItemIcon>
+          </ListItemIcon>
 
-          <ListItemText primary={at('btn-settings')} />
+          <ListItemText
+            primary={at('btn-settings')}
+            primaryTypographyProps={{ variant: 'subtitle1', marginRight: 2 }}
+          />
         </ListItemButton>
 
         <Divider />
 
-        <ListItemButton dense href={signoutURL}>
-          <SizedListItemIcon size="small">
+        <ListItemButton dense disableGutters href={signoutURL}>
+          <ListItemIcon style={{ justifyContent: 'center' }}>
             <LogoutIcon />
-          </SizedListItemIcon>
+          </ListItemIcon>
 
-          <ListItemText primary={at('btn-signout')} />
+          <ListItemText
+            primary={at('btn-signout')}
+            primaryTypographyProps={{ variant: 'subtitle1', marginRight: 2 }}
+          />
         </ListItemButton>
       </Menu>
     </Suspense>

@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react';
 import type { ConfigData, RootNodeWidget } from '@appcraft/types';
 import type * as Appcraft from '@appcraft/mui';
 
-import { PersistentDrawerContent } from '~appcraft/styles';
+import { ResponsiveDrawer } from '~appcraft/styles';
 import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
 import type { TodoWrapperSelectProps, WidgetSelectProps } from '../common';
 
@@ -35,7 +35,7 @@ export interface WidgetEditorProps {
   };
 
   PersistentDrawerContentProps?: Omit<
-    ComponentProps<typeof PersistentDrawerContent>,
+    ComponentProps<typeof ResponsiveDrawer>,
     'ContentProps' | 'DrawerProps' | 'content' | 'drawer' | 'open' | 'onClose'
   >;
 }

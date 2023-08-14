@@ -60,12 +60,12 @@ const useRender: Types.RenderHook = (
           if (type === 'props') {
             return Util.getProps(globalState.props(widget, queue), props);
           } else if (type === 'todos') {
-            Object.entries(
-              globalState.todos(widget, queue, {
-                onFetchData,
-                onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
-              })
-            ).forEach(([propPath, { todos, handlers }]) =>
+            const todos = globalState.todos(widget, queue, {
+              onFetchData,
+              onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
+            });
+
+            Object.entries(todos).forEach(([propPath, { todos, handlers }]) =>
               _set(props, propPath, (...e: unknown[]) =>
                 startTransition(() => {
                   (async () => {

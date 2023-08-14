@@ -27,7 +27,14 @@ export default function AppHeader({
           href="/"
           fontFamily='"comic sans MS"'
           marginRight="auto"
-          icon={<SquareLogo sx={(theme) => ({ fontSize: theme.spacing(5) })} />}
+          icon={
+            <SquareLogo
+              sx={(theme) => ({
+                fontSize: theme.spacing(5),
+                color: 'primary.dark',
+              })}
+            />
+          }
         >
           Appcraft
         </Link>

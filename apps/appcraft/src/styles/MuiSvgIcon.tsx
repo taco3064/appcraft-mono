@@ -11,9 +11,9 @@ export const SquareLogo = withStyles(
   ),
   (theme) => ({
     root: {
-      background: theme.palette.text.primary,
       borderRadius: theme.spacing(1),
       color: theme.palette.primary.dark,
+      transform: 'rotate(-45deg)',
     },
   }),
   { name: 'SquareLogo' }

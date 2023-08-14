@@ -11,7 +11,7 @@ import * as Common from '../common';
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Service from '~appcraft/services';
-import { PersistentDrawerContent } from '~appcraft/styles';
+import { ResponsiveDrawer } from '~appcraft/styles';
 import type * as Types from './WidgetEditor.types';
 
 const getOverrideRenderType: Types.GetOverrideRenderType = (
@@ -129,7 +129,7 @@ export default function WidgetEditor({
         />
       )}
 
-      <PersistentDrawerContent
+      <ResponsiveDrawer
         {...PersistentDrawerContentProps}
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}

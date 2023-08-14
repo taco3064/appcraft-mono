@@ -9,8 +9,8 @@ import { useEffect, useState } from 'react';
 import * as Hook from '~appcraft/hooks';
 import { Breadcrumbs } from '../common';
 import { CommonButton, TodoOutputStepper } from '~appcraft/components';
+import { ResponsiveDrawer } from '~appcraft/styles';
 import { getTypeDefinition } from '~appcraft/services';
-import { PersistentDrawerContent } from '~appcraft/styles';
 import type { TodoEditorProps } from './TodoEditor.types';
 
 export default function TodoEditor({
@@ -88,7 +88,7 @@ export default function TodoEditor({
         />
       )}
 
-      <PersistentDrawerContent
+      <ResponsiveDrawer
         {...PersistentDrawerContentProps}
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{

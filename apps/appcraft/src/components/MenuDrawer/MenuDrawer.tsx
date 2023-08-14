@@ -1,10 +1,10 @@
-import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Divider from '@mui/material/Divider';
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import Toolbar from '@mui/material/Toolbar';
@@ -32,13 +32,23 @@ export default function MenuDrawer({
     >
       <List
         subheader={
-          <ListSubheader component={Toolbar}>
+          <ListSubheader
+            component={Toolbar}
+            sx={(theme) => ({ paddingX: `${theme.spacing(2)} !important` })}
+          >
             <Typography
               variant="h5"
               color="primary"
-              style={{ marginRight: 'auto' }}
+              marginRight="auto"
+              gap={2}
+              fontFamily='"comic sans MS"'
             >
-              <AutoAwesomeMosaicIcon />
+              <Style.SquareLogo
+                sx={(theme) => ({
+                  fontSize: theme.spacing(5),
+                  color: 'primary.dark',
+                })}
+              />
               Appcraft
             </Typography>
 
@@ -58,7 +68,7 @@ export default function MenuDrawer({
             component={Style.Link}
             onClick={(e) => onClose(e, 'escapeKeyDown')}
           >
-            <Style.SizedListItemIcon>
+            <ListItemIcon>
               <Icon
                 color="info"
                 fontSize="large"
@@ -66,7 +76,7 @@ export default function MenuDrawer({
               >
                 {icon}
               </Icon>
-            </Style.SizedListItemIcon>
+            </ListItemIcon>
 
             <ListItemText
               primary={nt(title)}

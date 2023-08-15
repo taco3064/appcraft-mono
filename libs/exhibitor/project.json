@@ -27,7 +27,8 @@
         "project": "libs/exhibitor/package.json",
         "entryFile": "libs/exhibitor/src/index.ts",
         "external": [
-          "react/jsx-runtime"
+          "react/jsx-runtime",
+          "core-js"
         ],
         "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
         "compiler": "babel",

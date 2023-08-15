@@ -1,10 +1,10 @@
-import type * as Appcraft from '@appcraft/types';
+import type { FetchWrapperHandler } from '@appcraft/exhibitor';
+import type { RootNodeWidget } from '@appcraft/types';
 
 import type { EditedState } from '../useStateOverride';
-import type { FetchWrapperHandler } from '../useRender';
 
 export type TemplateTodosHook = (
-  widget: Appcraft.RootNodeWidget,
+  widget: RootNodeWidget,
   editedState: EditedState | undefined,
   onFetchWidgetWrapper: FetchWrapperHandler<'widget'>
 ) => string[];

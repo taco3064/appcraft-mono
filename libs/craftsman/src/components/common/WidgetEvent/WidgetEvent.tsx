@@ -1,9 +1,9 @@
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 
 import { TypeItemSelection } from '../TypeItemSelection';
-import { getPropPath } from '../../../utils';
 import { useStateSelection } from '../../../hooks';
 import type { WidgetEventProps } from './WidgetEvent.types';
 
@@ -13,9 +13,9 @@ export default function WidgetEvent({
   path,
   onActive,
 }: WidgetEventProps) {
-  const [isState, selection] = useStateSelection(
+  const [_isState, selection] = useStateSelection(
     'todos',
-    getPropPath([elementName, path]),
+    ExhibitorUtil.getPropPath([elementName, path]),
     completePaths,
     (props) => <TypeItemSelection {...props} />
   );

@@ -10,21 +10,6 @@ const regs: RegExp[] = [
 export const getPropOrderSeq: Types.GetPropOrderSeq = (type) =>
   regs.findIndex((value) => value.test(type));
 
-export const getPropPath: Types.GetPropPath = (paths) =>
-  paths.reduce<string>((result, propName) => {
-    const str = propName.toString();
-
-    //* For Array
-    if (/^\d+$/.test(str)) {
-      return `${result}[${propName}]`;
-    } else if (/^\[\d+\]$/.test(str)) {
-      return `${result}${propName}`;
-    }
-
-    //* For Object
-    return `${result ? `${result}.` : ''}${propName}`;
-  }, '');
-
 export const sortPropPaths = <E = string>(
   paths: E[],
   getPath: (el: E) => string = (el) => el as string

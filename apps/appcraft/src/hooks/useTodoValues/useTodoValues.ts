@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { getEventHandler } from '@appcraft/craftsman';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useState, useTransition } from 'react';
-import type { OutputData } from '@appcraft/craftsman';
+import type { OutputData } from '@appcraft/exhibitor';
 import type { WidgetTodo } from '@appcraft/types';
 
 import { upsertConfig } from '~appcraft/services';
@@ -39,7 +39,7 @@ const useTodoValues: TodoValuesHook = ({ data, onOpen, onSave }) => {
 
       run: () =>
         startTransition(() => {
-          const handleFn = getEventHandler(todos, {
+          const handleFn = ExhibitorUtil.getEventHandler(todos, {
             onOutputCollect: ({ duration, outputs }) => {
               setDuration(duration);
               setOutputs(outputs);

@@ -4,10 +4,11 @@ import Container from '@mui/material/Container';
 import Head from 'next/head';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import axios from 'axios';
-import { Style, getEventHandler } from '@appcraft/craftsman';
+import { CraftsmanStyle } from '@appcraft/craftsman';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useRouter } from 'next/router';
 import { useState, useTransition } from 'react';
-import type { OutputCollectEvent } from '@appcraft/craftsman';
+import type { OutputCollectEvent } from '@appcraft/exhibitor';
 import type { WidgetTodo } from '@appcraft/types';
 
 import { CommonButton, TodoOutputStepper } from '~appcraft/components';
@@ -36,7 +37,7 @@ export default function Todos() {
           Record<string, WidgetTodo>
         >(data._id);
 
-        const handleFn = getEventHandler(todos, {
+        const handleFn = ExhibitorUtil.getEventHandler(todos, {
           onOutputCollect: (e) => setStepperProps(e),
           onFetchData: async ({ url, method, headers, data }) => {
             const { data: result } = await axios({
@@ -82,7 +83,7 @@ export default function Todos() {
               text={tt('btn-run')}
               onClick={() => handleRun(data)}
               icon={
-                <Style.CompositeIcon
+                <CraftsmanStyle.CompositeIcon
                   primary={AssignmentOutlinedIcon}
                   secondary={PlayCircleIcon}
                 />
@@ -92,7 +93,7 @@ export default function Todos() {
         />
       </PageContainer>
 
-      <Style.FlexDialog
+      <CraftsmanStyle.FlexDialog
         fullWidth
         maxWidth="xs"
         open={Boolean(steperProps)}
@@ -101,7 +102,7 @@ export default function Todos() {
         <Container disableGutters>
           <TodoOutputStepper {...steperProps} />
         </Container>
-      </Style.FlexDialog>
+      </CraftsmanStyle.FlexDialog>
     </>
   );
 }

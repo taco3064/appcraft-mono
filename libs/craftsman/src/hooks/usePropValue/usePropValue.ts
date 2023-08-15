@@ -1,7 +1,7 @@
 import _get from 'lodash/get';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useMemo } from 'react';
 
-import { getProps } from '../../utils';
 import { useEditorContext } from '../../contexts';
 import type { PropValueHookResult } from './usePropValue.types';
 
@@ -22,7 +22,7 @@ const usePropValue = <P = unknown>(
           return _get(JSON.parse(stringify), [propPath]) || null;
         }
 
-        const props = getProps(
+        const props = ExhibitorUtil.getProps(
           Object.entries(JSON.parse(stringify)).reduce(
             (result, [path, value]) => ({
               ...result,

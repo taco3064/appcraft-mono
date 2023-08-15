@@ -1,9 +1,10 @@
 import _get from 'lodash/get';
 import _toPath from 'lodash/toPath';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useMemo, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import { getForceArray, getPropPath } from '../../utils';
+import { getForceArray } from '../../utils';
 import type * as Types from './useStructure.types';
 import type { PropPaths } from '../../utils';
 
@@ -33,7 +34,7 @@ const useStructure: Types.StructureHook = (() => {
   return (widget) => {
     const [type, setType] = useState<Appcraft.NodeType>('element');
     const [paths, setPaths] = useState<PropPaths>([]);
-    const path = getPropPath(paths);
+    const path = ExhibitorUtil.getPropPath(paths);
 
     return [
       {

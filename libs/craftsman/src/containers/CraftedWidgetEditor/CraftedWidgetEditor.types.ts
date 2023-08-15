@@ -1,5 +1,6 @@
 import type * as Appcraft from '@appcraft/types';
 import type { ComponentProps } from 'react';
+import type { FetchWrapperHandler } from '@appcraft/exhibitor';
 
 import { WidgetAppBar } from '../../styles';
 import type * as Comp from '../../components';
@@ -33,6 +34,6 @@ export interface CraftedWidgetEditorProps {
   renderOverrideItem?: Context.RenderOverrideItem;
   onFetchNodesAndEvents: Hook.FetchNodesAndEvents;
   onFetchDefinition: Hook.FetchTypeDefinition;
-  onFetchWidgetWrapper: Hook.FetchWrapperHandler<'widget'>;
+  onFetchWidgetWrapper: FetchWrapperHandler<'widget'>;
   onWidgetChange: (e: Appcraft.RootNodeWidget | null) => void;
 }

@@ -1,6 +1,7 @@
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useMemo } from 'react';
 
-import { getPropOrderSeq, getPropPath } from '../../utils';
+import { getPropOrderSeq } from '../../utils';
 import { useEditorContext } from '../../contexts';
 import type * as Types from './useTypeItem.types';
 
@@ -12,7 +13,7 @@ const useTypeItem: Types.TypeItemHook = (
 
   return {
     label: propName || '',
-    propPath: getPropPath([collectionPath, propName as string]),
+    propPath: ExhibitorUtil.getPropPath([collectionPath, propName as string]),
 
     category: useMemo<Types.Category | null>(() => {
       switch (getPropOrderSeq(type)) {

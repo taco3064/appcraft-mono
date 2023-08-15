@@ -2,7 +2,7 @@ import ExtensionTwoToneIcon from '@mui/icons-material/ExtensionTwoTone';
 import Head from 'next/head';
 import LinearProgress from '@mui/material/LinearProgress';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import { Style } from '@appcraft/craftsman';
+import { CraftsmanStyle } from '@appcraft/craftsman';
 import { Suspense, useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -56,7 +56,7 @@ export default function Widgets() {
         />
       </PageContainer>
 
-      <Style.FlexDialog
+      <CraftsmanStyle.FlexDialog
         fullWidth
         maxWidth="sm"
         title={{ primary: wt('ttl-preview'), secondary: preview?.name }}
@@ -66,7 +66,7 @@ export default function Widgets() {
         <Suspense fallback={<LinearProgress />}>
           {preview && <WidgetPreview id={preview.id} />}
         </Suspense>
-      </Style.FlexDialog>
+      </CraftsmanStyle.FlexDialog>
     </>
   );
 }

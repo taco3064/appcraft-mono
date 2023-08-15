@@ -1,9 +1,7 @@
 import _isPlainObject from 'lodash/isPlainObject';
-import _set from 'lodash/set';
-import type * as Appcraft from '@appcraft/types';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import type { Components } from '@mui/material/styles';
 
-import { getPropPath } from '../prop-path';
 import type * as Types from './props-parser.types';
 
 export const getForceArray = <T>(target: T | T[]) =>
@@ -46,14 +44,5 @@ export const splitProps: Types.SplitProps = (target, paths = []) => {
     );
   }
 
-  return { [getPropPath(paths)]: target };
+  return { [ExhibitorUtil.getPropPath(paths)]: target };
 };
-
-export const getProps = <P extends object>(
-  props: Appcraft.ConfigOptions['props'],
-  defaultProps?: P
-) =>
-  Object.entries(props || {}).reduce<P>(
-    (result, [propPath, value]) => _set(result, propPath, value),
-    (defaultProps || {}) as P
-  );

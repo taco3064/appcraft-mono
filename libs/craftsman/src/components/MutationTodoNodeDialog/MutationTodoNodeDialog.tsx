@@ -1,8 +1,8 @@
 import Button from '@mui/material/Button';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import type * as Appcraft from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
-import { getProps } from '../../utils';
 import type { MutationTodoNodeDialogProps } from './MutationTodoNodeDialog.types';
 
 export default function MutationTodoNodeDialog({
@@ -32,7 +32,10 @@ export default function MutationTodoNodeDialog({
             color="primary"
             onClick={(e) => {
               const { mixedTypes } = values?.config || {};
-              const todo = getProps<Appcraft.WidgetTodo>(values?.config?.props);
+
+              const todo = ExhibitorUtil.getProps<Appcraft.WidgetTodo>(
+                values?.config?.props
+              );
 
               onClose(e, 'escapeKeyDown');
               onConfirm(!mixedTypes ? todo : { ...todo, mixedTypes });

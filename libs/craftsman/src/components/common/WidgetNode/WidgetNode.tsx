@@ -1,9 +1,9 @@
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 
 import { TypeItemSelection } from '../TypeItemSelection';
-import { getPropPath } from '../../../utils';
 import { useStateSelection } from '../../../hooks';
 import type { WidgetNodeProps } from './WidgetNode.types';
 
@@ -17,7 +17,7 @@ export default function WidgetNode({
 }: WidgetNodeProps) {
   const [isState, selection] = useStateSelection(
     type,
-    getPropPath([elementName, path]),
+    ExhibitorUtil.getPropPath([elementName, path]),
     completePaths,
     (props) => (defined ? null : <TypeItemSelection {...props} />)
   );

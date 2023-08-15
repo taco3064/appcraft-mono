@@ -1,5 +1,6 @@
 import _get from 'lodash/get';
 import _set from 'lodash/set';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 
 import * as Util from '../../utils';
 import { useStateContext } from '../../contexts';
@@ -14,7 +15,7 @@ const useStateSelection: StateSelectionHook = (
   const { basePath, values, onChange } = useStateContext();
   const category = Util.getStateCategory(generator);
 
-  const path = Util.getPropPath(
+  const path = ExhibitorUtil.getPropPath(
     Array.isArray(propPath) ? propPath : [basePath, 'props', propPath]
   );
 

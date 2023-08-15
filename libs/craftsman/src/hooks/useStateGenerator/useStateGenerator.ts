@@ -1,4 +1,5 @@
 import _get from 'lodash/get';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
@@ -22,7 +23,10 @@ const useStateGenerator: Types.StateGeneratorHook = (
       change: (config) => {
         if (editing) {
           const { mixedTypes } = config;
-          const newState = Util.getProps<Appcraft.WidgetState>(config.props);
+
+          const newState = ExhibitorUtil.getProps<Appcraft.WidgetState>(
+            config.props
+          );
 
           const { [category]: target, ...states } =
             _get(widget, ['state']) || {};

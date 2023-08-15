@@ -3,8 +3,8 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import Button from '@mui/material/Button';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import TextField from '@mui/material/TextField';
+import { CraftsmanStyle } from '@appcraft/craftsman';
 import { FormEvent, useState } from 'react';
-import { Style } from '@appcraft/craftsman';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 
@@ -69,7 +69,7 @@ export default function HierarchyEditorButton({
         }
       />
 
-      <Style.FlexDialog
+      <CraftsmanStyle.FlexDialog
         fullWidth
         direction="column"
         maxWidth="xs"
@@ -106,7 +106,7 @@ export default function HierarchyEditorButton({
           label={at('lbl-description')}
           defaultValue={data.description}
         />
-      </Style.FlexDialog>
+      </CraftsmanStyle.FlexDialog>
     </>
   );
 }

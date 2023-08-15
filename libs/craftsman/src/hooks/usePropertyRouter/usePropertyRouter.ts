@@ -1,8 +1,8 @@
 import _get from 'lodash/get';
 import _toPath from 'lodash/toPath';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useCallback, useMemo } from 'react';
 
-import { getPropPath } from '../../utils';
 import { useCollection } from '../common';
 import type { PropertyRouterHook } from './usePropertyRouter.types';
 
@@ -19,12 +19,16 @@ const usePropertyRouter: PropertyRouterHook = (onCollectionPathChange) => {
     {
       back: (index) =>
         onCollectionPathChange(
-          getPropPath(paths.slice(0, (index || paths.length - 2) + 1))
+          ExhibitorUtil.getPropPath(
+            paths.slice(0, (index || paths.length - 2) + 1)
+          )
         ),
 
       to: useCallback(
         ({ propName }) =>
-          onCollectionPathChange(getPropPath([...paths, propName as string])),
+          onCollectionPathChange(
+            ExhibitorUtil.getPropPath([...paths, propName as string])
+          ),
         [paths, onCollectionPathChange]
       ),
     },

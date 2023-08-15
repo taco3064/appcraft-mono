@@ -1,8 +1,8 @@
 import _toPath from 'lodash/toPath';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useState } from 'react';
 import type { PropTypesDef, StructureProp } from '@appcraft/types';
 
-import { getPropPath } from '../../utils';
 import { useCollection, usePropertiesSorting } from '../common';
 import type { ChangeHandler, OptionValues } from '../../contexts';
 import type { TypeItem, TypeItemsHookResult } from './useTypeItems.types';
@@ -22,7 +22,7 @@ const useTypeItems = <V extends OptionValues>(
   const paths = _toPath(path);
 
   const handleDelete = (fn: () => string) => {
-    const propPath = getPropPath([...paths, fn()]);
+    const propPath = ExhibitorUtil.getPropPath([...paths, fn()]);
     const { mixedTypes, props } = widgetValues;
 
     delete mixedTypes?.[propPath];
@@ -39,7 +39,10 @@ const useTypeItems = <V extends OptionValues>(
   if (collection.type === 'exact') {
     return [
       properties.reduce<TypeItem[]>((result, options) => {
-        const propPath = getPropPath([...paths, options.propName as string]);
+        const propPath = ExhibitorUtil.getPropPath([
+          ...paths,
+          options.propName as string,
+        ]);
 
         if (exclude.every((e) => !e.test(propPath))) {
           result.push({
@@ -57,7 +60,10 @@ const useTypeItems = <V extends OptionValues>(
   if (collection?.type === 'arrayOf' && Array.isArray(collection.options)) {
     return [
       collection.options.reduce<TypeItem[]>((result, options) => {
-        const propPath = getPropPath([...paths, options.propName as string]);
+        const propPath = ExhibitorUtil.getPropPath([
+          ...paths,
+          options.propName as string,
+        ]);
 
         if (exclude.every((e) => !e.test(propPath))) {
           result.push({
@@ -78,7 +84,7 @@ const useTypeItems = <V extends OptionValues>(
 
     return [
       list.reduce<TypeItem[]>((result, propName) => {
-        const propPath = getPropPath([...paths, propName]);
+        const propPath = ExhibitorUtil.getPropPath([...paths, propName]);
 
         if (exclude.every((e) => !e.test(propPath))) {
           const options: PropTypesDef = {
@@ -104,9 +110,12 @@ const useTypeItems = <V extends OptionValues>(
               }
 
               handleDelete(() => {
-                const propPath = getPropPath([..._toPath(path), propName]);
+                const propPath = ExhibitorUtil.getPropPath([
+                  ..._toPath(path),
+                  propName,
+                ]);
 
-                const newPropPath = getPropPath([
+                const newPropPath = ExhibitorUtil.getPropPath([
                   ..._toPath(path),
                   newPropName,
                 ]);
@@ -146,7 +155,7 @@ const useTypeItems = <V extends OptionValues>(
 
     return [
       Array.from({ length }).reduce<TypeItem[]>((result, _el, i) => {
-        const propPath = getPropPath([...paths, i]);
+        const propPath = ExhibitorUtil.getPropPath([...paths, i]);
 
         if (exclude.every((e) => !e.test(propPath))) {
           const options: PropTypesDef = {

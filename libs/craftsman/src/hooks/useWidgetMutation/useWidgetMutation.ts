@@ -1,9 +1,10 @@
 import _get from 'lodash/get';
 import _set from 'lodash/set';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import { getPropPath, removeState, resortState } from '../../utils';
+import { removeState, resortState } from '../../utils';
 import type { PropPaths } from '../../utils';
 import type { WidgetMutationHook } from './useWidgetMutation.types';
 
@@ -14,7 +15,7 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
   return [
     {
       todoPath,
-      widgetPath: getPropPath(editedPaths || []),
+      widgetPath: ExhibitorUtil.getPropPath(editedPaths || []),
 
       editedWidget: !editedPaths
         ? null
@@ -60,7 +61,7 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
           onWidgetChange({ ..._set(widget, e, undefined) });
         } else {
           const index = Number.parseInt(e.pop() as string, 10);
-          const basePath = getPropPath(e);
+          const basePath = ExhibitorUtil.getPropPath(e);
           const target: Appcraft.NodeWidget[] = _get(widget, e) || [];
 
           target.splice(index, 1);
@@ -92,7 +93,7 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
             state: resortState(
               'nodes',
               widget.state || {},
-              getPropPath(paths),
+              ExhibitorUtil.getPropPath(paths),
               [dragIndex, hoverIndex],
               target.length
             ),
@@ -105,7 +106,7 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
         const widgetPaths = e.slice(0, index);
 
         setEditedPaths(widgetPaths);
-        setTodoPath(getPropPath(e.slice(index + 1)));
+        setTodoPath(ExhibitorUtil.getPropPath(e.slice(index + 1)));
       },
     },
   ];

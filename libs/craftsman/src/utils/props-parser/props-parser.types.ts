@@ -1,9 +1,5 @@
 import type * as Appcraft from '@appcraft/types';
-import type { ComponentType, LazyExoticComponent } from 'react';
 import type { Theme } from '@mui/material/styles';
-
-//* Variables
-export type LazyWidget = LazyExoticComponent<ComponentType>;
 
 //* Methods
 export type GetDefaultProps = (

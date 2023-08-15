@@ -3,7 +3,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { CraftedTodoEditor, Style } from '@appcraft/craftsman';
+import { CraftedTodoEditor, CraftsmanStyle } from '@appcraft/craftsman';
 import { useEffect, useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
@@ -41,7 +41,7 @@ export default function TodoEditor({
           <CommonButton
             btnVariant="icon"
             icon={
-              <Style.CompositeIcon
+              <CraftsmanStyle.CompositeIcon
                 primary={AssignmentOutlinedIcon}
                 secondary={PlayCircleIcon}
               />
@@ -123,13 +123,13 @@ export default function TodoEditor({
                   />
                 )}
 
-                <Style.GapTypography
+                <CraftsmanStyle.GapTypography
                   variant="subtitle1"
                   fontWeight="bolder"
                   color="primary"
                 >
                   {tt('ttl-output')}
-                </Style.GapTypography>
+                </CraftsmanStyle.GapTypography>
               </>
             }
           />

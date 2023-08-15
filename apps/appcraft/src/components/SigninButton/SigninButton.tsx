@@ -3,7 +3,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Divider from '@mui/material/Divider';
 import GoogleIcon from '@mui/icons-material/Google';
 import LoginIcon from '@mui/icons-material/Login';
-import { Style } from '@appcraft/craftsman';
+import { CraftsmanStyle } from '@appcraft/craftsman';
 import { useState } from 'react';
 
 import { CommonButton } from '../CommonButton';
@@ -26,7 +26,7 @@ export default function SigninButton({
         onClick={() => setOpen(true)}
       />
 
-      <Style.FlexDialog
+      <CraftsmanStyle.FlexDialog
         fullWidth
         maxWidth="xs"
         direction="column"
@@ -61,7 +61,7 @@ export default function SigninButton({
         >
           {at('btn-cancel')}
         </Button>
-      </Style.FlexDialog>
+      </CraftsmanStyle.FlexDialog>
     </>
   );
 }

@@ -3,13 +3,13 @@ import AppBar from '@mui/material/AppBar';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useTheme } from '@mui/material/styles';
 import type { WidgetTodo } from '@appcraft/types';
 
 import * as Comp from '../../components';
 import * as Style from '../../styles';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { getProps } from '../../utils';
 import { useFixedT, useTodoGenerator } from '../../hooks';
 import { useStateContext } from '../../contexts';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
@@ -58,7 +58,7 @@ export default function CraftedTodoEditor({
   const handleNormalBack = () => {
     if (editing) {
       const { mixedTypes } = editing.config || {};
-      const todo = getProps<WidgetTodo>(editing.config?.props);
+      const todo = ExhibitorUtil.getProps<WidgetTodo>(editing.config?.props);
 
       handleTodo.cancel();
 

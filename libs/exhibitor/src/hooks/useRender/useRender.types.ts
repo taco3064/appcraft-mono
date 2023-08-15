@@ -6,6 +6,8 @@ import type * as Util from '../../utils';
 import type { StateQueue } from '../useRendererState';
 
 //* Variables
+type LazyWidget = React.LazyExoticComponent<React.ComponentType>;
+
 export type PlainTextComponent = React.ComponentType<{
   children?: React.ReactNode;
 }>;
@@ -32,7 +34,7 @@ export type RenderHook = (
   options: {
     onFetchData: Util.FetchDataHandler;
     onFetchTodoWrapper: FetchWrapperHandler<'todo'>;
-    onLazyRetrieve: (type: string) => Util.LazyWidget;
+    onLazyRetrieve: (type: string) => LazyWidget;
     onOutputCollect?: Util.OutputCollectHandler;
   },
   globalState: ReturnType<typeof useRendererState>[1],

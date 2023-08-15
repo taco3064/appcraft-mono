@@ -1,8 +1,9 @@
 import _get from 'lodash/get';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { lazy, useImperativeHandle, useMemo, useRef } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import { getForceArray, getPropPath } from '../../utils';
+import { getForceArray } from '../../utils';
 import type { PropPaths } from '../../utils';
 import type * as Types from './useLazyWidgetElements.types';
 
@@ -15,7 +16,7 @@ const useLazyWidgetElements = <R>(
 ) => {
   const fetchRef = useRef(fetchNodesAndEvents);
   const renderRef = useRef(renderFn);
-  const path = getPropPath(paths);
+  const path = ExhibitorUtil.getPropPath(paths);
 
   const options = useMemo(() => {
     const items = getForceArray((!path ? widget : _get(widget, path)) || []);

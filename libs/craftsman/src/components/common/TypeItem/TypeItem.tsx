@@ -3,6 +3,7 @@ import Collapse from '@mui/material/Collapse';
 import LabelIcon from '@mui/icons-material/Label';
 import LabelOutlinedIcon from '@mui/icons-material/LabelOutlined';
 import Typography from '@mui/material/Typography';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useState } from 'react';
 
 import * as Hook from '../../../hooks';
@@ -12,7 +13,6 @@ import { TypeItemMixed, TypeItemMixedProps } from '../TypeItemMixed';
 import { TypeItemNaming } from '../TypeItemNaming';
 import { TypeItemPure, TypeItemPureProps } from '../TypeItemPure';
 import { TypeItemSelection } from '../TypeItemSelection';
-import { getPropPath } from '../../../utils';
 import type * as Types from './TypeItem.types';
 
 export default function TypeItem({
@@ -36,7 +36,7 @@ export default function TypeItem({
 
   const [isState, selection] = Hook.useStateSelection(
     'props',
-    getPropPath([elementName as string, propPath]),
+    ExhibitorUtil.getPropPath([elementName as string, propPath]),
     propPath,
     (props) => <TypeItemSelection {...props} />
   );

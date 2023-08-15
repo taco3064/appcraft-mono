@@ -1,7 +1,7 @@
 {
   "name": "@appcraft/exhibitor",
   "peerDependencies": {
-    "@appcraft/types": "^0.0.96",
-    "@appcraft/widgets": "^0.0.97"
+    "@appcraft/types": "^0",
+    "@appcraft/widgets": "^0"
   }
 }

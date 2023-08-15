@@ -1,8 +1,8 @@
 {
   "name": "@appcraft/craftsman",
-  "dependencies": {
-    "@appcraft/exhibitor": "^0.0.1",
-    "@appcraft/types": "^0.0.1",
-    "@appcraft/widgets": "^0.0.1"
+  "peerDependencies": {
+    "@appcraft/exhibitor": "^0.0.97",
+    "@appcraft/types": "^0.0.96",
+    "@appcraft/widgets": "^0.0.97"
   }
 }

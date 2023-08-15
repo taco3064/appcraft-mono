@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 import type { ConfigData, RootNodeWidget } from '@appcraft/types';
-import type * as Appcraft from '@appcraft/mui';
+import type * as Appcraft from '@appcraft/craftsman';
 
 import { ResponsiveDrawer } from '~appcraft/styles';
 import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';

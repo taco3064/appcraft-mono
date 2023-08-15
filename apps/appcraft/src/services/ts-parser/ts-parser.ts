@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getNodesAndEventsKey } from '@appcraft/mui';
+import { getNodesAndEventsKey } from '@appcraft/craftsman';
 import type { NodeAndEventProps } from '@appcraft/types';
 
 import { getDB } from '../common';

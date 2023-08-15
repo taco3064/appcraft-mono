@@ -1,12 +1,12 @@
 import Button from '@mui/material/Button';
 import Head from 'next/head';
-import { Style } from '@appcraft/mui';
+import { Style } from '@appcraft/craftsman';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
-import type { OutputCollectEvent } from '@appcraft/mui';
+import type { OutputCollectEvent } from '@appcraft/craftsman';
 import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';

@@ -1,5 +1,5 @@
 import type { ConfigData, RootNodeWidget } from '@appcraft/types';
-import type { CraftedWidgetEditorProps } from '@appcraft/mui';
+import type { CraftedWidgetEditorProps } from '@appcraft/craftsman';
 
 export type WidgetValuesHook = (options: {
   data: ConfigData<RootNodeWidget, string>;

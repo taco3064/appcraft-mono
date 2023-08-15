@@ -1,6 +1,6 @@
 import { DEFAULT_THEME, PALETTES } from '@appcraft/themes';
 import { PaletteOptions, createTheme } from '@mui/material/styles';
-import { getProps } from '@appcraft/mui';
+import { getProps } from '@appcraft/craftsman';
 import { useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { ConfigOptions } from '@appcraft/types';

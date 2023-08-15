@@ -11,8 +11,9 @@ import dayjs from 'dayjs';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 import { useEffect, useRef } from 'react';
 
-import * as Common from '..';
 import { AdornmentTextField, TypeItemAction } from '../../../styles';
+import { BoolInput } from '../BoolInput';
+import { NumberInput } from '../NumberInput';
 import { usePropValue } from '../../../hooks';
 import type { TypeItemPureProps } from './TypeItemPure.types';
 
@@ -90,7 +91,7 @@ export default function TypeItemPure({
                   icon={SwipeIcon}
                   InputProps={
                     {
-                      inputComponent: Common.BoolInput,
+                      inputComponent: BoolInput,
                       inputProps: {
                         label,
                         checked: Boolean(value),
@@ -113,7 +114,7 @@ export default function TypeItemPure({
                   label={label}
                   InputProps={
                     {
-                      inputComponent: Common.NumberInput,
+                      inputComponent: NumberInput,
                       inputProps: {
                         defaultValue: value as number,
                         onChange: (e: { target: { value: string } }) =>

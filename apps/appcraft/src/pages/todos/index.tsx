@@ -4,10 +4,10 @@ import Container from '@mui/material/Container';
 import Head from 'next/head';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import axios from 'axios';
-import { Style, getEventHandler } from '@appcraft/mui';
+import { Style, getEventHandler } from '@appcraft/craftsman';
 import { useRouter } from 'next/router';
 import { useState, useTransition } from 'react';
-import type { OutputCollectEvent } from '@appcraft/mui';
+import type { OutputCollectEvent } from '@appcraft/craftsman';
 import type { WidgetTodo } from '@appcraft/types';
 
 import { CommonButton, TodoOutputStepper } from '~appcraft/components';

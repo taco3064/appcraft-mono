@@ -2,7 +2,7 @@ import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import { ReactNode } from 'react';
-import { Style } from '@appcraft/mui';
+import { Style } from '@appcraft/craftsman';
 import { withStyles } from 'tss-react/mui';
 
 import type * as Types from './MuiContainer.types';

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { CraftedTypeEditorProps } from '@appcraft/mui';
+import type { CraftedTypeEditorProps } from '@appcraft/craftsman';
 import type { ConfigOptions } from '@appcraft/types';
 
 import type * as Hooks from '~appcraft/hooks';

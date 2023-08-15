@@ -3,7 +3,7 @@ import ConstructionIcon from '@mui/icons-material/Construction';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import axios from 'axios';
-import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/mui';
+import { CraftedRenderer, CraftedWidgetEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
 import type { RootNodeWidget, WidgetState, WidgetTodo } from '@appcraft/types';
 

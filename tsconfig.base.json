@@ -16,7 +16,7 @@
     "sourceMap": true,
     "target": "es2015",
     "paths": {
-      "@appcraft/mui": ["libs/mui/src/index.ts"],
+      "@appcraft/craftsman": ["libs/craftsman/src/index.ts"],
       "@appcraft/server": ["libs/server/src/index.ts"],
       "@appcraft/themes": ["libs/themes/src/index.ts"],
       "@appcraft/types": ["libs/types/src/index.ts"],

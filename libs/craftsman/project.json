@@ -1,7 +1,7 @@
 {
-  "name": "mui",
+  "name": "craftsman",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/mui/src",
+  "sourceRoot": "libs/craftsman/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -12,7 +12,7 @@
       ],
       "options": {
         "lintFilePatterns": [
-          "libs/mui/**/*.{ts,tsx,js,jsx}"
+          "libs/craftsman/**/*.{ts,tsx,js,jsx}"
         ]
       }
     },
@@ -22,18 +22,19 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/libs/mui",
-        "tsConfig": "libs/mui/tsconfig.lib.json",
-        "project": "libs/mui/package.json",
-        "entryFile": "libs/mui/src/index.ts",
+        "outputPath": "dist/libs/craftsman",
+        "tsConfig": "libs/craftsman/tsconfig.lib.json",
+        "project": "libs/craftsman/package.json",
+        "entryFile": "libs/craftsman/src/index.ts",
         "external": [
-          "react/jsx-runtime"
+          "react/jsx-runtime",
+          "core-js"
         ],
         "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
         "compiler": "babel",
         "assets": [
           {
-            "glob": "libs/mui/README.md",
+            "glob": "libs/craftsman/README.md",
             "input": ".",
             "output": "."
           }
@@ -46,7 +47,7 @@
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "options": {
-        "jestConfig": "libs/mui/jest.config.ts",
+        "jestConfig": "libs/craftsman/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -60,9 +61,9 @@
       "executor": "nx:run-commands",
       "options": {
         "commands": [
-          "tsc --noEmit -p libs/mui/tsconfig.json",
-          "tsc --noEmit -p libs/mui/tsconfig.spec.json",
-          "tsc --noEmit -p libs/mui/tsconfig.lib.json"
+          "tsc --noEmit -p libs/craftsman/tsconfig.json",
+          "tsc --noEmit -p libs/craftsman/tsconfig.spec.json",
+          "tsc --noEmit -p libs/craftsman/tsconfig.lib.json"
         ]
       }
     }

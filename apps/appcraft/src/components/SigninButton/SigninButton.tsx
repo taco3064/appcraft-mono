@@ -3,7 +3,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Divider from '@mui/material/Divider';
 import GoogleIcon from '@mui/icons-material/Google';
 import LoginIcon from '@mui/icons-material/Login';
-import { Style } from '@appcraft/mui';
+import { Style } from '@appcraft/craftsman';
 import { useState } from 'react';
 
 import { CommonButton } from '../CommonButton';

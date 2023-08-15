@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import TextField from '@mui/material/TextField';
 import { FormEvent, useState } from 'react';
-import { Style } from '@appcraft/mui';
+import { Style } from '@appcraft/craftsman';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 

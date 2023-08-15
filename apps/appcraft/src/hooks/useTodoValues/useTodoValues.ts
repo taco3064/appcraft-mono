@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { getEventHandler } from '@appcraft/mui';
+import { getEventHandler } from '@appcraft/craftsman';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useState, useTransition } from 'react';
-import type { OutputData } from '@appcraft/mui';
+import type { OutputData } from '@appcraft/craftsman';
 import type { WidgetTodo } from '@appcraft/types';
 
 import { upsertConfig } from '~appcraft/services';

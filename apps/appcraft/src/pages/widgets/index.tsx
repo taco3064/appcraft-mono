@@ -2,7 +2,7 @@ import ExtensionTwoToneIcon from '@mui/icons-material/ExtensionTwoTone';
 import Head from 'next/head';
 import LinearProgress from '@mui/material/LinearProgress';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import { Style } from '@appcraft/mui';
+import { Style } from '@appcraft/craftsman';
 import { Suspense, useState } from 'react';
 import { useRouter } from 'next/router';
 

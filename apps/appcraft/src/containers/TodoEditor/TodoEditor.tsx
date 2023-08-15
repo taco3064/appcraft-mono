@@ -3,7 +3,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { CraftedTodoEditor, Style } from '@appcraft/mui';
+import { CraftedTodoEditor, Style } from '@appcraft/craftsman';
 import { useEffect, useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';

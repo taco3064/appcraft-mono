@@ -1,4 +1,4 @@
-name: NPM Publish of mui
+name: NPM Publish of craftsman
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ on:
 
 jobs:
   publish-to-npm:
-    name: Publish mui to NPM
+    name: Publish craftsman to NPM
     runs-on: ubuntu-latest
     environment: production
     strategy:
@@ -39,12 +39,12 @@ jobs:
       - name: Build
         run: |
           npm ci
-          npx nx build mui
-          cd ./dist/libs/mui
+          npx nx build craftsman
+          cd ./dist/libs/craftsman
           npm version ${{ inputs.version }} --no-git-tag-version
 
       - uses: JS-DevTools/npm-publish@v1
         with:
-          package: ./dist/libs/mui/package.json
+          package: ./dist/libs/craftsman/package.json
           access: public
           token: ${{ secrets.NPM_TOKEN }}

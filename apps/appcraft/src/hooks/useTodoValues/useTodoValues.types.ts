@@ -1,5 +1,5 @@
 import type { ConfigData, WidgetTodo } from '@appcraft/types';
-import type { CraftedTodoEditorProps, OutputData } from '@appcraft/mui';
+import type { CraftedTodoEditorProps, OutputData } from '@appcraft/craftsman';
 
 export type TodoValuesHook = (options: {
   data: ConfigData<Record<string, WidgetTodo>, string>;

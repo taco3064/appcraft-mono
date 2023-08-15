@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getNodesAndEventsKey } from '@appcraft/mui';
+import { CraftsmanUtil } from '@appcraft/craftsman';
 import type { NodeAndEventProps } from '@appcraft/types';
 
 import { getDB } from '../common';
@@ -32,7 +32,11 @@ export const getNodesAndEvents: Types.GetNodesAndEventsService = async (
   const data: NodeAndEventProps = { nodes: {}, events: {} };
 
   for await (const { typeFile, typeName } of options) {
-    const key = getNodesAndEventsKey({ category: 'node', typeFile, typeName });
+    const key = CraftsmanUtil.getNodesAndEventsKey({
+      category: 'node',
+      typeFile,
+      typeName,
+    });
     const node = await db?.get('nodes', key);
     const event = await db?.get('events', key);
 

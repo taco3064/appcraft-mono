@@ -1,6 +1,6 @@
 import { DEFAULT_THEME, PALETTES } from '@appcraft/themes';
 import { PaletteOptions, createTheme } from '@mui/material/styles';
-import { getProps } from '@appcraft/mui';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useEffect, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { ConfigOptions } from '@appcraft/types';
@@ -94,7 +94,7 @@ export const useThemeStyle: Types.ThemeStyleHook = () => {
         try {
           const { content } = await getConfigById<ConfigOptions>(id);
 
-          return getProps<PaletteOptions>(content.props);
+          return ExhibitorUtil.getProps<PaletteOptions>(content.props);
         } catch (e) {
           console.warn(e);
 

@@ -1,7 +1,7 @@
 import Container from '@mui/material/Container';
 import ReplayIcon from '@mui/icons-material/Replay';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { CraftedTypeEditor } from '@appcraft/mui';
+import { CraftedTypeEditor } from '@appcraft/craftsman';
 
 import { Breadcrumbs } from '../common';
 import { CommonButton } from '~appcraft/components';

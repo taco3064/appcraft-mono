@@ -1,0 +1,7 @@
+{
+  "name": "@appcraft/exhibitor",
+  "dependencies": {
+    "@appcraft/types": "^0.0.1",
+    "@appcraft/widgets": "^0.0.1"
+  }
+}

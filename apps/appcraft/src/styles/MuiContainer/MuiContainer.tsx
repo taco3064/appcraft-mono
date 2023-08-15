@@ -1,8 +1,7 @@
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
-import { ReactNode } from 'react';
-import { Style } from '@appcraft/mui';
+import { CraftsmanStyle } from '@appcraft/craftsman';
 import { withStyles } from 'tss-react/mui';
 
 import type * as Types from './MuiContainer.types';
@@ -30,7 +29,7 @@ export const PageContainer = withStyles(
   }: Types.PageContainerProps) => (
     <Container {...props} disableGutters classes={containerClasses}>
       <Toolbar role="toolbar" disableGutters variant="dense">
-        <Style.AutoBreakTypography
+        <CraftsmanStyle.AutoBreakTypography
           {...{ primary, secondary }}
           classes={{ root: titleClassName }}
           primaryTypographyProps={{ variant: 'h5', color: 'secondary' }}

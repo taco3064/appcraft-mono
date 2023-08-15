@@ -1,6 +1,0 @@
-{
-  "name": "@appcraft/mui",
-  "dependencies": {
-    "@appcraft/widgets": "0.0.93"
-  }
-}

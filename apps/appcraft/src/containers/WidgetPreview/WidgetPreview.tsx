@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CraftedRenderer } from '@appcraft/mui';
+import { CraftedRenderer } from '@appcraft/exhibitor';
 import { useQuery } from '@tanstack/react-query';
 import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
 

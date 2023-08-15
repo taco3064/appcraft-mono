@@ -1,12 +1,12 @@
 import Button from '@mui/material/Button';
 import Head from 'next/head';
-import { Style } from '@appcraft/mui';
+import { CraftsmanStyle } from '@appcraft/craftsman';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
-import type { OutputCollectEvent } from '@appcraft/mui';
+import type { OutputCollectEvent } from '@appcraft/exhibitor';
 import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
@@ -96,7 +96,7 @@ export default function Detail() {
         />
       </PageContainer>
 
-      <Style.FlexDialog
+      <CraftsmanStyle.FlexDialog
         disableContentGutter
         disableContentJustifyCenter
         fullWidth
@@ -107,9 +107,9 @@ export default function Detail() {
         onClose={() => setOutput(undefined)}
       >
         {output && <TodoOutputStepper {...output} />}
-      </Style.FlexDialog>
+      </CraftsmanStyle.FlexDialog>
 
-      <Style.FlexDialog
+      <CraftsmanStyle.FlexDialog
         disableContentGutter
         disableContentPadding
         fullScreen
@@ -145,7 +145,7 @@ export default function Detail() {
             }}
           />
         )}
-      </Style.FlexDialog>
+      </CraftsmanStyle.FlexDialog>
     </>
   );
 }

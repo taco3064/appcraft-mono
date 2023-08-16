@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.100](https://github.com/taco3064/appcraft-mono/compare/v0.0.99...v0.0.100) (2023-08-16)
+
+
+### Features
+
+* **@appcraft/craftsman:** add locales provider to manager fixedT ([aa332e5](https://github.com/taco3064/appcraft-mono/commit/aa332e5f5320ea2631a223efc24a037bc80a3385))
+
 ### [0.0.99](https://github.com/taco3064/appcraft-mono/compare/v0.0.98...v0.0.99) (2023-08-15)
 
 ### [0.0.98](https://github.com/taco3064/appcraft-mono/compare/v0.0.97...v0.0.98) (2023-08-15)

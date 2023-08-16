@@ -6,7 +6,7 @@ import axios from 'axios';
 import { CraftedRenderer } from '@appcraft/exhibitor';
 import { CraftedWidgetEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
-import type { RootNodeWidget, WidgetState, WidgetTodo } from '@appcraft/types';
+import type { MainWidget, WidgetState, WidgetTodo } from '@appcraft/types';
 
 import * as Common from '../common';
 import * as Comp from '~appcraft/components';
@@ -76,9 +76,7 @@ export default function WidgetEditor({
 
   const handleFetchWrapper: Types.HandleFetchWrapper = async (category, id) => {
     const { content } = await Service.getConfigById<
-      typeof category extends 'widget'
-        ? RootNodeWidget
-        : Record<string, WidgetTodo>
+      typeof category extends 'widget' ? MainWidget : Record<string, WidgetTodo>
     >(id);
 
     return content;

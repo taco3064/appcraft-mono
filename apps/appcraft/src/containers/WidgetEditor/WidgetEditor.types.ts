@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react';
-import type { ConfigData, RootNodeWidget } from '@appcraft/types';
+import type { ConfigData, MainWidget } from '@appcraft/types';
 import type * as Exhibitor from '@appcraft/exhibitor';
 import type * as Craftsman from '@appcraft/craftsman';
 
@@ -22,7 +22,7 @@ export type GetOverrideRenderType = (
 
 //* Component Props
 export interface WidgetEditorProps {
-  data: ConfigData<RootNodeWidget, string>;
+  data: ConfigData<MainWidget, string>;
 
   onActionNodePick?: NodePickerFn<'expand' | 'reset' | 'save'>;
   onOutputCollect?: Exhibitor.OutputCollectHandler;

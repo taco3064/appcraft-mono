@@ -1,4 +1,3 @@
-import Button from '@mui/material/Button';
 import Head from 'next/head';
 import { CraftsmanStyle } from '@appcraft/craftsman';
 import { useQuery } from '@tanstack/react-query';
@@ -7,40 +6,39 @@ import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import type { OutputCollectEvent } from '@appcraft/exhibitor';
-import type { MainWidget, WidgetTodo } from '@appcraft/types';
+import type { LayoutWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
 import { CommonButton, TodoOutputStepper } from '~appcraft/components';
 import { PageContainer } from '~appcraft/styles';
-import { TodoEditor, WidgetEditor } from '~appcraft/containers';
+import { TodoEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 import type { HierarchyData } from '~appcraft/services';
 
+const PAGE_ACTIONS = ['reset', 'save'];
 const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];
-const WIDGET_ACTIONS = ['expand', 'reset', 'save'];
 
 export default function Detail() {
-  const [at, wt, tt] = Hook.useFixedT('app', 'widgets', 'todos');
+  const [at, pt, tt] = Hook.useFixedT('app', 'pages', 'todos');
   const { enqueueSnackbar } = useSnackbar();
   const { pathname, query } = useRouter();
   const [output, setOutput] = useState<OutputCollectEvent>();
   const [todoHierarchy, setTodoHierarchy] = useState<HierarchyData<string>>();
 
   const theme = useTheme();
-  const height = Hook.useHeight();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
 
-  const [widgetAction, handleWidgetActionPick] =
-    Hook.useNodePickHandle(WIDGET_ACTIONS);
+  const [pageAction, handlePageActionPick] =
+    Hook.useNodePickHandle(PAGE_ACTIONS);
 
   const [todoAction, handleTodoActionPick] =
     Hook.useNodePickHandle(TODO_ACTIONS);
 
-  const { data: widget, refetch } = useQuery({
+  const { data: layouts, refetch } = useQuery({
     queryKey: [id],
-    queryFn: findConfig<MainWidget>,
+    queryFn: findConfig<LayoutWidget[]>,
     refetchOnWindowFocus: false,
   });
 
@@ -55,45 +53,18 @@ export default function Detail() {
       <PageContainer
         ContentProps={{ disableGutters: true }}
         maxWidth="lg"
-        primary={wt('ttl-detail')}
+        primary={pt('ttl-detail')}
         secondary={superiors[id]}
         action={
           <>
-            {widgetAction?.expand}
-            {widgetAction?.reset}
-            {widgetAction?.save}
+            {pageAction?.reset}
+            {pageAction?.save}
           </>
         }
       >
         <Head>
-          <title>Appcraft | {wt('ttl-detail')}</title>
+          <title>Appcraft | {pt('ttl-detail')}</title>
         </Head>
-
-        <WidgetEditor
-          data={widget}
-          superiors={{ names: superiors, breadcrumbs }}
-          onActionNodePick={handleWidgetActionPick}
-          onSave={refetch}
-          onTodoWrapperView={setTodoHierarchy}
-          onWidgetWrapperView={(data) =>
-            global.window?.open(`/widgets/detail?id=${data._id}`, '_blank')
-          }
-          onOutputCollect={(e, eventName) =>
-            enqueueSnackbar(tt('msg-event-outputs', { name: eventName }), {
-              variant: 'info',
-              action: () => (
-                <Button color="inherit" onClick={() => setOutput(e)}>
-                  {at('btn-confirm')}
-                </Button>
-              ),
-            })
-          }
-          PersistentDrawerContentProps={{
-            disableGutters: true,
-            maxWidth: false,
-            height: (theme) => `calc(${height} - ${theme.spacing(30.25)})`,
-          }}
-        />
       </PageContainer>
 
       <CraftsmanStyle.FlexDialog

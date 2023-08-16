@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
-import type { RootNodeWidget } from '@appcraft/types';
+import type { MainWidget } from '@appcraft/types';
 
 import { upsertConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
@@ -11,12 +11,12 @@ const useWidgetValues: WidgetValuesHook = ({ data, onSave }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [at] = useFixedT('app');
 
-  const [widget, setWidget] = useState<RootNodeWidget>(
+  const [widget, setWidget] = useState<MainWidget>(
     () => data?.content?.type && JSON.parse(JSON.stringify(data.content || {}))
   );
 
   const mutation = useMutation({
-    mutationFn: upsertConfig<RootNodeWidget>,
+    mutationFn: upsertConfig<MainWidget>,
     onSuccess: () => {
       enqueueSnackbar(at('msg-succeed-update'), { variant: 'success' });
       onSave?.();

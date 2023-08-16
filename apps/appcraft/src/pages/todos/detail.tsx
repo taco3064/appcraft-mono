@@ -44,7 +44,7 @@ export default function Detail() {
       }
     >
       <Head>
-        <title>Appcraft | {tt('ttl-detail', { name: superiors[id] })}</title>
+        <title>Appcraft | {tt('ttl-detail')}</title>
       </Head>
 
       <TodoEditor

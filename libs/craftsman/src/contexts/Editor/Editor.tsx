@@ -28,7 +28,6 @@ export const useEditorContext = <V extends Types.OptionValues>() => {
 export default function EditorProvider<V extends Types.OptionValues>({
   children,
   collectionPath,
-  fixedT,
   values,
   overrideNamingProps,
   renderOverrideItem,
@@ -40,14 +39,13 @@ export default function EditorProvider<V extends Types.OptionValues>({
 
   const value = React.useMemo<Types.EditorContextValue<V>>(
     () => ({
-      fixedT,
       collectionPath,
       values,
       handleChangeRef,
       overrideNamingPropsRef,
       renderOverrideItemRef,
     }),
-    [fixedT, collectionPath, values]
+    [collectionPath, values]
   );
 
   React.useImperativeHandle(handleChangeRef, () => onChange, [onChange]);

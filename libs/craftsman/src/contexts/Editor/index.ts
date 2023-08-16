@@ -5,7 +5,6 @@ export type {
   DisplayProp,
   EditorContextValue,
   EditorProviderProps,
-  FixedT,
   OptionValues,
   OverrideNamingProps,
   PureProp,

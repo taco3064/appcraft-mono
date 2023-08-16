@@ -6,7 +6,6 @@ import type { PropPathRouterHandler } from '../../hooks';
 
 //* Variables
 export type ChangeHandler<E extends OptionValues> = (e: E) => void;
-export type FixedT = (key: string, options?: object) => string;
 export type OptionValues = Appcraft.NodeWidget | Appcraft.ConfigOptions;
 
 export type DisplayProp =
@@ -57,7 +56,6 @@ export type OverrideNamingProps = (options: {
 //* Context Value
 export interface EditorContextValue<V extends OptionValues> {
   collectionPath: string;
-  fixedT?: FixedT;
   values?: V;
   handleChangeRef?: MutableRefObject<ChangeHandler<V>>;
   overrideNamingPropsRef?: MutableRefObject<OverrideNamingProps | undefined>;

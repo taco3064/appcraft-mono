@@ -11,16 +11,17 @@ import type * as Appcraft from '@appcraft/types';
 import { FlexDialog } from '../../styles';
 import { WidgetTypeSelect } from '../common';
 import { getDefaultProps } from '../../utils';
+import { useLocalesContext } from '../../contexts';
 import type { MutationNewWidgetDialogProps } from './MutationNewWidgetDialog.types';
 
 export default function MutationNewWidgetDialog({
-  ct,
   disablePlaintext = false,
   open,
   onClose,
   onConfirm,
 }: MutationNewWidgetDialogProps) {
   const theme = useTheme();
+  const ct = useLocalesContext();
   const [data, setData] = useState<Appcraft.EntityWidgets>();
 
   const [active, setActive] =
@@ -81,7 +82,6 @@ export default function MutationNewWidgetDialog({
           size="small"
           margin="dense"
           variant="outlined"
-          ct={ct}
           label={ct('lbl-widget-type')}
           defaultValue=""
           onChange={({ target: { value } }) =>

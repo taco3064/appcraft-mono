@@ -13,7 +13,6 @@ export default function Breadcrumbs({
   ...props
 }: Types.BreadcrumbsProps) {
   const hasBreadcrumbs = Boolean(children?.length);
-
   const [open, setOpen] = useState(false);
 
   const options = children

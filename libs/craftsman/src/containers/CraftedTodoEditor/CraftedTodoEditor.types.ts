@@ -8,11 +8,7 @@ export interface CraftedTodoEditorProps
   extends Pick<TodoFlowControlsProps, 'disableCategories'>,
     Pick<
       CraftedTypeEditorProps<Appcraft.ConfigOptions>,
-      | 'HeaderProps'
-      | 'fixedT'
-      | 'fullHeight'
-      | 'renderOverrideItem'
-      | 'onFetchDefinition'
+      'HeaderProps' | 'fullHeight' | 'renderOverrideItem' | 'onFetchDefinition'
     > {
   typeFile?: string;
   values?: Record<string, Appcraft.WidgetTodo>;

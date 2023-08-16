@@ -14,14 +14,15 @@ import type * as Appcraft from '@appcraft/types';
 
 import { ActionButton } from './TodoFlowConrols.types';
 import { TodoIcon } from '../../styles';
+import { useLocalesContext } from '../../contexts';
 import type { TodoFlowControlsProps } from './TodoFlowConrols.types';
 
 export default function TodoFlowControls({
-  ct,
   disableCategories,
   onTodoAdd,
 }: TodoFlowControlsProps) {
   const { fitView, zoomIn, zoomOut } = useReactFlow();
+  const ct = useLocalesContext();
   const disables = new Set(disableCategories);
   const fitViewDebounce = useMemo(() => _debounce(fitView, 200), [fitView]);
   const nodes = useNodes();

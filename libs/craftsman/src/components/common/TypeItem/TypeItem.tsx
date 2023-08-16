@@ -13,6 +13,7 @@ import TypeItemNaming from '../TypeItemNaming';
 import TypeItemPure, { TypeItemPureProps } from '../TypeItemPure';
 import TypeItemSelection from '../TypeItemSelection';
 import { IconTipButton } from '../../../styles';
+import { useLocalesContext } from '../../../contexts';
 import type * as Types from './TypeItem.types';
 
 export default function TypeItem({
@@ -26,7 +27,7 @@ export default function TypeItem({
   onRename,
   onSubitemView,
 }: Types.TypeItemProps) {
-  const ct = Hook.useFixedT();
+  const ct = useLocalesContext();
   const [naming, setNaming] = useState(!options.propName);
   const { category, label, propPath } = Hook.useTypeItem(options);
 

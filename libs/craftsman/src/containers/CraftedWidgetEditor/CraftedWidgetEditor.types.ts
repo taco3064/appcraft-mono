@@ -4,7 +4,7 @@ import type { FetchWrapperHandler } from '@appcraft/exhibitor';
 
 import { WidgetAppBar } from '../../styles';
 import type * as Comp from '../../components';
-import type * as Context from '../../contexts';
+import type * as Ctx from '../../contexts';
 import type * as Hook from '../../hooks';
 
 //* Methods
@@ -25,13 +25,12 @@ export type LazyWidgetElementsProps = Omit<
 export interface CraftedWidgetEditorProps {
   BackButtonProps?: ComponentProps<typeof WidgetAppBar>['BackButtonProps'];
   disableCategories?: Comp.TodoFlowControlsProps['disableCategories'];
-  fixedT?: Context.FixedT;
   stateTypeFile?: string;
   todoTypeFile?: string;
   version?: string;
-  widget?: Appcraft.MainWidget;
-  overrideNamingProps?: Context.OverrideNamingProps;
-  renderOverrideItem?: Context.RenderOverrideItem;
+  widget: Appcraft.MainWidget;
+  overrideNamingProps?: Ctx.OverrideNamingProps;
+  renderOverrideItem?: Ctx.RenderOverrideItem;
   onFetchNodesAndEvents: Hook.FetchNodesAndEvents;
   onFetchDefinition: Hook.FetchTypeDefinition;
   onFetchWidgetWrapper: FetchWrapperHandler<'widget'>;

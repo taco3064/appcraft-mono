@@ -1,13 +1,12 @@
 import type { ReactNode } from 'react';
 import type { WidgetTodo } from '@appcraft/types';
 
-import type { RenderOverrideItemArgs, FixedT } from '../../contexts';
+import type { RenderOverrideItemArgs } from '../../contexts';
 import type * as Hook from '../../hooks';
 
 type BaseProps = RenderOverrideItemArgs<'display'>[1];
 
 export interface TodoItemProps extends Omit<BaseProps, 'value'> {
-  ct: FixedT;
   editedState?: Hook.EditedState;
   value?: Record<string, WidgetTodo>;
 

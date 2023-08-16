@@ -12,6 +12,7 @@ import _get from 'lodash/get';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Style from '../../styles';
+import { useLocalesContext } from '../../contexts';
 import { useStateGenerator } from '../../hooks';
 import type * as Types from './WidgetState.types';
 
@@ -19,7 +20,6 @@ const STATE_EXCLUDE: RegExp[] = [/^mixedTypes$/];
 const TABS: Appcraft.StateCategory[] = ['props', 'nodes', 'todos'];
 
 export default function WidgetState({
-  ct,
   typeFile = './node_modules/@appcraft/types/src/widgets/state.types.d.ts',
   values,
   renderEditor,
@@ -28,6 +28,7 @@ export default function WidgetState({
   onFetchDefinition,
   onStateEdit,
 }: Types.WidgetStateProps) {
+  const ct = useLocalesContext();
   const [active, setActive] = React.useState<Appcraft.StateCategory>(TABS[0]);
 
   const [editing, handleState] = useStateGenerator(
@@ -99,7 +100,6 @@ export default function WidgetState({
       {editing ? (
         renderEditor({
           exclude: STATE_EXCLUDE,
-          fixedT: ct,
           values: editing.config,
           onChange: handleState.change,
           onFetchDefinition,

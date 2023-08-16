@@ -1,5 +1,4 @@
-import type * as Appcraft from '@appcraft/types';
-import type { FixedT } from '../../contexts';
+import type { WidgetTodo } from '@appcraft/types';
 
 export enum ActionButton {
   state = 'btn-set-state',
@@ -11,7 +10,6 @@ export enum ActionButton {
 }
 
 export interface TodoFlowControlsProps {
-  ct: FixedT;
-  disableCategories?: Appcraft.WidgetTodo['category'][];
-  onTodoAdd: (category: Appcraft.WidgetTodo['category']) => void;
+  disableCategories?: WidgetTodo['category'][];
+  onTodoAdd: (category: WidgetTodo['category']) => void;
 }

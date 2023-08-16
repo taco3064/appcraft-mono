@@ -7,8 +7,7 @@ import UndoIcon from '@mui/icons-material/Undo';
 import type { FormEventHandler } from 'react';
 
 import { IconTipButton, TypeItemAction } from '../../../styles';
-import { useEditorContext } from '../../../contexts';
-import { useFixedT } from '../../../hooks';
+import { useEditorContext, useLocalesContext } from '../../../contexts';
 import type { TypeItemNamingProps } from './TypeItemNaming.types';
 
 export default function TypeItemNaming({
@@ -18,7 +17,7 @@ export default function TypeItemNaming({
   onClose,
   onRename,
 }: TypeItemNamingProps) {
-  const ct = useFixedT();
+  const ct = useLocalesContext();
   const { collectionPath, values, overrideNamingProps } = useEditorContext();
   const { typeFile, typeName } = values;
 

@@ -8,14 +8,14 @@ import _get from 'lodash/get';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Suspense, useState } from 'react';
-import type * as Appcraft from '@appcraft/types';
+import type { PlainTextWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Comp from '../../components';
 import * as Hook from '../../hooks';
 import * as Style from '../../styles';
 import { CraftedTodoEditor } from '../CraftedTodoEditor';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { StateProvider } from '../../contexts';
+import { StateProvider, useLocalesContext } from '../../contexts';
 import { getForceArray, getNodesAndEventsKey } from '../../utils';
 import type * as Types from './CraftedWidgetEditor.types';
 
@@ -36,7 +36,6 @@ const getActiveType: Types.GetActiveType = ({
 export default function CraftedWidgetEditor({
   BackButtonProps,
   disableCategories,
-  fixedT,
   stateTypeFile,
   todoTypeFile,
   version,
@@ -48,26 +47,26 @@ export default function CraftedWidgetEditor({
   onFetchWidgetWrapper,
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
-  const ct = Hook.useFixedT(fixedT);
+  const ct = useLocalesContext();
   const [newWidgetOpen, setNewWidgetOpen] = useState(false);
   const [stateOpen, setStateOpen] = useState(false);
   const [editedState, setEditedState] = useState<Hook.EditedState>();
 
   const todoNames = Hook.useTemplateTodos(
-    widget as Appcraft.MainWidget,
+    widget,
     editedState,
     onFetchWidgetWrapper
   );
 
   const [{ breadcrumbs, childrenCound, paths, type }, onRedirect] =
-    Hook.useStructure(widget as Appcraft.MainWidget);
+    Hook.useStructure(widget);
 
   const [{ editedWidget, widgetPath, todoPath }, handleMutation] =
-    Hook.useWidgetMutation(widget as Appcraft.MainWidget, onWidgetChange);
+    Hook.useWidgetMutation(widget, onWidgetChange);
 
   const LazyWidgetElements =
     Hook.useLazyWidgetElements<Types.LazyWidgetElementsProps>(
-      widget as Appcraft.MainWidget,
+      widget,
       paths,
       version,
       onFetchNodesAndEvents,
@@ -100,7 +99,7 @@ export default function CraftedWidgetEditor({
   });
 
   const stateEditorProps = Hook.useStateOverride(
-    widget as Appcraft.MainWidget,
+    widget,
     editedState,
     { overrideNamingProps, renderOverrideItem },
     {
@@ -114,10 +113,10 @@ export default function CraftedWidgetEditor({
         <Comp.TodoItem
           {...options}
           {...{ ct, editedState }}
-          value={value as Record<string, Appcraft.WidgetTodo>}
+          value={value as Record<string, WidgetTodo>}
           renderTodoEditor={({ values, onChange, onEditToggle }) => (
             <CraftedTodoEditor
-              {...{ fixedT, values, onChange, onEditToggle, onFetchDefinition }}
+              {...{ values, onChange, onEditToggle, onFetchDefinition }}
               fullHeight
               variant="normal"
               typeFile={todoTypeFile}
@@ -131,6 +130,7 @@ export default function CraftedWidgetEditor({
   const stateToggle = (
     <Style.IconTipButton
       title={ct('btn-state')}
+      disabled={!widget?.state}
       onClick={() => setStateOpen(true)}
     >
       <StorageRoundedIcon />
@@ -140,7 +140,6 @@ export default function CraftedWidgetEditor({
   return (
     <>
       <Comp.MutationNewWidgetDialog
-        ct={ct}
         disablePlaintext={paths.length === 0}
         open={newWidgetOpen}
         onClose={() => setNewWidgetOpen(false)}
@@ -148,20 +147,19 @@ export default function CraftedWidgetEditor({
       />
 
       <Comp.MutationPlainTextDialog
-        ct={ct}
         open={editedWidget?.category === 'plainText'}
-        values={editedWidget as Appcraft.PlainTextWidget}
+        values={editedWidget as PlainTextWidget}
         onClose={() => handleMutation.editing()}
         onConfirm={handleMutation.modify}
       />
 
       {active === 'state' && (
         <Comp.WidgetState
-          {...{ ct, onFetchDefinition }}
           typeFile={stateTypeFile}
-          values={widget as Appcraft.MainWidget}
+          values={widget}
           onBack={() => setStateOpen(false)}
           onChange={onWidgetChange}
+          onFetchDefinition={onFetchDefinition}
           onStateEdit={setEditedState}
           renderEditor={(props) => (
             <CraftedTypeEditor {...props} {...stateEditorProps} fullHeight />
@@ -173,7 +171,6 @@ export default function CraftedWidgetEditor({
         <CraftedTodoEditor
           {...(todoPath && { todoPath })}
           {...{
-            fixedT,
             disableCategories,
             overrideNamingProps,
             renderOverrideItem,
@@ -205,7 +202,6 @@ export default function CraftedWidgetEditor({
         {active === 'props' && editedWidget?.category === 'node' && (
           <CraftedTypeEditor
             {...{
-              fixedT,
               overrideNamingProps,
               renderOverrideItem,
               onFetchDefinition,
@@ -264,7 +260,6 @@ export default function CraftedWidgetEditor({
                 <DndProvider backend={HTML5Backend}>
                   <LazyWidgetElements
                     basePaths={paths}
-                    ct={ct}
                     superiorNodeType={type}
                     onClick={handleMutation.editing}
                     onDndMove={(...e) => handleMutation.resort(paths, ...e)}

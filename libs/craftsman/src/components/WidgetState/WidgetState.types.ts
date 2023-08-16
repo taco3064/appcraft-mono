@@ -9,7 +9,6 @@ export type EditToggleHandler = (e?: EditedState) => void;
 
 //* Component Props
 export interface WidgetStateProps {
-  ct: Context.FixedT;
   typeFile?: string;
   values: MainWidget;
   onBack: () => void;
@@ -19,7 +18,6 @@ export interface WidgetStateProps {
 
   renderEditor: (options: {
     exclude: RegExp[];
-    fixedT: Context.FixedT;
     values: ConfigOptions;
     onChange: Context.ChangeHandler<ConfigOptions>;
     onFetchDefinition: FetchTypeDefinition;

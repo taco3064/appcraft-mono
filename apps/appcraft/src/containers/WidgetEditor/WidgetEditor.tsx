@@ -50,7 +50,7 @@ export default function WidgetEditor({
   onTodoWrapperView,
   onWidgetWrapperView,
 }: Types.WidgetEditorProps) {
-  const [at, ct, wt] = Hook.useFixedT('app', 'appcraft', 'widgets');
+  const [at, wt] = Hook.useFixedT('app', 'widgets');
   const [open, setOpen] = useState(false);
   const [widget, handleWidget] = Hook.useWidgetValues({ data, onSave });
 
@@ -144,7 +144,6 @@ export default function WidgetEditor({
         }
         drawer={
           <CraftedWidgetEditor
-            fixedT={ct}
             stateTypeFile={__WEBPACK_DEFINE__.STATE_TYPE_FILE}
             todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             version={__WEBPACK_DEFINE__.VERSION}

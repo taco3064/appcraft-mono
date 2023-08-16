@@ -3,7 +3,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
 
-import { TypeItemSelection } from '../TypeItemSelection';
+import TypeItemSelection from '../TypeItemSelection';
 import { useStateSelection } from '../../../hooks';
 import type { WidgetNodeProps } from './WidgetNode.types';
 

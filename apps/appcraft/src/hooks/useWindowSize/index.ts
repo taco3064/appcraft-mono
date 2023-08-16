@@ -1,1 +1,1 @@
-export { useWidth, useHeight } from './useWindowSize';
+export * from './useWindowSize';

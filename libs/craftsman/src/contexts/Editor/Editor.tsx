@@ -25,7 +25,7 @@ export const useEditorContext = <V extends Types.OptionValues>() => {
   };
 };
 
-export function EditorProvider<V extends Types.OptionValues>({
+export default function EditorProvider<V extends Types.OptionValues>({
   children,
   collectionPath,
   fixedT,

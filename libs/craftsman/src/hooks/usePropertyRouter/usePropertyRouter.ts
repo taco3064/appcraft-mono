@@ -6,7 +6,9 @@ import { useCallback, useMemo } from 'react';
 import { useCollection } from '../common';
 import type { PropertyRouterHook } from './usePropertyRouter.types';
 
-const usePropertyRouter: PropertyRouterHook = (onCollectionPathChange) => {
+export const usePropertyRouter: PropertyRouterHook = (
+  onCollectionPathChange
+) => {
   const { path, source } = useCollection();
   const paths = useMemo(() => _toPath(path), [path]);
 
@@ -34,5 +36,3 @@ const usePropertyRouter: PropertyRouterHook = (onCollectionPathChange) => {
     },
   ];
 };
-
-export default usePropertyRouter;

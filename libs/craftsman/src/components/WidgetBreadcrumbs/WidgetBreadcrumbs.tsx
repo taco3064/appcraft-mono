@@ -2,7 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import * as Style from '../../styles';
-import { Breadcrumbs } from '../common/Breadcrumbs';
+import { Breadcrumbs } from '../common';
 import type { WidgetBreadcrumbsProps } from './WidgetBreadcrumbs.types';
 
 export default function WidgetBreadcrumbs({

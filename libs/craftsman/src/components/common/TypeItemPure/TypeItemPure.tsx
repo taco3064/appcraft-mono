@@ -11,9 +11,9 @@ import dayjs from 'dayjs';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 import { useEffect, useRef } from 'react';
 
+import BoolInput from '../BoolInput';
+import NumberInput from '../NumberInput';
 import { AdornmentTextField, TypeItemAction } from '../../../styles';
-import { BoolInput } from '../BoolInput';
-import { NumberInput } from '../NumberInput';
 import { usePropValue } from '../../../hooks';
 import type { TypeItemPureProps } from './TypeItemPure.types';
 

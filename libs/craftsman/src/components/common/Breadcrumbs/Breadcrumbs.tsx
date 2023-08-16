@@ -1,8 +1,8 @@
 import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
 import { useState } from 'react';
 
+import MenuDialog from '../MenuDialog';
 import { Breadcrumb } from '../../../styles';
-import { MenuDialog } from '../MenuDialog';
 import type * as Types from './Breadcrumbs.types';
 
 export default function Breadcrumbs({

@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 import * as Hook from '../../../hooks';
 import * as Style from '../../../styles';
-import { MenuDialog } from '../MenuDialog';
+import MenuDialog from '../MenuDialog';
 import type { TypeItemMixedProps } from './TypeItemMixed.types';
 
 export default function TypeItemMixed({

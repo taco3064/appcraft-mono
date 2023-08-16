@@ -1,2 +1,2 @@
-export { default as useSortableDnd } from './useSortableDnd';
+export * from './useSortableDnd';
 export type { SortableDndMoveHandler } from './useSortableDnd.types';

@@ -1,1 +1,1 @@
-export { default as useTemplateTodos } from './useTemplateTodos';
+export * from './useTemplateTodos';

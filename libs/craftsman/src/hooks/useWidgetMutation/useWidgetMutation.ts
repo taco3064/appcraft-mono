@@ -8,7 +8,10 @@ import { removeState, resortState } from '../../utils';
 import type { PropPaths } from '../../utils';
 import type { WidgetMutationHook } from './useWidgetMutation.types';
 
-const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
+export const useWidgetMutation: WidgetMutationHook = (
+  widget,
+  onWidgetChange
+) => {
   const [editedPaths, setEditedPaths] = useState<PropPaths>();
   const [todoPath, setTodoPath] = useState<string>();
 
@@ -111,5 +114,3 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
     },
   ];
 };
-
-export default useWidgetMutation;

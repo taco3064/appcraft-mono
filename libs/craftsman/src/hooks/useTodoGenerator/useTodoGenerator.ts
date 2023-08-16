@@ -8,7 +8,7 @@ import * as Util from '../../utils';
 import { DEFAULT_SIZE } from '../../styles';
 import type * as Types from './useTodoGenerator.types';
 
-const useTodoGenerator: Types.TodoGeneratorHook = (
+export const useTodoGenerator: Types.TodoGeneratorHook = (
   typeFile,
   todos,
   { onChange, onEditToggle }
@@ -101,5 +101,3 @@ const useTodoGenerator: Types.TodoGeneratorHook = (
     },
   ];
 };
-
-export default useTodoGenerator;

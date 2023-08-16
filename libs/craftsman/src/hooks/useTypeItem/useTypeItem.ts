@@ -5,10 +5,7 @@ import { getPropOrderSeq } from '../../utils';
 import { useEditorContext } from '../../contexts';
 import type * as Types from './useTypeItem.types';
 
-const useTypeItem: Types.TypeItemHook = (
-  collectionType,
-  { type, propName }
-) => {
+export const useTypeItem: Types.TypeItemHook = ({ type, propName }) => {
   const { collectionPath } = useEditorContext();
 
   return {
@@ -35,5 +32,3 @@ const useTypeItem: Types.TypeItemHook = (
     }, [type]),
   };
 };
-
-export default useTypeItem;

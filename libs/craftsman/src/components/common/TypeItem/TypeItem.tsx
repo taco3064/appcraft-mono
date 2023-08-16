@@ -7,12 +7,12 @@ import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useState } from 'react';
 
 import * as Hook from '../../../hooks';
+import TypeItemDisplay, { TypeItemDisplayProps } from '../TypeItemDisplay';
+import TypeItemMixed, { TypeItemMixedProps } from '../TypeItemMixed';
+import TypeItemNaming from '../TypeItemNaming';
+import TypeItemPure, { TypeItemPureProps } from '../TypeItemPure';
+import TypeItemSelection from '../TypeItemSelection';
 import { IconTipButton } from '../../../styles';
-import { TypeItemDisplay, TypeItemDisplayProps } from '../TypeItemDisplay';
-import { TypeItemMixed, TypeItemMixedProps } from '../TypeItemMixed';
-import { TypeItemNaming } from '../TypeItemNaming';
-import { TypeItemPure, TypeItemPureProps } from '../TypeItemPure';
-import { TypeItemSelection } from '../TypeItemSelection';
 import type * as Types from './TypeItem.types';
 
 export default function TypeItem({
@@ -28,11 +28,7 @@ export default function TypeItem({
 }: Types.TypeItemProps) {
   const ct = Hook.useFixedT();
   const [naming, setNaming] = useState(!options.propName);
-
-  const { category, label, propPath } = Hook.useTypeItem(
-    collectionType,
-    options
-  );
+  const { category, label, propPath } = Hook.useTypeItem(options);
 
   const [isState, selection] = Hook.useStateSelection(
     'props',

@@ -1,1 +1,1 @@
-export { default as useMixedTypeMapping } from './useMixedTypeMapping';
+export * from './useMixedTypeMapping';

@@ -7,7 +7,7 @@ import { upsertConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type { WidgetValuesHook } from './useWidgetValues.types';
 
-const useWidgetValues: WidgetValuesHook = ({ data, onSave }) => {
+export const useWidgetValues: WidgetValuesHook = ({ data, onSave }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [at] = useFixedT('app');
 
@@ -37,5 +37,3 @@ const useWidgetValues: WidgetValuesHook = ({ data, onSave }) => {
     },
   ];
 };
-
-export default useWidgetValues;

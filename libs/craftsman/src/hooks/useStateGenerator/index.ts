@@ -1,1 +1,1 @@
-export { default as useStateGenerator } from './useStateGenerator';
+export * from './useStateGenerator';

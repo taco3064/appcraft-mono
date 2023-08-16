@@ -12,8 +12,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNodes, useReactFlow } from 'reactflow';
 import type * as Appcraft from '@appcraft/types';
 
-import { ActionButton, TodoFlowControlsProps } from './TodoFlowConrols.types';
+import { ActionButton } from './TodoFlowConrols.types';
 import { TodoIcon } from '../../styles';
+import type { TodoFlowControlsProps } from './TodoFlowConrols.types';
 
 export default function TodoFlowControls({
   ct,

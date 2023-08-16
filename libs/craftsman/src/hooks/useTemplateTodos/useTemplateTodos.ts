@@ -3,7 +3,7 @@ import _get from 'lodash/get';
 
 import type { TemplateTodosHook } from './useTemplateTodos.types';
 
-const useTemplateTodos: TemplateTodosHook = (
+export const useTemplateTodos: TemplateTodosHook = (
   widget,
   editedState,
   onFetchWidgetWrapper
@@ -50,5 +50,3 @@ const useTemplateTodos: TemplateTodosHook = (
 
   return todos;
 };
-
-export default useTemplateTodos;

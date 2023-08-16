@@ -15,7 +15,7 @@ const replaces: Types.Replaces = [
   },
 ];
 
-const useFixedT: Types.FixedTHook = (defaultFixedT) => {
+export const useFixedT: Types.FixedTHook = (defaultFixedT) => {
   const { fixedT } = useEditorContext();
 
   return useMemo<Types.FixedT>(
@@ -31,5 +31,3 @@ const useFixedT: Types.FixedTHook = (defaultFixedT) => {
     [defaultFixedT, fixedT]
   );
 };
-
-export default useFixedT;

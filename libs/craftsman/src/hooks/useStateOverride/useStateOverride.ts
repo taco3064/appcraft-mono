@@ -29,7 +29,7 @@ const getOverrideRenderType: Types.GetOverrideRenderType = (
   }
 };
 
-const useStateOverride: Types.StateOverrideHook = (
+export const useStateOverride: Types.StateOverrideHook = (
   widget,
   editedState,
   { overrideNamingProps, renderOverrideItem },
@@ -75,5 +75,3 @@ const useStateOverride: Types.StateOverrideHook = (
     );
   },
 });
-
-export default useStateOverride;

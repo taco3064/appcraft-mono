@@ -8,7 +8,7 @@ import { getForceArray } from '../../utils';
 import type * as Types from './useStructure.types';
 import type { PropPaths } from '../../utils';
 
-const useStructure: Types.StructureHook = (() => {
+export const useStructure: Types.StructureHook = (() => {
   function convertToBreadcrumb(
     paths: PropPaths,
     widget: Appcraft.NodeWidget
@@ -60,5 +60,3 @@ const useStructure: Types.StructureHook = (() => {
     ];
   };
 })();
-
-export default useStructure;

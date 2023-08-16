@@ -8,7 +8,7 @@ const TYPE: Types.DndType = {
   item: Symbol('item'),
 };
 
-const useHierarchyDnd = <E extends HTMLElement>(
+export const useHierarchyDnd = <E extends HTMLElement>(
   ...args: Types.HierarchyDndHookArgs
 ): Types.HierarchyDndHookReturn<E> => {
   const [disableGroupChange, data, handleDnd] = args;
@@ -54,5 +54,3 @@ const useHierarchyDnd = <E extends HTMLElement>(
         : null,
   };
 };
-
-export default useHierarchyDnd;

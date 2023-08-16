@@ -4,7 +4,10 @@ import { useRouter } from 'next/router';
 import { getHierarchyNames } from '~appcraft/services';
 import type * as Types from './useHierarchyFilter.types';
 
-const useHierarchyFilter: Types.HierarchyFilterHook = (category, itemId) => {
+export const useHierarchyFilter: Types.HierarchyFilterHook = (
+  category,
+  itemId
+) => {
   const { query } = useRouter();
   const params = (query.superiors as string)?.split('-') || [];
 
@@ -37,5 +40,3 @@ const useHierarchyFilter: Types.HierarchyFilterHook = (category, itemId) => {
       ),
   };
 };
-
-export default useHierarchyFilter;

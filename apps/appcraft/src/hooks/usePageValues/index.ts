@@ -1,1 +1,1 @@
-export { default as usePageValues } from './usePageValues';
+export * from './usePageValues';

@@ -1,4 +1,4 @@
-export { EditorProvider, useEditorContext } from './Editor';
+export { default, default as EditorProvider, useEditorContext } from './Editor';
 
 export type {
   ChangeHandler,

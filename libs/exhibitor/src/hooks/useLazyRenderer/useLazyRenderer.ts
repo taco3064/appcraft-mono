@@ -57,7 +57,7 @@ const fetchWidgets: Types.FetchWidgets = async (
     : await fetchWidgets(extractTemplateIds(next), onFetchWidget, templates);
 };
 
-const useLazyRenderer = <R>(
+export const useLazyRenderer = <R>(
   options: RendererOptions,
   fetchWidgetWrapper: FetchWrapperHandler<'widget'>,
   renderer: Appcraft.LazyRenderer<WidgetMap, R>
@@ -94,5 +94,3 @@ const useLazyRenderer = <R>(
     [stringify]
   );
 };
-
-export default useLazyRenderer;

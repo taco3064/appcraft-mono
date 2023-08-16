@@ -7,7 +7,7 @@ import { upsertConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type { PageValuesHook } from './usePageValues.types';
 
-const usePageValues: PageValuesHook = ({ data, onSave }) => {
+export const usePageValues: PageValuesHook = ({ data, onSave }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [at] = useFixedT('app');
 
@@ -33,5 +33,3 @@ const usePageValues: PageValuesHook = ({ data, onSave }) => {
     },
   ];
 };
-
-export default usePageValues;

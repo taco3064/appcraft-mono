@@ -43,7 +43,7 @@ const getGeneratorOptions: Types.GetGeneratorOptions = (
     : { superiors, state: { ...state, path: Util.getPropPath([path, index]) } };
 };
 
-const useRender: Types.RenderHook = (
+export const useRender: Types.RenderHook = (
   { onFetchData, onFetchTodoWrapper, onLazyRetrieve, onOutputCollect },
   globalState,
   render
@@ -122,5 +122,3 @@ const useRender: Types.RenderHook = (
     });
   };
 };
-
-export default useRender;

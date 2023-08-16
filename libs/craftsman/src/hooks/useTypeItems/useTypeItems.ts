@@ -7,7 +7,7 @@ import { useCollection, usePropertiesSorting } from '../common';
 import type { ChangeHandler, OptionValues } from '../../contexts';
 import type { TypeItem, TypeItemsHookResult } from './useTypeItems.types';
 
-const useTypeItems = <V extends OptionValues>(
+export const useTypeItems = <V extends OptionValues>(
   collection: StructureProp,
   exclude: RegExp[],
   widgetValues: V,
@@ -188,5 +188,3 @@ const useTypeItems = <V extends OptionValues>(
 
   return [[]];
 };
-
-export default useTypeItems;

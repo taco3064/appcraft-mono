@@ -1,7 +1,10 @@
 import { useEditorContext } from '../../contexts';
 import type * as Types from './useMixedTypeMapping.types';
 
-const useMixedTypeMapping: Types.MixedTypeMappingHook = (propPath, options) => {
+export const useMixedTypeMapping: Types.MixedTypeMappingHook = (
+  propPath,
+  options
+) => {
   const {
     values: { mixedTypes, ...values },
     onChange,
@@ -43,5 +46,3 @@ const useMixedTypeMapping: Types.MixedTypeMappingHook = (propPath, options) => {
     },
   ];
 };
-
-export default useMixedTypeMapping;

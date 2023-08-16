@@ -1,14 +1,12 @@
 import type * as Appcraft from '@appcraft/types';
 
-import type { FixedT } from '../../contexts';
 import type { PathsChangeHandler, SortableDndMoveHandler } from '../../hooks';
 import type { PropPaths } from '../../utils';
 
 export type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
 
-export interface WidgetElementProps<I extends Appcraft.WidgetOptions> {
+export interface WidgetElementProps<I extends Appcraft.EntityWidgets> {
   basePaths: PropPaths;
-  ct: FixedT;
   index: number;
   item: I;
   event: I extends Appcraft.NodeWidget ? string[] : undefined;

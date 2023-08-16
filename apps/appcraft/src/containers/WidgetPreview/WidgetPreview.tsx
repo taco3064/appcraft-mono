@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { CraftedRenderer } from '@appcraft/exhibitor';
 import { useQuery } from '@tanstack/react-query';
-import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
+import type { MainWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Service from '~appcraft/services';
 import type { WidgetPreviewProps } from './WidgetPreview.types';
@@ -9,7 +9,7 @@ import type { WidgetPreviewProps } from './WidgetPreview.types';
 export default function WidgetPreview({ id }: WidgetPreviewProps) {
   const { data } = useQuery({
     queryKey: [id],
-    queryFn: Service.findConfig<RootNodeWidget>,
+    queryFn: Service.findConfig<MainWidget>,
     refetchOnWindowFocus: false,
   });
 
@@ -19,7 +19,7 @@ export default function WidgetPreview({ id }: WidgetPreviewProps) {
       onFetchWrapper={async (category, id) => {
         const { content } = await Service.getConfigById<
           typeof category extends 'widget'
-            ? RootNodeWidget
+            ? MainWidget
             : Record<string, WidgetTodo>
         >(id);
 

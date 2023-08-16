@@ -4,15 +4,17 @@ import { FormEvent } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
+import { useLocalesContext } from '../../contexts';
 import type { MutationPlainTextDialogProps } from './MutationPlainTextDialog.types';
 
 export default function MutationPlainTextDialog({
-  ct,
   open,
   values,
   onClose,
   onConfirm,
 }: MutationPlainTextDialogProps) {
+  const ct = useLocalesContext();
+
   return (
     <FlexDialog
       {...{ open, onClose }}

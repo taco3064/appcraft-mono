@@ -7,12 +7,12 @@ import type * as Util from '../../utils';
 //* Variables
 type Queue = { id: string; path?: string };
 export type StateQueue = { state: Queue; superiors?: Queue[] };
-export type WidgetMap = Map<string, Appcraft.RootNodeWidget>;
+export type WidgetMap = Map<string, Appcraft.MainWidget>;
 
 export type RendererOptions =
-  | Appcraft.RootNodeWidget
+  | Appcraft.MainWidget
   | {
-      widget: Appcraft.RootNodeWidget;
+      widget: Appcraft.MainWidget;
     }[];
 
 export type TodosReturn = ReturnType<ReturnType<RendererStateHook>[1]['todos']>;
@@ -80,6 +80,6 @@ export type RendererStateHook = (
     nodes: (
       widget: Appcraft.NodeWidget,
       queue: StateQueue
-    ) => Record<string, Appcraft.WidgetOptions | Appcraft.WidgetOptions[]>;
+    ) => Record<string, Appcraft.EntityWidgets | Appcraft.EntityWidgets[]>;
   }
 ];

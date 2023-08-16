@@ -2,7 +2,7 @@ import type * as Appcraft from '@appcraft/types';
 
 import type { ChangeHandler } from '../../contexts';
 
-export type StateValues = Appcraft.RootNodeWidget['state'];
+export type StateValues = Appcraft.MainWidget['state'];
 
 export type EditingState = {
   path: string;
@@ -12,8 +12,8 @@ export type EditingState = {
 export type StateGeneratorHook = <C extends Appcraft.StateCategory>(
   typeFile: string,
   category: C,
-  widget: Appcraft.RootNodeWidget,
-  onChange: (e: Appcraft.RootNodeWidget) => void
+  widget: Appcraft.MainWidget,
+  onChange: (e: Appcraft.MainWidget) => void
 ) => [
   EditingState,
   {

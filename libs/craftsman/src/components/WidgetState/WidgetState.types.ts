@@ -1,4 +1,4 @@
-import type { ConfigOptions, RootNodeWidget } from '@appcraft/types';
+import type { ConfigOptions, MainWidget } from '@appcraft/types';
 import type { ReactNode } from 'react';
 
 import type * as Context from '../../contexts';
@@ -9,17 +9,15 @@ export type EditToggleHandler = (e?: EditedState) => void;
 
 //* Component Props
 export interface WidgetStateProps {
-  ct: Context.FixedT;
   typeFile?: string;
-  values: RootNodeWidget;
+  values: MainWidget;
   onBack: () => void;
-  onChange: (e: RootNodeWidget) => void;
+  onChange: (e: MainWidget) => void;
   onFetchDefinition: FetchTypeDefinition;
   onStateEdit: (target?: EditedState) => void;
 
   renderEditor: (options: {
     exclude: RegExp[];
-    fixedT: Context.FixedT;
     values: ConfigOptions;
     onChange: Context.ChangeHandler<ConfigOptions>;
     onFetchDefinition: FetchTypeDefinition;

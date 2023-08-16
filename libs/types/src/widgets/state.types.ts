@@ -4,7 +4,13 @@ import type { WidgetTodo } from './todo.types';
 
 type States = 'nodes' | 'props' | 'todos';
 type StateType = 'private' | 'public';
+
 export type NodeType = 'element' | 'node';
+
+export type Template = {
+  id: string;
+  todos?: { [propPath: string]: Record<string, WidgetTodo> }; //* Record key is todo id
+};
 
 type BaseState<C extends States, P> = {
   category: C;
@@ -13,6 +19,12 @@ type BaseState<C extends States, P> = {
   description?: string;
   mixedTypes?: TypesMapping;
 } & P;
+
+type BaseNode<T extends NodeType, V extends Definition> = {
+  nodeType: T;
+  defaultValue?: V;
+  template?: Template;
+};
 
 export type PropsState = BaseState<
   'props',
@@ -30,27 +42,14 @@ export type TodosState = BaseState<
 
 export type ElementState = BaseState<
   'nodes',
-  {
-    nodeType: 'element';
-    defaultValue?: string | { [key: string]: Definition }; //* Props
-    template?: {
-      id: string;
-      todos?: Record<string, Record<string, WidgetTodo>>;
-    };
-  }
+  BaseNode<'element', string | { [key: string]: Definition }>
 >;
 
 export type NodeState = BaseState<
   'nodes',
-  {
-    nodeType: 'node';
-    defaultValue?: string | Definition[];
-    template?: {
-      id: string;
-      todos?: Record<string, Record<string, WidgetTodo>>;
-    };
-  }
+  BaseNode<'node', string | Definition[]>
 >;
 
+export type EntityNodeStates = ElementState | NodeState;
 export type WidgetState = ElementState | NodeState | PropsState | TodosState;
 export type StateCategory = WidgetState['category'];

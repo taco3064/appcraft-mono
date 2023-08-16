@@ -1,4 +1,3 @@
-import type { AxiosRequestConfig } from 'axios';
 import type { TypesMapping } from './prop-types-def.types';
 
 //* Variable Definition
@@ -48,7 +47,11 @@ export type VariableTodo = BaseTodo<
 
 export type FetchTodo = BaseTodo<
   'fetch',
-  Required<Pick<AxiosRequestConfig, 'url' | 'method'>> & {
+  {
+    url: string;
+    method: 'GET' | 'DELETE' | 'POST' | 'PUT' | 'PATCH';
+    data?: ExtractTodoResult;
+
     headers?: Record<
       | 'Accept'
       | 'Content-Length'
@@ -57,8 +60,6 @@ export type FetchTodo = BaseTodo<
       | 'Authorization',
       string
     >;
-
-    data?: ExtractTodoResult;
   }
 >;
 

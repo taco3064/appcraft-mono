@@ -1,20 +1,20 @@
 import type * as Appcraft from '@appcraft/types';
 import type { PropPaths } from '../../utils';
 
-type ModifyEvent = Appcraft.WidgetOptions | Appcraft.RootNodeWidget;
+type ModifyEvent = Appcraft.EntityWidgets | Appcraft.MainWidget;
 
 export type WidgetMutationHook = (
-  widget: Appcraft.RootNodeWidget,
-  onWidgetChange: (e: Appcraft.RootNodeWidget | null) => void
+  widget: Appcraft.MainWidget,
+  onWidgetChange: (e: Appcraft.MainWidget | null) => void
 ) => [
   {
-    editedWidget?: Appcraft.WidgetOptions;
+    editedWidget?: Appcraft.EntityWidgets;
     widgetPath: string;
     todoPath?: string;
   },
   {
     add: (
-      e: Appcraft.WidgetOptions,
+      e: Appcraft.EntityWidgets,
       type: Appcraft.NodeType,
       paths: PropPaths
     ) => void;

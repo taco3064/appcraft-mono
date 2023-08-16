@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { useEditorContext } from '../../contexts';
 import type { PropValueHookResult } from './usePropValue.types';
 
-const usePropValue = <P = unknown>(
+export const usePropValue = <P = unknown>(
   type: 'display' | 'pure',
   propPath: string
 ): PropValueHookResult<P> => {
@@ -55,5 +55,3 @@ const usePropValue = <P = unknown>(
     },
   ];
 };
-
-export default usePropValue;

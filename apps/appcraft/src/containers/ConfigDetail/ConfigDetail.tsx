@@ -17,7 +17,7 @@ export default function ConfigDetail({
   onActionNodePick = (e) => e,
   ...props
 }: ConfigDetailProps) {
-  const [at, ct] = useFixedT('app', 'appcraft');
+  const [at] = useFixedT('app');
   const { data } = props;
   const [values, handleConfig] = useConfigValues(props);
 
@@ -62,7 +62,6 @@ export default function ConfigDetail({
         {header}
 
         <CraftedTypeEditor
-          fixedT={ct}
           values={values}
           renderOverrideItem={renderOverrideItem}
           onChange={handleConfig.change}

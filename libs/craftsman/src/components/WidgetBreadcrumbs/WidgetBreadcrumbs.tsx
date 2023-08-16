@@ -2,16 +2,18 @@ import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import * as Style from '../../styles';
-import { Breadcrumbs } from '../common/Breadcrumbs';
+import { Breadcrumbs } from '../common';
+import { useLocalesContext } from '../../contexts';
 import type { WidgetBreadcrumbsProps } from './WidgetBreadcrumbs.types';
 
 export default function WidgetBreadcrumbs({
   addable,
   breadcrumbs,
-  ct,
   onAdd,
   onRedirect,
 }: WidgetBreadcrumbsProps) {
+  const ct = useLocalesContext();
+
   return !breadcrumbs.length ? null : (
     <Style.ListToolbar>
       <Style.IconTipButton

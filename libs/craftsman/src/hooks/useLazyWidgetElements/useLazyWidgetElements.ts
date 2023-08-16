@@ -7,8 +7,8 @@ import { getForceArray } from '../../utils';
 import type { PropPaths } from '../../utils';
 import type * as Types from './useLazyWidgetElements.types';
 
-const useLazyWidgetElements = <R>(
-  widget: Appcraft.RootNodeWidget,
+export const useLazyWidgetElements = <R>(
+  widget: Appcraft.MainWidget,
   paths: PropPaths,
   version: string | undefined,
   fetchNodesAndEvents: Types.FetchNodesAndEvents,
@@ -51,5 +51,3 @@ const useLazyWidgetElements = <R>(
     [options, version]
   );
 };
-
-export default useLazyWidgetElements;

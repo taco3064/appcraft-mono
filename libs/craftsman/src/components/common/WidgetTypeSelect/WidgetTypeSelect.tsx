@@ -5,12 +5,12 @@ import TextField from '@mui/material/TextField';
 import { MUI_WIDGETS } from '@appcraft/widgets';
 import type { ReactNode } from 'react';
 
+import { useLocalesContext } from '../../../contexts';
 import type { WidgetTypeSelectProps } from './WidgetTypeSelect.types';
 
-export default function WidgetTypeSelect({
-  ct,
-  ...props
-}: WidgetTypeSelectProps) {
+export default function WidgetTypeSelect(props: WidgetTypeSelectProps) {
+  const ct = useLocalesContext();
+
   return (
     <TextField SelectProps={{ displayEmpty: true }} select {...props}>
       <MenuItem value="">&nbsp;</MenuItem>

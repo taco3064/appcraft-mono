@@ -14,14 +14,14 @@ import type * as Appcraft from '@appcraft/types';
 import * as Style from '../../styles';
 import { WidgetEvent, WidgetNode } from '../common';
 import { sortPropPaths } from '../../utils';
+import { useLocalesContext } from '../../contexts';
 import { useSortableDnd } from '../../hooks';
 import type { MixedWidget, WidgetElementProps } from './WidgetElement.types';
 
 const DND_TYPE = Symbol('widget');
 
-export default function WidgetElement<I extends Appcraft.WidgetOptions>({
+export default function WidgetElement<I extends Appcraft.EntityWidgets>({
   basePaths,
-  ct,
   event,
   index,
   item,
@@ -34,8 +34,9 @@ export default function WidgetElement<I extends Appcraft.WidgetOptions>({
   onRemove,
 }: WidgetElementProps<I>) {
   const { category, description, type, content } = item as MixedWidget;
-  const isNode = category === 'node';
   const [open, setOpen] = useState(true);
+  const ct = useLocalesContext();
+  const isNode = category === 'node';
 
   const { ref, handlerId, isDragging } = useSortableDnd<HTMLDivElement>(
     DND_TYPE,

@@ -1,4 +1,4 @@
-export { default as CommonButton } from './CommonButton';
+export { default, default as CommonButton } from './CommonButton';
 
 export type {
   CommonButtonProps,

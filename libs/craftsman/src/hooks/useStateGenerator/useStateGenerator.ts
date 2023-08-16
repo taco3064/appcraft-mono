@@ -6,7 +6,7 @@ import type * as Appcraft from '@appcraft/types';
 import * as Util from '../../utils';
 import type * as Types from './useStateGenerator.types';
 
-const useStateGenerator: Types.StateGeneratorHook = (
+export const useStateGenerator: Types.StateGeneratorHook = (
   typeFile,
   category,
   widget,
@@ -69,5 +69,3 @@ const useStateGenerator: Types.StateGeneratorHook = (
     },
   ];
 };
-
-export default useStateGenerator;

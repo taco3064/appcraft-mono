@@ -17,7 +17,7 @@ export const useStateContext = () => {
   };
 };
 
-export function StateProvider({
+export default function StateProvider({
   basePath,
   children,
   toggle,

@@ -7,7 +7,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 
-import { HierarchyEditorButton } from '../HierarchyEditorButton';
+import HierarchyEditorButton from '../HierarchyEditorButton';
 import { CommonButton, RemoveButton } from '~appcraft/components';
 import { removeHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';

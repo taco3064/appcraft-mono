@@ -3,8 +3,8 @@ import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { useState } from 'react';
 
+import CommonButton, { CommonButtonProps } from '../CommonButton';
 import { ArcAlert } from '~appcraft/styles';
-import { CommonButton, CommonButtonProps } from '../CommonButton';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './RemoveButton.types';
 

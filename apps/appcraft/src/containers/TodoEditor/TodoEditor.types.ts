@@ -15,7 +15,7 @@ export interface TodoEditorProps {
     breadcrumbs: Breadcrumb[];
   };
 
-  PersistentDrawerContentProps?: Omit<
+  ResponsiveDrawerProps?: Omit<
     ComponentProps<typeof ResponsiveDrawer>,
     'ContentProps' | 'DrawerProps' | 'content' | 'drawer' | 'open' | 'onClose'
   >;

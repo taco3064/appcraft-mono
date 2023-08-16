@@ -8,7 +8,10 @@ import { removeState, resortState } from '../../utils';
 import type { PropPaths } from '../../utils';
 import type { WidgetMutationHook } from './useWidgetMutation.types';
 
-const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
+export const useWidgetMutation: WidgetMutationHook = (
+  widget,
+  onWidgetChange
+) => {
   const [editedPaths, setEditedPaths] = useState<PropPaths>();
   const [todoPath, setTodoPath] = useState<string>();
 
@@ -27,7 +30,7 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
     {
       add: (e, type, paths) => {
         if (!paths.length) {
-          onWidgetChange({ ...e, state: {} } as Appcraft.RootNodeWidget);
+          onWidgetChange({ ...e, state: {} } as Appcraft.MainWidget);
         } else if (type === 'element') {
           onWidgetChange({ ..._set(widget, paths, e) });
         } else {
@@ -46,7 +49,7 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
         if (editedPaths) {
           onWidgetChange(
             !editedPaths.length
-              ? (e as Appcraft.RootNodeWidget)
+              ? (e as Appcraft.MainWidget)
               : { ..._set(widget, editedPaths, e) }
           );
         }
@@ -111,5 +114,3 @@ const useWidgetMutation: WidgetMutationHook = (widget, onWidgetChange) => {
     },
   ];
 };
-
-export default useWidgetMutation;

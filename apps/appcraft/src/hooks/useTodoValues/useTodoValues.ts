@@ -10,7 +10,7 @@ import { upsertConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type { TodoValuesHook } from './useTodoValues.types';
 
-const useTodoValues: TodoValuesHook = ({ data, onOpen, onSave }) => {
+export const useTodoValues: TodoValuesHook = ({ data, onOpen, onSave }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [at] = useFixedT('app');
   const [duration, setDuration] = useState(0);
@@ -61,5 +61,3 @@ const useTodoValues: TodoValuesHook = ({ data, onOpen, onSave }) => {
     },
   ];
 };
-
-export default useTodoValues;

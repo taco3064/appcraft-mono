@@ -1,1 +1,1 @@
-export { default as usePropertiesSorting } from './usePropertiesSorting';
+export * from './usePropertiesSorting';

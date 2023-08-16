@@ -1,1 +1,1 @@
-export { default as useWidgetValues } from './useWidgetValues';
+export * from './useWidgetValues';

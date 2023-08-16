@@ -88,7 +88,7 @@ export default function Detail() {
               ),
             })
           }
-          PersistentDrawerContentProps={{
+          ResponsiveDrawerProps={{
             disableGutters: true,
             maxWidth: false,
             height: (theme) => `calc(${height} - ${theme.spacing(30.25)})`,
@@ -138,7 +138,7 @@ export default function Detail() {
             logZIndex={theme.zIndex.modal + 1}
             onActionNodePick={handleTodoActionPick}
             onSave={() => setTodoHierarchy(undefined)}
-            PersistentDrawerContentProps={{
+            ResponsiveDrawerProps={{
               disableGutters: true,
               maxWidth: false,
               height: () => '100%',

@@ -14,7 +14,7 @@ import { getTypeDefinition } from '~appcraft/services';
 import type { TodoEditorProps } from './TodoEditor.types';
 
 export default function TodoEditor({
-  PersistentDrawerContentProps,
+  ResponsiveDrawerProps,
   data,
   logZIndex,
   superiors,
@@ -89,7 +89,7 @@ export default function TodoEditor({
       )}
 
       <ResponsiveDrawer
-        {...PersistentDrawerContentProps}
+        {...ResponsiveDrawerProps}
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{
           anchor: 'right',

@@ -1,3 +1,4 @@
+import Button from '@mui/material/Button';
 import Head from 'next/head';
 import { CraftsmanStyle } from '@appcraft/craftsman';
 import { useQuery } from '@tanstack/react-query';
@@ -11,7 +12,7 @@ import type { LayoutWidget, WidgetTodo } from '@appcraft/types';
 import * as Hook from '~appcraft/hooks';
 import { CommonButton, TodoOutputStepper } from '~appcraft/components';
 import { PageContainer } from '~appcraft/styles';
-import { TodoEditor } from '~appcraft/containers';
+import { PageEditor, TodoEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 import type { HierarchyData } from '~appcraft/services';
 
@@ -26,6 +27,7 @@ export default function Detail() {
   const [todoHierarchy, setTodoHierarchy] = useState<HierarchyData<string>>();
 
   const theme = useTheme();
+  const height = Hook.useHeight();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
@@ -65,6 +67,32 @@ export default function Detail() {
         <Head>
           <title>Appcraft | {pt('ttl-detail')}</title>
         </Head>
+
+        <PageEditor
+          data={layouts}
+          superiors={{ names: superiors, breadcrumbs }}
+          onActionNodePick={handlePageActionPick}
+          onSave={refetch}
+          onTodoWrapperView={setTodoHierarchy}
+          onWidgetWrapperView={(data) =>
+            global.window?.open(`/widgets/detail?id=${data._id}`, '_blank')
+          }
+          onOutputCollect={(e, eventName) =>
+            enqueueSnackbar(tt('msg-event-outputs', { name: eventName }), {
+              variant: 'info',
+              action: () => (
+                <Button color="inherit" onClick={() => setOutput(e)}>
+                  {at('btn-confirm')}
+                </Button>
+              ),
+            })
+          }
+          ResponsiveDrawerProps={{
+            disableGutters: true,
+            maxWidth: false,
+            height: (theme) => `calc(${height} - ${theme.spacing(30.25)})`,
+          }}
+        />
       </PageContainer>
 
       <CraftsmanStyle.FlexDialog
@@ -109,7 +137,7 @@ export default function Detail() {
             logZIndex={theme.zIndex.modal + 1}
             onActionNodePick={handleTodoActionPick}
             onSave={() => setTodoHierarchy(undefined)}
-            PersistentDrawerContentProps={{
+            ResponsiveDrawerProps={{
               disableGutters: true,
               maxWidth: false,
               height: () => '100%',

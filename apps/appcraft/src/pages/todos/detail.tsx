@@ -52,7 +52,7 @@ export default function Detail() {
         superiors={{ names: superiors, breadcrumbs }}
         onActionNodePick={handleActionNodePick}
         onSave={refetch}
-        PersistentDrawerContentProps={{
+        ResponsiveDrawerProps={{
           disableGutters: true,
           maxWidth: false,
           height: (theme) => `calc(${height} - ${theme.spacing(30.25)})`,

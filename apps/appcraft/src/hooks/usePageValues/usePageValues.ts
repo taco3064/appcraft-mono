@@ -1,22 +1,22 @@
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
-import type { MainWidget } from '@appcraft/types';
+import type { LayoutWidget } from '@appcraft/types';
 
 import { upsertConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
-import type { WidgetValuesHook } from './useWidgetValues.types';
+import type { PageValuesHook } from './usePageValues.types';
 
-const useWidgetValues: WidgetValuesHook = ({ data, onSave }) => {
+const usePageValues: PageValuesHook = ({ data, onSave }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [at] = useFixedT('app');
 
-  const [values, setValues] = useState<MainWidget>(
-    () => data?.content?.type && JSON.parse(JSON.stringify(data.content || {}))
+  const [values, setValues] = useState<LayoutWidget[]>(() =>
+    JSON.parse(JSON.stringify(data.content || []))
   );
 
   const mutation = useMutation({
-    mutationFn: upsertConfig<MainWidget>,
+    mutationFn: upsertConfig<LayoutWidget[]>,
     onSuccess: () => {
       enqueueSnackbar(at('msg-succeed-update'), { variant: 'success' });
       onSave?.();
@@ -28,14 +28,10 @@ const useWidgetValues: WidgetValuesHook = ({ data, onSave }) => {
 
     {
       change: (e) => setValues(!e ? null : e),
+      reset: () => setValues(JSON.parse(JSON.stringify(data.content || []))),
       save: () => mutation.mutate({ ...data, content: values }),
-
-      reset: () =>
-        setValues(
-          data?.content?.type && JSON.parse(JSON.stringify(data.content || {}))
-        ),
     },
   ];
 };
 
-export default useWidgetValues;
+export default usePageValues;

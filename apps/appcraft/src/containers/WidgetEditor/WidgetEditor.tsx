@@ -41,7 +41,7 @@ const getOverrideRenderType: Types.GetOverrideRenderType = (
 };
 
 export default function WidgetEditor({
-  PersistentDrawerContentProps,
+  ResponsiveDrawerProps,
   data,
   superiors,
   onActionNodePick = (e) => e,
@@ -129,7 +129,7 @@ export default function WidgetEditor({
       )}
 
       <ResponsiveDrawer
-        {...PersistentDrawerContentProps}
+        {...ResponsiveDrawerProps}
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}

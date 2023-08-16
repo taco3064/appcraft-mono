@@ -1,5 +1,6 @@
 import Container from '@mui/material/Container';
 import Drawer from '@mui/material/Drawer';
+import cx from 'clsx';
 import { withStyles } from 'tss-react/mui';
 import type { PaperProps } from '@mui/material/Paper';
 
@@ -46,6 +47,7 @@ export const ResponsiveDrawer = withStyles(
     DrawerProps,
     classes,
     content,
+    disablePersistent = false,
     drawer,
     height,
     open,
@@ -53,7 +55,7 @@ export const ResponsiveDrawer = withStyles(
     ...props
   }: Types.ResponsiveDrawerProps) => {
     const width = useWidth();
-    const isTemporary = /^(xs|sm)$/.test(width);
+    const isTemporary = /^(xs|sm)$/.test(width) || disablePersistent;
 
     return (
       <Container {...props} className={classes.root}>
@@ -62,7 +64,10 @@ export const ResponsiveDrawer = withStyles(
           {...(isTemporary && { onClose })}
           variant={isTemporary ? 'temporary' : 'persistent'}
           open={open}
-          PaperProps={{ className: classes.paper }}
+          PaperProps={{
+            ...DrawerProps?.PaperProps,
+            className: cx(classes.paper, DrawerProps?.PaperProps?.className),
+          }}
         >
           {drawer}
         </SizedDrawer>
@@ -84,7 +89,7 @@ export const ResponsiveDrawer = withStyles(
       </Container>
     );
   },
-  (theme, { DrawerProps, height, open }) => ({
+  (theme, { DrawerProps, disablePersistent = false, height, open }) => ({
     root: {
       position: 'relative',
       display: 'flex',
@@ -120,6 +125,9 @@ export const ResponsiveDrawer = withStyles(
       [theme.breakpoints.down('md')]: {
         display: 'none !important',
       },
+      ...(disablePersistent && {
+        display: 'none !important',
+      }),
     },
   }),
   { name: 'ResponsiveDrawer' }

@@ -16,10 +16,10 @@ export type GetActiveType = (options: {
 
 //* Component Props
 export type LazyWidgetElementsProps = Omit<
-  Comp.WidgetElementProps<Appcraft.WidgetOptions>,
+  Comp.WidgetElementProps<Appcraft.EntityWidgets>,
   'index' | 'item' | 'event' | 'node' | 'defaultOpen'
 > & {
-  widgets: Appcraft.WidgetOptions[];
+  widgets: Appcraft.EntityWidgets[];
 };
 
 export interface CraftedWidgetEditorProps {
@@ -29,11 +29,11 @@ export interface CraftedWidgetEditorProps {
   stateTypeFile?: string;
   todoTypeFile?: string;
   version?: string;
-  widget?: Appcraft.RootNodeWidget;
+  widget?: Appcraft.MainWidget;
   overrideNamingProps?: Context.OverrideNamingProps;
   renderOverrideItem?: Context.RenderOverrideItem;
   onFetchNodesAndEvents: Hook.FetchNodesAndEvents;
   onFetchDefinition: Hook.FetchTypeDefinition;
   onFetchWidgetWrapper: FetchWrapperHandler<'widget'>;
-  onWidgetChange: (e: Appcraft.RootNodeWidget | null) => void;
+  onWidgetChange: (e: Appcraft.MainWidget | null) => void;
 }

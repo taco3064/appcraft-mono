@@ -3,7 +3,7 @@ import type { PropPathRouterHandler } from '../../../hooks';
 
 export interface TypeItemDisplayProps
   extends Omit<
-    Appcraft.BaseField<
+    Appcraft.BaseTypeItem<
       | Appcraft.ArrayOfProp
       | Appcraft.ExactProp
       | Appcraft.FuncProp

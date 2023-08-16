@@ -28,7 +28,7 @@ export type GetOverrideRenderType = (
 
 //* Custom Hooks
 export type StateOverrideHook = (
-  widget: Appcraft.RootNodeWidget,
+  widget: Appcraft.MainWidget,
   editedState: EditedState | undefined,
   options: OverrideOptions,
   override: Record<

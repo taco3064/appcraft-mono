@@ -54,20 +54,20 @@ export default function CraftedWidgetEditor({
   const [editedState, setEditedState] = useState<Hook.EditedState>();
 
   const todoNames = Hook.useTemplateTodos(
-    widget as Appcraft.RootNodeWidget,
+    widget as Appcraft.MainWidget,
     editedState,
     onFetchWidgetWrapper
   );
 
   const [{ breadcrumbs, childrenCound, paths, type }, onRedirect] =
-    Hook.useStructure(widget as Appcraft.RootNodeWidget);
+    Hook.useStructure(widget as Appcraft.MainWidget);
 
   const [{ editedWidget, widgetPath, todoPath }, handleMutation] =
-    Hook.useWidgetMutation(widget as Appcraft.RootNodeWidget, onWidgetChange);
+    Hook.useWidgetMutation(widget as Appcraft.MainWidget, onWidgetChange);
 
   const LazyWidgetElements =
     Hook.useLazyWidgetElements<Types.LazyWidgetElementsProps>(
-      widget as Appcraft.RootNodeWidget,
+      widget as Appcraft.MainWidget,
       paths,
       version,
       onFetchNodesAndEvents,
@@ -100,7 +100,7 @@ export default function CraftedWidgetEditor({
   });
 
   const stateEditorProps = Hook.useStateOverride(
-    widget as Appcraft.RootNodeWidget,
+    widget as Appcraft.MainWidget,
     editedState,
     { overrideNamingProps, renderOverrideItem },
     {
@@ -159,7 +159,7 @@ export default function CraftedWidgetEditor({
         <Comp.WidgetState
           {...{ ct, onFetchDefinition }}
           typeFile={stateTypeFile}
-          values={widget as Appcraft.RootNodeWidget}
+          values={widget as Appcraft.MainWidget}
           onBack={() => setStateOpen(false)}
           onChange={onWidgetChange}
           onStateEdit={setEditedState}

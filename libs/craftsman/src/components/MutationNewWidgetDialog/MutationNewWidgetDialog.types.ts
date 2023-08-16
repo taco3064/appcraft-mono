@@ -11,5 +11,5 @@ export interface MutationNewWidgetDialogProps
   extends Required<Pick<DialogProps, 'open' | 'onClose'>> {
   ct: FixedT;
   disablePlaintext?: boolean;
-  onConfirm: (e: Appcraft.WidgetOptions) => void;
+  onConfirm: (e: Appcraft.EntityWidgets) => void;
 }

@@ -1,7 +1,7 @@
 import type * as Appcraft from '@appcraft/types';
 
 //* Variables
-type StateRecord = Required<Appcraft.RootNodeWidget>['state'];
+type StateRecord = Required<Appcraft.MainWidget>['state'];
 export type StateGenerator = 'props' | 'todos' | 'node' | 'element';
 
 //* Private

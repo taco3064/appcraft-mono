@@ -3,7 +3,7 @@ import type { PropTypesDef } from './prop-types-def.types';
 
 export type CollectionType = 'array' | 'object';
 
-export interface BaseField<O extends PropTypesDef> {
+export interface BaseTypeItem<O extends PropTypesDef> {
   action?: ReactNode;
   description?: ReactNode;
   disabled?: boolean;
@@ -12,3 +12,10 @@ export interface BaseField<O extends PropTypesDef> {
   propPath: string;
   selection?: ReactNode;
 }
+
+//* Lazy Renderer Fn
+export type LazyRenderer<D, R = Record<string, never>> = (
+  options: R & {
+    fetchData?: D;
+  }
+) => JSX.Element;

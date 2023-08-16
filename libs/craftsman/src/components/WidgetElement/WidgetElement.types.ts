@@ -6,7 +6,7 @@ import type { PropPaths } from '../../utils';
 
 export type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
 
-export interface WidgetElementProps<I extends Appcraft.WidgetOptions> {
+export interface WidgetElementProps<I extends Appcraft.EntityWidgets> {
   basePaths: PropPaths;
   ct: FixedT;
   index: number;

@@ -29,7 +29,7 @@ const fetchWidgets: Types.FetchWidgets = async (
   onFetchWidget,
   templates = new Map()
 ) => {
-  const next: Appcraft.RootNodeWidget[] = [];
+  const next: Appcraft.MainWidget[] = [];
 
   const appended = templateIds.reduce<Promise<Types.WidgetInfo>[]>(
     (acc, id) => {

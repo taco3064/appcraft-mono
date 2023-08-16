@@ -21,10 +21,10 @@ export default function MutationNewWidgetDialog({
   onConfirm,
 }: MutationNewWidgetDialogProps) {
   const theme = useTheme();
-  const [data, setData] = useState<Appcraft.WidgetOptions>();
+  const [data, setData] = useState<Appcraft.EntityWidgets>();
 
   const [active, setActive] =
-    useState<Appcraft.WidgetOptions['category']>('node');
+    useState<Appcraft.EntityWidgets['category']>('node');
 
   const handleClose: typeof onClose = (...e) => {
     setActive('node');
@@ -43,7 +43,7 @@ export default function MutationNewWidgetDialog({
       onSubmit={(e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        onConfirm({ ...(data as Appcraft.WidgetOptions), id: nanoid(4) });
+        onConfirm({ ...(data as Appcraft.EntityWidgets), id: nanoid(4) });
         handleClose(e, 'escapeKeyDown');
       }}
       action={
@@ -124,7 +124,7 @@ export default function MutationNewWidgetDialog({
         defaultValue={data?.description || ''}
         onChange={(e) =>
           setData({
-            ...(data as Appcraft.WidgetOptions),
+            ...(data as Appcraft.EntityWidgets),
             description: e.target.value,
           })
         }

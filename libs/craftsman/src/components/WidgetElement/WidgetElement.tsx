@@ -19,7 +19,7 @@ import type { MixedWidget, WidgetElementProps } from './WidgetElement.types';
 
 const DND_TYPE = Symbol('widget');
 
-export default function WidgetElement<I extends Appcraft.WidgetOptions>({
+export default function WidgetElement<I extends Appcraft.EntityWidgets>({
   basePaths,
   ct,
   event,

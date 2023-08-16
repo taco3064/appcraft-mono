@@ -1,2 +1,2 @@
-export { default as useHierarchyFilter } from './useHierarchyFilter';
+export * from './useHierarchyFilter';
 export type { Breadcrumb } from './useHierarchyFilter.types';

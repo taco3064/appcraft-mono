@@ -5,12 +5,10 @@ import type { WidgetMap } from '../useRendererState';
 
 export type WidgetInfo = {
   id: string;
-  widget: Appcraft.RootNodeWidget;
+  widget: Appcraft.MainWidget;
 };
 
-export type ExtractTemplateIds = (
-  widgets: Appcraft.RootNodeWidget[]
-) => string[];
+export type ExtractTemplateIds = (widgets: Appcraft.MainWidget[]) => string[];
 
 export type FetchWidgets = (
   templateIds: string[],

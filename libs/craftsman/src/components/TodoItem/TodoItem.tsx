@@ -4,10 +4,10 @@ import { useEffect, useImperativeHandle, useState } from 'react';
 import type { MouseEventHandler } from 'react';
 
 import { FlexDialog, GapTypography } from '../../styles';
+import { useLocalesContext } from '../../contexts';
 import type { TodoItemProps } from './TodoItem.types';
 
 export default function TodoItem({
-  ct,
   disabled: defaultDisabled = false,
   displayRef,
   label,
@@ -15,6 +15,7 @@ export default function TodoItem({
   renderTodoEditor,
   onChange,
 }: TodoItemProps) {
+  const ct = useLocalesContext();
   const disabled = defaultDisabled || Boolean(!label?.trim());
   const [editing, setEditing] = useState(false);
   const [open, setOpen] = useState(false);

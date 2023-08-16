@@ -17,13 +17,11 @@ export type FetchWrapperHandler<C extends 'widget' | 'todo'> = (
   type: C,
   id: string
 ) => Promise<
-  C extends 'widget'
-    ? Appcraft.RootNodeWidget
-    : Record<string, Appcraft.WidgetTodo>
+  C extends 'widget' ? Appcraft.MainWidget : Record<string, Appcraft.WidgetTodo>
 >;
 
 export type GetGeneratorOptions = (
-  widget: Appcraft.RootNodeWidget | Appcraft.WidgetOptions,
+  widget: Appcraft.MainWidget | Appcraft.EntityWidgets,
   propPath: string,
   queue: StateQueue,
   index?: number
@@ -47,4 +45,4 @@ export type RenderHook = (
       props: React.ComponentProps<typeof WidgetElement>;
     }
   ) => JSX.Element
-) => (widget: Appcraft.WidgetOptions, options: StateQueue) => React.ReactNode;
+) => (widget: Appcraft.EntityWidgets, options: StateQueue) => React.ReactNode;

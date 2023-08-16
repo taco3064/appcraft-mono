@@ -7,9 +7,10 @@ import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import UndoIcon from '@mui/icons-material/Undo';
 import { useState } from 'react';
 
-import * as Hook from '../../../hooks';
 import * as Style from '../../../styles';
-import { MenuDialog } from '../MenuDialog';
+import MenuDialog from '../MenuDialog';
+import { useLocalesContext } from '../../../contexts';
+import { useMixedTypeMapping } from '../../../hooks';
 import type { TypeItemMixedProps } from './TypeItemMixed.types';
 
 export default function TypeItemMixed({
@@ -21,13 +22,13 @@ export default function TypeItemMixed({
   renderMatchedField,
   selection,
 }: TypeItemMixedProps) {
-  const [selected, setSelected] = Hook.useMixedTypeMapping(
+  const [selected, setSelected] = useMixedTypeMapping(
     propPath,
     options.options || []
   );
 
   const [open, setOpen] = useState(false);
-  const ct = Hook.useFixedT();
+  const ct = useLocalesContext();
   const matched = options.options?.find(({ text }) => text === selected);
 
   const types =

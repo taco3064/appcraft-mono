@@ -8,7 +8,7 @@ export type GetDefaultProps = (
 ) => Record<string, unknown>;
 
 export type GetNodesAndEventsKey = (
-  options: Pick<Appcraft.WidgetOptions, 'category'> &
+  options: Pick<Appcraft.EntityWidgets, 'category'> &
     Partial<Pick<Appcraft.NodeWidget, 'typeFile' | 'typeName'>>,
 
   defaultKey?: string

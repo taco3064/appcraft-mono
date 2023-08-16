@@ -3,7 +3,7 @@ import type * as Appcraft from '@appcraft/types';
 
 import type { FetchTypeDefinition } from './useLazyTypeList.types';
 
-const useLazyTypeList = <R>(
+export const useLazyTypeList = <R>(
   options: Appcraft.TypesParseOptions,
   fetchTypeDefinition: FetchTypeDefinition,
   renderer: Appcraft.LazyRenderer<Appcraft.StructureProp, R>
@@ -29,5 +29,3 @@ const useLazyTypeList = <R>(
     [typeFile, typeName, mixedTypes, collectionPath]
   );
 };
-
-export default useLazyTypeList;

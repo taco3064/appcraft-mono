@@ -10,7 +10,8 @@ import type { WidgetTodo } from '@appcraft/types';
 import * as Comp from '../../components';
 import * as Style from '../../styles';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { useFixedT, useTodoGenerator } from '../../hooks';
+import { useLocalesContext } from '../../contexts';
+import { useTodoGenerator } from '../../hooks';
 import { useStateContext } from '../../contexts';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
 
@@ -36,7 +37,6 @@ export default function CraftedTodoEditor({
   HeaderProps,
   variant = 'popup',
   disableCategories,
-  fixedT,
   fullHeight,
   typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts',
   values,
@@ -46,7 +46,7 @@ export default function CraftedTodoEditor({
   onFetchDefinition,
 }: CraftedTodoEditorProps) {
   const theme = useTheme();
-  const ct = useFixedT(fixedT);
+  const ct = useLocalesContext();
   const { toggle } = useStateContext();
 
   const [{ editing, nodes, edges }, handleTodo] = useTodoGenerator(
@@ -73,14 +73,13 @@ export default function CraftedTodoEditor({
     <>
       {variant === 'popup' && (
         <Comp.MutationTodoNodeDialog
-          ct={ct}
           open={Boolean(editing)}
           values={editing}
           onClose={handleTodo.cancel}
           onConfirm={(todo) => onChange({ ...values, [todo.id]: todo })}
           renderEditor={(todoConfig) => (
             <CraftedTypeEditor
-              {...{ fixedT, renderOverrideItem, onFetchDefinition }}
+              {...{ renderOverrideItem, onFetchDefinition }}
               exclude={EXCLUDE}
               values={todoConfig}
               onChange={handleTodo.change}
@@ -109,7 +108,7 @@ export default function CraftedTodoEditor({
         {variant === 'normal' && editing && (
           <>
             <CraftedTypeEditor
-              {...{ fixedT, renderOverrideItem, onFetchDefinition }}
+              {...{ renderOverrideItem, onFetchDefinition }}
               fullHeight
               exclude={EXCLUDE}
               values={editing.config}

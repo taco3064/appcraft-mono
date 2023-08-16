@@ -80,7 +80,7 @@ const getSuperiorTodos: Types.GetSuperiorTodos = (
     {}
   );
 
-const useRendererState: Types.RendererStateHook = (
+export const useRendererState: Types.RendererStateHook = (
   options,
   templates //* Map Key: Configurate ID
 ) => {
@@ -263,5 +263,3 @@ const useRendererState: Types.RendererStateHook = (
     },
   ];
 };
-
-export default useRendererState;

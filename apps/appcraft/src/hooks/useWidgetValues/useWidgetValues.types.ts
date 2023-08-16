@@ -1,11 +1,11 @@
-import type { ConfigData, RootNodeWidget } from '@appcraft/types';
+import type { ConfigData, MainWidget } from '@appcraft/types';
 import type { CraftedWidgetEditorProps } from '@appcraft/craftsman';
 
 export type WidgetValuesHook = (options: {
-  data: ConfigData<RootNodeWidget, string>;
+  data: ConfigData<MainWidget, string>;
   onSave?: () => void;
 }) => [
-  RootNodeWidget | undefined,
+  MainWidget | undefined,
   {
     change: CraftedWidgetEditorProps['onWidgetChange'];
     reset: () => void;

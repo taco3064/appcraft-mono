@@ -6,7 +6,7 @@ import * as Util from '../../utils';
 import { useStateContext } from '../../contexts';
 import type { StateSelectionHook } from './useStateSelection.types';
 
-const useStateSelection: StateSelectionHook = (
+export const useStateSelection: StateSelectionHook = (
   generator,
   alias,
   propPath,
@@ -48,5 +48,3 @@ const useStateSelection: StateSelectionHook = (
         }),
   ];
 };
-
-export default useStateSelection;

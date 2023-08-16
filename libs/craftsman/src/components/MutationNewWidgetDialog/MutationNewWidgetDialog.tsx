@@ -11,20 +11,21 @@ import type * as Appcraft from '@appcraft/types';
 import { FlexDialog } from '../../styles';
 import { WidgetTypeSelect } from '../common';
 import { getDefaultProps } from '../../utils';
+import { useLocalesContext } from '../../contexts';
 import type { MutationNewWidgetDialogProps } from './MutationNewWidgetDialog.types';
 
 export default function MutationNewWidgetDialog({
-  ct,
   disablePlaintext = false,
   open,
   onClose,
   onConfirm,
 }: MutationNewWidgetDialogProps) {
   const theme = useTheme();
-  const [data, setData] = useState<Appcraft.WidgetOptions>();
+  const ct = useLocalesContext();
+  const [data, setData] = useState<Appcraft.EntityWidgets>();
 
   const [active, setActive] =
-    useState<Appcraft.WidgetOptions['category']>('node');
+    useState<Appcraft.EntityWidgets['category']>('node');
 
   const handleClose: typeof onClose = (...e) => {
     setActive('node');
@@ -43,7 +44,7 @@ export default function MutationNewWidgetDialog({
       onSubmit={(e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        onConfirm({ ...(data as Appcraft.WidgetOptions), id: nanoid(4) });
+        onConfirm({ ...(data as Appcraft.EntityWidgets), id: nanoid(4) });
         handleClose(e, 'escapeKeyDown');
       }}
       action={
@@ -81,7 +82,6 @@ export default function MutationNewWidgetDialog({
           size="small"
           margin="dense"
           variant="outlined"
-          ct={ct}
           label={ct('lbl-widget-type')}
           defaultValue=""
           onChange={({ target: { value } }) =>
@@ -124,7 +124,7 @@ export default function MutationNewWidgetDialog({
         defaultValue={data?.description || ''}
         onChange={(e) =>
           setData({
-            ...(data as Appcraft.WidgetOptions),
+            ...(data as Appcraft.EntityWidgets),
             description: e.target.value,
           })
         }

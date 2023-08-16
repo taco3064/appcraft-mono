@@ -1,64 +1,66 @@
 import type * as State from './state.types';
-import type { TypesMapping, TypesParseOptions } from './prop-types-def.types';
+import type { TypesParseOptions } from './prop-types-def.types';
 import type { WidgetTodo } from './todo.types';
 
 //* Variables
-enum OptionCategory {
+enum ConfigCategory {
   config,
   node,
   plainText,
-  template,
 }
 
-export type ChildNodes = Record<string, State.NodeType>;
+export type ChildNodes = { [propPath: string]: State.NodeType };
 
 export type NodeAndEventProps = {
-  nodes: Record<string, ChildNodes>;
-  events: Record<string, string[]>;
+  //* Widget key is `${typeFile}#${typeName}`
+  nodes: { [widgetKey: string]: ChildNodes };
+  events: { [widgetKey: string]: string[] };
 };
 
 //* Options
-type BaseOptions<C extends keyof typeof OptionCategory, P> = {
+type BaseConfig<C extends keyof typeof ConfigCategory, P> = {
   category: C;
   description?: string;
 } & P;
 
-export type PlainTextWidget = BaseOptions<
+export type ConfigOptions = BaseConfig<
+  'config',
+  Omit<TypesParseOptions, 'collectionPath'> & {
+    props?: { [propPath: string]: unknown };
+  }
+>;
+
+export type PlainTextWidget = BaseConfig<
   'plainText',
   { id: string; content: string }
 >;
 
-export type ConfigOptions = BaseOptions<
-  'config',
-  Omit<TypesParseOptions, 'collectionPath'> & {
-    props?: Record<string, unknown>;
-  }
->;
-
-export type NodeWidget = BaseOptions<
+export type NodeWidget = BaseConfig<
   'node',
   Omit<ConfigOptions, 'category'> & {
     id: string;
     type: string;
-    nodes?: Record<string, WidgetOptions | WidgetOptions[]>;
-    todos?: Record<string, Record<string, WidgetTodo>>;
+    nodes?: { [propPath: string]: EntityWidgets | EntityWidgets[] };
+    todos?: State.Template['todos'];
   }
 >;
 
-export interface RootNodeWidget extends NodeWidget {
+export type EntityWidgets = PlainTextWidget | NodeWidget;
+
+export interface MainWidget extends NodeWidget {
   template?: { index?: number };
   state: {
-    nodes?: Record<string, State.ElementState | State.NodeState>;
-    props?: Record<string, State.PropsState>;
-    todos?: Record<string, State.TodosState>;
+    //* State key is complete path to prop
+    nodes?: { [stateKey: string]: State.EntityNodeStates };
+    props?: { [stateKey: string]: State.PropsState };
+    todos?: { [stateKey: string]: State.TodosState };
   };
 }
 
-export type WidgetOptions = PlainTextWidget | NodeWidget;
-
-//* Lazy Renderer Fn
-export type LazyRenderer<D, R = Record<string, never>> = (
-  options: R & {
-    fetchData?: D;
-  }
-) => JSX.Element;
+export type LayoutWidget = {
+  id: string;
+  layout: Record<'x' | 'y' | 'width' | 'height', number>;
+  nodes?: { [stateKey: string]: State.Template };
+  props?: { [stateKey: string]: unknown };
+  template: State.Template;
+};

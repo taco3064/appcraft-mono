@@ -1,1 +1,1 @@
-export { default as usePropValue } from './usePropValue';
+export * from './usePropValue';

@@ -1,1 +1,1 @@
-export { default as useLazyUserProfile } from './useLazyUserProfile';
+export * from './useLazyUserProfile';

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { lazy, useMemo, useRef } from 'react';
 import type { LazyRenderer } from '@appcraft/types';
 
-const useLazyUserProfile = <D, R = Record<string, never>>(
+export const useLazyUserProfile = <D, R = Record<string, never>>(
   idToken,
   renderer: LazyRenderer<D, R>
 ) => {
@@ -27,5 +27,3 @@ const useLazyUserProfile = <D, R = Record<string, never>>(
     [idToken]
   );
 };
-
-export default useLazyUserProfile;

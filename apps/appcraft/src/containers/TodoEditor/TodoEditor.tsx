@@ -14,14 +14,14 @@ import { getTypeDefinition } from '~appcraft/services';
 import type { TodoEditorProps } from './TodoEditor.types';
 
 export default function TodoEditor({
-  PersistentDrawerContentProps,
+  ResponsiveDrawerProps,
   data,
   logZIndex,
   superiors,
   onActionNodePick = (e) => e,
   onSave,
 }: TodoEditorProps) {
-  const [at, ct, tt] = Hook.useFixedT('app', 'appcraft', 'todos');
+  const [at, tt] = Hook.useFixedT('app', 'todos');
   const [open, setOpen] = useState(true);
 
   const [{ duration, outputs, todos }, handleTodos] = Hook.useTodoValues({
@@ -89,7 +89,7 @@ export default function TodoEditor({
       )}
 
       <ResponsiveDrawer
-        {...PersistentDrawerContentProps}
+        {...ResponsiveDrawerProps}
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{
           anchor: 'right',
@@ -102,7 +102,6 @@ export default function TodoEditor({
           <CraftedTodoEditor
             fullHeight
             disableCategories={['wrap', 'state']}
-            fixedT={ct}
             typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             values={todos}
             onChange={handleTodos.change}

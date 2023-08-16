@@ -1,4 +1,4 @@
-export { default as useRendererState } from './useRendererState';
+export * from './useRendererState';
 
 export type {
   RendererOptions,

@@ -7,7 +7,7 @@ import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import type { OutputCollectEvent } from '@appcraft/exhibitor';
-import type { RootNodeWidget, WidgetTodo } from '@appcraft/types';
+import type { MainWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
 import { CommonButton, TodoOutputStepper } from '~appcraft/components';
@@ -16,8 +16,8 @@ import { TodoEditor, WidgetEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 import type { HierarchyData } from '~appcraft/services';
 
+const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];
 const WIDGET_ACTIONS = ['expand', 'reset', 'save'];
-const WRAP_ACTIONS = ['expand', 'run', 'reset', 'save'];
 
 export default function Detail() {
   const [at, wt, tt] = Hook.useFixedT('app', 'widgets', 'todos');
@@ -36,11 +36,11 @@ export default function Detail() {
     Hook.useNodePickHandle(WIDGET_ACTIONS);
 
   const [todoAction, handleTodoActionPick] =
-    Hook.useNodePickHandle(WRAP_ACTIONS);
+    Hook.useNodePickHandle(TODO_ACTIONS);
 
   const { data: widget, refetch } = useQuery({
     queryKey: [id],
-    queryFn: findConfig<RootNodeWidget>,
+    queryFn: findConfig<MainWidget>,
     refetchOnWindowFocus: false,
   });
 
@@ -66,7 +66,7 @@ export default function Detail() {
         }
       >
         <Head>
-          <title>Appcraft | {wt('ttl-detail', { name: superiors[id] })}</title>
+          <title>Appcraft | {wt('ttl-detail')}</title>
         </Head>
 
         <WidgetEditor
@@ -88,7 +88,7 @@ export default function Detail() {
               ),
             })
           }
-          PersistentDrawerContentProps={{
+          ResponsiveDrawerProps={{
             disableGutters: true,
             maxWidth: false,
             height: (theme) => `calc(${height} - ${theme.spacing(30.25)})`,
@@ -138,7 +138,7 @@ export default function Detail() {
             logZIndex={theme.zIndex.modal + 1}
             onActionNodePick={handleTodoActionPick}
             onSave={() => setTodoHierarchy(undefined)}
-            PersistentDrawerContentProps={{
+            ResponsiveDrawerProps={{
               disableGutters: true,
               maxWidth: false,
               height: () => '100%',

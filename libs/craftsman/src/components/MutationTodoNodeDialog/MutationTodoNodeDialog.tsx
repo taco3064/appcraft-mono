@@ -3,16 +3,18 @@ import { ExhibitorUtil } from '@appcraft/exhibitor';
 import type * as Appcraft from '@appcraft/types';
 
 import { FlexDialog } from '../../styles';
+import { useLocalesContext } from '../../contexts';
 import type { MutationTodoNodeDialogProps } from './MutationTodoNodeDialog.types';
 
 export default function MutationTodoNodeDialog({
-  ct,
   open,
   values,
   renderEditor,
   onClose,
   onConfirm,
 }: MutationTodoNodeDialogProps) {
+  const ct = useLocalesContext();
+
   return (
     <FlexDialog
       {...{ open, onClose }}

@@ -5,7 +5,9 @@ import { useMemo } from 'react';
 import { OptionValues, useEditorContext } from '../../../contexts';
 import type { Collection } from './useCollection.types';
 
-const useCollection = <V extends OptionValues>(defaultValues?: Collection) => {
+export const useCollection = <V extends OptionValues>(
+  defaultValues?: Collection
+) => {
   const { collectionPath, values } = useEditorContext<V>();
 
   const source = useMemo<object>(() => {
@@ -28,5 +30,3 @@ const useCollection = <V extends OptionValues>(defaultValues?: Collection) => {
       defaultValues,
   };
 };
-
-export default useCollection;

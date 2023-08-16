@@ -1,1 +1,1 @@
-export { default as useStateSelection } from './useStateSelection';
+export * from './useStateSelection';

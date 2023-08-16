@@ -1,4 +1,4 @@
-export { default as useTodoGenerator } from './useTodoGenerator';
+export * from './useTodoGenerator';
 
 export type {
   EditToggleHandler,

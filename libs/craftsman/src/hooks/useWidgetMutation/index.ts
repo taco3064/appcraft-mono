@@ -1,1 +1,1 @@
-export { default as useWidgetMutation } from './useWidgetMutation';
+export * from './useWidgetMutation';

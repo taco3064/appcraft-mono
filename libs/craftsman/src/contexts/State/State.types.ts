@@ -1,11 +1,11 @@
 import type { MutableRefObject, ReactElement, ReactNode } from 'react';
-import type { RootNodeWidget } from '@appcraft/types';
+import type { MainWidget } from '@appcraft/types';
 
-type ChangeHandler = (widget: RootNodeWidget) => void;
+type ChangeHandler = (widget: MainWidget) => void;
 
 export interface StateContextValue {
   basePath: string;
-  values?: RootNodeWidget;
+  values?: MainWidget;
   toggleRef?: MutableRefObject<ReactElement>;
   handleChangeRef?: MutableRefObject<ChangeHandler>;
 }
@@ -14,6 +14,6 @@ export interface StateProviderProps {
   basePath: string;
   children: ReactNode;
   toggle: ReactElement;
-  values?: RootNodeWidget;
+  values?: MainWidget;
   onChange: ChangeHandler;
 }

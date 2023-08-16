@@ -6,7 +6,7 @@ import axios from 'axios';
 import { CraftedRenderer } from '@appcraft/exhibitor';
 import { CraftedWidgetEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
-import type { RootNodeWidget, WidgetState, WidgetTodo } from '@appcraft/types';
+import type { MainWidget, WidgetState, WidgetTodo } from '@appcraft/types';
 
 import * as Common from '../common';
 import * as Comp from '~appcraft/components';
@@ -41,7 +41,7 @@ const getOverrideRenderType: Types.GetOverrideRenderType = (
 };
 
 export default function WidgetEditor({
-  PersistentDrawerContentProps,
+  ResponsiveDrawerProps,
   data,
   superiors,
   onActionNodePick = (e) => e,
@@ -50,7 +50,7 @@ export default function WidgetEditor({
   onTodoWrapperView,
   onWidgetWrapperView,
 }: Types.WidgetEditorProps) {
-  const [at, ct, wt] = Hook.useFixedT('app', 'appcraft', 'widgets');
+  const [at, wt] = Hook.useFixedT('app', 'widgets');
   const [open, setOpen] = useState(false);
   const [widget, handleWidget] = Hook.useWidgetValues({ data, onSave });
 
@@ -76,9 +76,7 @@ export default function WidgetEditor({
 
   const handleFetchWrapper: Types.HandleFetchWrapper = async (category, id) => {
     const { content } = await Service.getConfigById<
-      typeof category extends 'widget'
-        ? RootNodeWidget
-        : Record<string, WidgetTodo>
+      typeof category extends 'widget' ? MainWidget : Record<string, WidgetTodo>
     >(id);
 
     return content;
@@ -131,7 +129,7 @@ export default function WidgetEditor({
       )}
 
       <ResponsiveDrawer
-        {...PersistentDrawerContentProps}
+        {...ResponsiveDrawerProps}
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
@@ -146,7 +144,6 @@ export default function WidgetEditor({
         }
         drawer={
           <CraftedWidgetEditor
-            fixedT={ct}
             stateTypeFile={__WEBPACK_DEFINE__.STATE_TYPE_FILE}
             todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             version={__WEBPACK_DEFINE__.VERSION}

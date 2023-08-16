@@ -3,15 +3,14 @@ import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
 
 import * as Comp from '../../components';
+import * as Ctx from '../../contexts';
 import * as Hook from '../../hooks';
 import * as Style from '../../styles';
-import { EditorProvider, OptionValues, useStateContext } from '../../contexts';
 import type * as Types from './CraftedTypeEditor.types';
 
-export default function CraftedTypeEditor<V extends OptionValues>({
+export default function CraftedTypeEditor<V extends Ctx.OptionValues>({
   HeaderProps,
   exclude,
-  fixedT,
   fullHeight,
   values,
   overrideNamingProps,
@@ -19,8 +18,8 @@ export default function CraftedTypeEditor<V extends OptionValues>({
   onChange,
   onFetchDefinition,
 }: Types.CraftedTypeEditorProps<V>) {
-  const ct = Hook.useFixedT(fixedT);
-  const { toggle } = useStateContext();
+  const ct = Ctx.useLocalesContext();
+  const { toggle } = Ctx.useStateContext();
   const [collectionPath, setCollectionPath] = useState('');
 
   const LazyTypeList = Hook.useLazyTypeList<Types.LazyTypeListProps<V>>(
@@ -42,9 +41,8 @@ export default function CraftedTypeEditor<V extends OptionValues>({
   );
 
   return (
-    <EditorProvider
+    <Ctx.EditorProvider
       {...{
-        fixedT,
         collectionPath,
         values,
         overrideNamingProps,
@@ -83,6 +81,6 @@ export default function CraftedTypeEditor<V extends OptionValues>({
           />
         </Suspense>
       </Style.FlexContainer>
-    </EditorProvider>
+    </Ctx.EditorProvider>
   );
 }

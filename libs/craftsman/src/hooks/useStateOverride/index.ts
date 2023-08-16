@@ -1,2 +1,2 @@
-export { default as useStateOverride } from './useStateOverride';
+export * from './useStateOverride';
 export type { EditedState } from './useStateOverride.types';

@@ -7,7 +7,7 @@ import { upsertConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type { ConfigValuesHook } from './useConfigValues.types';
 
-const useConfigValues: ConfigValuesHook = ({
+export const useConfigValues: ConfigValuesHook = ({
   data,
   typeFile,
   typeName,
@@ -65,5 +65,3 @@ const useConfigValues: ConfigValuesHook = ({
     },
   ];
 };
-
-export default useConfigValues;

@@ -3,7 +3,7 @@ import { useRef } from 'react';
 
 import type * as Types from './useSortableDnd.types';
 
-const useSortableDnd = <E extends HTMLElement>(
+export const useSortableDnd = <E extends HTMLElement>(
   ...args: Types.SortableDndHookArgs
 ): Types.SortableDndHookReturn<E> => {
   const [type, id, index, handleDndMove] = args;
@@ -51,5 +51,3 @@ const useSortableDnd = <E extends HTMLElement>(
     isDragging,
   };
 };
-
-export default useSortableDnd;

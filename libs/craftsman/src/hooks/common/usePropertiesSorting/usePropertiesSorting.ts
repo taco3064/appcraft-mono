@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { getPropOrderSeq } from '../../../utils';
 import type { PropertiesSortingHook } from './usePropertiesSorting.types';
 
-const usePropertiesSorting: PropertiesSortingHook = (basicType) =>
+export const usePropertiesSorting: PropertiesSortingHook = (basicType) =>
   useMemo(
     () =>
       Object.values(basicType?.options || {}).sort(
@@ -16,5 +16,3 @@ const usePropertiesSorting: PropertiesSortingHook = (basicType) =>
       ),
     [basicType?.options]
   );
-
-export default usePropertiesSorting;

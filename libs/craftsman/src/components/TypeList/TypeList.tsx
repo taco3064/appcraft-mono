@@ -6,6 +6,7 @@ import type { NodeWidget } from '@appcraft/types';
 import * as Hook from '../../hooks';
 import * as Style from '../../styles';
 import { Breadcrumbs, TypeItem } from '../common';
+import { useLocalesContext } from '../../contexts';
 import type { OptionValues } from '../../contexts';
 import type { TypeListProps } from './TypeList.types';
 
@@ -16,7 +17,7 @@ export default function TypeList<V extends OptionValues>({
   onChange,
   onCollectionPathChange,
 }: TypeListProps<V>) {
-  const ct = Hook.useFixedT();
+  const ct = useLocalesContext();
 
   const [breadcrumbs, { back: handleBack, to: handleTo }] =
     Hook.usePropertyRouter(onCollectionPathChange);

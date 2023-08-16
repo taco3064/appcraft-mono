@@ -1,1 +1,1 @@
-export { default as useLazyRenderer } from './useLazyRenderer';
+export * from './useLazyRenderer';

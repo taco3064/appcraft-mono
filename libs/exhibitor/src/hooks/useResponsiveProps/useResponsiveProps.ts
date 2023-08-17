@@ -19,31 +19,40 @@ const getLayout: Types.GetLayout = (sizes, size, { id, layout }) => {
 export const useResponsiveProps: Types.ResponsivePropsHook = (options) => {
   const theme = useTheme();
 
-  return useMemo(
+  const stringify = useMemo(
     () =>
-      !Array.isArray(options)
-        ? undefined
-        : theme.breakpoints.keys.reduce<Types.ResponsiveProps>(
-            ({ breakpoints, cols, layouts }, size, i, sizes) => {
-              return {
-                breakpoints: {
-                  ...breakpoints,
-                  [size]: theme.breakpoints.values[size],
-                },
-                cols: {
-                  ...cols,
-                  [size]: (i + 1) * 2,
-                },
-                layouts: {
-                  ...layouts,
-                  [size]: options.map((layout) =>
-                    getLayout(sizes, size, layout)
-                  ),
-                },
-              };
-            },
-            { breakpoints: {}, cols: {}, layouts: {} }
-          ),
-    [theme, options]
+      JSON.stringify(
+        !Array.isArray(options)
+          ? null
+          : options.map(({ id, layout }) => ({ id, layout }))
+      ),
+    [options]
   );
+
+  return useMemo(() => {
+    const keys = [...theme.breakpoints.keys];
+    const opts: Parameters<Types.GetLayout>[2][] = JSON.parse(stringify);
+
+    return !Array.isArray(opts)
+      ? undefined
+      : keys.reverse().reduce<Types.ResponsiveProps>(
+          ({ breakpoints, cols, layouts }, size, i) => ({
+            breakpoints: {
+              ...breakpoints,
+              [size]: Math.max(0, theme.breakpoints.values[size] - 1),
+            },
+            cols: {
+              ...cols,
+              [size]: (keys.length - i) * 2,
+            },
+            layouts: {
+              ...layouts,
+              [size]: opts.map((layout) =>
+                getLayout(theme.breakpoints.keys, size, layout)
+              ),
+            },
+          }),
+          { breakpoints: {}, cols: {}, layouts: {} }
+        );
+  }, [theme, stringify]);
 };

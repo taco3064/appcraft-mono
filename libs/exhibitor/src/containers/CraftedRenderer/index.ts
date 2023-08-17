@@ -1,2 +1,6 @@
 export { default, default as CraftedRenderer } from './CraftedRenderer';
-export type { CraftedRendererProps } from './CraftedRenderer.types';
+
+export type {
+  CraftedRendererProps,
+  LayoutChangeHandler,
+} from './CraftedRenderer.types';

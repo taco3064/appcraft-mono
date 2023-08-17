@@ -1,3 +1,3 @@
-import type { Breakpoint } from '@mui/system';
+import type { Breakpoint } from '@mui/material/styles';
 
 export type WidthHook = () => Breakpoint;

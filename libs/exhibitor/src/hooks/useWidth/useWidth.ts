@@ -1,6 +1,6 @@
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import type { Breakpoint } from '@mui/system';
+import type { Breakpoint } from '@mui/material/styles';
 
 import type { WidthHook } from './useWidth.types';
 

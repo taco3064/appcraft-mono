@@ -1,4 +1,4 @@
-import type { Breakpoint } from '@mui/system';
+import type { Breakpoint } from '@mui/material/styles';
 import type { Layout } from 'react-grid-layout';
 import type { LayoutWidget } from '@appcraft/types';
 
@@ -17,7 +17,7 @@ export type ResponsiveProps = {
 export type GetLayout = (
   sizes: Breakpoint[],
   size: Breakpoint,
-  layoutWidget: LayoutWidget
+  layout: Pick<LayoutWidget, 'id' | 'layout'>
 ) => Layout;
 
 //* Custom Hooks

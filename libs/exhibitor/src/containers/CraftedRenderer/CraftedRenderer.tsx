@@ -1,9 +1,10 @@
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Container from '@mui/material/Container';
 import LinearProgress from '@mui/material/LinearProgress';
 import Paper from '@mui/material/Paper';
 import { LazyWidget } from '@appcraft/widgets';
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 
 import * as Hook from '../../hooks';
@@ -15,7 +16,7 @@ function RendererContent({
   elevation,
   fetchData,
   options,
-  onLayoutChange,
+  layoutable,
   ...props
 }: Types.RendererContentProps) {
   const theme = useTheme();
@@ -28,63 +29,79 @@ function RendererContent({
     (Widget, { key, props }) => <Widget key={key} {...props} />
   );
 
+  useEffect(() => {
+    window.dispatchEvent(new Event('resize'));
+  }, [layoutable?.breakpoint]);
+
   if (!Array.isArray(options)) {
     return ((isPrepared && render(options, { state: { id: options.id } })) ||
       null) as JSX.Element;
   }
 
   return (
-    <ResponsiveGridLayout
-      {...responsiveProps}
-      {...(onLayoutChange && {
-        isDraggable: true,
-        isResizable: true,
-        resizeHandles: ['se'],
-        resizeHandle: (
-          <ArrowForwardIosIcon
-            className="react-resizable-handle"
-            sx={{
-              position: 'absolute',
-              cursor: 'nwse-resize',
-              bottom: 0,
-              right: 0,
-              transform: 'rotate(45deg)',
-              color: theme.palette.action.disabled,
-
-              '&:hover': {
-                color: theme.palette.action.active,
-              },
-            }}
-          />
-        ),
-        onLayoutChange,
-      })}
-      autoSize
-      rowHeight={Number.parseInt(theme.spacing(6).replace(/px$/, ''), 10)}
-      style={{ position: 'relative', minHeight: theme.spacing(6) }}
+    <Container
+      disableGutters
+      maxWidth={layoutable?.breakpoint || false}
+      style={{
+        height: 'auto',
+        ...(layoutable && {
+          minWidth: theme.breakpoints.values[layoutable.breakpoint],
+        }),
+      }}
     >
-      {options.map(({ id, template }) => {
-        const widget = fetchData.get(template?.id);
+      <ResponsiveGridLayout
+        autoSize
+        rowHeight={Number.parseInt(theme.spacing(6).replace(/px$/, ''), 10)}
+        style={{ position: 'relative', minHeight: theme.spacing(6) }}
+        {...responsiveProps}
+        {...(layoutable && {
+          isDraggable: true,
+          isResizable: true,
+          resizeHandles: ['se'],
+          onLayoutChange: (...e) =>
+            layoutable.onLayoutChange(layoutable.breakpoint, ...e),
+          resizeHandle: (
+            <ArrowForwardIosIcon
+              className="react-resizable-handle"
+              sx={{
+                position: 'absolute',
+                cursor: 'nwse-resize',
+                bottom: 0,
+                right: 0,
+                transform: 'rotate(45deg)',
+                color: theme.palette.action.disabled,
 
-        return (
-          <Paper key={id} elevation={elevation}>
-            {id}
-            {isPrepared &&
-              widget &&
-              render(widget, { state: { id: template.id } })}
-          </Paper>
-        );
-      })}
-    </ResponsiveGridLayout>
+                '&:hover': {
+                  color: theme.palette.action.active,
+                },
+              }}
+            />
+          ),
+        })}
+      >
+        {options.map(({ id, template }) => {
+          const widget = fetchData.get(template?.id);
+
+          return (
+            <Paper key={id} elevation={elevation}>
+              {id}
+              {isPrepared &&
+                widget &&
+                render(widget, { state: { id: template.id } })}
+            </Paper>
+          );
+        })}
+      </ResponsiveGridLayout>
+    </Container>
   );
 }
 
 export default function CraftedRenderer({
   elevation,
+  layoutable,
   options,
   onFetchData,
   onFetchWrapper,
-  onLayoutChange,
   onOutputCollect,
 }: Types.CraftedRendererProps) {
   const LazyRenderer = Hook.useLazyRenderer<Types.LazyRendererProps>(
@@ -97,7 +114,7 @@ export default function CraftedRenderer({
     <Suspense fallback={<LinearProgress />}>
       {options && (
         <LazyRenderer
-          {...{ elevation, onFetchData, onLayoutChange, onOutputCollect }}
+          {...{ elevation, layoutable, onFetchData, onOutputCollect }}
           options={options}
           onFetchTodoWrapper={onFetchWrapper}
           onLazyRetrieve={(type) => LazyWidget[type]}

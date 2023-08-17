@@ -16,7 +16,7 @@ import { PageEditor, TodoEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 import type { HierarchyData } from '~appcraft/services';
 
-const PAGE_ACTIONS = ['reset', 'save'];
+const PAGE_ACTIONS = ['add', 'reset', 'save'];
 const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];
 
 export default function Detail() {
@@ -59,6 +59,7 @@ export default function Detail() {
         secondary={superiors[id]}
         action={
           <>
+            {pageAction?.add}
             {pageAction?.reset}
             {pageAction?.save}
           </>

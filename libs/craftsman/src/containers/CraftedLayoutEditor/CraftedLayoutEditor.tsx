@@ -1,9 +1,9 @@
 import type { CraftedLayoutEditorProps } from './CraftedLayoutEditor.types';
 
 export default function CraftedLayoutEditor({
-  layouts,
+  layout,
   onFetchWidgetWrapper,
-  onLayoutsChange,
+  onLayoutChange,
 }: CraftedLayoutEditorProps) {
   return null;
 }

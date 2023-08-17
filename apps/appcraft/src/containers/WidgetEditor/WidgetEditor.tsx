@@ -2,11 +2,10 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import axios from 'axios';
 import { CraftedRenderer } from '@appcraft/exhibitor';
 import { CraftedWidgetEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
-import type { MainWidget, WidgetState, WidgetTodo } from '@appcraft/types';
+import type { WidgetState } from '@appcraft/types';
 
 import * as Common from '../common';
 import * as Comp from '~appcraft/components';
@@ -55,32 +54,9 @@ export default function WidgetEditor({
   const [widget, handleWidget] = Hook.useWidgetValues({ data, onSave });
 
   const width = Hook.useWidth();
+  const rendererFetchHandles = Hook.useRendererFetchHandles();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
-
-  const handleFetchData: Types.HandleFetchData = async ({
-    url,
-    method,
-    headers,
-    data,
-  }) => {
-    const { data: result } = await axios({
-      url,
-      method,
-      headers,
-      ...(data && { data }),
-    });
-
-    return result;
-  };
-
-  const handleFetchWrapper: Types.HandleFetchWrapper = async (category, id) => {
-    const { content } = await Service.getConfigById<
-      typeof category extends 'widget' ? MainWidget : Record<string, WidgetTodo>
-    >(id);
-
-    return content;
-  };
 
   const actionNode = Hook.useNodePicker(
     () =>
@@ -137,8 +113,8 @@ export default function WidgetEditor({
         content={
           <CraftedRenderer
             options={widget}
-            onFetchData={handleFetchData}
-            onFetchWrapper={handleFetchWrapper}
+            onFetchData={rendererFetchHandles.data}
+            onFetchWrapper={rendererFetchHandles.wrapper}
             onOutputCollect={onOutputCollect}
           />
         }
@@ -151,7 +127,7 @@ export default function WidgetEditor({
             onWidgetChange={handleWidget.change}
             onFetchDefinition={Service.getTypeDefinition}
             onFetchNodesAndEvents={Service.getNodesAndEvents}
-            onFetchWidgetWrapper={handleFetchWrapper}
+            onFetchWidgetWrapper={rendererFetchHandles.wrapper}
             renderOverrideItem={(...args) => {
               const [, props] = args;
 

@@ -68,13 +68,17 @@ export const useLazyRenderer = <R>(
   const stringify = useMemo(
     () =>
       JSON.stringify(
-        extractTemplateIds(
-          getForceArray(
-            !Array.isArray(options)
-              ? options
-              : options.map(({ widget }) => widget)
-          )
-        )
+        !Array.isArray(options)
+          ? extractTemplateIds([options])
+          : Array.from(
+              options.reduce((result, { template }) => {
+                if (template?.id) {
+                  result.add(template.id);
+                }
+
+                return result;
+              }, new Set<string>())
+            )
       ),
     [options]
   );

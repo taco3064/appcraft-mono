@@ -135,8 +135,12 @@ export const useRendererState: Types.RendererStateHook = (
     if (!Array.isArray(options)) {
       result.set(options.id, options);
     } else {
-      options.forEach(({ widget }) => {
-        result.set(widget.id, widget);
+      options.forEach(({ template }) => {
+        const widget = templates.get(template?.id);
+
+        if (widget) {
+          result.set(widget.id, widget);
+        }
       });
     }
 
@@ -148,7 +152,7 @@ export const useRendererState: Types.RendererStateHook = (
   }, [widgets]);
 
   return [
-    Object.keys(states).length > 0,
+    widgets.size > 0,
 
     {
       props: (widget, { state, superiors = [] }) => {

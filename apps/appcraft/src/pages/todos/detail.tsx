@@ -55,7 +55,7 @@ export default function Detail() {
         ResponsiveDrawerProps={{
           disableGutters: true,
           maxWidth: false,
-          height: (theme) => `calc(${height} - ${theme.spacing(30.25)})`,
+          height: (theme) => `calc(${height} - ${theme.spacing(29)})`,
         }}
       />
     </PageContainer>

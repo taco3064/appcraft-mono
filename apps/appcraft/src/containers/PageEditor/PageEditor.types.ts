@@ -9,7 +9,7 @@ import type { TodoWrapperSelectProps, WidgetSelectProps } from '../common';
 export interface PageEditorProps {
   data: ConfigData<LayoutWidget[], string>;
 
-  onActionNodePick?: NodePickerFn<'reset' | 'save'>;
+  onActionNodePick?: NodePickerFn<'add' | 'reset' | 'save'>;
   onOutputCollect?: Exhibitor.OutputCollectHandler;
   onSave?: () => void;
   onTodoWrapperView?: TodoWrapperSelectProps['onView'];

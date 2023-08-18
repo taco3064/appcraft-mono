@@ -1,14 +1,9 @@
-import { useRender } from '../../hooks';
 import type * as Hook from '../../hooks';
 import type { FetchDataHandler } from '../../utils';
+import type { RendererContentProps } from '../../components';
 
-export type LazyRendererProps = Parameters<typeof useRender>[0] & {
-  options: Hook.RendererOptions;
-};
-
-export type RendererContentProps = LazyRendererProps & {
-  fetchData: Hook.WidgetMap;
-};
+//* Component Props
+export type LazyRendererProps = Omit<RendererContentProps, 'templates'>;
 
 export interface CraftedRendererProps
   extends Omit<

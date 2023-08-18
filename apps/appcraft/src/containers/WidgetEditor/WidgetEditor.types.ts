@@ -10,8 +10,6 @@ import type { TodoWrapperSelectProps, WidgetSelectProps } from '../common';
 //* Variables
 type OverrideRenderType = 'WIDGET_PICKER' | 'STATE_PICKER' | 'TODO_PICKER';
 
-export type HandleFetchData = Exhibitor.CraftedRendererProps['onFetchData'];
-
 export type HandleFetchWrapper =
   Exhibitor.CraftedRendererProps['onFetchWrapper'];
 

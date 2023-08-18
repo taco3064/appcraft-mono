@@ -16,7 +16,7 @@ import { PageEditor, TodoEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 import type { HierarchyData } from '~appcraft/services';
 
-const PAGE_ACTIONS = ['reset', 'save'];
+const PAGE_ACTIONS = ['add', 'reset', 'save'];
 const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];
 
 export default function Detail() {
@@ -54,11 +54,12 @@ export default function Detail() {
     <>
       <PageContainer
         ContentProps={{ disableGutters: true }}
-        maxWidth="lg"
+        maxWidth="xl"
         primary={pt('ttl-detail')}
         secondary={superiors[id]}
         action={
           <>
+            {pageAction?.add}
             {pageAction?.reset}
             {pageAction?.save}
           </>
@@ -90,7 +91,7 @@ export default function Detail() {
           ResponsiveDrawerProps={{
             disableGutters: true,
             maxWidth: false,
-            height: (theme) => `calc(${height} - ${theme.spacing(30.25)})`,
+            height: (theme) => `calc(${height} - ${theme.spacing(29)})`,
           }}
         />
       </PageContainer>

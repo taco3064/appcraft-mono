@@ -1,6 +1,5 @@
 export * from './containers';
 export * as ExhibitorUtil from './utils';
-export { useWidth } from './hooks';
 
 export type { FetchWrapperHandler } from './hooks';
 

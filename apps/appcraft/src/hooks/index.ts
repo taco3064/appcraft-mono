@@ -1,5 +1,3 @@
-export { useWidth } from '@appcraft/exhibitor';
-
 export * from './useApp';
 export * from './useConfigValues';
 export * from './useHeight';
@@ -11,3 +9,4 @@ export * from './usePageValues';
 export * from './useRendererFetchHandles';
 export * from './useTodoValues';
 export * from './useWidgetValues';
+export * from './useWidth';

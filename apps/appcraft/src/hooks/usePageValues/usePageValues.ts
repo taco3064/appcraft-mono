@@ -37,43 +37,6 @@ export const usePageValues: PageValuesHook = ({ data, onSave }) => {
             JSON.stringify(Array.isArray(data.content) ? data.content : [])
           )
         ),
-
-      layout: (breakpoint, layouts) =>
-        setValues(
-          values.map(({ layout, ...widget }) => {
-            const { i: _id, ...newLayout } = layouts.find(
-              ({ i }) => i === widget.id
-            );
-
-            return {
-              ...widget,
-              layout: {
-                ...layout,
-                [breakpoint]: newLayout,
-              },
-            };
-          })
-        ),
-
-      add: () =>
-        setValues([
-          ...values,
-          {
-            id: nanoid(4),
-            template: { id: '' },
-            layout: {
-              xs: {
-                w: 24,
-                h: 1,
-                x: 0,
-                y: Math.max(
-                  0,
-                  ...values.map(({ layout: { xs } }) => xs.y + xs.h || 0)
-                ),
-              },
-            },
-          },
-        ]),
     },
   ];
 };

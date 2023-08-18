@@ -54,7 +54,7 @@ export default function Detail() {
     <>
       <PageContainer
         ContentProps={{ disableGutters: true }}
-        maxWidth="lg"
+        maxWidth="xl"
         primary={pt('ttl-detail')}
         secondary={superiors[id]}
         action={
@@ -91,7 +91,7 @@ export default function Detail() {
           ResponsiveDrawerProps={{
             disableGutters: true,
             maxWidth: false,
-            height: (theme) => `calc(${height} - ${theme.spacing(30.25)})`,
+            height: (theme) => `calc(${height} - ${theme.spacing(29)})`,
           }}
         />
       </PageContainer>

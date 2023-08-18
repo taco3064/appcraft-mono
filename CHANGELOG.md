@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.101](https://github.com/taco3064/appcraft-mono/compare/v0.0.100...v0.0.101) (2023-08-18)
+
+
+### Features
+
+* **@appcraft/exhibitor:** support layout with react-grid-layout ([f8b83f9](https://github.com/taco3064/appcraft-mono/commit/f8b83f97201a2ec18eab6db2ecf6ce778a6b6279))
+* **apps/appcraft:** design page editor component ([129648b](https://github.com/taco3064/appcraft-mono/commit/129648b4ec53a2fa6ce0c36ba56bd157bb66ec9b))
+
+
+### Bug Fixes
+
+* **@appcraft/exhibitor:** fixed the bugs of rwd settings ([13fe6e0](https://github.com/taco3064/appcraft-mono/commit/13fe6e0b9c967c3c44c034a710f26f8598012688))
+
 ### [0.0.100](https://github.com/taco3064/appcraft-mono/compare/v0.0.99...v0.0.100) (2023-08-16)
 
 

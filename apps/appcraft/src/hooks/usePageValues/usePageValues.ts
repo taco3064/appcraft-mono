@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
@@ -12,7 +13,7 @@ export const usePageValues: PageValuesHook = ({ data, onSave }) => {
   const [at] = useFixedT('app');
 
   const [values, setValues] = useState<LayoutWidget[]>(() =>
-    JSON.parse(JSON.stringify(data.content || []))
+    JSON.parse(JSON.stringify(Array.isArray(data.content) ? data.content : []))
   );
 
   const mutation = useMutation({
@@ -27,9 +28,15 @@ export const usePageValues: PageValuesHook = ({ data, onSave }) => {
     values,
 
     {
-      change: (e) => setValues(!e ? null : e),
-      reset: () => setValues(JSON.parse(JSON.stringify(data.content || []))),
+      change: setValues,
       save: () => mutation.mutate({ ...data, content: values }),
+
+      reset: () =>
+        setValues(
+          JSON.parse(
+            JSON.stringify(Array.isArray(data.content) ? data.content : [])
+          )
+        ),
     },
   ];
 };

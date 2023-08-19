@@ -1,3 +1,8 @@
 {
+  "lbl-lg": "Large",
+  "lbl-md": "Medium ",
+  "lbl-sm": "Small",
+  "lbl-xl": "Extra Large",
+  "lbl-xs": "Extra Small",
   "ttl-detail": "Page"
 }

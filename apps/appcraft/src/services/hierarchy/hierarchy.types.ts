@@ -19,7 +19,7 @@ export type GetHierarchyNamesService = QueryFunction<
 >;
 
 export type AddHierarchyService = (
-  data: Omit<HierarchyData, '_id'>
+  data: HierarchyData
 ) => Promise<HierarchyData<string>>;
 
 export type UpdateHierarchyService = (

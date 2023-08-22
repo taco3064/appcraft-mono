@@ -9,16 +9,15 @@ import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import _get from 'lodash/get';
 import { useMemo, useState } from 'react';
+import { useDndContext } from '@dnd-kit/core';
+import { useSortable } from '@dnd-kit/sortable';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Style from '../../styles';
 import { WidgetEvent, WidgetNode } from '../common';
 import { sortPropPaths } from '../../utils';
 import { useLocalesContext } from '../../contexts';
-import { useSortableDnd } from '../../hooks';
 import type { MixedWidget, WidgetElementProps } from './WidgetElement.types';
-
-const DND_TYPE = Symbol('widget');
 
 export default function WidgetElement<I extends Appcraft.EntityWidgets>({
   basePaths,
@@ -28,22 +27,18 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
   node,
   superiorNodeType,
   onClick,
-  onDndMove,
   onEventActive,
   onNodeActive,
   onRemove,
 }: WidgetElementProps<I>) {
+  const { active } = useDndContext();
   const { category, description, type, content } = item as MixedWidget;
   const [open, setOpen] = useState(true);
   const ct = useLocalesContext();
   const isNode = category === 'node';
 
-  const { ref, handlerId, isDragging } = useSortableDnd<HTMLDivElement>(
-    DND_TYPE,
-    item.id,
-    index,
-    onDndMove
-  );
+  const { setNodeRef, attributes, listeners, transition, transform } =
+    useSortable({ id: item.id });
 
   const events: string[] = useMemo(
     () => (Array.isArray(event) ? sortPropPaths(event) : []),
@@ -62,10 +57,11 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
   return (
     <>
       <ListItemButton
-        ref={ref}
+        {...attributes}
+        {...listeners}
+        ref={setNodeRef}
         selected={open}
-        data-handler-id={handlerId}
-        style={{ opacity: isDragging ? 0 : 1 }}
+        style={{ transition, transform: `translateY(${transform?.y || 0}px)` }}
         onClick={() =>
           onClick([
             ...basePaths,
@@ -119,7 +115,12 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
         </Style.TypeItemAction>
       </ListItemButton>
 
-      <Collapse in={open && nodes.length > 0 && display === 'nodes'}>
+      <Collapse
+        in={open && nodes.length > 0 && display === 'nodes'}
+        sx={(theme) => ({
+          opacity: active ? theme.palette.action.disabledOpacity : 1,
+        })}
+      >
         {nodes.map(([path, type]) => (
           <WidgetNode
             {...{ path, type }}

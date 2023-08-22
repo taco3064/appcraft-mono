@@ -1,4 +1,6 @@
 import type * as Appcraft from '@appcraft/types';
+import type { DragEndEvent } from '@dnd-kit/core';
+
 import type { PropPaths } from '../../utils';
 
 type ModifyEvent = Appcraft.EntityWidgets | Appcraft.MainWidget;
@@ -22,7 +24,7 @@ export type WidgetMutationHook = (
     editing: (e?: PropPaths) => void;
     modify: <E extends ModifyEvent>(e: E) => void;
     remove: (e: PropPaths) => void;
-    resort: (paths: PropPaths, dragIndex: number, hoverIndex: number) => void;
+    resort: (paths: PropPaths, e: DragEndEvent) => void;
     todo: (e: PropPaths) => void;
   }
 ];

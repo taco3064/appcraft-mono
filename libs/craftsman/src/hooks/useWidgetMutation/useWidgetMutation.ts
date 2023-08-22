@@ -1,6 +1,7 @@
 import _get from 'lodash/get';
 import _set from 'lodash/set';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
+import { arrayMove } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
@@ -82,23 +83,21 @@ export const useWidgetMutation: WidgetMutationHook = (
         }
       },
 
-      resort: (paths, dragIndex, hoverIndex) => {
+      resort: (paths, { active, over }) => {
         const target = _get(widget, paths);
 
-        if (Array.isArray(target)) {
-          const dragItem = target[dragIndex];
-
-          target.splice(dragIndex, 1);
-          target.splice(hoverIndex, 0, dragItem);
+        if (Array.isArray(target) && active.id !== over?.id) {
+          const activeIndex = target.findIndex(({ id }) => id === active.id);
+          const overIndex = target.findIndex(({ id }) => id === over?.id);
+          const chidldren = arrayMove(target, activeIndex, overIndex);
 
           onWidgetChange({
-            ..._set(widget, paths, [...target]),
+            ..._set(widget, paths, chidldren),
             state: resortState(
-              'nodes',
               widget.state || {},
               ExhibitorUtil.getPropPath(paths),
-              [dragIndex, hoverIndex],
-              target.length
+              [activeIndex, overIndex],
+              chidldren.length
             ),
           });
         }

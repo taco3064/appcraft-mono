@@ -4,8 +4,9 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import ListItemButton from '@mui/material/ListItemButton';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import { useDraggable, useDroppable } from '@dnd-kit/core';
 
-import { useFixedT, useHierarchyDnd } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './HierarchyItem.types';
 
 export default function HierarchyItem({
@@ -15,29 +16,42 @@ export default function HierarchyItem({
   icon: MuiIcon,
   onActionRender,
   onClick,
-  onGroupChange,
 }: Types.HierarchyItemProps) {
   const [at] = useFixedT('app');
   const { type, name, description } = data;
   const action = (type === 'item' && onActionRender?.(data)) || null;
 
-  const { ref, status } = useHierarchyDnd<HTMLDivElement>(
-    disableGroupChange,
-    data,
-    onGroupChange
-  );
+  const dnd: Types.DndHook = {
+    group: useDroppable({
+      id: data._id,
+      disabled: type === 'item',
+    }),
+    item: useDraggable({
+      id: data._id,
+      disabled: type === 'group' || disableGroupChange,
+    }),
+  };
 
   return (
     <ImageListItem
-      ref={ref}
+      ref={dnd[type].setNodeRef}
       component={Paper}
       elevation={4}
       sx={(theme) => ({
-        ...(status === 'dragging' && { opacity: 0 }),
-        ...(status === 'over' && {
-          border: `1px solid ${theme.palette.divider}`,
-          opacity: 0.8,
+        padding: theme.spacing(0.25),
+        transform: !dnd.item.transform
+          ? undefined
+          : `translate3d(${dnd.item.transform.x}px, ${dnd.item.transform.y}px, 0)`,
+
+        ...(dnd.group.isOver && {
+          border: `2px dashed ${theme.palette.action.selected}`,
+          filter: `brightness(1.2)`,
+          padding: 0,
         }),
+      })}
+      {...(type === 'item' && {
+        ...dnd.item.attributes,
+        ...dnd.item.listeners,
       })}
     >
       <ListItemButton

@@ -43,7 +43,6 @@ export type RemoveState = (
 ) => StateRecord;
 
 export type ResortState = (
-  category: Appcraft.StateCategory,
   state: StateRecord,
   basePath: string,
   indexes: [number, number],

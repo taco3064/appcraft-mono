@@ -21,17 +21,23 @@ export const useLazyWidgetElements = <R>(
   const options = useMemo(() => {
     const items = getForceArray((!path ? widget : _get(widget, path)) || []);
 
-    return items
-      .reduce<string[]>((result, item) => {
-        if (item.category === 'node') {
-          result.push(
-            JSON.stringify({ typeFile: item.typeFile, typeName: item.typeName })
-          );
-        }
+    return JSON.stringify(
+      items
+        .reduce<string[]>((result, item) => {
+          if (item.category === 'node') {
+            result.push(
+              JSON.stringify({
+                typeFile: item.typeFile,
+                typeName: item.typeName,
+              })
+            );
+          }
 
-        return result;
-      }, [])
-      .sort();
+          return result;
+        }, [])
+        .sort()
+        .map((stringify) => JSON.parse(stringify))
+    );
   }, [widget, path]);
 
   useImperativeHandle(renderRef, () => renderFn, [renderFn]);
@@ -39,10 +45,7 @@ export const useLazyWidgetElements = <R>(
   return useMemo(
     () =>
       lazy(async () => {
-        const fetchData = await fetchRef.current(
-          options.map<Types.ParseOptions>((option) => JSON.parse(option)),
-          version
-        );
+        const fetchData = await fetchRef.current(JSON.parse(options), version);
 
         return {
           default: (props: R) => renderRef.current?.({ ...props, fetchData }),

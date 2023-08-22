@@ -9,6 +9,8 @@ import type * as Types from './CraftedRenderer.types';
 
 export default function CraftedRenderer({
   GridLayoutProps,
+  action,
+  breakpoint,
   elevation,
   options,
   onFetchData,
@@ -30,7 +32,14 @@ export default function CraftedRenderer({
     <Suspense fallback={<LinearProgress />}>
       {options && (
         <LazyRenderer
-          {...{ GridLayoutProps, elevation, onFetchData, onOutputCollect }}
+          {...{
+            GridLayoutProps,
+            action,
+            breakpoint,
+            elevation,
+            onFetchData,
+            onOutputCollect,
+          }}
           options={options}
           onFetchTodoWrapper={onFetchWrapper}
           onLazyRetrieve={(type) => LazyWidget[type]}

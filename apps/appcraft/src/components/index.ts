@@ -3,6 +3,7 @@ export * from './BreakpointStepper';
 export * from './CollapseKeyword';
 export * from './CommonButton';
 export * from './HierarchyItem';
+export * from './LayoutAction';
 export * from './MenuDrawer';
 export * from './RemoveButton';
 export * from './SigninButton';

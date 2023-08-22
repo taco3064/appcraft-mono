@@ -25,7 +25,7 @@ export default function BreakpointStepper({
     <Toolbar variant="dense">
       <MobileStepper
         position="static"
-        variant="text"
+        variant="dots"
         steps={breakpoints.length}
         activeStep={activeStep}
         style={{ width: '100%', background: 'transparent' }}

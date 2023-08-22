@@ -3,15 +3,14 @@ import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { CraftedLayoutEditor } from '@appcraft/craftsman';
-import { useState } from 'react';
+import { CraftedRenderer } from '@appcraft/exhibitor';
+import { useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
-import type { Breakpoint } from '@mui/material/styles';
 
 import * as Common from '../common';
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
-import { ResponsiveDrawer } from '~appcraft/styles';
+import * as Style from '~appcraft/styles';
 import type * as Types from './PageEditor.types';
 
 export default function PageEditor({
@@ -25,15 +24,16 @@ export default function PageEditor({
   onWidgetWrapperView,
 }: Types.PageEditorProps) {
   const [at, ct, pt] = Hook.useFixedT('app', 'appcraft', 'pages');
-  const [items, handlePage] = Hook.usePageValues({ data, onSave });
-  const [active, setActive] = useState<number>();
-  const [breakpoint, setBreakpoint] = useState<Breakpoint>('xs');
+
+  const [{ active, breakpoint, items, layouts }, handlePage] =
+    Hook.usePageValues({
+      data,
+      onSave,
+    });
 
   const theme = useTheme();
   const rendererFetchHandles = Hook.useRendererFetchHandles();
   const isSettingOpen = Boolean(items[active]);
-
-  console.log(theme.breakpoints.keys);
 
   const actionNode = Hook.useNodePicker(
     () =>
@@ -43,7 +43,7 @@ export default function PageEditor({
             btnVariant="icon"
             icon={<AddIcon />}
             text={at('btn-add')}
-            onClick={console.log}
+            onClick={handlePage.add}
           />
         ),
         reset: (
@@ -66,6 +66,10 @@ export default function PageEditor({
     [breakpoint, items]
   );
 
+  useEffect(() => {
+    global.window?.dispatchEvent(new Event('resize'));
+  }, [breakpoint]);
+
   return (
     <>
       {superiors && (
@@ -80,7 +84,7 @@ export default function PageEditor({
         />
       )}
 
-      <ResponsiveDrawer
+      <Style.ResponsiveDrawer
         {...ResponsiveDrawerProps}
         ContentProps={{
           style: {
@@ -93,11 +97,53 @@ export default function PageEditor({
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         disablePersistent
         open={isSettingOpen}
-        onClose={() => setActive(undefined)}
+        onClose={() => handlePage.active(undefined)}
+        drawer={!isSettingOpen ? null : 'Editor Settings'}
         content={
           <>
-            <Container disableGutters maxWidth={false} sx={{ height: '100%' }}>
-              Crafted Renderer
+            <Container
+              disableGutters
+              maxWidth={false}
+              sx={{ height: '100%', overflow: 'auto' }}
+            >
+              <CraftedRenderer
+                breakpoint={breakpoint}
+                elevation={1}
+                options={items}
+                onFetchData={rendererFetchHandles.data}
+                onFetchWrapper={rendererFetchHandles.wrapper}
+                onOutputCollect={onOutputCollect}
+                action={(widget) => (
+                  <Comp.LayoutAction
+                    onEdit={() => handlePage.active(widget)}
+                    onRemove={() => handlePage.remove(widget)}
+                  />
+                )}
+                GridLayoutProps={{
+                  autoSize: true,
+                  cols: Hook.GRID_LAYOUT_COLS,
+                  isDraggable: true,
+                  isResizable: true,
+                  resizeHandles: ['se'],
+                  layouts,
+                  breakpoints: Object.fromEntries(
+                    Object.entries(theme.breakpoints.values).sort(
+                      ([, w1], [, w2]) => w2 - w1
+                    )
+                  ),
+                  resizeHandle: (
+                    <Style.GridLayoutResizeHandle
+                      className="react-resizable-handle"
+                      sx={(theme) => ({
+                        position: 'absolute',
+                        bottom: 0,
+                        right: 0,
+                        zIndex: theme.zIndex.fab,
+                      })}
+                    />
+                  ),
+                }}
+              />
             </Container>
 
             <AppBar
@@ -109,22 +155,10 @@ export default function PageEditor({
             >
               <Comp.BreakpointStepper
                 value={breakpoint}
-                onChange={setBreakpoint}
+                onChange={handlePage.breakpoint}
               />
             </AppBar>
           </>
-        }
-        drawer={
-          !isSettingOpen ? null : (
-            <CraftedLayoutEditor
-              layout={items[active]}
-              onFetchWidgetWrapper={rendererFetchHandles.wrapper}
-              onLayoutChange={(layout) => {
-                items.splice(active, 1, layout);
-                handlePage.change([...items]);
-              }}
-            />
-          )
         }
       />
     </>

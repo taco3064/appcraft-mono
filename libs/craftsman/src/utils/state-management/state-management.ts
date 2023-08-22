@@ -22,7 +22,7 @@ const convert2StateArray: Types.Convert2StateArray = (
     (result, [key, value]) => {
       if (key.startsWith(basePath)) {
         const matches = key
-          .replace(new RegExp(`^${basePath}`), '')
+          .replace(new RegExp(`^${basePath.replace(/[.[\]]/g, '\\$&')}`), '')
           .match(/^\[(\d+)\]/);
 
         const i = Number.parseInt(matches?.[1] as string, 10);
@@ -31,7 +31,15 @@ const convert2StateArray: Types.Convert2StateArray = (
 
         _set(
           result,
-          [i, key.replace(new RegExp(`^${basePath}\\[${i}\\]\\.`), '')],
+          [
+            i,
+            key.replace(
+              new RegExp(
+                `^${basePath.replace(/[.[\]]/g, '\\$&')}\\[${i}\\]\\.`
+              ),
+              ''
+            ),
+          ],
           value
         );
       }
@@ -119,17 +127,18 @@ export const removeState: Types.RemoveState = (
 };
 
 export const resortState: Types.ResortState = (
-  category,
-  { [category]: state = {}, ...states },
+  states, // { [category]: state = {}, ...states },
   basePath,
   [fm, to],
   length
-) => {
-  const target = convert2StateArray(state, basePath, length);
-  const dragItem = target[fm];
+) =>
+  ['props', 'todos', 'nodes'].reduce((result, category) => {
+    const { [category as keyof typeof result]: state = {} } = result;
+    const target = convert2StateArray(state, basePath, length);
+    const dragItem = target[fm];
 
-  target.splice(fm, 1);
-  target.splice(to, 0, dragItem);
+    target.splice(fm, 1);
+    target.splice(to, 0, dragItem);
 
-  return { ...states, [category]: convert2State(target, basePath, state) };
-};
+    return { ...result, [category]: convert2State(target, basePath, state) };
+  }, states);

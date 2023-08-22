@@ -48,7 +48,7 @@ export default function HierarchyEditorButton({
       ...data,
       name: formdata.get('name').toString(),
       description: formdata.get('description').toString(),
-    });
+    } as Parameters<typeof mutation.mutate>[0]);
   };
 
   return (

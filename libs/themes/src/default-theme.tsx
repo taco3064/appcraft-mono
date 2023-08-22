@@ -49,11 +49,17 @@ export const DEFAULT_THEME: ThemeOptions = {
       defaultProps: {
         position: 'sticky',
       },
+      styleOverrides: {
+        root: {
+          userSelect: 'none',
+        },
+      },
     },
     MuiButton: {
       styleOverrides: {
         root: {
           borderRadius: 12,
+          userSelect: 'none',
         },
         containedInherit: ({ theme }) => ({
           background: theme.palette.common.white,

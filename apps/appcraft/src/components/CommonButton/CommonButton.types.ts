@@ -22,11 +22,13 @@ interface BaseProps<
   btnVariant: T;
   text: string;
   icon: ReactNode;
+  iconPosition?: 'start' | 'end';
   props: P;
 }
 
 export type CommonGenericProps<T extends CommonButtonVariant> =
-  BaseProps<T>['props'] & Pick<BaseProps<T>, 'btnVariant' | 'text' | 'icon'>;
+  BaseProps<T>['props'] &
+    Pick<BaseProps<T>, 'btnVariant' | 'text' | 'icon' | 'iconPosition'>;
 
 export type CommonButtonProps =
   | CommonGenericProps<'text'>

@@ -1,9 +1,16 @@
 import SvgIcon from '@mui/material/SvgIcon';
+import { useDraggable, useDroppable } from '@dnd-kit/core';
 import type { ReactNode } from 'react';
 
 import type { HierarchyData } from '~appcraft/services';
-import type { HierarchyDndHandler } from '~appcraft/hooks';
 
+//* Variables
+export type DndHook = {
+  group: ReturnType<typeof useDroppable>;
+  item: ReturnType<typeof useDraggable>;
+};
+
+//* Component Props
 export interface HierarchyItemProps {
   mutation?: ReactNode;
   data: HierarchyData<string>;
@@ -12,5 +19,4 @@ export interface HierarchyItemProps {
 
   onActionRender?: (data: HierarchyData<string>) => JSX.Element;
   onClick: (data: HierarchyData<string>) => void;
-  onGroupChange: HierarchyDndHandler;
 }

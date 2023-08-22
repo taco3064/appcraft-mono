@@ -11,12 +11,16 @@ export default function CommonButton({
   btnVariant,
   text,
   icon,
+  iconPosition = 'start',
   ...props
 }: Types.CommonButtonProps) {
   switch (btnVariant) {
     case 'text':
       return (
-        <Button {...(props as ButtonProps)} startIcon={icon}>
+        <Button
+          {...(props as ButtonProps)}
+          {...{ [`${iconPosition}Icon`]: icon }}
+        >
           {text}
         </Button>
       );

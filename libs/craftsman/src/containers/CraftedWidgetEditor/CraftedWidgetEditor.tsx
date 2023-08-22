@@ -1,3 +1,5 @@
+import * as Dnd from '@dnd-kit/core';
+import * as Sortable from '@dnd-kit/sortable';
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -5,8 +7,6 @@ import List from '@mui/material/List';
 import MenuItem from '@mui/material/MenuItem';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import _get from 'lodash/get';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Suspense, useState } from 'react';
 import type { PlainTextWidget, WidgetTodo } from '@appcraft/types';
 
@@ -58,6 +58,20 @@ export default function CraftedWidgetEditor({
     onFetchWidgetWrapper
   );
 
+  const sensors = Dnd.useSensors(
+    Dnd.useSensor(Dnd.MouseSensor, {
+      activationConstraint: {
+        distance: 10,
+      },
+    }),
+    Dnd.useSensor(Dnd.TouchSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5,
+      },
+    })
+  );
+
   const [{ breadcrumbs, childrenCound, paths, type }, onRedirect] =
     Hook.useStructure(widget);
 
@@ -74,21 +88,29 @@ export default function CraftedWidgetEditor({
         widgets.length === 0 ? (
           <Style.ListPlaceholder message={ct('msg-no-widgets')} />
         ) : (
-          <>
-            {widgets.map((item, index) => {
-              const key = getNodesAndEventsKey(item, `item_${index}`);
-              const event = events?.[key];
-              const node = nodes?.[key];
+          <Dnd.DndContext
+            sensors={sensors}
+            onDragEnd={(e) => handleMutation.resort(paths, e)}
+          >
+            <Sortable.SortableContext
+              items={widgets}
+              strategy={Sortable.verticalListSortingStrategy}
+            >
+              {widgets.map((item, index) => {
+                const key = getNodesAndEventsKey(item, `item_${index}`);
+                const event = events?.[key];
+                const node = nodes?.[key];
 
-              return (
-                <Comp.WidgetElement
-                  {...props}
-                  {...{ index, item, event, node }}
-                  key={item.id}
-                />
-              );
-            })}
-          </>
+                return (
+                  <Comp.WidgetElement
+                    {...props}
+                    {...{ index, item, event, node }}
+                    key={item.id}
+                  />
+                );
+              })}
+            </Sortable.SortableContext>
+          </Dnd.DndContext>
         )
     );
 
@@ -257,20 +279,17 @@ export default function CraftedWidgetEditor({
               />
             ) : (
               <Suspense fallback={<LinearProgress />}>
-                <DndProvider backend={HTML5Backend}>
-                  <LazyWidgetElements
-                    basePaths={paths}
-                    superiorNodeType={type}
-                    onClick={handleMutation.editing}
-                    onDndMove={(...e) => handleMutation.resort(paths, ...e)}
-                    onEventActive={handleMutation.todo}
-                    onNodeActive={onRedirect}
-                    onRemove={handleMutation.remove}
-                    widgets={getForceArray(
-                      !paths.length ? widget : _get(widget, paths)
-                    )}
-                  />
-                </DndProvider>
+                <LazyWidgetElements
+                  basePaths={paths}
+                  superiorNodeType={type}
+                  onClick={handleMutation.editing}
+                  onEventActive={handleMutation.todo}
+                  onNodeActive={onRedirect}
+                  onRemove={handleMutation.remove}
+                  widgets={getForceArray(
+                    !paths.length ? widget : _get(widget, paths)
+                  )}
+                />
               </Suspense>
             )}
           </List>

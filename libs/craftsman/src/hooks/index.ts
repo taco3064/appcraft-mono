@@ -3,7 +3,6 @@ export * from './useLazyWidgetElements';
 export * from './useMixedTypeMapping';
 export * from './usePropValue';
 export * from './usePropertyRouter';
-export * from './useSortableDnd';
 export * from './useStateGenerator';
 export * from './useStateOverride';
 export * from './useStateSelection';

@@ -1,5 +1,6 @@
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import Fab from '@mui/material/Fab';
 import Paper from '@mui/material/Paper';
@@ -104,28 +105,42 @@ export default function RendererContent<T extends RendererOptions>({
                 {action && (
                   <Fab
                     size="small"
-                    color="secondary"
-                    className="drag-handle"
+                    color="info"
                     variant="extended"
                     disabled={Boolean(popover?.anchorEl)}
-                    onClick={(e) =>
-                      setPopover({
-                        anchorEl: e.currentTarget,
-                        layout,
-                      })
-                    }
                     sx={(theme) => ({
                       position: 'absolute',
                       bottom: theme.spacing(1),
                       left: theme.spacing(1),
                       zIndex: theme.zIndex.fab,
+                      gap: theme.spacing(1),
+                      color: theme.palette.common.white,
 
                       '&:disabled': {
                         backdropFilter: `blur(${theme.spacing(2)})`,
                       },
                     })}
                   >
-                    {popover?.anchorEl ? <TuneIcon /> : <DragIndicatorIcon />}
+                    <DragIndicatorIcon className="drag-handle" />
+                    <Divider
+                      flexItem
+                      orientation="vertical"
+                      sx={(theme) => ({
+                        borderColor: theme.palette.common.white,
+                        opacity: theme.palette.action.activatedOpacity,
+                      })}
+                    />
+
+                    <TuneIcon
+                      onClick={(e) =>
+                        setPopover({
+                          layout,
+                          anchorEl: e.currentTarget.closest(
+                            'button'
+                          ) as HTMLButtonElement,
+                        })
+                      }
+                    />
                   </Fab>
                 )}
               </Container>

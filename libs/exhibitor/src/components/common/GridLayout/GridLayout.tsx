@@ -38,15 +38,13 @@ export default function GridLayout({
       <ResponsiveGridLayout
         {...props}
         rowHeight={Number.parseInt(theme.spacing(6).replace(/px$/, ''), 10)}
+        style={{ minHeight: theme.spacing(6) }}
         breakpoints={Object.fromEntries(
           Object.entries(breakpoints || {}).map(([key, value]) => [
             key,
             value - 1,
           ])
         )}
-        style={{
-          minHeight: theme.spacing(6),
-        }}
       >
         {children}
       </ResponsiveGridLayout>

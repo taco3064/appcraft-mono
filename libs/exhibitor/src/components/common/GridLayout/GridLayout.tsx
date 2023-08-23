@@ -9,6 +9,7 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 export default function GridLayout({
   breakpoint,
+  breakpoints,
   children,
   options,
   ...props
@@ -25,9 +26,10 @@ export default function GridLayout({
     <Container
       disableGutters
       maxWidth={breakpoint || false}
-      style={{
+      sx={{
         position: 'relative',
         height: 'auto',
+
         ...(breakpoint && {
           minWidth: theme.breakpoints.values[breakpoint],
         }),
@@ -36,7 +38,15 @@ export default function GridLayout({
       <ResponsiveGridLayout
         {...props}
         rowHeight={Number.parseInt(theme.spacing(6).replace(/px$/, ''), 10)}
-        style={{ minHeight: theme.spacing(6) }}
+        breakpoints={Object.fromEntries(
+          Object.entries(breakpoints || {}).map(([key, value]) => [
+            key,
+            value - 1,
+          ])
+        )}
+        style={{
+          minHeight: theme.spacing(6),
+        }}
       >
         {children}
       </ResponsiveGridLayout>

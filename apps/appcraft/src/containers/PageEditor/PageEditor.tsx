@@ -174,10 +174,7 @@ export default function PageEditor({
               <Comp.BreakpointStepper
                 value={breakpoint}
                 onChange={handlePage.breakpoint}
-                disableNextButton={
-                  items.length === 0 ||
-                  items.some(({ template }) => !template?.id)
-                }
+                disableNextButton={items.length === 0}
               />
             </AppBar>
           </>

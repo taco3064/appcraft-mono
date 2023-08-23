@@ -34,11 +34,11 @@ export type RendererContentProps<T extends Hook.RendererOptions> =
             | 'draggableHandle'
             | 'options'
             | 'layouts'
-          >;
+          > & { mins: Hook.Mins };
 
           action?: (layout: LayoutWidget) => ReactNode;
           breakpoint?: GridLayoutProps['breakpoint'];
           elevation?: PaperProps['elevation'];
-          options: GridLayoutProps['options'];
+          options: LayoutWidget[];
           templates: Hook.WidgetMap;
         });

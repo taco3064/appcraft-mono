@@ -7,8 +7,8 @@ import Paper from '@mui/material/Paper';
 import Popover from '@mui/material/Popover';
 import Toolbar from '@mui/material/Toolbar';
 import TuneIcon from '@mui/icons-material/Tune';
-import { Fragment, useMemo, useState } from 'react';
-import type { Layouts } from 'react-grid-layout';
+import { useState } from 'react';
+import type { MouseEventHandler } from 'react';
 
 import * as Hook from '../../hooks';
 import { GridLayout } from '../common';
@@ -29,24 +29,7 @@ export default function RendererContent<T extends RendererOptions>({
 }: RendererContentProps<T>) {
   const [isPrepared, handleState] = Hook.useRendererState(options, templates);
   const [popover, setPopover] = useState<PopoverOptions>();
-
-  const layouts = useMemo(
-    () =>
-      (Array.isArray(options) ? options : []).reduce<Layouts>(
-        (result, { id, layout }) => {
-          Object.entries(layout).forEach(([key, opts]) => {
-            const { [key]: acc = [] } = result;
-
-            acc.push({ i: id, ...opts });
-            result[key] = acc;
-          });
-
-          return result;
-        },
-        {}
-      ),
-    [options]
-  );
+  const layouts = Hook.useGridLayouts(options, GridLayoutProps);
 
   const render = Hook.useRender(
     props,
@@ -56,12 +39,18 @@ export default function RendererContent<T extends RendererOptions>({
     )
   );
 
+  const handleActionClose: MouseEventHandler = ({ target, currentTarget }) => {
+    const el = target as HTMLElement;
+
+    if (el.closest('button')?.closest('header') === currentTarget) {
+      setPopover({ ...popover, anchorEl: undefined } as PopoverOptions);
+    }
+  };
+
   if (!Array.isArray(options)) {
     return ((isPrepared && render(options, { state: { id: options.id } })) ||
       null) as JSX.Element;
   }
-
-  console.log(options);
 
   return (
     <>
@@ -161,14 +150,8 @@ export default function RendererContent<T extends RendererOptions>({
           anchorEl={popover?.anchorEl}
           open={Boolean(popover?.anchorEl)}
           onClose={() => setPopover(undefined)}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'center' }}
           PaperProps={{
             sx: (theme) => ({
               borderRadius: `${theme.spacing(2.5)} / 50%`,
@@ -180,13 +163,7 @@ export default function RendererContent<T extends RendererOptions>({
             <AppBar
               position="static"
               color="default"
-              onClick={({ target, currentTarget }) => {
-                const el = target as HTMLElement;
-
-                if (el.closest('button')?.closest('header') === currentTarget) {
-                  setPopover({ ...popover, anchorEl: undefined });
-                }
-              }}
+              onClick={handleActionClose}
             >
               <Toolbar variant="dense">{action(popover.layout)}</Toolbar>
             </AppBar>

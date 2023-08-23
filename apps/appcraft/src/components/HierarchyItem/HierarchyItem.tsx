@@ -69,21 +69,6 @@ export default function HierarchyItem({
         ) : (
           <FolderRoundedIcon color="warning" style={{ fontSize: 160 }} />
         )}
-
-        <ImageListItemBar
-          subtitle={
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              whiteSpace="pre-line"
-            >
-              {description || at('txt-no-description')}
-            </Typography>
-          }
-          actionPosition="right"
-          actionIcon={action}
-          onClick={(e) => e.stopPropagation()}
-        />
       </ListItemButton>
 
       <ImageListItemBar
@@ -91,6 +76,21 @@ export default function HierarchyItem({
         title={name}
         actionPosition="right"
         actionIcon={mutation}
+      />
+
+      <ImageListItemBar
+        subtitle={
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            whiteSpace="pre-line"
+          >
+            {description || at('txt-no-description')}
+          </Typography>
+        }
+        actionPosition="right"
+        actionIcon={action}
+        onClick={(e) => e.stopPropagation()}
       />
     </ImageListItem>
   );

@@ -1,9 +1,12 @@
 {
   "btn-edit": "Edit",
+  "btn-widget-picker": "Select Widget",
   "lbl-lg": "Large",
   "lbl-md": "Medium ",
   "lbl-sm": "Small",
+  "lbl-widget": "Widget Template",
   "lbl-xl": "Extra Large",
   "lbl-xs": "Extra Small",
-  "ttl-detail": "Page"
+  "ttl-detail": "Page",
+  "ttl-widget-picker": "Select Widget"
 }

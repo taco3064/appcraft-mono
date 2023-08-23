@@ -3,12 +3,12 @@ import type { Dispatch } from 'react';
 
 import { getEventHandler } from '../../utils';
 import type * as Util from '../../utils';
+import type { RendererOptions } from '../useGridLayouts';
 
 //* Variables
 type Queue = { id: string; path?: string };
 export type StateQueue = { state: Queue; superiors?: Queue[] };
 export type WidgetMap = Map<string, Appcraft.MainWidget>;
-export type RendererOptions = Appcraft.MainWidget | Appcraft.LayoutWidget[];
 
 export type TodosReturn = ReturnType<ReturnType<RendererStateHook>[1]['todos']>;
 

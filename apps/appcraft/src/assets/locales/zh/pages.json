@@ -1,3 +1,12 @@
 {
-  "ttl-detail": "頁面設定"
+  "btn-edit": "編輯",
+  "btn-widget-picker": "選擇組件",
+  "lbl-lg": "大",
+  "lbl-md": "中等",
+  "lbl-sm": "小",
+  "lbl-widget": "目標組件",
+  "lbl-xl": "極大",
+  "lbl-xs": "極小",
+  "ttl-detail": "頁面設定",
+  "ttl-widget-picker": "選擇組件"
 }

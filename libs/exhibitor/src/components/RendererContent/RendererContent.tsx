@@ -61,6 +61,8 @@ export default function RendererContent<T extends RendererOptions>({
       null) as JSX.Element;
   }
 
+  console.log(options);
+
   return (
     <>
       <GridLayout
@@ -121,7 +123,11 @@ export default function RendererContent<T extends RendererOptions>({
                       },
                     })}
                   >
-                    <DragIndicatorIcon className="drag-handle" />
+                    <DragIndicatorIcon
+                      className="drag-handle"
+                      style={{ cursor: 'move' }}
+                    />
+
                     <Divider
                       flexItem
                       orientation="vertical"

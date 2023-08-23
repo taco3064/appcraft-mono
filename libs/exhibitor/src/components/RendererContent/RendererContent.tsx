@@ -12,10 +12,7 @@ import type { MouseEventHandler } from 'react';
 
 import * as Hook from '../../hooks';
 import { GridLayout } from '../common';
-import type {
-  PopoverOptions,
-  RendererContentProps,
-} from './RendererContent.types';
+import type * as Types from './RendererContent.types';
 import type { RendererOptions } from '../../hooks';
 
 export default function RendererContent<T extends RendererOptions>({
@@ -26,9 +23,9 @@ export default function RendererContent<T extends RendererOptions>({
   options,
   templates,
   ...props
-}: RendererContentProps<T>) {
+}: Types.RendererContentProps<T>) {
   const [isPrepared, handleState] = Hook.useRendererState(options, templates);
-  const [popover, setPopover] = useState<PopoverOptions>();
+  const [popover, setPopover] = useState<Types.PopoverOptions>();
   const layouts = Hook.useGridLayouts(options, GridLayoutProps);
 
   const render = Hook.useRender(
@@ -43,7 +40,7 @@ export default function RendererContent<T extends RendererOptions>({
     const el = target as HTMLElement;
 
     if (el.closest('button')?.closest('header') === currentTarget) {
-      setPopover({ ...popover, anchorEl: undefined } as PopoverOptions);
+      setPopover({ ...popover, anchorEl: undefined } as Types.PopoverOptions);
     }
   };
 

@@ -7,9 +7,6 @@ import type { FetchWrapperHandler } from '../useRender';
 import type { RendererOptions } from '../useGridLayouts';
 import type { WidgetMap } from '../useRendererState';
 
-const getForceArray = <T>(target: T | T[]) =>
-  (Array.isArray(target) ? target : [target]).filter((item) => !!item);
-
 const extractTemplateIds: Types.ExtractTemplateIds = (widgets) =>
   Array.from(
     widgets.reduce((result, widget) => {

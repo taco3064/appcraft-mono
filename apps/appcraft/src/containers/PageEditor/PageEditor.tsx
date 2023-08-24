@@ -108,7 +108,6 @@ export default function PageEditor({
               sx={{ height: '100%', overflow: 'auto' }}
             >
               <CraftedRenderer
-                key={breakpoint}
                 breakpoint={breakpoint}
                 elevation={1}
                 options={items}

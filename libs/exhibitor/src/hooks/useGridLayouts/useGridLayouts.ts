@@ -61,8 +61,6 @@ export const useGridLayouts: Types.GridLayoutsHook = (
     const { props, widgets }: Types.Config = JSON.parse(stringify);
     const keys = Object.keys(props.breakpoints || {}).reverse() as Breakpoint[];
 
-    console.log(widgets);
-
     return widgets.reduce<Layouts>((result, { id, layout }) => {
       keys.forEach((breakpoint) => {
         const opts = layout[breakpoint];

@@ -84,6 +84,9 @@ export default function HierarchyItem({
             variant="body1"
             color="text.secondary"
             whiteSpace="pre-line"
+            display="-webkit-box"
+            overflow="hidden"
+            style={{ WebkitBoxOrient: 'vertical', WebkitLineClamp: 2 }}
           >
             {description || at('txt-no-description')}
           </Typography>

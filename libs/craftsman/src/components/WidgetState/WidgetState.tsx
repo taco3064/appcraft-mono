@@ -116,7 +116,7 @@ export default function WidgetState({
               >
                 <ListItemText
                   primary={alias}
-                  secondary={description || path}
+                  secondary={description || path.replace(/.*nodes\./g, '')}
                   secondaryTypographyProps={{
                     variant: 'caption',
                     color: 'text.secondary',

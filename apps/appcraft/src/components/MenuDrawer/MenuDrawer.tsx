@@ -85,6 +85,15 @@ export default function MenuDrawer({
                 variant: 'subtitle1',
                 fontWeight: 'bolder',
               }}
+              secondaryTypographyProps={{
+                whiteSpace: 'pre-line',
+                display: '-webkit-box',
+                overflow: 'hidden',
+                style: {
+                  WebkitBoxOrient: 'vertical',
+                  WebkitLineClamp: 2,
+                },
+              }}
             />
           </ListItemButton>
         ))}

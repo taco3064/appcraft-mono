@@ -1,8 +1,11 @@
 {
   "btn-expand-off": "Close Editor",
   "btn-expand-on": "Open Editor",
+  "btn-state": "View Configurable States",
   "msg-no-options": "No Options Available.",
+  "msg-no-state": "No States Available.",
   "msg-required": "Required",
   "ttl-detail": "Widget",
-  "ttl-preview": "Widget Preview"
+  "ttl-preview": "Preview",
+  "ttl-state": "State"
 }

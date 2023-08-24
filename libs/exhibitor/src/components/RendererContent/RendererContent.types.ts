@@ -6,7 +6,13 @@ import { useRender } from '../../hooks';
 import type * as Hook from '../../hooks';
 import type { GridLayoutProps } from '../common';
 
+//* Variables
 type RendererHandlers = Parameters<typeof useRender>[0];
+
+export type PopoverOptions = {
+  anchorEl?: HTMLButtonElement;
+  layout: LayoutWidget;
+};
 
 //* Component Props
 export type RendererContentProps<T extends Hook.RendererOptions> =
@@ -23,12 +29,16 @@ export type RendererContentProps<T extends Hook.RendererOptions> =
       : {
           GridLayoutProps: Omit<
             GridLayoutProps,
-            'breakpoint' | 'children' | 'options'
-          >;
+            | 'breakpoint'
+            | 'children'
+            | 'draggableHandle'
+            | 'options'
+            | 'layouts'
+          > & { mins: Hook.Mins };
 
-          action?: (layout?: LayoutWidget) => ReactNode;
+          action?: (layout: LayoutWidget) => ReactNode;
           breakpoint?: GridLayoutProps['breakpoint'];
           elevation?: PaperProps['elevation'];
-          options: GridLayoutProps['options'];
+          options: LayoutWidget[];
           templates: Hook.WidgetMap;
         });

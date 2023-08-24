@@ -14,6 +14,9 @@ export default function WidgetSelect({
   disabled = false,
   exclude = [],
   label,
+  size,
+  variant,
+  name,
   value,
   onChange,
   onView,
@@ -28,14 +31,12 @@ export default function WidgetSelect({
 
   return (
     <TextField
-      {...{ disabled, label }}
+      {...{ disabled, label, name, size, variant }}
       SelectProps={{ displayEmpty: true }}
       fullWidth
       select
-      size="small"
-      variant="outlined"
-      value={value || ''}
-      onChange={(e) => onChange(e.target.value)}
+      defaultValue={value || ''}
+      onChange={(e) => onChange?.(e.target.value)}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">

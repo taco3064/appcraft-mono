@@ -4,10 +4,8 @@ import type * as Appcraft from '@appcraft/types';
 
 import type * as Types from './useLazyRenderer.types';
 import type { FetchWrapperHandler } from '../useRender';
-import type { RendererOptions, WidgetMap } from '../useRendererState';
-
-const getForceArray = <T>(target: T | T[]) =>
-  (Array.isArray(target) ? target : [target]).filter((item) => !!item);
+import type { RendererOptions } from '../useGridLayouts';
+import type { WidgetMap } from '../useRendererState';
 
 const extractTemplateIds: Types.ExtractTemplateIds = (widgets) =>
   Array.from(

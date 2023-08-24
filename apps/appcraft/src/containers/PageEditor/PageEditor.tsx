@@ -23,13 +23,12 @@ export default function PageEditor({
   onTodoWrapperView,
   onWidgetWrapperView,
 }: Types.PageEditorProps) {
-  const [at, ct, pt] = Hook.useFixedT('app', 'appcraft', 'pages');
+  const [at, pt] = Hook.useFixedT('app', 'pages');
 
-  const [{ active, breakpoint, items, layouts }, handlePage] =
-    Hook.usePageValues({
-      data,
-      onSave,
-    });
+  const [{ active, breakpoint, items }, handlePage] = Hook.usePageValues({
+    data,
+    onSave,
+  });
 
   const theme = useTheme();
   const rendererFetchHandles = Hook.useRendererFetchHandles();
@@ -41,6 +40,7 @@ export default function PageEditor({
         add: (
           <Comp.CommonButton
             btnVariant="icon"
+            disabled={breakpoint !== 'xs'}
             icon={<AddIcon />}
             text={at('btn-add')}
             onClick={handlePage.add}
@@ -57,6 +57,7 @@ export default function PageEditor({
         save: (
           <Comp.CommonButton
             btnVariant="icon"
+            disabled={breakpoint !== 'xl'}
             icon={<SaveAltIcon />}
             text={at('btn-save')}
             onClick={handlePage.save}
@@ -86,6 +87,11 @@ export default function PageEditor({
 
       <Style.ResponsiveDrawer
         {...ResponsiveDrawerProps}
+        disablePersistent
+        open={isSettingOpen}
+        onClose={() => handlePage.active(undefined)}
+        drawer={!isSettingOpen ? null : 'Editor Settings'}
+        DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         ContentProps={{
           style: {
             display: 'flex',
@@ -94,11 +100,6 @@ export default function PageEditor({
             overflow: 'hidden',
           },
         }}
-        DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
-        disablePersistent
-        open={isSettingOpen}
-        onClose={() => handlePage.active(undefined)}
-        drawer={!isSettingOpen ? null : 'Editor Settings'}
         content={
           <>
             <Container
@@ -113,19 +114,35 @@ export default function PageEditor({
                 onFetchData={rendererFetchHandles.data}
                 onFetchWrapper={rendererFetchHandles.wrapper}
                 onOutputCollect={onOutputCollect}
-                action={(widget) => (
+                action={(layout) => (
                   <Comp.LayoutAction
-                    onEdit={() => handlePage.active(widget)}
-                    onRemove={() => handlePage.remove(widget)}
+                    onEdit={() => handlePage.active(layout)}
+                    onRemove={() => handlePage.remove(layout)}
+                    onWidgetChange={(id) => {
+                      items.splice(items.indexOf(layout), 1, {
+                        ...layout,
+                        template: { id },
+                      });
+
+                      handlePage.change([...items]);
+                    }}
+                    widgetPicker={
+                      <Common.WidgetSelect
+                        name="widget"
+                        label={pt('lbl-widget')}
+                        value={layout.template?.id}
+                      />
+                    }
                   />
                 )}
                 GridLayoutProps={{
                   autoSize: true,
                   cols: Hook.GRID_LAYOUT_COLS,
+                  mins: Hook.GRID_LAYOUT_MINS,
                   isDraggable: true,
                   isResizable: true,
                   resizeHandles: ['se'],
-                  layouts,
+                  onLayoutChange: handlePage.layout,
                   breakpoints: Object.fromEntries(
                     Object.entries(theme.breakpoints.values).sort(
                       ([, w1], [, w2]) => w2 - w1
@@ -156,6 +173,7 @@ export default function PageEditor({
               <Comp.BreakpointStepper
                 value={breakpoint}
                 onChange={handlePage.breakpoint}
+                disableNextButton={items.length === 0}
               />
             </AppBar>
           </>

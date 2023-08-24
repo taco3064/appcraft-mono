@@ -1,5 +1,6 @@
+import _omit from 'lodash/omit';
 import { nanoid } from 'nanoid';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import type { Breakpoint } from '@mui/material/styles';
@@ -40,13 +41,28 @@ export const usePageValues: PageValuesHook = ({ data, onSave }) => {
       active,
       breakpoint,
       items: values,
-      layouts: useMemo(() => ({}), []),
     },
 
     {
       breakpoint: setBreakpoint,
       change: setValues,
       save: () => mutation.mutate({ ...data, content: values }),
+
+      layout: (layouts) =>
+        setValues(
+          values.map(({ id, layout, ...widget }) => {
+            const { i, ...newLayout } = layouts.find(({ i }) => i === id);
+
+            return {
+              ...widget,
+              id,
+              layout: {
+                ...layout,
+                [breakpoint]: newLayout,
+              },
+            } as LayoutWidget;
+          })
+        ),
 
       add: () => {
         setBreakpoint('xs');
@@ -58,6 +74,7 @@ export const usePageValues: PageValuesHook = ({ data, onSave }) => {
             template: { id: '' },
             layout: {
               xs: {
+                minW: GRID_LAYOUT_OPTIONS.xs.min,
                 x: 0,
                 h: 1,
                 w: GRID_LAYOUT_OPTIONS.xs.min,
@@ -76,15 +93,20 @@ export const usePageValues: PageValuesHook = ({ data, onSave }) => {
           !layout ? undefined : values.findIndex(({ id }) => id === layout.id)
         ),
 
-      remove: (layout) =>
-        setValues(values.filter(({ id }) => id !== layout.id)),
+      remove: (layout) => {
+        setBreakpoint('xs');
+        setValues(values.filter(({ id }) => id !== layout.id));
+      },
 
-      reset: () =>
+      reset: () => {
+        setBreakpoint('xs');
+
         setValues(
           JSON.parse(
             JSON.stringify(Array.isArray(data.content) ? data.content : [])
           )
-        ),
+        );
+      },
     },
   ];
 };

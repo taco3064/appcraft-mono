@@ -74,6 +74,15 @@ export const FlexDialog = withStyles(
                       fontWeight: 'inherit',
                       color: 'inherit',
                     }}
+                    secondaryTypographyProps={{
+                      whiteSpace: 'pre-line',
+                      display: '-webkit-box',
+                      overflow: 'hidden',
+                      style: {
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: 2,
+                      },
+                    }}
                     {...(typeof title === 'string'
                       ? { primary: title }
                       : title)}

@@ -162,6 +162,8 @@ export default function WidgetEditor({
                   return (
                     <Common.WidgetSelect
                       {...(props as Common.WidgetSelectProps)}
+                      size="small"
+                      variant="outlined"
                       exclude={[data._id]}
                       onView={onWidgetWrapperView}
                     />

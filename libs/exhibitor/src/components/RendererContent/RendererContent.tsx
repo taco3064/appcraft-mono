@@ -1,10 +1,18 @@
 import AppBar from '@mui/material/AppBar';
+import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import Fab from '@mui/material/Fab';
 import Paper from '@mui/material/Paper';
+import Popover from '@mui/material/Popover';
 import Toolbar from '@mui/material/Toolbar';
+import TuneIcon from '@mui/icons-material/Tune';
+import { useState } from 'react';
+import type { MouseEventHandler } from 'react';
 
 import * as Hook from '../../hooks';
 import { GridLayout } from '../common';
-import type { RendererContentProps } from './RendererContent.types';
+import type * as Types from './RendererContent.types';
 import type { RendererOptions } from '../../hooks';
 
 export default function RendererContent<T extends RendererOptions>({
@@ -15,8 +23,10 @@ export default function RendererContent<T extends RendererOptions>({
   options,
   templates,
   ...props
-}: RendererContentProps<T>) {
+}: Types.RendererContentProps<T>) {
   const [isPrepared, handleState] = Hook.useRendererState(options, templates);
+  const [popover, setPopover] = useState<Types.PopoverOptions>();
+  const layouts = Hook.useGridLayouts(options, GridLayoutProps);
 
   const render = Hook.useRender(
     props,
@@ -26,46 +36,137 @@ export default function RendererContent<T extends RendererOptions>({
     )
   );
 
+  const handleActionClose: MouseEventHandler = ({ target, currentTarget }) => {
+    const el = target as HTMLElement;
+
+    if (el.closest('button')?.closest('header') === currentTarget) {
+      setPopover({ ...popover, anchorEl: undefined } as Types.PopoverOptions);
+    }
+  };
+
   if (!Array.isArray(options)) {
     return ((isPrepared && render(options, { state: { id: options.id } })) ||
       null) as JSX.Element;
   }
 
   return (
-    <GridLayout {...GridLayoutProps} {...{ breakpoint, options }}>
-      {options.map((layout) => {
-        const { id, template } = layout;
-        const widget = templates.get(template?.id);
+    <>
+      <GridLayout
+        {...GridLayoutProps}
+        {...{ breakpoint, layouts, options }}
+        draggableHandle=".drag-handle"
+      >
+        {options.map((layout) => {
+          const { id, template } = layout;
+          const widget = templates.get(template?.id);
 
-        return (
-          <Paper key={id} elevation={elevation} sx={{ position: 'relative' }}>
-            {isPrepared &&
-              widget &&
-              render(widget, { state: { id: template.id } })}
+          return (
+            <Paper
+              key={id}
+              elevation={elevation}
+              sx={(theme) => ({
+                position: 'relative',
+                borderRadius: theme.shape.borderRadius,
 
-            {action && (
-              <AppBar
-                position="static"
-                color="transparent"
-                elevation={0}
+                transition: theme.transitions.create(['width', 'height'], {
+                  easing: theme.transitions.easing.easeOut,
+                  duration: theme.transitions.duration.enteringScreen,
+                }),
+              })}
+            >
+              <Container
+                disableGutters
+                maxWidth={false}
                 sx={(theme) => ({
-                  borderRadius: `${theme.spacing(2.5)} / 50%`,
-                  position: 'absolute',
-                  width: 'auto',
-                  bottom: 0,
-                  left: theme.spacing(1),
-                  zIndex: theme.zIndex.fab,
-                  transform: 'scale(0.8)',
+                  borderRadius: theme.shape.borderRadius,
+
+                  display: 'flex',
+                  flexDirection: 'column',
+                  overflow: 'hidden auto',
+                  height: '100%',
                 })}
               >
-                <Toolbar disableGutters variant="dense">
-                  {action(layout)}
-                </Toolbar>
-              </AppBar>
-            )}
-          </Paper>
-        );
-      })}
-    </GridLayout>
+                {isPrepared &&
+                  widget &&
+                  render(widget, { state: { id: widget.id } })}
+
+                {action && (
+                  <Fab
+                    size="small"
+                    color="info"
+                    variant="extended"
+                    disabled={Boolean(popover?.anchorEl)}
+                    sx={(theme) => ({
+                      position: 'absolute',
+                      bottom: theme.spacing(1),
+                      left: theme.spacing(1),
+                      zIndex: theme.zIndex.fab,
+                      gap: theme.spacing(1),
+                      color: theme.palette.common.white,
+
+                      '&:disabled': {
+                        backdropFilter: `blur(${theme.spacing(2)})`,
+                      },
+                    })}
+                  >
+                    <DragIndicatorIcon
+                      className="drag-handle"
+                      style={{ cursor: 'move' }}
+                    />
+
+                    <Divider
+                      flexItem
+                      orientation="vertical"
+                      sx={(theme) => ({
+                        borderColor: theme.palette.common.white,
+                        opacity: theme.palette.action.activatedOpacity,
+                      })}
+                    />
+
+                    <TuneIcon
+                      onClick={(e) =>
+                        setPopover({
+                          layout,
+                          anchorEl: e.currentTarget.closest(
+                            'button'
+                          ) as HTMLButtonElement,
+                        })
+                      }
+                    />
+                  </Fab>
+                )}
+              </Container>
+            </Paper>
+          );
+        })}
+      </GridLayout>
+
+      {action && (
+        <Popover
+          keepMounted
+          anchorEl={popover?.anchorEl}
+          open={Boolean(popover?.anchorEl)}
+          onClose={() => setPopover(undefined)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+          PaperProps={{
+            sx: (theme) => ({
+              borderRadius: `${theme.spacing(2.5)} / 50%`,
+              marginTop: theme.spacing(1),
+            }),
+          }}
+        >
+          {popover?.layout && (
+            <AppBar
+              position="static"
+              color="default"
+              onClick={handleActionClose}
+            >
+              <Toolbar variant="dense">{action(popover.layout)}</Toolbar>
+            </AppBar>
+          )}
+        </Popover>
+      )}
+    </>
   );
 }

@@ -20,6 +20,7 @@ export default function RendererContent<T extends RendererOptions>({
   elevation,
   options,
   templates,
+  onReady,
   ...props
 }: Types.RendererContentProps<T>) {
   const [isPrepared, handleState] = Hook.useRendererState(options, templates);
@@ -42,12 +43,10 @@ export default function RendererContent<T extends RendererOptions>({
     }
   };
 
-  if (!Array.isArray(options)) {
-    return ((isPrepared && render(options, { state: { id: options.id } })) ||
-      null) as JSX.Element;
-  }
-
-  return (
+  return !Array.isArray(options) ? (
+    (((isPrepared && render(options, { state: { id: options.id } })) ||
+      null) as JSX.Element)
+  ) : (
     <>
       <GridLayout
         {...GridLayoutProps}

@@ -16,6 +16,7 @@ export default function CraftedRenderer({
   onFetchData,
   onFetchWrapper,
   onOutputCollect,
+  onReady,
 }: Types.CraftedRendererProps) {
   const LazyRenderer = Hook.useLazyRenderer<Types.LazyRendererProps>(
     options as Parameters<typeof Hook.useLazyRenderer>[0],
@@ -37,10 +38,11 @@ export default function CraftedRenderer({
             action,
             breakpoint,
             elevation,
+            options,
             onFetchData,
             onOutputCollect,
+            onReady,
           }}
-          options={options}
           onFetchTodoWrapper={onFetchWrapper}
           onLazyRetrieve={(type) => LazyWidget[type]}
         />

@@ -23,7 +23,11 @@ export default function GridLayout({
   }, [breakpoint]);
 
   return (
-    <GridLayoutContainer disableGutters maxWidth={breakpoint || false}>
+    <GridLayoutContainer
+      disableGutters
+      breakpoint={breakpoint}
+      maxWidth={breakpoint || false}
+    >
       <ResponsiveGridLayout
         {...props}
         rowHeight={Number.parseInt(theme.spacing(6).replace(/px$/, ''), 10)}

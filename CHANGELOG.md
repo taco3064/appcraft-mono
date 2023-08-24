@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.103](https://github.com/taco3064/appcraft-mono/compare/v0.0.102...v0.0.103) (2023-08-24)
+
+
+### Features
+
+* **@appcraft/exhibitor:** update the settings of react-grid-layout ([2a237ae](https://github.com/taco3064/appcraft-mono/commit/2a237aee95b7ae7df0aeb8d03e6f3d652b740045))
+* **page-editor:** support RWD settings ([a5b699c](https://github.com/taco3064/appcraft-mono/commit/a5b699cdfb4b951e600be0fff81e9a86c2ec64d6))
+* **page-preview:** add new component: <PagePreview /> ([ca0037c](https://github.com/taco3064/appcraft-mono/commit/ca0037ca1b211bbe8c50c7dcd5921c8998f116f1))
+* **state-viewer:** add new component(StateViewer) to display public state ([b7a85ac](https://github.com/taco3064/appcraft-mono/commit/b7a85ac6e00dc955b7efe23d98fb80f5f04fd869))
+
+
+### Bug Fixes
+
+* fixed eslint issue ([08c04a2](https://github.com/taco3064/appcraft-mono/commit/08c04a21ad23388ff4baf508eec3e7b04f153bd7))
+* **page-editor:** remove key setting in CraftedRenderer ([0c7b14d](https://github.com/taco3064/appcraft-mono/commit/0c7b14d04f98a9c70ada0d6a85caeee988c261a1))
+* **page-editor:** remove the next step rule of the widget must has set template ([376dfac](https://github.com/taco3064/appcraft-mono/commit/376dfac129c2a6eb50396f0c8ce5c64b645bef11))
+* text content simplification ([6695625](https://github.com/taco3064/appcraft-mono/commit/6695625f98690dc086073eda8c1105d79fbfabb1))
+
 ### [0.0.102](https://github.com/taco3064/appcraft-mono/compare/v0.0.101...v0.0.102) (2023-08-22)
 
 

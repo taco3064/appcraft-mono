@@ -1,13 +1,18 @@
 import ExtensionTwoToneIcon from '@mui/icons-material/ExtensionTwoTone';
 import Head from 'next/head';
 import LinearProgress from '@mui/material/LinearProgress';
+import StorageIcon from '@mui/icons-material/Storage';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { CraftsmanStyle } from '@appcraft/craftsman';
 import { Suspense, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { CommonButton } from '~appcraft/components';
-import { HierarchyList, WidgetPreview } from '~appcraft/containers';
+import {
+  HierarchyList,
+  StateViewer,
+  WidgetPreview,
+} from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
 
@@ -16,7 +21,12 @@ const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
 export default function Widgets() {
   const { pathname } = useRouter();
   const [at, nt, wt] = useFixedT('app', 'nav', 'widgets');
-  const [preview, setPreview] = useState<{ id: string; name: string }>();
+
+  const [detail, setDetail] = useState<{
+    type: 'preview' | 'state';
+    id: string;
+    name: string;
+  }>();
 
   const [action, handleActionNodePick] = useNodePickHandle(
     HIERARCHY_LIST_ACTIONS
@@ -45,26 +55,37 @@ export default function Widgets() {
           icon={ExtensionTwoToneIcon}
           onActionNodePick={handleActionNodePick}
           onItemActionRender={({ _id, name }) => (
-            <CommonButton
-              btnVariant="icon"
-              color="default"
-              icon={<VisibilityOutlinedIcon />}
-              text={at('btn-preview')}
-              onClick={() => setPreview({ id: _id, name })}
-            />
+            <>
+              <CommonButton
+                btnVariant="icon"
+                color="default"
+                icon={<StorageIcon />}
+                text={wt('btn-state')}
+                onClick={() => setDetail({ type: 'state', id: _id, name })}
+              />
+
+              <CommonButton
+                btnVariant="icon"
+                color="default"
+                icon={<VisibilityOutlinedIcon />}
+                text={at('btn-preview')}
+                onClick={() => setDetail({ type: 'preview', id: _id, name })}
+              />
+            </>
           )}
         />
       </PageContainer>
 
       <CraftsmanStyle.FlexDialog
         fullWidth
-        maxWidth="sm"
-        title={{ primary: wt('ttl-preview'), secondary: preview?.name }}
-        open={Boolean(preview?.id)}
-        onClose={() => setPreview(undefined)}
+        maxWidth={detail?.type === 'state' ? 'xs' : 'sm'}
+        title={{ primary: wt(`ttl-${detail?.type}`), secondary: detail?.name }}
+        open={Boolean(detail?.id)}
+        onClose={() => setDetail(undefined)}
       >
         <Suspense fallback={<LinearProgress />}>
-          {preview && <WidgetPreview id={preview.id} />}
+          {detail?.type === 'preview' && <WidgetPreview id={detail.id} />}
+          {detail?.type === 'state' && <StateViewer id={detail.id} />}
         </Suspense>
       </CraftsmanStyle.FlexDialog>
     </>

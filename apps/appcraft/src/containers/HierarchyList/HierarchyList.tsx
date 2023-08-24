@@ -180,6 +180,8 @@ export default function HierarchyList({
           <Dnd.DndContext
             sensors={sensors}
             onDragEnd={({ active, over }) =>
+              active &&
+              over &&
               handleGroupChange({
                 item: hierarchies.find(({ _id }) => _id === active.id),
                 group: over.id as string,

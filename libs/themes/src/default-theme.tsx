@@ -18,6 +18,9 @@ export const DEFAULT_THEME: ThemeOptions = {
   components: {
     MuiCssBaseline: {
       styleOverrides: (theme) => ({
+        html: {
+          overflow: 'hidden',
+        },
         body: {
           background: theme.palette.background.default,
           color: theme.palette.text.primary,

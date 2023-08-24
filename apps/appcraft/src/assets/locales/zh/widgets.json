@@ -1,8 +1,11 @@
 {
   "btn-expand-off": "關閉編輯模式",
   "btn-expand-on": "開啟編輯模式",
+  "btn-state": "查看可設置的狀態",
   "msg-no-options": "沒有可用的選項",
+  "msg-no-state": "沒有可用的狀態",
   "msg-required": "必填",
   "ttl-detail": "組件管理",
-  "ttl-preview": "組件預覽"
+  "ttl-preview": "組件預覽",
+  "ttl-state": "組建狀態"
 }

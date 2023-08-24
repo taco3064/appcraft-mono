@@ -59,7 +59,9 @@ export interface MainWidget extends NodeWidget {
 
 export type LayoutWidget = {
   id: string;
-  layout: { [breakpoint: string]: Record<'x' | 'y' | 'w' | 'h', number> };
+  layout: {
+    [breakpoint: string]: Record<'x' | 'y' | 'w' | 'h' | 'minW', number>;
+  };
   nodes?: { [stateKey: string]: State.Template };
   props?: { [stateKey: string]: unknown };
   template: State.Template;

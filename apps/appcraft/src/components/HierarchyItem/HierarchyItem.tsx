@@ -79,6 +79,14 @@ export default function HierarchyItem({
       />
 
       <ImageListItemBar
+        actionPosition="right"
+        actionIcon={action}
+        onClick={(e) => e.stopPropagation()}
+        sx={{
+          '& > .MuiImageListItemBar-actionIcon': {
+            display: 'flex',
+          },
+        }}
         subtitle={
           <Typography
             variant="body1"
@@ -91,9 +99,6 @@ export default function HierarchyItem({
             {description || at('txt-no-description')}
           </Typography>
         }
-        actionPosition="right"
-        actionIcon={action}
-        onClick={(e) => e.stopPropagation()}
       />
     </ImageListItem>
   );

@@ -23,6 +23,7 @@ export const Link = withStyles(
       justifyContent: 'center',
       alignItems: 'center',
       gap: theme.spacing(disableGap ? 0 : 1),
+      userSelect: 'none',
     },
   }),
   { name: 'Link' }

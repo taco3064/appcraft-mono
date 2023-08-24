@@ -1,6 +1,7 @@
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
+import cx from 'clsx';
 import { CraftsmanStyle } from '@appcraft/craftsman';
 import { withStyles } from 'tss-react/mui';
 
@@ -20,15 +21,20 @@ export const MainContainer = withStyles(
 export const PageContainer = withStyles(
   ({
     ContentProps,
-    classes: { title: titleClassName, ...containerClasses },
     action,
     children,
     primary,
     secondary,
+    classes: {
+      content: contentClassName,
+      title: titleClassName,
+      toolbar: toolbarClassName,
+      ...containerClasses
+    },
     ...props
   }: Types.PageContainerProps) => (
     <Container {...props} disableGutters classes={containerClasses}>
-      <Toolbar role="toolbar" disableGutters variant="dense">
+      <Toolbar disableGutters variant="dense" className={toolbarClassName}>
         <CraftsmanStyle.AutoBreakTypography
           {...{ primary, secondary }}
           classes={{ root: titleClassName }}
@@ -39,31 +45,22 @@ export const PageContainer = withStyles(
       </Toolbar>
 
       <Paper
-        role="contentinfo"
         elevation={0}
         component={Container}
         maxWidth={false}
         {...ContentProps}
+        className={cx(contentClassName, ContentProps?.className)}
       >
         {children}
       </Paper>
     </Container>
   ),
   (theme, { ContentProps }) => ({
-    root: {
-      '& > [role=toolbar]': {
-        position: 'sticky',
-        background: theme.palette.background.default,
-        borderRadius: theme.shape.borderRadius,
-        top: theme.spacing(9),
-        zIndex: theme.zIndex.appBar,
-      },
-      '& > [role=contentinfo]': {
-        background: ContentProps?.disableGutters ? 'transparent' : null,
-        borderRadius: theme.spacing(2),
-        paddingTop: theme.spacing(ContentProps?.disableGutters ? 0 : 2),
-        paddingBottom: theme.spacing(ContentProps?.disableGutters ? 0 : 2),
-      },
+    content: {
+      background: ContentProps?.disableGutters ? 'transparent' : null,
+      borderRadius: theme.spacing(2),
+      paddingTop: theme.spacing(ContentProps?.disableGutters ? 0 : 2),
+      paddingBottom: theme.spacing(ContentProps?.disableGutters ? 0 : 2),
     },
     title: {
       marginRight: 'auto',
@@ -72,6 +69,14 @@ export const PageContainer = withStyles(
         fontSize: theme.typography.h6.fontSize,
         whiteSpace: 'pre-line' as never,
       },
+    },
+    toolbar: {
+      position: 'sticky' as never,
+      background: theme.palette.background.default,
+      borderRadius: theme.shape.borderRadius,
+      top: theme.spacing(9),
+      zIndex: theme.zIndex.appBar,
+      userSelect: 'none' as never,
     },
   }),
   { name: 'PageContainer' }

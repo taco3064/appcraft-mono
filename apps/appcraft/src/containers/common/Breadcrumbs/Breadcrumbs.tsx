@@ -40,7 +40,11 @@ export default function Breadcrumbs({
 
   return (
     <>
-      <Toolbar variant="dense" {...ToolbarProps}>
+      <Toolbar
+        variant="dense"
+        {...ToolbarProps}
+        style={{ ...ToolbarProps?.style, userSelect: 'none' }}
+      >
         <CommonButton
           btnVariant="icon"
           color="primary"

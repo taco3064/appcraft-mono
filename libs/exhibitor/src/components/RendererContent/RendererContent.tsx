@@ -1,9 +1,6 @@
 import AppBar from '@mui/material/AppBar';
-import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import Fab from '@mui/material/Fab';
-import Paper from '@mui/material/Paper';
 import Popover from '@mui/material/Popover';
 import Toolbar from '@mui/material/Toolbar';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -11,6 +8,7 @@ import { useState } from 'react';
 import type { MouseEventHandler } from 'react';
 
 import * as Hook from '../../hooks';
+import * as Style from '../../styles';
 import { GridLayout } from '../common';
 import type * as Types from './RendererContent.types';
 import type { RendererOptions } from '../../hooks';
@@ -61,67 +59,25 @@ export default function RendererContent<T extends RendererOptions>({
           const widget = templates.get(template?.id);
 
           return (
-            <Paper
-              key={id}
-              elevation={elevation}
-              sx={(theme) => ({
-                position: 'relative',
-                borderRadius: theme.shape.borderRadius,
-
-                transition: theme.transitions.create(['width', 'height'], {
-                  easing: theme.transitions.easing.easeOut,
-                  duration: theme.transitions.duration.enteringScreen,
-                }),
-              })}
-            >
-              <Container
-                disableGutters
-                maxWidth={false}
-                sx={(theme) => ({
-                  borderRadius: theme.shape.borderRadius,
-
-                  display: 'flex',
-                  flexDirection: 'column',
-                  overflow: 'hidden auto',
-                  height: '100%',
-                })}
-              >
+            <Style.GridLayoutItem key={id} elevation={elevation}>
+              <Style.GridLayoutItemContent disableGutters maxWidth={false}>
                 {isPrepared &&
                   widget &&
                   render(widget, { state: { id: widget.id } })}
 
                 {action && (
-                  <Fab
+                  <Style.GridLayoutItemAction
                     size="small"
                     color="info"
                     variant="extended"
                     disabled={Boolean(popover?.anchorEl)}
-                    sx={(theme) => ({
-                      position: 'absolute',
-                      bottom: theme.spacing(1),
-                      left: theme.spacing(1),
-                      zIndex: theme.zIndex.fab,
-                      gap: theme.spacing(1),
-                      color: theme.palette.common.white,
-
-                      '&:disabled': {
-                        backdropFilter: `blur(${theme.spacing(2)})`,
-                      },
-                    })}
                   >
                     <DragIndicatorIcon
                       className="drag-handle"
                       style={{ cursor: 'move' }}
                     />
 
-                    <Divider
-                      flexItem
-                      orientation="vertical"
-                      sx={(theme) => ({
-                        borderColor: theme.palette.common.white,
-                        opacity: theme.palette.action.activatedOpacity,
-                      })}
-                    />
+                    <Divider flexItem orientation="vertical" />
 
                     <TuneIcon
                       onClick={(e) =>
@@ -133,10 +89,10 @@ export default function RendererContent<T extends RendererOptions>({
                         })
                       }
                     />
-                  </Fab>
+                  </Style.GridLayoutItemAction>
                 )}
-              </Container>
-            </Paper>
+              </Style.GridLayoutItemContent>
+            </Style.GridLayoutItem>
           );
         })}
       </GridLayout>

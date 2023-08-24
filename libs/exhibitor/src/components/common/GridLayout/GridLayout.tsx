@@ -1,8 +1,8 @@
-import Container from '@mui/material/Container';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import { useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 
+import { GridLayoutContainer } from '../../../styles';
 import type { GridLayoutProps } from './GridLayout.types';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -23,18 +23,7 @@ export default function GridLayout({
   }, [breakpoint]);
 
   return (
-    <Container
-      disableGutters
-      maxWidth={breakpoint || false}
-      sx={{
-        position: 'relative',
-        height: 'auto',
-
-        ...(breakpoint && {
-          minWidth: theme.breakpoints.values[breakpoint],
-        }),
-      }}
-    >
+    <GridLayoutContainer disableGutters maxWidth={breakpoint || false}>
       <ResponsiveGridLayout
         {...props}
         rowHeight={Number.parseInt(theme.spacing(6).replace(/px$/, ''), 10)}
@@ -48,6 +37,6 @@ export default function GridLayout({
       >
         {children}
       </ResponsiveGridLayout>
-    </Container>
+    </GridLayoutContainer>
   );
 }

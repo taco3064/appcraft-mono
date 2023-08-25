@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.104](https://github.com/taco3064/appcraft-mono/compare/v0.0.103...v0.0.104) (2023-08-25)
+
+
+### Features
+
+* **@appcraft/types:** add new todo: SetPropsTodo ([b5490a0](https://github.com/taco3064/appcraft-mono/commit/b5490a0b9c6b98d3aca1966b6d8bba74703988f1))
+
+
+### Bug Fixes
+
+* **@appcraft/exhibitor:** add breakpoint prop to GridLayoutContainer ([44e2f5c](https://github.com/taco3064/appcraft-mono/commit/44e2f5c224c91d89fec2544927e309301c92faf4))
+* **apps/appcraft:** fixed bugs ([eb4407c](https://github.com/taco3064/appcraft-mono/commit/eb4407c19de9d947e166bedd718b98ac10f4bed7))
+
 ### [0.0.103](https://github.com/taco3064/appcraft-mono/compare/v0.0.102...v0.0.103) (2023-08-24)
 
 

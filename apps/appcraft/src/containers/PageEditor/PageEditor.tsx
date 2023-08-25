@@ -167,6 +167,7 @@ export default function PageEditor({
               position="static"
               color="default"
               sx={(theme) => ({
+                marginTop: theme.spacing(1),
                 borderRadius: `${theme.spacing(2.5)} / 50%`,
               })}
             >

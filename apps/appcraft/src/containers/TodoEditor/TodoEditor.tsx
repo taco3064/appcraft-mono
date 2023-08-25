@@ -101,7 +101,7 @@ export default function TodoEditor({
         content={
           <CraftedTodoEditor
             fullHeight
-            disableCategories={['wrap', 'state']}
+            disableCategories={['wrap', 'state', 'props']}
             typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             values={todos}
             onChange={handleTodos.change}

@@ -31,6 +31,7 @@ export default function RemoveButton({
         severity="warning"
         open={open}
         icon={<HelpOutlineIcon />}
+        style={{ userSelect: 'none' }}
         action={
           <Button
             color="inherit"

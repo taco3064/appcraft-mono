@@ -8,7 +8,7 @@ import type * as Types from './MuiAlert.types';
 export const ArcAlert = withStyles(
   ({ action, children, icon, severity, ...props }: Types.ArcAlertProps) => (
     <Dialog {...props} fullWidth maxWidth="xs">
-      <Alert {...{ action, icon, severity }} variant="filled">
+      <Alert {...{ action, icon, severity }} variant="outlined">
         <Typography variant="h6" color="inherit">
           {children}
         </Typography>
@@ -22,6 +22,7 @@ export const ArcAlert = withStyles(
       '& > [role=alert]': {
         borderRadius: theme.spacing(2),
         alignItems: 'center',
+        color: theme.palette.text.primary,
       },
     },
   }),

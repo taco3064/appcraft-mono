@@ -29,6 +29,7 @@ export default function MenuDrawer({
       anchor="left"
       open={open}
       onClose={onClose}
+      style={{ userSelect: 'none' }}
     >
       <List
         subheader={

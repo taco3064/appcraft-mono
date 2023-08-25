@@ -7,7 +7,7 @@ import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import type { OutputCollectEvent } from '@appcraft/exhibitor';
-import type { LayoutWidget, WidgetTodo } from '@appcraft/types';
+import type { WidgetTodo } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
 import { CommonButton, TodoOutputStepper } from '~appcraft/components';
@@ -15,8 +15,9 @@ import { PageContainer } from '~appcraft/styles';
 import { PageEditor, TodoEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 import type { HierarchyData } from '~appcraft/services';
+import type { PageData } from '~appcraft/hooks';
 
-const PAGE_ACTIONS = ['add', 'reset', 'save'];
+const PAGE_ACTIONS = ['add', 'ready', 'reset', 'save'];
 const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];
 
 export default function Detail() {
@@ -38,9 +39,9 @@ export default function Detail() {
   const [todoAction, handleTodoActionPick] =
     Hook.useNodePickHandle(TODO_ACTIONS);
 
-  const { data: layouts, refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: [id],
-    queryFn: findConfig<LayoutWidget[]>,
+    queryFn: findConfig<PageData>,
     refetchOnWindowFocus: false,
   });
 
@@ -60,6 +61,7 @@ export default function Detail() {
         action={
           <>
             {pageAction?.add}
+            {pageAction?.ready}
             {pageAction?.reset}
             {pageAction?.save}
           </>
@@ -70,7 +72,7 @@ export default function Detail() {
         </Head>
 
         <PageEditor
-          data={layouts}
+          data={data}
           superiors={{ names: superiors, breadcrumbs }}
           onActionNodePick={handlePageActionPick}
           onSave={refetch}

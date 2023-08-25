@@ -140,6 +140,18 @@ export const getEditingTodo: Types.GetEditingTodo = (
         },
       };
 
+    case 'props':
+      return {
+        todo,
+        config: {
+          category: 'config',
+          mixedTypes,
+          typeFile,
+          typeName: 'SetPropsTodo',
+          props: splitProps(todo),
+        },
+      };
+
     default:
       return null;
   }
@@ -199,6 +211,13 @@ export const getInitialTodo: Types.GetInitialTodo = (typeFile, category) => {
         ...data,
         category,
         states: [],
+      });
+
+    case 'props':
+      return getEditingTodo(typeFile, {
+        ...data,
+        category,
+        props: [],
       });
 
     default:

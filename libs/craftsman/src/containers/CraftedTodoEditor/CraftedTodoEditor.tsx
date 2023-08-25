@@ -88,7 +88,11 @@ export default function CraftedTodoEditor({
         />
       )}
 
-      <Style.FlexContainer disableGutters fullHeight={fullHeight}>
+      <Style.FlexContainer
+        disableGutters
+        maxWidth={false}
+        fullHeight={fullHeight}
+      >
         {HeaderProps && (
           <Style.WidgetAppBar
             action={toggle}

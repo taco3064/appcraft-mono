@@ -2,6 +2,7 @@ import type { CraftedRendererProps } from '@appcraft/exhibitor';
 import { GRID_LAYOUT_OPTIONS } from './usePageValues';
 
 export { usePageValues } from './usePageValues';
+export type { PageData } from './usePageValues.types';
 
 type GridLayoutProps = Required<CraftedRendererProps['GridLayoutProps']>;
 

@@ -6,6 +6,7 @@ export interface WidgetSelectProps {
   label: string;
   name?: string;
   size?: 'small' | 'medium';
+  targets?: string[];
   variant?: 'standard' | 'outlined' | 'filled';
   value?: string;
   onChange?: (value: string) => void;

@@ -2,6 +2,7 @@ import type { RenderOverrideItem } from '../../contexts';
 
 export type PropValueHookResult<P> = [
   {
+    props: object;
     value: P | null;
     typeFile: string;
     typeName: string;

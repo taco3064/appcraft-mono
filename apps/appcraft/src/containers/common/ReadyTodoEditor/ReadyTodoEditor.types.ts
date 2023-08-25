@@ -6,7 +6,7 @@ import type { WidgetSelectProps } from '../WidgetSelect';
 
 //* Variables
 type ReadyTodo = PageData['readyTodos'];
-type OverrideRenderType = 'TODO_PICKER' | 'PROPS_WIDGET';
+type OverrideRenderType = 'TODO_PICKER' | 'PROPS_WIDGET' | 'PROPS_PICKER';
 
 //* Methods
 export type GetOverrideRenderType = (

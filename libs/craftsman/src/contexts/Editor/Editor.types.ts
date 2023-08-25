@@ -30,6 +30,7 @@ export type RenderOverrideItemArgs<C extends 'display' | 'pure'> = [
     label: string;
     typeFile: string;
     typeName: string;
+    props?: object;
     value: unknown;
     onChange: (e: unknown) => void;
     options: C extends 'display' ? DisplayProp : PureProp;

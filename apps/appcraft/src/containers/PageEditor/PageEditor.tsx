@@ -135,6 +135,7 @@ export default function PageEditor({
                     }}
                     widgetPicker={
                       <Common.WidgetSelect
+                        fullWidth
                         name="widget"
                         label={pt('lbl-widget')}
                         value={layout.template?.id}

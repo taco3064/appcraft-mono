@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.105](https://github.com/taco3064/appcraft-mono/compare/v0.0.104...v0.0.105) (2023-08-25)
+
+
+### Features
+
+* **@appcraft/craftsman:** add UI for setPropsTodo functionality ([2a71422](https://github.com/taco3064/appcraft-mono/commit/2a7142216933646f77e601ecff048b6d70921075))
+* **data-forge:** support to use hierarchy ids to search data ([f30d968](https://github.com/taco3064/appcraft-mono/commit/f30d968e6b5f82c3141a153d730769e286fd19dd))
+* **ready-todo-editor:** add new component: ReadyTodoEditor ([cfca623](https://github.com/taco3064/appcraft-mono/commit/cfca623c6411607a0bd4dd0990660114a16da425))
+
+
+### Bug Fixes
+
+* **@appcraft/craftsman:** fixed bugs ([a7a3c0d](https://github.com/taco3064/appcraft-mono/commit/a7a3c0dfaa2ac056df2b1c0def033eb902662654))
+* **@appcraft/craftsman:** fixed bugs ([0e4cd74](https://github.com/taco3064/appcraft-mono/commit/0e4cd741c8797a8a9c76b0aa010ac54fac712c88))
+
 ### [0.0.104](https://github.com/taco3064/appcraft-mono/compare/v0.0.103...v0.0.104) (2023-08-25)
 
 

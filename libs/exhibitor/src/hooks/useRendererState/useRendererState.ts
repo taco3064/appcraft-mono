@@ -28,7 +28,7 @@ const getSuperiorProps: Types.GetSuperiorProps = (states, superiors = []) =>
 const getSuperiorTodos: Types.GetSuperiorTodos = (
   states,
   { state, superiors = [] },
-  { onFetchData, onFetchTodoWrapper, onStateChange }
+  { onFetchData, onFetchTodoWrapper, onPropsChange, onStateChange }
 ) =>
   Object.entries(_get(states, [state.id]) || {}).reduce<Types.TodosReturn>(
     (result, [stateKey, { category, propPath, options }]) => {
@@ -87,16 +87,18 @@ export const useRendererState: Types.RendererStateHook = (
   const [states, dispatch] = useReducer(
     (
       states: Types.ReducerState,
-      action: Types.ReducerAction | Types.WidgetMap
+      action: Types.ReducerAction | Types.ReducerAction[] | Types.WidgetMap
     ) => {
       if (!(action instanceof Map)) {
-        const { id, values } = action;
+        return (Array.isArray(action) ? action : [action]).reduce(
+          (result, { id, values }) => {
+            Object.entries(values).forEach(([propPath, value]) =>
+              _set(result, [id, propPath, 'value'], value)
+            );
 
-        return Object.entries(values).reduce(
-          (acc, [propPath, value]) => ({
-            ..._set(acc, [id, propPath, 'value'], value),
-          }),
-          states
+            return result;
+          },
+          { ...states }
         );
       }
 
@@ -183,6 +185,13 @@ export const useRendererState: Types.RendererStateHook = (
         const superiorProps = getSuperiorTodos(states, queue, {
           ...options,
           onStateChange: dispatch,
+          onPropsChange: (e) =>
+            dispatch(
+              Object.entries(e).map(([template, values]) => ({
+                id: templates.get(template)?.id as string,
+                values,
+              }))
+            ),
         });
 
         return Object.keys({
@@ -206,6 +215,14 @@ export const useRendererState: Types.RendererStateHook = (
                     ...options,
                     onStateChange: (values) =>
                       dispatch({ id: queue.state.id, values }),
+
+                    onPropsChange: (e) =>
+                      dispatch(
+                        Object.entries(e).map(([template, values]) => ({
+                          id: templates.get(template)?.id as string,
+                          values,
+                        }))
+                      ),
                   }),
                   ...handlers,
                 ],

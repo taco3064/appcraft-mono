@@ -6,5 +6,6 @@ export type {
   OutputCollectEvent,
   OutputCollectHandler,
   OutputData,
+  PropsChangeHandler,
   StateChangeHandler,
 } from './todo-parser.types';

@@ -24,6 +24,7 @@ export type GetSuperiorTodos = (
   handlers: {
     onFetchData: Util.FetchDataHandler;
     onFetchTodoWrapper: Util.FetchTodoWrapperHandler;
+    onPropsChange: Util.PropsChangeHandler;
     onStateChange: Dispatch<ReducerAction>;
   }
 ) => TodosReturn;

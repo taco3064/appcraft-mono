@@ -31,6 +31,7 @@ const NODE_TYPES: Rf.NodeTypes = {
   iterate: Comp.TodoFlowNode,
   wrap: Comp.TodoFlowNode,
   state: Comp.TodoFlowNode,
+  props: Comp.TodoFlowNode,
 };
 
 export default function CraftedTodoEditor({

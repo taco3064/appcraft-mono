@@ -1,6 +1,7 @@
 import type { WidgetTodo } from '@appcraft/types';
 
 export enum ActionButton {
+  props = 'btn-set-props',
   state = 'btn-set-state',
   wrap = 'btn-todo-wrap',
   iterate = 'btn-add-iterate',

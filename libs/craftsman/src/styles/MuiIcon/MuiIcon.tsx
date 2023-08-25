@@ -22,7 +22,6 @@ export const CompositeIcon = withStyles(
       badgeContent={
         <SecondaryIcon
           {...secondaryProps}
-          fontSize="small"
           className={cx(secondaryProps?.className, classes?.secondary)}
         />
       }
@@ -40,6 +39,7 @@ export const CompositeIcon = withStyles(
     secondary: {
       backdropFilter: `blur(${theme.spacing(2)})`,
       borderRadius: '50%',
+      fontSize: theme.spacing(2),
       margin: theme.spacing(1),
       transform: `translate(${anchorOrigin?.vertical === 'top' ? 25 : -25}%, ${
         anchorOrigin?.horizontal === 'left' ? 25 : -25

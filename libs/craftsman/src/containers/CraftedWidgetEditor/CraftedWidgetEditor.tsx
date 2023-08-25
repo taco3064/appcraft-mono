@@ -138,7 +138,13 @@ export default function CraftedWidgetEditor({
           value={value as Record<string, WidgetTodo>}
           renderTodoEditor={({ values, onChange, onEditToggle }) => (
             <CraftedTodoEditor
-              {...{ values, onChange, onEditToggle, onFetchDefinition }}
+              {...{
+                values,
+                renderOverrideItem,
+                onChange,
+                onEditToggle,
+                onFetchDefinition,
+              }}
               disableCategories={['props']}
               fullHeight
               variant="normal"

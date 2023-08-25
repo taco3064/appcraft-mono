@@ -15,6 +15,7 @@ export default function WidgetSelect({
   exclude = [],
   label,
   size,
+  targets,
   variant,
   name,
   value,
@@ -24,7 +25,7 @@ export default function WidgetSelect({
   const { data } = useQuery({
     refetchOnWindowFocus: false,
     queryFn: searchHierarchy,
-    queryKey: ['widgets', { type: 'item' }],
+    queryKey: ['widgets', { type: 'item', targets }],
   });
 
   const options = data?.filter(({ _id }) => !exclude.includes(_id)) || [];

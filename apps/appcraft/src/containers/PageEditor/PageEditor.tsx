@@ -48,9 +48,9 @@ export default function PageEditor({
         ),
         ready: (
           <Common.ReadyTodoEditor
+            {...{ layouts, onTodoWrapperView, onWidgetWrapperView }}
             value={readyTodos}
             onConfirm={(value) => handlePage.change('readyTodos', value)}
-            onTodoWrapperView={onTodoWrapperView}
           />
         ),
         reset: (

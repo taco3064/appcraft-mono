@@ -46,9 +46,10 @@ export interface TodoNodeLabelProps
 
 export enum CategoryColor {
   variable = 'palette.info.main',
+  wrap = 'palette.info.dark',
   fetch = 'palette.secondary.main',
   branch = 'palette.success.main',
-  iterate = 'palette.success.main',
-  wrap = 'palette.info.main',
-  state = 'palette.grey.700',
+  iterate = 'palette.success.dark',
+  state = 'palette.warning.main',
+  props = 'palette.warning.dark',
 }

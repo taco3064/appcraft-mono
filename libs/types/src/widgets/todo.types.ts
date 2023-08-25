@@ -26,7 +26,14 @@ export type ExtractVariable = Variable<'extract', ExtractTodoResult>;
 export type Variables = DefineVariable | ExtractVariable;
 
 //* Todo Events
-type Todos = 'variable' | 'fetch' | 'branch' | 'iterate' | 'wrap' | 'state';
+type Todos =
+  | 'variable'
+  | 'fetch'
+  | 'branch'
+  | 'iterate'
+  | 'wrap'
+  | 'state'
+  | 'props';
 
 type BaseTodo<C extends Todos, P> = {
   category: C;
@@ -97,10 +104,22 @@ export type SetStateTodo = BaseTodo<
   }
 >;
 
+export type SetPropsTodo = BaseTodo<
+  'props',
+  {
+    props: {
+      source: ExtractTodoResult;
+      widget: string;
+      propName: string;
+    }[];
+  }
+>;
+
 export type WidgetTodo =
   | VariableTodo
   | FetchTodo
   | ConditionBranchTodo
   | IterateTodo
   | WrapTodo
-  | SetStateTodo;
+  | SetStateTodo
+  | SetPropsTodo;

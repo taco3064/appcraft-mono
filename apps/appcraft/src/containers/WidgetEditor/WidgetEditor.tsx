@@ -123,6 +123,7 @@ export default function WidgetEditor({
             stateTypeFile={__WEBPACK_DEFINE__.STATE_TYPE_FILE}
             todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             version={__WEBPACK_DEFINE__.VERSION}
+            disableCategories={['props']}
             widget={widget}
             onWidgetChange={handleWidget.change}
             onFetchDefinition={Service.getTypeDefinition}

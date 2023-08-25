@@ -9,6 +9,8 @@ export interface PageContainerProps
   secondary?: string;
 
   classes?: ContainerProps['classes'] & {
+    content?: string;
     title?: string;
+    toolbar?: string;
   };
 }

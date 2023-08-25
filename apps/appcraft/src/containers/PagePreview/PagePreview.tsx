@@ -20,7 +20,7 @@ export default function PagePreview({ id }: PagePreviewProps) {
   });
 
   return !Array.isArray(layouts.content) ? (
-    <Typography variant="h6" color="text.secondary">
+    <Typography variant="h4" color="text.secondary">
       {pt('msg-no-layouts')}
     </Typography>
   ) : (

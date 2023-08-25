@@ -6,7 +6,7 @@ import type * as Types from './hierarchy.types';
 
 export const search: Types.SearchService = async (
   userid,
-  { category, keyword, superior, type }
+  { category, keyword, superior, type, targets }
 ) => {
   const collection = await getCollection<Types.HierarchyData<ObjectId>>({
     db: 'data-forge',
@@ -17,6 +17,7 @@ export const search: Types.SearchService = async (
     userid: { $eq: userid },
     ...(category && { category: { $eq: category } }),
     ...(type && { type: { $eq: type } }),
+    ...(targets && { _id: { $in: targets.map((id) => new ObjectId(id)) } }),
     ...(!keyword &&
       superior !== undefined && {
         superior: superior ? { $eq: superior } : null,

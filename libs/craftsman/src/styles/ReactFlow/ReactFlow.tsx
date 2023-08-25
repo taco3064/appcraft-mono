@@ -10,6 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Paper from '@mui/material/Paper';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import SettingsIcon from '@mui/icons-material/Settings';
 import StorageIcon from '@mui/icons-material/Storage';
 import SyncIcon from '@mui/icons-material/Sync';
 import _get from 'lodash/get';
@@ -81,6 +82,9 @@ export function TodoIcon({ variant }: Types.TodoIconProps) {
 
     case 'state':
       return <CompositeIcon primary={StorageIcon} secondary={SaveAltIcon} />;
+
+    case 'props':
+      return <CompositeIcon primary={SettingsIcon} secondary={SaveAltIcon} />;
 
     default:
       return null;

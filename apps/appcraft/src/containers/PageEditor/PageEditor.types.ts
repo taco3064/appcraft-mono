@@ -1,15 +1,15 @@
 import type { ComponentProps } from 'react';
-import type { ConfigData, LayoutWidget } from '@appcraft/types';
+import type { ConfigData } from '@appcraft/types';
 import type * as Exhibitor from '@appcraft/exhibitor';
 
 import { ResponsiveDrawer } from '~appcraft/styles';
-import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
+import type { Breadcrumb, NodePickerFn, PageData } from '~appcraft/hooks';
 import type { TodoWrapperSelectProps, WidgetSelectProps } from '../common';
 
 export interface PageEditorProps {
-  data: ConfigData<LayoutWidget[], string>;
+  data: ConfigData<PageData, string>;
 
-  onActionNodePick?: NodePickerFn<'add' | 'reset' | 'save'>;
+  onActionNodePick?: NodePickerFn<'add' | 'ready' | 'reset' | 'save'>;
   onOutputCollect?: Exhibitor.OutputCollectHandler;
   onSave?: () => void;
   onTodoWrapperView?: TodoWrapperSelectProps['onView'];

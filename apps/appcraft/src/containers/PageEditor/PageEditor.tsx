@@ -23,16 +23,16 @@ export default function PageEditor({
   onTodoWrapperView,
   onWidgetWrapperView,
 }: Types.PageEditorProps) {
+  const [{ active, breakpoint, layouts, readyTodos }, handlePage] =
+    Hook.usePageValues({
+      data,
+      onSave,
+    });
+
   const [at, pt] = Hook.useFixedT('app', 'pages');
-
-  const [{ active, breakpoint, items }, handlePage] = Hook.usePageValues({
-    data,
-    onSave,
-  });
-
   const theme = useTheme();
   const rendererFetchHandles = Hook.useRendererFetchHandles();
-  const isSettingOpen = Boolean(items[active]);
+  const isSettingOpen = Boolean(layouts[active]);
 
   const actionNode = Hook.useNodePicker(
     () =>
@@ -44,6 +44,13 @@ export default function PageEditor({
             icon={<AddIcon />}
             text={at('btn-add')}
             onClick={handlePage.add}
+          />
+        ),
+        ready: (
+          <Common.ReadyTodoEditor
+            value={readyTodos}
+            onConfirm={(value) => handlePage.change('readyTodos', value)}
+            onTodoWrapperView={onTodoWrapperView}
           />
         ),
         reset: (
@@ -64,7 +71,7 @@ export default function PageEditor({
           />
         ),
       }),
-    [breakpoint, items]
+    [breakpoint, layouts, readyTodos]
   );
 
   useEffect(() => {
@@ -110,7 +117,7 @@ export default function PageEditor({
               <CraftedRenderer
                 breakpoint={breakpoint}
                 elevation={1}
-                options={items}
+                options={layouts}
                 onFetchData={rendererFetchHandles.data}
                 onFetchWrapper={rendererFetchHandles.wrapper}
                 onOutputCollect={onOutputCollect}
@@ -119,12 +126,12 @@ export default function PageEditor({
                     onEdit={() => handlePage.active(layout)}
                     onRemove={() => handlePage.remove(layout)}
                     onWidgetChange={(id) => {
-                      items.splice(items.indexOf(layout), 1, {
+                      layouts.splice(layouts.indexOf(layout), 1, {
                         ...layout,
                         template: { id },
                       });
 
-                      handlePage.change([...items]);
+                      handlePage.change('layouts', [...layouts]);
                     }}
                     widgetPicker={
                       <Common.WidgetSelect
@@ -174,7 +181,7 @@ export default function PageEditor({
               <Comp.BreakpointStepper
                 value={breakpoint}
                 onChange={handlePage.breakpoint}
-                disableNextButton={items.length === 0}
+                disableNextButton={layouts.length === 0}
               />
             </AppBar>
           </>

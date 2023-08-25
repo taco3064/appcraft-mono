@@ -1,5 +1,6 @@
 {
   "btn-edit": "Edit",
+  "btn-ready-todo": "Set Ready Handle",
   "btn-widget-picker": "Select Widget",
   "lbl-lg": "Large",
   "lbl-md": "Medium ",
@@ -10,5 +11,6 @@
   "msg-no-layouts": "No Widgets Available.",
   "ttl-detail": "Page",
   "ttl-preview": "Page Preview",
+  "ttl-ready-todo": "Page Ready Todo",
   "ttl-widget-picker": "Select Widget"
 }

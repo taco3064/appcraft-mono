@@ -61,11 +61,7 @@ export type RendererStateHook = (
     (
       | undefined
       | Record<string, Appcraft.WidgetTodo>
-      | ((e: {
-          onFetchData: Util.FetchDataHandler;
-          onFetchTodoWrapper?: Util.FetchTodoWrapperHandler;
-          onPropsChange: Util.PropsChangeHandler;
-        }) => Promise<void>)
+      | ((onPropsChange: Util.PropsChangeHandler) => Promise<void>)
     ),
     Pick<
       Parameters<typeof getEventHandler>[1],

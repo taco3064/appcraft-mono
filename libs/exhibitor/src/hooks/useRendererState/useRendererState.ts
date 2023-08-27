@@ -176,7 +176,9 @@ export const useRendererState: Types.RendererStateHook = (
       dispatch(widgets);
 
       if (ready instanceof Function) {
-        ready(opts);
+        const { onPropsChange } = opts;
+
+        ready(onPropsChange);
       } else if (ready) {
         getEventHandler(ready, { ...opts, eventName: 'onReady' })();
       }

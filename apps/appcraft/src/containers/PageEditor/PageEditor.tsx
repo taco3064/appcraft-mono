@@ -123,9 +123,15 @@ export default function PageEditor({
                 onOutputCollect={onOutputCollect}
                 action={(layout, onClose) => (
                   <Comp.LayoutAction
-                    onClose={onClose}
-                    onEdit={() => handlePage.active(layout)}
-                    onRemove={() => handlePage.remove(layout)}
+                    onCancel={onClose}
+                    onEdit={() => {
+                      handlePage.active(layout);
+                      onClose();
+                    }}
+                    onRemove={() => {
+                      handlePage.remove(layout);
+                      onClose();
+                    }}
                     onWidgetChange={(id) => {
                       layouts.splice(layouts.indexOf(layout), 1, {
                         ...layout,
@@ -133,6 +139,7 @@ export default function PageEditor({
                       });
 
                       handlePage.change('layouts', [...layouts]);
+                      onClose();
                     }}
                     widgetPicker={
                       <Common.WidgetSelect

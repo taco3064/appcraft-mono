@@ -121,26 +121,21 @@ export default function PageEditor({
                 onFetchData={rendererFetchHandles.data}
                 onFetchWrapper={rendererFetchHandles.wrapper}
                 onOutputCollect={onOutputCollect}
-                action={(layout, onClose) => (
+                action={(layout, withActionClose) => (
                   <Comp.LayoutAction
-                    onCancel={onClose}
-                    onEdit={() => {
-                      handlePage.active(layout);
-                      onClose();
-                    }}
-                    onRemove={() => {
-                      handlePage.remove(layout);
-                      onClose();
-                    }}
-                    onWidgetChange={(id) => {
-                      layouts.splice(layouts.indexOf(layout), 1, {
-                        ...layout,
-                        template: { id },
-                      });
+                    onCancel={withActionClose()}
+                    onEdit={withActionClose(() => handlePage.active(layout))}
+                    onRemove={withActionClose(() => handlePage.remove(layout))}
+                    onWidgetChange={(id) =>
+                      withActionClose(() => {
+                        layouts.splice(layouts.indexOf(layout), 1, {
+                          ...layout,
+                          template: { id },
+                        });
 
-                      handlePage.change('layouts', [...layouts]);
-                      onClose();
-                    }}
+                        handlePage.change('layouts', [...layouts]);
+                      })()
+                    }
                     widgetPicker={
                       <Common.WidgetSelect
                         fullWidth

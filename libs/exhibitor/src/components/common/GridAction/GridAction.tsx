@@ -55,7 +55,10 @@ export default function GridAction({ action, layout }: GridActionProps) {
       >
         <AppBar position="static" color="default">
           <Toolbar variant="dense">
-            {action(layout, () => setAnchorEl(undefined))}
+            {action(layout, (fn) => async () => {
+              await fn?.();
+              setAnchorEl(undefined);
+            })}
           </Toolbar>
         </AppBar>
       </Popover>

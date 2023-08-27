@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 
 export type GridActionRenderer = (
   layout: LayoutWidget,
-  onClsoe: () => void
+  withActionClose: (fn?: () => void) => () => void
 ) => ReactNode;
 
 export interface GridActionProps {

@@ -13,10 +13,16 @@ export const usePropValue = <P = unknown>(
   const { typeFile, typeName, props } = values;
   const stringify = JSON.stringify(props || {});
 
+  const baseProps = useMemo(
+    () => ExhibitorUtil.getProps(JSON.parse(stringify)),
+    [stringify]
+  );
+
   return [
     {
       typeFile,
       typeName,
+      props: baseProps,
       value: useMemo<P>(() => {
         if (type === 'pure') {
           return _get(JSON.parse(stringify), [propPath]) || null;

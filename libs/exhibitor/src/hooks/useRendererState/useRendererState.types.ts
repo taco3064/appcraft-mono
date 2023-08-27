@@ -7,10 +7,17 @@ import type { RendererOptions } from '../useGridLayouts';
 
 //* Variables
 type Queue = { id: string; path?: string };
+export type ReadyOptions = Parameters<RendererStateHook>[2];
 export type StateQueue = { state: Queue; superiors?: Queue[] };
 export type WidgetMap = Map<string, Appcraft.MainWidget>;
-
 export type TodosReturn = ReturnType<ReturnType<RendererStateHook>[1]['todos']>;
+
+export type ReadyRef = [
+  Parameters<RendererStateHook>[2][0],
+  Parameters<RendererStateHook>[2][1] & {
+    onPropsChange: Util.PropsChangeHandler;
+  }
+];
 
 //* Methods
 export type GetSuperiorProps = (
@@ -24,6 +31,7 @@ export type GetSuperiorTodos = (
   handlers: {
     onFetchData: Util.FetchDataHandler;
     onFetchTodoWrapper: Util.FetchTodoWrapperHandler;
+    onPropsChange: Util.PropsChangeHandler;
     onStateChange: Dispatch<ReducerAction>;
   }
 ) => TodosReturn;
@@ -48,7 +56,18 @@ export type ReducerAction = {
 
 export type RendererStateHook = (
   options: RendererOptions,
-  tempaltes: WidgetMap
+  tempaltes: WidgetMap,
+  readyOptions: [
+    (
+      | undefined
+      | Record<string, Appcraft.WidgetTodo>
+      | ((onPropsChange: Util.PropsChangeHandler) => Promise<void>)
+    ),
+    Pick<
+      Parameters<typeof getEventHandler>[1],
+      'onFetchData' | 'onFetchTodoWrapper' | 'onOutputCollect'
+    >
+  ]
 ) => [
   boolean,
   {

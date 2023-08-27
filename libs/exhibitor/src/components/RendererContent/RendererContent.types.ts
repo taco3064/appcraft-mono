@@ -1,11 +1,10 @@
 import type { LayoutWidget, MainWidget, WidgetTodo } from '@appcraft/types';
 import type { PaperProps } from '@mui/material/Paper';
-import type { ReactNode } from 'react';
 
 import { getEventHandler } from '../../utils';
 import { useRender } from '../../hooks';
 import type * as Hook from '../../hooks';
-import type { GridLayoutProps } from '../common';
+import type { GridActionRenderer, GridLayoutProps } from '../common';
 
 //* Variables
 type RendererHandlers = Parameters<typeof useRender>[0];
@@ -38,13 +37,10 @@ export type RendererContentProps<T extends Hook.RendererOptions> =
             | 'layouts'
           > & { mins: Hook.Mins };
 
-          action?: (layout: LayoutWidget) => ReactNode;
+          action?: GridActionRenderer;
           breakpoint?: GridLayoutProps['breakpoint'];
           elevation?: PaperProps['elevation'];
           options: LayoutWidget[];
           templates: Hook.WidgetMap;
-
-          onReady?:
-            | Record<string, WidgetTodo>
-            | ReturnType<typeof getEventHandler>;
+          onReady?: Hook.ReadyOptions[0];
         });

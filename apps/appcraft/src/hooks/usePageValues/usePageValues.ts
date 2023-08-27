@@ -54,7 +54,9 @@ export const usePageValues: Types.PageValuesHook = ({ data, onSave }) => {
 
     {
       breakpoint: setBreakpoint,
-      save: () => mutation.mutate({ ...data, content: { layouts } }),
+
+      save: () =>
+        mutation.mutate({ ...data, content: { layouts, readyTodos } }),
 
       change: (key, value) => {
         if (key === 'layouts') {

@@ -29,7 +29,7 @@ export default function StateViewer({ id }: Types.StateViewerProps) {
   const [ct] = useFixedT('appcraft');
   const [expanded, setExpanded] = useState(new Set<string>());
 
-  const { data: widget, refetch } = useQuery({
+  const { data: widget } = useQuery({
     queryKey: [id],
     queryFn: findConfig<MainWidget>,
     refetchOnWindowFocus: false,

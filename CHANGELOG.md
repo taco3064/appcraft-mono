@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.106](https://github.com/taco3064/appcraft-mono/compare/v0.0.105...v0.0.106) (2023-08-27)
+
+
+### Features
+
+* **@appcraft/exhibitor:** support onReady event ([25df15e](https://github.com/taco3064/appcraft-mono/commit/25df15e3ea121e4e15ff6391dfb43095ccbc7df1))
+* **@appcraft/exhibitor:** support to set props in event handler ([25f21bc](https://github.com/taco3064/appcraft-mono/commit/25f21bcce9f8904ba16d77d40bd7116356fcadb6))
+* **prop-name-select:** add new override component: <PropNameSelect /> ([5df533e](https://github.com/taco3064/appcraft-mono/commit/5df533e9e266e85e9a63119907317b4a301b9b2c))
+
+
+### Bug Fixes
+
+* **@appcraft/exhibitor:** fixed the deps of hook in useRendererState ([4472bf0](https://github.com/taco3064/appcraft-mono/commit/4472bf0d792e21573f056181c33dd33a79b08410))
+* **@appcraft/exhibitor:** split component ([834f962](https://github.com/taco3064/appcraft-mono/commit/834f962d7fb339188e6b286b2e4a65ebc9961653))
+* **@appcraft/exhibitor:** update onReady parameters ([b814b5a](https://github.com/taco3064/appcraft-mono/commit/b814b5a211a97f71679f75e5866eec466b8d3e78))
+
 ### [0.0.105](https://github.com/taco3064/appcraft-mono/compare/v0.0.104...v0.0.105) (2023-08-25)
 
 

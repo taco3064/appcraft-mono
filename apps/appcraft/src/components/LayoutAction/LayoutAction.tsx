@@ -13,6 +13,7 @@ import type { LayoutActionProps } from './LayoutAction.types';
 
 export default function LayoutAction({
   widgetPicker,
+  onClose,
   onEdit,
   onRemove,
   onWidgetChange,
@@ -24,6 +25,7 @@ export default function LayoutAction({
     const formdata = new FormData(e.currentTarget);
 
     e.preventDefault();
+    onClose();
     onWidgetChange(formdata.get('widget') as string);
   };
 
@@ -40,12 +42,21 @@ export default function LayoutAction({
         btnVariant="icon"
         text={pt('btn-edit')}
         icon={<SettingsOutlinedIcon />}
-        onClick={onEdit}
+        onClick={() => {
+          onClose();
+          onEdit();
+        }}
       />
 
       <Divider flexItem orientation="vertical" />
 
-      <RemoveButton btnVariant="icon" onConfirm={onRemove} />
+      <RemoveButton
+        btnVariant="icon"
+        onConfirm={() => {
+          onClose();
+          onRemove();
+        }}
+      />
 
       <CraftsmanStyle.FlexDialog
         direction="column"
@@ -53,7 +64,10 @@ export default function LayoutAction({
         fullWidth
         maxWidth="xs"
         open={pickerOpen}
-        onClose={() => setPickerOpen(false)}
+        onClose={() => {
+          onClose();
+          setPickerOpen(false);
+        }}
         onSubmit={handleWidgetSubmit}
         action={
           <>

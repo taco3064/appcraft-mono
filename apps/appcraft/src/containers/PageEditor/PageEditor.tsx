@@ -121,8 +121,9 @@ export default function PageEditor({
                 onFetchData={rendererFetchHandles.data}
                 onFetchWrapper={rendererFetchHandles.wrapper}
                 onOutputCollect={onOutputCollect}
-                action={(layout) => (
+                action={(layout, onClose) => (
                   <Comp.LayoutAction
+                    onClose={onClose}
                     onEdit={() => handlePage.active(layout)}
                     onRemove={() => handlePage.remove(layout)}
                     onWidgetChange={(id) => {

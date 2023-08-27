@@ -84,68 +84,78 @@ const getSuperiorTodos: Types.GetSuperiorTodos = (
     {}
   );
 
+function reducer(
+  states: Types.ReducerState,
+  action: Types.ReducerAction | Types.ReducerAction[] | Types.WidgetMap
+) {
+  if (!(action instanceof Map)) {
+    return (Array.isArray(action) ? action : [action]).reduce(
+      (result, { id, values }) => {
+        Object.entries(values).forEach(([propPath, value]) =>
+          _set(result, [id, propPath, 'value'], value)
+        );
+
+        return result;
+      },
+      { ...states }
+    );
+  }
+
+  return Array.from(action.values()).reduce<Types.ReducerState>(
+    (result, { id, state }) => {
+      const acc: Types.ReducerState[string] = {};
+
+      Object.entries(state || {}).forEach(([category, $state]) =>
+        Object.entries($state).forEach(([stateKey, opts]) => {
+          acc[stateKey] = {
+            category: category as Appcraft.StateCategory,
+            options: opts,
+            value: opts.defaultValue,
+            propPath: stateKey.replace(
+              new RegExp(`(.*\\.${category}|^${category})\\.`),
+              ''
+            ),
+          };
+        })
+      );
+
+      return { ...result, [id]: acc };
+    },
+    {}
+  );
+}
+
 export const useRendererState: Types.RendererStateHook = (
   options,
   templates, //* Map Key: Configurate ID
   [onReady, readyOptions]
 ) => {
   const [, startTransition] = useTransition();
+  const [states, dispatch] = useReducer(reducer, {});
 
-  const [states, dispatch] = useReducer(
-    (
-      states: Types.ReducerState,
-      action: Types.ReducerAction | Types.ReducerAction[] | Types.WidgetMap
-    ) => {
-      if (!(action instanceof Map)) {
-        return (Array.isArray(action) ? action : [action]).reduce(
-          (result, { id, values }) => {
-            Object.entries(values).forEach(([propPath, value]) =>
-              _set(result, [id, propPath, 'value'], value)
-            );
-
-            return result;
-          },
-          { ...states }
-        );
-      }
-
-      return Array.from(action.values()).reduce<Types.ReducerState>(
-        (result, { id, state }) => {
-          const acc: Types.ReducerState[string] = {};
-
-          Object.entries(state || {}).forEach(([category, $state]) =>
-            Object.entries($state).forEach(([stateKey, opts]) => {
-              acc[stateKey] = {
-                category: category as Appcraft.StateCategory,
-                options: opts,
-                value: opts.defaultValue,
-                propPath: stateKey.replace(
-                  new RegExp(`(.*\\.${category}|^${category})\\.`),
-                  ''
-                ),
-              };
-            })
-          );
-
-          return { ...result, [id]: acc };
-        },
-        {}
-      );
-    },
-    {}
+  const stringify = useMemo(
+    () =>
+      JSON.stringify(
+        !Array.isArray(options)
+          ? options
+          : options.map(({ template }) => template?.id)
+      ),
+    [options]
   );
 
   const widgets = useMemo(() => {
+    const opts = JSON.parse(stringify);
+
     //* Map Key: Widget ID
     const result: Types.WidgetMap = new Map(
       Array.from(templates.values()).map((widget) => [widget.id, widget])
     );
 
-    if (!Array.isArray(options)) {
-      result.set(options.id, options);
+    if (!Array.isArray(opts)) {
+      result.set(opts.id, opts);
     } else {
-      options.forEach(({ template }) => {
-        const widget = templates.get(template?.id);
+      opts.forEach((id) => {
+        const widget = templates.get(id);
 
         if (widget) {
           result.set(widget.id, widget);
@@ -154,7 +164,7 @@ export const useRendererState: Types.RendererStateHook = (
     }
 
     return result;
-  }, [options, templates]);
+  }, [stringify, templates]);
 
   const handlePropsChange: PropsChangeHandler = (e) =>
     dispatch(

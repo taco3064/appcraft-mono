@@ -42,8 +42,5 @@ export type RendererContentProps<T extends Hook.RendererOptions> =
           elevation?: PaperProps['elevation'];
           options: LayoutWidget[];
           templates: Hook.WidgetMap;
-
-          onReady?:
-            | Record<string, WidgetTodo>
-            | ReturnType<typeof getEventHandler>;
+          onReady?: Hook.ReadyOptions[0];
         });

@@ -1,17 +1,21 @@
 import _get from 'lodash/get';
 import _set from 'lodash/set';
 import _toPath from 'lodash/toPath';
-import { useEffect, useMemo, useReducer } from 'react';
+import { useEffect, useMemo, useReducer, useRef, useTransition } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import { getEventHandler } from '../../utils';
 import type * as Types from './useRendererState.types';
+import type { PropsChangeHandler } from '../../utils';
 
 const getSuperiorProps: Types.GetSuperiorProps = (states, superiors = []) =>
   superiors.reduce((result, { id, path }) => {
     const state = _get(states, [id, path?.replace(/\[\d+\]$/, '') as string]);
 
-    if (state?.category === 'nodes' && state?.options.type === 'private') {
+    if (
+      state?.category === 'nodes' &&
+      (state?.options.type === 'private' || state?.value)
+    ) {
       const index = Number.parseInt(_toPath(path || '').pop() || '', 10);
       const statePath = path?.replace(/\[\d+\]$/, '');
 
@@ -82,8 +86,11 @@ const getSuperiorTodos: Types.GetSuperiorTodos = (
 
 export const useRendererState: Types.RendererStateHook = (
   options,
-  templates //* Map Key: Configurate ID
+  templates, //* Map Key: Configurate ID
+  [onReady, readyOptions]
 ) => {
+  const [, startTransition] = useTransition();
+
   const [states, dispatch] = useReducer(
     (
       states: Types.ReducerState,
@@ -149,8 +156,31 @@ export const useRendererState: Types.RendererStateHook = (
     return result;
   }, [options, templates]);
 
+  const handlePropsChange: PropsChangeHandler = (e) =>
+    dispatch(
+      Object.entries(e).map(([template, values]) => ({
+        id: templates.get(template)?.id as string,
+        values,
+      }))
+    );
+
+  const readyRef = useRef<Types.ReadyRef>([
+    onReady,
+    { ...readyOptions, onPropsChange: handlePropsChange },
+  ]);
+
   useEffect(() => {
-    dispatch(widgets);
+    startTransition(() => {
+      const [ready, opts] = readyRef.current;
+
+      dispatch(widgets);
+
+      if (ready instanceof Function) {
+        ready(opts);
+      } else if (ready) {
+        getEventHandler(ready, { ...opts, eventName: 'onReady' })();
+      }
+    });
   }, [widgets]);
 
   return [
@@ -185,13 +215,7 @@ export const useRendererState: Types.RendererStateHook = (
         const superiorProps = getSuperiorTodos(states, queue, {
           ...options,
           onStateChange: dispatch,
-          onPropsChange: (e) =>
-            dispatch(
-              Object.entries(e).map(([template, values]) => ({
-                id: templates.get(template)?.id as string,
-                values,
-              }))
-            ),
+          onPropsChange: handlePropsChange,
         });
 
         return Object.keys({
@@ -213,16 +237,9 @@ export const useRendererState: Types.RendererStateHook = (
               : [
                   getEventHandler(internal, {
                     ...options,
+                    onPropsChange: handlePropsChange,
                     onStateChange: (values) =>
                       dispatch({ id: queue.state.id, values }),
-
-                    onPropsChange: (e) =>
-                      dispatch(
-                        Object.entries(e).map(([template, values]) => ({
-                          id: templates.get(template)?.id as string,
-                          values,
-                        }))
-                      ),
                   }),
                   ...handlers,
                 ],
@@ -253,7 +270,7 @@ export const useRendererState: Types.RendererStateHook = (
                 _set(
                   result,
                   [propPath],
-                  Array.from({ length: source.length }).map((content, index) =>
+                  source.map((content, index) =>
                     template
                       ? { ...template, template: { index } }
                       : {

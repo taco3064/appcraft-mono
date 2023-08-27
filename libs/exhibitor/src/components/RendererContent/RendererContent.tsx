@@ -14,8 +14,17 @@ export default function RendererContent<T extends RendererOptions>({
   onReady,
   ...props
 }: Types.RendererContentProps<T>) {
-  const [isPrepared, handleState] = Hook.useRendererState(options, templates);
+  const { onFetchData, onFetchTodoWrapper, onOutputCollect } = props;
   const layouts = Hook.useGridLayouts(options, GridLayoutProps);
+
+  const [isPrepared, handleState] = Hook.useRendererState(options, templates, [
+    onReady,
+    {
+      onFetchData,
+      onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
+      onOutputCollect,
+    },
+  ]);
 
   const render = Hook.useRender(
     props,

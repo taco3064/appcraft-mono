@@ -121,6 +121,7 @@ export default function PageEditor({
                 onFetchData={rendererFetchHandles.data}
                 onFetchWrapper={rendererFetchHandles.wrapper}
                 onOutputCollect={onOutputCollect}
+                onReady={readyTodos}
                 action={(layout, withActionClose) => (
                   <Comp.LayoutAction
                     onCancel={withActionClose()}

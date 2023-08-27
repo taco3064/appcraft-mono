@@ -21,7 +21,7 @@ export default function TypeItemDisplay({
 }: TypeItemDisplayProps) {
   const ref = useRef<typeof onClick>(onClick);
 
-  const [{ value, typeFile, typeName }, handlePure] = usePropValue(
+  const [{ value, props, typeFile, typeName }, handlePure] = usePropValue(
     'display',
     propPath
   );
@@ -34,6 +34,7 @@ export default function TypeItemDisplay({
     propPath,
     typeFile,
     typeName,
+    props,
     value,
     onChange: handlePure.change,
   });

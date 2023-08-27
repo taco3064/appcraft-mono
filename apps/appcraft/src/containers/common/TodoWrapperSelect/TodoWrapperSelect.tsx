@@ -18,7 +18,7 @@ export default function TodoWrapperSelect({
   onChange,
   onView,
 }: TodoWrapperSelectProps) {
-  const [wt] = useFixedT('widgets');
+  const [at, wt] = useFixedT('app', 'widgets');
 
   const { data: options } = useQuery({
     refetchOnWindowFocus: false,
@@ -40,7 +40,7 @@ export default function TodoWrapperSelect({
         !options.length
           ? wt('msg-no-options')
           : !value
-          ? wt('msg-required')
+          ? at('msg-required')
           : undefined
       }
       InputProps={{

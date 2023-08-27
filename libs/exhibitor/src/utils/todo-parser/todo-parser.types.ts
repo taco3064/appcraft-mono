@@ -25,6 +25,7 @@ export type GetEventHandler = (
     defaultOutputs?: OutputData[];
     eventName?: string;
 
+    onPropsChange?: (e: Record<string, Record<string, unknown>>) => void;
     onStateChange?: (e: Record<string, unknown>) => void;
 
     onFetchData: <R>(
@@ -60,6 +61,10 @@ export type OutputCollectHandler = Required<
   Parameters<GetEventHandler>[1]
 >['onOutputCollect'];
 
+export type PropsChangeHandler = Required<
+  Parameters<GetEventHandler>[1]
+>['onPropsChange'];
+
 export type StateChangeHandler = Required<
   Parameters<GetEventHandler>[1]
 >['onStateChange'];
@@ -72,6 +77,7 @@ export type Execute = (
     outputs: OutputData[];
     onFetchData: FetchDataHandler;
     onFetchTodoWrapper?: FetchTodoWrapperHandler;
+    onPropsChange?: PropsChangeHandler;
     onStateChange?: StateChangeHandler;
   }
 ) => Promise<OutputData[]>;

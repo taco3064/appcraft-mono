@@ -1,9 +1,15 @@
 import TextField from '@mui/material/TextField';
 import type { ComponentProps } from 'react';
 
-import type { HierarchyData } from '~appcraft/services';
+//* Variables
+export type PropNameOption = {
+  value: string;
+  primary: string;
+  secondary: string;
+};
 
-export interface WidgetSelectProps
+//* Component Props
+export interface PropNameSelectProps
   extends Omit<
     ComponentProps<typeof TextField>,
     | 'InputProps'
@@ -14,9 +20,7 @@ export interface WidgetSelectProps
     | 'value'
     | 'onChange'
   > {
-  exclude?: string[];
-  targets?: string[];
+  template?: string;
   value?: string;
   onChange?: (value: string) => void;
-  onView?: (data: HierarchyData<string>) => void;
 }

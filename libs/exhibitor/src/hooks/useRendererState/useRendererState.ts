@@ -1,17 +1,21 @@
 import _get from 'lodash/get';
 import _set from 'lodash/set';
 import _toPath from 'lodash/toPath';
-import { useEffect, useMemo, useReducer } from 'react';
+import { useEffect, useMemo, useReducer, useRef, useTransition } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import { getEventHandler } from '../../utils';
 import type * as Types from './useRendererState.types';
+import type { PropsChangeHandler } from '../../utils';
 
 const getSuperiorProps: Types.GetSuperiorProps = (states, superiors = []) =>
   superiors.reduce((result, { id, path }) => {
     const state = _get(states, [id, path?.replace(/\[\d+\]$/, '') as string]);
 
-    if (state?.category === 'nodes' && state?.options.type === 'private') {
+    if (
+      state?.category === 'nodes' &&
+      (state?.options.type === 'private' || state?.value)
+    ) {
       const index = Number.parseInt(_toPath(path || '').pop() || '', 10);
       const statePath = path?.replace(/\[\d+\]$/, '');
 
@@ -28,7 +32,7 @@ const getSuperiorProps: Types.GetSuperiorProps = (states, superiors = []) =>
 const getSuperiorTodos: Types.GetSuperiorTodos = (
   states,
   { state, superiors = [] },
-  { onFetchData, onFetchTodoWrapper, onStateChange }
+  { onFetchData, onFetchTodoWrapper, onPropsChange, onStateChange }
 ) =>
   Object.entries(_get(states, [state.id]) || {}).reduce<Types.TodosReturn>(
     (result, [stateKey, { category, propPath, options }]) => {
@@ -80,63 +84,78 @@ const getSuperiorTodos: Types.GetSuperiorTodos = (
     {}
   );
 
-export const useRendererState: Types.RendererStateHook = (
-  options,
-  templates //* Map Key: Configurate ID
-) => {
-  const [states, dispatch] = useReducer(
-    (
-      states: Types.ReducerState,
-      action: Types.ReducerAction | Types.WidgetMap
-    ) => {
-      if (!(action instanceof Map)) {
-        const { id, values } = action;
-
-        return Object.entries(values).reduce(
-          (acc, [propPath, value]) => ({
-            ..._set(acc, [id, propPath, 'value'], value),
-          }),
-          states
+function reducer(
+  states: Types.ReducerState,
+  action: Types.ReducerAction | Types.ReducerAction[] | Types.WidgetMap
+) {
+  if (!(action instanceof Map)) {
+    return (Array.isArray(action) ? action : [action]).reduce(
+      (result, { id, values }) => {
+        Object.entries(values).forEach(([propPath, value]) =>
+          _set(result, [id, propPath, 'value'], value)
         );
-      }
 
-      return Array.from(action.values()).reduce<Types.ReducerState>(
-        (result, { id, state }) => {
-          const acc: Types.ReducerState[string] = {};
+        return result;
+      },
+      { ...states }
+    );
+  }
 
-          Object.entries(state || {}).forEach(([category, $state]) =>
-            Object.entries($state).forEach(([stateKey, opts]) => {
-              acc[stateKey] = {
-                category: category as Appcraft.StateCategory,
-                options: opts,
-                value: opts.defaultValue,
-                propPath: stateKey.replace(
-                  new RegExp(`(.*\\.${category}|^${category})\\.`),
-                  ''
-                ),
-              };
-            })
-          );
+  return Array.from(action.values()).reduce<Types.ReducerState>(
+    (result, { id, state }) => {
+      const acc: Types.ReducerState[string] = {};
 
-          return { ...result, [id]: acc };
-        },
-        {}
+      Object.entries(state || {}).forEach(([category, $state]) =>
+        Object.entries($state).forEach(([stateKey, opts]) => {
+          acc[stateKey] = {
+            category: category as Appcraft.StateCategory,
+            options: opts,
+            value: opts.defaultValue,
+            propPath: stateKey.replace(
+              new RegExp(`(.*\\.${category}|^${category})\\.`),
+              ''
+            ),
+          };
+        })
       );
+
+      return { ...result, [id]: acc };
     },
     {}
   );
+}
+
+export const useRendererState: Types.RendererStateHook = (
+  options,
+  templates, //* Map Key: Configurate ID
+  [onReady, readyOptions]
+) => {
+  const [, startTransition] = useTransition();
+  const [states, dispatch] = useReducer(reducer, {});
+
+  const stringify = useMemo(
+    () =>
+      JSON.stringify(
+        !Array.isArray(options)
+          ? options
+          : options.map(({ template }) => template?.id)
+      ),
+    [options]
+  );
 
   const widgets = useMemo(() => {
+    const opts = JSON.parse(stringify);
+
     //* Map Key: Widget ID
     const result: Types.WidgetMap = new Map(
       Array.from(templates.values()).map((widget) => [widget.id, widget])
     );
 
-    if (!Array.isArray(options)) {
-      result.set(options.id, options);
+    if (!Array.isArray(opts)) {
+      result.set(opts.id, opts);
     } else {
-      options.forEach(({ template }) => {
-        const widget = templates.get(template?.id);
+      opts.forEach((id) => {
+        const widget = templates.get(id);
 
         if (widget) {
           result.set(widget.id, widget);
@@ -145,10 +164,35 @@ export const useRendererState: Types.RendererStateHook = (
     }
 
     return result;
-  }, [options, templates]);
+  }, [stringify, templates]);
+
+  const handlePropsChange: PropsChangeHandler = (e) =>
+    dispatch(
+      Object.entries(e).map(([template, values]) => ({
+        id: templates.get(template)?.id as string,
+        values,
+      }))
+    );
+
+  const readyRef = useRef<Types.ReadyRef>([
+    onReady,
+    { ...readyOptions, onPropsChange: handlePropsChange },
+  ]);
 
   useEffect(() => {
-    dispatch(widgets);
+    startTransition(() => {
+      const [ready, opts] = readyRef.current;
+
+      dispatch(widgets);
+
+      if (ready instanceof Function) {
+        const { onPropsChange } = opts;
+
+        ready(onPropsChange);
+      } else if (ready) {
+        getEventHandler(ready, { ...opts, eventName: 'onReady' })();
+      }
+    });
   }, [widgets]);
 
   return [
@@ -183,6 +227,7 @@ export const useRendererState: Types.RendererStateHook = (
         const superiorProps = getSuperiorTodos(states, queue, {
           ...options,
           onStateChange: dispatch,
+          onPropsChange: handlePropsChange,
         });
 
         return Object.keys({
@@ -204,6 +249,7 @@ export const useRendererState: Types.RendererStateHook = (
               : [
                   getEventHandler(internal, {
                     ...options,
+                    onPropsChange: handlePropsChange,
                     onStateChange: (values) =>
                       dispatch({ id: queue.state.id, values }),
                   }),
@@ -236,7 +282,7 @@ export const useRendererState: Types.RendererStateHook = (
                 _set(
                   result,
                   [propPath],
-                  Array.from({ length: source.length }).map((content, index) =>
+                  source.map((content, index) =>
                     template
                       ? { ...template, template: { index } }
                       : {

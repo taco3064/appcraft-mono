@@ -1,8 +1,11 @@
 import AlarmOnIcon from '@mui/icons-material/AlarmOn';
 import Button from '@mui/material/Button';
+import _get from 'lodash/get';
+import _toPath from 'lodash/toPath';
 import { CraftsmanStyle, CraftedTodoEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
 
+import PropNameSelect from '../PropNameSelect';
 import TodoWrapperSelect from '../TodoWrapperSelect';
 import WidgetSelect from '../WidgetSelect';
 import { CommonButton } from '~appcraft/components';
@@ -10,6 +13,7 @@ import { getTypeDefinition } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './ReadyTodoEditor.types';
 import type { PageData } from '~appcraft/hooks';
+import type { PropNameSelectProps } from '../PropNameSelect';
 import type { TodoWrapperSelectProps } from '../TodoWrapperSelect';
 import type { WidgetSelectProps } from '../WidgetSelect';
 
@@ -22,9 +26,15 @@ const getOverrideRenderType: Types.GetOverrideRenderType = (
   } else if (
     kind === 'pure' &&
     typeName === 'SetPropsTodo' &&
-    /^props\[\\d\]\.widget$/
+    /^props\[\d\]\.widget$/.test(propPath)
   ) {
     return 'PROPS_WIDGET';
+  } else if (
+    kind === 'pure' &&
+    typeName === 'SetPropsTodo' &&
+    /^props\[\d\]\.propName$/.test(propPath)
+  ) {
+    return 'PROPS_PICKER';
   }
 };
 
@@ -103,16 +113,43 @@ export default function ReadyTodoEditor({
                 );
               }
               case 'PROPS_WIDGET': {
+                const { value } = props as WidgetSelectProps;
+
                 return (
                   <WidgetSelect
                     {...(props as WidgetSelectProps)}
+                    fullWidth
+                    required
                     size="small"
                     variant="outlined"
+                    error={!value}
+                    helperText={!value ? at('msg-required') : undefined}
                     targets={layouts.map(({ template }) => template?.id)}
                     onView={onWidgetWrapperView}
                   />
                 );
               }
+              case 'PROPS_PICKER': {
+                const { value } = props as WidgetSelectProps;
+
+                const propPath = _toPath(
+                  props.propPath.replace(/\.propName$/, '.widget')
+                );
+
+                return (
+                  <PropNameSelect
+                    {...(props as PropNameSelectProps)}
+                    fullWidth
+                    required
+                    size="small"
+                    variant="outlined"
+                    template={_get(props, ['props', ...propPath])}
+                    error={!value}
+                    helperText={!value ? at('msg-required') : undefined}
+                  />
+                );
+              }
+              default:
             }
           }}
         />

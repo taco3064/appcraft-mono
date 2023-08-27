@@ -25,6 +25,7 @@
   "lbl-lng": "語言",
   "lbl-theme": "主題風格",
   "msg-remove-content": "是否刪除?",
+  "msg-required": "必填",
   "msg-succeed-add": "新增完成",
   "msg-succeed-dnd": "{{name}} 已成功搬移至新資料夾",
   "msg-succeed-remove": "刪除完畢",

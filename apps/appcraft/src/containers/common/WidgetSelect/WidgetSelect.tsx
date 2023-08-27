@@ -11,16 +11,12 @@ import { searchHierarchy } from '~appcraft/services';
 import type { WidgetSelectProps } from './WidgetSelect.types';
 
 export default function WidgetSelect({
-  disabled = false,
   exclude = [],
-  label,
-  size,
   targets,
-  variant,
-  name,
   value,
   onChange,
   onView,
+  ...props
 }: WidgetSelectProps) {
   const { data } = useQuery({
     refetchOnWindowFocus: false,
@@ -32,9 +28,8 @@ export default function WidgetSelect({
 
   return (
     <TextField
-      {...{ disabled, label, name, size, variant }}
+      {...props}
       SelectProps={{ displayEmpty: true }}
-      fullWidth
       select
       defaultValue={value || ''}
       onChange={(e) => onChange?.(e.target.value)}

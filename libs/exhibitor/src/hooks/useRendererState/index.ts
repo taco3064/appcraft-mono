@@ -1,2 +1,7 @@
 export * from './useRendererState';
-export type { StateQueue, WidgetMap } from './useRendererState.types';
+
+export type {
+  ReadyOptions,
+  StateQueue,
+  WidgetMap,
+} from './useRendererState.types';

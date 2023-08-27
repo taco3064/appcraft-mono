@@ -71,13 +71,40 @@ function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
 const execute: Types.Execute = async (
   todos,
   todo,
-  { event, outputs, onFetchData, onFetchTodoWrapper, onStateChange }
+  {
+    event,
+    outputs,
+    onFetchData,
+    onFetchTodoWrapper,
+    onPropsChange,
+    onStateChange,
+  }
 ) => {
   while (todo) {
     const { id, alias = id, category, defaultNextTodo, mixedTypes } = todo;
     const { [defaultNextTodo as string]: next } = todos;
 
     switch (category) {
+      case 'props': {
+        const { props } = todo;
+
+        todo = next;
+
+        onPropsChange?.(
+          props.reduce<Parameters<Types.PropsChangeHandler>[0]>(
+            (result, { source, propName, widget }) => ({
+              ...result,
+              [widget]: getVariableOutput(
+                { [propName]: { mode: 'extract', initial: source } },
+                { event, outputs }
+              ),
+            }),
+            {}
+          )
+        );
+
+        break;
+      }
       case 'state': {
         const { states } = todo;
 
@@ -272,6 +299,7 @@ export const getEventHandler: Types.GetEventHandler = (todos, options) => {
     onFetchData,
     onFetchTodoWrapper,
     onOutputCollect,
+    onPropsChange,
     onStateChange,
   } = options;
 
@@ -303,6 +331,7 @@ export const getEventHandler: Types.GetEventHandler = (todos, options) => {
         outputs: [...(_get(event, [0, OUTPUTS_SYMBOL]) || [])],
         onFetchData,
         onFetchTodoWrapper,
+        onPropsChange,
         onStateChange,
       });
 

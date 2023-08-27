@@ -25,6 +25,7 @@
   "lbl-lng": "Language",
   "lbl-theme": "Theme Style",
   "msg-remove-content": "Are you sure to remove?",
+  "msg-required": "Required",
   "msg-succeed-add": "Add Successfully.",
   "msg-succeed-dnd": "Successfully moved {{ name }} to the new group.",
   "msg-succeed-remove": "Remove Done.",

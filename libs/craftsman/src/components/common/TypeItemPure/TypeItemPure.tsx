@@ -25,7 +25,7 @@ export default function TypeItemPure({
   propPath,
   selection,
 }: TypeItemPureProps) {
-  const [{ value, typeFile, typeName }, handlePure] = usePropValue(
+  const [{ value, props, typeFile, typeName }, handlePure] = usePropValue(
     'pure',
     propPath
   );
@@ -48,6 +48,7 @@ export default function TypeItemPure({
       propPath,
       typeFile,
       typeName,
+      props,
       value,
       onChange: handlePure.change,
     });

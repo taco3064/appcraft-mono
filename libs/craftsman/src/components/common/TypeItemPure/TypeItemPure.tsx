@@ -30,36 +30,19 @@ export default function TypeItemPure({
     propPath
   );
 
-  const initialRef = useRef<() => void>(() =>
-    handlePure.change(options.options?.[0])
-  );
+  const override = handlePure.renderOverride?.('pure', {
+    disabled,
+    label,
+    options,
+    propPath,
+    typeFile,
+    typeName,
+    props,
+    value,
+    onChange: handlePure.change,
+  });
 
-  const hidden =
-    options.type === 'oneOf' &&
-    options.required &&
-    options.options?.length === 1;
-
-  const override =
-    !hidden &&
-    handlePure.renderOverride?.('pure', {
-      disabled,
-      label,
-      options,
-      propPath,
-      typeFile,
-      typeName,
-      props,
-      value,
-      onChange: handlePure.change,
-    });
-
-  useEffect(() => {
-    if (hidden) {
-      initialRef.current?.();
-    }
-  }, [hidden]);
-
-  return hidden || override === false ? null : (
+  return override === false ? null : (
     <ListItem data-category="pure">
       {selection}
 

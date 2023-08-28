@@ -1,18 +1,15 @@
+import type * as Craftsman from '@appcraft/craftsman';
 import type { ReactNode } from 'react';
 import type { WidgetTodo } from '@appcraft/types';
 
-import type { RenderOverrideItemArgs } from '../../contexts';
-import type * as Hook from '../../hooks';
-
-type BaseProps = RenderOverrideItemArgs<'display'>[1];
+type BaseProps = Craftsman.RenderOverrideItemArgs<'display'>[1];
 
 export interface TodoItemProps extends Omit<BaseProps, 'value'> {
-  editedState?: Hook.EditedState;
   value?: Record<string, WidgetTodo>;
 
   renderTodoEditor: (options: {
     values: TodoItemProps['value'];
-    onChange: Hook.TodoChangeHandler;
-    onEditToggle: Hook.EditToggleHandler;
+    onChange: Craftsman.CraftedTodoEditorProps['onChange'];
+    onEditToggle: Craftsman.EditToggleHandler;
   }) => ReactNode;
 }

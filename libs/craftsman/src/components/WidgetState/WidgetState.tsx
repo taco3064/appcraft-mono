@@ -16,7 +16,9 @@ import { useLocalesContext } from '../../contexts';
 import { useStateGenerator } from '../../hooks';
 import type * as Types from './WidgetState.types';
 
-const STATE_EXCLUDE: RegExp[] = [/^mixedTypes$/];
+const STATE_EXCLUDE: RegExp[] = [
+  /^(mixedTypes|category|nodeType|options|type)$/,
+];
 const TABS: Appcraft.StateCategory[] = ['props', 'nodes', 'todos'];
 
 export default function WidgetState({
@@ -26,7 +28,6 @@ export default function WidgetState({
   onBack,
   onChange,
   onFetchDefinition,
-  onStateEdit,
 }: Types.WidgetStateProps) {
   const ct = useLocalesContext();
   const [active, setActive] = React.useState<Appcraft.StateCategory>(TABS[0]);
@@ -44,11 +45,9 @@ export default function WidgetState({
 
   const handleEditToggle: Types.EditToggleHandler = (e) => {
     if (e) {
-      handleState.edit(e.path);
-      onStateEdit(e);
+      handleState.edit(e);
     } else {
       handleState.clear();
-      onStateEdit();
     }
   };
 
@@ -110,10 +109,7 @@ export default function WidgetState({
             <Style.ListPlaceholder message={ct('msg-no-state')} />
           ) : (
             states.map(([path, { alias, description }]) => (
-              <ListItemButton
-                key={path}
-                onClick={() => handleEditToggle({ category: active, path })}
-              >
+              <ListItemButton key={path} onClick={() => handleEditToggle(path)}>
                 <ListItemText
                   primary={alias}
                   secondary={description || path.replace(/.*nodes\./g, '')}

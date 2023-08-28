@@ -2,10 +2,10 @@ import type { ConfigOptions, MainWidget } from '@appcraft/types';
 import type { ReactNode } from 'react';
 
 import type * as Context from '../../contexts';
-import type { EditedState, FetchTypeDefinition } from '../../hooks';
+import type { FetchTypeDefinition } from '../../hooks';
 
 //* Variables
-export type EditToggleHandler = (e?: EditedState) => void;
+export type EditToggleHandler = (path?: string) => void;
 
 //* Component Props
 export interface WidgetStateProps {
@@ -14,7 +14,6 @@ export interface WidgetStateProps {
   onBack: () => void;
   onChange: (e: MainWidget) => void;
   onFetchDefinition: FetchTypeDefinition;
-  onStateEdit: (target?: EditedState) => void;
 
   renderEditor: (options: {
     exclude: RegExp[];

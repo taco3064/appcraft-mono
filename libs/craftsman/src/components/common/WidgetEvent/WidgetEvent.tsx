@@ -13,7 +13,7 @@ export default function WidgetEvent({
   path,
   onActive,
 }: WidgetEventProps) {
-  const [_isState, selection] = useStateSelection(
+  const [, selection] = useStateSelection(
     'todos',
     ExhibitorUtil.getPropPath([elementName, path]),
     completePaths,

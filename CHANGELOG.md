@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.107](https://github.com/taco3064/appcraft-mono/compare/v0.0.106...v0.0.107) (2023-08-28)
+
+
+### Features
+
+* **@appcraft/craftsman:** add override field of output path in todo editor ([abafde7](https://github.com/taco3064/appcraft-mono/commit/abafde75276fd80a2fe6ce1fe5d5416dc5c8122b))
+* **@appcraft/craftsman:** support override mixed type options ([85332d3](https://github.com/taco3064/appcraft-mono/commit/85332d3f99d25fc597b39b916fa533747e1679c8))
+
 ### [0.0.106](https://github.com/taco3064/appcraft-mono/compare/v0.0.105...v0.0.106) (2023-08-27)
 
 

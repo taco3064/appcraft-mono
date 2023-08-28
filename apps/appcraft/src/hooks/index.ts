@@ -1,6 +1,6 @@
 export * from './useApp';
 export * from './useConfigValues';
-export * from './useCraftedWidgetOverride';
+export * from './useCraftedOverride';
 export * from './useHeight';
 export * from './useHierarchyFilter';
 export * from './useLazyUserProfile';

@@ -1,7 +1,6 @@
-import type { LayoutWidget, MainWidget, WidgetTodo } from '@appcraft/types';
+import type { LayoutWidget, MainWidget } from '@appcraft/types';
 import type { PaperProps } from '@mui/material/Paper';
 
-import { getEventHandler } from '../../utils';
 import { useRender } from '../../hooks';
 import type * as Hook from '../../hooks';
 import type { GridActionRenderer, GridLayoutProps } from '../common';

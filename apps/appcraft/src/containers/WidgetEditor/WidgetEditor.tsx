@@ -2,6 +2,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import _omit from 'lodash/omit';
 import { CraftedRenderer } from '@appcraft/exhibitor';
 import { CraftedWidgetEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
@@ -36,7 +37,10 @@ export default function WidgetEditor({
   const renderOverrideItem = Hook.useCraftedWidgetOverride({
     STATE_PICKER: (category, props) => {
       const options: [string, WidgetState][] = Object.entries(
-        Object.assign({}, ...Object.values(widget?.state || {}))
+        Object.assign(
+          {},
+          ...Object.values(_omit(widget?.state || {}, ['todos']))
+        )
       );
 
       return (

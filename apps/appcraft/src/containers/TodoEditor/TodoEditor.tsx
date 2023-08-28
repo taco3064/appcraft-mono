@@ -23,6 +23,7 @@ export default function TodoEditor({
 }: TodoEditorProps) {
   const [at, tt] = Hook.useFixedT('app', 'todos');
   const [open, setOpen] = useState(true);
+  const rendererFetchHandles = Hook.useRendererFetchHandles();
 
   const [{ duration, outputs, todos }, handleTodos] = Hook.useTodoValues({
     data,
@@ -105,7 +106,9 @@ export default function TodoEditor({
             typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             values={todos}
             onChange={handleTodos.change}
+            onFetchData={rendererFetchHandles.data}
             onFetchDefinition={getTypeDefinition}
+            onFetchTodoWrapper={rendererFetchHandles.wrapper}
           />
         }
         drawer={

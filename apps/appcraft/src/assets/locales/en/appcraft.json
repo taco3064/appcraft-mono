@@ -30,6 +30,7 @@
   "msg-no-state": "No State Available",
   "msg-no-widget": "This section will display the widget structure. Please click 'New Widget' to start building the widget content.",
   "msg-no-widgets": "No Widgets Available",
+  "msg-required": "Required",
   "msg-select-widget-type-first": "Select a widget type first.",
   "ttl-category-data-display": "Data Display",
   "ttl-category-input": "Input",

@@ -1,4 +1,5 @@
 import type * as Appcraft from '@appcraft/types';
+import type * as Exhibitor from '@appcraft/exhibitor';
 
 import type * as Hook from '../../hooks';
 import type { CraftedTypeEditorProps } from '../CraftedTypeEditor';
@@ -15,4 +16,6 @@ export interface CraftedTodoEditorProps
   variant?: 'normal' | 'popup';
   onChange: Hook.TodoChangeHandler;
   onEditToggle?: Hook.EditToggleHandler;
+  onFetchData: Exhibitor.FetchDataHandler;
+  onFetchTodoWrapper: Exhibitor.FetchWrapperHandler<'todo'>;
 }

@@ -16,5 +16,5 @@ export type GetNodesAndEventsKey = (
 
 export type SplitProps = (
   target: unknown,
-  paths?: (string | number)[]
+  options?: { paths?: (string | number)[]; ignoreSplitArray?: boolean }
 ) => Record<string, unknown>;

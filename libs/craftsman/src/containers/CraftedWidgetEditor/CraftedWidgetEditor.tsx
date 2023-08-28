@@ -42,21 +42,17 @@ export default function CraftedWidgetEditor({
   widget,
   overrideNamingProps,
   renderOverrideItem,
+  onFetchData,
   onFetchDefinition,
   onFetchNodesAndEvents,
-  onFetchWidgetWrapper,
+  onFetchWrapper,
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
   const ct = useLocalesContext();
   const [newWidgetOpen, setNewWidgetOpen] = useState(false);
   const [stateOpen, setStateOpen] = useState(false);
   const [editedState, setEditedState] = useState<Hook.EditedState>();
-
-  const todoNames = Hook.useTemplateTodos(
-    widget,
-    editedState,
-    onFetchWidgetWrapper
-  );
+  const todoNames = Hook.useTemplateTodos(widget, editedState, onFetchWrapper);
 
   const sensors = Dnd.useSensors(
     Dnd.useSensor(Dnd.MouseSensor, {
@@ -143,12 +139,14 @@ export default function CraftedWidgetEditor({
                 renderOverrideItem,
                 onChange,
                 onEditToggle,
+                onFetchData,
                 onFetchDefinition,
               }}
               disableCategories={['props']}
               fullHeight
               variant="normal"
               typeFile={todoTypeFile}
+              onFetchTodoWrapper={onFetchWrapper}
             />
           )}
         />
@@ -203,11 +201,13 @@ export default function CraftedWidgetEditor({
             disableCategories,
             overrideNamingProps,
             renderOverrideItem,
+            onFetchData,
             onFetchDefinition,
           }}
           fullHeight
           typeFile={todoTypeFile}
           values={editedWidget.todos?.[todoPath as string]}
+          onFetchTodoWrapper={onFetchWrapper}
           onChange={(todo) =>
             handleMutation.modify({
               ...editedWidget,

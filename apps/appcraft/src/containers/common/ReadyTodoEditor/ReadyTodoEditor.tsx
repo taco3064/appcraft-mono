@@ -10,7 +10,7 @@ import TodoWrapperSelect from '../TodoWrapperSelect';
 import WidgetSelect from '../WidgetSelect';
 import { CommonButton } from '~appcraft/components';
 import { getTypeDefinition } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT, useRendererFetchHandles } from '~appcraft/hooks';
 import type * as Types from './ReadyTodoEditor.types';
 import type { PageData } from '~appcraft/hooks';
 import type { PropNameSelectProps } from '../PropNameSelect';
@@ -47,6 +47,7 @@ export default function ReadyTodoEditor({
 }: Types.ReadyTodoEditorProps) {
   const [at, pt] = useFixedT('app', 'pages');
   const [open, setOpen] = useState(false);
+  const rendererFetchHandles = useRendererFetchHandles();
 
   const [todos, setTodos] = useState<PageData['readyTodos']>(() =>
     JSON.parse(JSON.stringify(value))
@@ -99,7 +100,9 @@ export default function ReadyTodoEditor({
           typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
           values={todos}
           onChange={setTodos}
+          onFetchData={rendererFetchHandles.data}
           onFetchDefinition={getTypeDefinition}
+          onFetchTodoWrapper={rendererFetchHandles.wrapper}
           renderOverrideItem={(...args) => {
             const [, props] = args;
 

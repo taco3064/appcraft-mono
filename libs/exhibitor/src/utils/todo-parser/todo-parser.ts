@@ -24,7 +24,9 @@ function compiled<R>(template: string, data: object): R {
   return JSON.parse(compiledFn(data));
 }
 
-function getVariableOutput<R extends Record<string, Appcraft.Definition>>(
+export function getVariableOutput<
+  R extends Record<string, Appcraft.Definition>
+>(
   variables: Record<keyof R, Appcraft.Variables>,
   { mixedTypes, event, outputs }: Types.VariableOptions
 ): R {
@@ -219,7 +221,7 @@ const execute: Types.Execute = async (
 
       //* Iterate Data
       case 'iterate': {
-        const { source, iterateTodo } = todo;
+        const { id, alias = id, source, iterateTodo } = todo;
         const { [iterateTodo as string]: iterate } = todos;
 
         const { target } = !source
@@ -229,27 +231,30 @@ const execute: Types.Execute = async (
               { event, outputs }
             );
 
+        //* Iterate Todo 僅針對 Array 或 Object 進行處理
         if (Array.isArray(target) || _isPlainObject(target)) {
           const output = Array.isArray(target) ? [] : {};
+          const elkey = `$el_${alias}`;
 
           const keys = new Set([
-            '$el',
+            elkey,
             ...outputs.map(({ todo, alias = todo }) => alias),
           ]);
 
+          //* 建立虛擬的 $el output 供 iterate 迴圈使用
           const list: Types.IteratePrepare[] = Array.isArray(target)
             ? target.map((item, key) => ({
                 key,
                 outputs: [
                   ...outputs,
-                  { todo: id, alias: '$el', output: item as object },
+                  { todo: id, alias: elkey, output: item as object },
                 ],
               }))
             : Object.entries(target as object).map(([key, item]) => ({
                 key,
                 outputs: [
                   ...outputs,
-                  { todo: id, alias: '$el', output: item as object },
+                  { todo: id, alias: elkey, output: item as object },
                 ],
               }));
 
@@ -295,6 +300,7 @@ const execute: Types.Execute = async (
 //* Methods
 export const getEventHandler: Types.GetEventHandler = (todos, options) => {
   const {
+    disableIgnoreOutput = false,
     eventName,
     onFetchData,
     onFetchTodoWrapper,
@@ -335,17 +341,13 @@ export const getEventHandler: Types.GetEventHandler = (todos, options) => {
         onStateChange,
       });
 
-      const visibled = outputs.filter(({ todo }) => {
-        const {
-          [todo]: { ignoreOutput = false },
-        } = todos;
-
-        return !ignoreOutput;
-      });
-
-      if (visibled.length) {
-        result.push(...visibled);
-      }
+      result.push(
+        ...(disableIgnoreOutput
+          ? outputs
+          : outputs.filter(
+              ({ todo }) => _get(todos, [todo, 'ignoreOutput']) !== true
+            ))
+      );
     }
 
     onOutputCollect?.(

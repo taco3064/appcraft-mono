@@ -60,7 +60,7 @@ export default function TypeItemPure({
   }, [hidden]);
 
   return hidden || override === false ? null : (
-    <ListItem>
+    <ListItem data-category="pure">
       {selection}
 
       <ListItemText

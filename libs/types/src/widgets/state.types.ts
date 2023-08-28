@@ -1,4 +1,5 @@
 import type { Definition } from './todo.types';
+import type { PropTypesDef } from './prop-types-def.types';
 import type { TypesMapping } from './prop-types-def.types';
 import type { WidgetTodo } from './todo.types';
 
@@ -30,6 +31,7 @@ export type PropsState = BaseState<
   'props',
   {
     defaultValue?: Definition;
+    options: PropTypesDef;
   }
 >;
 

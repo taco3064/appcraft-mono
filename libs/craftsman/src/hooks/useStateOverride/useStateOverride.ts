@@ -1,15 +1,29 @@
 import _get from 'lodash/get';
 import type * as Types from './useStateOverride.types';
 
-const getOverridePropsType: Types.GetOverridePropsType = ({
+const getOverrideMixedType: Types.GetOverrideMixedType = ({
   typeFile,
   typeName,
   propPath,
 }) => {
   if (
-    /^template\.todos$/.test(propPath) &&
+    typeFile.includes('/@appcraft/types/src/widgets/state') &&
+    typeName === 'PropsState' &&
+    /^defaultValue$/.test(propPath)
+  ) {
+    return 'DEFAULT_STATE_VALUE';
+  }
+};
+
+const getOverrideNamingType: Types.GetOverrideNamingType = ({
+  typeFile,
+  typeName,
+  propPath,
+}) => {
+  if (
+    typeFile.includes('/@appcraft/types/src/widgets/state') &&
     typeName === 'NodeState' &&
-    typeFile.includes('/@appcraft/types/src/widgets/state')
+    /^template\.todos$/.test(propPath)
   ) {
     return 'TODO_NAMING';
   }
@@ -20,10 +34,10 @@ const getOverrideRenderType: Types.GetOverrideRenderType = (
   { propPath, typeName, typeFile }
 ) => {
   if (
-    kind === 'display' &&
-    /^template\.todos\..*$/.test(propPath) &&
+    typeFile.includes('/@appcraft/types/src/widgets/state') &&
     typeName === 'NodeState' &&
-    typeFile.includes('/@appcraft/types/src/widgets/state')
+    kind === 'display' &&
+    /^template\.todos\..*$/.test(propPath)
   ) {
     return 'TODO_EDITOR';
   }
@@ -32,15 +46,28 @@ const getOverrideRenderType: Types.GetOverrideRenderType = (
 export const useStateOverride: Types.StateOverrideHook = (
   widget,
   editedState,
-  { overrideNamingProps, renderOverrideItem },
+  { overrideMixedOptions, overrideNamingProps, renderOverrideItem },
   override
 ) => ({
+  overrideMixedOptions(options) {
+    const { category, path } = editedState || {};
+    const $override = overrideMixedOptions?.(options);
+
+    if ($override) {
+      return $override;
+    }
+
+    return _get(override, getOverrideMixedType(options) as string)?.(
+      options,
+      _get(widget, ['state', category, path] as string[])
+    );
+  },
   overrideNamingProps(options) {
     const { category, path } = editedState || {};
     const $override = overrideNamingProps?.(options);
 
     if (!$override) {
-      switch (getOverridePropsType(options)) {
+      switch (getOverrideNamingType(options)) {
         case 'TODO_NAMING': {
           const { TODO_NAMING: renderer } = override;
 

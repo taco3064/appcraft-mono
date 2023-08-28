@@ -28,12 +28,12 @@ export const useStateSelection: StateSelectionHook = (
       ? null
       : renderFn({
           checked,
-          onSelect: (newChecked) => {
+          onSelect: (newChecked, options) => {
             const { state: { [category]: state = {}, ...$state } = {} } =
               values;
 
             if (newChecked) {
-              state[path] = Util.getInitialState(generator, alias);
+              state[path] = Util.getInitialState(generator, alias, options);
             } else {
               delete state[path];
             }

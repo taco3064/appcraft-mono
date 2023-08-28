@@ -11,7 +11,7 @@ import * as Comp from '../../components';
 import * as Style from '../../styles';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { useLocalesContext } from '../../contexts';
-import { useTodoGenerator } from '../../hooks';
+import { useTodoGenerator, useTodoOverride } from '../../hooks';
 import { useStateContext } from '../../contexts';
 import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
 
@@ -41,10 +41,12 @@ export default function CraftedTodoEditor({
   fullHeight,
   typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts',
   values,
-  renderOverrideItem,
+  renderOverrideItem: defaultRenderOverrideItem,
   onChange,
   onEditToggle,
+  onFetchData,
   onFetchDefinition,
+  onFetchTodoWrapper,
 }: CraftedTodoEditorProps) {
   const theme = useTheme();
   const ct = useLocalesContext();
@@ -54,6 +56,33 @@ export default function CraftedTodoEditor({
     typeFile,
     values || {},
     { onChange, onEditToggle }
+  );
+
+  const renderOverrideItem = useTodoOverride(
+    values || {},
+    editing?.todo.id,
+    defaultRenderOverrideItem,
+    {
+      EVENT_PARAMS_PICKER: () => {
+        return <div>TEST</div>;
+      },
+      OUTPUT_PATH_PICKER: ({ disabled, label, value, onChange }) => (
+        <Comp.TodoOutputSelect
+          {...{
+            disabled,
+            edges,
+            label,
+            onChange,
+            onFetchData,
+            onFetchTodoWrapper,
+          }}
+          todos={values || {}}
+          todoid={editing?.todo.id as string}
+          value={(value || '') as string}
+          onFetchTodoWrapper={(todoid) => onFetchTodoWrapper('todo', todoid)}
+        />
+      ),
+    }
   );
 
   const handleNormalBack = () => {

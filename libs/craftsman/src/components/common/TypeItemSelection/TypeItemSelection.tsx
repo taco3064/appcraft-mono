@@ -5,6 +5,7 @@ import * as Types from './TypeItemSelection.types';
 
 export default function TypeItemSelection({
   checked,
+  options,
   onSelect,
 }: Types.TypeItemSelectionProps) {
   return (
@@ -12,7 +13,7 @@ export default function TypeItemSelection({
       <Checkbox
         color="primary"
         checked={checked}
-        onChange={(e) => onSelect(e.target.checked)}
+        onChange={(e) => onSelect(e.target.checked, options)}
       />
     </ListItemIcon>
   );

@@ -23,6 +23,7 @@ export type GetEventHandler = (
   todos: Record<string, Appcraft.WidgetTodo>,
   options: {
     defaultOutputs?: OutputData[];
+    disableIgnoreOutput?: boolean;
     eventName?: string;
 
     onPropsChange?: (e: Record<string, Record<string, unknown>>) => void;

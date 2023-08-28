@@ -26,7 +26,8 @@ export type GetStateCategory = (
 
 export type GetInitailState = (
   generator: StateGenerator,
-  alias: string
+  alias: string,
+  options?: Appcraft.PropTypesDef
 ) => Appcraft.WidgetState;
 
 export type GetStateConfig = (

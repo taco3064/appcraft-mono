@@ -60,7 +60,11 @@ export const getStateCategory: Types.GetStateCategory = (generator) => {
   }
 };
 
-export const getInitialState: Types.GetInitailState = (generator, alias) => {
+export const getInitialState: Types.GetInitailState = (
+  generator,
+  alias,
+  options
+) => {
   switch (generator) {
     case 'props':
       return {
@@ -69,6 +73,7 @@ export const getInitialState: Types.GetInitailState = (generator, alias) => {
         alias,
         description: '',
         defaultValue: undefined,
+        options: options as Appcraft.PropTypesDef,
       };
 
     case 'todos':

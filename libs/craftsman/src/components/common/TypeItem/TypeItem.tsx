@@ -35,7 +35,7 @@ export default function TypeItem({
     'props',
     ExhibitorUtil.getPropPath([elementName as string, propPath]),
     propPath,
-    (props) => <TypeItemSelection {...props} />
+    (props) => <TypeItemSelection {...props} options={options} />
   );
 
   const actions =

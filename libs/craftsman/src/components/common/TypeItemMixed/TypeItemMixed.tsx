@@ -9,7 +9,7 @@ import { useState } from 'react';
 
 import * as Style from '../../../styles';
 import MenuDialog from '../MenuDialog';
-import { useLocalesContext } from '../../../contexts';
+import { useEditorContext, useLocalesContext } from '../../../contexts';
 import { useMixedTypeMapping } from '../../../hooks';
 import type { TypeItemMixedProps } from './TypeItemMixed.types';
 
@@ -22,19 +22,19 @@ export default function TypeItemMixed({
   renderMatchedField,
   selection,
 }: TypeItemMixedProps) {
-  const [selected, setSelected] = useMixedTypeMapping(
-    propPath,
-    options.options || []
-  );
-
-  const [open, setOpen] = useState(false);
-  const ct = useLocalesContext();
-  const matched = options.options?.find(({ text }) => text === selected);
+  const { values, overrideMixedOptions } = useEditorContext();
+  const { typeFile, typeName } = values;
 
   const types =
-    options.options?.filter(
-      ({ type }) => !/^(func|element|node)$/.test(type)
-    ) || [];
+    (
+      overrideMixedOptions?.({ propPath, typeFile, typeName, options }) ||
+      options
+    )?.options?.filter(({ type }) => !/^(func|element|node)$/.test(type)) || [];
+
+  const [selected, setSelected] = useMixedTypeMapping(propPath, types);
+  const [open, setOpen] = useState(false);
+  const ct = useLocalesContext();
+  const matched = types.find(({ text }) => text === selected);
 
   return !types.length ? null : (
     <>
@@ -42,28 +42,31 @@ export default function TypeItemMixed({
         renderMatchedField(
           matched,
           selected as string,
-          <>
-            <Style.IconTipButton
-              disabled={disabled}
-              title={ct('btn-clear-type')}
-              onClick={() => setSelected()}
-            >
-              <UndoIcon />
-            </Style.IconTipButton>
+          types.length <= 1 ? null : (
+            <>
+              <Style.IconTipButton
+                disabled={disabled}
+                title={ct('btn-clear-type')}
+                onClick={() => setSelected()}
+              >
+                <UndoIcon />
+              </Style.IconTipButton>
 
-            <Style.IconTipButton
-              disabled={disabled}
-              title={ct('btn-reset-type')}
-              onClick={() => setOpen(true)}
-            >
-              <PlaylistAddCheckIcon />
-            </Style.IconTipButton>
-          </>
+              <Style.IconTipButton
+                disabled={disabled}
+                title={ct('btn-reset-type')}
+                onClick={() => setOpen(true)}
+              >
+                <PlaylistAddCheckIcon />
+              </Style.IconTipButton>
+            </>
+          )
         )
       ) : (
         <ListItemButton
           disableRipple={disabled}
           disableTouchRipple={disabled}
+          data-category="mixed"
           onClick={() => !disabled && setOpen(true)}
         >
           {selection && <ListItemIcon />}

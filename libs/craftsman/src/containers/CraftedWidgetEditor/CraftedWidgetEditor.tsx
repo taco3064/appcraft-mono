@@ -40,6 +40,7 @@ export default function CraftedWidgetEditor({
   todoTypeFile,
   version,
   widget,
+  overrideMixedOptions,
   overrideNamingProps,
   renderOverrideItem,
   onFetchData,
@@ -119,8 +120,15 @@ export default function CraftedWidgetEditor({
   const stateEditorProps = Hook.useStateOverride(
     widget,
     editedState,
-    { overrideNamingProps, renderOverrideItem },
+    { overrideMixedOptions, overrideNamingProps, renderOverrideItem },
     {
+      DEFAULT_STATE_VALUE: ({ options }, state) => ({
+        ...options,
+        options:
+          state.category === 'props'
+            ? [{ ...state.options, text: 'override' }]
+            : options.options,
+      }),
       TODO_NAMING: () =>
         todoNames.map((todoName) => (
           <MenuItem key={todoName} value={todoName}>

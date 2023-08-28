@@ -29,6 +29,7 @@ export interface CraftedWidgetEditorProps {
   todoTypeFile?: string;
   version?: string;
   widget: Appcraft.MainWidget;
+  overrideMixedOptions?: Ctx.OverrideMixedOptions;
   overrideNamingProps?: Ctx.OverrideNamingProps;
   renderOverrideItem?: Ctx.RenderOverrideItem;
   onFetchNodesAndEvents: Hook.FetchNodesAndEvents;

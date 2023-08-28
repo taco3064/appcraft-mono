@@ -12,6 +12,7 @@ const EditorContext = (<V extends Types.OptionValues>() =>
 export const useEditorContext = <V extends Types.OptionValues>() => {
   const {
     handleChangeRef,
+    overrideMixedOptionsRef,
     overrideNamingPropsRef,
     renderOverrideItemRef,
     ...value
@@ -20,6 +21,7 @@ export const useEditorContext = <V extends Types.OptionValues>() => {
   return {
     ...value,
     onChange: handleChangeRef?.current || (() => null),
+    overrideMixedOptions: overrideMixedOptionsRef?.current,
     overrideNamingProps: overrideNamingPropsRef?.current,
     renderOverrideItem: renderOverrideItemRef?.current,
   };
@@ -29,11 +31,13 @@ export default function EditorProvider<V extends Types.OptionValues>({
   children,
   collectionPath,
   values,
+  overrideMixedOptions,
   overrideNamingProps,
   renderOverrideItem,
   onChange,
 }: Types.EditorProviderProps<V>) {
   const handleChangeRef = React.useRef(onChange);
+  const overrideMixedOptionsRef = React.useRef(overrideMixedOptions);
   const overrideNamingPropsRef = React.useRef(overrideNamingProps);
   const renderOverrideItemRef = React.useRef(renderOverrideItem);
 
@@ -42,6 +46,7 @@ export default function EditorProvider<V extends Types.OptionValues>({
       collectionPath,
       values,
       handleChangeRef,
+      overrideMixedOptionsRef,
       overrideNamingPropsRef,
       renderOverrideItemRef,
     }),
@@ -49,6 +54,12 @@ export default function EditorProvider<V extends Types.OptionValues>({
   );
 
   React.useImperativeHandle(handleChangeRef, () => onChange, [onChange]);
+
+  React.useImperativeHandle(
+    overrideMixedOptionsRef,
+    () => overrideMixedOptions,
+    [overrideMixedOptions]
+  );
 
   React.useImperativeHandle(overrideNamingPropsRef, () => overrideNamingProps, [
     overrideNamingProps,

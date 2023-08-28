@@ -97,7 +97,6 @@ export default function PageEditor({
         disablePersistent
         open={isSettingOpen}
         onClose={() => handlePage.active(undefined)}
-        drawer={!isSettingOpen ? null : 'Editor Settings'}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         ContentProps={{
           style: {
@@ -107,6 +106,7 @@ export default function PageEditor({
             overflow: 'hidden',
           },
         }}
+        drawer={!isSettingOpen ? null : 'Editor Settings'}
         content={
           <>
             <Container

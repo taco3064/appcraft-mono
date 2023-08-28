@@ -11,7 +11,7 @@ export const useMixedTypeMapping: Types.MixedTypeMappingHook = (
   } = useEditorContext();
 
   return [
-    mixedTypes?.[propPath] || null,
+    (options.length === 1 ? options[0].text : mixedTypes?.[propPath]) || null,
 
     (mixedText) => {
       const { props } = values;

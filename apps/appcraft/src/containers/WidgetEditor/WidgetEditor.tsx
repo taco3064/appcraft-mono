@@ -1,11 +1,14 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ConstructionIcon from '@mui/icons-material/Construction';
+import MenuItem from '@mui/material/MenuItem';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import _get from 'lodash/get';
+import _omit from 'lodash/omit';
 import { CraftedRenderer } from '@appcraft/exhibitor';
-import { CraftedWidgetEditor } from '@appcraft/craftsman';
+import { CraftedTodoEditor, CraftedWidgetEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
-import type { WidgetState } from '@appcraft/types';
+import type { TodosState, WidgetState } from '@appcraft/types';
 
 import * as Common from '../common';
 import * as Comp from '~appcraft/components';
@@ -13,31 +16,6 @@ import * as Hook from '~appcraft/hooks';
 import * as Service from '~appcraft/services';
 import { ResponsiveDrawer } from '~appcraft/styles';
 import type * as Types from './WidgetEditor.types';
-
-const getOverrideRenderType: Types.GetOverrideRenderType = (
-  kind,
-  { typeName, propPath }
-) => {
-  if (
-    kind === 'pure' &&
-    /^(ElementState|NodeState)$/.test(typeName) &&
-    propPath === 'template.id'
-  ) {
-    return 'WIDGET_PICKER';
-  } else if (
-    kind === 'pure' &&
-    typeName === 'WrapTodo' &&
-    propPath === 'todosId'
-  ) {
-    return 'TODO_PICKER';
-  } else if (
-    kind === 'pure' &&
-    typeName === 'SetStateTodo' &&
-    /^states\[\d+\]\.state$/.test(propPath)
-  ) {
-    return 'STATE_PICKER';
-  }
-};
 
 export default function WidgetEditor({
   ResponsiveDrawerProps,
@@ -49,7 +27,7 @@ export default function WidgetEditor({
   onTodoWrapperView,
   onWidgetWrapperView,
 }: Types.WidgetEditorProps) {
-  const [at, wt] = Hook.useFixedT('app', 'widgets');
+  const [at, ct, wt] = Hook.useFixedT('app', 'appcraft', 'widgets');
   const [open, setOpen] = useState(false);
   const [widget, handleWidget] = Hook.useWidgetValues({ data, onSave });
 
@@ -90,6 +68,95 @@ export default function WidgetEditor({
     [open, widget, isCollapsable, isSettingOpen]
   );
 
+  const override = Hook.useCraftedOverride({
+    //* Mixed
+    STATE_DEFAULT_PROP_VALUE: ({ values, options }) => ({
+      ...options,
+      options: [{ ...values.options, text: 'override' }],
+    }),
+
+    //* Naming
+    TEMPLATE_TODO_NAMING: async ({ values, propPath }) => {
+      const templateid: string = _get(values, 'template.id');
+
+      const { state } = await rendererFetchHandles.wrapper(
+        'widget',
+        templateid
+      );
+
+      const options: [string, TodosState][] = Object.entries(
+        _get(state, ['todos']) || {}
+      );
+
+      return {
+        select: true,
+        disabled: !options.length,
+        children: options.map(([path, { alias }]) => (
+          <MenuItem key={alias || path} value={alias || path}>
+            {alias || path}{' '}
+          </MenuItem>
+        )),
+      };
+    },
+
+    //* Render
+    TEMPLATE_TODO_EDITOR: (category, props) => (
+      <Comp.TodoItem
+        {...(props as Comp.TodoItemProps)}
+        renderTodoEditor={({ values, onChange, onEditToggle }) => (
+          <CraftedTodoEditor
+            {...override}
+            {...{ values, onChange, onEditToggle }}
+            disableCategories={['props']}
+            fullHeight
+            variant="normal"
+            typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
+            onFetchData={rendererFetchHandles.data}
+            onFetchDefinition={Service.getTypeDefinition}
+            onFetchTodoWrapper={rendererFetchHandles.wrapper}
+          />
+        )}
+      />
+    ),
+    TEMPLATE_WIDGET_PICKER: (category, props) => (
+      <Common.WidgetSelect
+        {...(props as Common.WidgetSelectProps)}
+        fullWidth
+        size="small"
+        variant="outlined"
+        exclude={[data._id]}
+        onView={onWidgetWrapperView}
+      />
+    ),
+    TODO_STATE_PATH_PICKER: (category, props) => {
+      const options: [string, WidgetState][] = Object.entries(
+        Object.assign(
+          {},
+          ...Object.values(_omit(widget?.state || {}, ['todos']))
+        )
+      );
+
+      return (
+        <Common.StateSelect
+          {...(props as Omit<Common.StateSelectProps, 'options'>)}
+          options={options.map(([path, { category, alias, description }]) => ({
+            value: path,
+            primary: alias,
+            secondary: `${description || at('msg-no-description')} (${ct(
+              `ttl-state-${category}`
+            )})`,
+          }))}
+        />
+      );
+    },
+    TODO_WRAPPER_PICKER: (category, props) => (
+      <Common.TodoWrapperSelect
+        {...(props as Common.TodoWrapperSelectProps)}
+        onView={onTodoWrapperView}
+      />
+    ),
+  });
+
   return (
     <>
       {superiors && (
@@ -120,6 +187,7 @@ export default function WidgetEditor({
         }
         drawer={
           <CraftedWidgetEditor
+            {...override}
             stateTypeFile={__WEBPACK_DEFINE__.STATE_TYPE_FILE}
             todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             version={__WEBPACK_DEFINE__.VERSION}
@@ -130,50 +198,6 @@ export default function WidgetEditor({
             onFetchDefinition={Service.getTypeDefinition}
             onFetchNodesAndEvents={Service.getNodesAndEvents}
             onFetchWrapper={rendererFetchHandles.wrapper}
-            renderOverrideItem={(...args) => {
-              const [, props] = args;
-
-              switch (getOverrideRenderType(...args)) {
-                case 'STATE_PICKER': {
-                  const options: [string, WidgetState][] = Object.entries(
-                    Object.assign({}, ...Object.values(widget?.state || {}))
-                  );
-
-                  return (
-                    <Common.StateSelect
-                      {...(props as Omit<Common.StateSelectProps, 'options'>)}
-                      options={options.map(
-                        ([path, { alias, description }]) => ({
-                          value: path,
-                          primary: alias,
-                          secondary: description,
-                        })
-                      )}
-                    />
-                  );
-                }
-                case 'TODO_PICKER':
-                  return (
-                    <Common.TodoWrapperSelect
-                      {...(props as Common.TodoWrapperSelectProps)}
-                      onView={onTodoWrapperView}
-                    />
-                  );
-
-                case 'WIDGET_PICKER':
-                  return (
-                    <Common.WidgetSelect
-                      {...(props as Common.WidgetSelectProps)}
-                      fullWidth
-                      size="small"
-                      variant="outlined"
-                      exclude={[data._id]}
-                      onView={onWidgetWrapperView}
-                    />
-                  );
-                default:
-              }
-            }}
             BackButtonProps={
               isCollapsable && {
                 icon: <ChevronRightIcon />,

@@ -1,10 +1,10 @@
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import Button from '@mui/material/Button';
+import { CraftsmanStyle } from '@appcraft/craftsman';
 import { useEffect, useImperativeHandle, useState } from 'react';
 import type { MouseEventHandler } from 'react';
 
-import { FlexDialog, GapTypography } from '../../styles';
-import { useLocalesContext } from '../../contexts';
+import { useFixedT } from '~appcraft/hooks';
 import type { TodoItemProps } from './TodoItem.types';
 
 export default function TodoItem({
@@ -15,8 +15,8 @@ export default function TodoItem({
   renderTodoEditor,
   onChange,
 }: TodoItemProps) {
-  const ct = useLocalesContext();
   const disabled = defaultDisabled || Boolean(!label?.trim());
+  const [ct] = useFixedT('appcraft');
   const [editing, setEditing] = useState(false);
   const [open, setOpen] = useState(false);
   const [todos, setTodos] = useState<typeof value>();
@@ -39,16 +39,16 @@ export default function TodoItem({
 
   return (
     <>
-      <GapTypography
+      <CraftsmanStyle.GapTypography
         variant="subtitle1"
         color={disabled ? 'text.secondary' : 'text.primary'}
       >
         <AssignmentOutlinedIcon color={disabled ? 'disabled' : 'secondary'} />
 
         {label}
-      </GapTypography>
+      </CraftsmanStyle.GapTypography>
 
-      <FlexDialog
+      <CraftsmanStyle.FlexDialog
         disableContentJustifyCenter
         disableContentGutter
         disableContentPadding
@@ -81,7 +81,7 @@ export default function TodoItem({
           onChange: setTodos,
           onEditToggle: setEditing,
         })}
-      </FlexDialog>
+      </CraftsmanStyle.FlexDialog>
     </>
   );
 }

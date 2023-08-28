@@ -52,16 +52,18 @@ export type OverrideMixedOptions = (options: {
   typeFile: string;
   typeName: string;
   options: MixedProp;
+  values: unknown;
 }) => MixedProp | void;
 
 export type OverrideNamingProps = (options: {
   propPath: string;
   typeFile: string;
   typeName: string;
-}) => Pick<
+  values: unknown;
+}) => Promise<Pick<
   ComponentProps<typeof TextField>,
   'select' | 'children' | 'disabled'
-> | void;
+> | void>;
 
 //* Context Value
 export interface EditorContextValue<V extends OptionValues> {

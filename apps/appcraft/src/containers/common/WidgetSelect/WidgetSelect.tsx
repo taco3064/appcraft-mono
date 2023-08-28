@@ -29,7 +29,10 @@ export default function WidgetSelect({
   return (
     <TextField
       {...props}
-      SelectProps={{ displayEmpty: true }}
+      SelectProps={{
+        displayEmpty: true,
+        MenuProps: { PaperProps: { style: { maxWidth: 'min-content' } } },
+      }}
       select
       defaultValue={value || ''}
       onChange={(e) => onChange?.(e.target.value)}
@@ -68,6 +71,13 @@ export default function WidgetSelect({
             secondaryTypographyProps={{
               variant: 'caption',
               color: 'text.secondary',
+              whiteSpace: 'pre-line',
+              display: '-webkit-box',
+              overflow: 'hidden',
+              style: {
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 2,
+              },
             }}
           />
         </MenuItem>

@@ -12,6 +12,7 @@ import { useFixedT } from '~appcraft/hooks';
 import type { LayoutActionProps } from './LayoutAction.types';
 
 export default function LayoutAction({
+  layout,
   widgetPicker,
   onCancel,
   onEdit,
@@ -39,16 +40,17 @@ export default function LayoutAction({
 
       <CommonButton
         btnVariant="icon"
+        disabled={!layout.template.id}
         text={pt('btn-edit')}
         icon={<SettingsOutlinedIcon />}
-        onClick={onEdit}
+        onClick={() => onEdit(layout)}
       />
 
       <Divider flexItem orientation="vertical" />
 
       <RemoveButton
         btnVariant="icon"
-        onConfirm={onRemove}
+        onConfirm={() => onRemove(layout)}
         onCancel={onCancel}
       />
 

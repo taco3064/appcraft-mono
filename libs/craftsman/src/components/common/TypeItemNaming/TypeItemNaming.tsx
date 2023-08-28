@@ -1,10 +1,13 @@
 import CheckIcon from '@mui/icons-material/Check';
+import LinearProgress from '@mui/material/LinearProgress';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import TextField from '@mui/material/TextField';
 import UndoIcon from '@mui/icons-material/Undo';
-import type { FormEventHandler } from 'react';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
+import { Suspense, lazy, useMemo, useRef } from 'react';
+import type { ComponentProps, FormEventHandler } from 'react';
 
 import { IconTipButton, TypeItemAction } from '../../../styles';
 import { useEditorContext, useLocalesContext } from '../../../contexts';
@@ -19,7 +22,29 @@ export default function TypeItemNaming({
 }: TypeItemNamingProps) {
   const ct = useLocalesContext();
   const { collectionPath, values, overrideNamingProps } = useEditorContext();
-  const { typeFile, typeName } = values;
+  const { typeFile, typeName, props } = values;
+  const ref = useRef({ typeFile, typeName, overrideNamingProps });
+
+  const LazyTextField = useMemo(
+    () =>
+      lazy(async () => {
+        const { typeFile, typeName, overrideNamingProps } = ref.current;
+
+        const override = await overrideNamingProps?.({
+          propPath: collectionPath,
+          typeFile,
+          typeName,
+          values: ExhibitorUtil.getProps(props),
+        });
+
+        return {
+          default: (props: ComponentProps<typeof TextField>) => (
+            <TextField {...props} {...override} />
+          ),
+        };
+      }),
+    [collectionPath, props]
+  );
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     const formdata = new FormData(e.currentTarget);
@@ -39,23 +64,20 @@ export default function TypeItemNaming({
         disableTypography
         primary={
           open && (
-            <TextField
-              {...overrideNamingProps?.({
-                propPath: collectionPath,
-                typeFile,
-                typeName,
-              })}
-              autoFocus
-              fullWidth
-              required
-              size="small"
-              variant="outlined"
-              name="propName"
-              defaultValue={propName}
-              label={ct('lbl-prop-naming', {
-                name: propName || 'empty',
-              })}
-            />
+            <Suspense fallback={<LinearProgress />}>
+              <LazyTextField
+                autoFocus
+                fullWidth
+                required
+                size="small"
+                variant="outlined"
+                name="propName"
+                defaultValue={propName}
+                label={ct('lbl-prop-naming', {
+                  name: propName || 'empty',
+                })}
+              />
+            </Suspense>
           )
         }
       />

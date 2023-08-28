@@ -4,11 +4,10 @@ import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
-import MenuItem from '@mui/material/MenuItem';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import _get from 'lodash/get';
 import { Suspense, useState } from 'react';
-import type { PlainTextWidget, WidgetTodo } from '@appcraft/types';
+import type { PlainTextWidget } from '@appcraft/types';
 
 import * as Comp from '../../components';
 import * as Hook from '../../hooks';
@@ -52,8 +51,6 @@ export default function CraftedWidgetEditor({
   const ct = useLocalesContext();
   const [newWidgetOpen, setNewWidgetOpen] = useState(false);
   const [stateOpen, setStateOpen] = useState(false);
-  const [editedState, setEditedState] = useState<Hook.EditedState>();
-  const todoNames = Hook.useTemplateTodos(widget, editedState, onFetchWrapper);
 
   const sensors = Dnd.useSensors(
     Dnd.useSensor(Dnd.MouseSensor, {
@@ -117,51 +114,6 @@ export default function CraftedWidgetEditor({
     todoPath,
   });
 
-  const stateEditorProps = Hook.useStateOverride(
-    widget,
-    editedState,
-    { overrideMixedOptions, overrideNamingProps, renderOverrideItem },
-    {
-      DEFAULT_STATE_VALUE: ({ options }, state) => ({
-        ...options,
-        options:
-          state.category === 'props'
-            ? [{ ...state.options, text: 'override' }]
-            : options.options,
-      }),
-      TODO_NAMING: () =>
-        todoNames.map((todoName) => (
-          <MenuItem key={todoName} value={todoName}>
-            {todoName}
-          </MenuItem>
-        )),
-      TODO_EDITOR: ({ value, ...options }) => (
-        <Comp.TodoItem
-          {...options}
-          {...{ ct, editedState }}
-          value={value as Record<string, WidgetTodo>}
-          renderTodoEditor={({ values, onChange, onEditToggle }) => (
-            <CraftedTodoEditor
-              {...{
-                values,
-                renderOverrideItem,
-                onChange,
-                onEditToggle,
-                onFetchData,
-                onFetchDefinition,
-              }}
-              disableCategories={['props']}
-              fullHeight
-              variant="normal"
-              typeFile={todoTypeFile}
-              onFetchTodoWrapper={onFetchWrapper}
-            />
-          )}
-        />
-      ),
-    }
-  );
-
   const stateToggle = (
     <Style.IconTipButton
       title={ct('btn-state')}
@@ -195,9 +147,16 @@ export default function CraftedWidgetEditor({
           onBack={() => setStateOpen(false)}
           onChange={onWidgetChange}
           onFetchDefinition={onFetchDefinition}
-          onStateEdit={setEditedState}
           renderEditor={(props) => (
-            <CraftedTypeEditor {...props} {...stateEditorProps} fullHeight />
+            <CraftedTypeEditor
+              {...props}
+              {...{
+                overrideMixedOptions,
+                overrideNamingProps,
+                renderOverrideItem,
+              }}
+              fullHeight
+            />
           )}
         />
       )}

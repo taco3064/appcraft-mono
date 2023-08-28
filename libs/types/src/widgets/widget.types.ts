@@ -1,6 +1,5 @@
 import type * as State from './state.types';
 import type { TypesParseOptions } from './prop-types-def.types';
-import type { WidgetTodo } from './todo.types';
 
 //* Variables
 enum ConfigCategory {
@@ -62,7 +61,8 @@ export type LayoutWidget = {
   layout: {
     [breakpoint: string]: Record<'x' | 'y' | 'w' | 'h' | 'minW', number>;
   };
-  nodes?: { [stateKey: string]: State.Template };
-  props?: { [stateKey: string]: unknown };
-  template: State.Template;
+  template: State.Template & {
+    nodes?: { [stateKey: string]: State.Template };
+    props?: { [stateKey: string]: unknown };
+  };
 };

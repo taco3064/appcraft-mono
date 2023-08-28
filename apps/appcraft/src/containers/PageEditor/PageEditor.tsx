@@ -106,7 +106,18 @@ export default function PageEditor({
             overflow: 'hidden',
           },
         }}
-        drawer={!isSettingOpen ? null : 'Editor Settings'}
+        drawer={
+          !isSettingOpen ? null : (
+            <Common.LayoutPropsEditor
+              value={layouts[active]}
+              onClose={() => handlePage.active(undefined)}
+              onChange={(value) => {
+                layouts.splice(active, 1, value);
+                handlePage.change('layouts', [...layouts]);
+              }}
+            />
+          )
+        }
         content={
           <>
             <Container
@@ -124,9 +135,10 @@ export default function PageEditor({
                 onReady={readyTodos}
                 action={(layout, withActionClose) => (
                   <Comp.LayoutAction
+                    layout={layout}
                     onCancel={withActionClose()}
-                    onEdit={withActionClose(() => handlePage.active(layout))}
-                    onRemove={withActionClose(() => handlePage.remove(layout))}
+                    onEdit={withActionClose(handlePage.active)}
+                    onRemove={withActionClose(handlePage.remove)}
                     onWidgetChange={(id) =>
                       withActionClose(() => {
                         layouts.splice(layouts.indexOf(layout), 1, {

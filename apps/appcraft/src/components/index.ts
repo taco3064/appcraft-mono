@@ -8,4 +8,5 @@ export * from './MenuDrawer';
 export * from './RemoveButton';
 export * from './SigninButton';
 export * from './ThemeProvider';
+export * from './TodoItem';
 export * from './TodoOutputStepper';

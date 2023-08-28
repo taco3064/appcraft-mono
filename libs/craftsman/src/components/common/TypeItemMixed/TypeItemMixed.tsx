@@ -5,6 +5,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
 import UndoIcon from '@mui/icons-material/Undo';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useState } from 'react';
 
 import * as Style from '../../../styles';
@@ -23,12 +24,17 @@ export default function TypeItemMixed({
   selection,
 }: TypeItemMixedProps) {
   const { values, overrideMixedOptions } = useEditorContext();
-  const { typeFile, typeName } = values;
+  const { typeFile, typeName, props } = values;
 
   const types =
     (
-      overrideMixedOptions?.({ propPath, typeFile, typeName, options }) ||
-      options
+      overrideMixedOptions?.({
+        propPath,
+        typeFile,
+        typeName,
+        options,
+        values: ExhibitorUtil.getProps(props),
+      }) || options
     )?.options?.filter(({ type }) => !/^(func|element|node)$/.test(type)) || [];
 
   const [selected, setSelected] = useMixedTypeMapping(propPath, types);

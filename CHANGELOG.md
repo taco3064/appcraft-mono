@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.108](https://github.com/taco3064/appcraft-mono/compare/v0.0.107...v0.0.108) (2023-08-28)
+
+
+### Bug Fixes
+
+* **widget-editor:** the todos state path shouldn't be selected in state picker ([be27edf](https://github.com/taco3064/appcraft-mono/commit/be27edfe4681bd8353f2e9e0c046bf2db8c1b18d))
+* **widget-state:** enhance the presentation of dropdown option explanations ([c4cb126](https://github.com/taco3064/appcraft-mono/commit/c4cb126195ae6cd69e68d7c0e1fb584cda09b5de))
+
 ### [0.0.107](https://github.com/taco3064/appcraft-mono/compare/v0.0.106...v0.0.107) (2023-08-28)
 
 

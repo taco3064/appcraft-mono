@@ -14,31 +14,6 @@ import * as Service from '~appcraft/services';
 import { ResponsiveDrawer } from '~appcraft/styles';
 import type * as Types from './WidgetEditor.types';
 
-const getOverrideRenderType: Types.GetOverrideRenderType = (
-  kind,
-  { typeName, propPath }
-) => {
-  if (
-    kind === 'pure' &&
-    /^(ElementState|NodeState)$/.test(typeName) &&
-    propPath === 'template.id'
-  ) {
-    return 'WIDGET_PICKER';
-  } else if (
-    kind === 'pure' &&
-    typeName === 'WrapTodo' &&
-    propPath === 'todosId'
-  ) {
-    return 'TODO_PICKER';
-  } else if (
-    kind === 'pure' &&
-    typeName === 'SetStateTodo' &&
-    /^states\[\d+\]\.state$/.test(propPath)
-  ) {
-    return 'STATE_PICKER';
-  }
-};
-
 export default function WidgetEditor({
   ResponsiveDrawerProps,
   data,
@@ -57,6 +32,41 @@ export default function WidgetEditor({
   const rendererFetchHandles = Hook.useRendererFetchHandles();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
+
+  const renderOverrideItem = Hook.useCraftedWidgetOverride({
+    STATE_PICKER: (category, props) => {
+      const options: [string, WidgetState][] = Object.entries(
+        Object.assign({}, ...Object.values(widget?.state || {}))
+      );
+
+      return (
+        <Common.StateSelect
+          {...(props as Omit<Common.StateSelectProps, 'options'>)}
+          options={options.map(([path, { alias, description }]) => ({
+            value: path,
+            primary: alias,
+            secondary: description,
+          }))}
+        />
+      );
+    },
+    TODO_PICKER: (category, props) => (
+      <Common.TodoWrapperSelect
+        {...(props as Common.TodoWrapperSelectProps)}
+        onView={onTodoWrapperView}
+      />
+    ),
+    WIDGET_PICKER: (category, props) => (
+      <Common.WidgetSelect
+        {...(props as Common.WidgetSelectProps)}
+        fullWidth
+        size="small"
+        variant="outlined"
+        exclude={[data._id]}
+        onView={onWidgetWrapperView}
+      />
+    ),
+  });
 
   const actionNode = Hook.useNodePicker(
     () =>
@@ -130,50 +140,7 @@ export default function WidgetEditor({
             onFetchDefinition={Service.getTypeDefinition}
             onFetchNodesAndEvents={Service.getNodesAndEvents}
             onFetchWrapper={rendererFetchHandles.wrapper}
-            renderOverrideItem={(...args) => {
-              const [, props] = args;
-
-              switch (getOverrideRenderType(...args)) {
-                case 'STATE_PICKER': {
-                  const options: [string, WidgetState][] = Object.entries(
-                    Object.assign({}, ...Object.values(widget?.state || {}))
-                  );
-
-                  return (
-                    <Common.StateSelect
-                      {...(props as Omit<Common.StateSelectProps, 'options'>)}
-                      options={options.map(
-                        ([path, { alias, description }]) => ({
-                          value: path,
-                          primary: alias,
-                          secondary: description,
-                        })
-                      )}
-                    />
-                  );
-                }
-                case 'TODO_PICKER':
-                  return (
-                    <Common.TodoWrapperSelect
-                      {...(props as Common.TodoWrapperSelectProps)}
-                      onView={onTodoWrapperView}
-                    />
-                  );
-
-                case 'WIDGET_PICKER':
-                  return (
-                    <Common.WidgetSelect
-                      {...(props as Common.WidgetSelectProps)}
-                      fullWidth
-                      size="small"
-                      variant="outlined"
-                      exclude={[data._id]}
-                      onView={onWidgetWrapperView}
-                    />
-                  );
-                default:
-              }
-            }}
+            renderOverrideItem={renderOverrideItem}
             BackButtonProps={
               isCollapsable && {
                 icon: <ChevronRightIcon />,

@@ -135,7 +135,6 @@ export default function TodoOutputSelect({
 
   return (
     <Suspense fallback={<LinearProgress />}>
-      {value}
       <LazyTextField
         {...{ disabled, label, value }}
         SelectProps={{ displayEmpty: true }}

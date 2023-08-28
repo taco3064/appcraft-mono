@@ -24,7 +24,7 @@ export default function WidgetEditor({
   onTodoWrapperView,
   onWidgetWrapperView,
 }: Types.WidgetEditorProps) {
-  const [at, wt] = Hook.useFixedT('app', 'widgets');
+  const [at, ct, wt] = Hook.useFixedT('app', 'appcraft', 'widgets');
   const [open, setOpen] = useState(false);
   const [widget, handleWidget] = Hook.useWidgetValues({ data, onSave });
 
@@ -42,10 +42,12 @@ export default function WidgetEditor({
       return (
         <Common.StateSelect
           {...(props as Omit<Common.StateSelectProps, 'options'>)}
-          options={options.map(([path, { alias, description }]) => ({
+          options={options.map(([path, { category, alias, description }]) => ({
             value: path,
             primary: alias,
-            secondary: description,
+            secondary: `${description || at('msg-no-description')} (${ct(
+              `ttl-state-${category}`
+            )})`,
           }))}
         />
       );

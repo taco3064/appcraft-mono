@@ -1,6 +1,6 @@
 import _get from 'lodash/get';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
-import { useMemo } from 'react';
+import { startTransition, useMemo } from 'react';
 
 import { useEditorContext } from '../../contexts';
 import type { PropValueHookResult } from './usePropValue.types';

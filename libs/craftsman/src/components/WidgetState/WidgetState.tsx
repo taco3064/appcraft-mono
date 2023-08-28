@@ -16,7 +16,7 @@ import { useLocalesContext } from '../../contexts';
 import { useStateGenerator } from '../../hooks';
 import type * as Types from './WidgetState.types';
 
-const STATE_EXCLUDE: RegExp[] = [/^mixedTypes$/];
+const STATE_EXCLUDE: RegExp[] = [/^(mixedTypes|category|nodeType|type)$/];
 const TABS: Appcraft.StateCategory[] = ['props', 'nodes', 'todos'];
 
 export default function WidgetState({

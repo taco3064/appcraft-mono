@@ -40,23 +40,20 @@ export default function CraftedWidgetEditor({
   todoTypeFile,
   version,
   widget,
+  overrideMixedOptions,
   overrideNamingProps,
   renderOverrideItem,
+  onFetchData,
   onFetchDefinition,
   onFetchNodesAndEvents,
-  onFetchWidgetWrapper,
+  onFetchWrapper,
   onWidgetChange,
 }: Types.CraftedWidgetEditorProps) {
   const ct = useLocalesContext();
   const [newWidgetOpen, setNewWidgetOpen] = useState(false);
   const [stateOpen, setStateOpen] = useState(false);
   const [editedState, setEditedState] = useState<Hook.EditedState>();
-
-  const todoNames = Hook.useTemplateTodos(
-    widget,
-    editedState,
-    onFetchWidgetWrapper
-  );
+  const todoNames = Hook.useTemplateTodos(widget, editedState, onFetchWrapper);
 
   const sensors = Dnd.useSensors(
     Dnd.useSensor(Dnd.MouseSensor, {
@@ -123,8 +120,15 @@ export default function CraftedWidgetEditor({
   const stateEditorProps = Hook.useStateOverride(
     widget,
     editedState,
-    { overrideNamingProps, renderOverrideItem },
+    { overrideMixedOptions, overrideNamingProps, renderOverrideItem },
     {
+      DEFAULT_STATE_VALUE: ({ options }, state) => ({
+        ...options,
+        options:
+          state.category === 'props'
+            ? [{ ...state.options, text: 'override' }]
+            : options.options,
+      }),
       TODO_NAMING: () =>
         todoNames.map((todoName) => (
           <MenuItem key={todoName} value={todoName}>
@@ -143,12 +147,14 @@ export default function CraftedWidgetEditor({
                 renderOverrideItem,
                 onChange,
                 onEditToggle,
+                onFetchData,
                 onFetchDefinition,
               }}
               disableCategories={['props']}
               fullHeight
               variant="normal"
               typeFile={todoTypeFile}
+              onFetchTodoWrapper={onFetchWrapper}
             />
           )}
         />
@@ -203,11 +209,13 @@ export default function CraftedWidgetEditor({
             disableCategories,
             overrideNamingProps,
             renderOverrideItem,
+            onFetchData,
             onFetchDefinition,
           }}
           fullHeight
           typeFile={todoTypeFile}
           values={editedWidget.todos?.[todoPath as string]}
+          onFetchTodoWrapper={onFetchWrapper}
           onChange={(todo) =>
             handleMutation.modify({
               ...editedWidget,

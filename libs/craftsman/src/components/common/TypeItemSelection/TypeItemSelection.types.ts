@@ -1,4 +1,8 @@
+import type { PropTypesDef } from '@appcraft/types';
+import type { SelectHandler } from '../../../hooks';
+
 export interface TypeItemSelectionProps {
   checked: boolean;
-  onSelect: (e: boolean) => void;
+  options?: PropTypesDef;
+  onSelect: SelectHandler;
 }

@@ -13,6 +13,7 @@ export default function CraftedTypeEditor<V extends Ctx.OptionValues>({
   exclude,
   fullHeight,
   values,
+  overrideMixedOptions,
   overrideNamingProps,
   renderOverrideItem,
   onChange,
@@ -45,6 +46,7 @@ export default function CraftedTypeEditor<V extends Ctx.OptionValues>({
       {...{
         collectionPath,
         values,
+        overrideMixedOptions,
         overrideNamingProps,
         renderOverrideItem,
         onChange,

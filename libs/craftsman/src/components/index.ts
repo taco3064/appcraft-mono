@@ -4,6 +4,7 @@ export * from './MutationTodoNodeDialog';
 export * from './TodoFlowControls';
 export * from './TodoFlowNode';
 export * from './TodoItem';
+export * from './TodoOutputSelect';
 export * from './TypeList';
 export * from './WidgetBreadcrumbs';
 export * from './WidgetElement';

@@ -13,14 +13,6 @@ import type { GridActionProps } from './GridAction.types';
 export default function GridAction({ action, layout }: GridActionProps) {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>();
 
-  const handleActionClose: MouseEventHandler = ({ target, currentTarget }) => {
-    const el = target as HTMLElement;
-
-    if (el.closest('button')?.closest('header') === currentTarget) {
-      setAnchorEl(undefined);
-    }
-  };
-
   return !action ? null : (
     <>
       <Style.GridLayoutItemAction
@@ -44,12 +36,12 @@ export default function GridAction({ action, layout }: GridActionProps) {
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(undefined)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         PaperProps={{
           sx: (theme) => ({
             borderRadius: `${theme.spacing(2.5)} / 50%`,
-            marginTop: theme.spacing(1),
+            marginBottom: theme.spacing(1),
           }),
         }}
       >

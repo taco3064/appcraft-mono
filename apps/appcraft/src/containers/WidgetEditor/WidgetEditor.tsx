@@ -126,9 +126,10 @@ export default function WidgetEditor({
             disableCategories={['props']}
             widget={widget}
             onWidgetChange={handleWidget.change}
+            onFetchData={rendererFetchHandles.data}
             onFetchDefinition={Service.getTypeDefinition}
             onFetchNodesAndEvents={Service.getNodesAndEvents}
-            onFetchWidgetWrapper={rendererFetchHandles.wrapper}
+            onFetchWrapper={rendererFetchHandles.wrapper}
             renderOverrideItem={(...args) => {
               const [, props] = args;
 

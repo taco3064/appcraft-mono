@@ -15,6 +15,8 @@ export type DisplayProp =
   | Appcraft.ObjectProp
   | Appcraft.ObjectOfProp;
 
+export type MixedProp = Appcraft.OneOfTypeProp;
+
 export type PureProp =
   | Appcraft.BoolProp
   | Appcraft.InstanceOfProp
@@ -45,6 +47,13 @@ export type RenderOverrideItem = (
   ...args: RenderOverrideItemArgs<'display'> | RenderOverrideItemArgs<'pure'>
 ) => ReactNode;
 
+export type OverrideMixedOptions = (options: {
+  propPath: string;
+  typeFile: string;
+  typeName: string;
+  options: MixedProp;
+}) => MixedProp | void;
+
 export type OverrideNamingProps = (options: {
   propPath: string;
   typeFile: string;
@@ -59,6 +68,7 @@ export interface EditorContextValue<V extends OptionValues> {
   collectionPath: string;
   values?: V;
   handleChangeRef?: MutableRefObject<ChangeHandler<V>>;
+  overrideMixedOptionsRef?: MutableRefObject<OverrideMixedOptions | undefined>;
   overrideNamingPropsRef?: MutableRefObject<OverrideNamingProps | undefined>;
   renderOverrideItemRef?: MutableRefObject<RenderOverrideItem | undefined>;
 }
@@ -70,6 +80,7 @@ export interface EditorProviderProps<V extends OptionValues>
     'handleChangeRef' | 'overrideNamingPropsRef' | 'renderOverrideItemRef'
   > {
   children: ReactNode;
+  overrideMixedOptions?: OverrideMixedOptions;
   overrideNamingProps?: OverrideNamingProps;
   renderOverrideItem?: RenderOverrideItem;
   onChange: ChangeHandler<V>;

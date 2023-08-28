@@ -42,6 +42,7 @@ export default function TypeItemDisplay({
   return override === false ? null : (
     <ListItemButton
       disableRipple={disabled}
+      data-category="display"
       onClick={() => !disabled && ref.current(options)}
     >
       {selection}

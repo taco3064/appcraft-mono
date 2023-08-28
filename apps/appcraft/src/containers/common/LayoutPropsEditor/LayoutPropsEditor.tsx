@@ -99,35 +99,36 @@ export default function LayoutPropsEditor({
             <Collapse in={!collapsed.has(category)}>
               {(Object.entries(states) as [string, WidgetState][]).map(
                 ([propPath, state]) => {
-                  if (state.type === 'public') {
-                    switch (state.category) {
-                      case 'nodes':
-                        return (
-                          <Comp.LayoutNodeItem
-                            state={state}
-                            onChange={console.log}
-                          />
-                        );
-
-                      case 'props':
-                        return (
-                          <Comp.LayoutPropItem
-                            state={state}
-                            onChange={console.log}
-                          />
-                        );
-
-                      case 'todos':
-                        return (
-                          <Comp.LayoutTodoItem
-                            state={state}
-                            onChange={console.log}
-                          />
-                        );
-
-                      default:
-                    }
-                  }
+                  // if (state.type === 'public') {
+                  //   if (state.category === 'nodes') {
+                  //     return (
+                  //       <Comp.LayoutNodeItem
+                  //         key={propPath}
+                  //         state={state}
+                  //         value={value.template[state.category][propPath]}
+                  //         onChange={console.log}
+                  //       />
+                  //     );
+                  //   } else if (state.category === 'props') {
+                  //     return (
+                  //       <Comp.LayoutPropItem
+                  //         key={propPath}
+                  //         state={state}
+                  //         value={value.template[state.category][propPath]}
+                  //         onChange={console.log}
+                  //       />
+                  //     );
+                  //   } else if (state.category === 'todos') {
+                  //     return (
+                  //       <Comp.LayoutTodoItem
+                  //         key={propPath}
+                  //         state={state}
+                  //         value={value.template[state.category][propPath]}
+                  //         onChange={console.log}
+                  //       />
+                  //     );
+                  //   }
+                  // }
 
                   return null;
                 }

@@ -3,7 +3,9 @@ import type { ComponentProps } from 'react';
 
 import type { HierarchyData } from '~appcraft/services';
 
-export interface WidgetSelectProps
+export type WidgetViewHandler = (data: HierarchyData<string>) => void;
+
+export interface WidgetPickerProps
   extends Omit<
     ComponentProps<typeof TextField>,
     | 'InputProps'
@@ -18,5 +20,5 @@ export interface WidgetSelectProps
   targets?: string[];
   value?: string;
   onChange?: (value: string) => void;
-  onView?: (data: HierarchyData<string>) => void;
+  onView?: WidgetViewHandler;
 }

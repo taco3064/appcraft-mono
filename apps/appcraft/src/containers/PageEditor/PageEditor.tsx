@@ -11,6 +11,8 @@ import * as Common from '../common';
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Style from '~appcraft/styles';
+import { WidgetPicker } from '~appcraft/contexts';
+import { useFixedT, useCraftsmanFetch } from '~appcraft/contexts';
 import type * as Types from './PageEditor.types';
 
 export default function PageEditor({
@@ -21,7 +23,7 @@ export default function PageEditor({
   onOutputCollect,
   onSave,
   onTodoWrapperView,
-  onWidgetWrapperView,
+  onWidgetView,
 }: Types.PageEditorProps) {
   const [{ active, breakpoint, layouts, readyTodos }, handlePage] =
     Hook.usePageValues({
@@ -29,9 +31,9 @@ export default function PageEditor({
       onSave,
     });
 
-  const [at, pt] = Hook.useFixedT('app', 'pages');
+  const [at, pt] = useFixedT('app', 'pages');
   const theme = useTheme();
-  const rendererFetchHandles = Hook.useRendererFetchHandles();
+  const handleFetch = useCraftsmanFetch();
   const isSettingOpen = Boolean(layouts[active]);
 
   const actionNode = Hook.useNodePicker(
@@ -48,7 +50,7 @@ export default function PageEditor({
         ),
         ready: (
           <Common.ReadyTodoEditor
-            {...{ layouts, onTodoWrapperView, onWidgetWrapperView }}
+            {...{ layouts, onTodoWrapperView, onWidgetView }}
             value={readyTodos}
             onConfirm={(value) => handlePage.change('readyTodos', value)}
           />
@@ -129,8 +131,8 @@ export default function PageEditor({
                 breakpoint={breakpoint}
                 elevation={1}
                 options={layouts}
-                onFetchData={rendererFetchHandles.data}
-                onFetchWrapper={rendererFetchHandles.wrapper}
+                onFetchData={handleFetch.data}
+                onFetchWrapper={handleFetch.wrapper}
                 onOutputCollect={onOutputCollect}
                 onReady={readyTodos}
                 action={(layout, withActionClose) => (
@@ -150,7 +152,7 @@ export default function PageEditor({
                       })()
                     }
                     widgetPicker={
-                      <Common.WidgetSelect
+                      <WidgetPicker
                         fullWidth
                         name="widget"
                         label={pt('lbl-widget')}

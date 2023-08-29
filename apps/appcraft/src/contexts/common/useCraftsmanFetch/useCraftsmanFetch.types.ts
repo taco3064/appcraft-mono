@@ -1,6 +1,6 @@
 import type { CraftedRendererProps } from '@appcraft/exhibitor';
 
-export type RendererFetchHandlesHook = () => {
+export type CraftsmanFetchHook = () => {
   data: CraftedRendererProps['onFetchData'];
   wrapper: CraftedRendererProps['onFetchWrapper'];
 };

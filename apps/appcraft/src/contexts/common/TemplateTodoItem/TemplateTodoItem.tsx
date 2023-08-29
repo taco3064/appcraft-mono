@@ -1,21 +1,24 @@
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 import Button from '@mui/material/Button';
-import { CraftsmanStyle } from '@appcraft/craftsman';
+import { CraftsmanStyle, CraftedTodoEditor } from '@appcraft/craftsman';
 import { useEffect, useImperativeHandle, useState } from 'react';
 import type { MouseEventHandler } from 'react';
 
-import { useFixedT } from '~appcraft/hooks';
-import type { TodoItemProps } from './TodoItem.types';
+import { getTypeDefinition } from '~appcraft/services';
+import { useCraftsmanFetch } from '../useCraftsmanFetch';
+import { useFixedT } from '../useApp';
+import type { TemplateTodoItemProps } from './TemplateTodoItem.types';
 
-export default function TodoItem({
+export default function TemplateTodoItem({
+  CraftedTodoEditorProps,
   disabled: defaultDisabled = false,
   displayRef,
   label,
   value,
-  renderTodoEditor,
   onChange,
-}: TodoItemProps) {
+}: TemplateTodoItemProps) {
   const disabled = defaultDisabled || Boolean(!label?.trim());
+  const handleFetch = useCraftsmanFetch();
   const [ct] = useFixedT('appcraft');
   const [editing, setEditing] = useState(false);
   const [open, setOpen] = useState(false);
@@ -76,11 +79,19 @@ export default function TodoItem({
           </>
         }
       >
-        {renderTodoEditor({
-          values: todos,
-          onChange: setTodos,
-          onEditToggle: setEditing,
-        })}
+        <CraftedTodoEditor
+          {...CraftedTodoEditorProps}
+          disableCategories={['props']}
+          fullHeight
+          variant="normal"
+          typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
+          values={todos}
+          onChange={setTodos}
+          onEditToggle={setEditing}
+          onFetchData={handleFetch.data}
+          onFetchDefinition={getTypeDefinition}
+          onFetchTodoWrapper={handleFetch.wrapper}
+        />
       </CraftsmanStyle.FlexDialog>
     </>
   );

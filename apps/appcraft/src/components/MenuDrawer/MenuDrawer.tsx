@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 
 import * as Style from '~appcraft/styles';
 import NAVS from '~appcraft/assets/json/navs.json';
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/contexts';
 import type * as Types from './MenuDrawer.types';
 
 export default function MenuDrawer({

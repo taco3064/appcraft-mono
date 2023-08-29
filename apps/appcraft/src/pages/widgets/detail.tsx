@@ -11,16 +11,18 @@ import type { MainWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
 import { CommonButton, TodoOutputStepper } from '~appcraft/components';
+import { CraftsmanOverrideProvider } from '~appcraft/contexts';
 import { PageContainer } from '~appcraft/styles';
 import { TodoEditor, WidgetEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
+import { useFixedT } from '~appcraft/contexts';
 import type { HierarchyData } from '~appcraft/services';
 
 const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];
 const WIDGET_ACTIONS = ['expand', 'reset', 'save'];
 
 export default function Detail() {
-  const [at, wt, tt] = Hook.useFixedT('app', 'widgets', 'todos');
+  const [at, wt, tt] = useFixedT('app', 'widgets', 'todos');
   const { enqueueSnackbar } = useSnackbar();
   const { pathname, query } = useRouter();
   const [output, setOutput] = useState<OutputCollectEvent>();
@@ -51,7 +53,13 @@ export default function Detail() {
   });
 
   return (
-    <>
+    <CraftsmanOverrideProvider
+      hierarchyid={id}
+      onTodoView={setTodoHierarchy}
+      onWidgetView={(data) =>
+        global.window?.open(`/widgets/detail?id=${data._id}`, '_blank')
+      }
+    >
       <PageContainer
         ContentProps={{ disableGutters: true }}
         maxWidth="lg"
@@ -74,10 +82,6 @@ export default function Detail() {
           superiors={{ names: superiors, breadcrumbs }}
           onActionNodePick={handleWidgetActionPick}
           onSave={refetch}
-          onTodoWrapperView={setTodoHierarchy}
-          onWidgetWrapperView={(data) =>
-            global.window?.open(`/widgets/detail?id=${data._id}`, '_blank')
-          }
           onOutputCollect={(e, eventName) =>
             enqueueSnackbar(tt('msg-event-outputs', { name: eventName }), {
               variant: 'info',
@@ -146,6 +150,6 @@ export default function Detail() {
           />
         )}
       </CraftsmanStyle.FlexDialog>
-    </>
+    </CraftsmanOverrideProvider>
   );
 }

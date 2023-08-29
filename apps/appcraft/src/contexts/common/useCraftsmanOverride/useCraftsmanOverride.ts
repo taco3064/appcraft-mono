@@ -1,24 +1,20 @@
 import _get from 'lodash/get';
-import type * as Types from './useCraftedOverride.types';
+import type * as Types from './useCraftsmanOverride.types';
 
 const met: Types.MetType = {
-  mixed: ({ typeFile, typeName, propPath }) => {
+  mixed: ({ typeName, propPath }) => {
     if (typeName === 'PropsState' && /^defaultValue$/.test(propPath)) {
       return 'STATE_DEFAULT_PROP_VALUE';
     }
   },
 
-  naming: ({ typeFile, typeName, propPath }) => {
-    if (
-      typeFile.includes('/@appcraft/types/src/widgets/state') &&
-      typeName === 'NodeState' &&
-      /^template\.todos$/.test(propPath)
-    ) {
+  naming: ({ typeName, propPath }) => {
+    if (typeName === 'NodeState' && /^template\.todos$/.test(propPath)) {
       return 'TEMPLATE_TODO_NAMING';
     }
   },
 
-  render: (kind, { typeName, props, propPath }) => {
+  render: (kind, { typeName, propPath }) => {
     if (
       /^(ElementState|NodeState)$/.test(typeName) &&
       kind === 'pure' &&
@@ -32,7 +28,7 @@ const met: Types.MetType = {
       kind === 'display' &&
       /^template\.todos\..*$/.test(propPath)
     ) {
-      return 'TEMPLATE_TODO_EDITOR';
+      return 'TEMPLATE_TODO_ITEM';
     }
 
     if (kind === 'pure' && typeName === 'WrapTodo' && propPath === 'todosId') {
@@ -49,13 +45,14 @@ const met: Types.MetType = {
   },
 };
 
-export const useCraftedOverride: Types.CraftedOverrideHook = (override) => ({
-  overrideMixedOptions: (options) =>
-    _get(override, met.mixed(options) as string)?.(options),
+export const useCraftsmanOverride: Types.CraftsmanOverrideHook =
+  (override) => (widget) => ({
+    overrideMixedOptions: (options) =>
+      _get(override, met.mixed(options) as string)?.(options, widget),
 
-  overrideNamingProps: (options) =>
-    _get(override, met.naming(options) as string)?.(options),
+    overrideNamingProps: (options) =>
+      _get(override, met.naming(options) as string)?.(options, widget),
 
-  renderOverrideItem: (...args) =>
-    _get(override, met.render(...args) as string)?.(...args),
-});
+    renderOverrideItem: (...args) =>
+      _get(override, met.render(...args) as string)?.(...args, widget),
+  });

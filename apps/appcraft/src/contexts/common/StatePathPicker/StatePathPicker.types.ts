@@ -1,4 +1,4 @@
-export interface StateSelectProps {
+export interface StatePathPickerProps {
   disabled?: boolean;
   label: string;
   value: string;

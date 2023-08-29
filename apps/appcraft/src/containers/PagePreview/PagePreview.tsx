@@ -4,14 +4,15 @@ import { useQuery } from '@tanstack/react-query';
 import { useTheme } from '@mui/material/styles';
 import type { LayoutWidget } from '@appcraft/types';
 
-import * as Hook from '~appcraft/hooks';
+import { GRID_LAYOUT_COLS, GRID_LAYOUT_MINS } from '~appcraft/hooks';
 import { findConfig } from '~appcraft/services';
+import { useFixedT, useCraftsmanFetch } from '~appcraft/contexts';
 import type { PagePreviewProps } from './PagePreview.types';
 
 export default function PagePreview({ id }: PagePreviewProps) {
-  const [pt] = Hook.useFixedT('pages');
+  const [pt] = useFixedT('pages');
   const theme = useTheme();
-  const rendererFetchHandles = Hook.useRendererFetchHandles();
+  const handleFetch = useCraftsmanFetch();
 
   const { data: layouts } = useQuery({
     queryKey: [id],
@@ -27,12 +28,12 @@ export default function PagePreview({ id }: PagePreviewProps) {
     <CraftedRenderer
       elevation={1}
       options={layouts.content}
-      onFetchData={rendererFetchHandles.data}
-      onFetchWrapper={rendererFetchHandles.wrapper}
+      onFetchData={handleFetch.data}
+      onFetchWrapper={handleFetch.wrapper}
       GridLayoutProps={{
         autoSize: true,
-        cols: Hook.GRID_LAYOUT_COLS,
-        mins: Hook.GRID_LAYOUT_MINS,
+        cols: GRID_LAYOUT_COLS,
+        mins: GRID_LAYOUT_MINS,
         breakpoints: Object.fromEntries(
           Object.entries(theme.breakpoints.values).sort(
             ([, w1], [, w2]) => w2 - w1

@@ -1,20 +1,30 @@
+import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
+import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
+import LinkIcon from '@mui/icons-material/Link';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import ModeStandbyIcon from '@mui/icons-material/ModeStandby';
 import TextField from '@mui/material/TextField';
+import { useQuery } from '@tanstack/react-query';
 
-import { useFixedT } from '~appcraft/hooks';
-import type { StateSelectProps } from './StateSelect.types';
+import { searchHierarchy } from '~appcraft/services';
+import { useFixedT } from '../useApp';
+import type { TodoWrapperPickerProps } from './TodoWrapperPicker.types';
 
-export default function StateSelect({
+export default function TodoWrapperPicker({
   disabled = false,
   label,
-  options,
   value,
   onChange,
-}: StateSelectProps) {
-  const [wt] = useFixedT('widgets');
+  onView,
+}: TodoWrapperPickerProps) {
+  const [at, wt] = useFixedT('app', 'widgets');
+
+  const { data: options } = useQuery({
+    refetchOnWindowFocus: false,
+    queryFn: searchHierarchy,
+    queryKey: ['todos', { type: 'item' }],
+  });
 
   return (
     <TextField
@@ -30,25 +40,37 @@ export default function StateSelect({
         !options.length
           ? wt('msg-no-options')
           : !value
-          ? wt('msg-required')
+          ? at('msg-required')
           : undefined
       }
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <ModeStandbyIcon fontSize="small" color="disabled" />
+            {(!value || !onView) && (
+              <Inventory2OutlinedIcon fontSize="small" color="disabled" />
+            )}
+
+            {value && onView && (
+              <IconButton
+                size="small"
+                onClick={() => onView(options.find(({ _id }) => _id === value))}
+              >
+                <LinkIcon fontSize="small" />
+              </IconButton>
+            )}
           </InputAdornment>
         ),
       }}
     >
-      {options.map(({ primary, secondary, value }) => (
+      {options?.map(({ _id, name, description }) => (
         <MenuItem
-          key={value}
-          value={value}
+          key={_id}
+          value={_id}
           sx={(theme) => ({ paddingLeft: theme.spacing(2) })}
         >
           <ListItemText
-            {...{ primary, secondary }}
+            primary={name}
+            secondary={description}
             primaryTypographyProps={{
               variant: 'subtitle1',
               color: 'text.primary',

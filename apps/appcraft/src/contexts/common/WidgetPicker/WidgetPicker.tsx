@@ -8,16 +8,16 @@ import TextField from '@mui/material/TextField';
 import { useQuery } from '@tanstack/react-query';
 
 import { searchHierarchy } from '~appcraft/services';
-import type { WidgetSelectProps } from './WidgetSelect.types';
+import type { WidgetPickerProps } from './WidgetPicker.types';
 
-export default function WidgetSelect({
+export default function WidgetPicker({
   exclude = [],
   targets,
   value,
   onChange,
   onView,
   ...props
-}: WidgetSelectProps) {
+}: WidgetPickerProps) {
   const { data } = useQuery({
     refetchOnWindowFocus: false,
     queryFn: searchHierarchy,

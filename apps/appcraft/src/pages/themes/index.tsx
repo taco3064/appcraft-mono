@@ -3,19 +3,20 @@ import Head from 'next/head';
 import PaletteTwoToneIcon from '@mui/icons-material/PaletteTwoTone';
 import { useRouter } from 'next/router';
 
-import * as Hook from '~appcraft/hooks';
 import { CommonButton } from '~appcraft/components';
 import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
+import { useFixedT, useSettingModified } from '~appcraft/contexts';
+import { useNodePickHandle } from '~appcraft/hooks';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addItem'];
 
 export default function Themes() {
   const { pathname } = useRouter();
-  const [, handleSetting] = Hook.useSettingModified();
-  const [at, nt] = Hook.useFixedT('app', 'nav');
+  const [, handleSetting] = useSettingModified();
+  const [at, nt] = useFixedT('app', 'nav');
 
-  const [action, handleActionNodePick] = Hook.useNodePickHandle(
+  const [action, handleActionNodePick] = useNodePickHandle(
     HIERARCHY_LIST_ACTIONS
   );
 

@@ -2,9 +2,9 @@ import axios from 'axios';
 import type { MainWidget, WidgetTodo } from '@appcraft/types';
 
 import { getConfigById } from '~appcraft/services';
-import type { RendererFetchHandlesHook } from './useRendererFetchHandles.types';
+import type { CraftsmanFetchHook } from './useCraftsmanFetch.types';
 
-export const useRendererFetchHandles: RendererFetchHandlesHook = () => ({
+export const useCraftsmanFetch: CraftsmanFetchHook = () => ({
   data: async ({ url, method, headers, data }) => {
     const { data: result } = await axios({
       url,

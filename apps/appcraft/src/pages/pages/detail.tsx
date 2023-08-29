@@ -14,6 +14,7 @@ import { CommonButton, TodoOutputStepper } from '~appcraft/components';
 import { PageContainer } from '~appcraft/styles';
 import { PageEditor, TodoEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
+import { useFixedT } from '~appcraft/contexts';
 import type { HierarchyData } from '~appcraft/services';
 import type { PageData } from '~appcraft/hooks';
 
@@ -21,7 +22,7 @@ const PAGE_ACTIONS = ['add', 'ready', 'reset', 'save'];
 const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];
 
 export default function Detail() {
-  const [at, pt, tt] = Hook.useFixedT('app', 'pages', 'todos');
+  const [at, pt, tt] = useFixedT('app', 'pages', 'todos');
   const { enqueueSnackbar } = useSnackbar();
   const { pathname, query } = useRouter();
   const [output, setOutput] = useState<OutputCollectEvent>();
@@ -77,7 +78,7 @@ export default function Detail() {
           onActionNodePick={handlePageActionPick}
           onSave={refetch}
           onTodoWrapperView={setTodoHierarchy}
-          onWidgetWrapperView={(data) =>
+          onWidgetView={(data) =>
             global.window?.open(`/widgets/detail?id=${data._id}`, '_blank')
           }
           onOutputCollect={(e, eventName) =>

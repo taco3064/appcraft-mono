@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 
 import CommonButton from '../CommonButton';
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/contexts';
 import type { BreakpointStepperProps } from './BreakpointStepper.types';
 
 export default function BreakpointStepper({

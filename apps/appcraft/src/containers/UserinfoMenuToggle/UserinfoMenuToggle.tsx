@@ -12,19 +12,20 @@ import Tooltip from '@mui/material/Tooltip';
 import { Suspense, useState } from 'react';
 import type { Userinfo } from '@appcraft/types';
 
-import * as Hook from '~appcraft/hooks';
 import { Link } from '~appcraft/styles';
+import { useAuth, useFixedT } from '~appcraft/contexts';
+import { useLazyUserProfile } from '~appcraft/hooks';
 import type * as Types from './UserinfoMenuToggle.types';
 
 export default function UserinfoMenuToggle({
   menuTransform,
   signoutURL,
 }: Types.UserinfoMenuToggleProps) {
-  const [at] = Hook.useFixedT('app');
+  const [at] = useFixedT('app');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
-  const [{ authorized, tokens }] = Hook.useAuth();
+  const [{ authorized, tokens }] = useAuth();
 
-  const LazyAvatar = Hook.useLazyUserProfile<Userinfo>(
+  const LazyAvatar = useLazyUserProfile<Userinfo>(
     tokens.id,
     ({ fetchData }) => (
       <Tooltip title={fetchData?.username}>

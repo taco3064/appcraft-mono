@@ -6,16 +6,16 @@ import { CraftsmanStyle, CraftedTodoEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
 
 import PropNameSelect from '../PropNameSelect';
-import TodoWrapperSelect from '../TodoWrapperSelect';
-import WidgetSelect from '../WidgetSelect';
+// import TodoWrapperSelect from '../TodoWrapperSelect';
 import { CommonButton } from '~appcraft/components';
+import { WidgetPicker } from '~appcraft/contexts';
 import { getTypeDefinition } from '~appcraft/services';
-import { useFixedT, useRendererFetchHandles } from '~appcraft/hooks';
+import { useFixedT, useCraftsmanFetch } from '~appcraft/contexts';
 import type * as Types from './ReadyTodoEditor.types';
 import type { PageData } from '~appcraft/hooks';
 import type { PropNameSelectProps } from '../PropNameSelect';
-import type { TodoWrapperSelectProps } from '../TodoWrapperSelect';
-import type { WidgetSelectProps } from '../WidgetSelect';
+// import type { TodoWrapperSelectProps } from '../TodoWrapperSelect';
+import type { WidgetPickerProps } from '~appcraft/contexts';
 
 const getOverrideRenderType: Types.GetOverrideRenderType = (
   kind,
@@ -43,11 +43,11 @@ export default function ReadyTodoEditor({
   value,
   onConfirm,
   onTodoWrapperView,
-  onWidgetWrapperView,
+  onWidgetView,
 }: Types.ReadyTodoEditorProps) {
   const [at, pt] = useFixedT('app', 'pages');
   const [open, setOpen] = useState(false);
-  const rendererFetchHandles = useRendererFetchHandles();
+  const handleFetch = useCraftsmanFetch();
 
   const [todos, setTodos] = useState<PageData['readyTodos']>(() =>
     JSON.parse(JSON.stringify(value))
@@ -100,27 +100,27 @@ export default function ReadyTodoEditor({
           typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
           values={todos}
           onChange={setTodos}
-          onFetchData={rendererFetchHandles.data}
+          onFetchData={handleFetch.data}
           onFetchDefinition={getTypeDefinition}
-          onFetchTodoWrapper={rendererFetchHandles.wrapper}
+          onFetchTodoWrapper={handleFetch.wrapper}
           renderOverrideItem={(...args) => {
             const [, props] = args;
 
             switch (getOverrideRenderType(...args)) {
-              case 'TODO_PICKER': {
-                return (
-                  <TodoWrapperSelect
-                    {...(props as TodoWrapperSelectProps)}
-                    onView={onTodoWrapperView}
-                  />
-                );
-              }
+              // case 'TODO_PICKER': {
+              //   return (
+              //     <TodoWrapperSelect
+              //       {...(props as TodoWrapperSelectProps)}
+              //       onView={onTodoWrapperView}
+              //     />
+              //   );
+              // }
               case 'PROPS_WIDGET': {
-                const { value } = props as WidgetSelectProps;
+                const { value } = props as WidgetPickerProps;
 
                 return (
-                  <WidgetSelect
-                    {...(props as WidgetSelectProps)}
+                  <WidgetPicker
+                    {...(props as WidgetPickerProps)}
                     fullWidth
                     required
                     size="small"
@@ -128,12 +128,12 @@ export default function ReadyTodoEditor({
                     error={!value}
                     helperText={!value ? at('msg-required') : undefined}
                     targets={layouts.map(({ template }) => template?.id)}
-                    onView={onWidgetWrapperView}
+                    onView={onWidgetView}
                   />
                 );
               }
               case 'PROPS_PICKER': {
-                const { value } = props as WidgetSelectProps;
+                const { value } = props as PropNameSelectProps;
 
                 const propPath = _toPath(
                   props.propPath.replace(/\.propName$/, '.widget')

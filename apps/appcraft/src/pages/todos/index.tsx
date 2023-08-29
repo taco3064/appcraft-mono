@@ -15,7 +15,8 @@ import { CommonButton, TodoOutputStepper } from '~appcraft/components';
 import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { getConfigById } from '~appcraft/services';
-import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/contexts';
+import { useNodePickHandle } from '~appcraft/hooks';
 import type { HierarchyData } from '~appcraft/services';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];

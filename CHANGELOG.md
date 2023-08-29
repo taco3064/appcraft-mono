@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.109](https://github.com/taco3064/appcraft-mono/compare/v0.0.108...v0.0.109) (2023-08-29)
+
+
+### Bug Fixes
+
+* adjusting Program Consistency ([68b8d51](https://github.com/taco3064/appcraft-mono/commit/68b8d514badc13c88494ba22d2eec15c41773529))
+* **use-craftsman-override:** fixed bugs ([398cd31](https://github.com/taco3064/appcraft-mono/commit/398cd317092e030225f595308144326b5d5f49f2))
+
 ### [0.0.108](https://github.com/taco3064/appcraft-mono/compare/v0.0.107...v0.0.108) (2023-08-28)
 
 

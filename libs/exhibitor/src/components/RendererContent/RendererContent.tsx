@@ -1,8 +1,8 @@
+import { GridAction, GridLayout } from '../common';
 import * as Hook from '../../hooks';
 import * as Style from '../../styles';
-import { GridAction, GridLayout } from '../common';
 import type * as Types from './RendererContent.types';
-import type { RendererOptions } from '../../hooks';
+import type { RendererOptions } from '../../utils';
 
 export default function RendererContent<T extends RendererOptions>({
   GridLayoutProps,
@@ -17,14 +17,12 @@ export default function RendererContent<T extends RendererOptions>({
   const { onFetchData, onFetchTodoWrapper, onOutputCollect } = props;
   const layouts = Hook.useGridLayouts(options, GridLayoutProps);
 
-  const [isPrepared, handleState] = Hook.useRendererState(options, templates, [
+  const [isPrepared, handleState] = Hook.useRendererState(templates, options, {
+    onFetchData,
+    onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
+    onOutputCollect,
     onReady,
-    {
-      onFetchData,
-      onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
-      onOutputCollect,
-    },
-  ]);
+  });
 
   const render = Hook.useRender(
     props,

@@ -1,2 +1,2 @@
 export * from './useGridLayouts';
-export type { Mins, RendererOptions } from './useGridLayouts.types';
+export type { Mins } from './useGridLayouts.types';

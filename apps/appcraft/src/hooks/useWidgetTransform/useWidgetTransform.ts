@@ -3,7 +3,7 @@ import _set from 'lodash/set';
 import { useQuery } from '@tanstack/react-query';
 import type * as Appcraft from '@appcraft/types';
 
-import { getConfigById, searchHierarchy } from '~appcraft/services';
+import * as Service from '~appcraft/services';
 import type * as Types from './useWidgetTransform.types';
 
 export const useWidgetTransform: Types.WidgetTransformHook = (layout) => {
@@ -15,7 +15,7 @@ export const useWidgetTransform: Types.WidgetTransformHook = (layout) => {
   } = useQuery({
     enabled: Boolean(template.id),
     queryKey: ['widgets', { type: 'item', targets: [template.id] }],
-    queryFn: searchHierarchy,
+    queryFn: Service.searchHierarchy,
     refetchOnWindowFocus: false,
   });
 
@@ -34,10 +34,16 @@ export const useWidgetTransform: Types.WidgetTransformHook = (layout) => {
     },
 
     {
-      onFetchDefinition: async ({ typeName: id }) => {
-        const { content: widget } = await getConfigById<Appcraft.MainWidget>(
-          id
-        );
+      onFetchDefinition: async (options) => {
+        const { typeFile } = options;
+
+        if (typeFile === __WEBPACK_DEFINE__.TODO_TYPE_FILE) {
+          return Service.getTypeDefinition(options);
+        }
+
+        const { content: widget } =
+          await Service.getConfigById<Appcraft.MainWidget>(id);
+
         const { state } = widget;
 
         return {
@@ -58,9 +64,8 @@ export const useWidgetTransform: Types.WidgetTransformHook = (layout) => {
         const result: Appcraft.NodeAndEventProps = { nodes: {}, events: {} };
 
         for await (const data of options.map(async ({ typeFile, typeName }) => {
-          const { content: widget } = await getConfigById<Appcraft.MainWidget>(
-            typeName
-          );
+          const { content: widget } =
+            await Service.getConfigById<Appcraft.MainWidget>(typeName);
 
           return {
             ..._pick(widget.state, ['todos']),

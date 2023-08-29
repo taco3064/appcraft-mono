@@ -1,5 +1,5 @@
 import type * as Hook from '../../hooks';
-import type { FetchDataHandler } from '../../utils';
+import type { FetchDataHandler, RendererOptions } from '../../utils';
 import type { RendererContentProps } from '../../components';
 
 //* Component Props
@@ -10,7 +10,7 @@ export interface CraftedRendererProps
     LazyRendererProps,
     'options' | 'onFetchTodoWrapper' | 'onLazyRetrieve'
   > {
-  options?: Hook.RendererOptions;
+  options?: RendererOptions;
   onFetchData: FetchDataHandler;
   onFetchWrapper: Hook.FetchWrapperHandler<'todo' | 'widget'>;
 }

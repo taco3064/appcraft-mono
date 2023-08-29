@@ -1,5 +1,5 @@
 import type * as Craftsman from '@appcraft/craftsman';
-import type { MainWidget } from '@appcraft/types';
+import type { LayoutWidget, MainWidget } from '@appcraft/types';
 
 //* Variables
 type Mixeds = 'STATE_DEFAULT_PROP_VALUE';
@@ -8,8 +8,15 @@ type Namings = 'TEMPLATE_TODO_NAMING';
 type Renders =
   | 'TEMPLATE_TODO_ITEM'
   | 'TEMPLATE_WIDGET_PICKER'
+  | 'TODO_PROPS_WIDGET_PICKER'
+  | 'TODO_PROPS_PATH_PICKER'
   | 'TODO_STATE_PATH_PICKER'
   | 'TODO_WRAPPER_PICKER';
+
+export type OverrideOptions = {
+  layouts?: LayoutWidget[];
+  widget?: MainWidget;
+};
 
 export type OverrideHandlers = Required<
   Pick<
@@ -25,7 +32,7 @@ type OverrideHandler<
 > = Record<
   C,
   (
-    widget: MainWidget,
+    options: OverrideOptions,
     ...args: Parameters<OverrideHandlers[K]>
   ) => ReturnType<OverrideHandlers[K]>
 >;
@@ -51,4 +58,4 @@ export type CraftsmanOverrideHook = (
       OverrideHandler<Namings, 'overrideNamingProps'> &
       OverrideHandler<Renders, 'renderOverrideItem'>
   >
-) => (widget: MainWidget) => OverrideHandlers;
+) => (options: OverrideOptions) => OverrideHandlers;

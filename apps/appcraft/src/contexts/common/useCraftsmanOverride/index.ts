@@ -1,2 +1,6 @@
 export * from './useCraftsmanOverride';
-export type { OverrideHandlers } from './useCraftsmanOverride.types';
+
+export type {
+  OverrideHandlers,
+  OverrideOptions,
+} from './useCraftsmanOverride.types';

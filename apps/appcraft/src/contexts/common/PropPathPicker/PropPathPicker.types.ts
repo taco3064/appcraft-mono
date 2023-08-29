@@ -2,14 +2,14 @@ import TextField from '@mui/material/TextField';
 import type { ComponentProps } from 'react';
 
 //* Variables
-export type PropNameOption = {
+export type PropPathOption = {
   value: string;
   primary: string;
   secondary: string;
 };
 
 //* Component Props
-export interface PropNameSelectProps
+export interface PropPathPickerProps
   extends Omit<
     ComponentProps<typeof TextField>,
     | 'InputProps'

@@ -8,14 +8,14 @@ import type { MainWidget } from '@appcraft/types';
 
 import { findConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/contexts';
-import type * as Types from './PropNameSelect.types';
+import type * as Types from './PropPathPicker.types';
 
-export default function PropNameSelect({
+export default function PropPathPicker({
   template,
   value,
   onChange,
   ...props
-}: Types.PropNameSelectProps) {
+}: Types.PropPathPickerProps) {
   const [ct] = useFixedT('appcraft');
 
   const { data: widget } = useQuery({
@@ -26,7 +26,7 @@ export default function PropNameSelect({
   });
 
   const options = Object.entries(widget?.content.state || {}).reduce<
-    Types.PropNameOption[]
+    Types.PropPathOption[]
   >((result, [category, states]) => {
     Object.entries(states).forEach(([path, { alias, type, description }]) => {
       if (type === 'public') {

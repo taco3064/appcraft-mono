@@ -1,19 +1,18 @@
-import type { MainWidget } from '@appcraft/types';
 import type { MutableRefObject, ReactNode } from 'react';
 
 import type * as Common from '../common';
 
 export type CraftsmanOverrideContextValue = MutableRefObject<
-  (widget: MainWidget) => Common.OverrideHandlers
+  (options: Common.OverrideOptions) => Common.OverrideHandlers
 >;
 
 export type CraftsmanOverrideContextHook = (
-  widget: MainWidget
+  options: Common.OverrideOptions
 ) => Partial<Common.OverrideHandlers>;
 
 export interface CraftsmanOverrideProviderProps {
   children: ReactNode;
-  hierarchyid: string;
+  hierarchyid?: string;
   onTodoView?: Common.TodoWrapperPickerProps['onView'];
   onWidgetView?: Common.WidgetPickerProps['onView'];
 }

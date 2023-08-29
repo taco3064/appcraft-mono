@@ -22,8 +22,6 @@ export default function PageEditor({
   onActionNodePick = (e) => e,
   onOutputCollect,
   onSave,
-  onTodoWrapperView,
-  onWidgetView,
 }: Types.PageEditorProps) {
   const [{ active, breakpoint, layouts, readyTodos }, handlePage] =
     Hook.usePageValues({
@@ -50,7 +48,7 @@ export default function PageEditor({
         ),
         ready: (
           <Common.ReadyTodoEditor
-            {...{ layouts, onTodoWrapperView, onWidgetView }}
+            layouts={layouts}
             value={readyTodos}
             onConfirm={(value) => handlePage.change('readyTodos', value)}
           />

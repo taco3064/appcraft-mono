@@ -1,53 +1,23 @@
 import AlarmOnIcon from '@mui/icons-material/AlarmOn';
 import Button from '@mui/material/Button';
-import _get from 'lodash/get';
-import _toPath from 'lodash/toPath';
 import { CraftsmanStyle, CraftedTodoEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
 
-import PropNameSelect from '../PropNameSelect';
-// import TodoWrapperSelect from '../TodoWrapperSelect';
+import * as Ctx from '~appcraft/contexts';
 import { CommonButton } from '~appcraft/components';
-import { WidgetPicker } from '~appcraft/contexts';
 import { getTypeDefinition } from '~appcraft/services';
-import { useFixedT, useCraftsmanFetch } from '~appcraft/contexts';
 import type * as Types from './ReadyTodoEditor.types';
 import type { PageData } from '~appcraft/hooks';
-import type { PropNameSelectProps } from '../PropNameSelect';
-// import type { TodoWrapperSelectProps } from '../TodoWrapperSelect';
-import type { WidgetPickerProps } from '~appcraft/contexts';
-
-const getOverrideRenderType: Types.GetOverrideRenderType = (
-  kind,
-  { typeName, propPath }
-) => {
-  if (kind === 'pure' && typeName === 'WrapTodo' && propPath === 'todosId') {
-    return 'TODO_PICKER';
-  } else if (
-    kind === 'pure' &&
-    typeName === 'SetPropsTodo' &&
-    /^props\[\d\]\.widget$/.test(propPath)
-  ) {
-    return 'PROPS_WIDGET';
-  } else if (
-    kind === 'pure' &&
-    typeName === 'SetPropsTodo' &&
-    /^props\[\d\]\.propName$/.test(propPath)
-  ) {
-    return 'PROPS_PICKER';
-  }
-};
 
 export default function ReadyTodoEditor({
   layouts,
   value,
   onConfirm,
-  onTodoWrapperView,
-  onWidgetView,
 }: Types.ReadyTodoEditorProps) {
-  const [at, pt] = useFixedT('app', 'pages');
+  const [at, pt] = Ctx.useFixedT('app', 'pages');
   const [open, setOpen] = useState(false);
-  const handleFetch = useCraftsmanFetch();
+  const handleFetch = Ctx.useCraftsmanFetch();
+  const override = Ctx.useCraftsmanOverrideContext({ layouts });
 
   const [todos, setTodos] = useState<PageData['readyTodos']>(() =>
     JSON.parse(JSON.stringify(value))
@@ -95,6 +65,7 @@ export default function ReadyTodoEditor({
         }}
       >
         <CraftedTodoEditor
+          {...override}
           fullHeight
           disableCategories={['state']}
           typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
@@ -103,58 +74,6 @@ export default function ReadyTodoEditor({
           onFetchData={handleFetch.data}
           onFetchDefinition={getTypeDefinition}
           onFetchTodoWrapper={handleFetch.wrapper}
-          renderOverrideItem={(...args) => {
-            const [, props] = args;
-
-            switch (getOverrideRenderType(...args)) {
-              // case 'TODO_PICKER': {
-              //   return (
-              //     <TodoWrapperSelect
-              //       {...(props as TodoWrapperSelectProps)}
-              //       onView={onTodoWrapperView}
-              //     />
-              //   );
-              // }
-              case 'PROPS_WIDGET': {
-                const { value } = props as WidgetPickerProps;
-
-                return (
-                  <WidgetPicker
-                    {...(props as WidgetPickerProps)}
-                    fullWidth
-                    required
-                    size="small"
-                    variant="outlined"
-                    error={!value}
-                    helperText={!value ? at('msg-required') : undefined}
-                    targets={layouts.map(({ template }) => template?.id)}
-                    onView={onWidgetView}
-                  />
-                );
-              }
-              case 'PROPS_PICKER': {
-                const { value } = props as PropNameSelectProps;
-
-                const propPath = _toPath(
-                  props.propPath.replace(/\.propName$/, '.widget')
-                );
-
-                return (
-                  <PropNameSelect
-                    {...(props as PropNameSelectProps)}
-                    fullWidth
-                    required
-                    size="small"
-                    variant="outlined"
-                    template={_get(props, ['props', ...propPath])}
-                    error={!value}
-                    helperText={!value ? at('msg-required') : undefined}
-                  />
-                );
-              }
-              default:
-            }
-          }}
         />
       </CraftsmanStyle.FlexDialog>
     </>

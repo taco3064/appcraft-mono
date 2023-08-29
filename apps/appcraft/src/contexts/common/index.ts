@@ -1,3 +1,4 @@
+export * from './PropPathPicker';
 export * from './StatePathPicker';
 export * from './TemplateTodoItem';
 export * from './TodoWrapperPicker';

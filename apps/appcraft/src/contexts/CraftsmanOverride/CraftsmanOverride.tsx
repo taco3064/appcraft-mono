@@ -2,6 +2,7 @@ import * as React from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import _get from 'lodash/get';
 import _omit from 'lodash/omit';
+import _toPath from 'lodash/toPath';
 import type { TodosState, WidgetState } from '@appcraft/types';
 
 import * as Common from '../common';
@@ -29,7 +30,7 @@ export default function CraftsmanOverrideProvider({
 
   const overrides = Common.useCraftsmanOverride({
     //* Mixeds
-    STATE_DEFAULT_PROP_VALUE: (widget, { values, options }) => ({
+    STATE_DEFAULT_PROP_VALUE: (opts, { values, options }) => ({
       ...options,
       options: [
         {
@@ -40,7 +41,7 @@ export default function CraftsmanOverrideProvider({
     }),
 
     //* Namings
-    TEMPLATE_TODO_NAMING: async (widget, { values, propPath }) => {
+    TEMPLATE_TODO_NAMING: async (opts, { values, propPath }) => {
       const templateid: string = _get(values, 'template.id');
       const { state } = await handleFetch.wrapper('widget', templateid);
 
@@ -60,29 +61,57 @@ export default function CraftsmanOverrideProvider({
     },
 
     //* Renders
-    TEMPLATE_TODO_ITEM: (widget, category, props) => (
+    TEMPLATE_TODO_ITEM: (opts, category, props) => (
       <Common.TemplateTodoItem
         {...(props as Common.TemplateTodoItemProps)}
-        CraftedTodoEditorProps={overrides(widget)}
+        CraftedTodoEditorProps={overrides(opts)}
       />
     ),
-    TEMPLATE_WIDGET_PICKER: (widget, category, props) => (
+    TEMPLATE_WIDGET_PICKER: (opts, category, props) => (
       <Common.WidgetPicker
         {...(props as Common.WidgetPickerProps)}
+        {...(hierarchyid && { exclude: [hierarchyid] })}
         fullWidth
         size="small"
         variant="outlined"
-        exclude={[hierarchyid]}
         onView={onWidgetView}
       />
     ),
-    TODO_WRAPPER_PICKER: (widget, category, props) => (
+    TODO_PROPS_WIDGET_PICKER: ({ layouts }, category, props) => (
+      <Common.WidgetPicker
+        {...(props as Common.WidgetPickerProps)}
+        fullWidth
+        required
+        size="small"
+        variant="outlined"
+        error={!props.value}
+        helperText={!props.value ? at('msg-required') : undefined}
+        targets={layouts?.map(({ template }) => template?.id) || []}
+        onView={onWidgetView}
+      />
+    ),
+    TODO_WRAPPER_PICKER: (opts, category, props) => (
       <Common.TodoWrapperPicker
         {...(props as Common.TodoWrapperPickerProps)}
         onView={onTodoView}
       />
     ),
-    TODO_STATE_PATH_PICKER: (widget, category, props) => {
+    TODO_PROPS_PATH_PICKER: (opts, category, props) => (
+      <Common.PropPathPicker
+        {...(props as Common.PropPathPickerProps)}
+        fullWidth
+        required
+        size="small"
+        variant="outlined"
+        error={!props.value}
+        helperText={!props.value ? at('msg-required') : undefined}
+        template={_get(props, [
+          'props',
+          ..._toPath(props.propPath.replace(/\.propName$/, '.widget')),
+        ])}
+      />
+    ),
+    TODO_STATE_PATH_PICKER: ({ widget }, category, props) => {
       const options: [string, WidgetState][] = Object.entries(
         Object.assign(
           {},

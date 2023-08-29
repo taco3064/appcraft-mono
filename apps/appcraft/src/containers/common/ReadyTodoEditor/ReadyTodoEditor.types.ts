@@ -1,6 +1,4 @@
 import type { CraftedWidgetEditorProps } from '@appcraft/craftsman';
-
-import type * as Ctx from '~appcraft/contexts';
 import type { PageData } from '~appcraft/hooks';
 
 //* Variables
@@ -17,6 +15,4 @@ export interface ReadyTodoEditorProps {
   layouts: PageData['layouts'];
   value?: ReadyTodo;
   onConfirm: (value: ReadyTodo) => void;
-  onTodoWrapperView?: Ctx.TodoWrapperViewHandler;
-  onWidgetView?: Ctx.WidgetViewHandler;
 }

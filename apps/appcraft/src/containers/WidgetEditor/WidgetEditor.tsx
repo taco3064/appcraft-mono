@@ -27,7 +27,7 @@ export default function WidgetEditor({
   const [widget, handleWidget] = useWidgetValues({ data, onSave });
 
   const width = useWidth();
-  const override = Ctx.useCraftsmanOverrideContext(widget);
+  const override = Ctx.useCraftsmanOverrideContext({ widget });
   const handleFetch = Ctx.useCraftsmanFetch();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;

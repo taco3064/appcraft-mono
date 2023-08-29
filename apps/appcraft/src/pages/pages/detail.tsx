@@ -9,12 +9,12 @@ import { useTheme } from '@mui/material/styles';
 import type { OutputCollectEvent } from '@appcraft/exhibitor';
 import type { WidgetTodo } from '@appcraft/types';
 
+import * as Ctx from '~appcraft/contexts';
 import * as Hook from '~appcraft/hooks';
 import { CommonButton, TodoOutputStepper } from '~appcraft/components';
 import { PageContainer } from '~appcraft/styles';
 import { PageEditor, TodoEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
-import { useFixedT } from '~appcraft/contexts';
 import type { HierarchyData } from '~appcraft/services';
 import type { PageData } from '~appcraft/hooks';
 
@@ -22,7 +22,7 @@ const PAGE_ACTIONS = ['add', 'ready', 'reset', 'save'];
 const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];
 
 export default function Detail() {
-  const [at, pt, tt] = useFixedT('app', 'pages', 'todos');
+  const [at, pt, tt] = Ctx.useFixedT('app', 'pages', 'todos');
   const { enqueueSnackbar } = useSnackbar();
   const { pathname, query } = useRouter();
   const [output, setOutput] = useState<OutputCollectEvent>();
@@ -53,7 +53,12 @@ export default function Detail() {
   });
 
   return (
-    <>
+    <Ctx.CraftsmanOverrideProvider
+      onTodoView={setTodoHierarchy}
+      onWidgetView={(data) =>
+        global.window?.open(`/widgets/detail?id=${data._id}`, '_blank')
+      }
+    >
       <PageContainer
         ContentProps={{ disableGutters: true }}
         maxWidth="xl"
@@ -77,10 +82,6 @@ export default function Detail() {
           superiors={{ names: superiors, breadcrumbs }}
           onActionNodePick={handlePageActionPick}
           onSave={refetch}
-          onTodoWrapperView={setTodoHierarchy}
-          onWidgetView={(data) =>
-            global.window?.open(`/widgets/detail?id=${data._id}`, '_blank')
-          }
           onOutputCollect={(e, eventName) =>
             enqueueSnackbar(tt('msg-event-outputs', { name: eventName }), {
               variant: 'info',
@@ -149,6 +150,6 @@ export default function Detail() {
           />
         )}
       </CraftsmanStyle.FlexDialog>
-    </>
+    </Ctx.CraftsmanOverrideProvider>
   );
 }

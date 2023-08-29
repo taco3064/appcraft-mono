@@ -48,11 +48,11 @@ const met: Types.MetType = {
 export const useCraftsmanOverride: Types.CraftsmanOverrideHook =
   (override) => (widget) => ({
     overrideMixedOptions: (options) =>
-      _get(override, met.mixed(options) as string)?.(options, widget),
+      _get(override, met.mixed(options) as string)?.(widget, options),
 
     overrideNamingProps: (options) =>
-      _get(override, met.naming(options) as string)?.(options, widget),
+      _get(override, met.naming(options) as string)?.(widget, options),
 
     renderOverrideItem: (...args) =>
-      _get(override, met.render(...args) as string)?.(...args, widget),
+      _get(override, met.render(...args) as string)?.(widget, ...args),
   });

@@ -109,6 +109,7 @@ export default function PageEditor({
         drawer={
           !isSettingOpen ? null : (
             <Common.LayoutPropsEditor
+              layouts={layouts}
               value={layouts[active]}
               onClose={() => handlePage.active(undefined)}
               onChange={(value) => {

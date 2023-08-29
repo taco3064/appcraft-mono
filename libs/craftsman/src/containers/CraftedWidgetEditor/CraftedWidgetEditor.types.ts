@@ -1,6 +1,6 @@
 import type * as Appcraft from '@appcraft/types';
 import type * as Exhibitor from '@appcraft/exhibitor';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 
 import { WidgetAppBar } from '../../styles';
 import type * as Comp from '../../components';
@@ -24,8 +24,11 @@ export type LazyWidgetElementsProps = Omit<
 
 export interface CraftedWidgetEditorProps {
   BackButtonProps?: ComponentProps<typeof WidgetAppBar>['BackButtonProps'];
+  disableRemove?: boolean;
+  disableState?: boolean;
   disableCategories?: Comp.TodoFlowControlsProps['disableCategories'];
   stateTypeFile?: string;
+  title?: ReactNode;
   todoTypeFile?: string;
   version?: string;
   widget: Appcraft.MainWidget;

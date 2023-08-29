@@ -62,7 +62,6 @@ export type LayoutWidget = {
     [breakpoint: string]: Record<'x' | 'y' | 'w' | 'h' | 'minW', number>;
   };
   template: State.Template & {
-    nodes?: { [stateKey: string]: State.Template };
     props?: { [stateKey: string]: unknown };
   };
 };

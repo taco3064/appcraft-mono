@@ -99,39 +99,18 @@ export default function CraftsmanOverrideProvider({
     TODO_PROPS_PATH_PICKER: (opts, category, props) => (
       <Common.PropPathPicker
         {...(props as Common.PropPathPickerProps)}
-        fullWidth
-        required
-        size="small"
-        variant="outlined"
-        error={!props.value}
-        helperText={!props.value ? at('msg-required') : undefined}
         template={_get(props, [
           'props',
           ..._toPath(props.propPath.replace(/\.propName$/, '.widget')),
         ])}
       />
     ),
-    TODO_STATE_PATH_PICKER: ({ widget }, category, props) => {
-      const options: [string, WidgetState][] = Object.entries(
-        Object.assign(
-          {},
-          ...Object.values(_omit(widget?.state || {}, ['todos']))
-        )
-      );
-
-      return (
-        <Common.StatePathPicker
-          {...(props as Omit<Common.StatePathPickerProps, 'options'>)}
-          options={options.map(([path, { category, alias, description }]) => ({
-            value: path,
-            primary: alias,
-            secondary: `${description || at('msg-no-description')} (${ct(
-              `ttl-state-${category}`
-            )})`,
-          }))}
-        />
-      );
-    },
+    TODO_STATE_PATH_PICKER: ({ widget }, category, props) => (
+      <Common.StatePathPicker
+        {...(props as Omit<Common.StatePathPickerProps, 'states'>)}
+        states={_omit(widget?.state || {}, ['todos'])}
+      />
+    ),
   });
 
   const value = React.useRef(overrides);

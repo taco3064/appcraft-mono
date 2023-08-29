@@ -5,16 +5,35 @@ import ModeStandbyIcon from '@mui/icons-material/ModeStandby';
 import TextField from '@mui/material/TextField';
 
 import { useFixedT } from '../useApp';
-import type { StatePathPickerProps } from './StatePathPicker.types';
+import type * as Types from './StatePathPicker.types';
 
 export default function StatePathPicker({
   disabled = false,
   label,
-  options,
+  states,
   value,
   onChange,
-}: StatePathPickerProps) {
-  const [wt] = useFixedT('widgets');
+}: Types.StatePathPickerProps) {
+  const [ct, wt] = useFixedT('appcraft', 'widgets');
+
+  const options = Object.entries(states || {}).reduce<Types.StatePathOption[]>(
+    (result, [category, states]) => {
+      Object.entries(states).forEach(([path, { alias, type, description }]) => {
+        if (type === 'public') {
+          result.push({
+            value: path,
+            primary: alias,
+            secondary: `${ct(`ttl-state-${category}`)} - ${
+              description || path.replace(/.*nodes\./g, '')
+            }`,
+          });
+        }
+      });
+
+      return result;
+    },
+    []
+  );
 
   return (
     <TextField

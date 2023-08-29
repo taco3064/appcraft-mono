@@ -16,7 +16,7 @@ export default function PropPathPicker({
   onChange,
   ...props
 }: Types.PropPathPickerProps) {
-  const [ct] = useFixedT('appcraft');
+  const [at, ct] = useFixedT('app', 'appcraft');
 
   const { data: widget } = useQuery({
     enabled: Boolean(template),
@@ -47,7 +47,13 @@ export default function PropPathPicker({
     <TextField
       {...props}
       SelectProps={{ displayEmpty: true }}
+      fullWidth
+      required
       select
+      size="small"
+      variant="outlined"
+      error={!value}
+      helperText={!value ? at('msg-required') : undefined}
       disabled={!widget || !options.length}
       defaultValue={value || ''}
       onChange={(e) => onChange?.(e.target.value)}

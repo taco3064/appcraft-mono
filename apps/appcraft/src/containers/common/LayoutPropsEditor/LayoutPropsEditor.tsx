@@ -1,8 +1,8 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import _set from 'lodash/set';
 import { CraftedWidgetEditor, CraftsmanStyle } from '@appcraft/craftsman';
 
 import * as Ctx from '~appcraft/contexts';
-import * as Service from '~appcraft/services';
 import { useWidgetTransform } from '~appcraft/hooks';
 import type { LayoutPropsEditorProps } from './LayoutPropsEditor.types';
 
@@ -12,6 +12,7 @@ export default function LayoutPropsEditor({
   onChange,
   onClose,
 }: LayoutPropsEditorProps) {
+  const { template } = value;
   const [at] = Ctx.useFixedT('app');
   const [widget, fetchProps] = useWidgetTransform(value);
   const handleFetch = Ctx.useCraftsmanFetch();
@@ -31,9 +32,13 @@ export default function LayoutPropsEditor({
       version={__WEBPACK_DEFINE__.VERSION}
       disableCategories={['state']}
       widget={widget}
-      onWidgetChange={console.log} //! 想辦法接到 onChange
       onFetchData={handleFetch.data}
       onFetchWrapper={handleFetch.wrapper}
+      onWidgetChange={({ props, todos }) =>
+        onChange({
+          ..._set(value, ['template'], { ...template, props, todos }),
+        })
+      }
       title={
         <CraftsmanStyle.AutoBreakTypography
           primary={widget.type}

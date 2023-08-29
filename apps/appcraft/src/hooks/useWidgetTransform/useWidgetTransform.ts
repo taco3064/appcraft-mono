@@ -46,7 +46,7 @@ export const useWidgetTransform: Types.WidgetTransformHook = (layout) => {
             (result, [path, { alias, type, options }]) => ({
               ...result,
               ...(type === 'public' && {
-                [alias || path]: options,
+                [alias || path]: { ...options, propName: alias || path },
               }),
             }),
             {}

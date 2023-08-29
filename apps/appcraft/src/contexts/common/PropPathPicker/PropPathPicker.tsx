@@ -3,11 +3,13 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import StorageIcon from '@mui/icons-material/Storage';
 import TextField from '@mui/material/TextField';
+import _omit from 'lodash/omit';
 import { useQuery } from '@tanstack/react-query';
 import type { MainWidget } from '@appcraft/types';
 
 import { findConfig } from '~appcraft/services';
-import { useFixedT } from '~appcraft/contexts';
+import { useFixedT } from '../useApp';
+import { usePathOptions } from '../usePathOptions';
 import type * as Types from './PropPathPicker.types';
 
 export default function PropPathPicker({
@@ -16,7 +18,7 @@ export default function PropPathPicker({
   onChange,
   ...props
 }: Types.PropPathPickerProps) {
-  const [at, ct] = useFixedT('app', 'appcraft');
+  const [at] = useFixedT('app');
 
   const { data: widget } = useQuery({
     enabled: Boolean(template),
@@ -25,23 +27,7 @@ export default function PropPathPicker({
     refetchOnWindowFocus: false,
   });
 
-  const options = Object.entries(widget?.content.state || {}).reduce<
-    Types.PropPathOption[]
-  >((result, [category, states]) => {
-    Object.entries(states).forEach(([path, { alias, type, description }]) => {
-      if (type === 'public') {
-        result.push({
-          value: path,
-          primary: alias,
-          secondary: `${ct(`ttl-state-${category}`)} - ${
-            description || path.replace(/.*nodes\./g, '')
-          }`,
-        });
-      }
-    });
-
-    return result;
-  }, []);
+  const options = usePathOptions(_omit(widget?.content.state, ['todos']));
 
   return (
     <TextField

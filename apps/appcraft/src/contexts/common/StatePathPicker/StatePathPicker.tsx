@@ -1,10 +1,11 @@
 import InputAdornment from '@mui/material/InputAdornment';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import ModeStandbyIcon from '@mui/icons-material/ModeStandby';
+import StorageIcon from '@mui/icons-material/Storage';
 import TextField from '@mui/material/TextField';
 
 import { useFixedT } from '../useApp';
+import { usePathOptions } from '../usePathOptions';
 import type * as Types from './StatePathPicker.types';
 
 export default function StatePathPicker({
@@ -14,26 +15,8 @@ export default function StatePathPicker({
   value,
   onChange,
 }: Types.StatePathPickerProps) {
-  const [ct, wt] = useFixedT('appcraft', 'widgets');
-
-  const options = Object.entries(states || {}).reduce<Types.StatePathOption[]>(
-    (result, [category, states]) => {
-      Object.entries(states).forEach(([path, { alias, type, description }]) => {
-        if (type === 'public') {
-          result.push({
-            value: path,
-            primary: alias,
-            secondary: `${ct(`ttl-state-${category}`)} - ${
-              description || path.replace(/.*nodes\./g, '')
-            }`,
-          });
-        }
-      });
-
-      return result;
-    },
-    []
-  );
+  const [wt] = useFixedT('widgets');
+  const options = usePathOptions(states);
 
   return (
     <TextField
@@ -55,24 +38,18 @@ export default function StatePathPicker({
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <ModeStandbyIcon fontSize="small" color="disabled" />
+            <StorageIcon fontSize="small" color="disabled" />
           </InputAdornment>
         ),
       }}
     >
       {options.map(({ primary, secondary, value }) => (
-        <MenuItem
-          key={value}
-          value={value}
-          sx={(theme) => ({ paddingLeft: theme.spacing(2) })}
-        >
+        <MenuItem key={value} value={value}>
           <ListItemText
             {...{ primary, secondary }}
             primaryTypographyProps={{
               variant: 'subtitle1',
               color: 'text.primary',
-              lineHeight: 1.5,
-              style: { margin: 0 },
             }}
             secondaryTypographyProps={{
               variant: 'caption',

@@ -8,7 +8,7 @@ import type { FormEventHandler } from 'react';
 
 import CommonButton from '../CommonButton';
 import RemoveButton from '../RemoveButton';
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/contexts';
 import type { LayoutActionProps } from './LayoutAction.types';
 
 export default function LayoutAction({

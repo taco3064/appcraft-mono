@@ -7,14 +7,11 @@ import { CraftsmanStyle } from '@appcraft/craftsman';
 import { Suspense, useState } from 'react';
 import { useRouter } from 'next/router';
 
+import * as Ctr from '~appcraft/containers';
 import { CommonButton } from '~appcraft/components';
-import {
-  HierarchyList,
-  StateViewer,
-  WidgetPreview,
-} from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
-import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/contexts';
+import { useNodePickHandle } from '~appcraft/hooks';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
 
@@ -50,7 +47,7 @@ export default function Widgets() {
           <title>Appcraft | {nt('ttl-widgets')}</title>
         </Head>
 
-        <HierarchyList
+        <Ctr.HierarchyList
           category={pathname.replace(/^\//, '')}
           icon={ExtensionTwoToneIcon}
           onActionNodePick={handleActionNodePick}
@@ -84,8 +81,8 @@ export default function Widgets() {
         onClose={() => setDetail(undefined)}
       >
         <Suspense fallback={<LinearProgress />}>
-          {detail?.type === 'preview' && <WidgetPreview id={detail.id} />}
-          {detail?.type === 'state' && <StateViewer id={detail.id} />}
+          {detail?.type === 'preview' && <Ctr.WidgetPreview id={detail.id} />}
+          {detail?.type === 'state' && <Ctr.StateViewer id={detail.id} />}
         </Suspense>
       </CraftsmanStyle.FlexDialog>
     </>

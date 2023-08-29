@@ -6,8 +6,8 @@ import { CraftedTypeEditor } from '@appcraft/craftsman';
 import { Breadcrumbs } from '../common';
 import { CommonButton } from '~appcraft/components';
 import { getTypeDefinition } from '~appcraft/services';
-import { useConfigValues } from '~appcraft/hooks';
-import { useFixedT, useNodePicker } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/contexts';
+import { useConfigValues, useNodePicker } from '~appcraft/hooks';
 import type { ConfigDetailProps } from './ConfigDetail.types';
 
 export default function ConfigDetail({

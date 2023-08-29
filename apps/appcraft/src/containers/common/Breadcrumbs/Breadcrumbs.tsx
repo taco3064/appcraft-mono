@@ -10,7 +10,8 @@ import { useRouter } from 'next/router';
 
 import { CommonButton } from '~appcraft/components';
 import { Link } from '~appcraft/styles';
-import { useFixedT, useWidth } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/contexts';
+import { useWidth } from '~appcraft/hooks';
 import type * as Types from './Breadcrumbs.types';
 
 export default function Breadcrumbs({

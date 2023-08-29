@@ -17,7 +17,7 @@ export default function RendererContent<T extends RendererOptions>({
   const { onFetchData, onFetchTodoWrapper, onOutputCollect } = props;
   const layouts = Hook.useGridLayouts(options, GridLayoutProps);
 
-  const [isPrepared, handleState] = Hook.useRendererState(templates, options, {
+  const handleState = Hook.useRendererState(templates, options, {
     onFetchData,
     onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
     onOutputCollect,
@@ -33,8 +33,7 @@ export default function RendererContent<T extends RendererOptions>({
   );
 
   return !Array.isArray(options) ? (
-    (((isPrepared && render(options, { state: { id: options.id } })) ||
-      null) as JSX.Element)
+    ((render(options, { state: { id: options.id } }) || null) as JSX.Element)
   ) : (
     <GridLayout
       {...GridLayoutProps}
@@ -48,9 +47,7 @@ export default function RendererContent<T extends RendererOptions>({
         return (
           <Style.GridLayoutItem key={id} elevation={elevation}>
             <Style.GridLayoutItemContent disableGutters maxWidth={false}>
-              {isPrepared &&
-                widget &&
-                render(widget, { state: { id: widget.id } })}
+              {widget && render(widget, { state: { id: widget.id } })}
 
               <GridAction action={action} layout={layout} />
             </Style.GridLayoutItemContent>

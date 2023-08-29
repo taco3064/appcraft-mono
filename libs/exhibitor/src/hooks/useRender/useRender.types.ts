@@ -35,7 +35,7 @@ export type RenderHook = (
     onLazyRetrieve: (type: string) => LazyWidget;
     onOutputCollect?: Util.OutputCollectHandler;
   },
-  globalState: ReturnType<typeof useRendererState>[1],
+  globalState: ReturnType<typeof useRendererState>,
   render: (
     WidgetElement:
       | React.LazyExoticComponent<React.ComponentType>

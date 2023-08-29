@@ -4,6 +4,10 @@ import type { Dispatch } from 'react';
 import type * as Util from '../../../utils';
 
 //* Variables
+export type InjectionProps = {
+  [widgetid: string]: Omit<Appcraft.LayoutWidget['template'], 'id'>;
+};
+
 export type ReadyHandler =
   | Record<string, Appcraft.WidgetTodo>
   | ((onPropsChange: Util.PropsChangeHandler) => Promise<void>);
@@ -16,22 +20,32 @@ export type ReadyRef = [
 ];
 
 //* Custom Hooks
+export type InitialAction = Map<
+  string,
+  {
+    widget: Appcraft.MainWidget;
+    props?: InjectionProps;
+  }
+>;
+
+export type ReducerAction = {
+  id: string;
+  isProps?: boolean;
+  values: Parameters<Util.StateChangeHandler>[0];
+};
+
 export type ReducerState = Record<
   string,
   {
     [stateKey: string]: {
       category: Appcraft.StateCategory;
+      isProps: boolean;
       value: unknown;
       propPath: string;
       options: Appcraft.WidgetState;
     };
   }
 >;
-
-export type ReducerAction = {
-  id: string;
-  values: Parameters<Util.StateChangeHandler>[0];
-};
 
 export type StateReducerHook = (
   tempaltes: Util.WidgetMap,

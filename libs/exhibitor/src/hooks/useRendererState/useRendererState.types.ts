@@ -9,7 +9,7 @@ import type { ReducerAction, ReducerState } from '../common';
 //* Variables
 type Queue = { id: string; path?: string };
 export type StateQueue = { state: Queue; superiors?: Queue[] };
-export type TodosReturn = ReturnType<ReturnType<RendererStateHook>[1]['todos']>;
+export type TodosReturn = ReturnType<ReturnType<RendererStateHook>['todos']>;
 
 //* Methods
 export type GetSuperiorProps = (
@@ -31,32 +31,29 @@ export type GetSuperiorTodos = (
 //* Custom Hooks
 export type RendererStateHook = (
   ...args: Parameters<typeof useStateReducer>
-) => [
-  boolean,
-  {
-    props: (
-      widget: Appcraft.NodeWidget,
-      queue: StateQueue
-    ) => Required<Appcraft.NodeWidget>['props'];
+) => {
+  props: (
+    widget: Appcraft.NodeWidget,
+    queue: StateQueue
+  ) => Required<Appcraft.NodeWidget>['props'];
 
-    todos: (
-      widget: Appcraft.NodeWidget,
-      queue: StateQueue,
-      options: {
-        onFetchData: Util.FetchDataHandler;
-        onFetchTodoWrapper: Util.FetchTodoWrapperHandler;
-      }
-    ) => Record<
-      string,
-      {
-        todos: Record<string, Appcraft.WidgetTodo>;
-        handlers: ReturnType<typeof getEventHandler>[];
-      }
-    >;
+  todos: (
+    widget: Appcraft.NodeWidget,
+    queue: StateQueue,
+    options: {
+      onFetchData: Util.FetchDataHandler;
+      onFetchTodoWrapper: Util.FetchTodoWrapperHandler;
+    }
+  ) => Record<
+    string,
+    {
+      todos: Record<string, Appcraft.WidgetTodo>;
+      handlers: ReturnType<typeof getEventHandler>[];
+    }
+  >;
 
-    nodes: (
-      widget: Appcraft.NodeWidget,
-      queue: StateQueue
-    ) => Record<string, Appcraft.EntityWidgets | Appcraft.EntityWidgets[]>;
-  }
-];
+  nodes: (
+    widget: Appcraft.NodeWidget,
+    queue: StateQueue
+  ) => Record<string, Appcraft.EntityWidgets | Appcraft.EntityWidgets[]>;
+};

@@ -1,7 +1,7 @@
 import InputAdornment from '@mui/material/InputAdornment';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import StorageIcon from '@mui/icons-material/Storage';
+import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import TextField from '@mui/material/TextField';
 
 import { useFixedT } from '../useApp';
@@ -26,6 +26,7 @@ export default function StatePathPicker({
       select
       size="small"
       variant="outlined"
+      disabled={!options.length}
       error={!options.length || !value}
       onChange={(e) => onChange(e.target.value)}
       helperText={
@@ -38,7 +39,7 @@ export default function StatePathPicker({
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <StorageIcon fontSize="small" color="disabled" />
+            <SaveAltIcon fontSize="small" color="disabled" />
           </InputAdornment>
         ),
       }}

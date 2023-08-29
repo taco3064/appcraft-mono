@@ -1,7 +1,7 @@
 import InputAdornment from '@mui/material/InputAdornment';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
-import StorageIcon from '@mui/icons-material/Storage';
+import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import TextField from '@mui/material/TextField';
 import _omit from 'lodash/omit';
 import { useQuery } from '@tanstack/react-query';
@@ -13,12 +13,13 @@ import { usePathOptions } from '../usePathOptions';
 import type * as Types from './PropPathPicker.types';
 
 export default function PropPathPicker({
+  disabled = false,
+  label,
   template,
   value,
   onChange,
-  ...props
 }: Types.PropPathPickerProps) {
-  const [at] = useFixedT('app');
+  const [wt] = useFixedT('widgets');
 
   const { data: widget } = useQuery({
     enabled: Boolean(template),
@@ -31,22 +32,26 @@ export default function PropPathPicker({
 
   return (
     <TextField
-      {...props}
-      SelectProps={{ displayEmpty: true }}
+      {...{ disabled, label, value }}
       fullWidth
       required
       select
       size="small"
       variant="outlined"
-      error={!value}
-      helperText={!value ? at('msg-required') : undefined}
       disabled={!widget || !options.length}
-      defaultValue={value || ''}
+      error={!value}
       onChange={(e) => onChange?.(e.target.value)}
+      helperText={
+        !options.length
+          ? wt('msg-no-options')
+          : !value
+          ? wt('msg-required')
+          : undefined
+      }
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <StorageIcon fontSize="small" color="disabled" />
+            <SaveAltIcon fontSize="small" color="disabled" />
           </InputAdornment>
         ),
       }}

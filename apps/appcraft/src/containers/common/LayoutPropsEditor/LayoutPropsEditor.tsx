@@ -11,9 +11,8 @@ import { Fragment, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { MainWidget, WidgetState } from '@appcraft/types';
 
-import * as Comp from '~appcraft/components';
 import { findConfig, searchHierarchy } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/contexts';
 import type { LayoutPropsEditorProps } from './LayoutPropsEditor.types';
 
 export default function LayoutPropsEditor({

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { ConfigOptions } from '@appcraft/types';
 
 import { upsertConfig } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/contexts';
 import type { ConfigValuesHook } from './useConfigValues.types';
 
 export const useConfigValues: ConfigValuesHook = ({

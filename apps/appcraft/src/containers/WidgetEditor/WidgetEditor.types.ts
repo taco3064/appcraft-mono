@@ -4,7 +4,6 @@ import type * as Exhibitor from '@appcraft/exhibitor';
 
 import { ResponsiveDrawer } from '~appcraft/styles';
 import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
-import type { TodoWrapperSelectProps, WidgetSelectProps } from '../common';
 
 export type HandleFetchWrapper =
   Exhibitor.CraftedRendererProps['onFetchWrapper'];
@@ -16,8 +15,6 @@ export interface WidgetEditorProps {
   onActionNodePick?: NodePickerFn<'expand' | 'reset' | 'save'>;
   onOutputCollect?: Exhibitor.OutputCollectHandler;
   onSave?: () => void;
-  onTodoWrapperView?: TodoWrapperSelectProps['onView'];
-  onWidgetWrapperView?: WidgetSelectProps['onView'];
 
   superiors?: {
     names: Record<string, string>;

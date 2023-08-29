@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import CommonButton, { CommonButtonProps } from '../CommonButton';
 import { ArcAlert } from '~appcraft/styles';
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/contexts';
 import type * as Types from './RemoveButton.types';
 
 export default function RemoveButton({

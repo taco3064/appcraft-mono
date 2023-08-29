@@ -16,7 +16,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { MainWidget, WidgetState } from '@appcraft/types';
 
 import { findConfig } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/contexts';
 import type * as Types from './StateViewer.types';
 
 const ICONS: Types.StateIcon = {

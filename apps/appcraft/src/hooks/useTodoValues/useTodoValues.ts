@@ -7,7 +7,7 @@ import type { OutputData } from '@appcraft/exhibitor';
 import type { WidgetTodo } from '@appcraft/types';
 
 import { upsertConfig } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/contexts';
 import type { TodoValuesHook } from './useTodoValues.types';
 
 export const useTodoValues: TodoValuesHook = ({ data, onOpen, onSave }) => {

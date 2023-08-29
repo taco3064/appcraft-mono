@@ -6,7 +6,7 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 
-import { useFixedT } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/contexts';
 import type * as Types from './HierarchyItem.types';
 
 export default function HierarchyItem({

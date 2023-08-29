@@ -7,23 +7,24 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type { ConfigOptions } from '@appcraft/types';
 
-import * as Hook from '~appcraft/hooks';
 import { CommonButton } from '~appcraft/components';
 import { ConfigDetail } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
+import { useFixedT, useSettingModified } from '~appcraft/contexts';
+import { useHierarchyFilter, useNodePickHandle } from '~appcraft/hooks';
 
 const CONFIG_DETAIL_ACTIONS = ['reset', 'save'];
 
 export default function Detail() {
-  const [at, tt] = Hook.useFixedT('app', 'themes');
-  const [, handleSetting] = Hook.useSettingModified();
+  const [at, tt] = useFixedT('app', 'themes');
+  const [, handleSetting] = useSettingModified();
   const { pathname, query } = useRouter();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
-  const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
+  const { superiors, breadcrumbs } = useHierarchyFilter(category, id);
 
-  const [action, handleActionNodePick] = Hook.useNodePickHandle(
+  const [action, handleActionNodePick] = useNodePickHandle(
     CONFIG_DETAIL_ACTIONS
   );
 

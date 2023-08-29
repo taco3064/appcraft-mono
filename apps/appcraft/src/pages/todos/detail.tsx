@@ -7,11 +7,12 @@ import * as Hook from '~appcraft/hooks';
 import { PageContainer } from '~appcraft/styles';
 import { TodoEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
+import { useFixedT } from '~appcraft/contexts';
 
 const TODO_EDITOR_ACTIONS = ['run', 'reset', 'save'];
 
 export default function Detail() {
-  const [tt] = Hook.useFixedT('todos');
+  const [tt] = useFixedT('todos');
   const { pathname, query } = useRouter();
 
   const height = Hook.useHeight();

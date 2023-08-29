@@ -1,8 +1,5 @@
 import type { CraftedWidgetEditorProps } from '@appcraft/craftsman';
-
 import type { PageData } from '~appcraft/hooks';
-import type { TodoWrapperSelectProps } from '../TodoWrapperSelect';
-import type { WidgetSelectProps } from '../WidgetSelect';
 
 //* Variables
 type ReadyTodo = PageData['readyTodos'];
@@ -18,6 +15,4 @@ export interface ReadyTodoEditorProps {
   layouts: PageData['layouts'];
   value?: ReadyTodo;
   onConfirm: (value: ReadyTodo) => void;
-  onTodoWrapperView?: TodoWrapperSelectProps['onView'];
-  onWidgetWrapperView?: WidgetSelectProps['onView'];
 }

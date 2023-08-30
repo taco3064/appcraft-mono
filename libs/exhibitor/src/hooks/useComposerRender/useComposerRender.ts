@@ -4,7 +4,7 @@ import { lazy, useTransition } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Util from '../../utils';
-import type * as Types from './useRender.types';
+import type * as Types from './useComposerRender.types';
 
 const LazyPlainText = lazy<Types.PlainTextComponent>(async () => ({
   default: ({ children }) => children as JSX.Element,
@@ -43,7 +43,7 @@ const getGeneratorOptions: Types.GetGeneratorOptions = (
     : { superiors, state: { ...state, path: Util.getPropPath([path, index]) } };
 };
 
-export const useRender: Types.RenderHook = (
+export const useComposerRender: Types.ComposerRenderHook = (
   { onFetchData, onFetchTodoWrapper, onLazyRetrieve, onOutputCollect },
   globalState,
   render

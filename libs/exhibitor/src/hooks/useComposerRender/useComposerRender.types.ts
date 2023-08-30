@@ -1,9 +1,9 @@
 import type * as Appcraft from '@appcraft/types';
 import type * as React from 'react';
 
-import { useRendererState } from '../useRendererState';
+import { usePropsStateMaestro } from '../usePropsStateMaestro';
 import type * as Util from '../../utils';
-import type { StateQueue } from '../useRendererState';
+import type { StateQueue } from '../usePropsStateMaestro';
 
 //* Variables
 type LazyWidget = React.LazyExoticComponent<React.ComponentType>;
@@ -28,14 +28,14 @@ export type GetGeneratorOptions = (
 ) => StateQueue;
 
 //* Custom Hook
-export type RenderHook = (
+export type ComposerRenderHook = (
   options: {
     onFetchData: Util.FetchDataHandler;
     onFetchTodoWrapper: FetchWrapperHandler<'todo'>;
     onLazyRetrieve: (type: string) => LazyWidget;
     onOutputCollect?: Util.OutputCollectHandler;
   },
-  globalState: ReturnType<typeof useRendererState>,
+  globalState: ReturnType<typeof usePropsStateMaestro>,
   render: (
     WidgetElement:
       | React.LazyExoticComponent<React.ComponentType>

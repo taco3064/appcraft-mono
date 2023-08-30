@@ -1,6 +1,6 @@
+export * from './useComposerRender';
 export * from './useGridLayouts';
-export * from './useLazyRenderer';
-export * from './useRender';
-export * from './useRendererState';
+export * from './useLazyWidgetInitial';
+export * from './usePropsStateMaestro';
 
 export type { ReadyHandler } from './common';

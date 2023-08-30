@@ -1,10 +1,10 @@
 import { GridAction, GridLayout } from '../common';
 import * as Hook from '../../hooks';
 import * as Style from '../../styles';
-import type * as Types from './RendererContent.types';
+import type * as Types from './ExhibitionContent.types';
 import type { RendererOptions } from '../../utils';
 
-export default function RendererContent<T extends RendererOptions>({
+export default function ExhibitionContent<T extends RendererOptions>({
   GridLayoutProps,
   action,
   breakpoint,
@@ -13,18 +13,18 @@ export default function RendererContent<T extends RendererOptions>({
   templates,
   onReady,
   ...props
-}: Types.RendererContentProps<T>) {
+}: Types.ExhibitionContentProps<T>) {
   const { onFetchData, onFetchTodoWrapper, onOutputCollect } = props;
   const layouts = Hook.useGridLayouts(options, GridLayoutProps);
 
-  const handleState = Hook.useRendererState(templates, options, {
+  const handleState = Hook.usePropsStateMaestro(templates, options, {
     onFetchData,
     onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
     onOutputCollect,
     onReady,
   });
 
-  const render = Hook.useRender(
+  const render = Hook.useComposerRender(
     props,
     handleState,
     (Widget, { key, props: widgetProps }) => (

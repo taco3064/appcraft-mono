@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import type { ComponentProps } from 'react';
 
 import * as Hook from '../../hooks';
-import { RendererContent } from '../../components';
+import { ExhibitionContent } from '../../components';
 import type * as Types from './CraftedRenderer.types';
 
 export default function CraftedRenderer({
@@ -18,21 +18,22 @@ export default function CraftedRenderer({
   onOutputCollect,
   onReady,
 }: Types.CraftedRendererProps) {
-  const LazyRenderer = Hook.useLazyRenderer<Types.LazyRendererProps>(
-    options as Parameters<typeof Hook.useLazyRenderer>[0],
-    onFetchWrapper,
-    ({ fetchData, ...props }) => (
-      <RendererContent
-        {...(props as ComponentProps<typeof RendererContent>)}
-        templates={fetchData as Exclude<typeof fetchData, undefined>}
-      />
-    )
-  );
+  const LazyContent =
+    Hook.useLazyWidgetInitial<Types.LazyExhibitionContentProps>(
+      options as Parameters<typeof Hook.useLazyWidgetInitial>[0],
+      onFetchWrapper,
+      ({ fetchData, ...props }) => (
+        <ExhibitionContent
+          {...(props as ComponentProps<typeof ExhibitionContent>)}
+          templates={fetchData as Exclude<typeof fetchData, undefined>}
+        />
+      )
+    );
 
   return (
     <Suspense fallback={<LinearProgress />}>
       {options && (
-        <LazyRenderer
+        <LazyContent
           {...{
             GridLayoutProps,
             action,

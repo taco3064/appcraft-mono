@@ -1,1 +1,1 @@
-export * from './RendererContent';
+export * from './ExhibitionContent';

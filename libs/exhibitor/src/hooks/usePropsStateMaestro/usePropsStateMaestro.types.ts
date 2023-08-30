@@ -8,8 +8,12 @@ import type { ReducerAction, ReducerState } from '../common';
 
 //* Variables
 type Queue = { id: string; path?: string };
+
 export type StateQueue = { state: Queue; superiors?: Queue[] };
-export type TodosReturn = ReturnType<ReturnType<RendererStateHook>['todos']>;
+
+export type TodosReturn = ReturnType<
+  ReturnType<PropsStateMaestroHook>['todos']
+>;
 
 //* Methods
 export type GetSuperiorProps = (
@@ -29,7 +33,7 @@ export type GetSuperiorTodos = (
 ) => TodosReturn;
 
 //* Custom Hooks
-export type RendererStateHook = (
+export type PropsStateMaestroHook = (
   ...args: Parameters<typeof useStateReducer>
 ) => {
   props: (

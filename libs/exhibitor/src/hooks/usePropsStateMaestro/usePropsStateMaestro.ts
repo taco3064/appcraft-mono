@@ -5,7 +5,7 @@ import type * as Appcraft from '@appcraft/types';
 
 import { getEventHandler } from '../../utils';
 import { useStateReducer } from '../common';
-import type * as Types from './useRendererState.types';
+import type * as Types from './usePropsStateMaestro.types';
 
 const getSuperiorProps: Types.GetSuperiorProps = (states, superiors = []) =>
   superiors.reduce((result, { id, path }) => {
@@ -79,7 +79,7 @@ const getSuperiorTodos: Types.GetSuperiorTodos = (
     {}
   );
 
-export const useRendererState: Types.RendererStateHook = (
+export const usePropsStateMaestro: Types.PropsStateMaestroHook = (
   templates, //* Map Key: Configurate ID
   ...options
 ) => {

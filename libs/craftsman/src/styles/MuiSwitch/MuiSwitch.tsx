@@ -15,8 +15,13 @@ export const WidgetNodeSwitch = withStyles(
       />
     )
   ),
-  (theme, { value }) => {
-    const color = theme.palette[value === 'events' ? 'success' : 'info'];
+  (theme, { disabled = false, value }) => {
+    const color = disabled
+      ? {
+          main: theme.palette.action.disabled,
+          dark: theme.palette.text.disabled,
+        }
+      : theme.palette[value === 'events' ? 'success' : 'info'];
 
     return {
       root: {
@@ -35,7 +40,7 @@ export const WidgetNodeSwitch = withStyles(
       },
       track: {
         opacity: 1,
-        background: theme.palette.action.disabled,
+        background: theme.palette.divider,
         borderRadius: 20 / 2,
       },
       thumb: {

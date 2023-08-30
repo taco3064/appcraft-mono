@@ -1,7 +1,7 @@
 import type * as Appcraft from '@appcraft/types';
 
-import type { FetchWrapperHandler } from '../useRender';
-import type { WidgetMap } from '../useRendererState';
+import type { FetchWrapperHandler } from '../useComposerRender';
+import type { WidgetMap } from '../../utils';
 
 export type WidgetInfo = {
   id: string;

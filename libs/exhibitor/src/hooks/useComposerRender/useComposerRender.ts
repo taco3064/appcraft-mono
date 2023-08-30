@@ -4,7 +4,7 @@ import { lazy, useTransition } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Util from '../../utils';
-import type * as Types from './useRender.types';
+import type * as Types from './useComposerRender.types';
 
 const LazyPlainText = lazy<Types.PlainTextComponent>(async () => ({
   default: ({ children }) => children as JSX.Element,
@@ -43,7 +43,7 @@ const getGeneratorOptions: Types.GetGeneratorOptions = (
     : { superiors, state: { ...state, path: Util.getPropPath([path, index]) } };
 };
 
-export const useRender: Types.RenderHook = (
+export const useComposerRender: Types.ComposerRenderHook = (
   { onFetchData, onFetchTodoWrapper, onLazyRetrieve, onOutputCollect },
   globalState,
   render
@@ -66,29 +66,26 @@ export const useRender: Types.RenderHook = (
             });
 
             Object.entries(todos).forEach(([propPath, { todos, handlers }]) =>
-              _set(props, propPath, (...e: unknown[]) =>
+              _set(props, propPath, (...e: unknown[]) => {
+                const start = Date.now();
+
                 startTransition(() => {
-                  (async () => {
-                    const start = Date.now();
-                    const outputs: Util.OutputData[] = [];
-
-                    for (const handler of handlers) {
-                      const args = [{ [Util.OUTPUTS_SYMBOL]: outputs }, ...e];
-
-                      outputs.push(...(await handler(...args)));
-                    }
-
-                    onOutputCollect?.(
-                      {
-                        duration: Date.now() - start,
-                        outputs,
-                        todos,
-                      },
-                      propPath
+                  handlers
+                    .reduce(
+                      (result, handler) =>
+                        result.then((outputs) =>
+                          handler({ [Util.OUTPUTS_SYMBOL]: outputs }, ...e)
+                        ),
+                      Promise.resolve<Util.OutputData[]>([])
+                    )
+                    .then((outputs) =>
+                      onOutputCollect?.(
+                        { duration: Date.now() - start, outputs, todos },
+                        propPath
+                      )
                     );
-                  })();
-                })
-              )
+                });
+              })
             );
           } else if (type === 'nodes') {
             Object.entries(globalState.nodes(widget, queue)).forEach(

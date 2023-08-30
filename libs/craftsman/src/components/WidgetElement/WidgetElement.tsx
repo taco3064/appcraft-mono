@@ -21,6 +21,7 @@ import type { MixedWidget, WidgetElementProps } from './WidgetElement.types';
 
 export default function WidgetElement<I extends Appcraft.EntityWidgets>({
   basePaths,
+  disableRemove = false,
   event,
   index,
   item,
@@ -95,23 +96,29 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
         />
 
         <Style.TypeItemAction>
-          {open && nodes.length > 0 && events.length > 0 && (
+          {open && (
             <Tooltip title={ct(`btn-${display}`)}>
-              <Style.WidgetNodeSwitch value={display} onChange={setDisplay} />
+              <Style.WidgetNodeSwitch
+                disabled={nodes.length === 0 || events.length === 0}
+                value={display}
+                onChange={setDisplay}
+              />
             </Tooltip>
           )}
 
-          <Style.IconTipButton
-            title={ct('btn-remove-widget')}
-            onClick={() =>
-              onRemove([
-                ...basePaths,
-                ...(superiorNodeType === 'node' ? [index] : []),
-              ])
-            }
-          >
-            <CloseIcon />
-          </Style.IconTipButton>
+          {!disableRemove && (
+            <Style.IconTipButton
+              title={ct('btn-remove-widget')}
+              onClick={() =>
+                onRemove([
+                  ...basePaths,
+                  ...(superiorNodeType === 'node' ? [index] : []),
+                ])
+              }
+            >
+              <CloseIcon />
+            </Style.IconTipButton>
+          )}
         </Style.TypeItemAction>
       </ListItemButton>
 

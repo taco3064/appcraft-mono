@@ -35,7 +35,10 @@ const getActiveType: Types.GetActiveType = ({
 export default function CraftedWidgetEditor({
   BackButtonProps,
   disableCategories,
+  disableRemove = false,
+  disableState = false,
   stateTypeFile,
+  title,
   todoTypeFile,
   version,
   widget,
@@ -191,6 +194,7 @@ export default function CraftedWidgetEditor({
 
       <StateProvider
         basePath={widgetPath}
+        disabled={disableState}
         toggle={stateToggle}
         values={widget}
         onChange={onWidgetChange}
@@ -220,9 +224,9 @@ export default function CraftedWidgetEditor({
         >
           <Style.WidgetAppBar
             BackButtonProps={BackButtonProps}
-            action={stateToggle}
+            action={disableState ? null : stateToggle}
           >
-            {ct('ttl-structure')}
+            {title || ct('ttl-structure')}
           </Style.WidgetAppBar>
 
           <List
@@ -255,6 +259,7 @@ export default function CraftedWidgetEditor({
               <Suspense fallback={<LinearProgress />}>
                 <LazyWidgetElements
                   basePaths={paths}
+                  disableRemove={disableRemove}
                   superiorNodeType={type}
                   onClick={handleMutation.editing}
                   onEventActive={handleMutation.todo}

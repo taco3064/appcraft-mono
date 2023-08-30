@@ -11,5 +11,6 @@ export * from './MuiListItemSecondaryAction';
 export * from './MuiListSubheader';
 export * from './MuiSwitch';
 export * from './MuiTextField';
+export * from './MuiTooltip';
 export * from './MuiTypography';
 export * from './ReactFlow';

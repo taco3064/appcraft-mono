@@ -5,6 +5,6 @@ import type { LayoutWidget, MainWidget } from '@appcraft/types';
 export type WidgetTransformHook = (
   layout: LayoutWidget
 ) => [
-  MainWidget,
+  MainWidget | undefined,
   Pick<CraftedWidgetEditorProps, 'onFetchDefinition' | 'onFetchNodesAndEvents'>
 ];

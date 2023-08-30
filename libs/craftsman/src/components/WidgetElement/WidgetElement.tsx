@@ -6,7 +6,6 @@ import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Tooltip from '@mui/material/Tooltip';
 import _get from 'lodash/get';
 import { useMemo, useState } from 'react';
 import { useDndContext } from '@dnd-kit/core';
@@ -21,7 +20,6 @@ import type { MixedWidget, WidgetElementProps } from './WidgetElement.types';
 
 export default function WidgetElement<I extends Appcraft.EntityWidgets>({
   basePaths,
-  disableRemove = false,
   event,
   index,
   item,
@@ -99,31 +97,29 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
 
         <Style.TypeItemAction>
           {open && (
-            <Tooltip
+            <Style.AppcraftHint
               title={ct(`btn-${display}`)}
-              {...(isSwitchDisabled && { open: false })}
+              disabled={isSwitchDisabled}
             >
               <Style.WidgetNodeSwitch
                 disabled={isSwitchDisabled}
                 value={display}
                 onChange={setDisplay}
               />
-            </Tooltip>
+            </Style.AppcraftHint>
           )}
 
-          {!disableRemove && (
-            <Style.IconTipButton
-              title={ct('btn-remove-widget')}
-              onClick={() =>
-                onRemove([
-                  ...basePaths,
-                  ...(superiorNodeType === 'node' ? [index] : []),
-                ])
-              }
-            >
-              <CloseIcon />
-            </Style.IconTipButton>
-          )}
+          <Style.IconTipButton
+            title={ct('btn-remove-widget')}
+            onClick={() =>
+              onRemove([
+                ...basePaths,
+                ...(superiorNodeType === 'node' ? [index] : []),
+              ])
+            }
+          >
+            <CloseIcon />
+          </Style.IconTipButton>
         </Style.TypeItemAction>
       </ListItemButton>
 

@@ -1,6 +1,7 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import _set from 'lodash/set';
 import { CraftedWidgetEditor, CraftsmanStyle } from '@appcraft/craftsman';
+import type { CraftedWidgetEditorProps } from '@appcraft/craftsman';
 
 import * as Ctx from '~appcraft/contexts';
 import { useWidgetTransform } from '~appcraft/hooks';
@@ -22,27 +23,38 @@ export default function LayoutPropsEditor({
     widget,
   });
 
+  const handleWidgetChange: CraftedWidgetEditorProps['onWidgetChange'] = (
+    newWidget
+  ) => {
+    const { props, todos } = newWidget || {};
+
+    !newWidget && onClose();
+
+    onChange({
+      ..._set(
+        value,
+        ['template'],
+        !newWidget ? {} : { ...template, props, todos }
+      ),
+    });
+  };
+
   return (
     <CraftedWidgetEditor
       {...override}
       {...fetchProps}
-      disableRemove
       disableState
       todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
       version={__WEBPACK_DEFINE__.VERSION}
-      disableCategories={['state']}
+      disableTodoCategories={['state']}
       widget={widget}
       onFetchData={handleFetch.data}
       onFetchWrapper={handleFetch.wrapper}
-      onWidgetChange={({ props, todos }) =>
-        onChange({
-          ..._set(value, ['template'], { ...template, props, todos }),
-        })
-      }
+      onWidgetChange={handleWidgetChange}
       title={
         <CraftsmanStyle.AutoBreakTypography
-          primary={widget.type}
-          secondary={widget.description}
+          primary={widget?.type}
+          secondary={widget?.description}
         />
       }
       BackButtonProps={{

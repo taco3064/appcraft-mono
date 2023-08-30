@@ -24,9 +24,8 @@ export type LazyWidgetElementsProps = Omit<
 
 export interface CraftedWidgetEditorProps {
   BackButtonProps?: ComponentProps<typeof WidgetAppBar>['BackButtonProps'];
-  disableRemove?: boolean;
   disableState?: boolean;
-  disableCategories?: Comp.TodoFlowControlsProps['disableCategories'];
+  disableTodoCategories?: Comp.TodoFlowControlsProps['disableCategories'];
   stateTypeFile?: string;
   title?: ReactNode;
   todoTypeFile?: string;

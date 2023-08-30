@@ -34,8 +34,7 @@ const getActiveType: Types.GetActiveType = ({
 
 export default function CraftedWidgetEditor({
   BackButtonProps,
-  disableCategories,
-  disableRemove = false,
+  disableTodoCategories,
   disableState = false,
   stateTypeFile,
   title,
@@ -168,13 +167,13 @@ export default function CraftedWidgetEditor({
         <CraftedTodoEditor
           {...(todoPath && { todoPath })}
           {...{
-            disableCategories,
             overrideNamingProps,
             renderOverrideItem,
             onFetchData,
             onFetchDefinition,
           }}
           fullHeight
+          disableCategories={disableTodoCategories}
           typeFile={todoTypeFile}
           values={editedWidget.todos?.[todoPath as string]}
           onFetchTodoWrapper={onFetchWrapper}
@@ -259,7 +258,6 @@ export default function CraftedWidgetEditor({
               <Suspense fallback={<LinearProgress />}>
                 <LazyWidgetElements
                   basePaths={paths}
-                  disableRemove={disableRemove}
                   superiorNodeType={type}
                   onClick={handleMutation.editing}
                   onEventActive={handleMutation.todo}

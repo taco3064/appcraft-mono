@@ -10,9 +10,7 @@ export const useWidgetTransform: Types.WidgetTransformHook = (layout) => {
   const { template } = layout;
   const { id, props, todos } = template;
 
-  const {
-    data: [hierarchy],
-  } = useQuery({
+  const { data } = useQuery({
     enabled: Boolean(template.id),
     queryKey: ['widgets', { type: 'item', targets: [template.id] }],
     queryFn: Service.searchHierarchy,
@@ -20,11 +18,11 @@ export const useWidgetTransform: Types.WidgetTransformHook = (layout) => {
   });
 
   return [
-    {
+    data?.[0] && {
       category: 'node',
-      description: hierarchy.description,
+      description: data[0].description,
       id,
-      type: hierarchy.name,
+      type: data[0].name,
       typeFile: 'widget',
       typeName: id,
       state: {},

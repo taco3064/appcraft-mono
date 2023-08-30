@@ -64,10 +64,17 @@ export default function PageEditor({
         save: (
           <Comp.CommonButton
             btnVariant="icon"
-            disabled={breakpoint !== 'xl'}
             icon={<SaveAltIcon />}
             text={at('btn-save')}
             onClick={handlePage.save}
+            disabled={
+              !layouts.length ||
+              layouts.some(
+                ({ layout, template }) =>
+                  !template?.id ||
+                  Object.keys(layout).length < theme.breakpoints.keys.length
+              )
+            }
           />
         ),
       }),

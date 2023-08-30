@@ -78,7 +78,7 @@ export default function StateViewer({ id }: Types.StateViewerProps) {
 
             <Collapse in={!list.length || expanded.has(category)}>
               {list.length === 0 && (
-                <ListItem disabled>
+                <ListItem>
                   <ListItemIcon />
 
                   <ListItemText

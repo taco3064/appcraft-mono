@@ -80,7 +80,12 @@ export default function WidgetState({
           }}
         >
           {TABS.map((value) => (
-            <Tab key={value} label={ct(`ttl-state-${value}`)} value={value} />
+            <Tab
+              key={value}
+              label={ct(`ttl-state-${value}`)}
+              disabled={Boolean(editing)}
+              value={value}
+            />
           ))}
         </Tabs>
 

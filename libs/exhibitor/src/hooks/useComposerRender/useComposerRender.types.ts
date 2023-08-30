@@ -45,4 +45,8 @@ export type ComposerRenderHook = (
       props: React.ComponentProps<typeof WidgetElement>;
     }
   ) => JSX.Element
-) => (widget: Appcraft.EntityWidgets, options: StateQueue) => React.ReactNode;
+) => (
+  widget: Appcraft.EntityWidgets,
+  options: StateQueue,
+  index?: number
+) => React.ReactNode;

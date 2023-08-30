@@ -5,7 +5,7 @@ import type * as Types from './MuiIconButton.types';
 
 export function IconTipButton({ title, ...props }: Types.IconTipButtonProps) {
   return (
-    <Tooltip title={title}>
+    <Tooltip title={title} {...(props.disabled && { open: false })}>
       <IconButton {...props} />
     </Tooltip>
   );

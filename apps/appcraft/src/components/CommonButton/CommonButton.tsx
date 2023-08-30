@@ -27,7 +27,7 @@ export default function CommonButton({
 
     case 'icon': {
       return (
-        <Tooltip title={text}>
+        <Tooltip title={text} {...(props?.disabled && { open: false })}>
           <IconButton {...(props as IconButtonProps)}>{icon}</IconButton>
         </Tooltip>
       );

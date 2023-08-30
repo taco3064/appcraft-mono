@@ -27,7 +27,7 @@ const ICONS: Types.StateIcon = {
 
 export default function StateViewer({ id }: Types.StateViewerProps) {
   const [ct] = useFixedT('appcraft');
-  const [expanded, setExpanded] = useState(new Set<string>());
+  const [collapsed, setCollapsed] = useState(new Set<string>());
 
   const { data: widget } = useQuery({
     queryKey: [id],
@@ -46,15 +46,15 @@ export default function StateViewer({ id }: Types.StateViewerProps) {
           <Fragment key={category}>
             <ListItemButton
               disabled={!list.length}
-              selected={expanded.has(category)}
+              selected={!collapsed.has(category)}
               onClick={() => {
-                if (expanded.has(category)) {
-                  expanded.delete(category);
+                if (collapsed.has(category)) {
+                  collapsed.delete(category);
                 } else {
-                  expanded.add(category);
+                  collapsed.add(category);
                 }
 
-                setExpanded(new Set(expanded));
+                setCollapsed(new Set(collapsed));
               }}
             >
               <ListItemIcon>{icon}</ListItemIcon>
@@ -68,15 +68,15 @@ export default function StateViewer({ id }: Types.StateViewerProps) {
               />
 
               <ListItemSecondaryAction>
-                {expanded.has(category) ? (
-                  <ExpandLessIcon />
-                ) : (
+                {collapsed.has(category) ? (
                   <ExpandMoreIcon />
+                ) : (
+                  <ExpandLessIcon />
                 )}
               </ListItemSecondaryAction>
             </ListItemButton>
 
-            <Collapse in={!list.length || expanded.has(category)}>
+            <Collapse in={!list.length || !collapsed.has(category)}>
               {list.length === 0 && (
                 <ListItem>
                   <ListItemIcon />
@@ -91,16 +91,33 @@ export default function StateViewer({ id }: Types.StateViewerProps) {
                 </ListItem>
               )}
 
-              {list.map(([path, { alias, description }]) => (
-                <ListItemButton key={path}>
-                  <ListItemIcon />
+              {list.map(
+                ([path, { category, alias, description, ...state }]) => (
+                  <ListItem key={path}>
+                    <ListItemIcon />
 
-                  <ListItemText
-                    primary={alias}
-                    secondary={description || path.replace(/.*nodes\./g, '')}
-                  />
-                </ListItemButton>
-              ))}
+                    <ListItemText
+                      primary={
+                        category !== 'props'
+                          ? alias || ct('msg-no-alias')
+                          : `${alias || ct('msg-no-alias')} (${_get(state, [
+                              'options',
+                              'type',
+                            ])})`
+                      }
+                      secondary={description || path.replace(/.*nodes\./g, '')}
+                      primaryTypographyProps={{
+                        fontWeight: 'bolder',
+                        color: alias ? 'text.primary' : 'error',
+                      }}
+                      secondaryTypographyProps={{
+                        variant: 'caption',
+                        color: 'text.secondary',
+                      }}
+                    />
+                  </ListItem>
+                )
+              )}
             </Collapse>
           </Fragment>
         );

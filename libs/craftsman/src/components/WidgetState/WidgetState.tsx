@@ -114,8 +114,12 @@ export default function WidgetState({
             states.map(([path, { alias, description }]) => (
               <ListItemButton key={path} onClick={() => handleEditToggle(path)}>
                 <ListItemText
-                  primary={alias}
+                  primary={alias || ct('msg-no-alias')}
                   secondary={description || path.replace(/.*nodes\./g, '')}
+                  primaryTypographyProps={{
+                    fontWeight: 'bolder',
+                    color: alias ? 'text.primary' : 'error',
+                  }}
                   secondaryTypographyProps={{
                     variant: 'caption',
                     color: 'text.secondary',

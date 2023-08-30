@@ -26,6 +26,7 @@
   "lbl-plain-text": "文字內容",
   "lbl-prop-naming": "設置名稱({{ name }})",
   "lbl-widget-type": "類型",
+  "msg-no-alias": "未設定別名",
   "msg-no-properties": "沒有可顯示之設置項目",
   "msg-no-state": "沒有可顯示之狀態項目",
   "msg-no-widget": "此區塊將顯示當前組件的組成結構。請點擊新增以開始建構網頁內容",

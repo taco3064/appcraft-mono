@@ -9,11 +9,12 @@ import TextField from '@mui/material/TextField';
 import TitleIcon from '@mui/icons-material/Title';
 import dayjs from 'dayjs';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
-import { useEffect, useRef } from 'react';
+import type { ComponentProps } from 'react';
 
 import BoolInput from '../BoolInput';
 import NumberInput from '../NumberInput';
 import { AdornmentTextField, TypeItemAction } from '../../../styles';
+import { useLocalesContext } from '../../../contexts';
 import { usePropValue } from '../../../hooks';
 import type { TypeItemPureProps } from './TypeItemPure.types';
 
@@ -25,10 +26,22 @@ export default function TypeItemPure({
   propPath,
   selection,
 }: TypeItemPureProps) {
+  const ct = useLocalesContext();
+
   const [{ value, props, typeFile, typeName }, handlePure] = usePropValue(
     'pure',
     propPath
   );
+
+  const baseProps: Omit<ComponentProps<typeof AdornmentTextField>, 'icon'> = {
+    disabled,
+    error: options.required && !value,
+    fullWidth: true,
+    helperText: options.required && !value ? ct('msg-required') : undefined,
+    required: options.required,
+    size: 'small',
+    variant: 'outlined',
+  };
 
   const override = handlePure.renderOverride?.('pure', {
     disabled,
@@ -53,13 +66,9 @@ export default function TypeItemPure({
             <>
               {options.type === 'string' && (
                 <AdornmentTextField
-                  fullWidth
-                  size="small"
-                  variant="outlined"
-                  icon={TitleIcon}
-                  disabled={disabled}
-                  required={options.required}
+                  {...baseProps}
                   label={label}
+                  icon={TitleIcon}
                   defaultValue={value || ''}
                   onChange={(e) => handlePure.change(e.target.value)}
                 />
@@ -67,11 +76,7 @@ export default function TypeItemPure({
 
               {options.type === 'bool' && (
                 <AdornmentTextField
-                  fullWidth
-                  size="small"
-                  variant="outlined"
-                  disabled={disabled}
-                  required={options.required}
+                  {...baseProps}
                   icon={SwipeIcon}
                   InputProps={
                     {
@@ -89,11 +94,7 @@ export default function TypeItemPure({
 
               {options.type === 'number' && (
                 <AdornmentTextField
-                  fullWidth
-                  size="small"
-                  variant="outlined"
-                  disabled={disabled}
-                  required={options.required}
+                  {...baseProps}
                   icon={DialpadIcon}
                   label={label}
                   InputProps={
@@ -119,6 +120,7 @@ export default function TypeItemPure({
                 <MobileDateTimePicker
                   ampm={false}
                   label={label}
+                  disabled={disabled}
                   value={value ? dayjs(value as string) : null}
                   onChange={(e) => handlePure.change(e?.toDate().toISOString())}
                   slots={{
@@ -126,10 +128,7 @@ export default function TypeItemPure({
                   }}
                   slotProps={{
                     textField: {
-                      fullWidth: true,
-                      required: options.required,
-                      size: 'small',
-                      variant: 'outlined',
+                      ...baseProps,
                       icon: CalendarMonthIcon,
                     } as object,
                   }}
@@ -138,19 +137,13 @@ export default function TypeItemPure({
 
               {options.type === 'oneOf' && (
                 <AdornmentTextField
+                  {...baseProps}
                   SelectProps={{ displayEmpty: options.required }}
                   select
-                  fullWidth
-                  size="small"
-                  variant="outlined"
-                  required={options.required}
                   icon={MenuOpenIcon}
                   label={label}
                   value={value || ''}
                   onChange={(e) => handlePure.change(e.target.value)}
-                  disabled={
-                    disabled || Boolean(options.options?.length === 1 && value)
-                  }
                 >
                   {!options.required && <MenuItem value="">&nbsp;</MenuItem>}
 

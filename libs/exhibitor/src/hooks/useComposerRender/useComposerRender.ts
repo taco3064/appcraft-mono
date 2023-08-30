@@ -50,72 +50,81 @@ export const useComposerRender: Types.ComposerRenderHook = (
 ) => {
   const [, startTransition] = useTransition();
 
-  return function generate(widget, queue) {
-    if (widget.category === 'node') {
-      const Widget = onLazyRetrieve(widget.type);
+  return function generate(widget, queue, index = 0) {
+    const key = `${widget.id}_${index}`;
 
-      return render(Widget, {
-        key: widget.id,
-        props: TYPES.reduce((props, type) => {
-          if (type === 'props') {
-            return Util.getProps(globalState.props(widget, queue), props);
-          } else if (type === 'todos') {
-            const todos = globalState.todos(widget, queue, {
-              onFetchData,
-              onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
-            });
+    switch (widget.category) {
+      case 'plainText':
+        return render(LazyPlainText, {
+          key,
+          props: { children: widget.content || '' },
+        });
 
-            Object.entries(todos).forEach(([propPath, { todos, handlers }]) =>
-              _set(props, propPath, (...e: unknown[]) => {
-                const start = Date.now();
+      case 'node': {
+        const Widget = onLazyRetrieve(widget.type);
 
-                startTransition(() => {
-                  handlers
-                    .reduce(
-                      (result, handler) =>
-                        result.then((outputs) =>
-                          handler({ [Util.OUTPUTS_SYMBOL]: outputs }, ...e)
-                        ),
-                      Promise.resolve<Util.OutputData[]>([])
-                    )
-                    .then((outputs) =>
-                      onOutputCollect?.(
-                        { duration: Date.now() - start, outputs, todos },
-                        propPath
+        return render(Widget, {
+          key,
+          props: TYPES.reduce((props, type) => {
+            if (type === 'props') {
+              return Util.getProps(globalState.props(widget, queue), props);
+            } else if (type === 'todos') {
+              const todos = globalState.todos(widget, queue, {
+                onFetchData,
+                onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
+              });
+
+              Object.entries(todos).forEach(([propPath, { todos, handlers }]) =>
+                _set(props, propPath, (...e: unknown[]) => {
+                  const start = Date.now();
+
+                  startTransition(() => {
+                    handlers
+                      .reduce(
+                        (result, handler) =>
+                          result.then((outputs) =>
+                            handler({ [Util.OUTPUTS_SYMBOL]: outputs }, ...e)
+                          ),
+                        Promise.resolve<Util.OutputData[]>([])
                       )
-                    );
-                });
-              })
-            );
-          } else if (type === 'nodes') {
-            Object.entries(globalState.nodes(widget, queue)).forEach(
-              ([propPath, nodes]) =>
-                _set(
-                  props,
-                  propPath,
-                  !Array.isArray(nodes)
-                    ? generate(
-                        nodes,
-                        getGeneratorOptions(nodes, propPath, queue)
-                      )
-                    : nodes.map((node, i) =>
-                        generate(
-                          node,
-                          getGeneratorOptions(node, propPath, queue, i)
+                      .then((outputs) =>
+                        onOutputCollect?.(
+                          { duration: Date.now() - start, outputs, todos },
+                          propPath
                         )
-                      )
-                )
-            );
-          }
+                      );
+                  });
+                })
+              );
+            } else if (type === 'nodes') {
+              Object.entries(globalState.nodes(widget, queue)).forEach(
+                ([propPath, nodes]) =>
+                  _set(
+                    props,
+                    propPath,
+                    !Array.isArray(nodes)
+                      ? generate(
+                          nodes,
+                          getGeneratorOptions(nodes, propPath, queue)
+                        )
+                      : nodes.map((node, i) =>
+                          generate(
+                            node,
+                            getGeneratorOptions(node, propPath, queue, i),
+                            i
+                          )
+                        )
+                  )
+              );
+            }
 
-          return props;
-        }, {}),
-      });
+            return props;
+          }, {}),
+        });
+      }
+      default:
     }
 
-    return render(LazyPlainText, {
-      key: widget.id,
-      props: { children: widget.content || '' },
-    });
+    return null;
   };
 };

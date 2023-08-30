@@ -34,7 +34,7 @@ export default function WidgetPicker({
         MenuProps: { PaperProps: { style: { maxWidth: 'min-content' } } },
       }}
       select
-      defaultValue={value || ''}
+      value={value || ''}
       onChange={(e) => onChange?.(e.target.value)}
       InputProps={{
         startAdornment: (

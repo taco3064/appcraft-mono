@@ -3,7 +3,7 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem, { MenuItemProps } from '@mui/material/MenuItem';
-import Tooltip from '@mui/material/Tooltip';
+import { CraftsmanStyle } from '@appcraft/craftsman';
 
 import type * as Types from './CommonButton.types';
 
@@ -27,9 +27,9 @@ export default function CommonButton({
 
     case 'icon': {
       return (
-        <Tooltip title={text}>
+        <CraftsmanStyle.AppcraftHint title={text}>
           <IconButton {...(props as IconButtonProps)}>{icon}</IconButton>
-        </Tooltip>
+        </CraftsmanStyle.AppcraftHint>
       );
     }
 

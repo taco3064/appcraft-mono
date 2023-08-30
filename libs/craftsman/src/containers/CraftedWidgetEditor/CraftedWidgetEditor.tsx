@@ -34,8 +34,7 @@ const getActiveType: Types.GetActiveType = ({
 
 export default function CraftedWidgetEditor({
   BackButtonProps,
-  disableCategories,
-  disableRemove = false,
+  disableTodoCategories,
   disableState = false,
   stateTypeFile,
   title,
@@ -44,6 +43,7 @@ export default function CraftedWidgetEditor({
   widget,
   overrideMixedOptions,
   overrideNamingProps,
+  renderNewWidgetDialog,
   renderOverrideItem,
   onFetchData,
   onFetchDefinition,
@@ -129,12 +129,21 @@ export default function CraftedWidgetEditor({
 
   return (
     <>
-      <Comp.MutationNewWidgetDialog
-        disablePlaintext={paths.length === 0}
-        open={newWidgetOpen}
-        onClose={() => setNewWidgetOpen(false)}
-        onConfirm={(e) => handleMutation.add(e, type, paths)}
-      />
+      {renderNewWidgetDialog ? (
+        renderNewWidgetDialog({
+          type,
+          paths,
+          open: newWidgetOpen,
+          onClose: () => setNewWidgetOpen(false),
+        })
+      ) : (
+        <Comp.MutationNewWidgetDialog
+          disablePlaintext={paths.length === 0}
+          open={newWidgetOpen}
+          onClose={() => setNewWidgetOpen(false)}
+          onConfirm={(e) => handleMutation.add(e, type, paths)}
+        />
+      )}
 
       <Comp.MutationPlainTextDialog
         open={editedWidget?.category === 'plainText'}
@@ -168,13 +177,13 @@ export default function CraftedWidgetEditor({
         <CraftedTodoEditor
           {...(todoPath && { todoPath })}
           {...{
-            disableCategories,
             overrideNamingProps,
             renderOverrideItem,
             onFetchData,
             onFetchDefinition,
           }}
           fullHeight
+          disableCategories={disableTodoCategories}
           typeFile={todoTypeFile}
           values={editedWidget.todos?.[todoPath as string]}
           onFetchTodoWrapper={onFetchWrapper}
@@ -259,7 +268,6 @@ export default function CraftedWidgetEditor({
               <Suspense fallback={<LinearProgress />}>
                 <LazyWidgetElements
                   basePaths={paths}
-                  disableRemove={disableRemove}
                   superiorNodeType={type}
                   onClick={handleMutation.editing}
                   onEventActive={handleMutation.todo}

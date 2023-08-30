@@ -1,10 +1,15 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import _get from 'lodash/get';
 import _set from 'lodash/set';
 import { CraftedWidgetEditor, CraftsmanStyle } from '@appcraft/craftsman';
+import type { CraftedWidgetEditorProps } from '@appcraft/craftsman';
+import type { NodeType } from '@appcraft/types';
 
 import * as Ctx from '~appcraft/contexts';
+import { NodeTemplateDialog } from '~appcraft/components';
 import { useWidgetTransform } from '~appcraft/hooks';
 import type { LayoutPropsEditorProps } from './LayoutPropsEditor.types';
+import type { NodeTemplateDialogProps } from '~appcraft/components';
 
 export default function LayoutPropsEditor({
   layouts,
@@ -14,7 +19,7 @@ export default function LayoutPropsEditor({
 }: LayoutPropsEditorProps) {
   const { template } = value;
   const [at] = Ctx.useFixedT('app');
-  const [widget, fetchProps] = useWidgetTransform(value);
+  const [widget, fetchProps] = useWidgetTransform(value, { onChange, onClose });
   const handleFetch = Ctx.useCraftsmanFetch();
 
   const override = Ctx.useCraftsmanOverrideContext({
@@ -22,27 +27,49 @@ export default function LayoutPropsEditor({
     widget,
   });
 
+  const handleWidgetAdd = (
+    type: NodeType,
+    paths: (string | number)[],
+    e: Parameters<NodeTemplateDialogProps['onConfirm']>[0]
+  ) => {
+    if (type === 'element') {
+      onChange({
+        ...value,
+        template: { ..._set(template, paths, { id: e }) },
+      });
+    } else {
+      const target = _get(template, paths) || [];
+
+      target.push({ id: e });
+
+      onChange({
+        ...value,
+        template: { ..._set(template, paths, target) },
+      });
+    }
+  };
+
   return (
     <CraftedWidgetEditor
       {...override}
       {...fetchProps}
-      disableRemove
       disableState
       todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
       version={__WEBPACK_DEFINE__.VERSION}
-      disableCategories={['state']}
+      disableTodoCategories={['state']}
       widget={widget}
       onFetchData={handleFetch.data}
       onFetchWrapper={handleFetch.wrapper}
-      onWidgetChange={({ props, todos }) =>
-        onChange({
-          ..._set(value, ['template'], { ...template, props, todos }),
-        })
-      }
+      renderNewWidgetDialog={({ type, paths, open, onClose }) => (
+        <NodeTemplateDialog
+          {...{ open, onClose }}
+          onConfirm={(e) => handleWidgetAdd(type, paths, e)}
+        />
+      )}
       title={
         <CraftsmanStyle.AutoBreakTypography
-          primary={widget.type}
-          secondary={widget.description}
+          primary={widget?.type}
+          secondary={widget?.description}
         />
       }
       BackButtonProps={{

@@ -88,9 +88,9 @@ export const useStateReducer: Types.StateReducerHook = (
 
     return JSON.stringify(
       options.reduce<Types.InjectionProps>(
-        (result, { template: { id, props, todos } }) => ({
+        (result, { template: { id, nodes, props, todos } }) => ({
           ...result,
-          [id]: { props, todos },
+          [id]: { nodes, props, todos },
         }),
         {}
       )

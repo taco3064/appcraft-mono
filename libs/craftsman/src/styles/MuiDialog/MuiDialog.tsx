@@ -198,7 +198,7 @@ export const FlexDialog = withStyles(
         borderTopRightRadius: 0,
         margin: '0 !important',
 
-        '&:first-child': {
+        '&:first-of-type': {
           borderBottomLeftRadius: theme.spacing(2),
         },
         '&:last-child': {

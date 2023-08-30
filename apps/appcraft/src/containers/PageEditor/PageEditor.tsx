@@ -4,7 +4,7 @@ import Container from '@mui/material/Container';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedRenderer } from '@appcraft/exhibitor';
-import { useEffect } from 'react';
+import { useEffect, useImperativeHandle, useRef } from 'react';
 import { useTheme } from '@mui/material/styles';
 
 import * as Common from '../common';
@@ -31,6 +31,7 @@ export default function PageEditor({
 
   const [at, pt] = useFixedT('app', 'pages');
   const theme = useTheme();
+  const editingRef = useRef<boolean>();
   const handleFetch = useCraftsmanFetch();
   const isSettingOpen = Boolean(layouts[active]);
 
@@ -80,6 +81,8 @@ export default function PageEditor({
       }),
     [breakpoint, layouts, readyTodos]
   );
+
+  useImperativeHandle(editingRef, () => isSettingOpen, [isSettingOpen]);
 
   useEffect(() => {
     global.window?.dispatchEvent(new Event('resize'));
@@ -139,8 +142,10 @@ export default function PageEditor({
                 options={layouts}
                 onFetchData={handleFetch.data}
                 onFetchWrapper={handleFetch.wrapper}
-                onOutputCollect={onOutputCollect}
                 onReady={readyTodos}
+                onOutputCollect={(...e) =>
+                  !editingRef.current && onOutputCollect(...e)
+                }
                 action={(layout, withActionClose) => (
                   <Comp.LayoutAction
                     layout={layout}

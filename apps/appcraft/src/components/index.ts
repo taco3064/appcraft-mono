@@ -5,6 +5,7 @@ export * from './CommonButton';
 export * from './HierarchyItem';
 export * from './LayoutAction';
 export * from './MenuDrawer';
+export * from './NodeTemplateDialog';
 export * from './RemoveButton';
 export * from './SigninButton';
 export * from './ThemeProvider';

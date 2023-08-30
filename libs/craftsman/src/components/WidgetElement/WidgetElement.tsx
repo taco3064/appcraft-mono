@@ -6,7 +6,6 @@ import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Tooltip from '@mui/material/Tooltip';
 import _get from 'lodash/get';
 import { useMemo, useState } from 'react';
 import { useDndContext } from '@dnd-kit/core';
@@ -21,7 +20,6 @@ import type { MixedWidget, WidgetElementProps } from './WidgetElement.types';
 
 export default function WidgetElement<I extends Appcraft.EntityWidgets>({
   basePaths,
-  disableRemove = false,
   event,
   index,
   item,
@@ -36,7 +34,6 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
   const { category, description, type, content } = item as MixedWidget;
   const [open, setOpen] = useState(true);
   const ct = useLocalesContext();
-  const isNode = category === 'node';
 
   const { setNodeRef, attributes, listeners, transition, transform } =
     useSortable({ id: item.id });
@@ -54,6 +51,9 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
   const [display, setDisplay] = useState<'events' | 'nodes'>(() =>
     nodes.length > 0 ? 'nodes' : 'events'
   );
+
+  const isNode = category === 'node';
+  const isSwitchDisabled = nodes.length === 0 || events.length === 0;
 
   return (
     <>
@@ -97,28 +97,26 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
 
         <Style.TypeItemAction>
           {open && (
-            <Tooltip title={ct(`btn-${display}`)}>
+            <Style.AppcraftHint title={ct(`btn-${display}`)}>
               <Style.WidgetNodeSwitch
-                disabled={nodes.length === 0 || events.length === 0}
+                disabled={isSwitchDisabled}
                 value={display}
                 onChange={setDisplay}
               />
-            </Tooltip>
+            </Style.AppcraftHint>
           )}
 
-          {!disableRemove && (
-            <Style.IconTipButton
-              title={ct('btn-remove-widget')}
-              onClick={() =>
-                onRemove([
-                  ...basePaths,
-                  ...(superiorNodeType === 'node' ? [index] : []),
-                ])
-              }
-            >
-              <CloseIcon />
-            </Style.IconTipButton>
-          )}
+          <Style.IconTipButton
+            title={ct('btn-remove-widget')}
+            onClick={() =>
+              onRemove([
+                ...basePaths,
+                ...(superiorNodeType === 'node' ? [index] : []),
+              ])
+            }
+          >
+            <CloseIcon />
+          </Style.IconTipButton>
         </Style.TypeItemAction>
       </ListItemButton>
 

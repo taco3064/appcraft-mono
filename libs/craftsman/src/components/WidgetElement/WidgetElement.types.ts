@@ -7,7 +7,6 @@ export type MixedWidget = Appcraft.PlainTextWidget & Appcraft.NodeWidget;
 
 export interface WidgetElementProps<I extends Appcraft.EntityWidgets> {
   basePaths: PropPaths;
-  disableRemove?: boolean;
   index: number;
   item: I;
   event: I extends Appcraft.NodeWidget ? string[] : undefined;

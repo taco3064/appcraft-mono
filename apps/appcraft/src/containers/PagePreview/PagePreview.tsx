@@ -7,6 +7,7 @@ import type { LayoutWidget } from '@appcraft/types';
 import { GRID_LAYOUT_COLS, GRID_LAYOUT_MINS } from '~appcraft/hooks';
 import { findConfig } from '~appcraft/services';
 import { useFixedT, useCraftsmanFetch } from '~appcraft/contexts';
+import type { PageData } from '~appcraft/hooks';
 import type { PagePreviewProps } from './PagePreview.types';
 
 export default function PagePreview({ id }: PagePreviewProps) {
@@ -14,22 +15,23 @@ export default function PagePreview({ id }: PagePreviewProps) {
   const theme = useTheme();
   const handleFetch = useCraftsmanFetch();
 
-  const { data: layouts } = useQuery({
+  const { data } = useQuery({
     queryKey: [id],
-    queryFn: findConfig<LayoutWidget[]>,
+    queryFn: findConfig<PageData>,
     refetchOnWindowFocus: false,
   });
 
-  return !Array.isArray(layouts.content) ? (
+  return !data?.content ? (
     <Typography variant="h4" color="text.secondary">
       {pt('msg-no-layouts')}
     </Typography>
   ) : (
     <CraftedRenderer
       elevation={1}
-      options={layouts.content}
+      options={data.content.layouts}
       onFetchData={handleFetch.data}
       onFetchWrapper={handleFetch.wrapper}
+      onReady={data.content.readyTodos}
       GridLayoutProps={{
         autoSize: true,
         cols: GRID_LAYOUT_COLS,

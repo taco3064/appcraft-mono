@@ -39,6 +39,7 @@ export const AutoBreakTypography = withStyles(
         variant="subtitle1"
         fontWeight="bolder"
         color="primary"
+        component="span"
         className={classes?.root}
         {...primaryTypographyProps}
       >

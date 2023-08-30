@@ -1,12 +1,13 @@
 import type { LayoutWidget, MainWidget } from '@appcraft/types';
 import type { PaperProps } from '@mui/material/Paper';
 
-import { useRender } from '../../hooks';
+import { useComposerRender } from '../../hooks';
 import type * as Hook from '../../hooks';
 import type { GridActionRenderer, GridLayoutProps } from '../common';
+import type { RendererOptions, WidgetMap } from '../../utils';
 
 //* Variables
-type RendererHandlers = Parameters<typeof useRender>[0];
+type RendererHandlers = Parameters<typeof useComposerRender>[0];
 
 export type PopoverOptions = {
   anchorEl?: HTMLButtonElement;
@@ -14,7 +15,7 @@ export type PopoverOptions = {
 };
 
 //* Component Props
-export type RendererContentProps<T extends Hook.RendererOptions> =
+export type ExhibitionContentProps<T extends RendererOptions> =
   RendererHandlers &
     (T extends MainWidget
       ? {
@@ -23,7 +24,7 @@ export type RendererContentProps<T extends Hook.RendererOptions> =
           breakpoint?: never;
           elevation?: never;
           options: MainWidget;
-          templates: Hook.WidgetMap;
+          templates: WidgetMap;
           onReady?: never;
         }
       : {
@@ -40,6 +41,6 @@ export type RendererContentProps<T extends Hook.RendererOptions> =
           breakpoint?: GridLayoutProps['breakpoint'];
           elevation?: PaperProps['elevation'];
           options: LayoutWidget[];
-          templates: Hook.WidgetMap;
-          onReady?: Hook.ReadyOptions[0];
+          templates: WidgetMap;
+          onReady?: Hook.ReadyHandler;
         });

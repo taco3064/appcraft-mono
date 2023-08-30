@@ -1,10 +1,10 @@
+import { GridAction, GridLayout } from '../common';
 import * as Hook from '../../hooks';
 import * as Style from '../../styles';
-import { GridAction, GridLayout } from '../common';
-import type * as Types from './RendererContent.types';
-import type { RendererOptions } from '../../hooks';
+import type * as Types from './ExhibitionContent.types';
+import type { RendererOptions } from '../../utils';
 
-export default function RendererContent<T extends RendererOptions>({
+export default function ExhibitionContent<T extends RendererOptions>({
   GridLayoutProps,
   action,
   breakpoint,
@@ -13,20 +13,18 @@ export default function RendererContent<T extends RendererOptions>({
   templates,
   onReady,
   ...props
-}: Types.RendererContentProps<T>) {
+}: Types.ExhibitionContentProps<T>) {
   const { onFetchData, onFetchTodoWrapper, onOutputCollect } = props;
   const layouts = Hook.useGridLayouts(options, GridLayoutProps);
 
-  const [isPrepared, handleState] = Hook.useRendererState(options, templates, [
+  const handleState = Hook.usePropsStateMaestro(templates, options, {
+    onFetchData,
+    onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
+    onOutputCollect,
     onReady,
-    {
-      onFetchData,
-      onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
-      onOutputCollect,
-    },
-  ]);
+  });
 
-  const render = Hook.useRender(
+  const render = Hook.useComposerRender(
     props,
     handleState,
     (Widget, { key, props: widgetProps }) => (
@@ -35,8 +33,7 @@ export default function RendererContent<T extends RendererOptions>({
   );
 
   return !Array.isArray(options) ? (
-    (((isPrepared && render(options, { state: { id: options.id } })) ||
-      null) as JSX.Element)
+    ((render(options, { state: { id: options.id } }) || null) as JSX.Element)
   ) : (
     <GridLayout
       {...GridLayoutProps}
@@ -50,9 +47,7 @@ export default function RendererContent<T extends RendererOptions>({
         return (
           <Style.GridLayoutItem key={id} elevation={elevation}>
             <Style.GridLayoutItemContent disableGutters maxWidth={false}>
-              {isPrepared &&
-                widget &&
-                render(widget, { state: { id: widget.id } })}
+              {widget && render(widget, { state: { id: widget.id } })}
 
               <GridAction action={action} layout={layout} />
             </Style.GridLayoutItemContent>

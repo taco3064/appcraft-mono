@@ -12,7 +12,7 @@ export const useStateSelection: StateSelectionHook = (
   propPath,
   renderFn
 ) => {
-  const { basePath, values, onChange } = useStateContext();
+  const { basePath, disabled, values, onChange } = useStateContext();
   const category = Util.getStateCategory(generator);
 
   const path = ExhibitorUtil.getPropPath(
@@ -22,9 +22,9 @@ export const useStateSelection: StateSelectionHook = (
   const checked = Boolean(_get(values, ['state', category, path]));
 
   return [
-    checked,
+    disabled ? false : checked,
 
-    !values
+    !values || disabled
       ? null
       : renderFn({
           checked,

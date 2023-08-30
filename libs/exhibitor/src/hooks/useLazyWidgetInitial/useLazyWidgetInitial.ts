@@ -2,10 +2,9 @@ import _get from 'lodash/get';
 import { lazy, useMemo, useRef } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
-import type * as Types from './useLazyRenderer.types';
-import type { FetchWrapperHandler } from '../useRender';
-import type { RendererOptions } from '../useGridLayouts';
-import type { WidgetMap } from '../useRendererState';
+import type * as Types from './useLazyWidgetInitial.types';
+import type { FetchWrapperHandler } from '../useComposerRender';
+import type { RendererOptions, WidgetMap } from '../../utils';
 
 const extractTemplateIds: Types.ExtractTemplateIds = (widgets) =>
   Array.from(
@@ -55,7 +54,7 @@ const fetchWidgets: Types.FetchWidgets = async (
     : await fetchWidgets(extractTemplateIds(next), onFetchWidget, templates);
 };
 
-export const useLazyRenderer = <R>(
+export const useLazyWidgetInitial = <R>(
   options: RendererOptions,
   fetchWidgetWrapper: FetchWrapperHandler<'widget'>,
   renderer: Appcraft.LazyRenderer<WidgetMap, R>

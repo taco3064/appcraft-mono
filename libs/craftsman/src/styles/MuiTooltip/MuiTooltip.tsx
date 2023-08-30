@@ -1,12 +1,13 @@
 import Tooltip from '@mui/material/Tooltip';
 import { withStyles } from 'tss-react/mui';
-
-import type * as Types from './MuiTooltip.types';
+import type { TooltipProps } from '@mui/material/Tooltip';
 
 export const AppcraftHint = withStyles(
-  ({ disabled, title, ...props }: Types.AppcraftHintProps) => (
-    <Tooltip title={disabled ? '' : title} {...props} />
+  ({ children, ...props }: TooltipProps) => (
+    <Tooltip {...props}>
+      <span>{children}</span>
+    </Tooltip>
   ),
-  (theme) => ({}),
+  () => ({}),
   { name: 'AppcraftHint' }
 );

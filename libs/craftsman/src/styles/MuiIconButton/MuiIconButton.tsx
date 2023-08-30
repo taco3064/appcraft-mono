@@ -5,7 +5,7 @@ import type * as Types from './MuiIconButton.types';
 
 export function IconTipButton({ title, ...props }: Types.IconTipButtonProps) {
   return (
-    <AppcraftHint title={title} disabled={props.disabled}>
+    <AppcraftHint title={title}>
       <IconButton {...props} />
     </AppcraftHint>
   );

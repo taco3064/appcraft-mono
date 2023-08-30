@@ -43,6 +43,7 @@ export default function CraftedWidgetEditor({
   widget,
   overrideMixedOptions,
   overrideNamingProps,
+  renderNewWidgetDialog,
   renderOverrideItem,
   onFetchData,
   onFetchDefinition,
@@ -128,12 +129,21 @@ export default function CraftedWidgetEditor({
 
   return (
     <>
-      <Comp.MutationNewWidgetDialog
-        disablePlaintext={paths.length === 0}
-        open={newWidgetOpen}
-        onClose={() => setNewWidgetOpen(false)}
-        onConfirm={(e) => handleMutation.add(e, type, paths)}
-      />
+      {renderNewWidgetDialog ? (
+        renderNewWidgetDialog({
+          type,
+          paths,
+          open: newWidgetOpen,
+          onClose: () => setNewWidgetOpen(false),
+        })
+      ) : (
+        <Comp.MutationNewWidgetDialog
+          disablePlaintext={paths.length === 0}
+          open={newWidgetOpen}
+          onClose={() => setNewWidgetOpen(false)}
+          onConfirm={(e) => handleMutation.add(e, type, paths)}
+        />
+      )}
 
       <Comp.MutationPlainTextDialog
         open={editedWidget?.category === 'plainText'}

@@ -97,10 +97,7 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
 
         <Style.TypeItemAction>
           {open && (
-            <Style.AppcraftHint
-              title={ct(`btn-${display}`)}
-              disabled={isSwitchDisabled}
-            >
+            <Style.AppcraftHint title={ct(`btn-${display}`)}>
               <Style.WidgetNodeSwitch
                 disabled={isSwitchDisabled}
                 value={display}

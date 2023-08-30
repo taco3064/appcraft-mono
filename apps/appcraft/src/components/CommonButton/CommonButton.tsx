@@ -27,7 +27,7 @@ export default function CommonButton({
 
     case 'icon': {
       return (
-        <CraftsmanStyle.AppcraftHint title={text} disabled={props.disabled}>
+        <CraftsmanStyle.AppcraftHint title={text}>
           <IconButton {...(props as IconButtonProps)}>{icon}</IconButton>
         </CraftsmanStyle.AppcraftHint>
       );

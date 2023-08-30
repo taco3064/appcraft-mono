@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.110](https://github.com/taco3064/appcraft-mono/compare/v0.0.109...v0.0.110) (2023-08-30)
+
+
+### Features
+
+* **apps:** transform to use widget editor in PageEditor ([83e6b05](https://github.com/taco3064/appcraft-mono/commit/83e6b05727775af7bb0257f869e2c5a657187aa6))
+* **use-renderer-state:** support inject props/todos ([22cdb4a](https://github.com/taco3064/appcraft-mono/commit/22cdb4acb57d56620f0b7938f341add577f3034e))
+
+
+### Bug Fixes
+
+* **@appcraft/exhibitor:** rename components and hooks to highlight their primary functions ([6324b2e](https://github.com/taco3064/appcraft-mono/commit/6324b2eb9e9ed96ce7eab243a4285fbde83e53f2))
+* **apps:** adjusting Program Consistency ([da6da2d](https://github.com/taco3064/appcraft-mono/commit/da6da2dc96d3b8253f953f2c3507d93a693cfe86))
+* fixed bugs ([be9e052](https://github.com/taco3064/appcraft-mono/commit/be9e0522f3b20d9bfc758d3170b0eb6f0cc77b97))
+* **layout-props-editor:** fixed bugs ([60e4936](https://github.com/taco3064/appcraft-mono/commit/60e493684fc1ecc5105d8fca59d4b0b53cad79da))
+* **page-editor:** update the disabled rule of save button ([ba16f69](https://github.com/taco3064/appcraft-mono/commit/ba16f6960c01ce2478b8bc960ca571d52f585875))
+* **use-render:** fixed the issue of duplicated outputs ([3ceb1ed](https://github.com/taco3064/appcraft-mono/commit/3ceb1ed9e48c6a393f68ba7845a641d61079ec8a))
+
 ### [0.0.109](https://github.com/taco3064/appcraft-mono/compare/v0.0.108...v0.0.109) (2023-08-29)
 
 

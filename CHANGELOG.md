@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.111](https://github.com/taco3064/appcraft-mono/compare/v0.0.110...v0.0.111) (2023-08-30)
+
+
+### Features
+
+* **page-editor:** support edit template node ([7d3d73f](https://github.com/taco3064/appcraft-mono/commit/7d3d73f84e3dcee33883d5ba6e5b13ab9bdf5b77))
+
+
+### Bug Fixes
+
+* fixed the controlled issue of Tooltip ([a3d6ed4](https://github.com/taco3064/appcraft-mono/commit/a3d6ed454cbd256e79b86b18fd9d54d607b43177))
+* fixed the warning issues from browser tips ([a0a6a06](https://github.com/taco3064/appcraft-mono/commit/a0a6a061e436cf14f2810f587d405bbe61dc5fdd))
+* **page-preview:** fixed the invalid fetch settings ([be7058b](https://github.com/taco3064/appcraft-mono/commit/be7058b0eeac52e4b80411eefb840c1cc64dae93))
+* **state:** adjusting Program Consistency ([df0963b](https://github.com/taco3064/appcraft-mono/commit/df0963bbc0d0d9f37864c571a6a27a3afc4324a0))
+
 ### [0.0.110](https://github.com/taco3064/appcraft-mono/compare/v0.0.109...v0.0.110) (2023-08-30)
 
 

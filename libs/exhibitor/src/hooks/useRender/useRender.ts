@@ -66,30 +66,26 @@ export const useRender: Types.RenderHook = (
             });
 
             Object.entries(todos).forEach(([propPath, { todos, handlers }]) =>
-              _set(props, propPath, (...e: unknown[]) =>
-                startTransition(() => {
-                  (async () => {
-                    const start = Date.now();
+              _set(props, propPath, (...e: unknown[]) => {
+                const start = Date.now();
 
-                    const outputs = await handlers.reduce(
+                startTransition(() => {
+                  handlers
+                    .reduce(
                       (result, handler) =>
                         result.then((outputs) =>
                           handler({ [Util.OUTPUTS_SYMBOL]: outputs }, ...e)
                         ),
                       Promise.resolve<Util.OutputData[]>([])
+                    )
+                    .then((outputs) =>
+                      onOutputCollect?.(
+                        { duration: Date.now() - start, outputs, todos },
+                        propPath
+                      )
                     );
-
-                    onOutputCollect?.(
-                      {
-                        duration: Date.now() - start,
-                        outputs,
-                        todos,
-                      },
-                      propPath
-                    );
-                  })();
-                })
-              )
+                });
+              })
             );
           } else if (type === 'nodes') {
             Object.entries(globalState.nodes(widget, queue)).forEach(

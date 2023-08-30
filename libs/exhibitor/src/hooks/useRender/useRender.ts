@@ -70,13 +70,14 @@ export const useRender: Types.RenderHook = (
                 startTransition(() => {
                   (async () => {
                     const start = Date.now();
-                    const outputs: Util.OutputData[] = [];
 
-                    for (const handler of handlers) {
-                      const args = [{ [Util.OUTPUTS_SYMBOL]: outputs }, ...e];
-
-                      outputs.push(...(await handler(...args)));
-                    }
+                    const outputs = await handlers.reduce(
+                      (result, handler) =>
+                        result.then((outputs) =>
+                          handler({ [Util.OUTPUTS_SYMBOL]: outputs }, ...e)
+                        ),
+                      Promise.resolve<Util.OutputData[]>([])
+                    );
 
                     onOutputCollect?.(
                       {

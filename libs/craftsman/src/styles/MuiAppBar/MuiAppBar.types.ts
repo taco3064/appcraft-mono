@@ -10,6 +10,7 @@ export interface WidgetAppBarProps {
     root?: string;
     action?: string;
     back?: string;
+    title?: string;
     toolbar?: string;
   };
 

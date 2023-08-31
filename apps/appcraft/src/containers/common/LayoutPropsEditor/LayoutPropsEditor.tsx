@@ -70,6 +70,14 @@ export default function LayoutPropsEditor({
         <CraftsmanStyle.AutoBreakTypography
           primary={widget?.type}
           secondary={widget?.description}
+          primaryTypographyProps={{
+            whiteSpace: 'nowrap',
+          }}
+          secondaryTypographyProps={{
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
         />
       }
       BackButtonProps={{

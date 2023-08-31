@@ -16,8 +16,13 @@ export const WidgetAppBar = withStyles(
   }: Types.WidgetAppBarProps) => (
     <AppBar color="default" position="sticky" className={classes?.root} sx={sx}>
       <Toolbar variant="regular" className={classes?.toolbar}>
-        <GapTypography variant="subtitle1" fontWeight="bolder" color="primary">
-          {BackButtonProps && ( // ct('btn-back')
+        <GapTypography
+          className={classes?.title}
+          variant="subtitle1"
+          fontWeight="bolder"
+          color="primary"
+        >
+          {BackButtonProps && (
             <IconTipButton
               className={classes?.back}
               title={BackButtonProps.text}
@@ -40,7 +45,11 @@ export const WidgetAppBar = withStyles(
     action: {
       marginLeft: 'auto',
     },
+    title: {
+      overflow: 'hidden',
+    },
     toolbar: {
+      overflow: 'hidden',
       padding: `${theme.spacing(0, 2)} !important`,
     },
   }),

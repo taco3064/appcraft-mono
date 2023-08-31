@@ -144,7 +144,7 @@ export const useStateReducer: Types.StateReducerHook = (
         const { onPropsChange } = opts;
 
         ready(onPropsChange);
-      } else if (ready) {
+      } else if (ready && Object.keys(ready).length > 0) {
         getEventHandler(ready, { ...opts, eventName: 'onReady' })();
       }
     });

@@ -9,7 +9,7 @@ import type { ReducerAction, ReducerState } from '../common';
 //* Variables
 type Queue = { id: string; path?: string };
 
-export type StateQueue = { state: Queue; superiors?: Queue[] };
+export type StateQueue = { owner: Queue; superiors?: Queue[] };
 
 export type TodosReturn = ReturnType<
   ReturnType<PropsStateMaestroHook>['todos']

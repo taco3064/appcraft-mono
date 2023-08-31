@@ -26,8 +26,6 @@ export default function WidgetPicker({
 
   const options = data?.filter(({ _id }) => !exclude.includes(_id)) || [];
 
-  console.log(options);
-
   return (
     <TextField
       {...props}

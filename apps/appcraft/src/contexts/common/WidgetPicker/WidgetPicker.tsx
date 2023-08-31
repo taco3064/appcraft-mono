@@ -26,16 +26,19 @@ export default function WidgetPicker({
 
   const options = data?.filter(({ _id }) => !exclude.includes(_id)) || [];
 
+  console.log(options);
+
   return (
     <TextField
       {...props}
+      key={value || ''}
+      select
+      defaultValue={value || ''}
+      onChange={(e) => onChange?.(e.target.value)}
       SelectProps={{
         displayEmpty: true,
         MenuProps: { PaperProps: { style: { maxWidth: 'min-content' } } },
       }}
-      select
-      value={value || ''}
-      onChange={(e) => onChange?.(e.target.value)}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
@@ -55,9 +58,7 @@ export default function WidgetPicker({
         ),
       }}
     >
-      <MenuItem value="">&nbsp;</MenuItem>
-
-      {options.map(({ _id, name, description }) => (
+      {options.map(({ _id, name, description }, i) => (
         <MenuItem key={_id} value={_id}>
           <ListItemText
             primary={name}

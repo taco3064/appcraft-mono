@@ -8,7 +8,13 @@ export type WidgetInfo = {
   widget: Appcraft.MainWidget;
 };
 
-export type ExtractTemplateIds = (widgets: Appcraft.MainWidget[]) => string[];
+export type ExtractByLayoutTemplate = (
+  template: Appcraft.LayoutWidget['template'][]
+) => string[];
+
+export type ExtractByStateTemplate = (
+  widgets: Appcraft.MainWidget[]
+) => string[];
 
 export type FetchWidgets = (
   templateIds: string[],

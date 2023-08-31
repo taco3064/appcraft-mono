@@ -2,7 +2,6 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import _get from 'lodash/get';
 import _set from 'lodash/set';
 import { CraftedWidgetEditor, CraftsmanStyle } from '@appcraft/craftsman';
-import type { CraftedWidgetEditorProps } from '@appcraft/craftsman';
 import type { NodeType } from '@appcraft/types';
 
 import * as Ctx from '~appcraft/contexts';
@@ -60,6 +59,7 @@ export default function LayoutPropsEditor({
       widget={widget}
       onFetchData={handleFetch.data}
       onFetchWrapper={handleFetch.wrapper}
+      isAllowedToAddWidget={(type, count) => count < 1}
       renderNewWidgetDialog={({ type, paths, open, onClose }) => (
         <NodeTemplateDialog
           {...{ open, onClose }}

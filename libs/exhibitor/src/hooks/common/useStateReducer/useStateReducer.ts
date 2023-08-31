@@ -148,7 +148,7 @@ export const useStateReducer: Types.StateReducerHook = (
         getEventHandler(ready, { ...opts, eventName: 'onReady' })();
       }
     });
-  }, [widgets]);
+  }, [widgets, onReady]);
 
   return [states, { props: handlePropsChange, state: dispatch }];
 };

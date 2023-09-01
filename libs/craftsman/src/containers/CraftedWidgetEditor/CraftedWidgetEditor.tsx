@@ -70,7 +70,7 @@ export default function CraftedWidgetEditor({
     })
   );
 
-  const [{ breadcrumbs, childrenCound, paths, type }, onRedirect] =
+  const [{ breadcrumbs, childrenCount, paths, type }, onRedirect] =
     Hook.useStructure(widget);
 
   const [{ editedWidget, widgetPath, todoPath }, handleMutation] =
@@ -247,8 +247,15 @@ export default function CraftedWidgetEditor({
                 onAdd={() => setNewWidgetOpen(true)}
                 onRedirect={onRedirect}
                 addable={
-                  isAllowedToAddWidget(type, childrenCound) &&
-                  (type === 'node' || childrenCound < 1)
+                  isAllowedToAddWidget({
+                    childrenCount,
+                    paths,
+                    type,
+                    owner:
+                      (editedWidget?.category === 'node' && editedWidget) ||
+                      undefined,
+                  }) &&
+                  (type === 'node' || childrenCount < 1)
                 }
               />
             }

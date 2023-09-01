@@ -59,7 +59,7 @@ export default function LayoutPropsEditor({
       widget={widget}
       onFetchData={handleFetch.data}
       onFetchWrapper={handleFetch.wrapper}
-      isAllowedToAddWidget={(type, count) => count < 1}
+      isAllowedToAddWidget={({ childrenCount }) => childrenCount < 1}
       renderNewWidgetDialog={({ type, paths, open, onClose }) => (
         <NodeTemplateDialog
           {...{ open, onClose }}

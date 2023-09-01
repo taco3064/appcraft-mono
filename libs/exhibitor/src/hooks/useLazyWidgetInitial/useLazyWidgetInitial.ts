@@ -6,14 +6,11 @@ import type * as Types from './useLazyWidgetInitial.types';
 import type { FetchWrapperHandler } from '../useComposerRender';
 import type { RenderedWidget, WidgetRegistry } from '../common';
 
-const extractByLayoutTemplate: Types.ExtractByLayoutTemplate = (templates) =>
-  templates.reduce<ReturnType<Types.ExtractByLayoutTemplate>>(
+const extractByLayout: Types.ExtractByLayout = (templates) =>
+  templates.reduce<ReturnType<Types.ExtractByLayout>>(
     (result, { id, nodes }) => {
       if (id) {
-        result.push(
-          id,
-          ...extractByLayoutTemplate(Object.values(nodes || {}).flat())
-        );
+        result.push(id, ...extractByLayout(Object.values(nodes || {}).flat()));
       }
 
       return result;
@@ -21,7 +18,7 @@ const extractByLayoutTemplate: Types.ExtractByLayoutTemplate = (templates) =>
     []
   );
 
-const extractByStateTemplate: Types.ExtractByStateTemplate = (widgets) =>
+const extractByState: Types.ExtractByState = (widgets) =>
   Array.from(
     widgets.reduce((result, widget) => {
       const state = _get(widget, ['state', 'nodes']) || {};
@@ -66,11 +63,7 @@ const fetchWidgets: Types.FetchWidgets = async (
 
   return !next.length
     ? templates
-    : await fetchWidgets(
-        extractByStateTemplate(next),
-        onFetchWidget,
-        templates
-      );
+    : await fetchWidgets(extractByState(next), onFetchWidget, templates);
 };
 
 export const useLazyWidgetInitial = <R>(
@@ -85,11 +78,9 @@ export const useLazyWidgetInitial = <R>(
     () =>
       JSON.stringify(
         !Array.isArray(options)
-          ? extractByStateTemplate([options])
+          ? extractByState([options])
           : Array.from(
-              new Set(
-                extractByLayoutTemplate(options.map(({ template }) => template))
-              )
+              new Set(extractByLayout(options.map(({ template }) => template)))
             )
       ),
     [options]

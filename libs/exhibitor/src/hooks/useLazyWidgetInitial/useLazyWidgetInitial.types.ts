@@ -1,7 +1,7 @@
 import type * as Appcraft from '@appcraft/types';
 
 import type { FetchWrapperHandler } from '../useComposerRender';
-import type { WidgetMap } from '../../utils';
+import type { WidgetRegistry } from '../common';
 
 export type WidgetInfo = {
   id: string;
@@ -19,5 +19,5 @@ export type ExtractByStateTemplate = (
 export type FetchWidgets = (
   templateIds: string[],
   onFetchWidget: FetchWrapperHandler<'widget'>,
-  tempaltes?: WidgetMap
-) => Promise<WidgetMap>;
+  tempaltes?: WidgetRegistry
+) => Promise<WidgetRegistry>;

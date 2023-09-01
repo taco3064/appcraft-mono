@@ -33,6 +33,9 @@ function reducer(
   //* 初始化
   return Array.from(action.values()).reduce<Types.ReducerState>(
     (result, { widget, ...override }) => {
+      //! override 必須對應到 widget 所在的 path
+      //! 感覺 override (props) 也要存放到 reducer state 中
+      //! hook 也連帶要 rename
       const { id, state } = widget;
       const acc: Types.ReducerState[string] = {};
 

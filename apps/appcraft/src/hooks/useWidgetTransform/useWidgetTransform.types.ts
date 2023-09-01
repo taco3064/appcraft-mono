@@ -12,10 +12,6 @@ export type TransformHandlers = {
 };
 
 //* Methods
-export type ConvertToNode = (
-  widgets: NodeWidget
-) => Exclude<LayoutWidget['template'], any[]>;
-
 export type ConvertToNodes = (
   nodes: MainWidget['nodes']
 ) => LayoutWidget['template']['nodes'];

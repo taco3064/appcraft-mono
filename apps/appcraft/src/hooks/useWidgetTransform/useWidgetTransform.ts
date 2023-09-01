@@ -21,36 +21,20 @@ const extractTemplateIds: Types.ExtractTemplateIds = ({ id, nodes }) =>
     [id]
   );
 
-const convertToNode: Types.ConvertToNode = (widgets) => {
-  const { typeName: id, props, todos, nodes = {} } = widgets;
-
-  return {
-    id,
-    props,
-    todos,
-    nodes: convertToNodes(nodes),
-  };
-};
-
 const convertToNodes: Types.ConvertToNodes = (nodes) =>
-  Object.entries(nodes || {}).reduce((result, [path, widgets]) => {
-    if (!Array.isArray(widgets)) {
-      return widgets.category !== 'node'
-        ? result
-        : {
-            ...result,
-            [path]: convertToNode(widgets),
-          };
+  Object.entries(nodes || {}).reduce((result, [path, widget]) => {
+    if (!Array.isArray(widget) && widget?.category === 'node') {
+      const { typeName: id, props, todos, nodes = {} } = widget;
+
+      result[path] = {
+        id,
+        props,
+        todos,
+        nodes: convertToNodes(nodes),
+      };
     }
 
-    return {
-      ...result,
-      [path]: widgets.reduce(
-        (acc, widget) =>
-          widget.category !== 'node' ? acc : [...acc, convertToNode(widget)],
-        []
-      ),
-    };
+    return result;
   }, {});
 
 const convertToWidget: Types.ConvertToWidget = (
@@ -71,13 +55,9 @@ const convertToWidget: Types.ConvertToWidget = (
       props,
       todos,
       nodes: Object.entries(nodes || {}).reduce(
-        (result, [path, templates]) => ({
+        (result, [path, template]) => ({
           ...result,
-          [path]: !Array.isArray(templates)
-            ? convertToWidget(hierarchies, templates)
-            : templates.map((template) =>
-                convertToWidget(hierarchies, template)
-              ),
+          [path]: convertToWidget(hierarchies, template),
         }),
         {}
       ),
@@ -119,9 +99,7 @@ export const useWidgetTransform: Types.WidgetTransformHook = (
             ...template,
             props,
             todos,
-            nodes: convertToNodes(
-              nodes as Parameters<typeof convertToNodes>[0]
-            ),
+            nodes: convertToNodes(nodes),
           }),
         };
 
@@ -177,13 +155,11 @@ export const useWidgetTransform: Types.WidgetTransformHook = (
             )
           );
 
-          Object.entries(nodes || {}).forEach(
-            ([path, { alias, type, nodeType }]) => {
-              if (type === 'public') {
-                _set(result, ['nodes', widgetKey, alias || path], nodeType);
-              }
+          Object.entries(nodes || {}).forEach(([path, { alias, type }]) => {
+            if (type === 'public') {
+              _set(result, ['nodes', widgetKey, alias || path], 'element');
             }
-          );
+          });
         }
 
         return result;

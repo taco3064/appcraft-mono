@@ -45,7 +45,7 @@ const getGeneratorOptions: Types.GetGeneratorOptions = (
 
 export const useComposerRender: Types.ComposerRenderHook = (
   { onFetchData, onFetchTodoWrapper, onLazyRetrieve, onOutputCollect },
-  globalState,
+  handleMaestro,
   render
 ) => {
   const [, startTransition] = useTransition();
@@ -67,9 +67,9 @@ export const useComposerRender: Types.ComposerRenderHook = (
           key,
           props: TYPES.reduce((props, type) => {
             if (type === 'props') {
-              return Util.getProps(globalState.props(widget, queue), props);
+              return Util.getProps(handleMaestro.props(widget, queue), props);
             } else if (type === 'todos') {
-              const todos = globalState.todos(widget, queue, {
+              const todos = handleMaestro.todos(widget, queue, {
                 onFetchData,
                 onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
               });
@@ -97,7 +97,7 @@ export const useComposerRender: Types.ComposerRenderHook = (
                 })
               );
             } else if (type === 'nodes') {
-              Object.entries(globalState.nodes(widget, queue)).forEach(
+              Object.entries(handleMaestro.nodes(widget, queue)).forEach(
                 ([propPath, nodes]) =>
                   _set(
                     props,

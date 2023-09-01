@@ -35,7 +35,7 @@ export type ComposerRenderHook = (
     onLazyRetrieve: (type: string) => LazyWidget;
     onOutputCollect?: Util.OutputCollectHandler;
   },
-  globalState: ReturnType<typeof usePropsStateMaestro>,
+  handleMaestro: ReturnType<typeof usePropsStateMaestro>,
   render: (
     WidgetElement:
       | React.LazyExoticComponent<React.ComponentType>

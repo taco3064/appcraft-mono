@@ -4,7 +4,7 @@ import type * as Appcraft from '@appcraft/types';
 
 import type * as Types from './useLazyWidgetInitial.types';
 import type { FetchWrapperHandler } from '../useComposerRender';
-import type { RendererOptions, WidgetMap } from '../../utils';
+import type { RenderedWidget, WidgetRegistry } from '../common';
 
 const extractByLayoutTemplate: Types.ExtractByLayoutTemplate = (templates) =>
   templates.reduce<ReturnType<Types.ExtractByLayoutTemplate>>(
@@ -74,9 +74,9 @@ const fetchWidgets: Types.FetchWidgets = async (
 };
 
 export const useLazyWidgetInitial = <R>(
-  options: RendererOptions,
+  options: RenderedWidget,
   fetchWidgetWrapper: FetchWrapperHandler<'widget'>,
-  renderer: Appcraft.LazyRenderer<WidgetMap, R>
+  renderer: Appcraft.LazyRenderer<WidgetRegistry, R>
 ) => {
   const fetchRef = useRef(fetchWidgetWrapper);
   const renderRef = useRef(renderer);

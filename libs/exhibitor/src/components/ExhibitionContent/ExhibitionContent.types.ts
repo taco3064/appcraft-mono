@@ -4,7 +4,6 @@ import type { PaperProps } from '@mui/material/Paper';
 import { useComposerRender } from '../../hooks';
 import type * as Hook from '../../hooks';
 import type { GridActionRenderer, GridLayoutProps } from '../common';
-import type { RendererOptions, WidgetMap } from '../../utils';
 
 //* Variables
 type RendererHandlers = Parameters<typeof useComposerRender>[0];
@@ -15,7 +14,7 @@ export type PopoverOptions = {
 };
 
 //* Component Props
-export type ExhibitionContentProps<T extends RendererOptions> =
+export type ExhibitionContentProps<T extends Hook.RenderedWidget> =
   RendererHandlers &
     (T extends MainWidget
       ? {
@@ -24,7 +23,7 @@ export type ExhibitionContentProps<T extends RendererOptions> =
           breakpoint?: never;
           elevation?: never;
           options: MainWidget;
-          templates: WidgetMap;
+          templates: Hook.WidgetRegistry;
           onReady?: never;
         }
       : {
@@ -41,6 +40,6 @@ export type ExhibitionContentProps<T extends RendererOptions> =
           breakpoint?: GridLayoutProps['breakpoint'];
           elevation?: PaperProps['elevation'];
           options: LayoutWidget[];
-          templates: WidgetMap;
+          templates: Hook.WidgetRegistry;
           onReady?: Hook.ReadyHandler;
         });

@@ -2,9 +2,9 @@ import { GridAction, GridLayout } from '../common';
 import * as Hook from '../../hooks';
 import * as Style from '../../styles';
 import type * as Types from './ExhibitionContent.types';
-import type { RendererOptions } from '../../utils';
+import type { RenderedWidget } from '../../hooks';
 
-export default function ExhibitionContent<T extends RendererOptions>({
+export default function ExhibitionContent<T extends RenderedWidget>({
   GridLayoutProps,
   action,
   breakpoint,

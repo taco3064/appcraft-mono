@@ -2,6 +2,7 @@ import type * as Appcraft from '@appcraft/types';
 import type { Dispatch } from 'react';
 
 import type * as Util from '../../../utils';
+import type { RenderedWidget, WidgetRegistry } from '../index.types';
 
 //* Variables
 export type InjectionProps = {
@@ -48,8 +49,8 @@ export type ReducerState = Record<
 >;
 
 export type StateReducerHook = (
-  tempaltes: Util.WidgetMap,
-  options: Util.RendererOptions,
+  tempaltes: WidgetRegistry,
+  options: RenderedWidget,
   ready: Pick<
     Parameters<typeof Util.getEventHandler>[1],
     'onFetchData' | 'onFetchTodoWrapper' | 'onOutputCollect'

@@ -95,14 +95,16 @@ export default function Todos() {
       </PageContainer>
 
       <CraftsmanStyle.FlexDialog
+        disableContentGutter
+        disableContentJustifyCenter
         fullWidth
         maxWidth="xs"
+        direction="column"
+        title={tt('ttl-output')}
         open={Boolean(steperProps)}
         onClose={() => setStepperProps(undefined)}
       >
-        <Container disableGutters>
-          <TodoOutputStepper {...steperProps} />
-        </Container>
+        <TodoOutputStepper {...steperProps} />
       </CraftsmanStyle.FlexDialog>
     </>
   );

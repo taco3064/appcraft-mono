@@ -66,6 +66,14 @@ export default function WidgetState({
             editing?.path as string,
             'alias',
           ])}
+          primaryTypographyProps={{
+            whiteSpace: 'nowrap',
+          }}
+          secondaryTypographyProps={{
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
         />
       </Style.WidgetAppBar>
 

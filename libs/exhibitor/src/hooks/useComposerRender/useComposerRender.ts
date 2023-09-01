@@ -15,22 +15,22 @@ const TYPES: Appcraft.StateCategory[] = ['props', 'todos', 'nodes'];
 const getGeneratorOptions: Types.GetGeneratorOptions = (
   widget,
   propPath,
-  { state, superiors = [] },
+  { owner, superiors = [] },
   index
 ) => {
-  const path = Util.getPropPath([state.path || '', 'nodes', propPath]);
+  const path = Util.getPropPath([owner.path || '', 'nodes', propPath]);
 
   if (_get(widget, 'template')) {
-    const { id } = state;
+    const { id } = owner;
     const templateIndex = _get(widget, 'template.index');
 
     return typeof templateIndex !== 'number'
       ? {
-          state: { id: widget.id },
+          owner: { id: widget.id },
           superiors: [{ id, path }, ...superiors],
         }
       : {
-          state: { id: widget.id },
+          owner: { id: widget.id },
           superiors: [
             { id, path: Util.getPropPath([path, templateIndex]) },
             ...superiors,
@@ -39,8 +39,8 @@ const getGeneratorOptions: Types.GetGeneratorOptions = (
   }
 
   return typeof index !== 'number'
-    ? { superiors, state: { ...state, path } }
-    : { superiors, state: { ...state, path: Util.getPropPath([path, index]) } };
+    ? { superiors, owner: { ...owner, path } }
+    : { superiors, owner: { ...owner, path: Util.getPropPath([path, index]) } };
 };
 
 export const useComposerRender: Types.ComposerRenderHook = (

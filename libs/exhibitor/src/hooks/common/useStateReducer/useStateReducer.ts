@@ -1,4 +1,5 @@
 import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import _set from 'lodash/set';
 import { useEffect, useMemo, useReducer, useRef, useTransition } from 'react';
 import type * as Appcraft from '@appcraft/types';
@@ -31,23 +32,32 @@ function reducer(
 
   //* 初始化
   return Array.from(action.values()).reduce<Types.ReducerState>(
-    (result, { widget, props }) => {
+    (result, { widget, ...override }) => {
+      //! override 必須對應到 widget 所在的 path
+      //! 感覺 override (props) 也要存放到 reducer state 中
+      //! hook 也連帶要 rename
       const { id, state } = widget;
       const acc: Types.ReducerState[string] = {};
 
       Object.entries(state || {}).forEach(([category, $state]) =>
         Object.entries($state).forEach(([stateKey, opts]) => {
-          const propValue = _get(props, [category, opts.alias || stateKey]);
+          const propValue = _get(override, [category, opts.alias || stateKey]);
 
           acc[stateKey] = {
             category: category as Appcraft.StateCategory,
             isProps: propValue != null,
-            options: opts,
-            value: propValue || opts.defaultValue,
+            value: (category === 'props' && propValue) || opts.defaultValue,
             propPath: stateKey.replace(
               new RegExp(`(.*\\.${category}|^${category})\\.`),
               ''
             ),
+            options: {
+              ...opts,
+              ...(category === 'nodes' &&
+                !_isEmpty(propValue) && {
+                  template: Array.isArray(propValue) ? propValue[0] : propValue,
+                }),
+            },
           };
         })
       );
@@ -126,7 +136,7 @@ export const useStateReducer: Types.StateReducerHook = (
         const widget = templates.get(id);
 
         if (widget) {
-          result.set(widget.id, { widget, props: props[id] });
+          result.set(widget.id, { ...props[id], widget });
         }
       });
     }
@@ -144,11 +154,11 @@ export const useStateReducer: Types.StateReducerHook = (
         const { onPropsChange } = opts;
 
         ready(onPropsChange);
-      } else if (ready) {
+      } else if (ready && Object.keys(ready).length > 0) {
         getEventHandler(ready, { ...opts, eventName: 'onReady' })();
       }
     });
-  }, [widgets]);
+  }, [widgets, onReady]);
 
   return [states, { props: handlePropsChange, state: dispatch }];
 };

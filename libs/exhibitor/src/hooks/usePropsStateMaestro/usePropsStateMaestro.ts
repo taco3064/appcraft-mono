@@ -11,10 +11,8 @@ const getSuperiorProps: Types.GetSuperiorProps = (states, superiors = []) =>
   superiors.reduce((result, { id, path }) => {
     const state = _get(states, [id, path?.replace(/\[\d+\]$/, '') as string]);
 
-    if (
-      state?.category === 'nodes' &&
-      (state?.options.type === 'private' || state?.isProps || state?.value)
-    ) {
+    //*  || state?.isProps || state?.value
+    if (state?.category === 'nodes' && (!state?.isProps || state?.value)) {
       const index = Number.parseInt(_toPath(path || '').pop() || '', 10);
       const statePath = path?.replace(/\[\d+\]$/, '');
 
@@ -30,15 +28,15 @@ const getSuperiorProps: Types.GetSuperiorProps = (states, superiors = []) =>
 
 const getSuperiorTodos: Types.GetSuperiorTodos = (
   states,
-  { state, superiors = [] },
+  { owner, superiors = [] },
   { onStateChange, ...handlerOptions }
 ) =>
-  Object.entries(_get(states, [state.id]) || {}).reduce<Types.TodosReturn>(
+  Object.entries(_get(states, [owner.id]) || {}).reduce<Types.TodosReturn>(
     (result, [stateKey, { category, propPath, options }]) => {
       if (
         category === 'todos' &&
         stateKey.replace(new RegExp(`.*todos.${propPath}$`), '') ===
-          (state.path || '')
+          (owner.path || '')
       ) {
         const { alias } = options;
         const todosPath = ['options', 'template', 'todos', alias];
@@ -86,15 +84,15 @@ export const usePropsStateMaestro: Types.PropsStateMaestroHook = (
   const [states, handles] = useStateReducer(templates, ...options);
 
   return {
-    props: (widget, { state, superiors = [] }) => {
+    props: (widget, { owner, superiors = [] }) => {
       const props = getSuperiorProps(states, superiors);
 
-      return Object.entries(_get(states, [state.id]) || {}).reduce(
+      return Object.entries(_get(states, [owner.id]) || {}).reduce(
         (result, [stateKey, { category, propPath, value, options }]) => {
           if (
             category === 'props' &&
             stateKey.replace(new RegExp(`.props.${propPath}$`), '') ===
-              state.path
+              owner.path
           ) {
             const { alias, type } = options as Appcraft.PropsState;
 
@@ -151,7 +149,7 @@ export const usePropsStateMaestro: Types.PropsStateMaestroHook = (
                       ...options,
                       onPropsChange: handles.props,
                       onStateChange: (values) =>
-                        handles.state({ id: queue.state.id, values }),
+                        handles.state({ id: queue.owner.id, values }),
                     }),
                     ...acc,
                   ],
@@ -161,15 +159,15 @@ export const usePropsStateMaestro: Types.PropsStateMaestroHook = (
       }, {});
     },
 
-    nodes: (widget, { state, superiors }) => {
+    nodes: (widget, { owner, superiors }) => {
       const props = getSuperiorProps(states, superiors);
 
-      return Object.entries(_get(states, [state.id]) || {}).reduce(
+      return Object.entries(_get(states, [owner.id]) || {}).reduce(
         (result, [stateKey, { category, propPath, value, options }]) => {
           if (
             category === 'nodes' &&
             stateKey.replace(new RegExp(`.?nodes.${propPath}$`), '') ===
-              (state.path || '')
+              (owner.path || '')
           ) {
             const { nodeType, type, alias } = options as
               | Appcraft.ElementState

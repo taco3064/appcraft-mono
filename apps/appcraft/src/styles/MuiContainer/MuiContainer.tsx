@@ -38,7 +38,16 @@ export const PageContainer = withStyles(
         <CraftsmanStyle.AutoBreakTypography
           {...{ primary, secondary }}
           classes={{ root: titleClassName }}
-          primaryTypographyProps={{ variant: 'h5', color: 'secondary' }}
+          primaryTypographyProps={{
+            variant: 'h5',
+            color: 'secondary',
+            whiteSpace: 'nowrap',
+          }}
+          secondaryTypographyProps={{
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
         />
 
         {action}
@@ -67,7 +76,6 @@ export const PageContainer = withStyles(
 
       [theme.breakpoints.only('xs')]: {
         fontSize: theme.typography.h6.fontSize,
-        whiteSpace: 'pre-line' as never,
       },
     },
     toolbar: {

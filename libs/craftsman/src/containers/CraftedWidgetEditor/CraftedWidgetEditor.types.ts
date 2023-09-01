@@ -10,6 +10,11 @@ import type * as Ctx from '../../contexts';
 import type * as Hook from '../../hooks';
 
 //* Variables
+type CheckAllowedToAddWidget = (
+  type: Appcraft.NodeType,
+  childrenCount: number
+) => boolean;
+
 type RenderNewWidgetDialog = (options: {
   type: Appcraft.NodeType;
   paths: (string | number)[];
@@ -41,6 +46,7 @@ export interface CraftedWidgetEditorProps {
   todoTypeFile?: string;
   version?: string;
   widget: Appcraft.MainWidget;
+  isAllowedToAddWidget?: CheckAllowedToAddWidget;
   overrideMixedOptions?: Ctx.OverrideMixedOptions;
   overrideNamingProps?: Ctx.OverrideNamingProps;
   renderNewWidgetDialog?: RenderNewWidgetDialog;

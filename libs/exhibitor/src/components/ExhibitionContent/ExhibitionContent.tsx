@@ -33,7 +33,7 @@ export default function ExhibitionContent<T extends RendererOptions>({
   );
 
   return !Array.isArray(options) ? (
-    ((render(options, { state: { id: options.id } }) || null) as JSX.Element)
+    ((render(options, { owner: { id: options.id } }) || null) as JSX.Element)
   ) : (
     <GridLayout
       {...GridLayoutProps}
@@ -47,7 +47,7 @@ export default function ExhibitionContent<T extends RendererOptions>({
         return (
           <Style.GridLayoutItem key={id} elevation={elevation}>
             <Style.GridLayoutItemContent disableGutters maxWidth={false}>
-              {widget && render(widget, { state: { id: widget.id } })}
+              {widget && render(widget, { owner: { id: widget.id } })}
 
               <GridAction action={action} layout={layout} />
             </Style.GridLayoutItemContent>

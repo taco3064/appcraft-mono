@@ -1,19 +1,10 @@
 import type { ExhibitionContentProps } from '../../components';
-import type { FetchDataHandler } from '../../utils';
-import type { FetchWrapperHandler, RenderedWidget } from '../../hooks';
+import type { RenderedWidget } from '../../hooks';
+import type { HandleFns } from '../../contexts';
 
 //* Component Props
-export type LazyExhibitionContentProps = Omit<
-  ExhibitionContentProps,
-  'templates'
->;
-
 export interface CraftedRendererProps
-  extends Omit<
-    LazyExhibitionContentProps,
-    'options' | 'onFetchTodoWrapper' | 'onLazyRetrieve'
-  > {
+  extends Omit<ExhibitionContentProps, 'options'>,
+    Omit<HandleFns, 'getWidgetOptions' | 'onLazyRetrieve'> {
   options?: RenderedWidget;
-  onFetchData: FetchDataHandler;
-  onFetchWrapper: FetchWrapperHandler<'todo' | 'widget'>;
 }

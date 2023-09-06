@@ -1,130 +1,84 @@
-import _get from 'lodash/get';
 import _set from 'lodash/set';
-import { lazy, useTransition } from 'react';
-import type * as Appcraft from '@appcraft/types';
+import type { ComponentProps } from 'react';
+import type { StateCategory } from '@appcraft/types';
 
-import * as Util from '../../utils';
+import { getEventHandler, getPropPath } from '../../utils';
+import { useHandles, useMutableHandles } from '../../contexts';
 import type * as Types from './useComposerRender.types';
 
-const LazyPlainText = lazy<Types.PlainTextComponent>(async () => ({
-  default: ({ children }) => children as JSX.Element,
-}));
+const sources: StateCategory[] = ['props', 'todos', 'nodes'];
 
-const TYPES: Appcraft.StateCategory[] = ['props', 'todos', 'nodes'];
+function getProps<P>(
+  ...[
+    widget,
+    { group, renderPaths = [] },
+    { generate, getHandles },
+  ]: Types.GetPropsArgs
+) {
+  const { onFetchData, onFetchWrapper, onOutputCollect } = getHandles<'todo'>();
 
-const getGeneratorOptions: Types.GetGeneratorOptions = (
-  widget,
-  propPath,
-  { owner, superiors = [] },
-  index
-) => {
-  const path = Util.getPropPath([owner.path || '', 'nodes', propPath]);
-
-  if (_get(widget, 'template')) {
-    const { id } = owner;
-    const templateIndex = _get(widget, 'template.index');
-
-    return typeof templateIndex !== 'number'
-      ? {
-          owner: { id: widget.id },
-          superiors: [{ id, path }, ...superiors],
-        }
-      : {
-          owner: { id: widget.id },
-          superiors: [
-            { id, path: Util.getPropPath([path, templateIndex]) },
-            ...superiors,
-          ],
-        };
-  }
-
-  return typeof index !== 'number'
-    ? { superiors, owner: { ...owner, path } }
-    : { superiors, owner: { ...owner, path: Util.getPropPath([path, index]) } };
-};
-
-export const useComposerRender: Types.ComposerRenderHook = (
-  { onFetchData, onFetchTodoWrapper, onLazyRetrieve, onOutputCollect },
-  handleMaestro,
-  render
-) => {
-  const [, startTransition] = useTransition();
-
-  return function generate(widget, queue, index = 0) {
-    const key = `${widget.id}_${index}`;
-
-    switch (widget.category) {
-      case 'plainText':
-        return render(LazyPlainText, {
-          key,
-          props: { children: widget.content || '' },
-        });
-
-      case 'node': {
-        const Widget = onLazyRetrieve(widget.type);
-
-        return render(Widget, {
-          key,
-          props: TYPES.reduce((props, type) => {
-            if (type === 'props') {
-              return Util.getProps(handleMaestro.props(widget, queue), props);
-            } else if (type === 'todos') {
-              const todos = handleMaestro.todos(widget, queue, {
-                onFetchData,
-                onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
-              });
-
-              Object.entries(todos).forEach(([propPath, { todos, handlers }]) =>
-                _set(props, propPath, (...e: unknown[]) => {
-                  const start = Date.now();
-
-                  startTransition(() => {
-                    handlers
-                      .reduce(
-                        (result, handler) =>
-                          result.then((outputs) =>
-                            handler({ [Util.OUTPUTS_SYMBOL]: outputs }, ...e)
-                          ),
-                        Promise.resolve<Util.OutputData[]>([])
-                      )
-                      .then((outputs) =>
-                        onOutputCollect?.(
-                          { duration: Date.now() - start, outputs, todos },
-                          propPath
-                        )
-                      );
-                  });
+  return sources.reduce((result, source) => {
+    if (source === 'props') {
+      Object.entries(widget[source] || {}).forEach(([propPath, value]) =>
+        _set(result, propPath, value)
+      );
+    } else if (source === 'todos') {
+      Object.entries(widget[source] || {}).forEach(([propPath, todos]) =>
+        _set(
+          result,
+          propPath,
+          getEventHandler(todos, {
+            eventName: propPath,
+            onFetchData,
+            onFetchTodoWrapper: (todoid) => onFetchWrapper('todo', todoid),
+            onOutputCollect,
+          })
+        )
+      );
+    } else if (source === 'nodes') {
+      Object.entries(widget[source] || {}).forEach(([propPath, nodes]) =>
+        _set(
+          result,
+          propPath,
+          !Array.isArray(nodes)
+            ? generate(nodes, {
+                group,
+                renderPaths: [...renderPaths, propPath],
+              })
+            : nodes.map((node, index) =>
+                generate(node, {
+                  group,
+                  index,
+                  renderPaths: [...renderPaths, getPropPath([propPath, index])],
                 })
-              );
-            } else if (type === 'nodes') {
-              Object.entries(handleMaestro.nodes(widget, queue)).forEach(
-                ([propPath, nodes]) =>
-                  _set(
-                    props,
-                    propPath,
-                    !Array.isArray(nodes)
-                      ? generate(
-                          nodes,
-                          getGeneratorOptions(nodes, propPath, queue)
-                        )
-                      : nodes.map((node, i) =>
-                          generate(
-                            node,
-                            getGeneratorOptions(node, propPath, queue, i),
-                            i
-                          )
-                        )
-                  )
-              );
-            }
-
-            return props;
-          }, {}),
-        });
-      }
-      default:
+              )
+        )
+      );
     }
 
-    return null;
+    return result;
+  }, {}) as P;
+}
+
+export const useComposerRender: Types.ComposerRenderHook = (render) => {
+  const getHandles = useMutableHandles();
+  const { getWidget } = useHandles();
+
+  return function generate(target, queue) {
+    const [element, widget] = getWidget(target);
+    const key = `${queue.group}_${widget?.id || 'none'}_${queue.index || 0}`;
+
+    return !widget
+      ? null
+      : render(element, {
+          key,
+          props:
+            widget.category !== 'node'
+              ? { children: widget.content || '' }
+              : getProps<ComponentProps<typeof element>>(widget, queue, {
+                  generate,
+                  getHandles,
+                }),
+        });
   };
 };

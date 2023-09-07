@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.112](https://github.com/taco3064/appcraft-mono/compare/v0.0.111...v0.0.112) (2023-09-07)
+
+
+### Features
+
+* **page-editor:** support to override the children nodes in page-editor ([fd96034](https://github.com/taco3064/appcraft-mono/commit/fd96034ae8eda5fb8e2d3fc13795736d636d75f1))
+
+
+### Bug Fixes
+
+* **@appcraft/exhibitor:** rename type and update the type file path ([fd86129](https://github.com/taco3064/appcraft-mono/commit/fd861291dd44b8d0e1e06a3f0f92fb5e10b83670))
+* **@appcraft/exhibitor:** rename variables ([71df478](https://github.com/taco3064/appcraft-mono/commit/71df47883553f84db66b8a4e94d9fc4a1f2044d3))
+* fixed the \d regexp must be \d+ ([fd4b5a2](https://github.com/taco3064/appcraft-mono/commit/fd4b5a2a3e89d76847e2237534ea6dfaed0ef9bb))
+* fixed the parameters content of isAllowedToAddWidget in CraftedWidgetEditor ([ed79c21](https://github.com/taco3064/appcraft-mono/commit/ed79c21c9ebf11f93d0a97e650d0e247a44faac8))
+* **global-state:** fixed the invalid render ([481ab48](https://github.com/taco3064/appcraft-mono/commit/481ab48c6c1c2f04cf521f08f099ba7ea56b35de))
+* **layout-props-editor:** make sure the convert methods wouldn't process the node array ([dc8e9fe](https://github.com/taco3064/appcraft-mono/commit/dc8e9febb037a92e8bf0a15fee1e56be2e8df810))
+* **page-editor:** add locales setttings ([3f5a4da](https://github.com/taco3064/appcraft-mono/commit/3f5a4daee3e1c004ee35a18f0de3453955851370))
+* remove the invalid props injection in flex-dialog ([5bd3710](https://github.com/taco3064/appcraft-mono/commit/5bd371064f7734a2ee7a1dae29bc9f0360d3023b))
+* **use-lazy-widget-initial:** remove the unnecessary process and types ([3817c07](https://github.com/taco3064/appcraft-mono/commit/3817c07b532a6219f93493bcf6c0ecfed41a523a))
+* **use-lazy-widget-initial:** support to extract the template ids from layout ([bb354d0](https://github.com/taco3064/appcraft-mono/commit/bb354d0ced0f7d0e78224a8fa6e5d6eb9cc466ef))
+* **use-state-reducer:** make sure onReady will be trigger when the ready todos was changed ([45af1cf](https://github.com/taco3064/appcraft-mono/commit/45af1cf6adbaf0e57696b58d32a7b40964e641cd))
+* **use-state-reducer:** wouldn't execute onReady when there isn't any ready todos ([5fc84b0](https://github.com/taco3064/appcraft-mono/commit/5fc84b031c9c76f951253d484f93e573e69cf9d6))
+* **widget-picker:** fixed bugs ([8f7ad67](https://github.com/taco3064/appcraft-mono/commit/8f7ad67d3fca36c7b5dd2cda0888cfd2fbdf539b))
+
 ### [0.0.111](https://github.com/taco3064/appcraft-mono/compare/v0.0.110...v0.0.111) (2023-08-30)
 
 

@@ -26,13 +26,23 @@ export type PendingStateOptions = {
   widget: Appcraft.MainWidget;
 };
 
-export type ReadyHandler =
-  | Record<string, Appcraft.WidgetTodo>
-  | ((onPropsChange: Util.PropsChangeHandler) => Promise<void>);
-
 export type StateType<T extends Appcraft.StateCategory> = Required<
   Required<Appcraft.MainWidget['state']>[T]
 >[string];
+
+//* Methods
+export type GetStateOptionsFn = (
+  state: Appcraft.WidgetState,
+  renderPaths: string[],
+  propPath: string,
+  override?: Required<
+    Required<Appcraft.LayoutWidget['template']>[Appcraft.StateCategory]
+  >[string]
+) => StateOptions<Appcraft.StateCategory>;
+
+export type ReadyHandler =
+  | Record<string, Appcraft.WidgetTodo>
+  | ((onPropsChange: Util.PropsChangeHandler) => Promise<void>);
 
 //* Custom Hooks
 export type GlobalState = Record<

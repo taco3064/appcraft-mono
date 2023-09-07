@@ -10,6 +10,49 @@ import type * as Types from './GlobalState.types';
 //* Variables
 const sources: Appcraft.StateCategory[] = ['props', 'todos', 'nodes'];
 
+//* Methods
+const getStateOptions: Types.GetStateOptionsFn = (
+  state,
+  renderPaths,
+  propPath,
+  override
+) => {
+  const source = state.category;
+  const options: typeof state = JSON.parse(JSON.stringify(state));
+
+  if (override) {
+    if (source === 'nodes') {
+      const value = override as Types.InjectType<'nodes'>;
+
+      _set(options, ['template', 'id'], value.id);
+    } else if (source === 'props') {
+      const value = override as Types.InjectType<'props'>;
+
+      _set(options, ['defaultValue'], value);
+    }
+  }
+
+  return {
+    category: source,
+    options,
+    propPath: propPath.substring(
+      propPath.lastIndexOf(`.${source}.`) + `.${source}.`.length
+    ),
+    value:
+      override && source === 'todos'
+        ? override
+        : _get(options, ['defaultValue']),
+    renderPath: Util.getPropPath(
+      source === 'nodes'
+        ? renderPaths
+        : [
+            ...renderPaths,
+            propPath.substring(0, propPath.lastIndexOf(`.${source}.`)),
+          ]
+    ),
+  };
+};
+
 //* Custom Hooks
 function reducer(
   globalState: Types.GlobalState | undefined,
@@ -57,44 +100,14 @@ function reducer(
               const key = state.alias || propPath;
               const override = _get(injection, [source, key]);
 
-              const options: Types.StateType<typeof source> = JSON.parse(
-                JSON.stringify(state)
+              states.push(
+                getStateOptions(
+                  state,
+                  renderPaths,
+                  propPath,
+                  isOverrideAllowed && override
+                )
               );
-
-              if (isOverrideAllowed && override) {
-                if (source === 'nodes') {
-                  const value = override as Types.InjectType<'nodes'>;
-
-                  _set(options, ['template', 'id'], value.id);
-                } else if (source === 'props') {
-                  const value = override as Types.InjectType<'props'>;
-
-                  _set(options, ['defaultValue'], value);
-                }
-              }
-
-              states.push({
-                category: source,
-                options,
-                propPath: propPath.substring(
-                  propPath.lastIndexOf(`.${source}.`) + `.${source}.`.length
-                ),
-                value:
-                  isOverrideAllowed && source === 'todos'
-                    ? _get(injection, [source, key])
-                    : _get(options, ['defaultValue']),
-                renderPath: Util.getPropPath(
-                  source === 'nodes'
-                    ? renderPaths
-                    : [
-                        ...renderPaths,
-                        propPath.substring(
-                          0,
-                          propPath.lastIndexOf(`.${source}.`)
-                        ),
-                      ]
-                ),
-              });
 
               _set(result, [group], states);
             }
@@ -151,35 +164,31 @@ export const useGlobalState: Types.GlobalStateHook = () => {
         const { [group]: target } = globalState;
         const path = Util.getPropPath(renderPaths);
 
-        return (
-          target?.reduce(
-            (result, { category, propPath, renderPath, options, value }) => {
-              if (renderPath === path) {
-                if (category === 'nodes') {
-                  const widget = getWidgetOptions(
-                    'template',
-                    _get(options, ['template', 'id'])
-                  );
+        return (target || []).reduce(
+          (result, { category, propPath, renderPath, options, value }) => {
+            if (renderPath === path) {
+              if (category === 'nodes') {
+                const id = _get(options, ['template', 'id']);
+                const widget = getWidgetOptions('template', id);
 
-                  _set(
-                    result,
-                    [category, propPath],
-                    Util.getWidgetsByValue(
-                      widget,
-                      value,
-                      options as Appcraft.EntityNodeStates,
-                      getWidgetOptions
-                    )
-                  );
-                } else if (value) {
-                  _set(result, [category, propPath], value);
-                }
+                _set(
+                  result,
+                  [category, propPath],
+                  Util.getWidgetsByValue(
+                    widget,
+                    value,
+                    options as Appcraft.EntityNodeStates,
+                    getWidgetOptions
+                  )
+                );
+              } else if (value) {
+                _set(result, [category, propPath], value);
               }
+            }
 
-              return result;
-            },
-            {}
-          ) || {}
+            return result;
+          },
+          {}
         );
       },
       [getWidgetOptions, globalState]

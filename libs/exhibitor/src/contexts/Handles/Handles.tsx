@@ -14,11 +14,10 @@ const HandlesContext = React.createContext<Types.HandlesContextValue>({
 });
 
 export const useHandles: Types.HandlesHook = () => {
-  const { getWidgetOptions, onReady } = React.useContext(HandlesContext);
+  const { getWidgetOptions } = React.useContext(HandlesContext);
 
   return {
     getWidgetOptions,
-    onReady,
     getWidget: (target) => {
       const widget =
         typeof target !== 'string'
@@ -50,7 +49,6 @@ export default function HandlesProvider({
   onFetchData,
   onFetchWrapper,
   onOutputCollect,
-  onReady,
 }: Types.HandlesProviderProps) {
   const mutablesRef = React.useRef({
     onFetchData,
@@ -59,8 +57,8 @@ export default function HandlesProvider({
   });
 
   const value = React.useMemo(
-    () => ({ mutablesRef, getWidgetOptions, onReady }),
-    [getWidgetOptions, onReady]
+    () => ({ mutablesRef, getWidgetOptions }),
+    [getWidgetOptions]
   );
 
   React.useImperativeHandle(

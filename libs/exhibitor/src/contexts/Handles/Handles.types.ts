@@ -34,15 +34,10 @@ export type FetchWrapperHandler<W extends WrapperType> = (
     : Record<string, Appcraft.WidgetTodo>
 >;
 
-export type ReadyHandler =
-  | Record<string, Appcraft.WidgetTodo>
-  | ((onPropsChange: Util.PropsChangeHandler) => Promise<void>);
-
 //* Custom Hooks
 export type HandlesHook = () => {
   getWidget: GetWidgetFn;
   getWidgetOptions: Util.GetWidgetOptionsFn;
-  onReady?: ReadyHandler;
 };
 
 export type HandlesContextValue = Omit<ReturnType<HandlesHook>, 'getWidget'> & {

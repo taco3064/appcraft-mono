@@ -81,10 +81,11 @@ export const getWidgetsByValue: Types.GetWidgetsByValueFn = (
   if (!widget) {
     return nodeType === 'element'
       ? { category: 'plainText', id: nanoid(4), content: value as string }
-      : (Array.isArray(value) ? value : [value]).map((content: string) => ({
+      : (Array.isArray(value) ? value : [value]).map((content) => ({
           category: 'plainText',
           id: nanoid(4),
-          content,
+          content:
+            typeof content === 'string' ? content : JSON.stringify(content),
         }));
   }
 

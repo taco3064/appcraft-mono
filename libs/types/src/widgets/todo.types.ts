@@ -109,7 +109,7 @@ export type SetPropsTodo = BaseTodo<
   {
     props: {
       source: ExtractTodoResult;
-      widget: string;
+      group: string;
       propName: string;
     }[];
   }

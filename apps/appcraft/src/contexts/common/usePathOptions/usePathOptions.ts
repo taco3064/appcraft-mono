@@ -1,10 +1,11 @@
 import { useFixedT } from '../useApp';
-import type { PathOption, PathOptionsHook } from './usePathOptions.types';
+import type { BaseOption } from '../index.types';
+import type { PathOptionsHook } from './usePathOptions.types';
 
 export const usePathOptions: PathOptionsHook = (states, stateType) => {
   const [ct] = useFixedT('appcraft');
 
-  return Object.entries(states || {}).reduce<PathOption[]>(
+  return Object.entries(states || {}).reduce<BaseOption[]>(
     (result, [category, states]) => {
       Object.entries(states).forEach(([path, { alias, type, description }]) => {
         if (!stateType || type === stateType) {

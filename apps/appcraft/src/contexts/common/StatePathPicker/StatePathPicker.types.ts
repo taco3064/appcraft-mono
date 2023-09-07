@@ -1,12 +1,5 @@
 import type { MainWidget } from '@appcraft/types';
 
-//* Variables
-export type StatePathOption = {
-  value: string;
-  primary: string;
-  secondary: string;
-};
-
 //* Component Props
 export interface StatePathPickerProps {
   disabled?: boolean;

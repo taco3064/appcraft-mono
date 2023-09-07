@@ -5,26 +5,51 @@ import LinkIcon from '@mui/icons-material/Link';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
+import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { searchHierarchy } from '~appcraft/services';
-import type { WidgetPickerProps } from './WidgetPicker.types';
+import { BaseOption } from '../index.types';
+import type { PropsGroupPickerProps } from './PropsGroupPicker.types';
 
-export default function WidgetPicker({
-  exclude = [],
-  targets,
+export default function PropsGroupPicker({
+  layouts,
   value,
   onChange,
   onView,
   ...props
-}: WidgetPickerProps) {
+}: PropsGroupPickerProps) {
+  const targets = layouts.reduce((result, { template }) => {
+    if (template?.id) {
+      result.push(template.id);
+    }
+
+    return result;
+  }, []);
+
   const { data } = useQuery({
     refetchOnWindowFocus: false,
     queryFn: searchHierarchy,
     queryKey: ['widgets', { type: 'item', targets }],
   });
 
-  const options = data?.filter(({ _id }) => !exclude.includes(_id)) || [];
+  const options = useMemo(
+    () =>
+      data.map<BaseOption & { hierarchy: (typeof data)[number] }>(
+        (hierarchy) => {
+          const { _id, name, description } = hierarchy;
+          const layout = layouts.find(({ template }) => template?.id === _id);
+
+          return {
+            value: layout.id,
+            hierarchy,
+            primary: name,
+            secondary: description,
+          };
+        }
+      ),
+    [data, layouts]
+  );
 
   return (
     <TextField
@@ -47,7 +72,11 @@ export default function WidgetPicker({
             {value && onView && (
               <IconButton
                 size="small"
-                onClick={() => onView(data.find(({ _id }) => _id === value))}
+                onClick={() =>
+                  onView(
+                    options.find(({ value: id }) => id === value).hierarchy
+                  )
+                }
               >
                 <LinkIcon fontSize="small" />
               </IconButton>
@@ -56,11 +85,11 @@ export default function WidgetPicker({
         ),
       }}
     >
-      {options.map(({ _id, name, description }) => (
-        <MenuItem key={_id} value={_id}>
+      {options.map(({ value, primary, secondary }) => (
+        <MenuItem key={value} value={value}>
           <ListItemText
-            primary={name}
-            secondary={description}
+            primary={primary}
+            secondary={secondary}
             primaryTypographyProps={{
               variant: 'subtitle1',
               color: 'text.primary',

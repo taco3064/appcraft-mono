@@ -1,14 +1,8 @@
 import type { MainWidget } from '@appcraft/types';
-
-//* Variables
-export type PathOption = {
-  value: string;
-  primary: string;
-  secondary: string;
-};
+import type { BaseOption } from '../index.types';
 
 //* Custom Hooks
 export type PathOptionsHook = (
   states: Omit<MainWidget['state'], 'todos'>,
   stateType?: 'public' | 'private'
-) => PathOption[];
+) => BaseOption[];

@@ -1,9 +1,7 @@
 import TextField from '@mui/material/TextField';
 import type { ComponentProps } from 'react';
 
-import type { HierarchyData } from '~appcraft/services';
-
-export type WidgetViewHandler = (data: HierarchyData<string>) => void;
+import type { WidgetViewHandler } from '../index.types';
 
 export interface WidgetPickerProps
   extends Omit<

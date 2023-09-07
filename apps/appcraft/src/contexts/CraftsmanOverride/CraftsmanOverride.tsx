@@ -3,7 +3,7 @@ import MenuItem from '@mui/material/MenuItem';
 import _get from 'lodash/get';
 import _omit from 'lodash/omit';
 import _toPath from 'lodash/toPath';
-import type { TodosState, WidgetState } from '@appcraft/types';
+import type { TodosState } from '@appcraft/types';
 
 import * as Common from '../common';
 import type * as Types from './CraftsmanOverride.types';
@@ -25,7 +25,6 @@ export default function CraftsmanOverrideProvider({
   onTodoView,
   onWidgetView,
 }: Types.CraftsmanOverrideProviderProps) {
-  const [at, ct] = Common.useFixedT('app', 'appcraft');
   const handleFetch = Common.useCraftsmanFetch();
 
   const overrides = Common.useCraftsmanOverride({
@@ -82,13 +81,6 @@ export default function CraftsmanOverrideProvider({
         {...(props as Common.PropPathPickerProps)}
         layouts={layouts}
         onView={onWidgetView}
-        // fullWidth
-        // required
-        // size="small"
-        // variant="outlined"
-        // error={!props.value}
-        // helperText={!props.value ? at('msg-required') : undefined}
-        // targets={layouts?.map(({ template }) => template?.id) || []}
       />
     ),
     TODO_WRAPPER_PICKER: (opts, category, props) => (
@@ -97,15 +89,19 @@ export default function CraftsmanOverrideProvider({
         onView={onTodoView}
       />
     ),
-    TODO_PROPS_PATH_PICKER: (opts, category, props) => (
-      <Common.PropPathPicker
-        {...(props as Common.PropPathPickerProps)}
-        template={_get(props, [
-          'props',
-          ..._toPath(props.propPath.replace(/\.propName$/, '.widget')),
-        ])}
-      />
-    ),
+    TODO_PROPS_PATH_PICKER: ({ layouts }, category, props) => {
+      const group = _get(props, [
+        'props',
+        ..._toPath(props.propPath.replace(/\.propName$/, '.group')),
+      ]);
+
+      return (
+        <Common.PropPathPicker
+          {...(props as Common.PropPathPickerProps)}
+          layout={layouts.find(({ id }) => id === group)}
+        />
+      );
+    },
     TODO_STATE_PATH_PICKER: ({ widget }, category, props) => (
       <Common.StatePathPicker
         {...(props as Omit<Common.StatePathPickerProps, 'states'>)}

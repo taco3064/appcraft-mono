@@ -69,6 +69,14 @@ export default function CraftedTypeEditor<V extends Ctx.OptionValues>({
             <Style.AutoBreakTypography
               primary={HeaderProps.primary}
               secondary={HeaderProps.secondary}
+              primaryTypographyProps={{
+                whiteSpace: 'nowrap',
+              }}
+              secondaryTypographyProps={{
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
             />
           </Style.WidgetAppBar>
         )}

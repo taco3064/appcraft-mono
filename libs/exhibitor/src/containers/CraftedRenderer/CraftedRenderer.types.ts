@@ -1,19 +1,10 @@
-import type * as Hook from '../../hooks';
-import type { FetchDataHandler, RendererOptions } from '../../utils';
 import type { ExhibitionContentProps } from '../../components';
+import type { RenderedWidget } from '../../hooks';
+import type { HandleFns } from '../../contexts';
 
 //* Component Props
-export type LazyExhibitionContentProps = Omit<
-  ExhibitionContentProps,
-  'templates'
->;
-
 export interface CraftedRendererProps
-  extends Omit<
-    LazyExhibitionContentProps,
-    'options' | 'onFetchTodoWrapper' | 'onLazyRetrieve'
-  > {
-  options?: RendererOptions;
-  onFetchData: FetchDataHandler;
-  onFetchWrapper: Hook.FetchWrapperHandler<'todo' | 'widget'>;
+  extends Omit<ExhibitionContentProps, 'options'>,
+    Omit<HandleFns, 'getWidgetOptions' | 'onLazyRetrieve'> {
+  options?: RenderedWidget;
 }

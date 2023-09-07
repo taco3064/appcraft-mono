@@ -34,13 +34,14 @@ const getActiveType: Types.GetActiveType = ({
 
 export default function CraftedWidgetEditor({
   BackButtonProps,
-  disableTodoCategories,
   disableState = false,
+  disableTodoCategories,
   stateTypeFile,
   title,
   todoTypeFile,
   version,
   widget,
+  isAllowedToAddWidget = () => true,
   overrideMixedOptions,
   overrideNamingProps,
   renderNewWidgetDialog,
@@ -69,7 +70,7 @@ export default function CraftedWidgetEditor({
     })
   );
 
-  const [{ breadcrumbs, childrenCound, paths, type }, onRedirect] =
+  const [{ breadcrumbs, childrenCount, paths, type }, onRedirect] =
     Hook.useStructure(widget);
 
   const [{ editedWidget, widgetPath, todoPath }, handleMutation] =
@@ -243,9 +244,19 @@ export default function CraftedWidgetEditor({
             subheader={
               <Comp.WidgetBreadcrumbs
                 {...{ breadcrumbs, ct }}
-                addable={type === 'node' || childrenCound < 1}
                 onAdd={() => setNewWidgetOpen(true)}
                 onRedirect={onRedirect}
+                addable={
+                  isAllowedToAddWidget({
+                    childrenCount,
+                    paths,
+                    type,
+                    owner:
+                      (editedWidget?.category === 'node' && editedWidget) ||
+                      undefined,
+                  }) &&
+                  (type === 'node' || childrenCount < 1)
+                }
               />
             }
           >

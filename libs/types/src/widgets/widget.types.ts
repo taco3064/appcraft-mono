@@ -63,8 +63,6 @@ export type LayoutWidget = {
   };
   template: State.Template & {
     props?: { [stateKey: string]: unknown };
-    nodes?: {
-      [stateKey: string]: LayoutWidget['template'] | LayoutWidget['template'][];
-    };
+    nodes?: { [stateKey: string]: LayoutWidget['template'] };
   };
 };

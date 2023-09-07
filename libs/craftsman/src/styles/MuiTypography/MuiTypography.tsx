@@ -45,31 +45,31 @@ export const AutoBreakTypography = withStyles(
       >
         {primary}
 
-        {secondary &&
-          (isAutoBreak ? (
-            <>
-              <br />
-              <Typography
-                variant="caption"
-                color="text.secondary"
-                {...secondaryTypographyProps}
-              >
-                {secondary}
-              </Typography>
-            </>
-          ) : (
-            <>
-              <Divider flexItem orientation="vertical" />
+        {secondary && (
+          <>
+            <Divider
+              flexItem={!isAutoBreak}
+              orientation="vertical"
+              component={isAutoBreak ? 'br' : 'hr'}
+            />
 
+            <Typography
+              display="block"
+              variant={isAutoBreak ? 'caption' : 'inherit'}
+              color={isAutoBreak ? 'text.secondary' : 'inherit'}
+              {...secondaryTypographyProps}
+            >
               {secondary}
-            </>
-          ))}
+            </Typography>
+          </>
+        )}
       </GapTypography>
     );
   },
   (theme, { autoBreakpoint = 'sm' }) => ({
     root: {
       height: 'auto',
+      overflow: 'hidden',
 
       [theme.breakpoints.down(autoBreakpoint === 'xs' ? 'sm' : autoBreakpoint)]:
         {

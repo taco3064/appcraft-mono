@@ -1,59 +1,50 @@
 import { GridAction, GridLayout } from '../common';
+
 import * as Hook from '../../hooks';
 import * as Style from '../../styles';
 import type * as Types from './ExhibitionContent.types';
-import type { RendererOptions } from '../../utils';
+import type { RenderedWidget } from '../../hooks';
 
-export default function ExhibitionContent<T extends RendererOptions>({
+export default function ExhibitionContent<T extends RenderedWidget>({
   GridLayoutProps,
   action,
   breakpoint,
   elevation,
   options,
-  templates,
-  onReady,
-  ...props
 }: Types.ExhibitionContentProps<T>) {
-  const { onFetchData, onFetchTodoWrapper, onOutputCollect } = props;
   const layouts = Hook.useGridLayouts(options, GridLayoutProps);
 
-  const handleState = Hook.usePropsStateMaestro(templates, options, {
-    onFetchData,
-    onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
-    onOutputCollect,
-    onReady,
-  });
+  // const handleMaestro = Hook.usePropsStateMaestro(templates, options, {
+  //   onFetchData,
+  //   onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
+  //   onOutputCollect,
+  //   onReady,
+  // });
 
-  const render = Hook.useComposerRender(
-    props,
-    handleState,
-    (Widget, { key, props: widgetProps }) => (
-      <Widget key={key} {...widgetProps} />
-    )
-  );
+  const generate = Hook.useComposerRender((Widget, { key, props }) => (
+    <Widget key={key} {...props} />
+  ));
 
   return !Array.isArray(options) ? (
-    ((render(options, { state: { id: options.id } }) || null) as JSX.Element)
+    (generate(options, { group: options.id }) as JSX.Element)
   ) : (
     <GridLayout
       {...GridLayoutProps}
       {...{ breakpoint, layouts, options }}
       draggableHandle=".drag-handle"
     >
-      {options.map((layout) => {
-        const { id, template } = layout;
-        const widget = templates.get(template?.id);
+      {options.map((layout) => (
+        <Style.GridLayoutItem key={layout.id} elevation={elevation}>
+          <Style.GridLayoutItemContent disableGutters maxWidth={false}>
+            {generate(layout.template.id, {
+              group: layout.id,
+              injection: layout.template,
+            })}
 
-        return (
-          <Style.GridLayoutItem key={id} elevation={elevation}>
-            <Style.GridLayoutItemContent disableGutters maxWidth={false}>
-              {widget && render(widget, { state: { id: widget.id } })}
-
-              <GridAction action={action} layout={layout} />
-            </Style.GridLayoutItemContent>
-          </Style.GridLayoutItem>
-        );
-      })}
+            <GridAction action={action} layout={layout} />
+          </Style.GridLayoutItemContent>
+        </Style.GridLayoutItem>
+      ))}
     </GridLayout>
   );
 }

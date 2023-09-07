@@ -43,7 +43,7 @@ export default function PageEditor({
             btnVariant="icon"
             disabled={breakpoint !== 'xs'}
             icon={<AddIcon />}
-            text={at('btn-add')}
+            text={pt('btn-add')}
             onClick={handlePage.add}
           />
         ),

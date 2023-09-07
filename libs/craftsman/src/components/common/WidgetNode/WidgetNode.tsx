@@ -32,13 +32,19 @@ export default function WidgetNode({
       <ListItemText
         primary={path}
         secondary={type}
-        secondaryTypographyProps={{ variant: 'caption' }}
         primaryTypographyProps={{
           variant: 'subtitle2',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
           color: isState ? 'text.secondary' : 'text.primary',
+        }}
+        secondaryTypographyProps={{
+          variant: 'caption',
+          display: '-webkit-box',
+          overflow: 'hidden',
+          whiteSpace: 'pre-line',
+          style: { WebkitBoxOrient: 'vertical', WebkitLineClamp: 2 },
         }}
       />
     </ListItemButton>

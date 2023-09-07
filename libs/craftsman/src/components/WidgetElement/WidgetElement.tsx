@@ -93,6 +93,13 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
           }}
+          secondaryTypographyProps={{
+            variant: 'caption',
+            display: '-webkit-box',
+            overflow: 'hidden',
+            whiteSpace: 'pre-line',
+            style: { WebkitBoxOrient: 'vertical', WebkitLineClamp: 2 },
+          }}
         />
 
         <Style.TypeItemAction>

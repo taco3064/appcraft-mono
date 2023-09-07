@@ -20,6 +20,8 @@ export const FlexDialog = withStyles(
     action,
     children,
     classes = {},
+    disableContentGutter = false,
+    disableContentJustifyCenter = false,
     fullScreen: fs = false,
     icon,
     title,

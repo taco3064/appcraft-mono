@@ -1,130 +1,119 @@
 import _get from 'lodash/get';
+import _merge from 'lodash/merge';
 import _set from 'lodash/set';
-import { lazy, useTransition } from 'react';
-import type * as Appcraft from '@appcraft/types';
+import type { ComponentProps } from 'react';
+import type { MainWidget, StateCategory } from '@appcraft/types';
 
-import * as Util from '../../utils';
+import * as Ctx from '../../contexts';
+import { getEventHandler, getPropPath } from '../../utils';
 import type * as Types from './useComposerRender.types';
 
-const LazyPlainText = lazy<Types.PlainTextComponent>(async () => ({
-  default: ({ children }) => children as JSX.Element,
-}));
+const sources: StateCategory[] = ['props', 'todos', 'nodes'];
 
-const TYPES: Appcraft.StateCategory[] = ['props', 'todos', 'nodes'];
+function getProps<P>(
+  ...[
+    widget,
+    { group, injection, renderPaths = [] },
+    {
+      generate,
+      getGlobalState,
+      onFetchData,
+      onFetchWrapper,
+      onOutputCollect,
+      onStateChange,
+    },
+  ]: Types.GetPropsArgs
+) {
+  const states = getGlobalState(group, renderPaths);
 
-const getGeneratorOptions: Types.GetGeneratorOptions = (
-  widget,
-  propPath,
-  { state, superiors = [] },
-  index
-) => {
-  const path = Util.getPropPath([state.path || '', 'nodes', propPath]);
+  return sources.reduce((result, source) => {
+    if (source === 'props') {
+      Object.entries({ ...widget[source], ...states[source] }).forEach(
+        ([propPath, value]) => _set(result, propPath, value)
+      );
+    } else if (source === 'todos') {
+      const merged = _merge({}, widget[source], states[source]);
 
-  if (_get(widget, 'template')) {
-    const { id } = state;
-    const templateIndex = _get(widget, 'template.index');
-
-    return typeof templateIndex !== 'number'
-      ? {
-          state: { id: widget.id },
-          superiors: [{ id, path }, ...superiors],
-        }
-      : {
-          state: { id: widget.id },
-          superiors: [
-            { id, path: Util.getPropPath([path, templateIndex]) },
-            ...superiors,
-          ],
-        };
-  }
-
-  return typeof index !== 'number'
-    ? { superiors, state: { ...state, path } }
-    : { superiors, state: { ...state, path: Util.getPropPath([path, index]) } };
-};
-
-export const useComposerRender: Types.ComposerRenderHook = (
-  { onFetchData, onFetchTodoWrapper, onLazyRetrieve, onOutputCollect },
-  globalState,
-  render
-) => {
-  const [, startTransition] = useTransition();
-
-  return function generate(widget, queue, index = 0) {
-    const key = `${widget.id}_${index}`;
-
-    switch (widget.category) {
-      case 'plainText':
-        return render(LazyPlainText, {
-          key,
-          props: { children: widget.content || '' },
-        });
-
-      case 'node': {
-        const Widget = onLazyRetrieve(widget.type);
-
-        return render(Widget, {
-          key,
-          props: TYPES.reduce((props, type) => {
-            if (type === 'props') {
-              return Util.getProps(globalState.props(widget, queue), props);
-            } else if (type === 'todos') {
-              const todos = globalState.todos(widget, queue, {
-                onFetchData,
-                onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
-              });
-
-              Object.entries(todos).forEach(([propPath, { todos, handlers }]) =>
-                _set(props, propPath, (...e: unknown[]) => {
-                  const start = Date.now();
-
-                  startTransition(() => {
-                    handlers
-                      .reduce(
-                        (result, handler) =>
-                          result.then((outputs) =>
-                            handler({ [Util.OUTPUTS_SYMBOL]: outputs }, ...e)
-                          ),
-                        Promise.resolve<Util.OutputData[]>([])
-                      )
-                      .then((outputs) =>
-                        onOutputCollect?.(
-                          { duration: Date.now() - start, outputs, todos },
-                          propPath
-                        )
-                      );
-                  });
+      Object.entries(merged).forEach(([propPath, todos]) =>
+        _set(
+          result,
+          propPath,
+          getEventHandler(todos, {
+            eventName: propPath,
+            onFetchData,
+            onFetchTodoWrapper: (todoid) => onFetchWrapper('todo', todoid),
+            onOutputCollect,
+            onStateChange: (e) => onStateChange(group, e),
+          })
+        )
+      );
+    } else if (source === 'nodes') {
+      Object.entries({ ...widget[source], ...states[source] }).forEach(
+        ([propPath, nodes]) =>
+          _set(
+            result,
+            propPath,
+            !Array.isArray(nodes)
+              ? generate(nodes, {
+                  group,
+                  injection: _get(injection, ['nodes', propPath]),
+                  renderPaths: [
+                    ...renderPaths,
+                    getPropPath(['nodes', propPath]),
+                  ],
                 })
-              );
-            } else if (type === 'nodes') {
-              Object.entries(globalState.nodes(widget, queue)).forEach(
-                ([propPath, nodes]) =>
-                  _set(
-                    props,
-                    propPath,
-                    !Array.isArray(nodes)
-                      ? generate(
-                          nodes,
-                          getGeneratorOptions(nodes, propPath, queue)
-                        )
-                      : nodes.map((node, i) =>
-                          generate(
-                            node,
-                            getGeneratorOptions(node, propPath, queue, i),
-                            i
-                          )
-                        )
-                  )
-              );
-            }
-
-            return props;
-          }, {}),
-        });
-      }
-      default:
+              : nodes.map((node, index) =>
+                  generate(node, {
+                    group,
+                    index,
+                    injection: _get(injection, ['nodes', propPath]),
+                    renderPaths: [
+                      ...renderPaths,
+                      getPropPath(['nodes', propPath, index]),
+                    ],
+                  })
+                )
+          )
+      );
     }
 
-    return null;
+    return result;
+  }, {}) as P;
+}
+
+export const useComposerRender: Types.ComposerRenderHook = (render) => {
+  const getHandles = Ctx.useMutableHandles();
+  const setInitializePending = Ctx.useInitializePending();
+  const { getGlobalState, onStateChange } = Ctx.useGlobalState();
+  const { getWidget } = Ctx.useHandles();
+
+  return function generate(target, queue) {
+    const [element, widget] = getWidget(target);
+    const mutableHandles = getHandles<'todo'>();
+    const key = `${queue.group}_${widget?.id || 'none'}_${queue.index || 0}`;
+
+    if (widget?.category === 'node' && 'state' in widget) {
+      setInitializePending({
+        group: queue.group,
+        injection: queue.injection,
+        renderPaths: queue.renderPaths || [],
+        widget: widget as MainWidget,
+      });
+    }
+
+    return !widget || !mutableHandles
+      ? null
+      : render(element, {
+          key,
+          props:
+            widget.category !== 'node'
+              ? { children: widget.content || '' }
+              : getProps<ComponentProps<typeof element>>(widget, queue, {
+                  ...mutableHandles,
+                  generate,
+                  getGlobalState,
+                  onStateChange,
+                }),
+        });
   };
 };

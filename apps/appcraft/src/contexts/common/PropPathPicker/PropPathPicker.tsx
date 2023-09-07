@@ -28,7 +28,10 @@ export default function PropPathPicker({
     refetchOnWindowFocus: false,
   });
 
-  const options = usePathOptions(_omit(widget?.content.state, ['todos']));
+  const options = usePathOptions(
+    _omit(widget?.content.state, ['todos']),
+    'public'
+  );
 
   return (
     <TextField

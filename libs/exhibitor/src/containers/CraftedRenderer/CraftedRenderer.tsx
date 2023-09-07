@@ -23,10 +23,10 @@ export default function CraftedRenderer({
     onFetchWrapper,
     ({ fetchData, ...props }) => (
       <HandlesProvider
-        {...{ onFetchData, onFetchWrapper, onOutputCollect, onReady }}
+        {...{ onFetchData, onFetchWrapper, onOutputCollect }}
         getWidgetOptions={fetchData as Exclude<typeof fetchData, undefined>}
       >
-        <GlobalStateProvider>
+        <GlobalStateProvider onReady={onReady}>
           <ExhibitionContent {...props} />
         </GlobalStateProvider>
       </HandlesProvider>

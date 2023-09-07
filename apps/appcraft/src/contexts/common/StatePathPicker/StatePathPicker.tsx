@@ -18,8 +18,6 @@ export default function StatePathPicker({
   const [wt] = useFixedT('widgets');
   const options = usePathOptions(states);
 
-  console.log(states, options);
-
   return (
     <TextField
       {...{ disabled, label, value }}

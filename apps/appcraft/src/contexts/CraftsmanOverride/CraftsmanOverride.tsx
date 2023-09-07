@@ -77,17 +77,18 @@ export default function CraftsmanOverrideProvider({
         onView={onWidgetView}
       />
     ),
-    TODO_PROPS_WIDGET_PICKER: ({ layouts }, category, props) => (
-      <Common.WidgetPicker
-        {...(props as Common.WidgetPickerProps)}
-        fullWidth
-        required
-        size="small"
-        variant="outlined"
-        error={!props.value}
-        helperText={!props.value ? at('msg-required') : undefined}
-        targets={layouts?.map(({ template }) => template?.id) || []}
+    TODO_PROPS_GROUP_PICKER: ({ layouts }, category, props) => (
+      <Common.PropsGroupPicker
+        {...(props as Common.PropPathPickerProps)}
+        layouts={layouts}
         onView={onWidgetView}
+        // fullWidth
+        // required
+        // size="small"
+        // variant="outlined"
+        // error={!props.value}
+        // helperText={!props.value ? at('msg-required') : undefined}
+        // targets={layouts?.map(({ template }) => template?.id) || []}
       />
     ),
     TODO_WRAPPER_PICKER: (opts, category, props) => (

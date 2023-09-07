@@ -1,38 +1,40 @@
+import type * as Appcraft from '@appcraft/types';
 import type { ComponentProps, ReactNode } from 'react';
-import type { EntityWidgets, MainWidget, NodeWidget } from '@appcraft/types';
 
 import { useMutableHandles } from '../../contexts';
-import type { WidgetElement } from '../../contexts';
+import type * as Ctx from '../../contexts';
 
 //* Variables
 export type GenerateQueue = {
   group: string;
-  renderPaths?: string[];
   index?: number;
+  injection?: Appcraft.LayoutWidget['template'];
+  renderPaths?: string[];
 };
 
 export type GetPropsArgs = [
-  NodeWidget | MainWidget,
+  Appcraft.NodeWidget | Appcraft.MainWidget,
   GenerateQueue,
-  {
+  Ctx.MutableHandles<'todo'> & {
     generate: GenerateFn;
-    getHandles: ReturnType<typeof useMutableHandles>;
+    getGlobalState: Ctx.GetGlobalStateFn;
+    onStateChange: Ctx.StateChangeHandler;
   }
 ];
 
 //* Methods
 type GenerateFn = (
-  target: EntityWidgets | MainWidget | string,
+  target: Appcraft.EntityWidgets | Appcraft.MainWidget | string,
   queue: GenerateQueue
 ) => ReactNode;
 
 type RenderFn = (
-  WidgetEl: WidgetElement,
-  options: { key: string; props: ComponentProps<WidgetElement> }
+  WidgetEl: Ctx.WidgetElement,
+  options: { key: string; props: ComponentProps<Ctx.WidgetElement> }
 ) => JSX.Element;
 
-export type GetPropsFn = <E extends WidgetElement>(
-  widget: EntityWidgets | MainWidget,
+export type GetPropsFn = <E extends Ctx.WidgetElement>(
+  widget: Appcraft.EntityWidgets | Appcraft.MainWidget,
   queue: GenerateQueue
 ) => ComponentProps<E>;
 

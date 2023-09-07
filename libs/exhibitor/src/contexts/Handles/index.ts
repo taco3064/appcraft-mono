@@ -8,6 +8,7 @@ export type HandleFns = Omit<Types.HandlesProviderProps, 'children'>;
 export type {
   FetchWrapperHandler,
   GetWidgetOptionsFn,
+  MutableHandles,
   ReadyHandler,
   WidgetElement,
 } from './Handles.types';

@@ -1,9 +1,11 @@
+import _get from 'lodash/get';
+import _merge from 'lodash/merge';
 import _set from 'lodash/set';
 import type { ComponentProps } from 'react';
-import type { StateCategory } from '@appcraft/types';
+import type { MainWidget, StateCategory } from '@appcraft/types';
 
+import * as Ctx from '../../contexts';
 import { getEventHandler, getPropPath } from '../../utils';
-import { useHandles, useMutableHandles } from '../../contexts';
 import type * as Types from './useComposerRender.types';
 
 const sources: StateCategory[] = ['props', 'todos', 'nodes'];
@@ -11,19 +13,30 @@ const sources: StateCategory[] = ['props', 'todos', 'nodes'];
 function getProps<P>(
   ...[
     widget,
-    { group, renderPaths = [] },
-    { generate, getHandles },
+    { group, injection, renderPaths = [] },
+    {
+      generate,
+      getGlobalState,
+      onFetchData,
+      onFetchWrapper,
+      onOutputCollect,
+      onStateChange,
+    },
   ]: Types.GetPropsArgs
 ) {
-  const { onFetchData, onFetchWrapper, onOutputCollect } = getHandles<'todo'>();
+  const states = getGlobalState(group, renderPaths);
+
+  console.log(states);
 
   return sources.reduce((result, source) => {
     if (source === 'props') {
-      Object.entries(widget[source] || {}).forEach(([propPath, value]) =>
-        _set(result, propPath, value)
+      Object.entries({ ...widget[source], ...states[source] }).forEach(
+        ([propPath, value]) => _set(result, propPath, value)
       );
     } else if (source === 'todos') {
-      Object.entries(widget[source] || {}).forEach(([propPath, todos]) =>
+      const merged = _merge({}, widget[source], states[source]);
+
+      Object.entries(merged).forEach(([propPath, todos]) =>
         _set(
           result,
           propPath,
@@ -32,27 +45,37 @@ function getProps<P>(
             onFetchData,
             onFetchTodoWrapper: (todoid) => onFetchWrapper('todo', todoid),
             onOutputCollect,
+            onStateChange: (e) => onStateChange(group, e),
           })
         )
       );
     } else if (source === 'nodes') {
-      Object.entries(widget[source] || {}).forEach(([propPath, nodes]) =>
-        _set(
-          result,
-          propPath,
-          !Array.isArray(nodes)
-            ? generate(nodes, {
-                group,
-                renderPaths: [...renderPaths, propPath],
-              })
-            : nodes.map((node, index) =>
-                generate(node, {
+      Object.entries({ ...widget[source], ...states[source] }).forEach(
+        ([propPath, nodes]) =>
+          _set(
+            result,
+            propPath,
+            !Array.isArray(nodes)
+              ? generate(nodes, {
                   group,
-                  index,
-                  renderPaths: [...renderPaths, getPropPath([propPath, index])],
+                  injection: _get(injection, ['nodes', propPath]),
+                  renderPaths: [
+                    ...renderPaths,
+                    getPropPath(['nodes', propPath]),
+                  ],
                 })
-              )
-        )
+              : nodes.map((node, index) =>
+                  generate(node, {
+                    group,
+                    index,
+                    injection: _get(injection, ['nodes', propPath]),
+                    renderPaths: [
+                      ...renderPaths,
+                      getPropPath(['nodes', propPath, index]),
+                    ],
+                  })
+                )
+          )
       );
     }
 
@@ -61,14 +84,26 @@ function getProps<P>(
 }
 
 export const useComposerRender: Types.ComposerRenderHook = (render) => {
-  const getHandles = useMutableHandles();
-  const { getWidget } = useHandles();
+  const getHandles = Ctx.useMutableHandles();
+  const setInitializePending = Ctx.useInitializePending();
+  const { getGlobalState, onStateChange } = Ctx.useGlobalState();
+  const { getWidget } = Ctx.useHandles();
 
   return function generate(target, queue) {
     const [element, widget] = getWidget(target);
+    const mutableHandles = getHandles<'todo'>();
     const key = `${queue.group}_${widget?.id || 'none'}_${queue.index || 0}`;
 
-    return !widget
+    if (widget?.category === 'node' && 'state' in widget) {
+      setInitializePending({
+        group: queue.group,
+        injection: queue.injection,
+        renderPaths: queue.renderPaths || [],
+        widget: widget as MainWidget,
+      });
+    }
+
+    return !widget || !mutableHandles
       ? null
       : render(element, {
           key,
@@ -76,8 +111,10 @@ export const useComposerRender: Types.ComposerRenderHook = (render) => {
             widget.category !== 'node'
               ? { children: widget.content || '' }
               : getProps<ComponentProps<typeof element>>(widget, queue, {
+                  ...mutableHandles,
                   generate,
-                  getHandles,
+                  getGlobalState,
+                  onStateChange,
                 }),
         });
   };

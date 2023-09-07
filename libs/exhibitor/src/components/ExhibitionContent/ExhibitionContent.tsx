@@ -36,7 +36,10 @@ export default function ExhibitionContent<T extends RenderedWidget>({
       {options.map((layout) => (
         <Style.GridLayoutItem key={layout.id} elevation={elevation}>
           <Style.GridLayoutItemContent disableGutters maxWidth={false}>
-            {generate(layout.template.id, { group: layout.id })}
+            {generate(layout.template.id, {
+              group: layout.id,
+              injection: layout.template,
+            })}
 
             <GridAction action={action} layout={layout} />
           </Style.GridLayoutItemContent>

@@ -4,7 +4,7 @@ import type * as React from 'react';
 import type * as Util from '../../utils';
 
 //* Variables
-type WrapperType = 'todo' | 'widget';
+export type WrapperType = 'todo' | 'widget';
 
 export type PlainTextComponent = React.ComponentType<{
   children?: React.ReactNode;
@@ -13,6 +13,12 @@ export type PlainTextComponent = React.ComponentType<{
 export type WidgetElement =
   | React.LazyExoticComponent<React.ComponentType>
   | React.LazyExoticComponent<PlainTextComponent>;
+
+export type MutableHandles<W extends WrapperType> = {
+  onFetchData: Util.FetchDataHandler;
+  onFetchWrapper: FetchWrapperHandler<W>;
+  onOutputCollect?: Util.OutputCollectHandler;
+};
 
 //* Methods
 type GetWidgetFn = <W extends Appcraft.EntityWidgets | Appcraft.MainWidget>(
@@ -44,21 +50,13 @@ export type HandlesHook = () => {
   onReady?: ReadyHandler;
 };
 
-export type MutableHandlesHook = () => <W extends WrapperType>() => {
-  onFetchData: Util.FetchDataHandler;
-  onFetchWrapper: FetchWrapperHandler<W>;
-  onOutputCollect?: Util.OutputCollectHandler;
-};
-
 export type HandlesContextValue = Omit<ReturnType<HandlesHook>, 'getWidget'> & {
-  mutablesRef?: React.MutableRefObject<
-    ReturnType<ReturnType<MutableHandlesHook>>
-  >;
+  mutablesRef: React.RefObject<MutableHandles<WrapperType>>;
 };
 
 //* Component Props
 export interface HandlesProviderProps
   extends Omit<ReturnType<HandlesHook>, 'getWidget'>,
-    ReturnType<ReturnType<MutableHandlesHook>> {
+    MutableHandles<WrapperType> {
   children: React.ReactNode;
 }

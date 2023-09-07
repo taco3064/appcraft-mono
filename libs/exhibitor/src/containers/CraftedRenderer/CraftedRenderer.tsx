@@ -1,10 +1,9 @@
 import LinearProgress from '@mui/material/LinearProgress';
 import { Suspense } from 'react';
-import type { ComponentProps } from 'react';
 
 import * as Hook from '../../hooks';
 import { ExhibitionContent } from '../../components';
-import { HandlesProvider } from '../../contexts';
+import { GlobalStateProvider, HandlesProvider } from '../../contexts';
 import type * as Types from './CraftedRenderer.types';
 import type { ExhibitionContentProps } from '../../components';
 
@@ -27,7 +26,9 @@ export default function CraftedRenderer({
         {...{ onFetchData, onFetchWrapper, onOutputCollect, onReady }}
         getWidgetOptions={fetchData as Exclude<typeof fetchData, undefined>}
       >
-        <ExhibitionContent {...props} />
+        <GlobalStateProvider>
+          <ExhibitionContent {...props} />
+        </GlobalStateProvider>
       </HandlesProvider>
     )
   );

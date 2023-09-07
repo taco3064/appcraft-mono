@@ -10,6 +10,7 @@ const LazyPlainText = React.lazy<Types.PlainTextComponent>(async () => ({
 //* Custom Hooks
 const HandlesContext = React.createContext<Types.HandlesContextValue>({
   getWidgetOptions: () => undefined,
+  mutablesRef: React.createRef<Types.MutableHandles<Types.WrapperType>>(),
 });
 
 export const useHandles: Types.HandlesHook = () => {
@@ -32,12 +33,14 @@ export const useHandles: Types.HandlesHook = () => {
   };
 };
 
-export const useMutableHandles: Types.MutableHandlesHook = () => {
-  const { mutablesRef } = React.useContext(
-    HandlesContext
-  ) as Required<Types.HandlesContextValue>;
+export const useMutableHandles = () => {
+  const { mutablesRef } = React.useContext(HandlesContext);
 
-  return React.useCallback(() => mutablesRef.current, [mutablesRef]);
+  return React.useCallback(
+    <W extends Types.WrapperType>() =>
+      mutablesRef.current as Types.MutableHandles<W> | null,
+    [mutablesRef]
+  );
 };
 
 //* Provider Component

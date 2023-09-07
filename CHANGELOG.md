@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.113](https://github.com/taco3064/appcraft-mono/compare/v0.0.112...v0.0.113) (2023-09-07)
+
+
+### Features
+
+* **@appcraft/exhibitor:** support to handle the ready event ([4677407](https://github.com/taco3064/appcraft-mono/commit/46774079407b8727a7e35c96d59ce9801b57b11c))
+
 ### [0.0.112](https://github.com/taco3064/appcraft-mono/compare/v0.0.111...v0.0.112) (2023-09-07)
 
 

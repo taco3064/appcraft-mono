@@ -14,16 +14,16 @@ import type * as Types from './PropPathPicker.types';
 
 export default function PropPathPicker({
   disabled = false,
+  layout,
   label,
-  template,
   value,
   onChange,
 }: Types.PropPathPickerProps) {
   const [wt] = useFixedT('widgets');
 
   const { data: widget } = useQuery({
-    enabled: Boolean(template),
-    queryKey: [template],
+    enabled: Boolean(layout?.template?.id),
+    queryKey: [layout?.template?.id],
     queryFn: findConfig<MainWidget>,
     refetchOnWindowFocus: false,
   });

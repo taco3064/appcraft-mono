@@ -11,6 +11,7 @@ type StateOptions<C extends Appcraft.StateCategory> = {
   category: C;
   renderPath: string;
   propPath: string;
+  stateKey: string;
   options: StateType<C>;
   value: C extends 'todos' ? Record<string, Appcraft.WidgetTodo> : unknown;
 };
@@ -51,6 +52,7 @@ export type GlobalState = Record<
 >;
 
 export type GlobalAction =
+  | BaseAction<'setProps', Parameters<Util.PropsChangeHandler>[0]>
   | BaseAction<'setState', { group: string; values: StateChangeEvent }>
   | BaseAction<
       'initial',
@@ -62,8 +64,8 @@ export type GlobalAction =
 
 export type GlobalStateContextValue = {
   globalState: GlobalState;
-  dispatch: Dispatch<GlobalAction>;
   pendingRef: React.RefObject<PendingStateOptions[]>;
+  dispatch: Dispatch<GlobalAction>;
 };
 
 export type InitializePendingHook = () => (
@@ -75,6 +77,7 @@ export type GlobalStateHook = () => {
     group: string,
     renderPaths: string[]
   ) => Pick<Appcraft.MainWidget, Appcraft.StateCategory>;
+  onPropsChange: Util.PropsChangeHandler;
   onStateChange: (group: string, e: StateChangeEvent) => void;
 };
 

@@ -1,6 +1,7 @@
 import type { LayoutWidget, LazyRenderer, MainWidget } from '@appcraft/types';
 
-import type { FetchWrapperHandler, GetWidgetOptionsFn } from '../../contexts';
+import type { FetchWrapperHandler } from '../../contexts';
+import type { GetWidgetOptionsFn } from '../../utils';
 import type { RenderedWidget } from '../index.types';
 
 //* Variables

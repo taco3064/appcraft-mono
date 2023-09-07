@@ -1,11 +1,9 @@
 import type * as Appcraft from '@appcraft/types';
 import type { Dispatch } from 'react';
 
-import type { GetWidgetOptionsFn } from '../Handles';
-import type { StateChangeHandler } from '../../utils';
+import type { GetWidgetOptionsFn, StateChangeHandler } from '../../utils';
 
 //* Variables
-type Widget = Appcraft.MainWidget | Appcraft.EntityWidgets;
 type StateChangeEvent = Parameters<StateChangeHandler>[0];
 type BaseAction<T extends string, P = unknown> = { type: T; payload: P };
 
@@ -31,34 +29,6 @@ export type PendingStateOptions = {
   renderPaths: string[];
   widget: Appcraft.MainWidget;
 };
-
-//* Methods
-export type GetNodesByValueFn = (
-  options: {
-    defaultNodes?: Appcraft.MainWidget['nodes'];
-    value: unknown;
-    states?: Appcraft.MainWidget['state']['nodes'];
-  },
-  getWidgetOptions: GetWidgetOptionsFn
-) => Appcraft.MainWidget['nodes'];
-
-export type GetPropsByValueFn = (options: {
-  value: unknown;
-  states?: Appcraft.MainWidget['state']['props'];
-}) => Appcraft.MainWidget['props'];
-
-export type GetTodosByTemplateFn = (options: {
-  defaultTodos?: Appcraft.MainWidget['todos'];
-  template?: Appcraft.MainWidget['todos'];
-  states?: Appcraft.MainWidget['state']['todos'];
-}) => Appcraft.MainWidget['todos'];
-
-export type GetNodeByValueFn = (
-  widget: Appcraft.MainWidget | undefined,
-  value: unknown,
-  state: Appcraft.EntityNodeStates,
-  getWidgetOptions: GetWidgetOptionsFn
-) => Widget | Widget[];
 
 //* Custom Hooks
 export type GlobalState = Record<

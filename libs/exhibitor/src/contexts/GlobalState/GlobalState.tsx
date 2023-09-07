@@ -13,77 +13,107 @@ import type * as Types from './GlobalState.types';
 const sources: Appcraft.StateCategory[] = ['props', 'todos', 'nodes'];
 
 //* Methods
-const getPropsByValue: Types.GetPropsByValueFn = ({ value, state = {} }) => {
-  const propPaths = Object.keys(state);
+const getNodesByValue: Types.GetNodesByValueFn = (
+  { defaultNodes = {}, value, states = {} },
+  getWidgetOptions
+) => {
+  const nodePaths = Object.keys(states);
 
   return Object.entries(value || {}).reduce(
-    (result, [propName, propValue]) =>
-      _set(
-        result,
-        propPaths.find((propPath) => {
-          const target = _get(state, [propPath, 'alias']) || propPath;
+    (result, [propName, propValue]) => {
+      const path = nodePaths.find(
+        (nodePath) =>
+          propName === (_get(states, [nodePath, 'alias']) || nodePath)
+      );
 
-          return propName === target;
-        }) || propName,
-        propValue
-      ),
-    {}
-  );
+      if (path) {
+        const { template } = states[path];
+        const widget = getWidgetOptions('template', template?.id as string);
+
+        _set(
+          result,
+          path,
+          getNodeByValue(widget, propValue, states[path], getWidgetOptions)
+        );
+      }
+
+      return result;
+    },
+    { nodes: JSON.parse(JSON.stringify(defaultNodes)) as typeof defaultNodes }
+  ).nodes;
+};
+
+const getPropsByValue: Types.GetPropsByValueFn = ({ value, states = {} }) => {
+  const propPaths = Object.keys(states);
+
+  return Object.entries(value || {}).reduce((result, [propName, propValue]) => {
+    const path = propPaths.find(
+      (propPath) => propName === (_get(states, [propPath, 'alias']) || propPath)
+    );
+
+    if (path) {
+      _set(result, path, propValue);
+    }
+
+    return result;
+  }, {});
 };
 
 const getTodosByTemplate: Types.GetTodosByTemplateFn = ({
+  defaultTodos = {},
   template = {},
-  todos = {},
-  state = {},
+  states = {},
 }) => {
-  const eventPaths = Object.keys(state);
+  const eventPaths = Object.keys(states);
 
-  return Object.entries(template).reduce((result, [eventName, temp]) => {
-    const propPath =
-      eventPaths.find((eventPath) => {
-        const target = _get(state, [eventPath, 'alias']) || eventPath;
+  return Object.entries(template).reduce((result, [eventName, events]) => {
+    const path = eventPaths.find(
+      (eventPath) =>
+        eventName === (_get(states, [eventPath, 'alias']) || eventPath)
+    );
 
-        return eventName === target;
-      }) || eventName;
+    if (path) {
+      _set(result, path, _merge({}, defaultTodos[path], events));
+    }
 
-    return _set(result, propPath, _merge({}, todos[propPath], temp));
-  }, {});
+    return result;
+  }, JSON.parse(JSON.stringify(defaultTodos)) as typeof defaultTodos);
 };
 
 const getNodeByValue: Types.GetNodeByValueFn = (
   widget,
   value,
-  { nodeType, template }
+  { nodeType, template },
+  getWidgetOptions
 ) => {
   if (!widget) {
     return nodeType === 'element'
       ? { category: 'plainText', id: nanoid(4), content: value as string }
-      : !Array.isArray(value)
-      ? []
-      : value.map((content: string) => ({
+      : (Array.isArray(value) ? value : [value]).map((content: string) => ({
           category: 'plainText',
           id: nanoid(4),
           content,
         }));
   }
 
-  const { props, todos, state } = widget;
+  const { props, todos, nodes, state } = widget;
 
   if (nodeType === 'element') {
     return {
       ...widget,
+      nodes: getNodesByValue(
+        { defaultNodes: nodes, value, states: state?.nodes },
+        getWidgetOptions
+      ),
       props: {
         ...props,
-        ...getPropsByValue({ value, state: state?.props }),
+        ...getPropsByValue({ value, states: state?.props }),
       },
-      todos: {
-        ...todos,
-        ...getTodosByTemplate({
-          todos,
-          template: template?.todos,
-          state: state?.todos,
-        }),
-      },
+      todos: getTodosByTemplate({
+        defaultTodos: todos,
+        template: template?.todos,
+        states: state?.todos,
+      }),
     };
   }
 
@@ -91,18 +121,19 @@ const getNodeByValue: Types.GetNodeByValueFn = (
     ? []
     : value.map((val) => ({
         ...widget,
+        nodes: getNodesByValue(
+          { defaultNodes: nodes, value: val, states: state?.nodes },
+          getWidgetOptions
+        ),
         props: {
           ...props,
-          ...getPropsByValue({ value: val, state: state?.props }),
+          ...getPropsByValue({ value: val, states: state?.props }),
         },
-        todos: {
-          ...todos,
-          ...getTodosByTemplate({
-            todos,
-            template: template?.todos,
-            state: state?.todos,
-          }),
-        },
+        todos: getTodosByTemplate({
+          defaultTodos: todos,
+          template: template?.todos,
+          states: state?.todos,
+        }),
       }));
 };
 
@@ -264,7 +295,8 @@ export const useGlobalState: Types.GlobalStateHook = () => {
                     getNodeByValue(
                       widget,
                       value,
-                      options as Appcraft.EntityNodeStates
+                      options as Appcraft.EntityNodeStates,
+                      getWidgetOptions
                     )
                   );
                 } else if (value) {

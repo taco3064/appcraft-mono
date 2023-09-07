@@ -26,8 +26,6 @@ function getProps<P>(
 ) {
   const states = getGlobalState(group, renderPaths);
 
-  console.log(states);
-
   return sources.reduce((result, source) => {
     if (source === 'props') {
       Object.entries({ ...widget[source], ...states[source] }).forEach(

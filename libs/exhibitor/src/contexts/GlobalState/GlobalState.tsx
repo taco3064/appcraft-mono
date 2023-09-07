@@ -229,7 +229,7 @@ export default function GlobalStateProvider({
   const { getWidgetOptions } = useHandles();
   const getHandles = useMutableHandles();
   const pendingRef = React.useRef<Types.PendingStateOptions[]>([]);
-  const [globalState, dispatch] = React.useReducer(reducer, {});
+  const [globalState, dispatch] = React.useReducer(reducer, undefined);
   const isInitialized = Boolean(globalState);
 
   const value = React.useMemo(
@@ -242,11 +242,13 @@ export default function GlobalStateProvider({
   );
 
   React.useEffect(() => {
-    dispatch({
-      type: 'initial',
-      payload: { pending: pendingRef.current || [], getWidgetOptions },
-    });
-  }, [getWidgetOptions]);
+    if (!isInitialized) {
+      dispatch({
+        type: 'initial',
+        payload: { pending: pendingRef.current || [], getWidgetOptions },
+      });
+    }
+  }, [isInitialized, getWidgetOptions]);
 
   React.useEffect(() => {
     if (isInitialized && onReady) {

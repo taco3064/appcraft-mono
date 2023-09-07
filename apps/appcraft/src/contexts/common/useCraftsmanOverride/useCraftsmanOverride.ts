@@ -38,7 +38,7 @@ const met: Types.MetType = {
     if (
       kind === 'pure' &&
       typeName === 'SetPropsTodo' &&
-      /^props\[\d\]\.propName$/.test(propPath)
+      /^props\[\d+\]\.propName$/.test(propPath)
     ) {
       return 'TODO_PROPS_PATH_PICKER';
     }
@@ -54,7 +54,7 @@ const met: Types.MetType = {
     if (
       kind === 'pure' &&
       typeName === 'SetPropsTodo' &&
-      /^props\[\d\]\.widget$/.test(propPath)
+      /^props\[\d+\]\.widget$/.test(propPath)
     ) {
       return 'TODO_PROPS_WIDGET_PICKER';
     }

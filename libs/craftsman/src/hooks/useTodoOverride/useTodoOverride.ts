@@ -23,12 +23,12 @@ const getOverrideRenderType: Types.GetOverrideRenderType = (
     isTodoFile &&
     ((typeName === 'FetchTodo' && /^data\.path$/.test(propPath)) ||
       (typeName === 'ConditionBranchTodo' &&
-        /^sources\[\d\]\.path$/.test(propPath)) ||
+        /^sources\[\d+\]\.path$/.test(propPath)) ||
       (typeName === 'IterateTodo' && /^source\.path$/.test(propPath)) ||
       (typeName === 'SetStateTodo' &&
-        /^states\[\d\]\.source\.path$/.test(propPath)) ||
+        /^states\[\d+\]\.source\.path$/.test(propPath)) ||
       (typeName === 'SetPropsTodo' &&
-        /^props\[\d\]\.source\.path$/.test(propPath)))
+        /^props\[\d+\]\.source\.path$/.test(propPath)))
   ) {
     const source = _get(props, propPath.replace(/\.path$/, '.source'));
 

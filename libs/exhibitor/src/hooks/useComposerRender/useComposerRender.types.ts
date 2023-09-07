@@ -1,52 +1,42 @@
 import type * as Appcraft from '@appcraft/types';
-import type * as React from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 
-import { usePropsStateMaestro } from '../usePropsStateMaestro';
-import type * as Util from '../../utils';
-import type { StateQueue } from '../usePropsStateMaestro';
+import { useMutableHandles } from '../../contexts';
+import type * as Ctx from '../../contexts';
 
 //* Variables
-type LazyWidget = React.LazyExoticComponent<React.ComponentType>;
+export type GenerateQueue = {
+  group: string;
+  index?: number;
+  injection?: Appcraft.LayoutWidget['template'];
+  renderPaths?: string[];
+};
 
-export type PlainTextComponent = React.ComponentType<{
-  children?: React.ReactNode;
-}>;
+export type GetPropsArgs = [
+  Appcraft.NodeWidget | Appcraft.MainWidget,
+  GenerateQueue,
+  Ctx.MutableHandles<'todo'> & {
+    generate: GenerateFn;
+    getGlobalState: Ctx.GetGlobalStateFn;
+    onStateChange: Ctx.StateChangeHandler;
+  }
+];
 
 //* Methods
-export type FetchWrapperHandler<C extends 'widget' | 'todo'> = (
-  type: C,
-  id: string
-) => Promise<
-  C extends 'widget' ? Appcraft.MainWidget : Record<string, Appcraft.WidgetTodo>
->;
+type GenerateFn = (
+  target: Appcraft.EntityWidgets | Appcraft.MainWidget | string,
+  queue: GenerateQueue
+) => ReactNode;
 
-export type GetGeneratorOptions = (
-  widget: Appcraft.MainWidget | Appcraft.EntityWidgets,
-  propPath: string,
-  queue: StateQueue,
-  index?: number
-) => StateQueue;
+type RenderFn = (
+  WidgetEl: Ctx.WidgetElement,
+  options: { key: string; props: ComponentProps<Ctx.WidgetElement> }
+) => JSX.Element;
 
-//* Custom Hook
-export type ComposerRenderHook = (
-  options: {
-    onFetchData: Util.FetchDataHandler;
-    onFetchTodoWrapper: FetchWrapperHandler<'todo'>;
-    onLazyRetrieve: (type: string) => LazyWidget;
-    onOutputCollect?: Util.OutputCollectHandler;
-  },
-  globalState: ReturnType<typeof usePropsStateMaestro>,
-  render: (
-    WidgetElement:
-      | React.LazyExoticComponent<React.ComponentType>
-      | React.LazyExoticComponent<PlainTextComponent>,
-    options: {
-      key: string;
-      props: React.ComponentProps<typeof WidgetElement>;
-    }
-  ) => JSX.Element
-) => (
-  widget: Appcraft.EntityWidgets,
-  options: StateQueue,
-  index?: number
-) => React.ReactNode;
+export type GetPropsFn = <E extends Ctx.WidgetElement>(
+  widget: Appcraft.EntityWidgets | Appcraft.MainWidget,
+  queue: GenerateQueue
+) => ComponentProps<E>;
+
+//* Custom Hooks
+export type ComposerRenderHook = (render: RenderFn) => GenerateFn;

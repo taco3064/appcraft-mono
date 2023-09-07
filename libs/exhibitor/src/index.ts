@@ -1,7 +1,7 @@
 export * from './containers';
 export * as ExhibitorUtil from './utils';
 
-export type { FetchWrapperHandler } from './hooks';
+export type { FetchWrapperHandler } from './contexts';
 
 export type {
   FetchDataHandler,

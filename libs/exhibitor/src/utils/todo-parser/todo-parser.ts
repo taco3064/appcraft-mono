@@ -37,7 +37,9 @@ export function getVariableOutput<
       let value = undefined;
 
       //* Generate Value
-      if (mode === 'extract') {
+      if (!initial) {
+        return result;
+      } else if (mode === 'extract') {
         const { source, path } = initial;
 
         if (source === 'event') {

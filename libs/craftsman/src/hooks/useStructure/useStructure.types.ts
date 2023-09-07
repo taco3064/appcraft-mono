@@ -16,7 +16,7 @@ export type StructureHook = (widget: Appcraft.MainWidget) => [
     type: Appcraft.NodeType;
     breadcrumbs: Breadcrumbs;
     paths: PropPaths;
-    childrenCound: number;
+    childrenCount: number;
   },
   PathsChangeHandler
 ];

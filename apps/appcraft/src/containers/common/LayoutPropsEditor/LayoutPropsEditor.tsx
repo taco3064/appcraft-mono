@@ -26,27 +26,11 @@ export default function LayoutPropsEditor({
     widget,
   });
 
-  const handleWidgetAdd = (
-    type: NodeType,
-    paths: (string | number)[],
-    e: Parameters<NodeTemplateDialogProps['onConfirm']>[0]
-  ) => {
-    if (type === 'element') {
-      onChange({
-        ...value,
-        template: { ..._set(template, paths, { id: e }) },
-      });
-    } else {
-      const target = _get(template, paths) || [];
-
-      target.push({ id: e });
-
-      onChange({
-        ...value,
-        template: { ..._set(template, paths, target) },
-      });
-    }
-  };
+  const handleWidgetAdd = (paths: (string | number)[], id: string) =>
+    onChange({
+      ...value,
+      template: { ..._set(template, paths, { id }) },
+    });
 
   return (
     <CraftedWidgetEditor
@@ -59,11 +43,10 @@ export default function LayoutPropsEditor({
       widget={widget}
       onFetchData={handleFetch.data}
       onFetchWrapper={handleFetch.wrapper}
-      isAllowedToAddWidget={(type, count) => count < 1}
-      renderNewWidgetDialog={({ type, paths, open, onClose }) => (
+      renderNewWidgetDialog={({ paths, open, onClose }) => (
         <NodeTemplateDialog
           {...{ open, onClose }}
-          onConfirm={(e) => handleWidgetAdd(type, paths, e)}
+          onConfirm={(e) => handleWidgetAdd(paths, e)}
         />
       )}
       title={

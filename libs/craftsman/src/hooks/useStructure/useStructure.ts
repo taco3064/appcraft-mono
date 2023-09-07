@@ -46,7 +46,7 @@ export const useStructure: Types.StructureHook = (() => {
           [path, widget]
         ),
 
-        childrenCound: getForceArray(
+        childrenCount: getForceArray(
           (!paths.length ? widget : _get(widget, paths)) || []
         ).length,
       },

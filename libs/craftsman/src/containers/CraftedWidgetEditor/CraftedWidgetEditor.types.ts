@@ -10,10 +10,12 @@ import type * as Ctx from '../../contexts';
 import type * as Hook from '../../hooks';
 
 //* Variables
-type CheckAllowedToAddWidget = (
-  type: Appcraft.NodeType,
-  childrenCount: number
-) => boolean;
+type CheckAllowedToAddWidget = (e: {
+  owner?: Appcraft.NodeWidget;
+  paths: (string | number)[];
+  type: Appcraft.NodeType;
+  childrenCount: number;
+}) => boolean;
 
 type RenderNewWidgetDialog = (options: {
   type: Appcraft.NodeType;

@@ -9,5 +9,6 @@ export type PathOption = {
 
 //* Custom Hooks
 export type PathOptionsHook = (
-  states: Omit<MainWidget['state'], 'todos'>
+  states: Omit<MainWidget['state'], 'todos'>,
+  stateType?: 'public' | 'private'
 ) => PathOption[];

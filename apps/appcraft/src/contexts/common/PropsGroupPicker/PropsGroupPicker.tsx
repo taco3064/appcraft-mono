@@ -9,6 +9,7 @@ import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { searchHierarchy } from '~appcraft/services';
+import { useFixedT } from '../useApp';
 import { BaseOption } from '../index.types';
 import type { PropsGroupPickerProps } from './PropsGroupPicker.types';
 
@@ -19,6 +20,8 @@ export default function PropsGroupPicker({
   onView,
   ...props
 }: PropsGroupPickerProps) {
+  const [at] = useFixedT('app');
+
   const targets = layouts.reduce((result, { template }) => {
     if (template?.id) {
       result.push(template.id);
@@ -55,7 +58,12 @@ export default function PropsGroupPicker({
     <TextField
       {...props}
       key={value || ''}
+      required
       select
+      size="small"
+      variant="outlined"
+      error={!value}
+      helperText={!value ? at('msg-required') : undefined}
       defaultValue={value || ''}
       onChange={(e) => onChange?.(e.target.value)}
       SelectProps={{

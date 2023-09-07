@@ -96,9 +96,9 @@ const execute: Types.Execute = async (
 
         onPropsChange?.(
           props.reduce<Parameters<Types.PropsChangeHandler>[0]>(
-            (result, { source, propName, widget }) => ({
+            (result, { source, propName, group }) => ({
               ...result,
-              [widget]: getVariableOutput(
+              [group]: getVariableOutput(
                 { [propName]: { mode: 'extract', initial: source } },
                 { event, outputs }
               ),

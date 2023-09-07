@@ -54,9 +54,9 @@ const met: Types.MetType = {
     if (
       kind === 'pure' &&
       typeName === 'SetPropsTodo' &&
-      /^props\[\d+\]\.widget$/.test(propPath)
+      /^props\[\d+\]\.group$/.test(propPath)
     ) {
-      return 'TODO_PROPS_WIDGET_PICKER';
+      return 'TODO_PROPS_GROUP_PICKER';
     }
   },
 };

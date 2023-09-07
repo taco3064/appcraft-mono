@@ -1,11 +1,11 @@
 import type * as Appcraft from '@appcraft/types';
 import type { Dispatch } from 'react';
 
-import type { GetWidgetOptionsFn, StateChangeHandler } from '../../utils';
+import type * as Util from '../../utils';
 
 //* Variables
-type StateChangeEvent = Parameters<StateChangeHandler>[0];
 type BaseAction<T extends string, P = unknown> = { type: T; payload: P };
+type StateChangeEvent = Parameters<Util.StateChangeHandler>[0];
 
 type StateOptions<C extends Appcraft.StateCategory> = {
   category: C;
@@ -19,16 +19,30 @@ export type InjectType<T extends Appcraft.StateCategory> = Required<
   Required<Appcraft.LayoutWidget['template']>[T]
 >[string];
 
-export type StateType<T extends Appcraft.StateCategory> = Required<
-  Required<Appcraft.MainWidget['state']>[T]
->[string];
-
 export type PendingStateOptions = {
   group: string;
   injection?: Appcraft.LayoutWidget['template'];
   renderPaths: string[];
   widget: Appcraft.MainWidget;
 };
+
+export type StateType<T extends Appcraft.StateCategory> = Required<
+  Required<Appcraft.MainWidget['state']>[T]
+>[string];
+
+//* Methods
+export type GetStateOptionsFn = (
+  state: Appcraft.WidgetState,
+  renderPaths: string[],
+  propPath: string,
+  override?: Required<
+    Required<Appcraft.LayoutWidget['template']>[Appcraft.StateCategory]
+  >[string]
+) => StateOptions<Appcraft.StateCategory>;
+
+export type ReadyHandler =
+  | Record<string, Appcraft.WidgetTodo>
+  | ((onPropsChange: Util.PropsChangeHandler) => Promise<void>);
 
 //* Custom Hooks
 export type GlobalState = Record<
@@ -40,7 +54,10 @@ export type GlobalAction =
   | BaseAction<'setState', { group: string; values: StateChangeEvent }>
   | BaseAction<
       'initial',
-      { pending: PendingStateOptions[]; getWidgetOptions: GetWidgetOptionsFn }
+      {
+        pending: PendingStateOptions[];
+        getWidgetOptions: Util.GetWidgetOptionsFn;
+      }
     >;
 
 export type GlobalStateContextValue = {
@@ -64,4 +81,5 @@ export type GlobalStateHook = () => {
 //* Component Props
 export interface GlobalStateProviderProps {
   children: React.ReactNode;
+  onReady?: ReadyHandler;
 }

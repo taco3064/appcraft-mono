@@ -3,6 +3,7 @@ import type { ComponentProps, ReactNode } from 'react';
 
 import { useMutableHandles } from '../../contexts';
 import type * as Ctx from '../../contexts';
+import type { PropsChangeHandler } from '../../utils';
 
 //* Variables
 export type GenerateQueue = {
@@ -18,6 +19,7 @@ export type GetPropsArgs = [
   Ctx.MutableHandles<'todo'> & {
     generate: GenerateFn;
     getGlobalState: Ctx.GetGlobalStateFn;
+    onPropsChange: PropsChangeHandler;
     onStateChange: Ctx.StateChangeHandler;
   }
 ];

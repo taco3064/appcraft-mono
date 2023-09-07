@@ -20,6 +20,7 @@ function getProps<P>(
       onFetchData,
       onFetchWrapper,
       onOutputCollect,
+      onPropsChange,
       onStateChange,
     },
   ]: Types.GetPropsArgs
@@ -43,6 +44,7 @@ function getProps<P>(
             onFetchData,
             onFetchTodoWrapper: (todoid) => onFetchWrapper('todo', todoid),
             onOutputCollect,
+            onPropsChange,
             onStateChange: (e) => onStateChange(group, e),
           })
         )
@@ -84,7 +86,7 @@ function getProps<P>(
 export const useComposerRender: Types.ComposerRenderHook = (render) => {
   const getHandles = Ctx.useMutableHandles();
   const setInitializePending = Ctx.useInitializePending();
-  const { getGlobalState, onStateChange } = Ctx.useGlobalState();
+  const { getGlobalState, onPropsChange, onStateChange } = Ctx.useGlobalState();
   const { getWidget } = Ctx.useHandles();
 
   return function generate(target, queue) {
@@ -112,6 +114,7 @@ export const useComposerRender: Types.ComposerRenderHook = (render) => {
                   ...mutableHandles,
                   generate,
                   getGlobalState,
+                  onPropsChange,
                   onStateChange,
                 }),
         });

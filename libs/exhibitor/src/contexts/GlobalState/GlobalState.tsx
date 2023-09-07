@@ -6,6 +6,7 @@ import type * as Appcraft from '@appcraft/types';
 import * as Util from '../../utils';
 import { useHandles, useMutableHandles } from '../Handles';
 import type * as Types from './GlobalState.types';
+import type { PropsChangeHandler } from '../../utils';
 
 //* Variables
 const sources: Appcraft.StateCategory[] = ['props', 'todos', 'nodes'];
@@ -35,6 +36,7 @@ const getStateOptions: Types.GetStateOptionsFn = (
   return {
     category: source,
     options,
+    stateKey: propPath,
     propPath: propPath.substring(
       propPath.lastIndexOf(`.${source}.`) + `.${source}.`.length
     ),
@@ -58,6 +60,25 @@ function reducer(
   globalState: Types.GlobalState | undefined,
   { type, payload }: Types.GlobalAction
 ) {
+  if (globalState && type === 'setProps') {
+    return Object.entries(payload).reduce((result, [group, values]) => {
+      const { [group]: states } = result;
+
+      if (states) {
+        Object.entries(values).forEach(([propPath, value]) => {
+          const target = states.find(({ stateKey }) => stateKey === propPath);
+
+          target && _set(target, 'value', value);
+        });
+      }
+
+      return {
+        ...result,
+        [group]: states,
+      };
+    }, globalState);
+  }
+
   if (globalState && type === 'setState') {
     const { group, values } = payload;
     const { [group]: states } = globalState;
@@ -154,6 +175,10 @@ export const useGlobalState: Types.GlobalStateHook = () => {
   const { globalState, dispatch } = React.useContext(GlobalStateContext);
 
   return {
+    onPropsChange: React.useCallback(
+      (payload) => dispatch({ type: 'setProps', payload }),
+      [dispatch]
+    ),
     onStateChange: React.useCallback(
       (group, values) =>
         dispatch({ type: 'setState', payload: { group, values } }),
@@ -204,24 +229,26 @@ export default function GlobalStateProvider({
   const { getWidgetOptions } = useHandles();
   const getHandles = useMutableHandles();
   const pendingRef = React.useRef<Types.PendingStateOptions[]>([]);
-  const [globalState, dispatch] = React.useReducer(reducer, {});
+  const [globalState, dispatch] = React.useReducer(reducer, undefined);
   const isInitialized = Boolean(globalState);
 
   const value = React.useMemo(
     () => ({
       globalState: globalState || {},
-      dispatch,
       pendingRef,
+      dispatch,
     }),
     [globalState, dispatch]
   );
 
   React.useEffect(() => {
-    dispatch({
-      type: 'initial',
-      payload: { pending: pendingRef.current || [], getWidgetOptions },
-    });
-  }, [getWidgetOptions]);
+    if (!isInitialized) {
+      dispatch({
+        type: 'initial',
+        payload: { pending: pendingRef.current || [], getWidgetOptions },
+      });
+    }
+  }, [isInitialized, getWidgetOptions]);
 
   React.useEffect(() => {
     if (isInitialized && onReady) {
@@ -237,6 +264,7 @@ export default function GlobalStateProvider({
           onFetchData,
           onFetchTodoWrapper: (todoid) => onFetchWrapper('todo', todoid),
           onOutputCollect,
+          onPropsChange: (payload) => dispatch({ type: 'setProps', payload }),
         })();
       }
     }

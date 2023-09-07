@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.115](https://github.com/taco3064/appcraft-mono/compare/v0.0.114...v0.0.115) (2023-09-07)
+
+
+### Features
+
+* **@appcraft/exhibitor:** support update prop values ([ca444c9](https://github.com/taco3064/appcraft-mono/commit/ca444c989ac3309e0b972b4c9d2ad328cdad2e43))
+
+
+### Bug Fixes
+
+* **@appcraft/exhibitor:** fixed bugs ([e603dc0](https://github.com/taco3064/appcraft-mono/commit/e603dc00f6d36f73053db70c2c58c0e952c17453))
+
 ### [0.0.114](https://github.com/taco3064/appcraft-mono/compare/v0.0.113...v0.0.114) (2023-09-07)
 
 ### [0.0.113](https://github.com/taco3064/appcraft-mono/compare/v0.0.112...v0.0.113) (2023-09-07)

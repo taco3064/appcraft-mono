@@ -4,6 +4,11 @@ import type * as Appcraft from '@appcraft/types';
 type Widget = Appcraft.MainWidget | Appcraft.EntityWidgets;
 
 //* Methods
+export type SetTodoPriorityFn = (
+  allTodos: Exclude<Appcraft.MainWidget['todos'], undefined>,
+  priority: number
+) => Exclude<Appcraft.MainWidget['todos'], undefined>;
+
 export type GetWidgetOptionsFn = (
   getBy: 'template' | 'widget',
   id: string

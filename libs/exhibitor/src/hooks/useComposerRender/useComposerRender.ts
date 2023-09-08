@@ -1,14 +1,27 @@
 import _get from 'lodash/get';
 import _merge from 'lodash/merge';
 import _set from 'lodash/set';
+import { startTransition } from 'react';
 import type { ComponentProps } from 'react';
-import type { MainWidget, StateCategory } from '@appcraft/types';
+import type { MainWidget, StateCategory, WidgetTodo } from '@appcraft/types';
 
 import * as Ctx from '../../contexts';
-import { getEventHandler, getPropPath } from '../../utils';
+import * as Util from '../../utils';
 import type * as Types from './useComposerRender.types';
+import type { OutputData } from '../../utils';
 
 const sources: StateCategory[] = ['props', 'todos', 'nodes'];
+
+function getTodosPriority(todos: Record<string, WidgetTodo>) {
+  return Object.entries(todos).reduce((result, [id, todo]) => {
+    const { priority = 3 } = todo;
+    const acc = result[priority - 1] || {};
+
+    result[priority - 1] = _set(acc, [id], todo);
+
+    return result;
+  }, new Array<Record<string, WidgetTodo>>(3));
+}
 
 function getProps<P>(
   ...[
@@ -33,22 +46,50 @@ function getProps<P>(
         ([propPath, value]) => _set(result, propPath, value)
       );
     } else if (source === 'todos') {
-      const merged = _merge({}, widget[source], states[source]);
+      /**
+       * * 這裡的 todos 需要依據其來源進行區分，來源會有以下幾種(編號視同應遵守的執行順序)：
+       * * 1. widget 本身 - 此處取自於 widget，區分則是在 widget-parser 中
+       * * 2. node state 中的 template - 同上
+       * * 3. layout template - 取自 states
+       */
+      const merged = _merge(
+        {},
+        Util.setTodoPriority(widget[source] || {}, 1),
+        Util.setTodoPriority(states[source] || {}, 3)
+      );
 
-      Object.entries(merged).forEach(([propPath, todos]) =>
-        _set(
-          result,
-          propPath,
-          getEventHandler(todos, {
+      Object.entries(merged).forEach(([propPath, todos]) => {
+        const handles = getTodosPriority(todos).map((e) =>
+          Util.getEventHandler(e, {
             eventName: propPath,
             onFetchData,
             onFetchTodoWrapper: (todoid) => onFetchWrapper('todo', todoid),
-            onOutputCollect,
             onPropsChange,
             onStateChange: (e) => onStateChange(group, e),
           })
-        )
-      );
+        );
+
+        _set(result, propPath, (...e: unknown[]) => {
+          const start = Date.now();
+
+          startTransition(() => {
+            handles
+              .reduce(
+                (promise, handler) =>
+                  promise.then((outputs) =>
+                    handler({ [Util.OUTPUTS_SYMBOL]: outputs }, ...e)
+                  ),
+                Promise.resolve<OutputData[]>([])
+              )
+              .then((outputs) =>
+                onOutputCollect?.(
+                  { duration: Date.now() - start, outputs, todos },
+                  propPath
+                )
+              );
+          });
+        });
+      });
     } else if (source === 'nodes') {
       Object.entries({ ...widget[source], ...states[source] }).forEach(
         ([propPath, nodes]) =>
@@ -61,7 +102,7 @@ function getProps<P>(
                   injection: _get(injection, ['nodes', propPath]),
                   renderPaths: [
                     ...renderPaths,
-                    getPropPath(['nodes', propPath]),
+                    Util.getPropPath(['nodes', propPath]),
                   ],
                 })
               : nodes.map((node, index) =>
@@ -71,7 +112,7 @@ function getProps<P>(
                     injection: _get(injection, ['nodes', propPath]),
                     renderPaths: [
                       ...renderPaths,
-                      getPropPath(['nodes', propPath, index]),
+                      Util.getPropPath(['nodes', propPath, index]),
                     ],
                   })
                 )

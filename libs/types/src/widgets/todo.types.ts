@@ -115,11 +115,14 @@ export type SetPropsTodo = BaseTodo<
   }
 >;
 
-export type WidgetTodo =
+export type WidgetTodo = (
   | VariableTodo
   | FetchTodo
   | ConditionBranchTodo
   | IterateTodo
   | WrapTodo
   | SetStateTodo
-  | SetPropsTodo;
+  | SetPropsTodo
+) & {
+  priority?: 1 | 2 | 3;
+};

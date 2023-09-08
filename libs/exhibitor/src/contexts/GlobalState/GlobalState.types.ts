@@ -73,12 +73,12 @@ export type InitializePendingHook = () => (
 ) => void;
 
 export type GlobalStateHook = () => {
+  onPropsChange: Util.PropsChangeHandler;
+  onStateChange: (group: string, e: StateChangeEvent) => void;
   getGlobalState: (
     group: string,
     renderPaths: string[]
   ) => Pick<Appcraft.MainWidget, Appcraft.StateCategory>;
-  onPropsChange: Util.PropsChangeHandler;
-  onStateChange: (group: string, e: StateChangeEvent) => void;
 };
 
 //* Component Props

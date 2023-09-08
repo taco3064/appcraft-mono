@@ -6,7 +6,6 @@ import type * as Appcraft from '@appcraft/types';
 import * as Util from '../../utils';
 import { useHandles, useMutableHandles } from '../Handles';
 import type * as Types from './GlobalState.types';
-import type { PropsChangeHandler } from '../../utils';
 
 //* Variables
 const sources: Appcraft.StateCategory[] = ['props', 'todos', 'nodes'];
@@ -89,17 +88,8 @@ function reducer(
       : {
           ...globalState,
           [group]: states.map((state) => {
-            const { category, propPath, renderPath } = state;
-
-            const target = keys.find(
-              (key) =>
-                renderPath ===
-                  key.substring(0, key.lastIndexOf(`.${category}.`)) &&
-                propPath ===
-                  key.substring(
-                    key.lastIndexOf(`.${category}.`) + `.${category}.`.length
-                  )
-            );
+            const { stateKey } = state;
+            const target = keys.find((key) => key === stateKey);
 
             return !target ? state : _set(state, ['value'], values[target]);
           }),

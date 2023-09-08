@@ -5,6 +5,16 @@ import { nanoid } from 'nanoid';
 
 import type * as Types from './widget-parser.types';
 
+export const setTodoPriority: Types.SetTodoPriorityFn = (allTodos, priority) =>
+  Object.fromEntries(
+    Object.entries(allTodos).map(([propPath, todos]) => [
+      propPath,
+      Object.fromEntries(
+        Object.entries(todos).map(([id, todo]) => [id, { ...todo, priority }])
+      ),
+    ])
+  ) as ReturnType<Types.SetTodoPriorityFn>;
+
 const getNodesByValue: Types.GetNodesByValueFn = (
   { defaultNodes = {}, value, states = {} },
   getWidgetOptions
@@ -58,18 +68,21 @@ const getTodosByTemplate: Types.GetTodosByTemplateFn = ({
 }) => {
   const eventPaths = Object.keys(states);
 
-  return Object.entries(template).reduce((result, [eventName, events]) => {
-    const path = eventPaths.find(
-      (eventPath) =>
-        eventName === (_get(states, [eventPath, 'alias']) || eventPath)
-    );
+  return Object.entries(setTodoPriority(template, 2)).reduce(
+    (result, [eventName, events]) => {
+      const path = eventPaths.find(
+        (eventPath) =>
+          eventName === (_get(states, [eventPath, 'alias']) || eventPath)
+      );
 
-    if (path) {
-      _set(result, path, _merge({}, defaultTodos[path], events));
-    }
+      if (path) {
+        _set(result, path, _merge({}, defaultTodos[path], events));
+      }
 
-    return result;
-  }, JSON.parse(JSON.stringify(defaultTodos)) as typeof defaultTodos);
+      return result;
+    },
+    JSON.parse(JSON.stringify(defaultTodos)) as typeof defaultTodos
+  );
 };
 
 export const getWidgetsByValue: Types.GetWidgetsByValueFn = (

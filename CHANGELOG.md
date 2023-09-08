@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.116](https://github.com/taco3064/appcraft-mono/compare/v0.0.115...v0.0.116) (2023-09-08)
+
+
+### Bug Fixes
+
+* **@appcraft/exhibitor:** prioritize the execution order based on the source of todos ([e8f6fb5](https://github.com/taco3064/appcraft-mono/commit/e8f6fb5a9d90bc1b517199ef3a1a6ade2ce8f249))
+* **@appcraft/exhibitor:** remove unused import ([8c990bf](https://github.com/taco3064/appcraft-mono/commit/8c990bf3dc0a00cd6920089ce8f9c8ed58adffb6))
+
 ### [0.0.115](https://github.com/taco3064/appcraft-mono/compare/v0.0.114...v0.0.115) (2023-09-07)
 
 

@@ -4,10 +4,10 @@ import { useRouter } from 'next/router';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
+import { CraftsmanOverrideProvider, useFixedT } from '~appcraft/contexts';
 import { PageContainer } from '~appcraft/styles';
 import { TodoEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
-import { useFixedT } from '~appcraft/contexts';
 
 const TODO_EDITOR_ACTIONS = ['run', 'reset', 'save'];
 
@@ -30,35 +30,37 @@ export default function Detail() {
   });
 
   return (
-    <PageContainer
-      ContentProps={{ disableGutters: true }}
-      maxWidth="lg"
-      primary={tt('ttl-detail')}
-      secondary={superiors[id]}
-      action={
-        <>
-          {action?.expand}
-          {action?.run}
-          {action?.reset}
-          {action?.save}
-        </>
-      }
-    >
-      <Head>
-        <title>Appcraft | {tt('ttl-detail')}</title>
-      </Head>
+    <CraftsmanOverrideProvider disableTodoEventSource>
+      <PageContainer
+        ContentProps={{ disableGutters: true }}
+        maxWidth="lg"
+        primary={tt('ttl-detail')}
+        secondary={superiors[id]}
+        action={
+          <>
+            {action?.expand}
+            {action?.run}
+            {action?.reset}
+            {action?.save}
+          </>
+        }
+      >
+        <Head>
+          <title>Appcraft | {tt('ttl-detail')}</title>
+        </Head>
 
-      <TodoEditor
-        data={todos}
-        superiors={{ names: superiors, breadcrumbs }}
-        onActionNodePick={handleActionNodePick}
-        onSave={refetch}
-        ResponsiveDrawerProps={{
-          disableGutters: true,
-          maxWidth: false,
-          height: (theme) => `calc(${height} - ${theme.spacing(29)})`,
-        }}
-      />
-    </PageContainer>
+        <TodoEditor
+          data={todos}
+          superiors={{ names: superiors, breadcrumbs }}
+          onActionNodePick={handleActionNodePick}
+          onSave={refetch}
+          ResponsiveDrawerProps={{
+            disableGutters: true,
+            maxWidth: false,
+            height: (theme) => `calc(${height} - ${theme.spacing(29)})`,
+          }}
+        />
+      </PageContainer>
+    </CraftsmanOverrideProvider>
   );
 }

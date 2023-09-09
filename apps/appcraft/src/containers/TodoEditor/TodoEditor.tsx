@@ -6,11 +6,11 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedTodoEditor, CraftsmanStyle } from '@appcraft/craftsman';
 import { useEffect, useState } from 'react';
 
+import * as Ctx from '~appcraft/contexts';
 import { Breadcrumbs } from '../common';
 import { CommonButton, TodoOutputStepper } from '~appcraft/components';
 import { ResponsiveDrawer } from '~appcraft/styles';
 import { getTypeDefinition } from '~appcraft/services';
-import { useFixedT, useCraftsmanFetch } from '~appcraft/contexts';
 import { useNodePicker, useTodoValues, useWidth } from '~appcraft/hooks';
 import type { TodoEditorProps } from './TodoEditor.types';
 
@@ -22,9 +22,9 @@ export default function TodoEditor({
   onActionNodePick = (e) => e,
   onSave,
 }: TodoEditorProps) {
-  const [at, tt] = useFixedT('app', 'todos');
+  const [at, tt] = Ctx.useFixedT('app', 'todos');
   const [open, setOpen] = useState(true);
-  const handleFetch = useCraftsmanFetch();
+  const handleFetch = Ctx.useCraftsmanFetch();
 
   const [{ duration, outputs, todos }, handleTodos] = useTodoValues({
     data,
@@ -35,6 +35,7 @@ export default function TodoEditor({
   const width = useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width) && outputs.length > 0;
   const isLogsOpen = (!isCollapsable || open) && outputs.length > 0;
+  const override = Ctx.useCraftsmanOverrideContext({});
 
   const actionNode = useNodePicker(
     () =>
@@ -102,6 +103,7 @@ export default function TodoEditor({
         onClose={() => setOpen(false)}
         content={
           <CraftedTodoEditor
+            {...override}
             fullHeight
             disableCategories={['wrap', 'state', 'props']}
             typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}

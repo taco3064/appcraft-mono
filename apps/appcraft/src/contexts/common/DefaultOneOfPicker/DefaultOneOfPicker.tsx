@@ -4,15 +4,15 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import TextField from '@mui/material/TextField';
 
 import { useFixedT } from '../useApp';
-import type { AutoAssignPickerProps } from './AutoAssignPicker.types';
+import type { DefaultOneOfPickerProps } from './DefaultOneOfPicker.types';
 
-export default function AutoAssignPicker({
+export default function DefaultOneOfPicker({
   disabled,
   label,
   options,
   value,
   onChange,
-}: AutoAssignPickerProps) {
+}: DefaultOneOfPickerProps) {
   const [wt] = useFixedT('widgets');
   const error = options.required && !value;
 

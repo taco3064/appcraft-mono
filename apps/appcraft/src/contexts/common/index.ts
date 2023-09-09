@@ -1,4 +1,4 @@
-export * from './AutoAssignPicker';
+export * from './DefaultOneOfPicker';
 export * from './PropPathPicker';
 export * from './PropsGroupPicker';
 export * from './StatePathPicker';

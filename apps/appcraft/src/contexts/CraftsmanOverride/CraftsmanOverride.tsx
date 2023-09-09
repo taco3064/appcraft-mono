@@ -111,14 +111,11 @@ export default function CraftsmanOverrideProvider({
     ),
     TODO_VARIABLE_SOURCE: (opts, category, { options, ...props }) =>
       !disableTodoEventSource ? null : (
-        <Common.AutoAssignPicker
-          {...(props as Omit<Common.AutoAssignPickerProps, 'options'>)}
-          options={
-            {
-              ...options,
-              options: ['output'],
-            } as Common.AutoAssignPickerProps['options']
-          }
+        <Common.DefaultOneOfPicker
+          {...({
+            ...props,
+            options: { ...options, options: ['output'] },
+          } as Common.DefaultOneOfPickerProps)}
         />
       ),
   });

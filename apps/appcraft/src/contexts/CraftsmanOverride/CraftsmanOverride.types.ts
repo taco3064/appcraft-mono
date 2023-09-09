@@ -3,7 +3,7 @@ import type { MutableRefObject, ReactNode } from 'react';
 import type * as Common from '../common';
 
 export type CraftsmanOverrideContextValue = MutableRefObject<
-  (options: Common.OverrideOptions) => Common.OverrideHandlers
+  (options?: Common.OverrideOptions) => Common.OverrideHandlers
 >;
 
 export type CraftsmanOverrideContextHook = (

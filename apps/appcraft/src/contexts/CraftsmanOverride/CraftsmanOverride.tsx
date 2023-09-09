@@ -12,11 +12,11 @@ const CraftsmanOverrideContext =
   React.createContext<Types.CraftsmanOverrideContextValue | null>(null);
 
 export const useCraftsmanOverrideContext: Types.CraftsmanOverrideContextHook = (
-  widget
+  options = {}
 ) => {
   const ref = React.useContext(CraftsmanOverrideContext);
 
-  return ref?.current?.(widget) || {};
+  return ref?.current?.(options) || {};
 };
 
 export default function CraftsmanOverrideProvider({

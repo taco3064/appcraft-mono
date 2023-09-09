@@ -12,6 +12,7 @@ export interface CraftedTodoEditorProps
       'HeaderProps' | 'fullHeight' | 'renderOverrideItem' | 'onFetchDefinition'
     > {
   typeFile?: string;
+  definition?: Appcraft.FuncProp;
   values?: Record<string, Appcraft.WidgetTodo>;
   variant?: 'normal' | 'popup';
   onChange: Hook.TodoChangeHandler;

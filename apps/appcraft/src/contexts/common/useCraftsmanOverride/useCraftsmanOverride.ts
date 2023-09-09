@@ -58,18 +58,6 @@ const met: Types.MetType = {
     ) {
       return 'TODO_PROPS_GROUP_PICKER';
     }
-
-    if (
-      kind === 'pure' &&
-      ((typeName === 'VariableTodo' &&
-        /^variables\..+\.initial\.source$/.test(propPath)) ||
-        (typeName === 'FetchTodo' && /^data\.source$/.test(propPath)) ||
-        (typeName === 'IterateTodo' && /^source\.source$/.test(propPath)) ||
-        (typeName === 'ConditionBranchTodo' &&
-          /^sources\[\d+\]\.source$/.test(propPath)))
-    ) {
-      return 'TODO_VARIABLE_SOURCE';
-    }
   },
 };
 

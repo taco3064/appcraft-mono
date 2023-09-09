@@ -109,15 +109,6 @@ export default function CraftsmanOverrideProvider({
         states={_omit(widget?.state || {}, ['todos'])}
       />
     ),
-    TODO_VARIABLE_SOURCE: (opts, category, { options, ...props }) =>
-      !disableTodoEventSource ? null : (
-        <Common.DefaultOneOfPicker
-          {...({
-            ...props,
-            options: { ...options, options: ['output'] },
-          } as Common.DefaultOneOfPickerProps)}
-        />
-      ),
   });
 
   const value = React.useRef(overrides);

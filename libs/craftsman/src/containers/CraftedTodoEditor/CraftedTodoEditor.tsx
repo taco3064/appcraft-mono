@@ -3,6 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
+import _set from 'lodash/set';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useTheme } from '@mui/material/styles';
 import type { WidgetTodo } from '@appcraft/types';
@@ -40,6 +41,7 @@ export default function CraftedTodoEditor({
   disableCategories,
   fullHeight,
   typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts',
+  definition,
   values,
   renderOverrideItem: defaultRenderOverrideItem,
   onChange,
@@ -63,8 +65,13 @@ export default function CraftedTodoEditor({
     editing?.todo.id,
     defaultRenderOverrideItem,
     {
-      EVENT_PARAMS_PICKER: () => {
+      EVENT_PARAMS_PICKER: (...e) => {
         return <div>TEST</div>;
+      },
+      VARIABLE_SOURCE: ({ options }) => {
+        if (!definition && options.type === 'oneOf') {
+          _set(options, ['options'], ['output']);
+        }
       },
       OUTPUT_PATH_PICKER: ({ disabled, label, value, onChange }) => (
         <Comp.TodoOutputSelect

@@ -11,7 +11,6 @@ type Renders =
   | 'TODO_PROPS_GROUP_PICKER'
   | 'TODO_PROPS_PATH_PICKER'
   | 'TODO_STATE_PATH_PICKER'
-  | 'TODO_VARIABLE_SOURCE'
   | 'TODO_WRAPPER_PICKER';
 
 export type OverrideOptions = {

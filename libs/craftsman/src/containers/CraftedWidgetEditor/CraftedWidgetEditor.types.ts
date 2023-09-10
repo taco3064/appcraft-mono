@@ -8,6 +8,7 @@ import { WidgetAppBar } from '../../styles';
 import type * as Comp from '../../components';
 import type * as Ctx from '../../contexts';
 import type * as Hook from '../../hooks';
+import type { CraftedTodoEditorProps } from '../CraftedTodoEditor';
 
 //* Variables
 type CheckAllowedToAddWidget = (e: {
@@ -39,6 +40,7 @@ export type LazyWidgetElementsProps = Omit<
   widgets: Appcraft.EntityWidgets[];
 };
 
+//* Component Props
 export interface CraftedWidgetEditorProps {
   BackButtonProps?: ComponentProps<typeof WidgetAppBar>['BackButtonProps'];
   disableState?: boolean;

@@ -6,15 +6,16 @@ import Toolbar from '@mui/material/Toolbar';
 import _set from 'lodash/set';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useTheme } from '@mui/material/styles';
-import type { WidgetTodo } from '@appcraft/types';
+import type { StructureProp, WidgetTodo } from '@appcraft/types';
 
 import * as Comp from '../../components';
+import * as Hook from '../../hooks';
 import * as Style from '../../styles';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { useLocalesContext } from '../../contexts';
-import { useTodoGenerator, useTodoOverride } from '../../hooks';
 import { useStateContext } from '../../contexts';
-import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
+import type * as Types from './CraftedTodoEditor.types';
+import type { FetchTypeDefinition } from '../../hooks';
 
 const EXCLUDE: RegExp[] = [
   /^id$/,
@@ -41,7 +42,7 @@ export default function CraftedTodoEditor({
   disableCategories,
   fullHeight,
   typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts',
-  definition,
+  definitionSource,
   values,
   renderOverrideItem: defaultRenderOverrideItem,
   onChange,
@@ -49,27 +50,36 @@ export default function CraftedTodoEditor({
   onFetchData,
   onFetchDefinition,
   onFetchTodoWrapper,
-}: CraftedTodoEditorProps) {
+}: Types.CraftedTodoEditorProps) {
   const theme = useTheme();
   const ct = useLocalesContext();
   const { toggle } = useStateContext();
 
-  const [{ editing, nodes, edges }, handleTodo] = useTodoGenerator(
+  const [{ editing, nodes, edges }, handleTodo] = Hook.useTodoGenerator(
     typeFile,
     values || {},
     { onChange, onEditToggle }
   );
 
-  const renderOverrideItem = useTodoOverride(
+  const renderOverrideItem = Hook.useTodoOverride(
     values || {},
     editing?.todo.id,
     defaultRenderOverrideItem,
     {
-      EVENT_PARAMS_PICKER: (...e) => {
-        return <div>TEST</div>;
+      EVENT_PARAMS_PICKER: ({ disabled, label, value, onChange }) => {
+        if (definitionSource) {
+          return (
+            <Comp.TodoInputSelect
+              {...{ disabled, label, onChange }}
+              source={definitionSource}
+              value={value as string}
+              onFetchDefinition={onFetchDefinition}
+            />
+          );
+        }
       },
       VARIABLE_SOURCE: ({ options }) => {
-        if (!definition && options.type === 'oneOf') {
+        if (!definitionSource && options.type === 'oneOf') {
           _set(options, ['options'], ['output']);
         }
       },
@@ -116,10 +126,13 @@ export default function CraftedTodoEditor({
           onConfirm={(todo) => onChange({ ...values, [todo.id]: todo })}
           renderEditor={(todoConfig) => (
             <CraftedTypeEditor
-              {...{ renderOverrideItem, onFetchDefinition }}
               exclude={EXCLUDE}
+              renderOverrideItem={renderOverrideItem}
               values={todoConfig}
               onChange={handleTodo.change}
+              onFetchDefinition={
+                onFetchDefinition as FetchTypeDefinition<StructureProp>
+              }
             />
           )}
         />
@@ -157,11 +170,14 @@ export default function CraftedTodoEditor({
         {variant === 'normal' && editing && (
           <>
             <CraftedTypeEditor
-              {...{ renderOverrideItem, onFetchDefinition }}
               fullHeight
               exclude={EXCLUDE}
+              renderOverrideItem={renderOverrideItem}
               values={editing.config}
               onChange={handleTodo.change}
+              onFetchDefinition={
+                onFetchDefinition as FetchTypeDefinition<StructureProp>
+              }
             />
 
             <AppBar

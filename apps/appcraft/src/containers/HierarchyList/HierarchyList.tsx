@@ -11,6 +11,7 @@ import { useState } from 'react';
 
 import * as Common from '../common';
 import * as Comp from '~appcraft/components';
+import { CommonButton } from '~appcraft/components/common';
 import { useFixedT } from '~appcraft/contexts';
 import { useHierarchyFilter, useNodePicker, useWidth } from '~appcraft/hooks';
 import { searchHierarchy, updateHierarchy } from '~appcraft/services';
@@ -92,7 +93,7 @@ export default function HierarchyList({
         search: (
           <Fade in={collapsed}>
             <div>
-              <Comp.CommonButton
+              <CommonButton
                 btnVariant="icon"
                 icon={<FilterListIcon />}
                 text={at('btn-filter')}

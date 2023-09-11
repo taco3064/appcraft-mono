@@ -4,7 +4,7 @@ import { CraftsmanStyle, CraftedTodoEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
 
 import * as Ctx from '~appcraft/contexts';
-import { CommonButton } from '~appcraft/components';
+import { CommonButton } from '~appcraft/components/common';
 import { getTypeDefinition } from '~appcraft/services';
 import type * as Types from './ReadyTodoEditor.types';
 import type { PageData } from '~appcraft/hooks';

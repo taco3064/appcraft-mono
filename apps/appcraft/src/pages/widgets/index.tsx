@@ -8,7 +8,7 @@ import { Suspense, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import * as Ctr from '~appcraft/containers';
-import { CommonButton } from '~appcraft/components';
+import { CommonButton } from '~appcraft/components/common';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT } from '~appcraft/contexts';
 import { useNodePickHandle } from '~appcraft/hooks';

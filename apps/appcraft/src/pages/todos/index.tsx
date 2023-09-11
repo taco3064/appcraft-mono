@@ -11,9 +11,10 @@ import { useState, useTransition } from 'react';
 import type { OutputCollectEvent } from '@appcraft/exhibitor';
 import type { WidgetTodo } from '@appcraft/types';
 
-import { CommonButton, TodoOutputStepper } from '~appcraft/components';
+import { CommonButton } from '~appcraft/components/common';
 import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
+import { TodoOutputStepper } from '~appcraft/components';
 import { getConfigById } from '~appcraft/services';
 import { useFixedT } from '~appcraft/contexts';
 import { useNodePickHandle } from '~appcraft/hooks';

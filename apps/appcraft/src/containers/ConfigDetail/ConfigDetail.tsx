@@ -4,7 +4,7 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedTypeEditor } from '@appcraft/craftsman';
 
 import { Breadcrumbs } from '../common';
-import { CommonButton } from '~appcraft/components';
+import { CommonButton } from '~appcraft/components/common';
 import { getTypeDefinition } from '~appcraft/services';
 import { useFixedT } from '~appcraft/contexts';
 import { useConfigValues, useNodePicker } from '~appcraft/hooks';

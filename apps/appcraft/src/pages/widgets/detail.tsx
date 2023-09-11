@@ -10,10 +10,11 @@ import type { OutputCollectEvent } from '@appcraft/exhibitor';
 import type { MainWidget, WidgetTodo } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
-import { CommonButton, TodoOutputStepper } from '~appcraft/components';
+import { CommonButton } from '~appcraft/components/common';
 import { CraftsmanOverrideProvider } from '~appcraft/contexts';
 import { PageContainer } from '~appcraft/styles';
 import { TodoEditor, WidgetEditor } from '~appcraft/containers';
+import { TodoOutputStepper } from '~appcraft/components';
 import { findConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/contexts';
 import type { HierarchyData } from '~appcraft/services';

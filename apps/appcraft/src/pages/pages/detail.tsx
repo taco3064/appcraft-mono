@@ -11,9 +11,10 @@ import type { WidgetTodo } from '@appcraft/types';
 
 import * as Ctx from '~appcraft/contexts';
 import * as Hook from '~appcraft/hooks';
-import { CommonButton, TodoOutputStepper } from '~appcraft/components';
+import { CommonButton } from '~appcraft/components/common';
 import { PageContainer } from '~appcraft/styles';
 import { PageEditor, TodoEditor } from '~appcraft/containers';
+import { TodoOutputStepper } from '~appcraft/components';
 import { findConfig } from '~appcraft/services';
 import type { HierarchyData } from '~appcraft/services';
 import type { PageData } from '~appcraft/hooks';

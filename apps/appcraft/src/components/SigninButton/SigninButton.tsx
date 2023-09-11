@@ -6,7 +6,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import { CraftsmanStyle } from '@appcraft/craftsman';
 import { useState } from 'react';
 
-import CommonButton from '../CommonButton';
+import CommonButton from '../common/CommonButton';
 import { useFixedT } from '~appcraft/contexts';
 import type * as Types from './SigninButton.types';
 

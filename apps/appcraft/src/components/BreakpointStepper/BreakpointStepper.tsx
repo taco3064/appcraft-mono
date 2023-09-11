@@ -7,7 +7,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 
-import CommonButton from '../CommonButton';
+import { CommonButton } from '~appcraft/components/common';
 import { useFixedT } from '~appcraft/contexts';
 import type { BreakpointStepperProps } from './BreakpointStepper.types';
 

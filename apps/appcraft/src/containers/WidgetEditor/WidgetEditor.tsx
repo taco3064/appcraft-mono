@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 import * as Ctx from '~appcraft/contexts';
 import { Breadcrumbs } from '../common';
-import { CommonButton } from '~appcraft/components';
+import { CommonButton } from '~appcraft/components/common';
 import { ResponsiveDrawer } from '~appcraft/styles';
 import { getNodesAndEvents, getTypeDefinition } from '~appcraft/services';
 import { useNodePicker, useWidth, useWidgetValues } from '~appcraft/hooks';

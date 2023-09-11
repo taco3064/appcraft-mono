@@ -3,9 +3,10 @@ import Button from '@mui/material/Button';
 import { CraftsmanStyle, CraftedTodoEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
 
-import * as Ctx from '~appcraft/contexts';
-import { CommonButton } from '~appcraft/components';
+import { CommonButton } from '~appcraft/components/common';
 import { getTypeDefinition } from '~appcraft/services';
+import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks/common';
+import { useCraftsmanOverrideContext } from '~appcraft/contexts';
 import type * as Types from './ReadyTodoEditor.types';
 import type { PageData } from '~appcraft/hooks';
 
@@ -14,10 +15,10 @@ export default function ReadyTodoEditor({
   value,
   onConfirm,
 }: Types.ReadyTodoEditorProps) {
-  const [at, pt] = Ctx.useFixedT('app', 'pages');
+  const [at, pt] = useFixedT('app', 'pages');
   const [open, setOpen] = useState(false);
-  const handleFetch = Ctx.useCraftsmanFetch();
-  const override = Ctx.useCraftsmanOverrideContext({ layouts });
+  const handleFetch = useCraftsmanFetch();
+  const override = useCraftsmanOverrideContext({ layouts });
 
   const [todos, setTodos] = useState<PageData['readyTodos']>(() =>
     JSON.parse(JSON.stringify(value))

@@ -1,5 +1,5 @@
 import _get from 'lodash/get';
-import { lazy, useMemo, useRef } from 'react';
+import { lazy, useEffect, useMemo, useRef, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import type * as Types from './useLazyWidgetNav.types';
@@ -58,10 +58,8 @@ const fetchWidgets: Types.FetchWidgets = async (
 export function useLazyWidgetNav<R>(
   ...[options, fetchWidgetWrapper, renderer]: Types.LazyWidgetNavArgs<R>
 ) {
-  const handlesRef = useRef({
-    fetch: fetchWidgetWrapper,
-    renderer,
-  });
+  const [fetchPromise, setFetchPromise] = useState<Promise<Types.WidgetNav>>();
+  const ref = useRef({ fetchWidgetWrapper, renderer });
 
   const stringify = useMemo(
     () =>
@@ -78,11 +76,17 @@ export function useLazyWidgetNav<R>(
     [options]
   );
 
+  useEffect(() => {
+    const { fetchWidgetWrapper } = ref.current;
+
+    setFetchPromise(fetchWidgets(JSON.parse(stringify), fetchWidgetWrapper));
+  }, [stringify]);
+
   return useMemo(
     () =>
       lazy(async () => {
-        const { fetch, renderer } = handlesRef.current;
-        const nav = await fetchWidgets(JSON.parse(stringify), fetch);
+        const { renderer } = ref.current;
+        const nav = (await fetchPromise) || (new Map() as Types.WidgetNav);
 
         return {
           default: (props: R) =>
@@ -96,6 +100,6 @@ export function useLazyWidgetNav<R>(
             }),
         };
       }),
-    [stringify]
+    [fetchPromise]
   );
 }

@@ -1,29 +1,31 @@
 import axios from 'axios';
-import { lazy, useMemo, useRef } from 'react';
+import { lazy, useEffect, useMemo, useRef, useState } from 'react';
 import type { LazyRenderer } from '@appcraft/types';
 
 export const useLazyUserProfile = <D, R = Record<string, never>>(
   idToken,
   renderer: LazyRenderer<D, R>
 ) => {
+  const [fetchPromise, setFetchPromise] = useState<Promise<D | undefined>>();
   const renderRef = useRef(renderer);
+
+  useEffect(() => {
+    setFetchPromise(
+      !idToken
+        ? Promise.resolve(undefined)
+        : axios.get('/api/userinfo/profile').then(({ data }) => data as D)
+    );
+  }, [idToken]);
 
   return useMemo(
     () =>
       lazy(async () => {
-        if (idToken) {
-          const { data: fetchData } = await axios.get('/api/userinfo/profile');
-
-          return {
-            default: (props: R) => renderRef.current({ ...props, fetchData }),
-          };
-        }
+        const fetchData = (await fetchPromise) || null;
 
         return {
-          default: (props: R) =>
-            renderRef.current({ ...props, fetchData: null }),
+          default: (props: R) => renderRef.current({ ...props, fetchData }),
         };
       }),
-    [idToken]
+    [fetchPromise]
   );
 };

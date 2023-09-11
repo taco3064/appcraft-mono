@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { MainWidget } from '@appcraft/types';
 
 import { upsertConfig } from '~appcraft/services';
-import { useFixedT } from '~appcraft/contexts';
+import { useFixedT } from '~appcraft/hooks/common';
 import type { WidgetValuesHook } from './useWidgetValues.types';
 
 export const useWidgetValues: WidgetValuesHook = ({ data, onSave }) => {

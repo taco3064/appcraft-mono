@@ -1,5 +1,5 @@
 import type { HierarchyData } from '~appcraft/services';
-import type { CommonButtonProps } from '~appcraft/components';
+import type { CommonButtonProps } from '~appcraft/components/common';
 
 enum EditorMode {
   add,

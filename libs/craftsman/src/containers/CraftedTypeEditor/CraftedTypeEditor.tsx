@@ -1,6 +1,7 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Typography from '@mui/material/Typography';
 import { Suspense, useState } from 'react';
+import type { StructureProp } from '@appcraft/types';
 
 import * as Comp from '../../components';
 import * as Ctx from '../../contexts';
@@ -23,7 +24,10 @@ export default function CraftedTypeEditor<V extends Ctx.OptionValues>({
   const { toggle } = Ctx.useStateContext();
   const [collectionPath, setCollectionPath] = useState('');
 
-  const LazyTypeList = Hook.useLazyTypeList<Types.LazyTypeListProps<V>>(
+  const LazyTypeList = Hook.useLazyDefinition<
+    Types.LazyTypeListProps<V>,
+    StructureProp
+  >(
     { ...(values as V), collectionPath },
     onFetchDefinition,
     ({ fetchData, placeholder, ...props }) =>

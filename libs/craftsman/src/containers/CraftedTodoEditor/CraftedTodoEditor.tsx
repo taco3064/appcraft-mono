@@ -3,17 +3,20 @@ import AppBar from '@mui/material/AppBar';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
+import _toPath from 'lodash/toPath';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useTheme } from '@mui/material/styles';
-import type { WidgetTodo } from '@appcraft/types';
+import { useTransition } from 'react';
+import type { StructureProp, WidgetTodo } from '@appcraft/types';
 
 import * as Comp from '../../components';
+import * as Hook from '../../hooks';
 import * as Style from '../../styles';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { useLocalesContext } from '../../contexts';
-import { useTodoGenerator, useTodoOverride } from '../../hooks';
 import { useStateContext } from '../../contexts';
-import type { CraftedTodoEditorProps } from './CraftedTodoEditor.types';
+import type * as Types from './CraftedTodoEditor.types';
+import type { FetchTypeDefinition } from '../../hooks';
 
 const EXCLUDE: RegExp[] = [
   /^id$/,
@@ -40,6 +43,7 @@ export default function CraftedTodoEditor({
   disableCategories,
   fullHeight,
   typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts',
+  definitionSource,
   values,
   renderOverrideItem: defaultRenderOverrideItem,
   onChange,
@@ -47,24 +51,48 @@ export default function CraftedTodoEditor({
   onFetchData,
   onFetchDefinition,
   onFetchTodoWrapper,
-}: CraftedTodoEditorProps) {
+}: Types.CraftedTodoEditorProps) {
   const theme = useTheme();
   const ct = useLocalesContext();
   const { toggle } = useStateContext();
+  const [, startTransition] = useTransition();
 
-  const [{ editing, nodes, edges }, handleTodo] = useTodoGenerator(
+  const [{ editing, nodes, edges }, handleTodo] = Hook.useTodoGenerator(
     typeFile,
     values || {},
     { onChange, onEditToggle }
   );
 
-  const renderOverrideItem = useTodoOverride(
+  const handleNormalBack = () => {
+    if (editing) {
+      const { mixedTypes } = editing.config || {};
+      const todo = ExhibitorUtil.getProps<WidgetTodo>(editing.config?.props);
+
+      handleTodo.cancel();
+
+      onChange({
+        ...values,
+        [todo.id]: !mixedTypes ? todo : { ...todo, mixedTypes },
+      });
+    }
+  };
+
+  const renderOverrideItem = Hook.useTodoOverride(
     values || {},
     editing?.todo.id,
     defaultRenderOverrideItem,
     {
-      EVENT_PARAMS_PICKER: () => {
-        return <div>TEST</div>;
+      EVENT_PARAMS_PICKER: ({ disabled, label, value, onChange }) => {
+        if (definitionSource) {
+          return (
+            <Comp.TodoInputSelect
+              {...{ disabled, label, onChange }}
+              source={definitionSource}
+              value={value as string}
+              onFetchDefinition={onFetchDefinition}
+            />
+          );
+        }
       },
       OUTPUT_PATH_PICKER: ({ disabled, label, value, onChange }) => (
         <Comp.TodoOutputSelect
@@ -82,22 +110,47 @@ export default function CraftedTodoEditor({
           onFetchTodoWrapper={(todoid) => onFetchTodoWrapper('todo', todoid)}
         />
       ),
+      VARIABLE_SOURCE: ({
+        disabled,
+        label,
+        value,
+        propPath,
+        options,
+        onChange,
+      }) => {
+        if (options.type === 'oneOf') {
+          return (
+            <Comp.TodoSourceSelect
+              {...{ disabled, label }}
+              value={value as string}
+              options={options.options?.filter(
+                (opt) => definitionSource || opt !== 'event'
+              )}
+              onChange={(e) => {
+                if (editing?.config) {
+                  const { props } = editing.config;
+
+                  delete props?.[
+                    ExhibitorUtil.getPropPath(
+                      _toPath(propPath.replace(/\.source$/, '.path'))
+                    )
+                  ];
+
+                  handleTodo.change({
+                    ...editing.config,
+                    props: {
+                      ...props,
+                      [propPath]: e,
+                    },
+                  });
+                }
+              }}
+            />
+          );
+        }
+      },
     }
   );
-
-  const handleNormalBack = () => {
-    if (editing) {
-      const { mixedTypes } = editing.config || {};
-      const todo = ExhibitorUtil.getProps<WidgetTodo>(editing.config?.props);
-
-      handleTodo.cancel();
-
-      onChange({
-        ...values,
-        [todo.id]: !mixedTypes ? todo : { ...todo, mixedTypes },
-      });
-    }
-  };
 
   return (
     <>
@@ -109,10 +162,13 @@ export default function CraftedTodoEditor({
           onConfirm={(todo) => onChange({ ...values, [todo.id]: todo })}
           renderEditor={(todoConfig) => (
             <CraftedTypeEditor
-              {...{ renderOverrideItem, onFetchDefinition }}
               exclude={EXCLUDE}
+              renderOverrideItem={renderOverrideItem}
               values={todoConfig}
               onChange={handleTodo.change}
+              onFetchDefinition={
+                onFetchDefinition as FetchTypeDefinition<StructureProp>
+              }
             />
           )}
         />
@@ -150,11 +206,14 @@ export default function CraftedTodoEditor({
         {variant === 'normal' && editing && (
           <>
             <CraftedTypeEditor
-              {...{ renderOverrideItem, onFetchDefinition }}
               fullHeight
               exclude={EXCLUDE}
+              renderOverrideItem={renderOverrideItem}
               values={editing.config}
               onChange={handleTodo.change}
+              onFetchDefinition={
+                onFetchDefinition as FetchTypeDefinition<StructureProp>
+              }
             />
 
             <AppBar

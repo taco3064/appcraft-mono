@@ -1,6 +1,6 @@
 import TextField from '@mui/material/TextField';
 import type * as Appcraft from '@appcraft/types';
-import type { ComponentProps, MutableRefObject, ReactNode } from 'react';
+import type * as React from 'react';
 
 import type { PropPathRouterHandler } from '../../hooks';
 
@@ -38,14 +38,14 @@ export type RenderOverrideItemArgs<C extends 'display' | 'pure'> = [
     options: C extends 'display' ? DisplayProp : PureProp;
 
     displayRef?: C extends 'display'
-      ? MutableRefObject<PropPathRouterHandler>
+      ? React.MutableRefObject<PropPathRouterHandler>
       : never;
   }
 ];
 
 export type RenderOverrideItem = (
   ...args: RenderOverrideItemArgs<'display'> | RenderOverrideItemArgs<'pure'>
-) => ReactNode;
+) => React.ReactNode;
 
 export type OverrideMixedOptions = (options: {
   propPath: string;
@@ -61,7 +61,7 @@ export type OverrideNamingProps = (options: {
   typeName: string;
   values: unknown;
 }) => Promise<Pick<
-  ComponentProps<typeof TextField>,
+  React.ComponentProps<typeof TextField>,
   'select' | 'children' | 'disabled'
 > | void>;
 
@@ -69,10 +69,17 @@ export type OverrideNamingProps = (options: {
 export interface EditorContextValue<V extends OptionValues> {
   collectionPath: string;
   values?: V;
-  handleChangeRef?: MutableRefObject<ChangeHandler<V>>;
-  overrideMixedOptionsRef?: MutableRefObject<OverrideMixedOptions | undefined>;
-  overrideNamingPropsRef?: MutableRefObject<OverrideNamingProps | undefined>;
-  renderOverrideItemRef?: MutableRefObject<RenderOverrideItem | undefined>;
+  handleChangeRef?: React.MutableRefObject<ChangeHandler<V>>;
+
+  overrideMixedOptionsRef?: React.MutableRefObject<
+    OverrideMixedOptions | undefined
+  >;
+  overrideNamingPropsRef?: React.MutableRefObject<
+    OverrideNamingProps | undefined
+  >;
+  renderOverrideItemRef?: React.MutableRefObject<
+    RenderOverrideItem | undefined
+  >;
 }
 
 //* Provider Props
@@ -81,7 +88,7 @@ export interface EditorProviderProps<V extends OptionValues>
     EditorContextValue<V>,
     'handleChangeRef' | 'overrideNamingPropsRef' | 'renderOverrideItemRef'
   > {
-  children: ReactNode;
+  children: React.ReactNode;
   overrideMixedOptions?: OverrideMixedOptions;
   overrideNamingProps?: OverrideNamingProps;
   renderOverrideItem?: RenderOverrideItem;

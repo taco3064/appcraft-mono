@@ -7,10 +7,12 @@ import { CraftedTodoEditor, CraftsmanStyle } from '@appcraft/craftsman';
 import { useEffect, useState } from 'react';
 
 import { Breadcrumbs } from '../common';
-import { CommonButton, TodoOutputStepper } from '~appcraft/components';
+import { CommonButton } from '~appcraft/components/common';
 import { ResponsiveDrawer } from '~appcraft/styles';
+import { TodoOutputStepper } from '~appcraft/components';
 import { getTypeDefinition } from '~appcraft/services';
-import { useFixedT, useCraftsmanFetch } from '~appcraft/contexts';
+import { useCraftsmanOverrideContext } from '~appcraft/contexts';
+import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks/common';
 import { useNodePicker, useTodoValues, useWidth } from '~appcraft/hooks';
 import type { TodoEditorProps } from './TodoEditor.types';
 
@@ -35,6 +37,7 @@ export default function TodoEditor({
   const width = useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width) && outputs.length > 0;
   const isLogsOpen = (!isCollapsable || open) && outputs.length > 0;
+  const override = useCraftsmanOverrideContext({});
 
   const actionNode = useNodePicker(
     () =>
@@ -102,6 +105,7 @@ export default function TodoEditor({
         onClose={() => setOpen(false)}
         content={
           <CraftedTodoEditor
+            {...override}
             fullHeight
             disableCategories={['wrap', 'state', 'props']}
             typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}

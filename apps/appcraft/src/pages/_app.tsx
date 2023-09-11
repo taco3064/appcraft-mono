@@ -9,8 +9,9 @@ import { Suspense, useMemo, useState } from 'react';
 import * as Comp from '~appcraft/components';
 import IndexPage from './index';
 import { MainContainer, MuiSnackbarProvider } from '~appcraft/styles';
+import { ThemeProvider } from '~appcraft/contexts';
 import { UserinfoMenuToggle } from '~appcraft/containers';
-import { useAuth, useFixedT } from '~appcraft/contexts';
+import { useAuth, useFixedT } from '~appcraft/hooks/common';
 import 'reactflow/dist/style.css';
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -41,7 +42,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
       <NoSsr>
         <QueryClientProvider client={client}>
-          <Comp.ThemeProvider>
+          <ThemeProvider>
             <MuiSnackbarProvider>
               <CraftsmanLocalesProvider fixedT={ct}>
                 <Comp.AppHeader
@@ -85,7 +86,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 )}
               </CraftsmanLocalesProvider>
             </MuiSnackbarProvider>
-          </Comp.ThemeProvider>
+          </ThemeProvider>
         </QueryClientProvider>
       </NoSsr>
     </>

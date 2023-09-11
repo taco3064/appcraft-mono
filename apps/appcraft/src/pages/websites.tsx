@@ -1,5 +1,5 @@
 import { PageContainer } from '~appcraft/styles';
-import { useFixedT } from '~appcraft/contexts';
+import { useFixedT } from '~appcraft/hooks/common';
 
 export default function WebSites() {
   const [nt] = useFixedT('nav');

@@ -176,13 +176,6 @@ export default function CraftedWidgetEditor({
 
       {active === 'todos' && editedWidget?.category === 'node' && (
         <CraftedTodoEditor
-          {...(todoPath && { todoPath })}
-          {...{
-            overrideNamingProps,
-            renderOverrideItem,
-            onFetchData,
-            onFetchDefinition,
-          }}
           fullHeight
           disableCategories={disableTodoCategories}
           typeFile={todoTypeFile}
@@ -194,6 +187,18 @@ export default function CraftedWidgetEditor({
               todos: { ...editedWidget.todos, [todoPath as string]: todo },
             })
           }
+          {...{
+            overrideNamingProps,
+            renderOverrideItem,
+            onFetchData,
+            onFetchDefinition,
+          }}
+          definitionSource={{
+            typeFile: editedWidget.typeFile,
+            typeName: editedWidget.typeName,
+            mixedTypes: editedWidget.mixedTypes,
+            collectionPath: todoPath,
+          }}
           HeaderProps={{
             primary: ct('ttl-events'),
             secondary: todoPath || undefined,

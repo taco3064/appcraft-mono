@@ -1,14 +1,12 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import _get from 'lodash/get';
 import _set from 'lodash/set';
 import { CraftedWidgetEditor, CraftsmanStyle } from '@appcraft/craftsman';
-import type { NodeType } from '@appcraft/types';
 
-import * as Ctx from '~appcraft/contexts';
-import { NodeTemplateDialog } from '~appcraft/components';
+import NodeTemplateDialog from '../NodeTemplateDialog';
+import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks/common';
+import { useCraftsmanOverrideContext } from '~appcraft/contexts';
 import { useWidgetTransform } from '~appcraft/hooks';
 import type { LayoutPropsEditorProps } from './LayoutPropsEditor.types';
-import type { NodeTemplateDialogProps } from '~appcraft/components';
 
 export default function LayoutPropsEditor({
   layouts,
@@ -17,14 +15,10 @@ export default function LayoutPropsEditor({
   onClose,
 }: LayoutPropsEditorProps) {
   const { template } = value;
-  const [at] = Ctx.useFixedT('app');
+  const [at] = useFixedT('app');
   const [widget, fetchProps] = useWidgetTransform(value, { onChange, onClose });
-  const handleFetch = Ctx.useCraftsmanFetch();
-
-  const override = Ctx.useCraftsmanOverrideContext({
-    layouts,
-    widget,
-  });
+  const handleFetch = useCraftsmanFetch();
+  const override = useCraftsmanOverrideContext({ layouts, widget });
 
   const handleWidgetAdd = (paths: (string | number)[], id: string) =>
     onChange({

@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { MainWidget } from '@appcraft/types';
 
 import * as Service from '~appcraft/services';
-import { useCraftsmanFetch } from '~appcraft/contexts';
+import { useCraftsmanFetch } from '~appcraft/hooks/common';
 import type * as Types from './WidgetPreview.types';
 
 export default function WidgetPreview({ id }: Types.WidgetPreviewProps) {

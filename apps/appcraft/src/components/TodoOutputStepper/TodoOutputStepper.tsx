@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import { JSONTree } from 'react-json-tree';
 import { useState } from 'react';
 
-import { useFixedT } from '~appcraft/contexts';
+import { useFixedT } from '~appcraft/hooks/common';
 import type { TodoOutputStepperProps } from './TodoOutputStepper.types';
 
 export default function TodoOutputStepper({

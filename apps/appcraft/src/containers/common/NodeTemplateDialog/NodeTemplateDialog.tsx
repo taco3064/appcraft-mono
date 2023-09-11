@@ -3,7 +3,7 @@ import { CraftsmanStyle } from '@appcraft/craftsman';
 import { useState } from 'react';
 import type { FormEventHandler } from 'react';
 
-import { WidgetPicker } from '~appcraft/contexts';
+import WidgetPicker from '../WidgetPicker';
 import { useFixedT } from '~appcraft/hooks/common';
 import type { NodeTemplateDialogProps } from './NodeTemplateDialog.types';
 

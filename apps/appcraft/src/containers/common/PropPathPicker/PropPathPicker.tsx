@@ -1,22 +1,36 @@
 import InputAdornment from '@mui/material/InputAdornment';
-import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
+import ListItemText from '@mui/material/ListItemText';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import TextField from '@mui/material/TextField';
+import _omit from 'lodash/omit';
+import { useQuery } from '@tanstack/react-query';
+import type { MainWidget } from '@appcraft/types';
 
-import { useFixedT } from '~appcraft/hooks/common';
-import { usePathOptions } from '../usePathOptions';
-import type * as Types from './StatePathPicker.types';
+import { findConfig } from '~appcraft/services';
+import { useFixedT, usePathOptions } from '~appcraft/hooks/common';
+import type * as Types from './PropPathPicker.types';
 
-export default function StatePathPicker({
+export default function PropPathPicker({
   disabled = false,
+  layout,
   label,
-  states,
   value,
   onChange,
-}: Types.StatePathPickerProps) {
+}: Types.PropPathPickerProps) {
   const [wt] = useFixedT('widgets');
-  const options = usePathOptions(states);
+
+  const { data: widget } = useQuery({
+    enabled: Boolean(layout?.template?.id),
+    queryKey: [layout?.template?.id],
+    queryFn: findConfig<MainWidget>,
+    refetchOnWindowFocus: false,
+  });
+
+  const options = usePathOptions(
+    _omit(widget?.content.state, ['todos']),
+    'public'
+  );
 
   return (
     <TextField
@@ -26,9 +40,9 @@ export default function StatePathPicker({
       select
       size="small"
       variant="outlined"
-      disabled={!options.length}
-      error={!options.length || !value}
-      onChange={(e) => onChange(e.target.value)}
+      disabled={!widget || !options.length}
+      error={!value}
+      onChange={(e) => onChange?.(e.target.value)}
       helperText={
         !options.length
           ? wt('msg-no-options')
@@ -44,7 +58,9 @@ export default function StatePathPicker({
         ),
       }}
     >
-      {options.map(({ primary, secondary, value }) => (
+      <MenuItem value="">&nbsp;</MenuItem>
+
+      {options.map(({ value, primary, secondary }) => (
         <MenuItem key={value} value={value}>
           <ListItemText
             {...{ primary, secondary }}

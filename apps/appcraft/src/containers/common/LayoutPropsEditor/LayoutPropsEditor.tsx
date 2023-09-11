@@ -2,7 +2,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import _set from 'lodash/set';
 import { CraftedWidgetEditor, CraftsmanStyle } from '@appcraft/craftsman';
 
-import { NodeTemplateDialog } from '~appcraft/components';
+import NodeTemplateDialog from '../NodeTemplateDialog';
 import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks/common';
 import { useCraftsmanOverrideContext } from '~appcraft/contexts';
 import { useWidgetTransform } from '~appcraft/hooks';

@@ -10,7 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { searchHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks/common';
-import { BaseOption } from '../index.types';
+import type { BaseOption } from '~appcraft/hooks/common';
 import type { PropsGroupPickerProps } from './PropsGroupPicker.types';
 
 export default function PropsGroupPicker({

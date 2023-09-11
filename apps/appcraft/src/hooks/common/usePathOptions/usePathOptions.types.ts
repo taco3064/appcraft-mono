@@ -1,5 +1,11 @@
 import type { MainWidget } from '@appcraft/types';
-import type { BaseOption } from '../index.types';
+
+//* Variables
+export type BaseOption = {
+  value: string;
+  primary: string;
+  secondary: string;
+};
 
 //* Custom Hooks
 export type PathOptionsHook = (

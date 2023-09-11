@@ -12,7 +12,7 @@ import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Style from '~appcraft/styles';
 import { CommonButton } from '~appcraft/components/common';
-import { WidgetPicker } from '~appcraft/contexts';
+import { WidgetPicker } from '~appcraft/containers/common';
 import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks/common';
 import type * as Types from './PageEditor.types';
 

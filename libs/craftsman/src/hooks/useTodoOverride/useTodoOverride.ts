@@ -40,7 +40,11 @@ const getOverrideRenderType: Types.GetOverrideRenderType = (
       (typeName === 'FetchTodo' && /^data\.source$/.test(propPath)) ||
       (typeName === 'IterateTodo' && /^source\.source$/.test(propPath)) ||
       (typeName === 'ConditionBranchTodo' &&
-        /^sources\[\d+\]\.source$/.test(propPath)))
+        /^sources\[\d+\]\.source$/.test(propPath)) ||
+      (typeName === 'SetStateTodo' &&
+        /^states\[\d+\]\.source\.source$/.test(propPath)) ||
+      (typeName === 'SetPropsTodo' &&
+        /^props\[\d+\]\.source\.source$/.test(propPath)))
   ) {
     return 'VARIABLE_SOURCE';
   }

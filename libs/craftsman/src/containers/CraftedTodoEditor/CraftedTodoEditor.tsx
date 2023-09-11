@@ -3,9 +3,10 @@ import AppBar from '@mui/material/AppBar';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
-import _set from 'lodash/set';
+import _toPath from 'lodash/toPath';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useTheme } from '@mui/material/styles';
+import { useTransition } from 'react';
 import type { StructureProp, WidgetTodo } from '@appcraft/types';
 
 import * as Comp from '../../components';
@@ -54,12 +55,27 @@ export default function CraftedTodoEditor({
   const theme = useTheme();
   const ct = useLocalesContext();
   const { toggle } = useStateContext();
+  const [, startTransition] = useTransition();
 
   const [{ editing, nodes, edges }, handleTodo] = Hook.useTodoGenerator(
     typeFile,
     values || {},
     { onChange, onEditToggle }
   );
+
+  const handleNormalBack = () => {
+    if (editing) {
+      const { mixedTypes } = editing.config || {};
+      const todo = ExhibitorUtil.getProps<WidgetTodo>(editing.config?.props);
+
+      handleTodo.cancel();
+
+      onChange({
+        ...values,
+        [todo.id]: !mixedTypes ? todo : { ...todo, mixedTypes },
+      });
+    }
+  };
 
   const renderOverrideItem = Hook.useTodoOverride(
     values || {},
@@ -78,11 +94,6 @@ export default function CraftedTodoEditor({
           );
         }
       },
-      VARIABLE_SOURCE: ({ options }) => {
-        if (!definitionSource && options.type === 'oneOf') {
-          _set(options, ['options'], ['output']);
-        }
-      },
       OUTPUT_PATH_PICKER: ({ disabled, label, value, onChange }) => (
         <Comp.TodoOutputSelect
           {...{
@@ -99,22 +110,47 @@ export default function CraftedTodoEditor({
           onFetchTodoWrapper={(todoid) => onFetchTodoWrapper('todo', todoid)}
         />
       ),
+      VARIABLE_SOURCE: ({
+        disabled,
+        label,
+        value,
+        propPath,
+        options,
+        onChange,
+      }) => {
+        if (options.type === 'oneOf') {
+          return (
+            <Comp.TodoSourceSelect
+              {...{ disabled, label }}
+              value={value as string}
+              options={options.options?.filter(
+                (opt) => definitionSource || opt !== 'event'
+              )}
+              onChange={(e) => {
+                if (editing?.config) {
+                  const { props } = editing.config;
+
+                  delete props?.[
+                    ExhibitorUtil.getPropPath(
+                      _toPath(propPath.replace(/\.source$/, '.path'))
+                    )
+                  ];
+
+                  handleTodo.change({
+                    ...editing.config,
+                    props: {
+                      ...props,
+                      [propPath]: e,
+                    },
+                  });
+                }
+              }}
+            />
+          );
+        }
+      },
     }
   );
-
-  const handleNormalBack = () => {
-    if (editing) {
-      const { mixedTypes } = editing.config || {};
-      const todo = ExhibitorUtil.getProps<WidgetTodo>(editing.config?.props);
-
-      handleTodo.cancel();
-
-      onChange({
-        ...values,
-        [todo.id]: !mixedTypes ? todo : { ...todo, mixedTypes },
-      });
-    }
-  };
 
   return (
     <>

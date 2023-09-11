@@ -1,10 +1,10 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import IconButton from '@mui/material/IconButton';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import LinearProgress from '@mui/material/LinearProgress';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import _toPath from 'lodash/toPath';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { Suspense, useState } from 'react';
@@ -40,7 +40,7 @@ export default function TodoInputSelect({
 
   const [menu, setMenu] = useState<Types.MenuState>({
     open: false,
-    path: '',
+    path: ExhibitorUtil.getPropPath(_toPath(value).slice(0, -1)),
   });
 
   const handleBack = (index?: number) => {
@@ -72,33 +72,36 @@ export default function TodoInputSelect({
         {children}
 
         {fetchData &&
-          getDefOptions(fetchData).map(({ propName, type }) => (
-            <MenuItem
-              key={propName}
-              sx={{ '& > .action': { display: 'flex !important' } }}
-              value={ExhibitorUtil.getPropPath([
-                superiorPath,
-                propName as string,
-              ])}
-            >
-              <ListItemText
-                primary={propName}
-                secondary={type}
-                secondaryTypographyProps={{ variant: 'caption' }}
-              />
+          getDefOptions(fetchData).map(({ options, propName, type }) =>
+            type === 'func' ||
+            (type === 'instanceOf' && options !== 'Date') ? null : (
+              <MenuItem
+                key={propName}
+                sx={{ '& > .action': { display: 'flex !important' } }}
+                value={ExhibitorUtil.getPropPath([
+                  superiorPath,
+                  propName as string,
+                ])}
+              >
+                <ListItemText
+                  primary={propName}
+                  secondary={type}
+                  secondaryTypographyProps={{ variant: 'caption' }}
+                />
 
-              {/^(arrayOf|exact|object|objectOf)$/.test(type) && (
-                <Style.TypeItemAction
-                  className="action"
-                  style={{ display: 'none' }}
-                >
-                  <IconButton onClick={() => onActive(propName as string)}>
-                    <ArrowForwardIcon />
-                  </IconButton>
-                </Style.TypeItemAction>
-              )}
-            </MenuItem>
-          ))}
+                {/^(exact|object|objectOf)$/.test(type) && (
+                  <Style.TypeItemAction
+                    className="action"
+                    style={{ display: 'none' }}
+                  >
+                    <IconButton onClick={() => onActive(propName as string)}>
+                      <ArrowForwardIcon />
+                    </IconButton>
+                  </Style.TypeItemAction>
+                )}
+              </MenuItem>
+            )
+          )}
       </Style.AdornmentTextField>
     )
   );
@@ -111,7 +114,11 @@ export default function TodoInputSelect({
           MenuProps: { MenuListProps: { style: { background: 'inherit' } } },
           open: menu.open,
           onOpen: () => setMenu({ ...menu, open: true }),
-          onClose: () => setMenu({ ...menu, open: false }),
+          onClose: () =>
+            setMenu({
+              open: false,
+              path: ExhibitorUtil.getPropPath(_toPath(value).slice(0, -1)),
+            }),
         }}
         fullWidth
         required
@@ -119,7 +126,7 @@ export default function TodoInputSelect({
         size="small"
         variant="outlined"
         helperText={error ? ct('msg-required') : undefined}
-        icon={InfoOutlinedIcon}
+        icon={MenuOpenIcon}
         superiorPath={menu.path}
         onActive={(propName) =>
           setMenu({

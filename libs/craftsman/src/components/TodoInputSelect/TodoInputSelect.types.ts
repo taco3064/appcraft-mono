@@ -17,10 +17,9 @@ export type GetDefOptionsFn = (
 
 //* Component Props
 export interface LazyAdornmentTextFieldProps
-  extends Omit<ComponentProps<typeof AdornmentTextField>, 'children'> {
+  extends ComponentProps<typeof AdornmentTextField> {
   superiorPath: string;
   onActive: (propName: string) => void;
-  onBack: (index?: number) => void;
 }
 
 export interface TodoInputSelectProps {

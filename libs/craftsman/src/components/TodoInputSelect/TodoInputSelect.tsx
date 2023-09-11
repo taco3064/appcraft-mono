@@ -43,6 +43,17 @@ export default function TodoInputSelect({
     path: '',
   });
 
+  const handleBack = (index?: number) => {
+    const paths = _toPath(menu.path);
+
+    setMenu({
+      open: true,
+      path: ExhibitorUtil.getPropPath(
+        paths.slice(0, typeof index === 'number' ? index : -1)
+      ),
+    });
+  };
+
   const LazyAdornmentTextField = useLazyDefinition<
     Types.LazyAdornmentTextFieldProps,
     FuncProp | StructureProp
@@ -56,41 +67,9 @@ export default function TodoInputSelect({
         : ExhibitorUtil.getPropPath([todoPath as string, 'params', menu.path]),
     },
     onFetchDefinition,
-    ({ fetchData, superiorPath, onActive, onBack, ...props }) => (
-      <Style.AdornmentTextField
-        {...props}
-        {...(!fetchData && {
-          error: true,
-          helperText: ct('msg-no-event-inputs'),
-        })}
-      >
-        <Style.ListToolbar
-          color="inherit"
-          muiSkipListHighlight
-          style={{ display: superiorPath ? 'flex' : 'none' }}
-        >
-          <Style.IconTipButton title={ct('btn-back')} onClick={() => onBack()}>
-            <ArrowBackIcon />
-          </Style.IconTipButton>
-
-          <Breadcrumbs
-            TopProps={{ text: ct('txt-top'), onClick: () => onBack(-1) }}
-            collapsedTitle={ct('ttl-props')}
-            separator="."
-            maxItems={2}
-            style={{ marginRight: 'auto' }}
-          >
-            {_toPath(superiorPath).map((name, i, arr) => (
-              <Style.Breadcrumb
-                key={`breadcrumb_${i}`}
-                brcVariant={i === arr.length - 1 ? 'text' : 'link'}
-                onClick={() => onBack(i)}
-              >
-                {/^\d+$/.test(name) ? `[${name}]` : name}
-              </Style.Breadcrumb>
-            ))}
-          </Breadcrumbs>
-        </Style.ListToolbar>
+    ({ fetchData, children, superiorPath, onActive, ...props }) => (
+      <Style.AdornmentTextField {...props}>
+        {children}
 
         {fetchData &&
           getDefOptions(fetchData).map(({ propName, type }) => (
@@ -142,6 +121,12 @@ export default function TodoInputSelect({
         helperText={error ? ct('msg-required') : undefined}
         icon={InfoOutlinedIcon}
         superiorPath={menu.path}
+        onActive={(propName) =>
+          setMenu({
+            open: true,
+            path: ExhibitorUtil.getPropPath([menu.path, propName]),
+          })
+        }
         onChange={(e) => {
           const paths = _toPath(e.target.value);
 
@@ -152,23 +137,38 @@ export default function TodoInputSelect({
             path: ExhibitorUtil.getPropPath(paths.slice(0, -1)),
           });
         }}
-        onActive={(propName) =>
-          setMenu({
-            open: true,
-            path: ExhibitorUtil.getPropPath([menu.path, propName]),
-          })
-        }
-        onBack={(index) => {
-          const paths = _toPath(menu.path);
+      >
+        <Style.ListToolbar
+          color="inherit"
+          muiSkipListHighlight
+          style={{ display: menu.path ? 'flex' : 'none' }}
+        >
+          <Style.IconTipButton
+            title={ct('btn-back')}
+            onClick={() => handleBack()}
+          >
+            <ArrowBackIcon />
+          </Style.IconTipButton>
 
-          setMenu({
-            open: true,
-            path: ExhibitorUtil.getPropPath(
-              paths.slice(0, (index || paths.length - 2) + 1)
-            ),
-          });
-        }}
-      />
+          <Breadcrumbs
+            TopProps={{ text: ct('txt-top'), onClick: () => handleBack(-1) }}
+            collapsedTitle={ct('ttl-props')}
+            separator="."
+            maxItems={2}
+            style={{ marginRight: 'auto' }}
+          >
+            {_toPath(menu.path).map((name, i, arr) => (
+              <Style.Breadcrumb
+                key={`breadcrumb_${i}`}
+                brcVariant={i === arr.length - 1 ? 'text' : 'link'}
+                onClick={() => handleBack(i)}
+              >
+                {/^\d+$/.test(name) ? `[${name}]` : name}
+              </Style.Breadcrumb>
+            ))}
+          </Breadcrumbs>
+        </Style.ListToolbar>
+      </LazyAdornmentTextField>
     </Suspense>
   );
 }

@@ -175,38 +175,36 @@ export default function CraftedWidgetEditor({
       )}
 
       {active === 'todos' && editedWidget?.category === 'node' && (
-        <Suspense>
-          <CraftedTodoEditor
-            fullHeight
-            disableCategories={disableTodoCategories}
-            typeFile={todoTypeFile}
-            values={editedWidget.todos?.[todoPath as string]}
-            onFetchTodoWrapper={onFetchWrapper}
-            onChange={(todo) =>
-              handleMutation.modify({
-                ...editedWidget,
-                todos: { ...editedWidget.todos, [todoPath as string]: todo },
-              })
-            }
-            {...{
-              overrideNamingProps,
-              renderOverrideItem,
-              onFetchData,
-              onFetchDefinition,
-            }}
-            definitionSource={{
-              typeFile: editedWidget.typeFile,
-              typeName: editedWidget.typeName,
-              mixedTypes: editedWidget.mixedTypes,
-              collectionPath: todoPath,
-            }}
-            HeaderProps={{
-              primary: ct('ttl-events'),
-              secondary: todoPath || undefined,
-              onBack: () => handleMutation.editing(),
-            }}
-          />
-        </Suspense>
+        <CraftedTodoEditor
+          fullHeight
+          disableCategories={disableTodoCategories}
+          typeFile={todoTypeFile}
+          values={editedWidget.todos?.[todoPath as string]}
+          onFetchTodoWrapper={onFetchWrapper}
+          onChange={(todo) =>
+            handleMutation.modify({
+              ...editedWidget,
+              todos: { ...editedWidget.todos, [todoPath as string]: todo },
+            })
+          }
+          {...{
+            overrideNamingProps,
+            renderOverrideItem,
+            onFetchData,
+            onFetchDefinition,
+          }}
+          definitionSource={{
+            typeFile: editedWidget.typeFile,
+            typeName: editedWidget.typeName,
+            mixedTypes: editedWidget.mixedTypes,
+            collectionPath: todoPath,
+          }}
+          HeaderProps={{
+            primary: ct('ttl-events'),
+            secondary: todoPath || undefined,
+            onBack: () => handleMutation.editing(),
+          }}
+        />
       )}
 
       <StateProvider

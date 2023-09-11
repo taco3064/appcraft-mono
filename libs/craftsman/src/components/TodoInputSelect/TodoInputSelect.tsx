@@ -4,7 +4,6 @@ import IconButton from '@mui/material/IconButton';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import LinearProgress from '@mui/material/LinearProgress';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
 import MenuItem from '@mui/material/MenuItem';
 import _toPath from 'lodash/toPath';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
@@ -12,6 +11,7 @@ import { Suspense, useState } from 'react';
 import type { FuncProp, StructureProp } from '@appcraft/types';
 
 import * as Style from '../../styles';
+import { Breadcrumbs } from '../common';
 import { useLazyDefinition } from '../../hooks';
 import { useLocalesContext } from '../../contexts';
 import type * as Types from './TodoInputSelect.types';
@@ -36,7 +36,6 @@ export default function TodoInputSelect({
 }: Types.TodoInputSelectProps) {
   const { typeFile, typeName, mixedTypes, collectionPath: todoPath } = source;
   const error = Boolean(!value);
-
   const ct = useLocalesContext();
 
   const [menu, setMenu] = useState<Types.MenuState>({
@@ -65,22 +64,39 @@ export default function TodoInputSelect({
           helperText: ct('msg-no-event-inputs'),
         })}
       >
-        <Style.ListToolbar color="inherit">
-          <IconButton
-            disabled={!superiorPath}
-            onClick={(e) => {
-              e.stopPropagation();
-              onBack();
-            }}
-          >
+        <Style.ListToolbar
+          color="inherit"
+          muiSkipListHighlight
+          style={{ display: superiorPath ? 'flex' : 'none' }}
+        >
+          <Style.IconTipButton title={ct('btn-back')} onClick={() => onBack()}>
             <ArrowBackIcon />
-          </IconButton>
+          </Style.IconTipButton>
+
+          <Breadcrumbs
+            TopProps={{ text: ct('txt-top'), onClick: () => onBack(-1) }}
+            collapsedTitle={ct('ttl-props')}
+            separator="."
+            maxItems={2}
+            style={{ marginRight: 'auto' }}
+          >
+            {_toPath(superiorPath).map((name, i, arr) => (
+              <Style.Breadcrumb
+                key={`breadcrumb_${i}`}
+                brcVariant={i === arr.length - 1 ? 'text' : 'link'}
+                onClick={() => onBack(i)}
+              >
+                {/^\d+$/.test(name) ? `[${name}]` : name}
+              </Style.Breadcrumb>
+            ))}
+          </Breadcrumbs>
         </Style.ListToolbar>
 
         {fetchData &&
           getDefOptions(fetchData).map(({ propName, type }) => (
             <MenuItem
               key={propName}
+              sx={{ '& > .action': { display: 'flex !important' } }}
               value={ExhibitorUtil.getPropPath([
                 superiorPath,
                 propName as string,
@@ -93,7 +109,10 @@ export default function TodoInputSelect({
               />
 
               {/^(arrayOf|exact|object|objectOf)$/.test(type) && (
-                <Style.TypeItemAction>
+                <Style.TypeItemAction
+                  className="action"
+                  style={{ display: 'none' }}
+                >
                   <IconButton onClick={() => onActive(propName as string)}>
                     <ArrowForwardIcon />
                   </IconButton>
@@ -123,19 +142,32 @@ export default function TodoInputSelect({
         helperText={error ? ct('msg-required') : undefined}
         icon={InfoOutlinedIcon}
         superiorPath={menu.path}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => {
+          const paths = _toPath(e.target.value);
+
+          onChange(e.target.value);
+
+          setMenu({
+            open: false,
+            path: ExhibitorUtil.getPropPath(paths.slice(0, -1)),
+          });
+        }}
         onActive={(propName) =>
           setMenu({
             open: true,
             path: ExhibitorUtil.getPropPath([menu.path, propName]),
           })
         }
-        onBack={() =>
+        onBack={(index) => {
+          const paths = _toPath(menu.path);
+
           setMenu({
             open: true,
-            path: ExhibitorUtil.getPropPath(_toPath(menu.path).slice(0, -1)),
-          })
-        }
+            path: ExhibitorUtil.getPropPath(
+              paths.slice(0, (index || paths.length - 2) + 1)
+            ),
+          });
+        }}
       />
     </Suspense>
   );

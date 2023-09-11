@@ -20,7 +20,7 @@ export interface LazyAdornmentTextFieldProps
   extends Omit<ComponentProps<typeof AdornmentTextField>, 'children'> {
   superiorPath: string;
   onActive: (propName: string) => void;
-  onBack: () => void;
+  onBack: (index?: number) => void;
 }
 
 export interface TodoInputSelectProps {

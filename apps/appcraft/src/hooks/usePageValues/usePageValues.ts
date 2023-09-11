@@ -6,7 +6,7 @@ import type { Breakpoint } from '@mui/material/styles';
 import type { LayoutWidget } from '@appcraft/types';
 
 import { upsertConfig } from '~appcraft/services';
-import { useFixedT } from '~appcraft/contexts';
+import { useFixedT } from '~appcraft/hooks/common';
 import type * as Types from './usePageValues.types';
 import type { PageData } from '~appcraft/hooks';
 

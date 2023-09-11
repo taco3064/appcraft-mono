@@ -33,6 +33,20 @@ const getOverrideRenderType: Types.GetOverrideRenderType = (
     const source = _get(props, propPath.replace(/\.path$/, '.source'));
 
     return source === 'event' ? 'EVENT_PARAMS_PICKER' : 'OUTPUT_PATH_PICKER';
+  } else if (
+    isTodoFile &&
+    ((typeName === 'VariableTodo' &&
+      /^variables\..+\.initial\.source$/.test(propPath)) ||
+      (typeName === 'FetchTodo' && /^data\.source$/.test(propPath)) ||
+      (typeName === 'IterateTodo' && /^source\.source$/.test(propPath)) ||
+      (typeName === 'ConditionBranchTodo' &&
+        /^sources\[\d+\]\.source$/.test(propPath)) ||
+      (typeName === 'SetStateTodo' &&
+        /^states\[\d+\]\.source\.source$/.test(propPath)) ||
+      (typeName === 'SetPropsTodo' &&
+        /^props\[\d+\]\.source\.source$/.test(propPath)))
+  ) {
+    return 'VARIABLE_SOURCE';
   }
 
   return undefined;

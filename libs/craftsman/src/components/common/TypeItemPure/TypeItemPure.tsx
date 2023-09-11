@@ -138,7 +138,7 @@ export default function TypeItemPure({
               {options.type === 'oneOf' && (
                 <AdornmentTextField
                   {...baseProps}
-                  SelectProps={{ displayEmpty: options.required }}
+                  SelectProps={{ displayEmpty: !options.required }}
                   select
                   icon={MenuOpenIcon}
                   label={label}

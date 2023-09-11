@@ -1,6 +1,6 @@
+import * as React from 'react';
 import _get from 'lodash/get';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
-import { lazy, useImperativeHandle, useMemo, useRef } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
 import { getForceArray } from '../../utils';
@@ -14,11 +14,13 @@ export const useLazyWidgetElements = <R>(
   fetchNodesAndEvents: Types.FetchNodesAndEvents,
   renderFn: Types.RenderFn<Appcraft.NodeAndEventProps, R>
 ) => {
-  const fetchRef = useRef(fetchNodesAndEvents);
-  const renderRef = useRef(renderFn);
   const path = ExhibitorUtil.getPropPath(paths);
+  const ref = React.useRef({ fetchNodesAndEvents, renderFn });
 
-  const options = useMemo(() => {
+  const [fetchPromise, setFetchPromise] =
+    React.useState<Promise<Appcraft.NodeAndEventProps>>();
+
+  const stringify = React.useMemo(() => {
     const items = getForceArray((!path ? widget : _get(widget, path)) || []);
 
     return JSON.stringify(
@@ -40,17 +42,28 @@ export const useLazyWidgetElements = <R>(
     );
   }, [widget, path]);
 
-  useImperativeHandle(renderRef, () => renderFn, [renderFn]);
+  React.useImperativeHandle(ref, () => ({ fetchNodesAndEvents, renderFn }), [
+    fetchNodesAndEvents,
+    renderFn,
+  ]);
 
-  return useMemo(
+  React.useEffect(() => {
+    const { fetchNodesAndEvents } = ref.current;
+
+    setFetchPromise(fetchNodesAndEvents(JSON.parse(stringify), version));
+  }, [stringify, version]);
+
+  return React.useMemo(
     () =>
-      lazy(async () => {
-        const fetchData = await fetchRef.current(JSON.parse(options), version);
+      React.lazy(async () => {
+        const { renderFn } = ref.current;
+        const fetchData = await fetchPromise;
 
         return {
-          default: (props: R) => renderRef.current?.({ ...props, fetchData }),
+          default: (props: R) =>
+            !fetchData ? null : renderFn?.({ ...props, fetchData }),
         };
       }),
-    [options, version]
+    [fetchPromise]
   );
 };

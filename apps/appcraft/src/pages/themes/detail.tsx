@@ -7,11 +7,11 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type { ConfigOptions } from '@appcraft/types';
 
-import { CommonButton } from '~appcraft/components';
+import { CommonButton } from '~appcraft/components/common';
 import { ConfigDetail } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
-import { useFixedT, useSettingModified } from '~appcraft/contexts';
+import { useFixedT, useSettingModified } from '~appcraft/hooks/common';
 import { useHierarchyFilter, useNodePickHandle } from '~appcraft/hooks';
 
 const CONFIG_DETAIL_ACTIONS = ['reset', 'save'];

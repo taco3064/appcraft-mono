@@ -5,18 +5,20 @@ import _omit from 'lodash/omit';
 import _toPath from 'lodash/toPath';
 import type { TodosState } from '@appcraft/types';
 
-import * as Common from '../common';
+import * as Comp from '~appcraft/components/common';
+import * as Ctr from '~appcraft/containers/common';
+import * as Hook from '~appcraft/hooks/common';
 import type * as Types from './CraftsmanOverride.types';
 
 const CraftsmanOverrideContext =
   React.createContext<Types.CraftsmanOverrideContextValue | null>(null);
 
 export const useCraftsmanOverrideContext: Types.CraftsmanOverrideContextHook = (
-  widget
+  options = {}
 ) => {
   const ref = React.useContext(CraftsmanOverrideContext);
 
-  return ref?.current?.(widget) || {};
+  return ref?.current?.(options) || {};
 };
 
 export default function CraftsmanOverrideProvider({
@@ -25,9 +27,9 @@ export default function CraftsmanOverrideProvider({
   onTodoView,
   onWidgetView,
 }: Types.CraftsmanOverrideProviderProps) {
-  const handleFetch = Common.useCraftsmanFetch();
+  const handleFetch = Hook.useCraftsmanFetch();
 
-  const overrides = Common.useCraftsmanOverride({
+  const overrides = Hook.useCraftsmanOverride({
     //* Mixeds
     STATE_DEFAULT_PROP_VALUE: (opts, { values, options }) => ({
       ...options,
@@ -61,14 +63,14 @@ export default function CraftsmanOverrideProvider({
 
     //* Renders
     TEMPLATE_TODO_ITEM: (opts, category, props) => (
-      <Common.TemplateTodoItem
-        {...(props as Common.TemplateTodoItemProps)}
+      <Ctr.TemplateTodoItem
+        {...(props as Ctr.TemplateTodoItemProps)}
         CraftedTodoEditorProps={overrides(opts)}
       />
     ),
     TEMPLATE_WIDGET_PICKER: (opts, category, props) => (
-      <Common.WidgetPicker
-        {...(props as Common.WidgetPickerProps)}
+      <Ctr.WidgetPicker
+        {...(props as Ctr.WidgetPickerProps)}
         {...(hierarchyid && { exclude: [hierarchyid] })}
         fullWidth
         size="small"
@@ -77,15 +79,15 @@ export default function CraftsmanOverrideProvider({
       />
     ),
     TODO_PROPS_GROUP_PICKER: ({ layouts }, category, props) => (
-      <Common.PropsGroupPicker
-        {...(props as Common.PropPathPickerProps)}
+      <Ctr.PropsGroupPicker
+        {...(props as Omit<Ctr.PropsGroupPickerProps, 'layouts'>)}
         layouts={layouts}
         onView={onWidgetView}
       />
     ),
     TODO_WRAPPER_PICKER: (opts, category, props) => (
-      <Common.TodoWrapperPicker
-        {...(props as Common.TodoWrapperPickerProps)}
+      <Ctr.TodoWrapperPicker
+        {...(props as Ctr.TodoWrapperPickerProps)}
         onView={onTodoView}
       />
     ),
@@ -96,15 +98,15 @@ export default function CraftsmanOverrideProvider({
       ]);
 
       return (
-        <Common.PropPathPicker
-          {...(props as Common.PropPathPickerProps)}
+        <Ctr.PropPathPicker
+          {...(props as Ctr.PropPathPickerProps)}
           layout={layouts.find(({ id }) => id === group)}
         />
       );
     },
     TODO_STATE_PATH_PICKER: ({ widget }, category, props) => (
-      <Common.StatePathPicker
-        {...(props as Omit<Common.StatePathPickerProps, 'states'>)}
+      <Comp.StatePathPicker
+        {...(props as Omit<Comp.StatePathPickerProps, 'states'>)}
         states={_omit(widget?.state || {}, ['todos'])}
       />
     ),

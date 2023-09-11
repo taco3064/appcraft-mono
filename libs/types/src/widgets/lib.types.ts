@@ -18,4 +18,4 @@ export type LazyRenderer<D, R = Record<string, never>> = (
   options: R & {
     fetchData?: D;
   }
-) => JSX.Element;
+) => JSX.Element | null;

@@ -1,6 +1,6 @@
 import _pick from 'lodash/pick';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
-import { lazy, useMemo, useRef } from 'react';
+import { lazy, useEffect, useMemo, useRef, useState } from 'react';
 import type { LazyRenderer } from '@appcraft/types';
 import type { OutputData } from '@appcraft/exhibitor';
 
@@ -24,6 +24,8 @@ const getSourceTodos: Types.GetSourceTodos = (
 export const useLazyTodoOutputs = <R>(
   ...args: Types.LazyTodoOutputsHookArgs<LazyRenderer<OutputData[], R>>
 ) => {
+  const [fetchPromise, setFetchPromise] = useState<Promise<OutputData[]>>();
+
   const [todos, edges, todoid, { onFetchData, onFetchTodoWrapper }, renderer] =
     args;
 
@@ -35,25 +37,31 @@ export const useLazyTodoOutputs = <R>(
     onFetchTodoWrapper,
   });
 
+  useEffect(() => {
+    const { todos, todoid, onFetchData, onFetchTodoWrapper } = ref.current;
+
+    setFetchPromise(
+      ExhibitorUtil.getEventHandler(
+        _pick(todos, getSourceTodos(todoid, edges)),
+        {
+          disableIgnoreOutput: true,
+          onFetchData,
+          onFetchTodoWrapper,
+        }
+      )()
+    );
+  }, [edges]);
+
   return useMemo(
     () =>
       lazy(async () => {
-        const { todos, todoid, renderer, onFetchData, onFetchTodoWrapper } =
-          ref.current;
-
-        const fetchData = await ExhibitorUtil.getEventHandler(
-          _pick(todos, getSourceTodos(todoid, edges)),
-          {
-            disableIgnoreOutput: true,
-            onFetchData,
-            onFetchTodoWrapper,
-          }
-        )();
+        const fetchData = await fetchPromise;
+        const { renderer } = ref.current;
 
         return {
           default: (props: R) => renderer({ ...props, fetchData }),
         };
       }),
-    [edges]
+    [fetchPromise]
   );
 };

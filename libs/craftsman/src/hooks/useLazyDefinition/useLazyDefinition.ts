@@ -1,3 +1,4 @@
+import _pick from 'lodash/pick';
 import { lazy, useEffect, useMemo, useRef, useState } from 'react';
 import type * as Appcraft from '@appcraft/types';
 
@@ -8,9 +9,17 @@ export const useLazyDefinition = <R, D extends Appcraft.PropTypesDef>(
   fetchTypeDefinition: FetchTypeDefinition<D>,
   renderer: Appcraft.LazyRenderer<D, R>
 ) => {
-  const stringify = JSON.stringify(options || {});
   const ref = useRef({ fetchTypeDefinition, renderer });
   const [fetchPromise, setFetchPromise] = useState<Promise<D | undefined>>();
+
+  const stringify = JSON.stringify(
+    _pick(options || {}, [
+      'typeFile',
+      'typeName',
+      'mixedTypes',
+      'collectionPath',
+    ])
+  );
 
   useEffect(() => {
     const { fetchTypeDefinition } = ref.current;

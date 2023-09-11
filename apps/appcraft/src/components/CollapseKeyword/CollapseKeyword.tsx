@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import { useRef } from 'react';
 
 import { CommonButton } from '~appcraft/components/common';
-import { useFixedT } from '~appcraft/contexts';
+import { useFixedT } from '~appcraft/hooks/common';
 import { useWidth } from '~appcraft/hooks';
 import type * as Types from './CollapseKeyword.types';
 

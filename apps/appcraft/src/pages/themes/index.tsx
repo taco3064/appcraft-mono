@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { CommonButton } from '~appcraft/components/common';
 import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
-import { useFixedT, useSettingModified } from '~appcraft/contexts';
+import { useFixedT, useSettingModified } from '~appcraft/hooks/common';
 import { useNodePickHandle } from '~appcraft/hooks';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addItem'];

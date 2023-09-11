@@ -2,11 +2,10 @@ import Typography from '@mui/material/Typography';
 import { CraftedRenderer } from '@appcraft/exhibitor';
 import { useQuery } from '@tanstack/react-query';
 import { useTheme } from '@mui/material/styles';
-import type { LayoutWidget } from '@appcraft/types';
 
 import { GRID_LAYOUT_COLS, GRID_LAYOUT_MINS } from '~appcraft/hooks';
 import { findConfig } from '~appcraft/services';
-import { useFixedT, useCraftsmanFetch } from '~appcraft/contexts';
+import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks/common';
 import type { PageData } from '~appcraft/hooks';
 import type { PagePreviewProps } from './PagePreview.types';
 

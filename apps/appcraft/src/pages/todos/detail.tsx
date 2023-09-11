@@ -4,10 +4,11 @@ import { useRouter } from 'next/router';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
-import { CraftsmanOverrideProvider, useFixedT } from '~appcraft/contexts';
+import { CraftsmanOverrideProvider } from '~appcraft/contexts';
 import { PageContainer } from '~appcraft/styles';
 import { TodoEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
+import { useFixedT } from '~appcraft/hooks/common';
 
 const TODO_EDITOR_ACTIONS = ['run', 'reset', 'save'];
 
@@ -30,7 +31,7 @@ export default function Detail() {
   });
 
   return (
-    <CraftsmanOverrideProvider disableTodoEventSource>
+    <CraftsmanOverrideProvider>
       <PageContainer
         ContentProps={{ disableGutters: true }}
         maxWidth="lg"

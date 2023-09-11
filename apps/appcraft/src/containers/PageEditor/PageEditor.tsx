@@ -13,7 +13,7 @@ import * as Hook from '~appcraft/hooks';
 import * as Style from '~appcraft/styles';
 import { CommonButton } from '~appcraft/components/common';
 import { WidgetPicker } from '~appcraft/contexts';
-import { useFixedT, useCraftsmanFetch } from '~appcraft/contexts';
+import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks/common';
 import type * as Types from './PageEditor.types';
 
 export default function PageEditor({

@@ -6,6 +6,7 @@ import _toPath from 'lodash/toPath';
 import type { TodosState } from '@appcraft/types';
 
 import * as Common from '../common';
+import { useCraftsmanFetch } from '~appcraft/hooks/common';
 import type * as Types from './CraftsmanOverride.types';
 
 const CraftsmanOverrideContext =
@@ -21,12 +22,11 @@ export const useCraftsmanOverrideContext: Types.CraftsmanOverrideContextHook = (
 
 export default function CraftsmanOverrideProvider({
   children,
-  disableTodoEventSource = false,
   hierarchyid,
   onTodoView,
   onWidgetView,
 }: Types.CraftsmanOverrideProviderProps) {
-  const handleFetch = Common.useCraftsmanFetch();
+  const handleFetch = useCraftsmanFetch();
 
   const overrides = Common.useCraftsmanOverride({
     //* Mixeds

@@ -12,7 +12,7 @@ import { useState } from 'react';
 import * as Common from '../common';
 import * as Comp from '~appcraft/components';
 import { CommonButton } from '~appcraft/components/common';
-import { useFixedT } from '~appcraft/contexts';
+import { useFixedT } from '~appcraft/hooks/common';
 import { useHierarchyFilter, useNodePicker, useWidth } from '~appcraft/hooks';
 import { searchHierarchy, updateHierarchy } from '~appcraft/services';
 import type * as Types from './HierarchyList.types';

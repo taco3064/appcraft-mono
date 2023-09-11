@@ -13,7 +13,7 @@ import { Suspense, useState } from 'react';
 import type { Userinfo } from '@appcraft/types';
 
 import { Link } from '~appcraft/styles';
-import { useAuth, useFixedT } from '~appcraft/contexts';
+import { useAuth, useFixedT } from '~appcraft/hooks/common';
 import { useLazyUserProfile } from '~appcraft/hooks';
 import type * as Types from './UserinfoMenuToggle.types';
 

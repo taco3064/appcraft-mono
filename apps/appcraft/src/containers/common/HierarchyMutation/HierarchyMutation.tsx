@@ -10,7 +10,7 @@ import { useState } from 'react';
 import HierarchyEditorButton from '../HierarchyEditorButton';
 import { CommonButton, RemoveButton } from '~appcraft/components/common';
 import { removeHierarchy } from '~appcraft/services';
-import { useFixedT } from '~appcraft/contexts';
+import { useFixedT } from '~appcraft/hooks/common';
 import type { HierarchyMutationProps } from './HierarchyMutation.types';
 
 export default function HierarchyMutation({

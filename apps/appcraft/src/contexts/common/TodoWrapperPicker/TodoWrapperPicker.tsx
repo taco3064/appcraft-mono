@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import { useQuery } from '@tanstack/react-query';
 
 import { searchHierarchy } from '~appcraft/services';
-import { useFixedT } from '../useApp';
+import { useFixedT } from '~appcraft/hooks/common';
 import type { TodoWrapperPickerProps } from './TodoWrapperPicker.types';
 
 export default function TodoWrapperPicker({

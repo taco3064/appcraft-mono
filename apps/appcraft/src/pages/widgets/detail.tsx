@@ -16,7 +16,7 @@ import { PageContainer } from '~appcraft/styles';
 import { TodoEditor, WidgetEditor } from '~appcraft/containers';
 import { TodoOutputStepper } from '~appcraft/components';
 import { findConfig } from '~appcraft/services';
-import { useFixedT } from '~appcraft/contexts';
+import { useFixedT } from '~appcraft/hooks/common';
 import type { HierarchyData } from '~appcraft/services';
 
 const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];

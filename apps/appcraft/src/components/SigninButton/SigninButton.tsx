@@ -7,7 +7,7 @@ import { CraftsmanStyle } from '@appcraft/craftsman';
 import { useState } from 'react';
 
 import CommonButton from '../common/CommonButton';
-import { useFixedT } from '~appcraft/contexts';
+import { useFixedT } from '~appcraft/hooks/common';
 import type * as Types from './SigninButton.types';
 
 export default function SigninButton({

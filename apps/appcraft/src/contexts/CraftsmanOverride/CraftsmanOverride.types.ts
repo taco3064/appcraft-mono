@@ -12,7 +12,6 @@ export type CraftsmanOverrideContextHook = (
 
 export interface CraftsmanOverrideProviderProps {
   children: ReactNode;
-  disableTodoEventSource?: boolean;
   hierarchyid?: string;
   onTodoView?: Common.TodoWrapperPickerProps['onView'];
   onWidgetView?: Common.WidgetPickerProps['onView'];

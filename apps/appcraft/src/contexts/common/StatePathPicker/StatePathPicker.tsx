@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import TextField from '@mui/material/TextField';
 
-import { useFixedT } from '../useApp';
+import { useFixedT } from '~appcraft/hooks/common';
 import { usePathOptions } from '../usePathOptions';
 import type * as Types from './StatePathPicker.types';
 

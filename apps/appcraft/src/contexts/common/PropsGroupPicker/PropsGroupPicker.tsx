@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { searchHierarchy } from '~appcraft/services';
-import { useFixedT } from '../useApp';
+import { useFixedT } from '~appcraft/hooks/common';
 import { BaseOption } from '../index.types';
 import type { PropsGroupPickerProps } from './PropsGroupPicker.types';
 

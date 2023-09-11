@@ -1,4 +1,4 @@
-import { useFixedT } from '../useApp';
+import { useFixedT } from '~appcraft/hooks/common';
 import type { BaseOption } from '../index.types';
 import type { PathOptionsHook } from './usePathOptions.types';
 

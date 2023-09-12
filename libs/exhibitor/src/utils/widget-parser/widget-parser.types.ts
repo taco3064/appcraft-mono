@@ -35,8 +35,9 @@ export type GetPropsByValueFn = (options: {
 }) => Appcraft.MainWidget['props'];
 
 export type GetTodosByTemplateFn = (options: {
-  defaultTodos?: Appcraft.MainWidget['todos'];
+  defaults?: Appcraft.MainWidget['todos'];
   template?: Appcraft.MainWidget['todos'];
+  injection?: Appcraft.MainWidget['todos'];
   states?: Appcraft.MainWidget['state']['todos'];
 }) => Appcraft.MainWidget['todos'];
 

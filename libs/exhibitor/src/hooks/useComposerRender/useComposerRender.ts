@@ -52,13 +52,7 @@ function getProps<P>(
        * * 2. node state 中的 template - 同上
        * * 3. layout template - 取自 states
        */
-      const merged = _merge(
-        {},
-        Util.setTodoPriority(widget[source] || {}, 1),
-        Util.setTodoPriority(states[source] || {}, 3)
-      );
-
-      Object.entries(merged).forEach(([propPath, todos]) => {
+      Object.entries(widget[source] || {}).forEach(([propPath, todos]) => {
         const handles = getTodosPriority(todos).map((e) =>
           Util.getEventHandler(e, {
             eventName: propPath,

@@ -7,7 +7,6 @@ import type * as Appcraft from '@appcraft/types';
 import * as Util from '../../utils';
 import { useHandles, useMutableHandles } from '../Handles';
 import type * as Types from './GlobalState.types';
-import e from 'express';
 
 //* Variables
 const sources: Appcraft.StateCategory[] = ['props', 'todos', 'nodes'];
@@ -37,14 +36,11 @@ const getStateOptions: Types.GetStateOptionsFn = (
   return {
     category: source,
     options,
+    value: _get(options, ['defaultValue']),
     stateKey: propPath,
     propPath: propPath.substring(
       propPath.lastIndexOf(`.${source}.`) + `.${source}.`.length
     ),
-    value:
-      override && source === 'todos'
-        ? override
-        : _get(options, ['defaultValue']),
     renderPath: Util.getPropPath(
       source === 'nodes'
         ? renderPaths
@@ -189,17 +185,15 @@ export const useGlobalState: Types.GlobalStateHook = () => {
           (result, { category, propPath, renderPath, options, value }) => {
             if (renderPath === path) {
               if (category === 'nodes') {
-                const { id, todos } = _get(options, ['template']) || {};
-                const path = options.alias || propPath;
+                const id = _get(options, ['template', 'id']);
                 const widget = getWidgetOptions('template', id);
-                const external = _get(injection, ['nodes', path]);
 
                 _set(
                   result,
                   [category, propPath],
                   Util.getWidgetsByValue(
                     widget,
-                    { ...external, todos: _merge({}, external?.todos, todos) },
+                    _get(injection, ['nodes', options.alias || propPath]),
                     value,
                     options as Appcraft.EntityNodeStates,
                     getWidgetOptions

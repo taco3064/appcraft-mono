@@ -6,12 +6,12 @@ import type { StateCategory } from '@appcraft/types';
 
 import type * as Types from './widget-parser.types';
 
-export const setTodoPriority: Types.SetTodoPriorityFn = (allTodos, priority) =>
+const setTodoPriority: Types.SetTodoPriorityFn = (allTodos, priority) =>
   Object.fromEntries(
     Object.entries(allTodos).map(([propPath, todos]) => [
       propPath,
       Object.fromEntries(
-        Object.entries(todos).map(([id, todo]) => [id, { ...todo, priority }])
+        Object.entries(todos).map(([id, todo]) => [id, { priority, ...todo }])
       ),
     ])
   ) as ReturnType<Types.SetTodoPriorityFn>;
@@ -98,26 +98,32 @@ const getPropsByValue: Types.GetPropsByValueFn = ({ value, states = {} }) => {
 };
 
 const getTodosByTemplate: Types.GetTodosByTemplateFn = ({
-  defaultTodos = {},
+  defaults = {},
+  injection = {},
   template = {},
   states = {},
 }) => {
   const eventPaths = Object.keys(states);
 
-  return Object.entries(setTodoPriority(template, 2)).reduce(
-    (result, [eventName, events]) => {
-      const path = eventPaths.find(
-        (eventPath) =>
-          eventName === (_get(states, [eventPath, 'alias']) || eventPath)
-      );
+  return _merge(
+    {},
+    setTodoPriority(JSON.parse(JSON.stringify(defaults)), 1),
+    setTodoPriority(injection, 3),
+    setTodoPriority(
+      Object.entries(template).reduce((result, [eventName, todos]) => {
+        const path = eventPaths
+          .find(
+            (eventPath) =>
+              eventName ===
+              (_get(states, [eventPath, 'alias']) ||
+                eventPath.replace(/^todos\./, ''))
+          )
+          ?.replace(/^todos\./, '');
 
-      if (path) {
-        _set(result, path, _merge({}, defaultTodos[path], events));
-      }
-
-      return result;
-    },
-    JSON.parse(JSON.stringify(defaultTodos)) as typeof defaultTodos
+        return !path ? result : _set(result, [path], todos);
+      }, {}),
+      2
+    )
   );
 };
 
@@ -155,7 +161,8 @@ export const getWidgetsByValue: Types.GetWidgetsByValueFn = (
         ...getPropsByValue({ value, states: state?.props }),
       },
       todos: getTodosByTemplate({
-        defaultTodos: { ...todos, ...external.todos },
+        defaults: todos,
+        injection: external.todos,
         template: template?.todos,
         states: state?.todos,
       }),
@@ -176,7 +183,8 @@ export const getWidgetsByValue: Types.GetWidgetsByValueFn = (
           ...getPropsByValue({ value: val, states: state?.props }),
         },
         todos: getTodosByTemplate({
-          defaultTodos: { ...todos, ...external.todos },
+          defaults: todos,
+          injection: external.todos,
           template: template?.todos,
           states: state?.todos,
         }),

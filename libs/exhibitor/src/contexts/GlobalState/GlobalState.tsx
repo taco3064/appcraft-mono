@@ -1,11 +1,13 @@
 import * as React from 'react';
 import _get from 'lodash/get';
+import _merge from 'lodash/merge';
 import _set from 'lodash/set';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Util from '../../utils';
 import { useHandles, useMutableHandles } from '../Handles';
 import type * as Types from './GlobalState.types';
+import e from 'express';
 
 //* Variables
 const sources: Appcraft.StateCategory[] = ['props', 'todos', 'nodes'];
@@ -187,15 +189,17 @@ export const useGlobalState: Types.GlobalStateHook = () => {
           (result, { category, propPath, renderPath, options, value }) => {
             if (renderPath === path) {
               if (category === 'nodes') {
-                const id = _get(options, ['template', 'id']);
+                const { id, todos } = _get(options, ['template']) || {};
+                const path = options.alias || propPath;
                 const widget = getWidgetOptions('template', id);
+                const external = _get(injection, ['nodes', path]);
 
                 _set(
                   result,
                   [category, propPath],
                   Util.getWidgetsByValue(
                     widget,
-                    _get(injection, ['nodes', options.alias || propPath]),
+                    { ...external, todos: _merge({}, external?.todos, todos) },
                     value,
                     options as Appcraft.EntityNodeStates,
                     getWidgetOptions

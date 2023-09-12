@@ -77,7 +77,8 @@ export type GlobalStateHook = () => {
   onStateChange: (group: string, e: StateChangeEvent) => void;
   getGlobalState: (
     group: string,
-    renderPaths: string[]
+    renderPaths: string[],
+    injection?: Appcraft.LayoutWidget['template']
   ) => Pick<Appcraft.MainWidget, Appcraft.StateCategory>;
 };
 

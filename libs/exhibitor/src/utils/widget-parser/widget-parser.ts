@@ -2,21 +2,51 @@ import _get from 'lodash/get';
 import _merge from 'lodash/merge';
 import _set from 'lodash/set';
 import { nanoid } from 'nanoid';
+import type { StateCategory } from '@appcraft/types';
 
 import type * as Types from './widget-parser.types';
 
-export const setTodoPriority: Types.SetTodoPriorityFn = (allTodos, priority) =>
+const setTodoPriority: Types.SetTodoPriorityFn = (allTodos, priority) =>
   Object.fromEntries(
     Object.entries(allTodos).map(([propPath, todos]) => [
       propPath,
       Object.fromEntries(
-        Object.entries(todos).map(([id, todo]) => [id, { ...todo, priority }])
+        Object.entries(todos).map(([id, todo]) => [id, { priority, ...todo }])
       ),
     ])
   ) as ReturnType<Types.SetTodoPriorityFn>;
 
+const convertInjectionWithStates: Types.ConvertInjectionWithStates = ({
+  injection,
+  states,
+}) => {
+  const sources: Exclude<StateCategory, 'nodes'>[] = ['props', 'todos'];
+
+  return sources.reduce<ReturnType<Types.ConvertInjectionWithStates>>(
+    (result, key) => {
+      const { [key]: target = {} } = result;
+      const { [key]: state } = states || {};
+      const { [key]: source } = injection || {};
+
+      Object.entries(source || {}).forEach(([propName, value]) => {
+        const [propPath] =
+          Object.entries(state || {}).find(
+            ([path, { alias }]) => propName === (alias || path)
+          ) || [];
+
+        if (propPath) {
+          _set(target, [propPath.replace(new RegExp(`^${key}\\.`), '')], value);
+        }
+      });
+
+      return { ...result, [key]: target };
+    },
+    {}
+  );
+};
+
 const getNodesByValue: Types.GetNodesByValueFn = (
-  { defaultNodes = {}, value, states = {} },
+  { defaultNodes = {}, injection, value, states = {} },
   getWidgetOptions
 ) => {
   const nodePaths = Object.keys(states);
@@ -35,7 +65,13 @@ const getNodesByValue: Types.GetNodesByValueFn = (
         _set(
           result,
           path,
-          getWidgetsByValue(widget, propValue, states[path], getWidgetOptions)
+          getWidgetsByValue(
+            widget,
+            _get(injection, path),
+            propValue,
+            states[path],
+            getWidgetOptions
+          )
         );
       }
 
@@ -62,31 +98,38 @@ const getPropsByValue: Types.GetPropsByValueFn = ({ value, states = {} }) => {
 };
 
 const getTodosByTemplate: Types.GetTodosByTemplateFn = ({
-  defaultTodos = {},
+  defaults = {},
+  injection = {},
   template = {},
   states = {},
 }) => {
   const eventPaths = Object.keys(states);
 
-  return Object.entries(setTodoPriority(template, 2)).reduce(
-    (result, [eventName, events]) => {
-      const path = eventPaths.find(
-        (eventPath) =>
-          eventName === (_get(states, [eventPath, 'alias']) || eventPath)
-      );
+  return _merge(
+    {},
+    setTodoPriority(JSON.parse(JSON.stringify(defaults)), 1),
+    setTodoPriority(injection, 3),
+    setTodoPriority(
+      Object.entries(template).reduce((result, [eventName, todos]) => {
+        const path = eventPaths
+          .find(
+            (eventPath) =>
+              eventName ===
+              (_get(states, [eventPath, 'alias']) ||
+                eventPath.replace(/^todos\./, ''))
+          )
+          ?.replace(/^todos\./, '');
 
-      if (path) {
-        _set(result, path, _merge({}, defaultTodos[path], events));
-      }
-
-      return result;
-    },
-    JSON.parse(JSON.stringify(defaultTodos)) as typeof defaultTodos
+        return !path ? result : _set(result, [path], todos);
+      }, {}),
+      2
+    )
   );
 };
 
 export const getWidgetsByValue: Types.GetWidgetsByValueFn = (
   widget,
+  injection,
   value,
   { nodeType, template },
   getWidgetOptions
@@ -103,20 +146,23 @@ export const getWidgetsByValue: Types.GetWidgetsByValueFn = (
   }
 
   const { props, todos, nodes, state } = widget;
+  const external = convertInjectionWithStates({ injection, states: state });
 
   if (nodeType === 'element') {
     return {
       ...widget,
       nodes: getNodesByValue(
-        { defaultNodes: nodes, value, states: state?.nodes },
+        { defaultNodes: nodes, injection, value, states: state?.nodes },
         getWidgetOptions
       ),
       props: {
         ...props,
+        ...external.props,
         ...getPropsByValue({ value, states: state?.props }),
       },
       todos: getTodosByTemplate({
-        defaultTodos: todos,
+        defaults: todos,
+        injection: external.todos,
         template: template?.todos,
         states: state?.todos,
       }),
@@ -128,15 +174,17 @@ export const getWidgetsByValue: Types.GetWidgetsByValueFn = (
     : value.map((val) => ({
         ...widget,
         nodes: getNodesByValue(
-          { defaultNodes: nodes, value: val, states: state?.nodes },
+          { defaultNodes: nodes, injection, value: val, states: state?.nodes },
           getWidgetOptions
         ),
         props: {
           ...props,
+          ...external.props,
           ...getPropsByValue({ value: val, states: state?.props }),
         },
         todos: getTodosByTemplate({
-          defaultTodos: todos,
+          defaults: todos,
+          injection: external.todos,
           template: template?.todos,
           states: state?.todos,
         }),

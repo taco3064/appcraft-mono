@@ -14,13 +14,6 @@ export default function ExhibitionContent<T extends RenderedWidget>({
 }: Types.ExhibitionContentProps<T>) {
   const layouts = Hook.useGridLayouts(options, GridLayoutProps);
 
-  // const handleMaestro = Hook.usePropsStateMaestro(templates, options, {
-  //   onFetchData,
-  //   onFetchTodoWrapper: (id) => onFetchTodoWrapper('todo', id),
-  //   onOutputCollect,
-  //   onReady,
-  // });
-
   const generate = Hook.useComposerRender((Widget, { key, props }) => (
     <Widget key={key} {...props} />
   ));

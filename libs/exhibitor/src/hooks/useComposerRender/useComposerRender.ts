@@ -38,7 +38,7 @@ function getProps<P>(
     },
   ]: Types.GetPropsArgs
 ) {
-  const states = getGlobalState(group, renderPaths);
+  const states = getGlobalState(group, renderPaths, injection);
 
   return sources.reduce((result, source) => {
     if (source === 'props') {

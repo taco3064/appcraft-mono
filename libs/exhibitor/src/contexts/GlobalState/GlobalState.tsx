@@ -112,12 +112,15 @@ function reducer(
               const override = _get(injection, [source, key]);
 
               states.push(
-                getStateOptions(
-                  state,
-                  renderPaths,
-                  propPath,
-                  isOverrideAllowed && override
-                )
+                globalState?.[group]?.find(
+                  ({ stateKey }) => stateKey === propPath
+                ) ||
+                  getStateOptions(
+                    state,
+                    renderPaths,
+                    propPath,
+                    isOverrideAllowed && override
+                  )
               );
 
               _set(result, [group], states);
@@ -141,13 +144,14 @@ const GlobalStateContext = React.createContext<Types.GlobalStateContextValue>({
 });
 
 export const useInitializePending: Types.InitializePendingHook = () => {
-  const { pendingRef } = React.useContext(GlobalStateContext);
+  const { globalState, pendingRef } = React.useContext(GlobalStateContext);
 
   return React.useCallback(
     (pending) => {
       const stringify = JSON.stringify(pending.renderPaths);
 
       if (
+        !Object.keys(globalState).length && //* 未進行初始化時，使用 pendingRef 進行緩存
         !pendingRef.current?.some(
           ({ group, renderPaths }) =>
             group === pending.group && JSON.stringify(renderPaths) === stringify
@@ -156,7 +160,7 @@ export const useInitializePending: Types.InitializePendingHook = () => {
         pendingRef.current?.push(pending);
       }
     },
-    [pendingRef]
+    [globalState, pendingRef]
   );
 };
 
@@ -175,7 +179,7 @@ export const useGlobalState: Types.GlobalStateHook = () => {
       [dispatch]
     ),
     getGlobalState: React.useCallback(
-      (group, renderPaths) => {
+      (group, renderPaths, injection) => {
         const { [group]: target } = globalState;
         const path = Util.getPropPath(renderPaths);
 
@@ -191,6 +195,7 @@ export const useGlobalState: Types.GlobalStateHook = () => {
                   [category, propPath],
                   Util.getWidgetsByValue(
                     widget,
+                    _get(injection, ['nodes', options.alias || propPath]),
                     value,
                     options as Appcraft.EntityNodeStates,
                     getWidgetOptions

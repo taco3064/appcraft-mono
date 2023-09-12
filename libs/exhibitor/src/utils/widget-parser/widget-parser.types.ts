@@ -4,6 +4,11 @@ import type * as Appcraft from '@appcraft/types';
 type Widget = Appcraft.MainWidget | Appcraft.EntityWidgets;
 
 //* Methods
+export type ConvertInjectionWithStates = (options: {
+  injection?: Appcraft.LayoutWidget['template'];
+  states?: Appcraft.MainWidget['state'];
+}) => Pick<Appcraft.MainWidget, 'props' | 'todos'>;
+
 export type SetTodoPriorityFn = (
   allTodos: Exclude<Appcraft.MainWidget['todos'], undefined>,
   priority: number
@@ -17,6 +22,7 @@ export type GetWidgetOptionsFn = (
 export type GetNodesByValueFn = (
   options: {
     defaultNodes?: Appcraft.MainWidget['nodes'];
+    injection?: Appcraft.LayoutWidget['template'];
     value: unknown;
     states?: Appcraft.MainWidget['state']['nodes'];
   },
@@ -36,6 +42,7 @@ export type GetTodosByTemplateFn = (options: {
 
 export type GetWidgetsByValueFn = (
   widget: Appcraft.MainWidget | undefined,
+  injection: Appcraft.LayoutWidget['template'] | undefined,
   value: unknown,
   state: Appcraft.EntityNodeStates,
   getWidgetOptions: GetWidgetOptionsFn

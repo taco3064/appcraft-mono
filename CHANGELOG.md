@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.118](https://github.com/taco3064/appcraft-mono/compare/v0.0.117...v0.0.118) (2023-09-12)
+
+
+### Bug Fixes
+
+* **@appcraft/exhibitor:** confirm that all configured todos have been implemented ([a26d17c](https://github.com/taco3064/appcraft-mono/commit/a26d17c490fdfd4d5d24b7dbd1a3e054550d2472))
+* **@appcraft/exhibitor:** fix the error where the injection node's events are not implemented ([8a362c1](https://github.com/taco3064/appcraft-mono/commit/8a362c10d1cc7cc86026987214fece7c958cc02a))
+* **@appcraft/exhibitor:** simplify the mechanism for implementing todos ([49ce18c](https://github.com/taco3064/appcraft-mono/commit/49ce18c4d7d6b27fe33e33ddc77dae44f1c94b37))
+* **use-lazy-definition:** fixed bugs ([ed97584](https://github.com/taco3064/appcraft-mono/commit/ed97584571e24c825a1e5215e55846fce31b9b4f))
+
 ### [0.0.117](https://github.com/taco3064/appcraft-mono/compare/v0.0.116...v0.0.117) (2023-09-11)
 
 

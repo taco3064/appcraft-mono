@@ -1,4 +1,3 @@
-export * from './prop-path';
-export * from './props-parser';
+export * from './props';
 export * from './state-management';
-export * from './todo-flow';
+export * from './todos';

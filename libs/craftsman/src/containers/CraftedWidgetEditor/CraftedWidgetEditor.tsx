@@ -6,6 +6,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import _get from 'lodash/get';
+import _toPath from 'lodash/toPath';
 import { Suspense, useState } from 'react';
 import type { PlainTextWidget } from '@appcraft/types';
 
@@ -34,6 +35,7 @@ const getActiveType: Types.GetActiveType = ({
 
 export default function CraftedWidgetEditor({
   BackButtonProps,
+  GeneratedTodoOverrideProps,
   disableState = false,
   disableTodoCategories,
   stateTypeFile,
@@ -180,7 +182,6 @@ export default function CraftedWidgetEditor({
           disableCategories={disableTodoCategories}
           typeFile={todoTypeFile}
           values={editedWidget.todos?.[todoPath as string]}
-          onFetchTodoWrapper={onFetchWrapper}
           onChange={(todo) =>
             handleMutation.modify({
               ...editedWidget,
@@ -192,12 +193,14 @@ export default function CraftedWidgetEditor({
             renderOverrideItem,
             onFetchData,
             onFetchDefinition,
+            onFetchWrapper,
           }}
-          definitionSource={{
-            typeFile: editedWidget.typeFile,
-            typeName: editedWidget.typeName,
-            mixedTypes: editedWidget.mixedTypes,
-            collectionPath: todoPath,
+          GeneratedOverrideProps={{
+            ...GeneratedTodoOverrideProps,
+            states: widget?.state,
+            widget: editedWidget,
+            widgetPath,
+            todoPath,
           }}
           HeaderProps={{
             primary: ct('ttl-events'),

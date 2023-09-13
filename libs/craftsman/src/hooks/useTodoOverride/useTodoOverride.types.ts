@@ -23,6 +23,6 @@ export type TodoOverrideHook = (
     (
       options: Ctx.RenderOverrideItemArgs<'display' | 'pure'>[1],
       todo: Appcraft.WidgetTodo
-    ) => JSX.Element | void
+    ) => JSX.Element | false | void
   >
 ) => Ctx.RenderOverrideItem;

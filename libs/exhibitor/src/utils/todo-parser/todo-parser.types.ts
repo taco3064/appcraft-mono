@@ -19,6 +19,14 @@ export type VariableOptions = Omit<
 };
 
 //* Methods
+export type GetEventHandlers = (
+  todos: Record<string, Appcraft.WidgetTodo>,
+  options: Parameters<GetEventHandler>[1],
+  filter?: (
+    todos: Record<string, Appcraft.WidgetTodo>
+  ) => Record<string, Appcraft.WidgetTodo>
+) => ReturnType<GetEventHandler>[];
+
 export type GetEventHandler = (
   todos: Record<string, Appcraft.WidgetTodo>,
   options: {

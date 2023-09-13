@@ -1,7 +1,7 @@
 import _set from 'lodash/set';
 import type * as Appcraft from '@appcraft/types';
 
-import { splitProps } from '../props-parser';
+import { splitProps } from '../props';
 import type * as Types from './state-management.types';
 
 const convert2State: Types.Convert2State = (arr, basePath, state) =>

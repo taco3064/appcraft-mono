@@ -92,11 +92,29 @@ export function useLazyWidgetNav<R>(
           default: (props: R) =>
             renderer({
               ...props,
-              fetchData: (getBy, id) =>
-                (getBy === 'widget'
-                  ? nav.get(id)
-                  : Array.from(nav.values()).find((item) => item.id === id)
-                )?.widget,
+              fetchData: (getBy, options) => {
+                switch (getBy) {
+                  case 'widget':
+                    return nav.get(options)?.widget;
+
+                  case 'template':
+                    return Array.from(nav.values()).find(
+                      (item) => item.id === options
+                    )?.widget;
+
+                  case 'type': {
+                    const { typeFile, typeName } = options;
+
+                    return Array.from(nav.values()).find(
+                      ({ widget }) =>
+                        widget.typeFile === typeFile &&
+                        widget.typeName === typeName
+                    )?.widget;
+                  }
+                  default:
+                    return undefined;
+                }
+              },
             }),
         };
       }),

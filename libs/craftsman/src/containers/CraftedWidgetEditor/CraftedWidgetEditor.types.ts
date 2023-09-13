@@ -11,6 +11,11 @@ import type * as Hook from '../../hooks';
 import type { CraftedTodoEditorProps } from '../CraftedTodoEditor';
 
 //* Variables
+type GeneratedOverrideProps = Exclude<
+  CraftedTodoEditorProps['GeneratedOverrideProps'],
+  undefined
+>;
+
 type CheckAllowedToAddWidget = (e: {
   owner?: Appcraft.NodeWidget;
   paths: (string | number)[];
@@ -43,6 +48,7 @@ export type LazyWidgetElementsProps = Omit<
 //* Component Props
 export interface CraftedWidgetEditorProps {
   BackButtonProps?: ComponentProps<typeof WidgetAppBar>['BackButtonProps'];
+  GeneratedTodoOverrideProps?: Pick<GeneratedOverrideProps, 'layout'>;
   disableState?: boolean;
   disableTodoCategories?: Comp.TodoFlowControlsProps['disableCategories'];
   stateTypeFile?: string;

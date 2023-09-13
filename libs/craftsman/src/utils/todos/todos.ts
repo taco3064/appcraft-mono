@@ -1,9 +1,30 @@
+import _get from 'lodash/get';
+import _toPath from 'lodash/toPath';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { nanoid } from 'nanoid';
 import type * as Appcraft from '@appcraft/types';
 
 import { DEFAULT_SIZE } from '../../styles';
-import { splitProps } from '../props-parser';
-import type * as Types from './todo-flow.types';
+import { splitProps } from '../props';
+import type * as Types from './todos.types';
+
+export const getTodoCollectionPath: Types.GetTodoCollectionPath = ({
+  widget,
+  states,
+  todoPath,
+} = {}) => {
+  const todoStates = Object.entries(
+    _get(widget, ['state', 'todos']) || _get(states, ['todos']) || {}
+  ) as [string, Appcraft.TodosState][];
+
+  const [target] =
+    todoStates.find(
+      ([path, { alias }]) =>
+        alias === todoPath || path.replace(/^todos\./, '') === todoPath
+    ) || [];
+
+  return target?.replace(/^todos\./, '');
+};
 
 export const getFlowNodes: Types.GetFlowNodes = (todos, each) =>
   Object.values(todos).map<Types.TodoNode>((todo) => {
@@ -67,13 +88,15 @@ export const getEditingTodo: Types.GetEditingTodo = (
   typeFile,
   { mixedTypes, ...todo }
 ) => {
+  const mixed = JSON.parse(JSON.stringify(mixedTypes || {}));
+
   switch (todo.category) {
     case 'variable':
       return {
         todo,
         config: {
           category: 'config',
-          mixedTypes,
+          mixedTypes: mixed,
           typeFile,
           typeName: 'VariableTodo',
           props: splitProps(todo),
@@ -85,7 +108,7 @@ export const getEditingTodo: Types.GetEditingTodo = (
         todo,
         config: {
           category: 'config',
-          mixedTypes,
+          mixedTypes: mixed,
           typeFile,
           typeName: 'FetchTodo',
           props: splitProps(todo),
@@ -97,7 +120,7 @@ export const getEditingTodo: Types.GetEditingTodo = (
         todo,
         config: {
           category: 'config',
-          mixedTypes,
+          mixedTypes: mixed,
           typeFile,
           typeName: 'ConditionBranchTodo',
           props: splitProps(todo),
@@ -109,7 +132,7 @@ export const getEditingTodo: Types.GetEditingTodo = (
         todo,
         config: {
           category: 'config',
-          mixedTypes,
+          mixedTypes: mixed,
           typeFile,
           typeName: 'IterateTodo',
           props: splitProps(todo),
@@ -121,7 +144,7 @@ export const getEditingTodo: Types.GetEditingTodo = (
         todo,
         config: {
           category: 'config',
-          mixedTypes,
+          mixedTypes: mixed,
           typeFile,
           typeName: 'WrapTodo',
           props: splitProps(todo),
@@ -133,7 +156,7 @@ export const getEditingTodo: Types.GetEditingTodo = (
         todo,
         config: {
           category: 'config',
-          mixedTypes,
+          mixedTypes: mixed,
           typeFile,
           typeName: 'SetStateTodo',
           props: splitProps(todo),
@@ -145,7 +168,7 @@ export const getEditingTodo: Types.GetEditingTodo = (
         todo,
         config: {
           category: 'config',
-          mixedTypes,
+          mixedTypes: mixed,
           typeFile,
           typeName: 'SetPropsTodo',
           props: splitProps(todo),
@@ -223,4 +246,53 @@ export const getInitialTodo: Types.GetInitialTodo = (typeFile, category) => {
     default:
       return null;
   }
+};
+
+export const getTodosInfo: Types.GetTodosInfo = ({
+  layout,
+  states,
+  widget,
+  widgetPath,
+  todoPath = nanoid(6),
+} = {}) => {
+  const stateKey = widgetPath?.substring(widgetPath.lastIndexOf('.nodes.') + 7);
+
+  const todoStates = _get(widget, ['state', 'todos']) as Record<
+    string,
+    Appcraft.TodosState
+  >;
+
+  const eventName =
+    Object.entries(todoStates || {})
+      .find(
+        ([path, { alias }]) =>
+          alias === todoPath || path === `todos.${todoPath}`
+      )?.[0]
+      ?.replace(/^todos\./, '') || todoPath;
+
+  const injection = _get(layout, [
+    'template',
+    ..._toPath(widgetPath),
+    'todos',
+    todoPath,
+  ]);
+
+  const [, state] =
+    Object.entries(_get(states, ['nodes']) || {}).find(
+      ([path, { alias }]: [string, Appcraft.EntityNodeStates]) =>
+        alias === stateKey || path === widgetPath
+    ) || [];
+
+  return {
+    eventName,
+    todos:
+      _get(
+        ExhibitorUtil.getWidgetTodos({
+          injection: { [eventName]: injection },
+          template: _get(state, ['template', 'todos']),
+          states: todoStates,
+        }),
+        [eventName]
+      ) || {},
+  };
 };

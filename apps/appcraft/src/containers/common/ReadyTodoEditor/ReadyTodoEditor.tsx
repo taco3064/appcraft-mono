@@ -74,7 +74,7 @@ export default function ReadyTodoEditor({
           onChange={setTodos}
           onFetchData={handleFetch.data}
           onFetchDefinition={getTypeDefinition}
-          onFetchTodoWrapper={handleFetch.wrapper}
+          onFetchWrapper={handleFetch.wrapper}
         />
       </CraftsmanStyle.FlexDialog>
     </>

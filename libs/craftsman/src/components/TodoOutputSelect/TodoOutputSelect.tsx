@@ -10,10 +10,10 @@ import TextField from '@mui/material/TextField';
 import _intersection from 'lodash/intersection';
 import _isPlainObject from 'lodash/isPlainObject';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
-import { Suspense } from 'react';
+import { Suspense, useMemo } from 'react';
 import type { ComponentProps } from 'react';
 
-import { splitProps } from '../../utils';
+import { getFlowEdges, splitProps } from '../../utils';
 import { useLazyTodoOutputs } from '../../hooks';
 import { useLocalesContext } from '../../contexts';
 import type * as Types from './TodoOutputSelect.types';
@@ -73,9 +73,8 @@ const getOutputOptions: Types.GetOutputOptions = (todos, outputs) =>
   );
 
 export default function TodoOutputSelect({
-  edges,
-  todos,
-  todoid,
+  TodoProps,
+  defaultTodos,
   disabled = false,
   label,
   value,
@@ -83,13 +82,29 @@ export default function TodoOutputSelect({
   onFetchData,
   onFetchTodoWrapper,
 }: Types.TodoOutputSelectProps) {
+  const { id, todos: external } = TodoProps;
   const ct = useLocalesContext();
+
+  const todos = useMemo<typeof external>(
+    () => ({
+      ...external,
+      ...Object.fromEntries(
+        Object.entries(defaultTodos || {}).map(([todoid, todo]) => [
+          todoid,
+          { ...todo, priority: 1 },
+        ])
+      ),
+    }),
+    [defaultTodos, external]
+  );
 
   const LazyTextField = useLazyTodoOutputs<ComponentProps<typeof TextField>>(
     todos,
-    edges,
-    todoid,
-    { onFetchData, onFetchTodoWrapper },
+    id,
+    {
+      onFetchData,
+      onFetchTodoWrapper: (todoid) => onFetchTodoWrapper('todo', todoid),
+    },
     ({ children, fetchData, ...props }) => (
       <TextField {...props}>
         {children}

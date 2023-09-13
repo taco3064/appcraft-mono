@@ -146,8 +146,8 @@ export default function TodoInputSelect({
         }}
       >
         <Style.ListToolbar
-          color="inherit"
           muiSkipListHighlight
+          color="inherit"
           style={{ display: menu.path ? 'flex' : 'none' }}
         >
           <Style.IconTipButton
@@ -158,7 +158,7 @@ export default function TodoInputSelect({
           </Style.IconTipButton>
 
           <Breadcrumbs
-            TopProps={{ text: ct('txt-top'), onClick: () => handleBack(-1) }}
+            TopProps={{ text: ct('txt-top'), onClick: () => handleBack(0) }}
             collapsedTitle={ct('ttl-props')}
             separator="."
             maxItems={2}
@@ -168,7 +168,7 @@ export default function TodoInputSelect({
               <Style.Breadcrumb
                 key={`breadcrumb_${i}`}
                 brcVariant={i === arr.length - 1 ? 'text' : 'link'}
-                onClick={() => handleBack(i)}
+                onClick={() => handleBack(i + 1)}
               >
                 {/^\d+$/.test(name) ? `[${name}]` : name}
               </Style.Breadcrumb>

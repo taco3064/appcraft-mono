@@ -11,7 +11,6 @@ export type GetSourceTodos = (
 
 export type LazyTodoOutputsHookArgs<T> = [
   Record<string, WidgetTodo>, //* todos
-  TodoEdge[], //* edges
   string, //* todoid
   {
     onFetchData: Exhibitor.FetchDataHandler;

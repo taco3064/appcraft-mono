@@ -7,10 +7,22 @@ export type EditingTodo = {
   config: Appcraft.ConfigOptions;
 } | null;
 
+export type GeneratedOverride = {
+  layout?: Appcraft.LayoutWidget;
+  widget?: Appcraft.NodeWidget | Appcraft.MainWidget;
+  states?: Appcraft.MainWidget['state'];
+  widgetPath?: string;
+  todoPath?: string;
+};
+
 export type TodoEdge = Edge<never>;
 export type TodoNode = Node<Appcraft.WidgetTodo>;
 
 //* Methods
+export type GetTodoCollectionPath = (
+  options?: GeneratedOverride
+) => string | undefined;
+
 export type GetInitialTodo = (
   typeFile: string,
   category: Appcraft.WidgetTodo['category']
@@ -30,3 +42,8 @@ export type GetFlowEdges = (
   todos: Record<string, Appcraft.WidgetTodo>,
   each?: (edge: TodoEdge) => void
 ) => TodoEdge[];
+
+export type GetTodosInfo = (options?: GeneratedOverride) => {
+  eventName: string;
+  todos: Record<string, Appcraft.WidgetTodo>;
+};

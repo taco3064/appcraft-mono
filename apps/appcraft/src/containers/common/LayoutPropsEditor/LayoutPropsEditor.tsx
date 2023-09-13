@@ -11,12 +11,18 @@ import type { LayoutPropsEditorProps } from './LayoutPropsEditor.types';
 export default function LayoutPropsEditor({
   layouts,
   value,
+  getWidgetOptions,
   onChange,
   onClose,
 }: LayoutPropsEditorProps) {
+  const [widget, fetchProps] = useWidgetTransform(value, {
+    getWidgetOptions,
+    onChange,
+    onClose,
+  });
+
   const { template } = value;
   const [at] = useFixedT('app');
-  const [widget, fetchProps] = useWidgetTransform(value, { onChange, onClose });
   const handleFetch = useCraftsmanFetch();
   const override = useCraftsmanOverrideContext({ layouts, widget });
 
@@ -30,6 +36,7 @@ export default function LayoutPropsEditor({
     <CraftedWidgetEditor
       {...override}
       {...fetchProps}
+      GeneratedTodoOverrideProps={{ layout: value }}
       disableState
       todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
       version={__WEBPACK_DEFINE__.VERSION}

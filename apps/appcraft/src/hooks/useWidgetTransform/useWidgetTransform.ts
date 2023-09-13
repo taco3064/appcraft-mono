@@ -1,3 +1,4 @@
+import _has from 'lodash/has';
 import _pick from 'lodash/pick';
 import _set from 'lodash/set';
 import { CraftsmanUtil } from '@appcraft/craftsman';
@@ -21,16 +22,24 @@ const extractTemplateIds: Types.ExtractTemplateIds = ({ id, nodes }) =>
     [id]
   );
 
-const convertToNodes: Types.ConvertToNodes = (nodes) =>
+const convertToNodes: Types.ConvertToNodes = (
+  nodes,
+  templateIds,
+  getWidgetOptions
+) =>
   Object.entries(nodes || {}).reduce((result, [path, widget]) => {
     if (!Array.isArray(widget) && widget?.category === 'node') {
-      const { typeName: id, props, todos, nodes = {} } = widget;
+      const { typeFile, typeName, props, todos, nodes = {} } = widget;
 
       result[path] = {
-        id,
         props,
         todos,
-        nodes: convertToNodes(nodes),
+        nodes: convertToNodes(nodes, templateIds, getWidgetOptions),
+        id: templateIds.find((id) => {
+          const target = getWidgetOptions('template', id);
+
+          return target?.typeFile === typeFile && target?.typeName === typeName;
+        }),
       };
     }
 
@@ -39,25 +48,25 @@ const convertToNodes: Types.ConvertToNodes = (nodes) =>
 
 const convertToWidget: Types.ConvertToWidget = (
   hierarchies,
-  { id, nodes, props, todos }
+  { id, nodes, props, todos },
+  getWidgetOptions
 ) => {
+  const widget = getWidgetOptions('template', id);
   const hierarchy = hierarchies.get(id);
 
   return (
     hierarchy && {
+      ...widget,
       category: 'node',
       description: hierarchy.description,
       id,
       type: hierarchy.name,
-      typeFile: 'widget',
-      typeName: id,
-      state: {},
       props,
       todos,
       nodes: Object.entries(nodes || {}).reduce(
         (result, [path, template]) => ({
           ...result,
-          [path]: convertToWidget(hierarchies, template),
+          [path]: convertToWidget(hierarchies, template, getWidgetOptions),
         }),
         {}
       ),
@@ -67,14 +76,14 @@ const convertToWidget: Types.ConvertToWidget = (
 
 export const useWidgetTransform: Types.WidgetTransformHook = (
   layout,
-  { onChange, onClose }
+  { getWidgetOptions, onChange, onClose }
 ) => {
   const { template } = layout;
-  const targets = useMemo(() => extractTemplateIds(template), [template]);
+  const templateIds = useMemo(() => extractTemplateIds(template), [template]);
 
   const { data } = useQuery({
     enabled: Boolean(template.id),
-    queryKey: ['widgets', { type: 'item', targets }],
+    queryKey: ['widgets', { type: 'item', targets: templateIds }],
     queryFn: Service.searchHierarchy,
     refetchOnWindowFocus: false,
   });
@@ -88,7 +97,7 @@ export const useWidgetTransform: Types.WidgetTransformHook = (
   );
 
   return [
-    convertToWidget(hierarchies, template),
+    convertToWidget(hierarchies, template, getWidgetOptions),
 
     {
       onWidgetChange: (e) => {
@@ -99,7 +108,7 @@ export const useWidgetTransform: Types.WidgetTransformHook = (
             ...template,
             props,
             todos,
-            nodes: convertToNodes(nodes),
+            nodes: convertToNodes(nodes, templateIds, getWidgetOptions),
           }),
         };
 
@@ -108,16 +117,20 @@ export const useWidgetTransform: Types.WidgetTransformHook = (
       },
 
       onFetchDefinition: async (options) => {
-        const { typeFile, typeName: id } = options;
+        const { typeFile, collectionPath } = options;
+        const widget = getWidgetOptions('type', options);
+        const { state } = widget || {};
 
-        if (typeFile === __WEBPACK_DEFINE__.TODO_TYPE_FILE) {
+        if (
+          typeFile === __WEBPACK_DEFINE__.TODO_TYPE_FILE ||
+          _has(widget, [
+            'state',
+            'todos',
+            `todos.${collectionPath.replace(/\.params.+/, '')}`,
+          ])
+        ) {
           return Service.getTypeDefinition(options);
         }
-
-        const { content: widget } =
-          await Service.getConfigById<Appcraft.MainWidget>(id);
-
-        const { state } = widget;
 
         return {
           type: 'exact',
@@ -136,13 +149,12 @@ export const useWidgetTransform: Types.WidgetTransformHook = (
       onFetchNodesAndEvents: async (options) => {
         const result: Appcraft.NodeAndEventProps = { nodes: {}, events: {} };
 
-        for await (const data of options.map(async ({ typeFile, typeName }) => {
-          const { content: widget } =
-            await Service.getConfigById<Appcraft.MainWidget>(typeName);
+        for (const data of options.map((opts) => {
+          const widget = getWidgetOptions('type', opts);
 
           return {
-            ..._pick(widget.state, ['nodes', 'todos']),
-            widgetKey: `${typeFile}#${typeName}`,
+            ..._pick(widget?.state, ['nodes', 'todos']),
+            widgetKey: `${opts.typeFile}#${opts.typeName}`,
           };
         })) {
           const { widgetKey, nodes, todos } = data;

@@ -1,10 +1,12 @@
 import AddIcon from '@mui/icons-material/Add';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
+import LinearProgress from '@mui/material/LinearProgress';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedRenderer } from '@appcraft/exhibitor';
-import { useEffect, useImperativeHandle, useRef } from 'react';
+import { Suspense, useEffect, useImperativeHandle, useRef } from 'react';
+import { useLazyWidgetNav } from '@appcraft/exhibitor';
 import { useTheme } from '@mui/material/styles';
 
 import * as Common from '../common';
@@ -35,6 +37,15 @@ export default function PageEditor({
   const editingRef = useRef<boolean>();
   const handleFetch = useCraftsmanFetch();
   const isSettingOpen = Boolean(layouts[active]);
+
+  const LazyLayoutPropsEditor =
+    useLazyWidgetNav<Types.LazyLayoutPropsEditorProps>(
+      layouts[active] ? [layouts[active]] : [],
+      handleFetch.wrapper,
+      ({ fetchData, ...props }) => (
+        <Common.LayoutPropsEditor {...props} getWidgetOptions={fetchData} />
+      )
+    );
 
   const actionNode = Hook.useNodePicker(
     () =>
@@ -119,15 +130,17 @@ export default function PageEditor({
         }}
         drawer={
           !isSettingOpen ? null : (
-            <Common.LayoutPropsEditor
-              layouts={layouts}
-              value={layouts[active]}
-              onClose={() => handlePage.active(undefined)}
-              onChange={(value) => {
-                layouts.splice(active, 1, value);
-                handlePage.change('layouts', [...layouts]);
-              }}
-            />
+            <Suspense fallback={<LinearProgress />}>
+              <LazyLayoutPropsEditor
+                layouts={layouts}
+                value={layouts[active]}
+                onClose={() => handlePage.active(undefined)}
+                onChange={(value) => {
+                  layouts.splice(active, 1, value);
+                  handlePage.change('layouts', [...layouts]);
+                }}
+              />
+            </Suspense>
           )
         }
         content={

@@ -1,9 +1,8 @@
 import _get from 'lodash/get';
-import _merge from 'lodash/merge';
 import _set from 'lodash/set';
 import { startTransition } from 'react';
 import type { ComponentProps } from 'react';
-import type { MainWidget, StateCategory, WidgetTodo } from '@appcraft/types';
+import type { MainWidget, StateCategory } from '@appcraft/types';
 
 import * as Ctx from '../../contexts';
 import * as Util from '../../utils';
@@ -11,17 +10,6 @@ import type * as Types from './useComposerRender.types';
 import type { OutputData } from '../../utils';
 
 const sources: StateCategory[] = ['props', 'todos', 'nodes'];
-
-function getTodosPriority(todos: Record<string, WidgetTodo>) {
-  return Object.entries(todos).reduce((result, [id, todo]) => {
-    const { priority = 3 } = todo;
-    const acc = result[priority - 1] || {};
-
-    result[priority - 1] = _set(acc, [id], todo);
-
-    return result;
-  }, new Array<Record<string, WidgetTodo>>(3));
-}
 
 function getProps<P>(
   ...[
@@ -53,15 +41,13 @@ function getProps<P>(
        * * 3. layout template - 取自 states
        */
       Object.entries(widget[source] || {}).forEach(([propPath, todos]) => {
-        const handles = getTodosPriority(todos).map((e) =>
-          Util.getEventHandler(e, {
-            eventName: propPath,
-            onFetchData,
-            onFetchTodoWrapper: (todoid) => onFetchWrapper('todo', todoid),
-            onPropsChange,
-            onStateChange: (e) => onStateChange(group, e),
-          })
-        );
+        const handles = Util.getEventHandlers(todos, {
+          eventName: propPath,
+          onFetchData,
+          onFetchTodoWrapper: (todoid) => onFetchWrapper('todo', todoid),
+          onPropsChange,
+          onStateChange: (e) => onStateChange(group, e),
+        });
 
         _set(result, propPath, (...e: unknown[]) => {
           const start = Date.now();

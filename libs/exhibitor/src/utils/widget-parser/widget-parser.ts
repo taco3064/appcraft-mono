@@ -11,7 +11,10 @@ const setTodoPriority: Types.SetTodoPriorityFn = (allTodos, priority) =>
     Object.entries(allTodos).map(([propPath, todos]) => [
       propPath,
       Object.fromEntries(
-        Object.entries(todos).map(([id, todo]) => [id, { priority, ...todo }])
+        Object.entries(todos || {}).map(([id, todo]) => [
+          id,
+          { priority, ...todo },
+        ])
       ),
     ])
   ) as ReturnType<Types.SetTodoPriorityFn>;
@@ -45,7 +48,7 @@ const convertInjectionWithStates: Types.ConvertInjectionWithStates = ({
   );
 };
 
-const getNodesByValue: Types.GetNodesByValueFn = (
+export const getWidgetNodes: Types.GetWidgetNodesFn = (
   { defaultNodes = {}, injection, value, states = {} },
   getWidgetOptions
 ) => {
@@ -81,7 +84,10 @@ const getNodesByValue: Types.GetNodesByValueFn = (
   ).nodes;
 };
 
-const getPropsByValue: Types.GetPropsByValueFn = ({ value, states = {} }) => {
+export const getWidgetProps: Types.GetWidgetPropsFn = ({
+  value,
+  states = {},
+}) => {
   const propPaths = Object.keys(states);
 
   return Object.entries(value || {}).reduce((result, [propName, propValue]) => {
@@ -97,7 +103,7 @@ const getPropsByValue: Types.GetPropsByValueFn = ({ value, states = {} }) => {
   }, {});
 };
 
-const getTodosByTemplate: Types.GetTodosByTemplateFn = ({
+export const getWidgetTodos: Types.GetWidgetTodosFn = ({
   defaults = {},
   injection = {},
   template = {},
@@ -151,16 +157,16 @@ export const getWidgetsByValue: Types.GetWidgetsByValueFn = (
   if (nodeType === 'element') {
     return {
       ...widget,
-      nodes: getNodesByValue(
+      nodes: getWidgetNodes(
         { defaultNodes: nodes, injection, value, states: state?.nodes },
         getWidgetOptions
       ),
       props: {
         ...props,
         ...external.props,
-        ...getPropsByValue({ value, states: state?.props }),
+        ...getWidgetProps({ value, states: state?.props }),
       },
-      todos: getTodosByTemplate({
+      todos: getWidgetTodos({
         defaults: todos,
         injection: external.todos,
         template: template?.todos,
@@ -173,16 +179,16 @@ export const getWidgetsByValue: Types.GetWidgetsByValueFn = (
     ? []
     : value.map((val) => ({
         ...widget,
-        nodes: getNodesByValue(
+        nodes: getWidgetNodes(
           { defaultNodes: nodes, injection, value: val, states: state?.nodes },
           getWidgetOptions
         ),
         props: {
           ...props,
           ...external.props,
-          ...getPropsByValue({ value: val, states: state?.props }),
+          ...getWidgetProps({ value: val, states: state?.props }),
         },
-        todos: getTodosByTemplate({
+        todos: getWidgetTodos({
           defaults: todos,
           injection: external.todos,
           template: template?.todos,

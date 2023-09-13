@@ -3,21 +3,26 @@ import AppBar from '@mui/material/AppBar';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
+import _get from 'lodash/get';
 import _toPath from 'lodash/toPath';
-import { ExhibitorUtil } from '@appcraft/exhibitor';
+import { ExhibitorUtil, useLazyWidgetNav } from '@appcraft/exhibitor';
+import { useMemo } from 'react';
 import { useTheme } from '@mui/material/styles';
-import { useTransition } from 'react';
-import type { StructureProp, WidgetTodo } from '@appcraft/types';
+import type * as Appcraft from '@appcraft/types';
 
 import * as Comp from '../../components';
 import * as Hook from '../../hooks';
 import * as Style from '../../styles';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
+import { getTodoCollectionPath, getTodosInfo } from '../../utils';
 import { useLocalesContext } from '../../contexts';
 import { useStateContext } from '../../contexts';
 import type * as Types from './CraftedTodoEditor.types';
 import type { FetchTypeDefinition } from '../../hooks';
+import type { GeneratedOverride } from '../../utils';
+import type { TodoOutputSelectProps } from '../../components';
 
+//* Variables
 const EXCLUDE: RegExp[] = [
   /^id$/,
   /^category$/,
@@ -37,25 +42,45 @@ const NODE_TYPES: Rf.NodeTypes = {
   props: Comp.TodoFlowNode,
 };
 
+//* Components
 export default function CraftedTodoEditor({
+  GeneratedOverrideProps,
   HeaderProps,
-  variant = 'popup',
   disableCategories,
   fullHeight,
   typeFile = './node_modules/@appcraft/types/src/widgets/todo.types.d.ts',
-  definitionSource,
   values,
+  variant = 'popup',
   renderOverrideItem: defaultRenderOverrideItem,
   onChange,
   onEditToggle,
   onFetchData,
   onFetchDefinition,
-  onFetchTodoWrapper,
+  onFetchWrapper,
 }: Types.CraftedTodoEditorProps) {
+  const { toggle } = useStateContext();
   const theme = useTheme();
   const ct = useLocalesContext();
-  const { toggle } = useStateContext();
-  const [, startTransition] = useTransition();
+  const stringify = JSON.stringify(GeneratedOverrideProps || {});
+
+  const { widget, renderedWidget, todoProps, source } = useMemo(() => {
+    const generated = JSON.parse(stringify) as GeneratedOverride;
+    const { layout, widget } = generated;
+
+    return {
+      widget,
+      todoProps: getTodosInfo(generated),
+      renderedWidget: layout ? [layout] : (widget as Appcraft.MainWidget),
+      source: !widget
+        ? undefined
+        : {
+            typeFile: widget?.typeFile,
+            typeName: widget?.typeName,
+            mixedTypes: widget?.mixedTypes,
+            collectionPath: getTodoCollectionPath(generated),
+          },
+    };
+  }, [stringify]);
 
   const [{ editing, nodes, edges }, handleTodo] = Hook.useTodoGenerator(
     typeFile,
@@ -63,10 +88,32 @@ export default function CraftedTodoEditor({
     { onChange, onEditToggle }
   );
 
+  const LazyTodoOutputSelect = useLazyWidgetNav<TodoOutputSelectProps>(
+    renderedWidget,
+    onFetchWrapper,
+    ({ TodoProps, defaultTodos: defaults, fetchData, ...props }) => {
+      const defaultTodos = _get(
+        (widget && fetchData?.('type', widget)) || widget,
+        ['todos', TodoProps.eventName]
+      );
+
+      return (
+        <Comp.TodoOutputSelect
+          {...props}
+          TodoProps={TodoProps}
+          defaultTodos={GeneratedOverrideProps ? defaultTodos : defaults}
+        />
+      );
+    }
+  );
+
   const handleNormalBack = () => {
     if (editing) {
       const { mixedTypes } = editing.config || {};
-      const todo = ExhibitorUtil.getProps<WidgetTodo>(editing.config?.props);
+
+      const todo = ExhibitorUtil.getProps<Appcraft.WidgetTodo>(
+        editing.config?.props
+      );
 
       handleTodo.cancel();
 
@@ -77,78 +124,69 @@ export default function CraftedTodoEditor({
     }
   };
 
+  const handleSourceChange = (propPath: string, source: string) => {
+    if (!editing?.config) {
+      return;
+    }
+
+    const { props } = editing.config;
+    const paths = _toPath(propPath.replace(/\.source$/, '.path'));
+
+    delete props?.[ExhibitorUtil.getPropPath(paths)];
+
+    handleTodo.change({
+      ...editing.config,
+      props: {
+        ...props,
+        [propPath]: source,
+      },
+    });
+  };
+
   const renderOverrideItem = Hook.useTodoOverride(
     values || {},
     editing?.todo.id,
     defaultRenderOverrideItem,
     {
-      EVENT_PARAMS_PICKER: ({ disabled, label, value, onChange }) => {
-        if (definitionSource) {
-          return (
-            <Comp.TodoInputSelect
-              {...{ disabled, label, onChange }}
-              source={definitionSource}
-              value={value as string}
-              onFetchDefinition={onFetchDefinition}
-            />
-          );
-        }
-      },
-      OUTPUT_PATH_PICKER: ({ disabled, label, value, onChange }) => (
-        <Comp.TodoOutputSelect
-          {...{
-            disabled,
-            edges,
-            label,
-            onChange,
-            onFetchData,
-            onFetchTodoWrapper,
-          }}
-          todos={values || {}}
-          todoid={editing?.todo.id as string}
-          value={(value || '') as string}
-          onFetchTodoWrapper={(todoid) => onFetchTodoWrapper('todo', todoid)}
-        />
-      ),
-      VARIABLE_SOURCE: ({
-        disabled,
-        label,
-        value,
-        propPath,
-        options,
-        onChange,
-      }) => {
-        if (options.type === 'oneOf') {
-          return (
-            <Comp.TodoSourceSelect
-              {...{ disabled, label }}
-              value={value as string}
-              options={options.options?.filter(
-                (opt) => definitionSource || opt !== 'event'
-              )}
-              onChange={(e) => {
-                if (editing?.config) {
-                  const { props } = editing.config;
+      EVENT_PARAMS_PICKER: ({ disabled, label, value, onChange }) =>
+        (source && (
+          <Comp.TodoInputSelect
+            {...{ disabled, label, source, onChange, onFetchDefinition }}
+            value={value as string}
+          />
+        )) ||
+        false,
 
-                  delete props?.[
-                    ExhibitorUtil.getPropPath(
-                      _toPath(propPath.replace(/\.source$/, '.path'))
-                    )
-                  ];
+      OUTPUT_PATH_PICKER: ({ disabled, label, value, onChange }) =>
+        (editing?.todo.id && (
+          <LazyTodoOutputSelect
+            {...{ disabled, label, onChange, onFetchData }}
+            defaultTodos={values}
+            value={(value || '') as string}
+            onFetchTodoWrapper={onFetchWrapper}
+            TodoProps={{
+              ...todoProps,
+              id: editing.todo.id,
+            }}
+          />
+        )) ||
+        false,
 
-                  handleTodo.change({
-                    ...editing.config,
-                    props: {
-                      ...props,
-                      [propPath]: e,
-                    },
-                  });
-                }
-              }}
-            />
-          );
-        }
-      },
+      VARIABLE_SOURCE: ({ disabled, label, value, propPath, options }) =>
+        (options.type === 'oneOf' && (
+          <Comp.TodoSourceSelect
+            {...{ disabled, label }}
+            value={value as string}
+            onChange={(e) => handleSourceChange(propPath, e)}
+            options={options.options?.filter(
+              (opt) =>
+                (GeneratedOverrideProps?.widget &&
+                  GeneratedOverrideProps?.todoPath) ||
+                opt !== 'event'
+            )}
+          />
+        )) ||
+        false,
     }
   );
 
@@ -167,7 +205,7 @@ export default function CraftedTodoEditor({
               values={todoConfig}
               onChange={handleTodo.change}
               onFetchDefinition={
-                onFetchDefinition as FetchTypeDefinition<StructureProp>
+                onFetchDefinition as FetchTypeDefinition<Appcraft.StructureProp>
               }
             />
           )}
@@ -212,7 +250,7 @@ export default function CraftedTodoEditor({
               values={editing.config}
               onChange={handleTodo.change}
               onFetchDefinition={
-                onFetchDefinition as FetchTypeDefinition<StructureProp>
+                onFetchDefinition as FetchTypeDefinition<Appcraft.StructureProp>
               }
             />
 

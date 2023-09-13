@@ -4,6 +4,7 @@ import { lazy, useEffect, useMemo, useRef, useState } from 'react';
 import type { LazyRenderer } from '@appcraft/types';
 import type { OutputData } from '@appcraft/exhibitor';
 
+import { getFlowEdges } from '../../utils';
 import type * as Types from './useLazyTodoOutputs.types';
 
 const getSourceTodos: Types.GetSourceTodos = (
@@ -24,10 +25,8 @@ const getSourceTodos: Types.GetSourceTodos = (
 export const useLazyTodoOutputs = <R>(
   ...args: Types.LazyTodoOutputsHookArgs<LazyRenderer<OutputData[], R>>
 ) => {
+  const [todos, todoid, { onFetchData, onFetchTodoWrapper }, renderer] = args;
   const [fetchPromise, setFetchPromise] = useState<Promise<OutputData[]>>();
-
-  const [todos, edges, todoid, { onFetchData, onFetchTodoWrapper }, renderer] =
-    args;
 
   const ref = useRef({
     todos,
@@ -40,23 +39,35 @@ export const useLazyTodoOutputs = <R>(
   useEffect(() => {
     const { todos, todoid, onFetchData, onFetchTodoWrapper } = ref.current;
 
-    setFetchPromise(
-      ExhibitorUtil.getEventHandler(
-        _pick(todos, getSourceTodos(todoid, edges)),
-        {
-          disableIgnoreOutput: true,
-          onFetchData,
-          onFetchTodoWrapper,
-        }
-      )()
+    const handles = ExhibitorUtil.getEventHandlers(
+      todos,
+      {
+        disableIgnoreOutput: true,
+        onFetchData,
+        onFetchTodoWrapper,
+      },
+      (sources) =>
+        !Object.keys(sources).includes(todoid)
+          ? sources
+          : _pick(todos, getSourceTodos(todoid, getFlowEdges(sources)))
     );
-  }, [edges]);
+
+    setFetchPromise(
+      handles.reduce(
+        (promise, handler) =>
+          promise.then((outputs) =>
+            handler({ [ExhibitorUtil.OUTPUTS_SYMBOL]: outputs })
+          ),
+        Promise.resolve<OutputData[]>([])
+      )
+    );
+  }, []);
 
   return useMemo(
     () =>
       lazy(async () => {
-        const fetchData = await fetchPromise;
         const { renderer } = ref.current;
+        const fetchData = await fetchPromise;
 
         return {
           default: (props: R) => renderer({ ...props, fetchData }),

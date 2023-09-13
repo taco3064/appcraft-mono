@@ -37,9 +37,7 @@ export function getVariableOutput<
       let value = undefined;
 
       //* Generate Value
-      if (!initial) {
-        return result;
-      } else if (mode === 'extract') {
+      if (mode === 'extract') {
         const { source, path } = initial;
 
         if (source === 'event') {
@@ -109,6 +107,7 @@ const execute: Types.Execute = async (
 
         break;
       }
+
       case 'state': {
         const { states } = todo;
 
@@ -364,3 +363,19 @@ export const getEventHandler: Types.GetEventHandler = (todos, options) => {
     return result;
   };
 };
+
+export const getEventHandlers: Types.GetEventHandlers = (
+  todos,
+  options,
+  filter
+) =>
+  Object.entries(todos)
+    .reduce((result, [id, todo]) => {
+      const { priority = 3 } = todo;
+      const acc = result[priority - 1] || {};
+
+      result[priority - 1] = _set(acc, [id], todo);
+
+      return result;
+    }, new Array<Record<string, Appcraft.WidgetTodo>>(3))
+    .map((e) => getEventHandler(filter ? filter(e) : e, options));

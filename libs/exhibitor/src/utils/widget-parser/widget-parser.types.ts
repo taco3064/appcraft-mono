@@ -15,11 +15,13 @@ export type SetTodoPriorityFn = (
 ) => Exclude<Appcraft.MainWidget['todos'], undefined>;
 
 export type GetWidgetOptionsFn = (
-  getBy: 'template' | 'widget',
-  id: string
+  ...args:
+    | ['template', string]
+    | ['widget', string]
+    | ['type', { typeFile: string; typeName: string }]
 ) => Appcraft.MainWidget | undefined;
 
-export type GetNodesByValueFn = (
+export type GetWidgetNodesFn = (
   options: {
     defaultNodes?: Appcraft.MainWidget['nodes'];
     injection?: Appcraft.LayoutWidget['template'];
@@ -29,12 +31,12 @@ export type GetNodesByValueFn = (
   getWidgetOptions: GetWidgetOptionsFn
 ) => Appcraft.MainWidget['nodes'];
 
-export type GetPropsByValueFn = (options: {
+export type GetWidgetPropsFn = (options: {
   value: unknown;
   states?: Appcraft.MainWidget['state']['props'];
 }) => Appcraft.MainWidget['props'];
 
-export type GetTodosByTemplateFn = (options: {
+export type GetWidgetTodosFn = (options: {
   defaults?: Appcraft.MainWidget['todos'];
   template?: Appcraft.MainWidget['todos'];
   injection?: Appcraft.MainWidget['todos'];

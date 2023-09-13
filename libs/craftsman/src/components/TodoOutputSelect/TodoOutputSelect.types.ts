@@ -1,7 +1,7 @@
-import type { WidgetTodo } from '@appcraft/types';
+import type { MainWidget, WidgetTodo } from '@appcraft/types';
 import type * as Exhibitor from '@appcraft/exhibitor';
 
-import type { TodoEdge } from '../../utils';
+import { getTodosInfo } from '../../utils';
 
 //* Variables
 export type OutputOption = {
@@ -17,13 +17,15 @@ export type GetOutputOptions = (
 
 //* Component Props
 export interface TodoOutputSelectProps {
-  edges: TodoEdge[];
-  todos: Record<string, WidgetTodo>;
-  todoid: string;
+  TodoProps: ReturnType<typeof getTodosInfo> & {
+    id: string;
+  };
+
+  defaultTodos?: Record<string, WidgetTodo>;
   disabled?: boolean;
   label: string;
   value: string;
   onChange: (value: string) => void;
   onFetchData: Exhibitor.FetchDataHandler;
-  onFetchTodoWrapper: Exhibitor.FetchTodoWrapperHandler;
+  onFetchTodoWrapper: Exhibitor.FetchWrapperHandler<'todo'>;
 }

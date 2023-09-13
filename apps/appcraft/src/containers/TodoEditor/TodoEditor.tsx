@@ -113,7 +113,7 @@ export default function TodoEditor({
             onChange={handleTodos.change}
             onFetchData={handleFetch.data}
             onFetchDefinition={getTypeDefinition}
-            onFetchTodoWrapper={handleFetch.wrapper}
+            onFetchWrapper={handleFetch.wrapper}
           />
         }
         drawer={

@@ -4,11 +4,17 @@ import type * as Exhibitor from '@appcraft/exhibitor';
 import type * as Comp from '../../components';
 import type * as Hook from '../../hooks';
 import type { CraftedTypeEditorProps } from '../CraftedTypeEditor';
+import type { GeneratedOverride } from '../../utils';
 
 //* Component Props
 export type LazyTodoInputSelectProps = Omit<
   Comp.TodoInputSelectProps,
   'definition'
+>;
+
+export type LazyTodoOutputSelectProps = Omit<
+  Comp.TodoOutputSelectProps,
+  'defaultTodos'
 >;
 
 export interface CraftedTodoEditorProps
@@ -17,14 +23,14 @@ export interface CraftedTodoEditorProps
       CraftedTypeEditorProps<Appcraft.ConfigOptions>,
       'HeaderProps' | 'fullHeight' | 'renderOverrideItem'
     > {
+  GeneratedOverrideProps?: GeneratedOverride;
   typeFile?: string;
-  definitionSource?: Appcraft.TypesParseOptions;
   values?: Record<string, Appcraft.WidgetTodo>;
   variant?: 'normal' | 'popup';
   onChange: Hook.TodoChangeHandler;
   onEditToggle?: Hook.EditToggleHandler;
   onFetchData: Exhibitor.FetchDataHandler;
-  onFetchTodoWrapper: Exhibitor.FetchWrapperHandler<'todo'>;
+  onFetchWrapper: Exhibitor.FetchWrapperHandler<'todo' | 'widget'>;
   onFetchDefinition: Hook.FetchTypeDefinition<
     Appcraft.StructureProp | Appcraft.FuncProp
   >;

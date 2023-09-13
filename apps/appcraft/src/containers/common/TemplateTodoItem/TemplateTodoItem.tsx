@@ -89,7 +89,7 @@ export default function TemplateTodoItem({
           onEditToggle={setEditing}
           onFetchData={handleFetch.data}
           onFetchDefinition={getTypeDefinition}
-          onFetchTodoWrapper={handleFetch.wrapper}
+          onFetchWrapper={handleFetch.wrapper}
         />
       </CraftsmanStyle.FlexDialog>
     </>

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.119](https://github.com/taco3064/appcraft-mono/compare/v0.0.118...v0.0.119) (2023-09-13)
+
+
+### Bug Fixes
+
+* **@appcraft/craftsman:** a perfect todo output path select ([4577878](https://github.com/taco3064/appcraft-mono/commit/45778784dac0bd64c845473cf8782d071ce51ce5))
+
 ### [0.0.118](https://github.com/taco3064/appcraft-mono/compare/v0.0.117...v0.0.118) (2023-09-12)
 
 

@@ -110,15 +110,12 @@ function reducer(
               const override = _get(injection, [source, key]);
 
               states.push(
-                globalState?.[group]?.find(
-                  ({ stateKey }) => stateKey === propPath
-                ) ||
-                  getStateOptions(
-                    state,
-                    renderPaths,
-                    propPath,
-                    isOverrideAllowed && override
-                  )
+                getStateOptions(
+                  state,
+                  renderPaths,
+                  propPath,
+                  isOverrideAllowed && override
+                )
               );
 
               _set(result, [group], states);

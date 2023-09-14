@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.120](https://github.com/taco3064/appcraft-mono/compare/v0.0.119...v0.0.120) (2023-09-14)
+
+
+### Bug Fixes
+
+* **page-editor:** fix the error in PageEditor where updates are not reflected in real-time ([2bb73b4](https://github.com/taco3064/appcraft-mono/commit/2bb73b40fdaeaa5ebaf45b60cff2aeb8bbe57280))
+
 ### [0.0.119](https://github.com/taco3064/appcraft-mono/compare/v0.0.118...v0.0.119) (2023-09-13)
 
 

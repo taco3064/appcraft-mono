@@ -26,7 +26,7 @@ export default function PageEditor({
   onOutputCollect,
   onSave,
 }: Types.PageEditorProps) {
-  const [{ active, breakpoint, layouts, readyTodos }, handlePage] =
+  const [{ active, breakpoint, layouts, readyTodos, refresh }, handlePage] =
     Hook.usePageValues({
       data,
       onSave,
@@ -151,6 +151,7 @@ export default function PageEditor({
               sx={{ height: '100%', overflow: 'auto' }}
             >
               <CraftedRenderer
+                key={refresh}
                 breakpoint={breakpoint}
                 elevation={1}
                 options={layouts}

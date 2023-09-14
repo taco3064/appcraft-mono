@@ -21,6 +21,7 @@ export type PageValuesHook = (options: {
   Required<PageData> & {
     active?: number;
     breakpoint: Breakpoint;
+    refresh: string;
   },
   {
     active: (e?: LayoutWidget) => void;

@@ -5,5 +5,6 @@ export * from './PagePreview';
 export * from './StateViewer';
 export * from './TodoEditor';
 export * from './UserinfoMenuToggle';
+export * from './WebsiteEditor';
 export * from './WidgetEditor';
 export * from './WidgetPreview';

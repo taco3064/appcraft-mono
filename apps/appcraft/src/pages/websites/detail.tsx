@@ -1,29 +1,32 @@
 import Head from 'next/head';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import type { WebsiteConfig } from '@appcraft/types';
+import type { Website } from '@appcraft/types';
 
+import * as Hook from '~appcraft/hooks';
 import { PageContainer } from '~appcraft/styles';
+import { WebsiteEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks/common';
-import { useHierarchyFilter, useNodePickHandle } from '~appcraft/hooks';
 
-const CONFIG_DETAIL_ACTIONS = ['reset', 'save'];
+const CONFIG_DETAIL_ACTIONS = ['expand', 'reset', 'save'];
 
 export default function Detail() {
   const [at, wt] = useFixedT('app', 'websites');
   const { pathname, query } = useRouter();
+
+  const height = Hook.useHeight();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
-  const { superiors, breadcrumbs } = useHierarchyFilter(category, id);
+  const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
 
-  const [action, handleActionNodePick] = useNodePickHandle(
+  const [action, handleActionNodePick] = Hook.useNodePickHandle(
     CONFIG_DETAIL_ACTIONS
   );
 
   const { data: website, refetch } = useQuery({
     queryKey: [id],
-    queryFn: findConfig<WebsiteConfig>,
+    queryFn: findConfig<Website>,
     refetchOnWindowFocus: false,
   });
 
@@ -35,6 +38,7 @@ export default function Detail() {
       secondary={superiors[id]}
       action={
         <>
+          {action?.expand}
           {action?.reset}
           {action?.save}
         </>
@@ -43,6 +47,18 @@ export default function Detail() {
       <Head>
         <title>Appcraft | {wt('ttl-detail')}</title>
       </Head>
+
+      <WebsiteEditor
+        data={website}
+        superiors={{ names: superiors, breadcrumbs }}
+        onActionNodePick={handleActionNodePick}
+        onSave={refetch}
+        ResponsiveDrawerProps={{
+          disableGutters: true,
+          maxWidth: false,
+          height: (theme) => `calc(${height} - ${theme.spacing(29)})`,
+        }}
+      />
     </PageContainer>
   );
 }

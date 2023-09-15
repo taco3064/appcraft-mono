@@ -1,3 +1,3 @@
-export interface WebsiteConfig {
+export interface Website {
   theme: string;
 }

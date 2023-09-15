@@ -6,10 +6,10 @@ import type { PropPaths, StateGenerator } from '../../utils';
 //* Methods
 type ChangeHandler = (widget: MainWidget) => void;
 
-export type SecondaryActionRenderer<M = unknown> = (options: {
+export type SecondaryActionRenderer = (options: {
   basePath: string;
   widget?: MainWidget;
-  metadata?: M;
+  path: string;
 }) => ReactNode;
 
 export type SelectHandler = (checked: boolean, options?: PropTypesDef) => void;

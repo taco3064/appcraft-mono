@@ -29,12 +29,12 @@ export const useSelectionAction: Types.SelectionActionHook = () => {
 
 export function useSecondaryAction<M>(category: StateCategory) {
   const { basePath, values, ref } = React.useContext(SelectionContext);
-  const renderer: Types.SecondaryActionRenderer<M> | undefined =
+  const renderer: Types.SecondaryActionRenderer | undefined =
     ref?.current?.secondaryActions?.[category];
 
   return (
     (renderer &&
-      ((metadata: M) => renderer({ basePath, widget: values, metadata }))) ||
+      ((path: string) => renderer({ basePath, widget: values, path }))) ||
     undefined
   );
 }
@@ -100,7 +100,11 @@ export default function SelectionProvider({
   values,
   onChange,
 }: Types.SelectionProviderProps) {
-  const ref = React.useRef({ action, secondaryActions, onChange });
+  const ref = React.useRef({
+    action,
+    secondaryActions,
+    onChange,
+  });
 
   const value = React.useMemo(
     () => ({ basePath, disabled, values, ref }),

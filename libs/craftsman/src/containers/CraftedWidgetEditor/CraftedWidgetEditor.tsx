@@ -37,6 +37,7 @@ export default function CraftedWidgetEditor({
   GeneratedTodoOverrideProps,
   disableSelection = false,
   disableTodoCategories,
+  secondaryActions,
   stateTypeFile,
   title,
   todoTypeFile,
@@ -210,9 +211,10 @@ export default function CraftedWidgetEditor({
       )}
 
       <SelectionProvider
+        action={stateToggle}
         basePath={widgetPath}
         disabled={disableSelection}
-        action={stateToggle}
+        secondaryActions={secondaryActions}
         values={widget}
         onChange={onWidgetChange}
       >

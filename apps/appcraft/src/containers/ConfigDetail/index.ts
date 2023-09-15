@@ -1,2 +1,6 @@
 export { default, default as ConfigDetail } from './ConfigDetail';
-export type { ConfigDetailProps } from './ConfigDetail.types';
+
+export type {
+  ConfigDetailProps,
+  RenderOverrideConfigItemHandler,
+} from './ConfigDetail.types';

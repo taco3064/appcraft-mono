@@ -13,6 +13,7 @@ import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
 import { useFixedT, useSettingModified } from '~appcraft/hooks/common';
 import { useHierarchyFilter, useNodePickHandle } from '~appcraft/hooks';
+import type { RenderOverrideConfigItemHandler } from '~appcraft/containers';
 
 const CONFIG_DETAIL_ACTIONS = ['reset', 'save'];
 
@@ -33,6 +34,39 @@ export default function Detail() {
     queryFn: findConfig<ConfigOptions>,
     refetchOnWindowFocus: false,
   });
+
+  const renderOverrideItem: RenderOverrideConfigItemHandler = (
+    kind,
+    { propPath, options, disabled, label, value, onChange }
+  ) => {
+    if (kind === 'pure' && options.type === 'string' && propPath !== 'mode') {
+      return (
+        <TextField
+          {...{ disabled, label }}
+          fullWidth
+          size="small"
+          variant="outlined"
+          defaultValue={value}
+          onChange={(e) => onChange(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Avatar
+                  sx={{
+                    width: 24,
+                    height: 24,
+                    background: value || 'none',
+                  }}
+                >
+                  &nbsp;
+                </Avatar>
+              </InputAdornment>
+            ),
+          }}
+        />
+      );
+    }
+  };
 
   return (
     <PageContainer
@@ -66,44 +100,9 @@ export default function Detail() {
         typeFile="./node_modules/@mui/material/styles/index.d.ts"
         data={theme}
         superiors={{ names: superiors, breadcrumbs }}
+        renderOverrideItem={renderOverrideItem}
         onSave={refetch}
         onActionNodePick={handleActionNodePick}
-        renderOverrideItem={(
-          kind,
-          { propPath, options, disabled, label, value, onChange }
-        ) => {
-          if (
-            kind === 'pure' &&
-            options.type === 'string' &&
-            propPath !== 'mode'
-          ) {
-            return (
-              <TextField
-                {...{ disabled, label }}
-                fullWidth
-                size="small"
-                variant="outlined"
-                defaultValue={value}
-                onChange={(e) => onChange(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Avatar
-                        sx={{
-                          width: 24,
-                          height: 24,
-                          background: value || 'none',
-                        }}
-                      >
-                        &nbsp;
-                      </Avatar>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            );
-          }
-        }}
       />
     </PageContainer>
   );

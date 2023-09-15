@@ -4,7 +4,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
 
 import TypeItemSelection from '../TypeItemSelection';
-import { useStateSelection } from '../../../hooks';
+import { useSelection } from '../../../hooks';
 import type { WidgetEventProps } from './WidgetEvent.types';
 
 export default function WidgetEvent({
@@ -13,7 +13,7 @@ export default function WidgetEvent({
   path,
   onActive,
 }: WidgetEventProps) {
-  const [, selection] = useStateSelection(
+  const [, selection] = useSelection(
     'todos',
     ExhibitorUtil.getPropPath([elementName, path]),
     completePaths,

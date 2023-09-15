@@ -1,3 +1,3 @@
 export * from './Editor';
 export * from './Locales';
-export * from './State';
+export * from './Selection';

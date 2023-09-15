@@ -7,7 +7,7 @@ import type { PropPaths, StateGenerator } from '../../utils';
 export type SelectHandler = (checked: boolean, options?: PropTypesDef) => void;
 
 //* Custom Hook
-export type StateSelectionHook = (
+export type SelectionHook = (
   generator: StateGenerator,
   alias: string,
   propPath: PropPaths | string,

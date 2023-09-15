@@ -3,19 +3,19 @@ import type { MainWidget } from '@appcraft/types';
 
 type ChangeHandler = (widget: MainWidget) => void;
 
-export interface StateContextValue {
+export interface SelectionContextValue {
   basePath: string;
   disabled: boolean;
   values?: MainWidget;
-  toggleRef?: MutableRefObject<ReactElement>;
+  actionRef?: MutableRefObject<ReactElement>;
   handleChangeRef?: MutableRefObject<ChangeHandler>;
 }
 
-export interface StateProviderProps {
+export interface SelectionProviderProps {
   basePath: string;
   children: ReactNode;
   disabled?: boolean;
-  toggle: ReactElement;
+  action: ReactElement;
   values?: MainWidget;
   onChange: ChangeHandler;
 }

@@ -21,7 +21,7 @@ export default function CraftedTypeEditor<V extends Ctx.OptionValues>({
   onFetchDefinition,
 }: Types.CraftedTypeEditorProps<V>) {
   const ct = Ctx.useLocalesContext();
-  const { toggle } = Ctx.useStateContext();
+  const { action } = Ctx.useSelectionContext();
   const [collectionPath, setCollectionPath] = useState('');
 
   const LazyTypeList = Hook.useLazyDefinition<
@@ -59,7 +59,7 @@ export default function CraftedTypeEditor<V extends Ctx.OptionValues>({
       <Style.FlexContainer disableGutters fullHeight={fullHeight}>
         {HeaderProps && (
           <Style.WidgetAppBar
-            action={toggle}
+            action={action}
             sx={HeaderProps.sx}
             BackButtonProps={{
               icon: <ArrowBackIcon />,

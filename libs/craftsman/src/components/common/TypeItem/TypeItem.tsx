@@ -31,7 +31,7 @@ export default function TypeItem({
   const [naming, setNaming] = useState(!options.propName);
   const { category, label, propPath } = Hook.useTypeItem(options);
 
-  const [isState, selection] = Hook.useStateSelection(
+  const [isState, selection] = Hook.useSelection(
     'props',
     ExhibitorUtil.getPropPath([elementName as string, propPath]),
     propPath,

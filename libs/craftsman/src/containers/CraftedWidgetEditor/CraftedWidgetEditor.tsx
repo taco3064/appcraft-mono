@@ -6,7 +6,6 @@ import LinearProgress from '@mui/material/LinearProgress';
 import List from '@mui/material/List';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import _get from 'lodash/get';
-import _toPath from 'lodash/toPath';
 import { Suspense, useState } from 'react';
 import type { PlainTextWidget } from '@appcraft/types';
 
@@ -15,7 +14,7 @@ import * as Hook from '../../hooks';
 import * as Style from '../../styles';
 import { CraftedTodoEditor } from '../CraftedTodoEditor';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
-import { StateProvider, useLocalesContext } from '../../contexts';
+import { SelectionProvider, useLocalesContext } from '../../contexts';
 import { getForceArray, getNodesAndEventsKey } from '../../utils';
 import type * as Types from './CraftedWidgetEditor.types';
 
@@ -36,7 +35,7 @@ const getActiveType: Types.GetActiveType = ({
 export default function CraftedWidgetEditor({
   BackButtonProps,
   GeneratedTodoOverrideProps,
-  disableState = false,
+  disableSelection = false,
   disableTodoCategories,
   stateTypeFile,
   title,
@@ -210,10 +209,10 @@ export default function CraftedWidgetEditor({
         />
       )}
 
-      <StateProvider
+      <SelectionProvider
         basePath={widgetPath}
-        disabled={disableState}
-        toggle={stateToggle}
+        disabled={disableSelection}
+        action={stateToggle}
         values={widget}
         onChange={onWidgetChange}
       >
@@ -242,7 +241,7 @@ export default function CraftedWidgetEditor({
         >
           <Style.WidgetAppBar
             BackButtonProps={BackButtonProps}
-            action={disableState ? null : stateToggle}
+            action={disableSelection ? null : stateToggle}
           >
             {title || ct('ttl-structure')}
           </Style.WidgetAppBar>
@@ -300,7 +299,7 @@ export default function CraftedWidgetEditor({
             )}
           </List>
         </Style.FullHeightCollapse>
-      </StateProvider>
+      </SelectionProvider>
     </>
   );
 }

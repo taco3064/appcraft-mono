@@ -3,16 +3,16 @@ import _set from 'lodash/set';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
 
 import * as Util from '../../utils';
-import { useStateContext } from '../../contexts';
-import type { StateSelectionHook } from './useStateSelection.types';
+import { useSelectionContext } from '../../contexts';
+import type { SelectionHook } from './useSelection.types';
 
-export const useStateSelection: StateSelectionHook = (
+export const useSelection: SelectionHook = (
   generator,
   alias,
   propPath,
   renderFn
 ) => {
-  const { basePath, disabled, values, onChange } = useStateContext();
+  const { basePath, disabled, values, onChange } = useSelectionContext();
   const category = Util.getStateCategory(generator);
 
   const path = ExhibitorUtil.getPropPath(

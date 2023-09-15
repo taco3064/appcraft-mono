@@ -3,8 +3,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
 
-import TypeItemSelection from '../TypeItemSelection';
-import { useSelection } from '../../../hooks';
+import { useSelection } from '../../../contexts';
 import type { WidgetEventProps } from './WidgetEvent.types';
 
 export default function WidgetEvent({
@@ -16,8 +15,7 @@ export default function WidgetEvent({
   const [, selection] = useSelection(
     'todos',
     ExhibitorUtil.getPropPath([elementName, path]),
-    completePaths,
-    (props) => <TypeItemSelection {...props} />
+    completePaths
   );
 
   return (

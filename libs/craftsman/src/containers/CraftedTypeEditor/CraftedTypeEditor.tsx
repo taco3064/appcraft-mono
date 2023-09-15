@@ -20,8 +20,8 @@ export default function CraftedTypeEditor<V extends Ctx.OptionValues>({
   onChange,
   onFetchDefinition,
 }: Types.CraftedTypeEditorProps<V>) {
+  const action = Ctx.useSelectionAction();
   const ct = Ctx.useLocalesContext();
-  const { action } = Ctx.useSelectionContext();
   const [collectionPath, setCollectionPath] = useState('');
 
   const LazyTypeList = Hook.useLazyDefinition<

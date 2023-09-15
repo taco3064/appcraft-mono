@@ -11,9 +11,8 @@ import TypeItemDisplay, { TypeItemDisplayProps } from '../TypeItemDisplay';
 import TypeItemMixed, { TypeItemMixedProps } from '../TypeItemMixed';
 import TypeItemNaming from '../TypeItemNaming';
 import TypeItemPure, { TypeItemPureProps } from '../TypeItemPure';
-import TypeItemSelection from '../TypeItemSelection';
 import { IconTipButton } from '../../../styles';
-import { useLocalesContext } from '../../../contexts';
+import { useLocalesContext, useSelection } from '../../../contexts';
 import type * as Types from './TypeItem.types';
 
 export default function TypeItem({
@@ -31,11 +30,11 @@ export default function TypeItem({
   const [naming, setNaming] = useState(!options.propName);
   const { category, label, propPath } = Hook.useTypeItem(options);
 
-  const [isState, selection] = Hook.useSelection(
+  const [isState, selection] = useSelection(
     'props',
     ExhibitorUtil.getPropPath([elementName as string, propPath]),
     propPath,
-    (props) => <TypeItemSelection {...props} options={options} />
+    options
   );
 
   const actions =

@@ -4,7 +4,6 @@ export * from './useLazyWidgetElements';
 export * from './useMixedTypeMapping';
 export * from './usePropValue';
 export * from './usePropertyRouter';
-export * from './useSelection';
 export * from './useStateGenerator';
 export * from './useStructure';
 export * from './useTodoGenerator';

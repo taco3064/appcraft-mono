@@ -3,8 +3,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
 
-import TypeItemSelection from '../TypeItemSelection';
-import { useSelection } from '../../../hooks';
+import { useSelection } from '../../../contexts';
 import type { WidgetNodeProps } from './WidgetNode.types';
 
 export default function WidgetNode({
@@ -18,8 +17,7 @@ export default function WidgetNode({
   const [isState, selection] = useSelection(
     type,
     ExhibitorUtil.getPropPath([elementName, path]),
-    completePaths,
-    (props) => (defined ? null : <TypeItemSelection {...props} />)
+    completePaths
   );
 
   return (

@@ -1,7 +1,8 @@
 export {
   default,
   default as SelectionProvider,
-  useSelectionContext,
+  useSelection,
+  useSelectionAction,
 } from './Selection';
 
 export type { SelectionProviderProps } from './Selection.types';

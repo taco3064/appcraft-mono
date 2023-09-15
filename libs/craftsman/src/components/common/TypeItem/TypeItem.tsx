@@ -6,13 +6,13 @@ import Typography from '@mui/material/Typography';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useState } from 'react';
 
+import * as Ctx from '../../../contexts';
 import * as Hook from '../../../hooks';
 import TypeItemDisplay, { TypeItemDisplayProps } from '../TypeItemDisplay';
 import TypeItemMixed, { TypeItemMixedProps } from '../TypeItemMixed';
 import TypeItemNaming from '../TypeItemNaming';
 import TypeItemPure, { TypeItemPureProps } from '../TypeItemPure';
 import { IconTipButton } from '../../../styles';
-import { useLocalesContext, useSelection } from '../../../contexts';
 import type * as Types from './TypeItem.types';
 
 export default function TypeItem({
@@ -26,11 +26,13 @@ export default function TypeItem({
   onRename,
   onSubitemView,
 }: Types.TypeItemProps) {
-  const ct = useLocalesContext();
+  const ct = Ctx.useLocalesContext();
+  const basePath = Ctx.useBasePath();
+  const render = Ctx.useSecondaryAction<string>('props');
   const [naming, setNaming] = useState(!options.propName);
   const { category, label, propPath } = Hook.useTypeItem(options);
 
-  const [isState, selection] = useSelection(
+  const [isState, selection] = Ctx.useSelection(
     'props',
     ExhibitorUtil.getPropPath([elementName as string, propPath]),
     propPath,
@@ -38,7 +40,7 @@ export default function TypeItem({
   );
 
   const actions =
-    !action && !onDelete ? null : (
+    !action && !onDelete && !render ? null : (
       <>
         {!naming && options.propName && action}
 
@@ -57,6 +59,9 @@ export default function TypeItem({
             <CloseIcon />
           </IconTipButton>
         )}
+
+        {!naming &&
+          render?.(ExhibitorUtil.getPropPath([basePath, 'props', propPath]))}
       </>
     );
 

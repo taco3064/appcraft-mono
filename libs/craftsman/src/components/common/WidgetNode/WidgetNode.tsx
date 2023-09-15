@@ -3,17 +3,19 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
 
-import { useSelection } from '../../../contexts';
+import { TypeItemAction } from '../../../styles';
+import { useSecondaryAction, useSelection } from '../../../contexts';
 import type { WidgetNodeProps } from './WidgetNode.types';
 
 export default function WidgetNode({
   completePaths,
-  defined,
   elementName,
   path,
   type,
   onActive,
 }: WidgetNodeProps) {
+  const render = useSecondaryAction<string>('nodes');
+
   const [isState, selection] = useSelection(
     type,
     ExhibitorUtil.getPropPath([elementName, path]),
@@ -45,6 +47,12 @@ export default function WidgetNode({
           style: { WebkitBoxOrient: 'vertical', WebkitLineClamp: 2 },
         }}
       />
+
+      {render && (
+        <TypeItemAction>
+          {render(ExhibitorUtil.getPropPath(completePaths))}
+        </TypeItemAction>
+      )}
     </ListItemButton>
   );
 }

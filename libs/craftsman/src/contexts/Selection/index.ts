@@ -1,8 +1,13 @@
 export {
   default,
   default as SelectionProvider,
+  useBasePath,
+  useSecondaryAction,
   useSelection,
   useSelectionAction,
 } from './Selection';
 
-export type { SelectionProviderProps } from './Selection.types';
+export type {
+  SecondaryActionRenderer,
+  SelectionProviderProps,
+} from './Selection.types';

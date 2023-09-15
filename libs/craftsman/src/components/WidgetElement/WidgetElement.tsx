@@ -137,7 +137,6 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
           <WidgetNode
             {...{ path, type }}
             key={path}
-            defined={Boolean(_get(item, ['nodes', path]))}
             elementName={type}
             onActive={onNodeActive}
             completePaths={[

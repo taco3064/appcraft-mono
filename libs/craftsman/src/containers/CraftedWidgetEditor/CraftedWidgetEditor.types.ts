@@ -30,6 +30,10 @@ type RenderNewWidgetDialog = (options: {
   onClose: () => void;
 }) => ReactElement<DialogProps, typeof Dialog>;
 
+type SecondaryAction = Partial<
+  Record<Appcraft.StateCategory, Ctx.SecondaryActionRenderer<{ path: string }>>
+>;
+
 //* Methods
 export type GetActiveType = (options: {
   editedWidgetCategory?: 'node' | 'plainText';
@@ -51,6 +55,7 @@ export interface CraftedWidgetEditorProps {
   GeneratedTodoOverrideProps?: Pick<GeneratedOverrideProps, 'layout'>;
   disableSelection?: boolean;
   disableTodoCategories?: Comp.TodoFlowControlsProps['disableCategories'];
+  secondaryActions?: SecondaryAction;
   stateTypeFile?: string;
   title?: ReactNode;
   todoTypeFile?: string;

@@ -66,7 +66,6 @@ export const IconSwitch = (<T extends string, F extends string>() =>
           width: 60,
           height: theme.spacing(4),
           padding: theme.spacing(1),
-          transform: 'translateY(4px)',
         },
         switchBase: {
           padding: 0,

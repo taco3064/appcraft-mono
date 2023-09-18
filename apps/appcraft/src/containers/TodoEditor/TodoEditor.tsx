@@ -11,7 +11,7 @@ import { CommonButton } from '~appcraft/components/common';
 import { ResponsiveDrawer } from '~appcraft/styles';
 import { TodoOutputStepper } from '~appcraft/components';
 import { getTypeDefinition } from '~appcraft/services';
-import { useCraftsmanOverrideContext } from '~appcraft/contexts';
+import { useCraftsmanOverrideContext } from '~appcraft/contexts/common';
 import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks/common';
 import { useNodePicker, useTodoValues, useWidth } from '~appcraft/hooks';
 import type { TodoEditorProps } from './TodoEditor.types';

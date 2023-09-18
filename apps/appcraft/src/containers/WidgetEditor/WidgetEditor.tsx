@@ -11,7 +11,7 @@ import { CommonButton } from '~appcraft/components/common';
 import { ResponsiveDrawer } from '~appcraft/styles';
 import { getNodesAndEvents, getTypeDefinition } from '~appcraft/services';
 import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks/common';
-import { useCraftsmanOverrideContext } from '~appcraft/contexts';
+import { useCraftsmanOverrideContext } from '~appcraft/contexts/common';
 import { useNodePicker, useWidth, useWidgetValues } from '~appcraft/hooks';
 import type * as Types from './WidgetEditor.types';
 

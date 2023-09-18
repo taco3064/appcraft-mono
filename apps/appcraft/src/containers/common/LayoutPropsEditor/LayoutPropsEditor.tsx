@@ -6,7 +6,7 @@ import { CraftedWidgetEditor, CraftsmanStyle } from '@appcraft/craftsman';
 
 import * as Hook from '~appcraft/hooks/common';
 import NodeTemplateDialog from '../NodeTemplateDialog';
-import { useCraftsmanOverrideContext } from '~appcraft/contexts';
+import { useCraftsmanOverrideContext } from '~appcraft/contexts/common';
 import type { LayoutPropsEditorProps } from './LayoutPropsEditor.types';
 
 export default function LayoutPropsEditor({

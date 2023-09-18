@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import type * as Appcraft from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
-import { CraftsmanOverrideProvider } from '~appcraft/contexts';
+import { CraftsmanOverrideProvider } from '~appcraft/contexts/common';
 import { PageContainer } from '~appcraft/styles';
 import { TodoEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';

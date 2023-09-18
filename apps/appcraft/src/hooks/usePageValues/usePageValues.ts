@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
+import { useDeferredValue, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import type { Breakpoint } from '@mui/material/styles';
 import type { LayoutWidget } from '@appcraft/types';
@@ -19,11 +19,10 @@ export const GRID_LAYOUT_OPTIONS: Types.GridLayoutOptions = {
 };
 
 export const usePageValues: Types.PageValuesHook = ({ data, onSave }) => {
-  const keyRef = useRef(nanoid(4));
   const { enqueueSnackbar } = useSnackbar();
   const [at] = useFixedT('app');
   const [active, setActive] = useState<number>();
-  const [refresh, setRefresh] = useState(keyRef.current);
+  const [refresh, setRefresh] = useState(nanoid(4));
   const [breakpoint, setBreakpoint] = useState<Breakpoint>('xs');
 
   const [layouts, setLayouts] = useState<PageData['layouts']>(() =>
@@ -52,7 +51,7 @@ export const usePageValues: Types.PageValuesHook = ({ data, onSave }) => {
       breakpoint,
       layouts,
       readyTodos,
-      refresh,
+      refresh: useDeferredValue(refresh),
     },
 
     {
@@ -64,10 +63,11 @@ export const usePageValues: Types.PageValuesHook = ({ data, onSave }) => {
       change: (key, value) => {
         if (key === 'layouts') {
           setLayouts(value as PageData['layouts']);
-          keyRef.current = nanoid(4);
         } else {
           setReadyTodos(value as PageData['readyTodos']);
         }
+
+        setRefresh(nanoid(4));
       },
 
       layout: (newLayouts) =>
@@ -110,15 +110,10 @@ export const usePageValues: Types.PageValuesHook = ({ data, onSave }) => {
         ]);
       },
 
-      active: (layout) => {
-        if (!layout) {
-          setRefresh(keyRef.current);
-        }
-
+      active: (layout) =>
         setActive(
           !layout ? undefined : layouts.findIndex(({ id }) => id === layout.id)
-        );
-      },
+        ),
 
       remove: (layout) => {
         setBreakpoint('xs');

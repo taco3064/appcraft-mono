@@ -111,9 +111,9 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
                 disabled={isSwitchDisabled}
                 value={display}
                 onChange={(e) => setDisplay(e as typeof display)}
-                icons={{
-                  nodes: AccountTreeOutlinedIcon,
-                  events: AssignmentOutlinedIcon,
+                options={{
+                  nodes: { icon: AccountTreeOutlinedIcon, color: 'info' },
+                  events: { icon: AssignmentOutlinedIcon, color: 'success' },
                 }}
               />
             </Style.AppcraftHint>

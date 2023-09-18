@@ -1,11 +1,12 @@
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import LinkIcon from '@mui/icons-material/Link';
+import LinkOffIcon from '@mui/icons-material/LinkOff';
 import _set from 'lodash/set';
 import { CraftedWidgetEditor, CraftsmanStyle } from '@appcraft/craftsman';
 
+import * as Hook from '~appcraft/hooks/common';
 import NodeTemplateDialog from '../NodeTemplateDialog';
-import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks/common';
 import { useCraftsmanOverrideContext } from '~appcraft/contexts';
-import { useWidgetTransform } from '~appcraft/hooks';
 import type { LayoutPropsEditorProps } from './LayoutPropsEditor.types';
 
 export default function LayoutPropsEditor({
@@ -15,15 +16,16 @@ export default function LayoutPropsEditor({
   onChange,
   onClose,
 }: LayoutPropsEditorProps) {
-  const [widget, fetchProps] = useWidgetTransform(value, {
+  const [widget, fetchProps] = Hook.useWidgetTransform(value, {
     getWidgetOptions,
     onChange,
     onClose,
   });
 
   const { template } = value;
-  const [at] = useFixedT('app');
-  const handleFetch = useCraftsmanFetch();
+  const [at] = Hook.useFixedT('app');
+  const [links, onLinkSet] = Hook.useLayoutLinks(value, onChange);
+  const handleFetch = Hook.useCraftsmanFetch();
   const override = useCraftsmanOverrideContext({ layouts, widget });
 
   const handleWidgetAdd = (paths: (string | number)[], id: string) =>
@@ -34,13 +36,13 @@ export default function LayoutPropsEditor({
 
   return (
     <CraftedWidgetEditor
-      {...override}
       {...fetchProps}
+      {...override}
       GeneratedTodoOverrideProps={{ layout: value }}
       disableSelection
+      disableTodoCategories={['state']}
       todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
       version={__WEBPACK_DEFINE__.VERSION}
-      disableTodoCategories={['state']}
       widget={widget}
       onFetchData={handleFetch.data}
       onFetchWrapper={handleFetch.wrapper}
@@ -50,6 +52,18 @@ export default function LayoutPropsEditor({
           onConfirm={(e) => handleWidgetAdd(paths, e)}
         />
       )}
+      secondaryActions={{
+        todos: ({ path }) => (
+          <CraftsmanStyle.IconSwitch
+            value={links.has(path) ? 'link' : 'unlink'}
+            onChange={() => onLinkSet(path)}
+            options={{
+              unlink: { icon: LinkOffIcon },
+              link: { icon: LinkIcon, color: 'info' },
+            }}
+          />
+        ),
+      }}
       title={
         <CraftsmanStyle.AutoBreakTypography
           primary={widget?.type}

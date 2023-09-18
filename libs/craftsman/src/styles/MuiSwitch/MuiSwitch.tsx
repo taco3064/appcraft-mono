@@ -1,34 +1,33 @@
 import ReactDomServer from 'react-dom/server';
 import Switch from '@mui/material/Switch';
+import _get from 'lodash/get';
 import { forwardRef } from 'react';
 import { withStyles } from 'tss-react/mui';
 
 import type * as Types from './MuiSwitch.types';
 
-export const IconSwitch = (<T extends string, F extends string>() =>
+export const IconSwitch = (<V extends string>() =>
   withStyles(
-    forwardRef<HTMLButtonElement, Types.IconSwitchProps<T, F>>(
-      ({ colors, icons, value, onChange, ...props }, ref) => {
-        const keys = Object.keys(icons);
+    forwardRef<HTMLButtonElement, Types.IconSwitchProps<V>>(
+      ({ options, value, onChange, ...props }, ref) => {
+        const keys = Object.keys(options) as V[];
 
         return (
           <Switch
             {...props}
             ref={ref}
             checked={value === keys[1]}
-            onChange={(e) => onChange(keys[e.target.checked ? 1 : 0] as T | F)}
+            onChange={(e) => onChange(keys[e.target.checked ? 1 : 0])}
           />
         );
       }
     ),
-    (theme, { disabled = false, colors, icons, value }) => {
-      const keys = Object.keys(icons);
+    (theme, { disabled = false, options, value }) => {
+      const opts = Object.entries(options) as [V, Types.IconOptions][];
       const parser = new DOMParser();
       const serializer = new XMLSerializer();
 
-      const docs = (
-        Object.entries(icons) as [T | F, Types.SwitchIcon][]
-      ).reduce((result, [key, Icon]) => {
+      const docs = opts.reduce((result, [key, { icon: Icon }]) => {
         const doc = parser.parseFromString(
           ReactDomServer.renderToString(<Icon />),
           'image/svg+xml'
@@ -49,23 +48,19 @@ export const IconSwitch = (<T extends string, F extends string>() =>
             )
           );
 
-        return { ...result, [key]: doc };
-      }, {} as Record<keyof typeof icons, Document>);
+        return { ...result, [key]: svg };
+      }, {} as Record<V, Document>);
 
-      const color = disabled
-        ? {
-            main: theme.palette.action.disabled,
-            dark: theme.palette.text.disabled,
-          }
-        : theme.palette[
-            colors?.[value] || (value === keys[1] ? 'success' : 'info')
-          ];
+      const color = _get(theme.palette, [options[value]?.color as string]);
 
       return {
         root: {
           width: 60,
           height: theme.spacing(4),
           padding: theme.spacing(1),
+        },
+        disabled: {
+          background: `linear-gradient(to bottom right, ${theme.palette.action.disabled}, ${theme.palette.text.disabled}) !important`,
         },
         switchBase: {
           padding: 0,
@@ -81,10 +76,20 @@ export const IconSwitch = (<T extends string, F extends string>() =>
           borderRadius: 20 / 2,
         },
         thumb: {
-          background: `linear-gradient(to bottom right, ${color.main}, ${color.dark})`,
           width: theme.spacing(4),
           height: theme.spacing(4),
 
+          background: `linear-gradient(to bottom right, ${
+            color?.main || theme.palette.grey['500']
+          }, ${color?.dark || theme.palette.grey['800']})`,
+
+          transition: theme.transitions.create('background', {
+            easing: theme.transitions.easing.sharp,
+            duration:
+              theme.transitions.duration[
+                value === opts[1][0] ? 'enteringScreen' : 'leavingScreen'
+              ],
+          }),
           '&::before': {
             content: "''",
             position: 'absolute',
@@ -95,7 +100,7 @@ export const IconSwitch = (<T extends string, F extends string>() =>
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             backgroundImage: `url('data:image/svg+xml;utf8,${serializer.serializeToString(
-              docs[value].documentElement
+              docs[value]
             )}')`,
           } as never,
         },

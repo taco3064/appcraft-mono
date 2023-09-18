@@ -8,7 +8,7 @@ import type * as Types from './MuiSwitch.types';
 export const IconSwitch = (<T extends string, F extends string>() =>
   withStyles(
     forwardRef<HTMLButtonElement, Types.IconSwitchProps<T, F>>(
-      ({ icons, value, onChange, ...props }, ref) => {
+      ({ colors, icons, value, onChange, ...props }, ref) => {
         const keys = Object.keys(icons);
 
         return (
@@ -21,7 +21,8 @@ export const IconSwitch = (<T extends string, F extends string>() =>
         );
       }
     ),
-    (theme, { disabled = false, icons, value }) => {
+    (theme, { disabled = false, colors, icons, value }) => {
+      const keys = Object.keys(icons);
       const parser = new DOMParser();
       const serializer = new XMLSerializer();
 
@@ -56,7 +57,9 @@ export const IconSwitch = (<T extends string, F extends string>() =>
             main: theme.palette.action.disabled,
             dark: theme.palette.text.disabled,
           }
-        : theme.palette[value === 'events' ? 'success' : 'info'];
+        : theme.palette[
+            colors?.[value] || (value === keys[1] ? 'success' : 'info')
+          ];
 
       return {
         root: {
@@ -83,21 +86,19 @@ export const IconSwitch = (<T extends string, F extends string>() =>
           width: theme.spacing(4),
           height: theme.spacing(4),
 
-          ...({
-            '&::before': {
-              content: "''",
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              left: 0,
-              top: 0,
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'center',
-              backgroundImage: `url('data:image/svg+xml;utf8,${serializer.serializeToString(
-                docs[value].documentElement
-              )}')`,
-            },
-          } as object),
+          '&::before': {
+            content: "''",
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            left: 0,
+            top: 0,
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+            backgroundImage: `url('data:image/svg+xml;utf8,${serializer.serializeToString(
+              docs[value].documentElement
+            )}')`,
+          } as never,
         },
       };
     },

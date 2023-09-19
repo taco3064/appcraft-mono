@@ -1,3 +1,5 @@
+import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
+import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
 import Collapse from '@mui/material/Collapse';
@@ -105,10 +107,14 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
         <Style.TypeItemAction>
           {open && (
             <Style.AppcraftHint title={ct(`btn-${display}`)}>
-              <Style.WidgetNodeSwitch
+              <Style.IconSwitch
                 disabled={isSwitchDisabled}
                 value={display}
-                onChange={setDisplay}
+                onChange={(e) => setDisplay(e as typeof display)}
+                options={{
+                  nodes: { icon: AccountTreeOutlinedIcon, color: 'info' },
+                  events: { icon: AssignmentOutlinedIcon, color: 'success' },
+                }}
               />
             </Style.AppcraftHint>
           )}
@@ -137,7 +143,6 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
           <WidgetNode
             {...{ path, type }}
             key={path}
-            defined={Boolean(_get(item, ['nodes', path]))}
             elementName={type}
             onActive={onNodeActive}
             completePaths={[

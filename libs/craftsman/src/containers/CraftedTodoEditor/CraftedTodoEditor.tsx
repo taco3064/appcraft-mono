@@ -16,7 +16,7 @@ import * as Style from '../../styles';
 import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { getTodoCollectionPath, getTodosInfo } from '../../utils';
 import { useLocalesContext } from '../../contexts';
-import { useStateContext } from '../../contexts';
+import { useSelectionAction } from '../../contexts';
 import type * as Types from './CraftedTodoEditor.types';
 import type { FetchTypeDefinition } from '../../hooks';
 import type { GeneratedOverride } from '../../utils';
@@ -58,7 +58,7 @@ export default function CraftedTodoEditor({
   onFetchDefinition,
   onFetchWrapper,
 }: Types.CraftedTodoEditorProps) {
-  const { toggle } = useStateContext();
+  const action = useSelectionAction();
   const theme = useTheme();
   const ct = useLocalesContext();
   const stringify = JSON.stringify(GeneratedOverrideProps || {});
@@ -219,7 +219,7 @@ export default function CraftedTodoEditor({
       >
         {HeaderProps && (
           <Style.WidgetAppBar
-            action={toggle}
+            action={action}
             BackButtonProps={{
               icon: <ArrowBackIcon />,
               text: ct('btn-back'),

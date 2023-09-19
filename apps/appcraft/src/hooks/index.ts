@@ -5,6 +5,5 @@ export * from './useLazyUserProfile';
 export * from './useNodePicker';
 export * from './usePageValues';
 export * from './useTodoValues';
-export * from './useWidgetTransform';
 export * from './useWidgetValues';
 export * from './useWidth';

@@ -3,8 +3,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
 
-import TypeItemSelection from '../TypeItemSelection';
-import { useStateSelection } from '../../../hooks';
+import { TypeItemAction } from '../../../styles';
+import { useSecondaryAction, useSelection } from '../../../contexts';
 import type { WidgetEventProps } from './WidgetEvent.types';
 
 export default function WidgetEvent({
@@ -13,11 +13,12 @@ export default function WidgetEvent({
   path,
   onActive,
 }: WidgetEventProps) {
-  const [, selection] = useStateSelection(
+  const render = useSecondaryAction<string>('todos');
+
+  const [, selection] = useSelection(
     'todos',
     ExhibitorUtil.getPropPath([elementName, path]),
-    completePaths,
-    (props) => <TypeItemSelection {...props} />
+    completePaths
   );
 
   return (
@@ -34,6 +35,12 @@ export default function WidgetEvent({
           color: 'text.primary',
         }}
       />
+
+      {render && (
+        <TypeItemAction>
+          {render(ExhibitorUtil.getPropPath(completePaths))}
+        </TypeItemAction>
+      )}
     </ListItemButton>
   );
 }

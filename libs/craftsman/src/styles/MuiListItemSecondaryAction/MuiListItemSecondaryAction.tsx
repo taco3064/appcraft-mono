@@ -11,6 +11,7 @@ export const TypeItemAction = withStyles(
     root: {
       position: 'static',
       display: 'flex',
+      alignItems: 'center',
       flexWrap: 'nowrap',
       transform: 'none',
     },

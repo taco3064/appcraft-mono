@@ -7,7 +7,6 @@ export type TypographyProps = Pick<
   ComponentProps<typeof Typography>,
   | 'align'
   | 'children'
-  | 'color'
   | 'gutterBottom'
   | 'noWrap'
   | 'paragraph'
@@ -16,4 +15,15 @@ export type TypographyProps = Pick<
   | 'justifyContent'
   | 'alignItems'
   | 'gap'
->;
+> & {
+  color?:
+    | 'primary'
+    | 'secondary'
+    | 'error.main'
+    | 'info.main'
+    | 'success.main'
+    | 'warning.main'
+    | 'text.disabled'
+    | 'text.primary'
+    | 'text.secondary';
+};

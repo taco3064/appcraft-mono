@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.121](https://github.com/taco3064/appcraft-mono/compare/v0.0.120...v0.0.121) (2023-09-19)
+
+
+### Features
+
+* **@appcraft/craftsman:** make Selection Context support to set secondary action ([04e6236](https://github.com/taco3064/appcraft-mono/commit/04e62365b3b46a53a0ab09735501a2bac382bde6))
+
+
+### Bug Fixes
+
+* **@appcraft/craftsman:** fixed bugs ([7b06802](https://github.com/taco3064/appcraft-mono/commit/7b068020f677768a9667be2a8736948faff9c94b))
+* **@appcraft/craftsman:** fixed the selection context prop types ([45485f9](https://github.com/taco3064/appcraft-mono/commit/45485f970068d692f150dc0a0b6f0b4d690286cf))
+* **@appcraft/craftsman:** make the MuiSwitch style compatible with a wider range of applications ([25df2e8](https://github.com/taco3064/appcraft-mono/commit/25df2e8731066c7bd233927b29e555a21ba39ffe))
+* **@appcraft/craftsman:** refactor the code for convergence ([19de5d6](https://github.com/taco3064/appcraft-mono/commit/19de5d6d120699cc18303cdf3098b110f47e49c2))
+* **@appcraft/craftsman:** rename state-selection as selection ([e467259](https://github.com/taco3064/appcraft-mono/commit/e467259fff18db3736af5c87444e0738fee179c7))
+* **@appcraft/types:** update the type's content of Website ([2c9179f](https://github.com/taco3064/appcraft-mono/commit/2c9179fa87e7c91b4946f3f78541d3d145fd9375))
+* **@appcraft/widgets:** udpate props ([316db18](https://github.com/taco3064/appcraft-mono/commit/316db183fe8a88315e4f1f6bd2b370d1df09bab8))
+* **apps/appcraft:** move CraftsmanOverride to common ([f7c312c](https://github.com/taco3064/appcraft-mono/commit/f7c312c0ff7e1d772dafa515cd8c8a59c1edb229))
+* **layout-props-editor:** support to set the event as a link ([0dc0740](https://github.com/taco3064/appcraft-mono/commit/0dc07403902fb866080135d77df1f36d5cc30b6a))
+* **use-page-values:** fixed the refresh bugs ([003eb5f](https://github.com/taco3064/appcraft-mono/commit/003eb5faf37f508f96b60762dc8f83305f165444))
+
 ### [0.0.120](https://github.com/taco3064/appcraft-mono/compare/v0.0.119...v0.0.120) (2023-09-14)
 
 

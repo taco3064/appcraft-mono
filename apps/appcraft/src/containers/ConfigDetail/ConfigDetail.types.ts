@@ -4,6 +4,9 @@ import type { ConfigOptions } from '@appcraft/types';
 
 import type * as Hooks from '~appcraft/hooks';
 
+export type RenderOverrideConfigItemHandler =
+  CraftedTypeEditorProps<ConfigOptions>['renderOverrideItem'];
+
 export interface ConfigDetailProps
   extends Hooks.ConfigValueOptions,
     Pick<CraftedTypeEditorProps<ConfigOptions>, 'renderOverrideItem'> {

@@ -7,6 +7,7 @@ export type TypographyProps = Pick<
   ComponentProps<typeof Typography>,
   | 'align'
   | 'children'
+  | 'color'
   | 'gutterBottom'
   | 'noWrap'
   | 'paragraph'

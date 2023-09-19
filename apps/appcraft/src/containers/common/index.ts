@@ -3,6 +3,7 @@ export * from './HierarchyEditorButton';
 export * from './HierarchyMutation';
 export * from './LayoutPropsEditor';
 export * from './NodeTemplateDialog';
+export * from './PageList';
 export * from './PropPathPicker';
 export * from './PropsGroupPicker';
 export * from './ReadyTodoEditor';

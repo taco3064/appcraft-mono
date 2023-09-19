@@ -8,13 +8,13 @@ import type * as Types from './MuiBreadcrumbs.types';
 export const Breadcrumb = (function <R>() {
   return withStyles(
     forwardRef<R, Types.BreadcrumbLinkProps | Types.BreadcrumbTextProps>(
-      ({ brcVariant, onClick, ...props }, ref) =>
+      ({ brcVariant, disabled = false, onClick, ...props }, ref) =>
         brcVariant === 'text' ? (
           <Typography {...props} ref={ref as ForwardedRef<HTMLSpanElement>} />
         ) : (
           <Link
             {...props}
-            {...{ component: 'button', onClick }}
+            {...{ component: 'button', disabled, onClick }}
             ref={ref as ForwardedRef<HTMLAnchorElement>}
           />
         )

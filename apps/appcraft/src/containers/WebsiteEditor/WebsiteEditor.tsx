@@ -5,9 +5,10 @@ import { useState } from 'react';
 
 import { Breadcrumbs } from '../common';
 import { CommonButton } from '~appcraft/components/common';
+import { PageList } from '~appcraft/containers/common';
 import { ResponsiveDrawer } from '~appcraft/styles';
-import { useFixedT } from '~appcraft/hooks/common';
-import { useNodePicker, useWidth } from '~appcraft/hooks';
+import { useFixedT, useWidth } from '~appcraft/hooks/common';
+import { useNodePicker, useWebsiteValues } from '~appcraft/hooks';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
 
 export default function WebsiteEditor({
@@ -19,10 +20,13 @@ export default function WebsiteEditor({
 }: WebsiteEditorProps) {
   const [at, wt] = useFixedT('app', 'websites');
   const [open, setOpen] = useState(false);
+  const [website, handleWebsite] = useWebsiteValues({ data, onSave });
 
   const width = useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
+
+  console.log(website);
 
   const actionNode = useNodePicker(
     () =>
@@ -41,7 +45,7 @@ export default function WebsiteEditor({
             btnVariant="icon"
             icon={<RestartAltIcon />}
             text={at('btn-reset')}
-            onClick={console.log}
+            onClick={handleWebsite.reset}
           />
         ),
         save: (
@@ -49,7 +53,7 @@ export default function WebsiteEditor({
             btnVariant="icon"
             icon={<SaveAltIcon />}
             text={at('btn-save')}
-            onClick={console.log}
+            onClick={handleWebsite.save}
           />
         ),
       }),
@@ -76,7 +80,12 @@ export default function WebsiteEditor({
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
         open={isSettingOpen}
         onClose={() => setOpen(false)}
-        content={<div>Content</div>}
+        content={
+          <PageList
+            values={data.content.pages}
+            onChange={(pages) => handleWebsite.change({ ...website, pages })}
+          />
+        }
         drawer={<div>Drawer</div>}
       />
     </>

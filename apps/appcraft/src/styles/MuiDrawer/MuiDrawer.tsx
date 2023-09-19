@@ -4,7 +4,7 @@ import cx from 'clsx';
 import { withStyles } from 'tss-react/mui';
 import type { PaperProps } from '@mui/material/Paper';
 
-import { useWidth } from '~appcraft/hooks';
+import { useWidth } from '~appcraft/hooks/common';
 import type * as Types from './MuiDrawer.types';
 
 export const SizedDrawer = withStyles(

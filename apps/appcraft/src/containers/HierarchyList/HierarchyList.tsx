@@ -11,11 +11,12 @@ import { useState } from 'react';
 
 import * as Common from '../common';
 import * as Comp from '~appcraft/components';
-import { CommonButton } from '~appcraft/components/common';
-import { useFixedT } from '~appcraft/hooks/common';
-import { useHierarchyFilter, useNodePicker, useWidth } from '~appcraft/hooks';
+import { CommonButton, HierarchyItem } from '~appcraft/components/common';
+import { useFixedT, useWidth } from '~appcraft/hooks/common';
+import { useHierarchyFilter, useNodePicker } from '~appcraft/hooks';
 import { searchHierarchy, updateHierarchy } from '~appcraft/services';
 import type * as Types from './HierarchyList.types';
+import type { HierarchyItemProps } from '~appcraft/components/common';
 
 export default function HierarchyList({
   category,
@@ -107,7 +108,7 @@ export default function HierarchyList({
   );
 
   //* Event Handlers
-  const handleItemClick: Comp.HierarchyItemProps['onClick'] = (data) =>
+  const handleItemClick: HierarchyItemProps['onClick'] = (data) =>
     push(
       data.type === 'group'
         ? {
@@ -192,7 +193,7 @@ export default function HierarchyList({
             }
           >
             {hierarchies.map((data) => (
-              <Comp.HierarchyItem
+              <HierarchyItem
                 key={data._id}
                 data={data}
                 icon={icon}

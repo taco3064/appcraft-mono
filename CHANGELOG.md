@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.122](https://github.com/taco3064/appcraft-mono/compare/v0.0.121...v0.0.122) (2023-09-19)
+
+
+### Bug Fixes
+
+* **@appcraft/widgets:** update typography props ([e11dd56](https://github.com/taco3064/appcraft-mono/commit/e11dd56de95a81afa5a16b3e18de8400cfb353a7))
+
 ### [0.0.121](https://github.com/taco3064/appcraft-mono/compare/v0.0.120...v0.0.121) (2023-09-19)
 
 

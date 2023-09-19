@@ -16,7 +16,7 @@ import { PageContainer } from '~appcraft/styles';
 import { PageEditor, TodoEditor } from '~appcraft/containers';
 import { TodoOutputStepper } from '~appcraft/components';
 import { findConfig } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks/common';
+import { useFixedT, useNodePickHandle } from '~appcraft/hooks/common';
 import type { HierarchyData } from '~appcraft/services';
 import type { PageData } from '~appcraft/hooks';
 
@@ -29,18 +29,14 @@ export default function Detail() {
   const { pathname, query } = useRouter();
   const [output, setOutput] = useState<OutputCollectEvent>();
   const [todoHierarchy, setTodoHierarchy] = useState<HierarchyData<string>>();
+  const [pageAction, handlePageActionPick] = useNodePickHandle(PAGE_ACTIONS);
+  const [todoAction, handleTodoActionPick] = useNodePickHandle(TODO_ACTIONS);
 
   const theme = useTheme();
   const height = Hook.useHeight();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
-
-  const [pageAction, handlePageActionPick] =
-    Hook.useNodePickHandle(PAGE_ACTIONS);
-
-  const [todoAction, handleTodoActionPick] =
-    Hook.useNodePickHandle(TODO_ACTIONS);
 
   const { data, refetch } = useQuery({
     queryKey: [id],

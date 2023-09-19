@@ -7,9 +7,9 @@ import * as Hook from '~appcraft/hooks';
 import { PageContainer } from '~appcraft/styles';
 import { WebsiteEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks/common';
+import { useFixedT, useNodePickHandle } from '~appcraft/hooks/common';
 
-const CONFIG_DETAIL_ACTIONS = ['expand', 'reset', 'save'];
+const CONFIG_DETAIL_ACTIONS = ['expand', 'add', 'reset', 'save'];
 
 export default function Detail() {
   const [at, wt] = useFixedT('app', 'websites');
@@ -20,7 +20,7 @@ export default function Detail() {
   const id = query.id as string;
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
 
-  const [action, handleActionNodePick] = Hook.useNodePickHandle(
+  const [action, handleActionNodePick] = useNodePickHandle(
     CONFIG_DETAIL_ACTIONS
   );
 
@@ -39,6 +39,7 @@ export default function Detail() {
       action={
         <>
           {action?.expand}
+          {action?.add}
           {action?.reset}
           {action?.save}
         </>

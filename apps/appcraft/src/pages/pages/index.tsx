@@ -8,8 +8,7 @@ import { useState } from 'react';
 import { CommonButton } from '~appcraft/components/common';
 import { HierarchyList, PagePreview } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
-import { useFixedT } from '~appcraft/hooks/common';
-import { useNodePickHandle } from '~appcraft/hooks';
+import { useFixedT, useNodePickHandle } from '~appcraft/hooks/common';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
 

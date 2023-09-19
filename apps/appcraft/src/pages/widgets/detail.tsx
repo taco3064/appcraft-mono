@@ -16,7 +16,7 @@ import { PageContainer } from '~appcraft/styles';
 import { TodoEditor, WidgetEditor } from '~appcraft/containers';
 import { TodoOutputStepper } from '~appcraft/components';
 import { findConfig } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks/common';
+import { useFixedT, useNodePickHandle } from '~appcraft/hooks/common';
 import type { HierarchyData } from '~appcraft/services';
 
 const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];
@@ -36,10 +36,9 @@ export default function Detail() {
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
 
   const [widgetAction, handleWidgetActionPick] =
-    Hook.useNodePickHandle(WIDGET_ACTIONS);
+    useNodePickHandle(WIDGET_ACTIONS);
 
-  const [todoAction, handleTodoActionPick] =
-    Hook.useNodePickHandle(TODO_ACTIONS);
+  const [todoAction, handleTodoActionPick] = useNodePickHandle(TODO_ACTIONS);
 
   const { data: widget, refetch } = useQuery({
     queryKey: [id],

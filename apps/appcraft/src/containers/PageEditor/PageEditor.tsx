@@ -11,11 +11,11 @@ import { useTheme } from '@mui/material/styles';
 
 import * as Common from '../common';
 import * as Comp from '~appcraft/components';
-import * as Hook from '~appcraft/hooks';
+import * as Hook from '~appcraft/hooks/common';
 import * as Style from '~appcraft/styles';
 import { CommonButton } from '~appcraft/components/common';
+import { GRID_LAYOUT, usePageValues } from '~appcraft/hooks';
 import { WidgetPicker } from '~appcraft/containers/common';
-import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks/common';
 import type * as Types from './PageEditor.types';
 
 export default function PageEditor({
@@ -27,15 +27,15 @@ export default function PageEditor({
   onSave,
 }: Types.PageEditorProps) {
   const [{ active, breakpoint, layouts, readyTodos, refresh }, handlePage] =
-    Hook.usePageValues({
+    usePageValues({
       data,
       onSave,
     });
 
-  const [at, pt] = useFixedT('app', 'pages');
+  const [at, pt] = Hook.useFixedT('app', 'pages');
   const theme = useTheme();
   const editingRef = useRef<boolean>();
-  const handleFetch = useCraftsmanFetch();
+  const handleFetch = Hook.useCraftsmanFetch();
   const isSettingOpen = Boolean(layouts[active]);
 
   const LazyLayoutPropsEditor =
@@ -189,8 +189,8 @@ export default function PageEditor({
                 )}
                 GridLayoutProps={{
                   autoSize: true,
-                  cols: Hook.GRID_LAYOUT_COLS,
-                  mins: Hook.GRID_LAYOUT_MINS,
+                  cols: GRID_LAYOUT.COLS,
+                  mins: GRID_LAYOUT.MINS,
                   isDraggable: true,
                   isResizable: true,
                   resizeHandles: ['se'],

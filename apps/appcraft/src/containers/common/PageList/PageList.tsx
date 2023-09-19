@@ -9,7 +9,11 @@ import { useState } from 'react';
 import { useFixedT, useWidth } from '~appcraft/hooks/common';
 import type * as Types from './PageList.types';
 
-export default function PageList({ values, onChange }: Types.PageListProps) {
+export default function PageList({
+  values,
+  onChange,
+  onActionNodePick,
+}: Types.PageListProps) {
   const width = useWidth();
   const [wt] = useFixedT('websites');
   const [hierarchies, setHierarchies] = useState<Types.PageHierarchy[]>([]);

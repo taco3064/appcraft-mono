@@ -1,3 +1,4 @@
+import AddIcon from '@mui/icons-material/Add';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -7,8 +8,8 @@ import { Breadcrumbs } from '../common';
 import { CommonButton } from '~appcraft/components/common';
 import { PageList } from '~appcraft/containers/common';
 import { ResponsiveDrawer } from '~appcraft/styles';
-import { useFixedT, useWidth } from '~appcraft/hooks/common';
-import { useNodePicker, useWebsiteValues } from '~appcraft/hooks';
+import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks/common';
+import { useWebsiteValues } from '~appcraft/hooks';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
 
 export default function WebsiteEditor({
@@ -26,11 +27,17 @@ export default function WebsiteEditor({
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
 
-  console.log(website);
-
   const actionNode = useNodePicker(
     () =>
       onActionNodePick({
+        add: (
+          <CommonButton
+            btnVariant="icon"
+            icon={<AddIcon />}
+            text={at('btn-add')}
+            onClick={console.log}
+          />
+        ),
         expand:
           !isCollapsable || isSettingOpen ? null : (
             <CommonButton

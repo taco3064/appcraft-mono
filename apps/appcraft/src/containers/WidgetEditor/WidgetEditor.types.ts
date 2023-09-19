@@ -3,7 +3,8 @@ import type { ConfigData, MainWidget } from '@appcraft/types';
 import type * as Exhibitor from '@appcraft/exhibitor';
 
 import { ResponsiveDrawer } from '~appcraft/styles';
-import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
+import type { Breadcrumb } from '~appcraft/hooks';
+import type { NodePickerFn } from '~appcraft/hooks/common';
 
 export type HandleFetchWrapper =
   Exhibitor.CraftedRendererProps['onFetchWrapper'];

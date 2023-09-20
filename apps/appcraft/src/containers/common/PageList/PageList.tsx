@@ -1,14 +1,13 @@
 import * as Dnd from '@dnd-kit/core';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
 import ImageList from '@mui/material/ImageList';
-import Slide from '@mui/material/Slide';
 import Toolbar from '@mui/material/Toolbar';
 import WebTwoToneIcon from '@mui/icons-material/WebTwoTone';
 import _get from 'lodash/get';
 import _set from 'lodash/set';
-import _toPath from 'lodash/toPath';
 import { CraftsmanStyle } from '@appcraft/craftsman';
 import { nanoid } from 'nanoid';
 import { useMemo, useState } from 'react';
@@ -24,23 +23,22 @@ export default function PageList({
 }: Types.PageListProps) {
   const width = useWidth();
   const [at, wt] = useFixedT('app', 'websites');
-  const [direction, setDirection] = useState<'left' | 'right'>('left');
   const [hierarchies, setHierarchies] = useState<Types.PageHierarchy[]>([]);
 
-  const { items, paths, refresh } = useMemo(() => {
-    const paths = !hierarchies.length
-      ? []
-      : _toPath(
-          hierarchies.map(({ index }) => `[${index}]`).join('.routes')
-        ).concat('.routes');
-
-    return {
-      paths,
+  const { paths, refresh } = useMemo(
+    () => ({
       refresh: nanoid(4),
-      items: ((!paths.length ? values : _get(values, paths)) ||
-        []) as Types.Page[],
-    };
-  }, [values, hierarchies]);
+      paths: !hierarchies.length
+        ? []
+        : hierarchies.map(({ index }) => [index, 'routes']).flat(),
+    }),
+    [hierarchies]
+  );
+
+  const items = useMemo<Types.Page[]>(
+    () => (!paths.length ? values : _get(values, paths)) || [],
+    [values, paths]
+  );
 
   //* Dnd
   const sensors = Dnd.useSensors(
@@ -87,10 +85,7 @@ export default function PageList({
       <Toolbar disableGutters variant="dense">
         <IconButton
           disabled={!hierarchies.length}
-          onClick={() => {
-            setDirection('right');
-            setHierarchies(hierarchies.slice(0, -1));
-          }}
+          onClick={() => setHierarchies(hierarchies.slice(0, -1))}
         >
           <ArrowBackIcon />
         </IconButton>
@@ -103,20 +98,14 @@ export default function PageList({
           TopProps={{
             alwaysShow: true,
             text: wt('txt-page-breadcrumb-top'),
-            onClick: () => {
-              setDirection('right');
-              setHierarchies([]);
-            },
+            onClick: () => setHierarchies([]),
           }}
         >
           {hierarchies.map(({ id, subTitle }, i) => (
             <CraftsmanStyle.Breadcrumb
               key={id}
               brcVariant={i === hierarchies.length - 1 ? 'text' : 'link'}
-              onClick={() => {
-                setDirection('right');
-                setHierarchies(hierarchies.slice(0, i + 1));
-              }}
+              onClick={() => setHierarchies(hierarchies.slice(0, i + 1))}
             >
               {subTitle}
             </CraftsmanStyle.Breadcrumb>
@@ -126,7 +115,7 @@ export default function PageList({
         {actionNode}
       </Toolbar>
 
-      <Slide key={refresh} direction={direction} in mountOnEnter unmountOnExit>
+      <Grow key={refresh} in>
         <ImageList
           gap={24}
           cols={width === 'xs' ? 1 : /^(sm|lg)$/.test(width) ? 2 : 3}
@@ -149,15 +138,13 @@ export default function PageList({
                 }}
                 onClick={() => {
                   hierarchies.push({ id, subTitle, index: i });
-
-                  setDirection('left');
                   setHierarchies([...hierarchies]);
                 }}
               />
             ))}
           </Dnd.DndContext>
         </ImageList>
-      </Slide>
+      </Grow>
     </>
   );
 }

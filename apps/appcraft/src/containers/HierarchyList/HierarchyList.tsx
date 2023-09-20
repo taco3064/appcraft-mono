@@ -1,13 +1,15 @@
 import * as Dnd from '@dnd-kit/core';
 import Fade from '@mui/material/Fade';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import Grow from '@mui/material/Grow';
 import ImageList from '@mui/material/ImageList';
 import Typography from '@mui/material/Typography';
+import { nanoid } from 'nanoid';
 import { useMutation } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import * as Common from '../common';
 import * as Comp from '~appcraft/components';
@@ -49,6 +51,11 @@ export default function HierarchyList({
       refetch();
     },
   });
+
+  const refresh = useMemo(
+    () => nanoid(hierarchies.length ? 4 : 6),
+    [hierarchies]
+  );
 
   //* Dnd
   const sensors = Dnd.useSensors(
@@ -175,50 +182,52 @@ export default function HierarchyList({
           {at('txt-no-data')}
         </Typography>
       ) : (
-        <ImageList
-          gap={24}
-          cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}
-          style={{ overflow: 'hidden auto' }}
-        >
-          <Dnd.DndContext
-            sensors={sensors}
-            onDragEnd={({ active, over }) =>
-              active &&
-              over &&
-              handleGroupChange({
-                item: hierarchies.find(({ _id }) => _id === active.id),
-                group: over.id as string,
-                isGroupRequired: true,
-              })
-            }
+        <Grow key={refresh} in>
+          <ImageList
+            gap={24}
+            cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}
+            style={{ overflow: 'hidden auto' }}
           >
-            {hierarchies.map((data) => (
-              <HierarchyItem
-                key={data._id}
-                data={data}
-                icon={icon}
-                onActionRender={onItemActionRender}
-                onClick={handleItemClick}
-                disableGroupChange={hierarchies.every(
-                  ({ type }) => type === 'item'
-                )}
-                mutation={
-                  <Common.HierarchyMutation
-                    data={data}
-                    onSuccess={() => refetch()}
-                    {...(superior && {
-                      onMoveToSuperiorGroup: () =>
-                        handleGroupChange({
-                          item: data,
-                          group: superiorList[superiorList.length - 2],
-                        }),
-                    })}
-                  />
-                }
-              />
-            ))}
-          </Dnd.DndContext>
-        </ImageList>
+            <Dnd.DndContext
+              sensors={sensors}
+              onDragEnd={({ active, over }) =>
+                active &&
+                over &&
+                handleGroupChange({
+                  item: hierarchies.find(({ _id }) => _id === active.id),
+                  group: over.id as string,
+                  isGroupRequired: true,
+                })
+              }
+            >
+              {hierarchies.map((data) => (
+                <HierarchyItem
+                  key={data._id}
+                  data={data}
+                  icon={icon}
+                  onActionRender={onItemActionRender}
+                  onClick={handleItemClick}
+                  disableGroupChange={hierarchies.every(
+                    ({ type }) => type === 'item'
+                  )}
+                  mutation={
+                    <Common.HierarchyMutation
+                      data={data}
+                      onSuccess={() => refetch()}
+                      {...(superior && {
+                        onMoveToSuperiorGroup: () =>
+                          handleGroupChange({
+                            item: data,
+                            group: superiorList[superiorList.length - 2],
+                          }),
+                      })}
+                    />
+                  }
+                />
+              ))}
+            </Dnd.DndContext>
+          </ImageList>
+        </Grow>
       )}
     </>
   );

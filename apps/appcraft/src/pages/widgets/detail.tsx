@@ -9,21 +9,19 @@ import { useTheme } from '@mui/material/styles';
 import type { OutputCollectEvent } from '@appcraft/exhibitor';
 import type { MainWidget, WidgetTodo } from '@appcraft/types';
 
+import * as Ctr from '~appcraft/containers';
 import * as Hook from '~appcraft/hooks';
-import { CommonButton } from '~appcraft/components/common';
-import { CraftsmanOverrideProvider } from '~appcraft/contexts/common';
+import { CommonButton, TodoOutputStepper } from '~appcraft/components';
+import { CraftsmanOverrideProvider } from '~appcraft/contexts';
 import { PageContainer } from '~appcraft/styles';
-import { TodoEditor, WidgetEditor } from '~appcraft/containers';
-import { TodoOutputStepper } from '~appcraft/components';
 import { findConfig } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks/common';
 import type { HierarchyData } from '~appcraft/services';
 
 const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];
 const WIDGET_ACTIONS = ['expand', 'reset', 'save'];
 
 export default function Detail() {
-  const [at, wt, tt] = useFixedT('app', 'widgets', 'todos');
+  const [at, wt, tt] = Hook.useFixedT('app', 'widgets', 'todos');
   const { enqueueSnackbar } = useSnackbar();
   const { pathname, query } = useRouter();
   const [output, setOutput] = useState<OutputCollectEvent>();
@@ -31,6 +29,7 @@ export default function Detail() {
 
   const theme = useTheme();
   const height = Hook.useHeight();
+  const handleFetch = Hook.useCraftsmanFetch();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
@@ -56,10 +55,13 @@ export default function Detail() {
   return (
     <CraftsmanOverrideProvider
       hierarchyid={id}
-      onTodoView={setTodoHierarchy}
-      onWidgetView={(data) =>
-        global.window?.open(`/widgets/detail?id=${data._id}`, '_blank')
-      }
+      options={Ctr.getOverrideRender({
+        onFetchData: handleFetch.data,
+        onFetchWrapper: handleFetch.wrapper,
+        onTodoView: setTodoHierarchy,
+        onWidgetView: (data) =>
+          global.window?.open(`/widgets/detail?id=${data._id}`, '_blank'),
+      })}
     >
       <PageContainer
         ContentProps={{ disableGutters: true }}
@@ -78,7 +80,7 @@ export default function Detail() {
           <title>Appcraft | {wt('ttl-detail')}</title>
         </Head>
 
-        <WidgetEditor
+        <Ctr.WidgetEditor
           data={widget}
           superiors={{ names: superiors, breadcrumbs }}
           onActionNodePick={handleWidgetActionPick}
@@ -138,7 +140,7 @@ export default function Detail() {
         )}
       >
         {todoHierarchy && (
-          <TodoEditor
+          <Ctr.TodoEditor
             data={todoWrapper}
             logZIndex={theme.zIndex.modal + 1}
             onActionNodePick={handleTodoActionPick}

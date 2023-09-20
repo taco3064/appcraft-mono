@@ -1,5 +1,7 @@
 {
   "btn-expand-off": "Close Settings",
   "btn-expand-on": "Open Settings",
-  "ttl-detail": "Website"
+  "ttl-detail": "Website",
+  "ttl-page-breadcrumbs": "Page Breadcrumbs",
+  "txt-page-breadcrumb-top": "Top"
 }

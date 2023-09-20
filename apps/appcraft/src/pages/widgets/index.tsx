@@ -8,10 +8,9 @@ import { Suspense, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import * as Ctr from '~appcraft/containers';
-import { CommonButton } from '~appcraft/components/common';
+import { CommonButton } from '~appcraft/components';
 import { PageContainer } from '~appcraft/styles';
-import { useFixedT } from '~appcraft/hooks/common';
-import { useNodePickHandle } from '~appcraft/hooks';
+import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
 

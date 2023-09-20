@@ -1,7 +1,7 @@
-import { GridAction, GridLayout } from '../common';
-
 import * as Hook from '../../hooks';
 import * as Style from '../../styles';
+import GridAction from '../GridAction';
+import GridLayout from '../GridLayout';
 import type * as Types from './ExhibitionContent.types';
 import type { RenderedWidget } from '../../hooks';
 

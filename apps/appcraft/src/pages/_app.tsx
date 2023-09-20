@@ -11,7 +11,7 @@ import IndexPage from './index';
 import { MainContainer, MuiSnackbarProvider } from '~appcraft/styles';
 import { ThemeProvider } from '~appcraft/contexts';
 import { UserinfoMenuToggle } from '~appcraft/containers';
-import { useAuth, useFixedT } from '~appcraft/hooks/common';
+import { useAuth, useFixedT } from '~appcraft/hooks';
 import 'reactflow/dist/style.css';
 
 export default function App({ Component, pageProps }: AppProps) {

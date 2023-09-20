@@ -1,5 +1,7 @@
 {
   "btn-expand-off": "關閉設定",
   "btn-expand-on": "開啟設定",
-  "ttl-detail": "網站配置"
+  "ttl-detail": "網站配置",
+  "ttl-page-breadcrumbs": "頁面路徑",
+  "txt-page-breadcrumb-top": "頂層"
 }

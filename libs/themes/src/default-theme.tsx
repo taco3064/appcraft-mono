@@ -29,6 +29,10 @@ export const DEFAULT_THEME: ThemeOptions = {
           height: global.window?.innerHeight || '100vh',
           overflow: 'hidden auto',
 
+          '& button:disabled': {
+            color: theme.palette.text.disabled,
+            pointerEvents: 'none !important',
+          },
           '&::-webkit-scrollbar, & *::-webkit-scrollbar': {
             width: `${theme.spacing(0.5)} !important`,
             height: `${theme.spacing(0.5)} !important`,
@@ -119,6 +123,16 @@ export const DEFAULT_THEME: ThemeOptions = {
       styleOverrides: {
         paper: {
           borderRadius: 12,
+        },
+      },
+    },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          '&:disabled': {
+            pointerEvents: 'none !important',
+            textDecoration: 'none !important',
+          },
         },
       },
     },

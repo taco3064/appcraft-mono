@@ -9,13 +9,13 @@ import { Suspense, useEffect, useImperativeHandle, useRef } from 'react';
 import { useLazyWidgetNav } from '@appcraft/exhibitor';
 import { useTheme } from '@mui/material/styles';
 
-import * as Common from '../common';
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Style from '~appcraft/styles';
-import { CommonButton } from '~appcraft/components/common';
-import { WidgetPicker } from '~appcraft/containers/common';
-import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks/common';
+import Breadcrumbs from '../Breadcrumbs';
+import LayoutPropsEditor from '../LayoutPropsEditor';
+import ReadyTodoEditor from '../ReadyTodoEditor';
+import WidgetPicker from '../WidgetPicker';
 import type * as Types from './PageEditor.types';
 
 export default function PageEditor({
@@ -32,10 +32,10 @@ export default function PageEditor({
       onSave,
     });
 
-  const [at, pt] = useFixedT('app', 'pages');
+  const [at, pt] = Hook.useFixedT('app', 'pages');
   const theme = useTheme();
   const editingRef = useRef<boolean>();
-  const handleFetch = useCraftsmanFetch();
+  const handleFetch = Hook.useCraftsmanFetch();
   const isSettingOpen = Boolean(layouts[active]);
 
   const LazyLayoutPropsEditor =
@@ -43,7 +43,7 @@ export default function PageEditor({
       layouts[active] ? [layouts[active]] : [],
       handleFetch.wrapper,
       ({ fetchData, ...props }) => (
-        <Common.LayoutPropsEditor {...props} getWidgetOptions={fetchData} />
+        <LayoutPropsEditor {...props} getWidgetOptions={fetchData} />
       )
     );
 
@@ -51,7 +51,7 @@ export default function PageEditor({
     () =>
       onActionNodePick({
         add: (
-          <CommonButton
+          <Comp.CommonButton
             btnVariant="icon"
             disabled={breakpoint !== 'xs'}
             icon={<AddIcon />}
@@ -60,14 +60,14 @@ export default function PageEditor({
           />
         ),
         ready: (
-          <Common.ReadyTodoEditor
+          <ReadyTodoEditor
             layouts={layouts}
             value={readyTodos}
             onConfirm={(value) => handlePage.change('readyTodos', value)}
           />
         ),
         reset: (
-          <CommonButton
+          <Comp.CommonButton
             btnVariant="icon"
             icon={<RestartAltIcon />}
             text={at('btn-reset')}
@@ -75,7 +75,7 @@ export default function PageEditor({
           />
         ),
         save: (
-          <CommonButton
+          <Comp.CommonButton
             btnVariant="icon"
             icon={<SaveAltIcon />}
             text={at('btn-save')}
@@ -103,7 +103,7 @@ export default function PageEditor({
   return (
     <>
       {superiors && (
-        <Common.Breadcrumbs
+        <Breadcrumbs
           ToolbarProps={{ disableGutters: true }}
           action={actionNode}
           onCustomize={([index]) => [
@@ -189,8 +189,8 @@ export default function PageEditor({
                 )}
                 GridLayoutProps={{
                   autoSize: true,
-                  cols: Hook.GRID_LAYOUT_COLS,
-                  mins: Hook.GRID_LAYOUT_MINS,
+                  cols: Hook.GRID_LAYOUT.COLS,
+                  mins: Hook.GRID_LAYOUT.MINS,
                   isDraggable: true,
                   isResizable: true,
                   resizeHandles: ['se'],

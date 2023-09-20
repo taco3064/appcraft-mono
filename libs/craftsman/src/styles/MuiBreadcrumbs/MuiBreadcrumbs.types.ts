@@ -4,6 +4,7 @@ import type { MouseEventHandler } from 'react';
 
 export type BreadcrumbProps<V extends 'link' | 'text', P> = {
   brcVariant: V;
+  disabled?: boolean;
 } & P;
 
 export type BreadcrumbLinkProps = BreadcrumbProps<

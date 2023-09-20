@@ -10,13 +10,11 @@ import { useState, useTransition } from 'react';
 import type { OutputCollectEvent } from '@appcraft/exhibitor';
 import type { WidgetTodo } from '@appcraft/types';
 
-import { CommonButton } from '~appcraft/components/common';
+import { CommonButton, TodoOutputStepper } from '~appcraft/components';
 import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
-import { TodoOutputStepper } from '~appcraft/components';
 import { getConfigById } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks/common';
-import { useNodePickHandle } from '~appcraft/hooks';
+import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
 import type { HierarchyData } from '~appcraft/services';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];

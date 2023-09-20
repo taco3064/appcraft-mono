@@ -1,19 +1,21 @@
 import * as Dnd from '@dnd-kit/core';
 import Fade from '@mui/material/Fade';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import Grow from '@mui/material/Grow';
 import ImageList from '@mui/material/ImageList';
 import Typography from '@mui/material/Typography';
+import { nanoid } from 'nanoid';
 import { useMutation } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import * as Common from '../common';
 import * as Comp from '~appcraft/components';
-import { CommonButton } from '~appcraft/components/common';
-import { useFixedT } from '~appcraft/hooks/common';
-import { useHierarchyFilter, useNodePicker, useWidth } from '~appcraft/hooks';
+import * as Hook from '~appcraft/hooks';
+import Breadcrumbs from '../Breadcrumbs';
+import HierarchyEditorButton from '../HierarchyEditorButton';
+import HierarchyMutation from '../HierarchyMutation';
 import { searchHierarchy, updateHierarchy } from '~appcraft/services';
 import type * as Types from './HierarchyList.types';
 
@@ -24,15 +26,15 @@ export default function HierarchyList({
   onActionNodePick = (e) => e,
   onItemActionRender,
 }: Types.HierarchyListProps) {
-  const { breadcrumbs, keyword, superiors } = useHierarchyFilter(category);
+  const { breadcrumbs, keyword, superiors } = Hook.useHierarchyFilter(category);
   const { pathname, push } = useRouter();
   const { enqueueSnackbar } = useSnackbar();
 
   const superiorList = Object.keys(superiors);
   const superior = superiorList[superiorList.length - 1] || null;
-  const width = useWidth();
+  const width = Hook.useWidth();
 
-  const [at] = useFixedT('app');
+  const [at] = Hook.useFixedT('app');
   const [collapsed, setCollapsed] = useState(Boolean(!keyword));
 
   const { data: hierarchies, refetch } = useQuery({
@@ -48,6 +50,11 @@ export default function HierarchyList({
       refetch();
     },
   });
+
+  const refresh = useMemo(
+    () => nanoid(hierarchies.length ? 4 : 6),
+    [hierarchies]
+  );
 
   //* Dnd
   const sensors = Dnd.useSensors(
@@ -65,11 +72,11 @@ export default function HierarchyList({
   );
 
   //* Action Nodes
-  const actionNode = useNodePicker(
+  const actionNode = Hook.useNodePicker(
     () =>
       onActionNodePick({
         addGroup: !disableGroup && (
-          <Common.HierarchyEditorButton
+          <HierarchyEditorButton
             mode="add"
             data={{
               category,
@@ -80,7 +87,7 @@ export default function HierarchyList({
           />
         ),
         addItem: (
-          <Common.HierarchyEditorButton
+          <HierarchyEditorButton
             mode="add"
             data={{
               category,
@@ -93,7 +100,7 @@ export default function HierarchyList({
         search: (
           <Fade in={collapsed}>
             <div>
-              <CommonButton
+              <Comp.CommonButton
                 btnVariant="icon"
                 icon={<FilterListIcon />}
                 text={at('btn-filter')}
@@ -142,7 +149,7 @@ export default function HierarchyList({
 
   return (
     <>
-      <Common.Breadcrumbs
+      <Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
         action={actionNode}
         onCustomize={($breadcrumbs) => [
@@ -174,50 +181,52 @@ export default function HierarchyList({
           {at('txt-no-data')}
         </Typography>
       ) : (
-        <ImageList
-          gap={24}
-          cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}
-          style={{ overflow: 'hidden auto' }}
-        >
-          <Dnd.DndContext
-            sensors={sensors}
-            onDragEnd={({ active, over }) =>
-              active &&
-              over &&
-              handleGroupChange({
-                item: hierarchies.find(({ _id }) => _id === active.id),
-                group: over.id as string,
-                isGroupRequired: true,
-              })
-            }
+        <Grow key={refresh} in>
+          <ImageList
+            gap={24}
+            cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}
+            style={{ overflow: 'hidden auto' }}
           >
-            {hierarchies.map((data) => (
-              <Comp.HierarchyItem
-                key={data._id}
-                data={data}
-                icon={icon}
-                onActionRender={onItemActionRender}
-                onClick={handleItemClick}
-                disableGroupChange={hierarchies.every(
-                  ({ type }) => type === 'item'
-                )}
-                mutation={
-                  <Common.HierarchyMutation
-                    data={data}
-                    onSuccess={() => refetch()}
-                    {...(superior && {
-                      onMoveToSuperiorGroup: () =>
-                        handleGroupChange({
-                          item: data,
-                          group: superiorList[superiorList.length - 2],
-                        }),
-                    })}
-                  />
-                }
-              />
-            ))}
-          </Dnd.DndContext>
-        </ImageList>
+            <Dnd.DndContext
+              sensors={sensors}
+              onDragEnd={({ active, over }) =>
+                active &&
+                over &&
+                handleGroupChange({
+                  item: hierarchies.find(({ _id }) => _id === active.id),
+                  group: over.id as string,
+                  isGroupRequired: true,
+                })
+              }
+            >
+              {hierarchies.map((data) => (
+                <Comp.HierarchyItem
+                  key={data._id}
+                  data={data}
+                  icon={icon}
+                  onActionRender={onItemActionRender}
+                  onClick={handleItemClick}
+                  disableGroupChange={hierarchies.every(
+                    ({ type }) => type === 'item'
+                  )}
+                  mutation={
+                    <HierarchyMutation
+                      data={data}
+                      onSuccess={() => refetch()}
+                      {...(superior && {
+                        onMoveToSuperiorGroup: () =>
+                          handleGroupChange({
+                            item: data,
+                            group: superiorList[superiorList.length - 2],
+                          }),
+                      })}
+                    />
+                  }
+                />
+              ))}
+            </Dnd.DndContext>
+          </ImageList>
+        </Grow>
       )}
     </>
   );

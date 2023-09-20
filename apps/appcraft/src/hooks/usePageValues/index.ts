@@ -6,16 +6,17 @@ export type { PageData } from './usePageValues.types';
 
 type GridLayoutProps = Required<CraftedRendererProps['GridLayoutProps']>;
 
-export const GRID_LAYOUT_COLS: GridLayoutProps['cols'] = Object.fromEntries(
-  Object.entries(GRID_LAYOUT_OPTIONS).map(([breakpoint, { max }]) => [
-    breakpoint,
-    max,
-  ])
-);
-
-export const GRID_LAYOUT_MINS = Object.fromEntries(
-  Object.entries(GRID_LAYOUT_OPTIONS).map(([breakpoint, { min }]) => [
-    breakpoint,
-    min,
-  ])
-) as GridLayoutProps['mins'];
+export const GRID_LAYOUT = {
+  COLS: Object.fromEntries(
+    Object.entries(GRID_LAYOUT_OPTIONS).map(([breakpoint, { max }]) => [
+      breakpoint,
+      max,
+    ])
+  ) as GridLayoutProps['cols'],
+  MINS: Object.fromEntries(
+    Object.entries(GRID_LAYOUT_OPTIONS).map(([breakpoint, { min }]) => [
+      breakpoint,
+      min,
+    ])
+  ) as GridLayoutProps['mins'],
+};

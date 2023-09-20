@@ -15,7 +15,7 @@ export default function Breadcrumbs({
   const hasBreadcrumbs = Boolean(children?.length);
   const [open, setOpen] = useState(false);
 
-  const options = children
+  const options = (children
     ?.slice(0, children.length - 1)
     .reverse()
     .map((child) => {
@@ -25,7 +25,7 @@ export default function Breadcrumbs({
         primary,
         value: onClick,
       };
-    }) as Types.MenuOptions;
+    }) || []) as Types.MenuOptions;
 
   return (
     <>
@@ -62,8 +62,12 @@ export default function Breadcrumbs({
           },
         }}
       >
-        {hasBreadcrumbs && TopProps && (
-          <Breadcrumb brcVariant="link" onClick={TopProps.onClick}>
+        {(hasBreadcrumbs || TopProps?.alwaysShow) && TopProps && (
+          <Breadcrumb
+            brcVariant="link"
+            disabled={!options.length}
+            onClick={TopProps.onClick}
+          >
             {TopProps.text}
           </Breadcrumb>
         )}

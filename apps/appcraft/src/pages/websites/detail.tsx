@@ -7,12 +7,12 @@ import * as Hook from '~appcraft/hooks';
 import { PageContainer } from '~appcraft/styles';
 import { WebsiteEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks/common';
 
-const CONFIG_DETAIL_ACTIONS = ['expand', 'reset', 'save'];
+const EDITOR_ADD_ACTIONS = ['add'];
+const EDITOR_BASE_ACTIONS = ['expand', 'reset', 'save'];
 
 export default function Detail() {
-  const [at, wt] = useFixedT('app', 'websites');
+  const [wt] = Hook.useFixedT('websites');
   const { pathname, query } = useRouter();
 
   const height = Hook.useHeight();
@@ -20,9 +20,11 @@ export default function Detail() {
   const id = query.id as string;
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
 
-  const [action, handleActionNodePick] = Hook.useNodePickHandle(
-    CONFIG_DETAIL_ACTIONS
-  );
+  const [actionAdd, handleActionAddPick] =
+    Hook.useNodePickHandle(EDITOR_ADD_ACTIONS);
+
+  const [actionBase, handleActionBasePick] =
+    Hook.useNodePickHandle(EDITOR_BASE_ACTIONS);
 
   const { data: website, refetch } = useQuery({
     queryKey: [id],
@@ -38,9 +40,10 @@ export default function Detail() {
       secondary={superiors[id]}
       action={
         <>
-          {action?.expand}
-          {action?.reset}
-          {action?.save}
+          {actionBase?.expand}
+          {actionAdd?.add}
+          {actionBase?.reset}
+          {actionBase?.save}
         </>
       }
     >
@@ -51,7 +54,8 @@ export default function Detail() {
       <WebsiteEditor
         data={website}
         superiors={{ names: superiors, breadcrumbs }}
-        onActionNodePick={handleActionNodePick}
+        onActionAddPick={handleActionAddPick}
+        onActionBasePick={handleActionBasePick}
         onSave={refetch}
         ResponsiveDrawerProps={{
           disableGutters: true,

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.123](https://github.com/taco3064/appcraft-mono/compare/v0.0.122...v0.0.123) (2023-09-20)
+
+
+### Bug Fixes
+
+* **apps/appcraft:** build PageList component ([59e3804](https://github.com/taco3064/appcraft-mono/commit/59e3804cbf62a8af94dbaf5102988552a4d39c21))
+* **apps/appcraft:** update folder structure ([8defed8](https://github.com/taco3064/appcraft-mono/commit/8defed825729349592a2bbb95d7a6712f988d593))
+
 ### [0.0.122](https://github.com/taco3064/appcraft-mono/compare/v0.0.121...v0.0.122) (2023-09-19)
 
 

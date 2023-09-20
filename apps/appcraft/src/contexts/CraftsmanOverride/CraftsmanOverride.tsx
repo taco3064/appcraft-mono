@@ -6,7 +6,7 @@ import _toPath from 'lodash/toPath';
 import type { TodosState } from '@appcraft/types';
 
 import * as Comp from '~appcraft/components/common';
-import * as Ctr from '~appcraft/containers/common';
+import * as Ctr from '~appcraft/containers';
 import { useCraftsmanFetch } from '~appcraft/hooks';
 import type * as Types from './CraftsmanOverride.types';
 

@@ -2,7 +2,7 @@ import type * as Craftsman from '@appcraft/craftsman';
 import type { LayoutWidget, MainWidget } from '@appcraft/types';
 import type { MutableRefObject, ReactNode } from 'react';
 
-import type * as Ctr from '~appcraft/containers/common';
+import type * as Ctr from '~appcraft/containers';
 
 //* Variables
 type Mixeds = 'STATE_DEFAULT_PROP_VALUE';

@@ -4,9 +4,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
-import { Breadcrumbs } from '../common';
+import Breadcrumbs from '../Breadcrumbs';
+import PageList from '../PageList';
 import { CommonButton } from '~appcraft/components/common';
-import { PageList } from '~appcraft/containers/common';
 import { ResponsiveDrawer } from '~appcraft/styles';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
 

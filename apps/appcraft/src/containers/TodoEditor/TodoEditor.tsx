@@ -7,7 +7,7 @@ import { CraftedTodoEditor, CraftsmanStyle } from '@appcraft/craftsman';
 import { useEffect, useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
-import { Breadcrumbs } from '../common';
+import Breadcrumbs from '../Breadcrumbs';
 import { CommonButton } from '~appcraft/components/common';
 import { ResponsiveDrawer } from '~appcraft/styles';
 import { TodoOutputStepper } from '~appcraft/components';

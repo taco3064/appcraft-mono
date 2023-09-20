@@ -9,12 +9,14 @@ import { Suspense, useEffect, useImperativeHandle, useRef } from 'react';
 import { useLazyWidgetNav } from '@appcraft/exhibitor';
 import { useTheme } from '@mui/material/styles';
 
-import * as Common from '../common';
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Style from '~appcraft/styles';
+import Breadcrumbs from '../Breadcrumbs';
+import LayoutPropsEditor from '../LayoutPropsEditor';
+import ReadyTodoEditor from '../ReadyTodoEditor';
+import WidgetPicker from '../WidgetPicker';
 import { CommonButton } from '~appcraft/components/common';
-import { WidgetPicker } from '~appcraft/containers/common';
 import type * as Types from './PageEditor.types';
 
 export default function PageEditor({
@@ -42,7 +44,7 @@ export default function PageEditor({
       layouts[active] ? [layouts[active]] : [],
       handleFetch.wrapper,
       ({ fetchData, ...props }) => (
-        <Common.LayoutPropsEditor {...props} getWidgetOptions={fetchData} />
+        <LayoutPropsEditor {...props} getWidgetOptions={fetchData} />
       )
     );
 
@@ -59,7 +61,7 @@ export default function PageEditor({
           />
         ),
         ready: (
-          <Common.ReadyTodoEditor
+          <ReadyTodoEditor
             layouts={layouts}
             value={readyTodos}
             onConfirm={(value) => handlePage.change('readyTodos', value)}
@@ -102,7 +104,7 @@ export default function PageEditor({
   return (
     <>
       {superiors && (
-        <Common.Breadcrumbs
+        <Breadcrumbs
           ToolbarProps={{ disableGutters: true }}
           action={actionNode}
           onCustomize={([index]) => [

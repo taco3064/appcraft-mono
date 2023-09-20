@@ -7,7 +7,7 @@ import { CraftedWidgetEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
-import { Breadcrumbs } from '../common';
+import Breadcrumbs from '../Breadcrumbs';
 import { CommonButton } from '~appcraft/components/common';
 import { ResponsiveDrawer } from '~appcraft/styles';
 import { getNodesAndEvents, getTypeDefinition } from '~appcraft/services';

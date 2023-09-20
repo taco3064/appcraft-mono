@@ -11,9 +11,11 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useMemo, useState } from 'react';
 
-import * as Common from '../common';
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
+import Breadcrumbs from '../Breadcrumbs';
+import HierarchyEditorButton from '../HierarchyEditorButton';
+import HierarchyMutation from '../HierarchyMutation';
 import { CommonButton, HierarchyItem } from '~appcraft/components/common';
 import { searchHierarchy, updateHierarchy } from '~appcraft/services';
 import type * as Types from './HierarchyList.types';
@@ -76,7 +78,7 @@ export default function HierarchyList({
     () =>
       onActionNodePick({
         addGroup: !disableGroup && (
-          <Common.HierarchyEditorButton
+          <HierarchyEditorButton
             mode="add"
             data={{
               category,
@@ -87,7 +89,7 @@ export default function HierarchyList({
           />
         ),
         addItem: (
-          <Common.HierarchyEditorButton
+          <HierarchyEditorButton
             mode="add"
             data={{
               category,
@@ -149,7 +151,7 @@ export default function HierarchyList({
 
   return (
     <>
-      <Common.Breadcrumbs
+      <Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
         action={actionNode}
         onCustomize={($breadcrumbs) => [
@@ -210,7 +212,7 @@ export default function HierarchyList({
                     ({ type }) => type === 'item'
                   )}
                   mutation={
-                    <Common.HierarchyMutation
+                    <HierarchyMutation
                       data={data}
                       onSuccess={() => refetch()}
                       {...(superior && {

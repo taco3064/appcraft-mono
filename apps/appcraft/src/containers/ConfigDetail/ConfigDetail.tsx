@@ -3,11 +3,11 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedTypeEditor } from '@appcraft/craftsman';
 
-import { Breadcrumbs } from '../common';
-import { CommonButton } from '~appcraft/components/common';
+import Breadcrumbs from '../Breadcrumbs';
+import { CommonButton } from '~appcraft/components';
 import { getTypeDefinition } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks/common';
-import { useConfigValues, useNodePicker } from '~appcraft/hooks';
+import { useFixedT, useNodePicker } from '~appcraft/hooks';
+import { useConfigValues } from '~appcraft/hooks';
 import type { ConfigDetailProps } from './ConfigDetail.types';
 
 export default function ConfigDetail({

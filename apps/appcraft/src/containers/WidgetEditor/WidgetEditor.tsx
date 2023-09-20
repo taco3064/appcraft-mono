@@ -6,13 +6,12 @@ import { CraftedRenderer } from '@appcraft/exhibitor';
 import { CraftedWidgetEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
 
-import { Breadcrumbs } from '../common';
-import { CommonButton } from '~appcraft/components/common';
+import * as Hook from '~appcraft/hooks';
+import Breadcrumbs from '../Breadcrumbs';
+import { CommonButton } from '~appcraft/components';
 import { ResponsiveDrawer } from '~appcraft/styles';
 import { getNodesAndEvents, getTypeDefinition } from '~appcraft/services';
-import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks/common';
-import { useCraftsmanOverrideContext } from '~appcraft/contexts/common';
-import { useNodePicker, useWidth, useWidgetValues } from '~appcraft/hooks';
+import { useCraftsmanOverride } from '~appcraft/contexts';
 import type * as Types from './WidgetEditor.types';
 
 export default function WidgetEditor({
@@ -23,17 +22,17 @@ export default function WidgetEditor({
   onOutputCollect,
   onSave,
 }: Types.WidgetEditorProps) {
-  const [at, wt] = useFixedT('app', 'widgets');
+  const [at, wt] = Hook.useFixedT('app', 'widgets');
   const [open, setOpen] = useState(false);
-  const [widget, handleWidget] = useWidgetValues({ data, onSave });
+  const [widget, handleWidget] = Hook.useWidgetValues({ data, onSave });
 
-  const width = useWidth();
-  const override = useCraftsmanOverrideContext({ widget });
-  const handleFetch = useCraftsmanFetch();
+  const width = Hook.useWidth();
+  const override = useCraftsmanOverride({ widget });
+  const handleFetch = Hook.useCraftsmanFetch();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
 
-  const actionNode = useNodePicker(
+  const actionNode = Hook.useNodePicker(
     () =>
       onActionNodePick({
         expand:

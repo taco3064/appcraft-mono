@@ -5,9 +5,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import { useRef } from 'react';
 
-import { CommonButton } from '~appcraft/components/common';
-import { useFixedT } from '~appcraft/hooks/common';
-import { useWidth } from '~appcraft/hooks';
+import CommonButton from '../CommonButton';
+import { useFixedT, useWidth } from '~appcraft/hooks';
 import type * as Types from './CollapseKeyword.types';
 
 const SEARCH_WIDTH: Record<'xs' | 'sm', string> = {

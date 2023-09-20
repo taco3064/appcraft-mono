@@ -3,7 +3,7 @@ import _toPath from 'lodash/toPath';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useCallback, useMemo } from 'react';
 
-import { useCollection } from '../common';
+import { useCollection } from '../useCollection';
 import type { PropertyRouterHook } from './usePropertyRouter.types';
 
 export const usePropertyRouter: PropertyRouterHook = (

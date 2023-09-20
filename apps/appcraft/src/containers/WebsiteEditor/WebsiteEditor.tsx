@@ -3,30 +3,32 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useState } from 'react';
 
-import { Breadcrumbs } from '../common';
-import { CommonButton } from '~appcraft/components/common';
+import * as Hook from '~appcraft/hooks';
+import Breadcrumbs from '../Breadcrumbs';
+import PageList from '../PageList';
+import { CommonButton } from '~appcraft/components';
 import { ResponsiveDrawer } from '~appcraft/styles';
-import { useFixedT } from '~appcraft/hooks/common';
-import { useNodePicker, useWidth } from '~appcraft/hooks';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
 
 export default function WebsiteEditor({
   ResponsiveDrawerProps,
   data,
   superiors,
-  onActionNodePick,
+  onActionAddPick,
+  onActionBasePick,
   onSave,
 }: WebsiteEditorProps) {
-  const [at, wt] = useFixedT('app', 'websites');
+  const [at, wt] = Hook.useFixedT('app', 'websites');
   const [open, setOpen] = useState(false);
+  const [website, handleWebsite] = Hook.useWebsiteValues({ data, onSave });
 
-  const width = useWidth();
-  const isCollapsable = /^(xs|sm)$/.test(width);
+  const width = Hook.useWidth();
+  const isCollapsable = /^(xs|sm|md)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
 
-  const actionNode = useNodePicker(
+  const actionNode = Hook.useNodePicker(
     () =>
-      onActionNodePick({
+      onActionBasePick({
         expand:
           !isCollapsable || isSettingOpen ? null : (
             <CommonButton
@@ -41,7 +43,7 @@ export default function WebsiteEditor({
             btnVariant="icon"
             icon={<RestartAltIcon />}
             text={at('btn-reset')}
-            onClick={console.log}
+            onClick={handleWebsite.reset}
           />
         ),
         save: (
@@ -49,11 +51,11 @@ export default function WebsiteEditor({
             btnVariant="icon"
             icon={<SaveAltIcon />}
             text={at('btn-save')}
-            onClick={console.log}
+            onClick={handleWebsite.save}
           />
         ),
       }),
-    [open, isCollapsable, isSettingOpen]
+    [website, open, isCollapsable, isSettingOpen]
   );
 
   return (
@@ -74,9 +76,16 @@ export default function WebsiteEditor({
         {...ResponsiveDrawerProps}
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
+        disablePersistent={/^(xs|sm|md)$/.test(width)}
         open={isSettingOpen}
         onClose={() => setOpen(false)}
-        content={<div>Content</div>}
+        content={
+          <PageList
+            values={website.pages}
+            onChange={(pages) => handleWebsite.change({ ...website, pages })}
+            onActionNodePick={onActionAddPick}
+          />
+        }
         drawer={<div>Drawer</div>}
       />
     </>

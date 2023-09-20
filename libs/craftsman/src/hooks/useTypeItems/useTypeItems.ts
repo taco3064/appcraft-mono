@@ -3,7 +3,8 @@ import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useState } from 'react';
 import type { PropTypesDef, StructureProp } from '@appcraft/types';
 
-import { useCollection, usePropertiesSorting } from '../common';
+import { useCollection } from '../useCollection';
+import { usePropertiesSorting } from '../usePropertiesSorting';
 import type { ChangeHandler, OptionValues } from '../../contexts';
 import type { TypeItem, TypeItemsHookResult } from './useTypeItems.types';
 

@@ -2,19 +2,19 @@ import type { ReactNode } from 'react';
 import type { CraftedTypeEditorProps } from '@appcraft/craftsman';
 import type { ConfigOptions } from '@appcraft/types';
 
-import type * as Hooks from '~appcraft/hooks';
+import type * as Hook from '~appcraft/hooks';
 
 export type RenderOverrideConfigItemHandler =
   CraftedTypeEditorProps<ConfigOptions>['renderOverrideItem'];
 
 export interface ConfigDetailProps
-  extends Hooks.ConfigValueOptions,
+  extends Hook.ConfigValueOptions,
     Pick<CraftedTypeEditorProps<ConfigOptions>, 'renderOverrideItem'> {
   header?: ReactNode;
-  onActionNodePick?: Hooks.NodePickerFn<'reset' | 'save'>;
+  onActionNodePick?: Hook.NodePickerFn<'reset' | 'save'>;
 
   superiors?: {
     names: Record<string, string>;
-    breadcrumbs: Hooks.Breadcrumb[];
+    breadcrumbs: Hook.Breadcrumb[];
   };
 }

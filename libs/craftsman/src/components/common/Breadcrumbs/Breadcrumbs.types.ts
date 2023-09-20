@@ -14,6 +14,7 @@ export interface BreadcrumbsProps
   children?: ReactElement<ComponentProps<typeof Breadcrumb>>[];
 
   TopProps?: {
+    alwaysShow?: boolean;
     text: string;
     onClick: () => void;
   };

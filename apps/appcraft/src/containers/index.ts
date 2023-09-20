@@ -20,3 +20,5 @@ export * from './WebsiteEditor';
 export * from './WidgetEditor';
 export * from './WidgetPicker';
 export * from './WidgetPreview';
+
+export * from './override';

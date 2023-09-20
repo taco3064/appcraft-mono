@@ -17,6 +17,8 @@ type Renders =
   | 'TODO_WRAPPER_PICKER';
 
 export type OverrideOptions = {
+  hierarchyid?: string;
+  overrides: ReturnType<GetOverridesFn>;
   layouts?: LayoutWidget[];
   widget?: MainWidget;
 };
@@ -26,6 +28,12 @@ export type OverrideHandlers = Required<
     Craftsman.CraftedWidgetEditorProps,
     'overrideMixedOptions' | 'overrideNamingProps' | 'renderOverrideItem'
   >
+>;
+
+export type OverrideRender = Partial<
+  OverrideHandler<Mixeds, 'overrideMixedOptions'> &
+    OverrideHandler<Namings, 'overrideNamingProps'> &
+    OverrideHandler<Renders, 'renderOverrideItem'>
 >;
 
 //* Methods
@@ -54,27 +62,23 @@ export type MetType = {
   ) => Renders | void;
 };
 
+export type GetOverridesFn = (
+  override: OverrideRender
+) => (options: OverrideOptions) => OverrideHandlers;
+
 //* Custom Hooks
-export type CraftsmanOverrideContextValue = MutableRefObject<
-  (options?: OverrideOptions) => OverrideHandlers
->;
+export type CraftsmanOverrideContextValue = {
+  hierarchyid?: string;
+  ref: MutableRefObject<ReturnType<GetOverridesFn>>;
+};
 
 export type CraftsmanOverrideContextHook = (
-  options: OverrideOptions
+  options?: Pick<OverrideOptions, 'layouts' | 'widget'>
 ) => Partial<OverrideHandlers>;
-
-export type OverrideHook = (
-  override: Partial<
-    OverrideHandler<Mixeds, 'overrideMixedOptions'> &
-      OverrideHandler<Namings, 'overrideNamingProps'> &
-      OverrideHandler<Renders, 'renderOverrideItem'>
-  >
-) => (options: OverrideOptions) => OverrideHandlers;
 
 //* Provider Component Props
 export interface CraftsmanOverrideProviderProps {
   children: ReactNode;
   hierarchyid?: string;
-  onTodoView?: Ctr.TodoWrapperPickerProps['onView'];
-  onWidgetView?: Ctr.WidgetPickerProps['onView'];
+  options: OverrideRender;
 }

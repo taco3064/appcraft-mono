@@ -6,7 +6,7 @@ import type * as Appcraft from '@appcraft/types';
 import * as Hook from '~appcraft/hooks';
 import { CraftsmanOverrideProvider } from '~appcraft/contexts';
 import { PageContainer } from '~appcraft/styles';
-import { TodoEditor } from '~appcraft/containers';
+import { TodoEditor, getOverrideRender } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 
 const TODO_EDITOR_ACTIONS = ['run', 'reset', 'save'];
@@ -16,6 +16,7 @@ export default function Detail() {
   const { pathname, query } = useRouter();
 
   const height = Hook.useHeight();
+  const handleFetch = Hook.useCraftsmanFetch();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
@@ -30,7 +31,12 @@ export default function Detail() {
   });
 
   return (
-    <CraftsmanOverrideProvider>
+    <CraftsmanOverrideProvider
+      options={getOverrideRender({
+        onFetchData: handleFetch.data,
+        onFetchWrapper: handleFetch.wrapper,
+      })}
+    >
       <PageContainer
         ContentProps={{ disableGutters: true }}
         maxWidth="lg"

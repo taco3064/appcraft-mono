@@ -9,11 +9,11 @@ import { useTheme } from '@mui/material/styles';
 import type { OutputCollectEvent } from '@appcraft/exhibitor';
 import type { WidgetTodo } from '@appcraft/types';
 
+import * as Ctr from '~appcraft/containers';
 import * as Hook from '~appcraft/hooks';
 import { CommonButton } from '~appcraft/components/common';
 import { CraftsmanOverrideProvider } from '~appcraft/contexts';
 import { PageContainer } from '~appcraft/styles';
-import { PageEditor, TodoEditor } from '~appcraft/containers';
 import { TodoOutputStepper } from '~appcraft/components';
 import { findConfig } from '~appcraft/services';
 import type { HierarchyData } from '~appcraft/services';
@@ -28,6 +28,7 @@ export default function Detail() {
   const { pathname, query } = useRouter();
   const [output, setOutput] = useState<OutputCollectEvent>();
   const [todoHierarchy, setTodoHierarchy] = useState<HierarchyData<string>>();
+  const handleFetch = Hook.useCraftsmanFetch();
 
   const [pageAction, handlePageActionPick] =
     Hook.useNodePickHandle(PAGE_ACTIONS);
@@ -55,10 +56,13 @@ export default function Detail() {
 
   return (
     <CraftsmanOverrideProvider
-      onTodoView={setTodoHierarchy}
-      onWidgetView={(data) =>
-        global.window?.open(`/widgets/detail?id=${data._id}`, '_blank')
-      }
+      options={Ctr.getOverrideRender({
+        onFetchData: handleFetch.data,
+        onFetchWrapper: handleFetch.wrapper,
+        onTodoView: setTodoHierarchy,
+        onWidgetView: (data) =>
+          global.window?.open(`/widgets/detail?id=${data._id}`, '_blank'),
+      })}
     >
       <PageContainer
         ContentProps={{ disableGutters: true }}
@@ -78,7 +82,7 @@ export default function Detail() {
           <title>Appcraft | {pt('ttl-detail')}</title>
         </Head>
 
-        <PageEditor
+        <Ctr.PageEditor
           data={data}
           superiors={{ names: superiors, breadcrumbs }}
           onActionNodePick={handlePageActionPick}
@@ -138,7 +142,7 @@ export default function Detail() {
         )}
       >
         {todoHierarchy && (
-          <TodoEditor
+          <Ctr.TodoEditor
             data={todoWrapper}
             logZIndex={theme.zIndex.modal + 1}
             onActionNodePick={handleTodoActionPick}

@@ -6,7 +6,8 @@ import { CraftsmanStyle } from '@appcraft/craftsman';
 import { useState } from 'react';
 import type { FormEventHandler } from 'react';
 
-import { CommonButton, RemoveButton } from '~appcraft/components/common';
+import CommonButton from '../CommonButton';
+import RemoveButton from '../RemoveButton';
 import { useFixedT } from '~appcraft/hooks';
 import type { LayoutActionProps } from './LayoutAction.types';
 

@@ -16,10 +16,8 @@ import * as Hook from '~appcraft/hooks';
 import Breadcrumbs from '../Breadcrumbs';
 import HierarchyEditorButton from '../HierarchyEditorButton';
 import HierarchyMutation from '../HierarchyMutation';
-import { CommonButton, HierarchyItem } from '~appcraft/components/common';
 import { searchHierarchy, updateHierarchy } from '~appcraft/services';
 import type * as Types from './HierarchyList.types';
-import type { HierarchyItemProps } from '~appcraft/components/common';
 
 export default function HierarchyList({
   category,
@@ -102,7 +100,7 @@ export default function HierarchyList({
         search: (
           <Fade in={collapsed}>
             <div>
-              <CommonButton
+              <Comp.CommonButton
                 btnVariant="icon"
                 icon={<FilterListIcon />}
                 text={at('btn-filter')}
@@ -116,7 +114,7 @@ export default function HierarchyList({
   );
 
   //* Event Handlers
-  const handleItemClick: HierarchyItemProps['onClick'] = (data) =>
+  const handleItemClick: Comp.HierarchyItemProps['onClick'] = (data) =>
     push(
       data.type === 'group'
         ? {
@@ -202,7 +200,7 @@ export default function HierarchyList({
               }
             >
               {hierarchies.map((data) => (
-                <HierarchyItem
+                <Comp.HierarchyItem
                   key={data._id}
                   data={data}
                   icon={icon}

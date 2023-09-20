@@ -12,7 +12,7 @@ import { CraftsmanStyle } from '@appcraft/craftsman';
 import { nanoid } from 'nanoid';
 import { useMemo, useState } from 'react';
 
-import { CommonButton, HierarchyItem } from '~appcraft/components/common';
+import { CommonButton, HierarchyItem } from '~appcraft/components';
 import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks';
 import type * as Types from './PageList.types';
 

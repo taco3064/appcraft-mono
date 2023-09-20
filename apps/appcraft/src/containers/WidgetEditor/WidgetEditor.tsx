@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
 import Breadcrumbs from '../Breadcrumbs';
-import { CommonButton } from '~appcraft/components/common';
+import { CommonButton } from '~appcraft/components';
 import { ResponsiveDrawer } from '~appcraft/styles';
 import { getNodesAndEvents, getTypeDefinition } from '~appcraft/services';
 import { useCraftsmanOverride } from '~appcraft/contexts';

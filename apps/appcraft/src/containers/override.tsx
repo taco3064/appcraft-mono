@@ -10,7 +10,7 @@ import PropsGroupPicker from './PropsGroupPicker';
 import TemplateTodoItem from './TemplateTodoItem';
 import TodoWrapperPicker from './TodoWrapperPicker';
 import WidgetPicker from './WidgetPicker';
-import { StatePathPicker } from '~appcraft/components/common';
+import { StatePathPicker } from '~appcraft/components';
 import type { GetOverrideRenderFn } from './index.types';
 
 export const getOverrideRender: GetOverrideRenderFn = ({

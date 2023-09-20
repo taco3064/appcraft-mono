@@ -8,7 +8,7 @@ import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 
 import HierarchyEditorButton from '../HierarchyEditorButton';
-import { CommonButton, RemoveButton } from '~appcraft/components/common';
+import { CommonButton, RemoveButton } from '~appcraft/components';
 import { removeHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type { HierarchyMutationProps } from './HierarchyMutation.types';

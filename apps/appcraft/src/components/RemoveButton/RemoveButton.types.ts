@@ -1,4 +1,4 @@
-import type { CommonButtonProps } from '~appcraft/components/common';
+import type { CommonButtonProps } from '../CommonButton';
 
 export type RemoveButtonProps = Omit<CommonButtonProps, 'icon' | 'text'> &
   Partial<Pick<CommonButtonProps, 'icon' | 'text'>> & {

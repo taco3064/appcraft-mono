@@ -8,9 +8,8 @@ import { useEffect, useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
 import Breadcrumbs from '../Breadcrumbs';
-import { CommonButton } from '~appcraft/components/common';
 import { ResponsiveDrawer } from '~appcraft/styles';
-import { TodoOutputStepper } from '~appcraft/components';
+import { CommonButton, TodoOutputStepper } from '~appcraft/components';
 import { getTypeDefinition } from '~appcraft/services';
 import { useCraftsmanOverride } from '~appcraft/contexts';
 import type { TodoEditorProps } from './TodoEditor.types';

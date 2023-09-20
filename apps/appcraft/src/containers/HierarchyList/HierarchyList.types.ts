@@ -1,7 +1,7 @@
 import SvgIcon from '@mui/material/SvgIcon';
 
 import type { HierarchyData } from '~appcraft/services';
-import type { HierarchyItemProps } from '~appcraft/components/common';
+import type { HierarchyItemProps } from '~appcraft/components';
 import type { NodePickerFn } from '~appcraft/hooks';
 
 //* Variables

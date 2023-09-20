@@ -16,7 +16,6 @@ import Breadcrumbs from '../Breadcrumbs';
 import LayoutPropsEditor from '../LayoutPropsEditor';
 import ReadyTodoEditor from '../ReadyTodoEditor';
 import WidgetPicker from '../WidgetPicker';
-import { CommonButton } from '~appcraft/components/common';
 import type * as Types from './PageEditor.types';
 
 export default function PageEditor({
@@ -52,7 +51,7 @@ export default function PageEditor({
     () =>
       onActionNodePick({
         add: (
-          <CommonButton
+          <Comp.CommonButton
             btnVariant="icon"
             disabled={breakpoint !== 'xs'}
             icon={<AddIcon />}
@@ -68,7 +67,7 @@ export default function PageEditor({
           />
         ),
         reset: (
-          <CommonButton
+          <Comp.CommonButton
             btnVariant="icon"
             icon={<RestartAltIcon />}
             text={at('btn-reset')}
@@ -76,7 +75,7 @@ export default function PageEditor({
           />
         ),
         save: (
-          <CommonButton
+          <Comp.CommonButton
             btnVariant="icon"
             icon={<SaveAltIcon />}
             text={at('btn-save')}

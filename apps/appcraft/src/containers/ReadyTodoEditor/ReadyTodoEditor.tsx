@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import { CraftsmanStyle, CraftedTodoEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
 
-import { CommonButton } from '~appcraft/components/common';
+import { CommonButton } from '~appcraft/components';
 import { getTypeDefinition } from '~appcraft/services';
 import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks';
 import { useCraftsmanOverride } from '~appcraft/contexts';

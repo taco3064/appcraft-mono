@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { CommonButton } from '~appcraft/components/common';
+import { CommonButton } from '~appcraft/components';
 import { Link } from '~appcraft/styles';
 import { useFixedT, useWidth } from '~appcraft/hooks';
 import type * as Types from './Breadcrumbs.types';

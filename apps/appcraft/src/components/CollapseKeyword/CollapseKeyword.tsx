@@ -5,7 +5,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import { useRef } from 'react';
 
-import { CommonButton } from '~appcraft/components/common';
+import CommonButton from '../CommonButton';
 import { useFixedT, useWidth } from '~appcraft/hooks';
 import type * as Types from './CollapseKeyword.types';
 

@@ -6,7 +6,7 @@ import { useState } from 'react';
 import * as Hook from '~appcraft/hooks';
 import Breadcrumbs from '../Breadcrumbs';
 import PageList from '../PageList';
-import { CommonButton } from '~appcraft/components/common';
+import { CommonButton } from '~appcraft/components';
 import { ResponsiveDrawer } from '~appcraft/styles';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
 

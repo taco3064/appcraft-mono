@@ -1,7 +1,8 @@
 import type { LayoutWidget, MainWidget } from '@appcraft/types';
 import type { PaperProps } from '@mui/material/Paper';
 
-import type { GridActionRenderer, GridLayoutProps } from '../common';
+import type { GridActionRenderer } from '../GridAction';
+import type { GridLayoutProps } from '../GridLayout';
 import type { Mins, RenderedWidget } from '../../hooks';
 
 //* Component Props

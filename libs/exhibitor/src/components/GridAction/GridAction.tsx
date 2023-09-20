@@ -6,7 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import TuneIcon from '@mui/icons-material/Tune';
 import { useState } from 'react';
 
-import * as Style from '../../../styles';
+import * as Style from '../../styles';
 import type { GridActionProps } from './GridAction.types';
 
 export default function GridAction({ action, layout }: GridActionProps) {

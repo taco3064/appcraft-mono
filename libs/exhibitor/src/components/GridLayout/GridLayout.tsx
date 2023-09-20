@@ -2,7 +2,7 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 import { useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 
-import { GridLayoutContainer } from '../../../styles';
+import { GridLayoutContainer } from '../../styles';
 import type { GridLayoutProps } from './GridLayout.types';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);

@@ -8,7 +8,8 @@ import type { NodePickerFn } from '~appcraft/hooks/common';
 export interface WebsiteEditorProps {
   data: ConfigData<Website, string>;
 
-  onActionNodePick?: NodePickerFn<'expand' | 'add' | 'reset' | 'save'>;
+  onActionBasePick?: NodePickerFn<'expand' | 'reset' | 'save'>;
+  onActionAddPick?: NodePickerFn<'add'>;
   onSave?: () => void;
 
   superiors?: {

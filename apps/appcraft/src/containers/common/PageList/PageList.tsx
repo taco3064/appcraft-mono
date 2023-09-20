@@ -1,12 +1,20 @@
 import * as Dnd from '@dnd-kit/core';
+import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import IconButton from '@mui/material/IconButton';
 import ImageList from '@mui/material/ImageList';
+import Slide from '@mui/material/Slide';
 import Toolbar from '@mui/material/Toolbar';
+import WebTwoToneIcon from '@mui/icons-material/WebTwoTone';
+import _get from 'lodash/get';
+import _set from 'lodash/set';
+import _toPath from 'lodash/toPath';
 import { CraftsmanStyle } from '@appcraft/craftsman';
-import { useState } from 'react';
+import { nanoid } from 'nanoid';
+import { useMemo, useState } from 'react';
 
-import { useFixedT, useWidth } from '~appcraft/hooks/common';
+import { CommonButton, HierarchyItem } from '~appcraft/components/common';
+import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks/common';
 import type * as Types from './PageList.types';
 
 export default function PageList({
@@ -15,8 +23,24 @@ export default function PageList({
   onActionNodePick,
 }: Types.PageListProps) {
   const width = useWidth();
-  const [wt] = useFixedT('websites');
+  const [at, wt] = useFixedT('app', 'websites');
+  const [direction, setDirection] = useState<'left' | 'right'>('left');
   const [hierarchies, setHierarchies] = useState<Types.PageHierarchy[]>([]);
+
+  const { items, paths, refresh } = useMemo(() => {
+    const paths = !hierarchies.length
+      ? []
+      : _toPath(
+          hierarchies.map(({ index }) => `[${index}]`).join('.routes')
+        ).concat('.routes');
+
+    return {
+      paths,
+      refresh: nanoid(4),
+      items: ((!paths.length ? values : _get(values, paths)) ||
+        []) as Types.Page[],
+    };
+  }, [values, hierarchies]);
 
   //* Dnd
   const sensors = Dnd.useSensors(
@@ -33,12 +57,40 @@ export default function PageList({
     })
   );
 
+  //* Action Node
+  const actionNode = useNodePicker(
+    () =>
+      onActionNodePick({
+        add: (
+          <CommonButton
+            btnVariant="icon"
+            icon={<AddIcon />}
+            text={at('btn-add')}
+            onClick={() => {
+              items.push({
+                id: nanoid(4),
+                subTitle: '',
+                pathname: '',
+                isNavItem: false,
+              });
+
+              onChange([..._set(values, paths, [...items])]);
+            }}
+          />
+        ),
+      }),
+    [items, paths]
+  );
+
   return (
     <>
       <Toolbar disableGutters variant="dense">
         <IconButton
           disabled={!hierarchies.length}
-          onClick={() => setHierarchies(hierarchies.slice(0, -1))}
+          onClick={() => {
+            setDirection('right');
+            setHierarchies(hierarchies.slice(0, -1));
+          }}
         >
           <ArrowBackIcon />
         </IconButton>
@@ -51,31 +103,61 @@ export default function PageList({
           TopProps={{
             alwaysShow: true,
             text: wt('txt-page-breadcrumb-top'),
-            onClick: () => setHierarchies([]),
+            onClick: () => {
+              setDirection('right');
+              setHierarchies([]);
+            },
           }}
         >
           {hierarchies.map(({ id, subTitle }, i) => (
             <CraftsmanStyle.Breadcrumb
               key={id}
               brcVariant={i === hierarchies.length - 1 ? 'text' : 'link'}
-              onClick={() => setHierarchies(hierarchies.slice(0, i + 1))}
+              onClick={() => {
+                setDirection('right');
+                setHierarchies(hierarchies.slice(0, i + 1));
+              }}
             >
               {subTitle}
             </CraftsmanStyle.Breadcrumb>
           ))}
         </CraftsmanStyle.Breadcrumbs>
+
+        {actionNode}
       </Toolbar>
 
-      <ImageList
-        gap={24}
-        cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}
-        style={{ overflow: 'hidden auto' }}
-      >
-        <Dnd.DndContext
-          sensors={sensors}
-          onDragEnd={({ active, over }) => console.log(active, over)}
-        ></Dnd.DndContext>
-      </ImageList>
+      <Slide key={refresh} direction={direction} in mountOnEnter unmountOnExit>
+        <ImageList
+          gap={24}
+          cols={width === 'xs' ? 1 : /^(sm|lg)$/.test(width) ? 2 : 3}
+          style={{ overflow: 'hidden auto' }}
+        >
+          <Dnd.DndContext
+            sensors={sensors}
+            onDragEnd={({ active, over }) => console.log(active, over)}
+          >
+            {items.map(({ id, subTitle, pathname, isNavItem }, i) => (
+              <HierarchyItem
+                key={id}
+                icon={WebTwoToneIcon}
+                data={{
+                  _id: id,
+                  category: 'route',
+                  type: 'item',
+                  name: subTitle,
+                  description: pathname,
+                }}
+                onClick={() => {
+                  hierarchies.push({ id, subTitle, index: i });
+
+                  setDirection('left');
+                  setHierarchies([...hierarchies]);
+                }}
+              />
+            ))}
+          </Dnd.DndContext>
+        </ImageList>
+      </Slide>
     </>
   );
 }

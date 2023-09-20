@@ -4,11 +4,11 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useState } from 'react';
 
+import * as Hook from '~appcraft/hooks/common';
 import { Breadcrumbs } from '../common';
 import { CommonButton } from '~appcraft/components/common';
 import { PageList } from '~appcraft/containers/common';
 import { ResponsiveDrawer } from '~appcraft/styles';
-import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks/common';
 import { useWebsiteValues } from '~appcraft/hooks';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
 
@@ -16,28 +16,21 @@ export default function WebsiteEditor({
   ResponsiveDrawerProps,
   data,
   superiors,
-  onActionNodePick,
+  onActionAddPick,
+  onActionBasePick,
   onSave,
 }: WebsiteEditorProps) {
-  const [at, wt] = useFixedT('app', 'websites');
+  const [at, wt] = Hook.useFixedT('app', 'websites');
   const [open, setOpen] = useState(false);
   const [website, handleWebsite] = useWebsiteValues({ data, onSave });
 
-  const width = useWidth();
-  const isCollapsable = /^(xs|sm)$/.test(width);
+  const width = Hook.useWidth();
+  const isCollapsable = /^(xs|sm|md)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
 
-  const actionNode = useNodePicker(
+  const actionNode = Hook.useNodePicker(
     () =>
-      onActionNodePick({
-        add: (
-          <CommonButton
-            btnVariant="icon"
-            icon={<AddIcon />}
-            text={at('btn-add')}
-            onClick={console.log}
-          />
-        ),
+      onActionBasePick({
         expand:
           !isCollapsable || isSettingOpen ? null : (
             <CommonButton
@@ -64,7 +57,7 @@ export default function WebsiteEditor({
           />
         ),
       }),
-    [open, isCollapsable, isSettingOpen]
+    [website, open, isCollapsable, isSettingOpen]
   );
 
   return (
@@ -85,12 +78,14 @@ export default function WebsiteEditor({
         {...ResponsiveDrawerProps}
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
+        disablePersistent={/^(xs|sm|md)$/.test(width)}
         open={isSettingOpen}
         onClose={() => setOpen(false)}
         content={
           <PageList
-            values={data.content.pages}
+            values={website.pages}
             onChange={(pages) => handleWebsite.change({ ...website, pages })}
+            onActionNodePick={onActionAddPick}
           />
         }
         drawer={<div>Drawer</div>}

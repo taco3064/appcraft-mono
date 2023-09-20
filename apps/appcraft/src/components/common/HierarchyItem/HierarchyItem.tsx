@@ -73,7 +73,7 @@ export default function HierarchyItem({
 
       <ImageListItemBar
         position="top"
-        title={name}
+        title={name || at('msg-no-title')}
         actionPosition="right"
         actionIcon={mutation}
       />

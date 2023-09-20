@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import TextField from '@mui/material/TextField';
 
-import { useFixedT, usePathOptions } from '~appcraft/hooks/common';
+import { useFixedT, usePathOptions } from '~appcraft/hooks';
 import type * as Types from './StatePathPicker.types';
 
 export default function StatePathPicker({

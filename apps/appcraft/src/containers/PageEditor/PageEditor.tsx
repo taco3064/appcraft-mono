@@ -11,10 +11,9 @@ import { useTheme } from '@mui/material/styles';
 
 import * as Common from '../common';
 import * as Comp from '~appcraft/components';
-import * as Hook from '~appcraft/hooks/common';
+import * as Hook from '~appcraft/hooks';
 import * as Style from '~appcraft/styles';
 import { CommonButton } from '~appcraft/components/common';
-import { GRID_LAYOUT, usePageValues } from '~appcraft/hooks';
 import { WidgetPicker } from '~appcraft/containers/common';
 import type * as Types from './PageEditor.types';
 
@@ -27,7 +26,7 @@ export default function PageEditor({
   onSave,
 }: Types.PageEditorProps) {
   const [{ active, breakpoint, layouts, readyTodos, refresh }, handlePage] =
-    usePageValues({
+    Hook.usePageValues({
       data,
       onSave,
     });
@@ -189,8 +188,8 @@ export default function PageEditor({
                 )}
                 GridLayoutProps={{
                   autoSize: true,
-                  cols: GRID_LAYOUT.COLS,
-                  mins: GRID_LAYOUT.MINS,
+                  cols: Hook.GRID_LAYOUT.COLS,
+                  mins: Hook.GRID_LAYOUT.MINS,
                   isDraggable: true,
                   isResizable: true,
                   resizeHandles: ['se'],

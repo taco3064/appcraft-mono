@@ -6,13 +6,12 @@ import { CraftedRenderer } from '@appcraft/exhibitor';
 import { CraftedWidgetEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
 
-import * as Hook from '~appcraft/hooks/common';
+import * as Hook from '~appcraft/hooks';
 import { Breadcrumbs } from '../common';
 import { CommonButton } from '~appcraft/components/common';
 import { ResponsiveDrawer } from '~appcraft/styles';
 import { getNodesAndEvents, getTypeDefinition } from '~appcraft/services';
-import { useCraftsmanOverrideContext } from '~appcraft/contexts/common';
-import { useWidgetValues } from '~appcraft/hooks';
+import { useCraftsmanOverride } from '~appcraft/contexts';
 import type * as Types from './WidgetEditor.types';
 
 export default function WidgetEditor({
@@ -25,10 +24,10 @@ export default function WidgetEditor({
 }: Types.WidgetEditorProps) {
   const [at, wt] = Hook.useFixedT('app', 'widgets');
   const [open, setOpen] = useState(false);
-  const [widget, handleWidget] = useWidgetValues({ data, onSave });
+  const [widget, handleWidget] = Hook.useWidgetValues({ data, onSave });
 
   const width = Hook.useWidth();
-  const override = useCraftsmanOverrideContext({ widget });
+  const override = useCraftsmanOverride({ widget });
   const handleFetch = Hook.useCraftsmanFetch();
   const isCollapsable = /^(xs|sm)$/.test(width);
   const isSettingOpen = !isCollapsable || open;

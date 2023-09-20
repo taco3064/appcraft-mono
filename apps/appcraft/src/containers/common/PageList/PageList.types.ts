@@ -1,5 +1,5 @@
 import type { Website } from '@appcraft/types';
-import type { NodePickerFn } from '~appcraft/hooks/common';
+import type { NodePickerFn } from '~appcraft/hooks';
 
 //* Variables
 export type Page = Website['pages'][number];

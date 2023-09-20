@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { FormEventHandler } from 'react';
 
 import WidgetPicker from '../WidgetPicker';
-import { useFixedT } from '~appcraft/hooks/common';
+import { useFixedT } from '~appcraft/hooks';
 import type { NodeTemplateDialogProps } from './NodeTemplateDialog.types';
 
 export default function NodeTemplateDialog({

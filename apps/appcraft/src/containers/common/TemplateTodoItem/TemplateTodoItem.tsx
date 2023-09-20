@@ -5,7 +5,7 @@ import { useEffect, useImperativeHandle, useState } from 'react';
 import type { MouseEventHandler } from 'react';
 
 import { getTypeDefinition } from '~appcraft/services';
-import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks/common';
+import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks';
 import type { TemplateTodoItemProps } from './TemplateTodoItem.types';
 
 export default function TemplateTodoItem({

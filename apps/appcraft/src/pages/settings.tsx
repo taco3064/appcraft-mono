@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 
 import { PageContainer } from '~appcraft/styles';
 import { searchHierarchy } from '~appcraft/services';
-import { useFixedT, useSettingModified } from '~appcraft/hooks/common';
+import { useFixedT, useSettingModified } from '~appcraft/hooks';
 
 export default function Settings() {
   const { back } = useRouter();

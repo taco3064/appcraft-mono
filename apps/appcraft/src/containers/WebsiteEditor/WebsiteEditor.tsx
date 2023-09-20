@@ -1,15 +1,13 @@
-import AddIcon from '@mui/icons-material/Add';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useState } from 'react';
 
-import * as Hook from '~appcraft/hooks/common';
+import * as Hook from '~appcraft/hooks';
 import { Breadcrumbs } from '../common';
 import { CommonButton } from '~appcraft/components/common';
 import { PageList } from '~appcraft/containers/common';
 import { ResponsiveDrawer } from '~appcraft/styles';
-import { useWebsiteValues } from '~appcraft/hooks';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
 
 export default function WebsiteEditor({
@@ -22,7 +20,7 @@ export default function WebsiteEditor({
 }: WebsiteEditorProps) {
   const [at, wt] = Hook.useFixedT('app', 'websites');
   const [open, setOpen] = useState(false);
-  const [website, handleWebsite] = useWebsiteValues({ data, onSave });
+  const [website, handleWebsite] = Hook.useWebsiteValues({ data, onSave });
 
   const width = Hook.useWidth();
   const isCollapsable = /^(xs|sm|md)$/.test(width);

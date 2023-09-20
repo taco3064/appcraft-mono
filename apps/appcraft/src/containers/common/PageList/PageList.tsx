@@ -13,7 +13,7 @@ import { nanoid } from 'nanoid';
 import { useMemo, useState } from 'react';
 
 import { CommonButton, HierarchyItem } from '~appcraft/components/common';
-import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks/common';
+import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks';
 import type * as Types from './PageList.types';
 
 export default function PageList({

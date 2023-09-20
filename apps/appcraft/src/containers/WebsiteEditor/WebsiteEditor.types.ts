@@ -2,8 +2,7 @@ import type { ComponentProps } from 'react';
 import type { ConfigData, Website } from '@appcraft/types';
 
 import { ResponsiveDrawer } from '~appcraft/styles';
-import type { Breadcrumb } from '~appcraft/hooks';
-import type { NodePickerFn } from '~appcraft/hooks/common';
+import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
 
 export interface WebsiteEditorProps {
   data: ConfigData<Website, string>;

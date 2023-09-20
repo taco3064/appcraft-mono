@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { Website } from '@appcraft/types';
 
 import { upsertConfig } from '~appcraft/services';
-import { useFixedT, useSettingModified } from '~appcraft/hooks/common';
+import { useFixedT, useSettingModified } from '../useApp';
 import type { WebsiteValuesHook } from './useWebsiteValues.types';
 
 export const useWebsiteValues: WebsiteValuesHook = ({ data, onSave }) => {

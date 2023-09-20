@@ -7,13 +7,12 @@ import * as Hook from '~appcraft/hooks';
 import { PageContainer } from '~appcraft/styles';
 import { WebsiteEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
-import { useFixedT, useNodePickHandle } from '~appcraft/hooks/common';
 
 const EDITOR_ADD_ACTIONS = ['add'];
 const EDITOR_BASE_ACTIONS = ['expand', 'reset', 'save'];
 
 export default function Detail() {
-  const [wt] = useFixedT('websites');
+  const [wt] = Hook.useFixedT('websites');
   const { pathname, query } = useRouter();
 
   const height = Hook.useHeight();
@@ -22,10 +21,10 @@ export default function Detail() {
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
 
   const [actionAdd, handleActionAddPick] =
-    useNodePickHandle(EDITOR_ADD_ACTIONS);
+    Hook.useNodePickHandle(EDITOR_ADD_ACTIONS);
 
   const [actionBase, handleActionBasePick] =
-    useNodePickHandle(EDITOR_BASE_ACTIONS);
+    Hook.useNodePickHandle(EDITOR_BASE_ACTIONS);
 
   const { data: website, refetch } = useQuery({
     queryKey: [id],

@@ -1,5 +1,8 @@
 import type * as Craftsman from '@appcraft/craftsman';
 import type { LayoutWidget, MainWidget } from '@appcraft/types';
+import type { MutableRefObject, ReactNode } from 'react';
+
+import type * as Ctr from '~appcraft/containers/common';
 
 //* Variables
 type Mixeds = 'STATE_DEFAULT_PROP_VALUE';
@@ -52,10 +55,26 @@ export type MetType = {
 };
 
 //* Custom Hooks
-export type CraftsmanOverrideHook = (
+export type CraftsmanOverrideContextValue = MutableRefObject<
+  (options?: OverrideOptions) => OverrideHandlers
+>;
+
+export type CraftsmanOverrideContextHook = (
+  options: OverrideOptions
+) => Partial<OverrideHandlers>;
+
+export type OverrideHook = (
   override: Partial<
     OverrideHandler<Mixeds, 'overrideMixedOptions'> &
       OverrideHandler<Namings, 'overrideNamingProps'> &
       OverrideHandler<Renders, 'renderOverrideItem'>
   >
 ) => (options: OverrideOptions) => OverrideHandlers;
+
+//* Provider Component Props
+export interface CraftsmanOverrideProviderProps {
+  children: ReactNode;
+  hierarchyid?: string;
+  onTodoView?: Ctr.TodoWrapperPickerProps['onView'];
+  onWidgetView?: Ctr.WidgetPickerProps['onView'];
+}

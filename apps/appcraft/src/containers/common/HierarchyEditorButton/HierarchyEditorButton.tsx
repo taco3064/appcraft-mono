@@ -10,7 +10,7 @@ import { useSnackbar } from 'notistack';
 
 import { CommonButton } from '~appcraft/components/common';
 import { addHierarchy, updateHierarchy } from '~appcraft/services';
-import { useFixedT } from '~appcraft/hooks/common';
+import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './HierarchyEditorButton.types';
 
 export default function HierarchyEditorButton({

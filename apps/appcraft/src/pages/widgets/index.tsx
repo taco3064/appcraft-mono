@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import * as Ctr from '~appcraft/containers';
 import { CommonButton } from '~appcraft/components/common';
 import { PageContainer } from '~appcraft/styles';
-import { useFixedT, useNodePickHandle } from '~appcraft/hooks/common';
+import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
 

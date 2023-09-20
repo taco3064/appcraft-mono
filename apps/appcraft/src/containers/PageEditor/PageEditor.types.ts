@@ -5,7 +5,7 @@ import type * as Exhibitor from '@appcraft/exhibitor';
 import { ResponsiveDrawer } from '~appcraft/styles';
 import type { Breadcrumb, PageData } from '~appcraft/hooks';
 import type { LayoutPropsEditorProps } from '../common';
-import type { NodePickerFn } from '~appcraft/hooks/common';
+import type { NodePickerFn } from '~appcraft/hooks';
 
 //* Component Props
 export type LazyLayoutPropsEditorProps = Omit<

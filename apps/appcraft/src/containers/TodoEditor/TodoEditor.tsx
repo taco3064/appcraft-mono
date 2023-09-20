@@ -6,14 +6,13 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedTodoEditor, CraftsmanStyle } from '@appcraft/craftsman';
 import { useEffect, useState } from 'react';
 
-import * as Hook from '~appcraft/hooks/common';
+import * as Hook from '~appcraft/hooks';
 import { Breadcrumbs } from '../common';
 import { CommonButton } from '~appcraft/components/common';
 import { ResponsiveDrawer } from '~appcraft/styles';
 import { TodoOutputStepper } from '~appcraft/components';
 import { getTypeDefinition } from '~appcraft/services';
-import { useCraftsmanOverrideContext } from '~appcraft/contexts/common';
-import { useTodoValues } from '~appcraft/hooks';
+import { useCraftsmanOverride } from '~appcraft/contexts';
 import type { TodoEditorProps } from './TodoEditor.types';
 
 export default function TodoEditor({
@@ -28,7 +27,7 @@ export default function TodoEditor({
   const [open, setOpen] = useState(true);
   const handleFetch = Hook.useCraftsmanFetch();
 
-  const [{ duration, outputs, todos }, handleTodos] = useTodoValues({
+  const [{ duration, outputs, todos }, handleTodos] = Hook.useTodoValues({
     data,
     onSave,
     onOpen: () => setOpen(true),
@@ -37,7 +36,7 @@ export default function TodoEditor({
   const width = Hook.useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width) && outputs.length > 0;
   const isLogsOpen = (!isCollapsable || open) && outputs.length > 0;
-  const override = useCraftsmanOverrideContext({});
+  const override = useCraftsmanOverride({});
 
   const actionNode = Hook.useNodePicker(
     () =>

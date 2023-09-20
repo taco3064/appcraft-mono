@@ -11,12 +11,11 @@ import type { WidgetTodo } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
 import { CommonButton } from '~appcraft/components/common';
-import { CraftsmanOverrideProvider } from '~appcraft/contexts/common';
+import { CraftsmanOverrideProvider } from '~appcraft/contexts';
 import { PageContainer } from '~appcraft/styles';
 import { PageEditor, TodoEditor } from '~appcraft/containers';
 import { TodoOutputStepper } from '~appcraft/components';
 import { findConfig } from '~appcraft/services';
-import { useFixedT, useNodePickHandle } from '~appcraft/hooks/common';
 import type { HierarchyData } from '~appcraft/services';
 import type { PageData } from '~appcraft/hooks';
 
@@ -24,13 +23,17 @@ const PAGE_ACTIONS = ['add', 'ready', 'reset', 'save'];
 const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];
 
 export default function Detail() {
-  const [at, pt, tt] = useFixedT('app', 'pages', 'todos');
+  const [at, pt, tt] = Hook.useFixedT('app', 'pages', 'todos');
   const { enqueueSnackbar } = useSnackbar();
   const { pathname, query } = useRouter();
   const [output, setOutput] = useState<OutputCollectEvent>();
   const [todoHierarchy, setTodoHierarchy] = useState<HierarchyData<string>>();
-  const [pageAction, handlePageActionPick] = useNodePickHandle(PAGE_ACTIONS);
-  const [todoAction, handleTodoActionPick] = useNodePickHandle(TODO_ACTIONS);
+
+  const [pageAction, handlePageActionPick] =
+    Hook.useNodePickHandle(PAGE_ACTIONS);
+
+  const [todoAction, handleTodoActionPick] =
+    Hook.useNodePickHandle(TODO_ACTIONS);
 
   const theme = useTheme();
   const height = Hook.useHeight();

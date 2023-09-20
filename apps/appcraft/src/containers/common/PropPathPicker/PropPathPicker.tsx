@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { MainWidget } from '@appcraft/types';
 
 import { findConfig } from '~appcraft/services';
-import { useFixedT, usePathOptions } from '~appcraft/hooks/common';
+import { useFixedT, usePathOptions } from '~appcraft/hooks';
 import type * as Types from './PropPathPicker.types';
 
 export default function PropPathPicker({

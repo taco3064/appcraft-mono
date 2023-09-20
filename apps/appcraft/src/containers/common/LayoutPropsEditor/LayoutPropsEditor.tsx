@@ -4,9 +4,9 @@ import LinkOffIcon from '@mui/icons-material/LinkOff';
 import _set from 'lodash/set';
 import { CraftedWidgetEditor, CraftsmanStyle } from '@appcraft/craftsman';
 
-import * as Hook from '~appcraft/hooks/common';
+import * as Hook from '~appcraft/hooks';
 import NodeTemplateDialog from '../NodeTemplateDialog';
-import { useCraftsmanOverrideContext } from '~appcraft/contexts/common';
+import { useCraftsmanOverride } from '~appcraft/contexts';
 import type { LayoutPropsEditorProps } from './LayoutPropsEditor.types';
 
 export default function LayoutPropsEditor({
@@ -26,7 +26,7 @@ export default function LayoutPropsEditor({
   const [at] = Hook.useFixedT('app');
   const [links, onLinkSet] = Hook.useLayoutLinks(value, onChange);
   const handleFetch = Hook.useCraftsmanFetch();
-  const override = useCraftsmanOverrideContext({ layouts, widget });
+  const override = useCraftsmanOverride({ layouts, widget });
 
   const handleWidgetAdd = (paths: (string | number)[], id: string) =>
     onChange({

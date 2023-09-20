@@ -1,4 +1,4 @@
-import { useFixedT } from '~appcraft/hooks/common';
+import { useFixedT } from '../useApp';
 import type { BaseOption, PathOptionsHook } from './usePathOptions.types';
 
 export const usePathOptions: PathOptionsHook = (states, stateType) => {

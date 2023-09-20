@@ -3,9 +3,8 @@ import { CraftedRenderer } from '@appcraft/exhibitor';
 import { useQuery } from '@tanstack/react-query';
 import { useTheme } from '@mui/material/styles';
 
-import { GRID_LAYOUT } from '~appcraft/hooks';
+import { GRID_LAYOUT, useCraftsmanFetch, useFixedT } from '~appcraft/hooks';
 import { findConfig } from '~appcraft/services';
-import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks/common';
 import type { PageData } from '~appcraft/hooks';
 import type { PagePreviewProps } from './PagePreview.types';
 

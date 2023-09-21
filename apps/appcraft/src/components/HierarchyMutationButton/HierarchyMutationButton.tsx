@@ -8,16 +8,16 @@ import { FormEvent, useState } from 'react';
 
 import CommonButton from '../CommonButton';
 import { useFixedT } from '~appcraft/hooks';
-import type * as Types from './HierarchyEditorButton.types';
+import type * as Types from './HierarchyMutationButton.types';
 
-export default function HierarchyEditorButton({
+export default function HierarchyMutationButton({
   CommonButtonProps,
   btnVariant = 'icon',
   mode,
   data,
   onCancel,
   onConfirm,
-}: Types.HierarchyEditorButtonProps) {
+}: Types.HierarchyMutationButtonProps) {
   const [at] = useFixedT('app');
   const [open, setOpen] = useState(false);
 

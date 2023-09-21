@@ -83,7 +83,7 @@ export default function HierarchyList({
     () =>
       onActionNodePick({
         addGroup: !disableGroup && (
-          <Comp.HierarchyEditorButton
+          <Comp.HierarchyMutationButton
             mode="add"
             data={{
               category,
@@ -94,7 +94,7 @@ export default function HierarchyList({
           />
         ),
         addItem: (
-          <Comp.HierarchyEditorButton
+          <Comp.HierarchyMutationButton
             mode="add"
             data={{
               category,

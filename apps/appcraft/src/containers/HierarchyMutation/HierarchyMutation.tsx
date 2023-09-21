@@ -72,7 +72,7 @@ export default function HierarchyMutation({
           />
         )}
 
-        <Comp.HierarchyEditorButton
+        <Comp.HierarchyMutationButton
           btnVariant="menu"
           mode="update"
           data={data}

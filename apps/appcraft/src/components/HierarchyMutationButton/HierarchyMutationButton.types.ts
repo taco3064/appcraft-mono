@@ -23,7 +23,7 @@ interface BaseProps<T extends keyof typeof EditorMode, D>
   onConfirm: UseMutateFunction<HierarchyData<string>, unknown, HierarchyData>;
 }
 
-export type HierarchyEditorButtonProps =
+export type HierarchyMutationButtonProps =
   | BaseProps<'update', HierarchyData<string>>
   | BaseProps<
       'add',

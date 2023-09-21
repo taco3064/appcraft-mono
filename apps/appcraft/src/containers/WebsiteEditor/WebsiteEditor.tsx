@@ -14,7 +14,7 @@ export default function WebsiteEditor({
   data,
   superiors,
   onActionAddPick,
-  onActionBasePick,
+  onActionBasePick = (e) => e,
   onSave,
 }: WebsiteEditorProps) {
   const [at, wt] = Hook.useFixedT('app', 'websites');

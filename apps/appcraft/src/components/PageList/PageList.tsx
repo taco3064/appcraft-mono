@@ -20,7 +20,7 @@ import type * as Types from './PageList.types';
 export default function PageList({
   values,
   onChange,
-  onActionNodePick,
+  onActionNodePick = (e) => e,
 }: Types.PageListProps) {
   const width = useWidth();
   const [at, wt] = useFixedT('app', 'websites');
@@ -64,7 +64,7 @@ export default function PageList({
           <CommonButton
             btnVariant="icon"
             icon={<AddIcon />}
-            text={at('btn-add')}
+            text={wt('btn-add-page')}
             onClick={() => {
               items.push({
                 id: nanoid(4),

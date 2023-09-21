@@ -1,15 +1,17 @@
 import ExtensionTwoToneIcon from '@mui/icons-material/ExtensionTwoTone';
 import Head from 'next/head';
-import LinearProgress from '@mui/material/LinearProgress';
 import StorageIcon from '@mui/icons-material/Storage';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { CraftsmanStyle } from '@appcraft/craftsman';
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import type { MainWidget } from '@appcraft/types';
 
-import * as Ctr from '~appcraft/containers';
-import { CommonButton } from '~appcraft/components';
+import { CommonButton, StateViewer, WidgetPreview } from '~appcraft/components';
+import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
+import { findConfig } from '~appcraft/services';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
@@ -23,6 +25,13 @@ export default function Widgets() {
     id: string;
     name: string;
   }>();
+
+  const { data: widget } = useQuery({
+    enabled: Boolean(detail?.id),
+    queryKey: [detail?.id],
+    queryFn: findConfig<MainWidget>,
+    refetchOnWindowFocus: false,
+  });
 
   const [action, handleActionNodePick] = useNodePickHandle(
     HIERARCHY_LIST_ACTIONS
@@ -46,7 +55,7 @@ export default function Widgets() {
           <title>Appcraft | {nt('ttl-widgets')}</title>
         </Head>
 
-        <Ctr.HierarchyList
+        <HierarchyList
           category={pathname.replace(/^\//, '')}
           icon={ExtensionTwoToneIcon}
           onActionNodePick={handleActionNodePick}
@@ -76,13 +85,20 @@ export default function Widgets() {
         fullWidth
         maxWidth={detail?.type === 'state' ? 'xs' : 'sm'}
         title={{ primary: wt(`ttl-${detail?.type}`), secondary: detail?.name }}
-        open={Boolean(detail?.id)}
+        open={Boolean(widget?.content)}
         onClose={() => setDetail(undefined)}
       >
-        <Suspense fallback={<LinearProgress />}>
-          {detail?.type === 'preview' && <Ctr.WidgetPreview id={detail.id} />}
-          {detail?.type === 'state' && <Ctr.StateViewer id={detail.id} />}
-        </Suspense>
+        {widget?.content && (
+          <>
+            {detail?.type === 'state' && (
+              <StateViewer widget={widget.content} />
+            )}
+
+            {detail?.type === 'preview' && (
+              <WidgetPreview widget={widget.content} />
+            )}
+          </>
+        )}
       </CraftsmanStyle.FlexDialog>
     </>
   );

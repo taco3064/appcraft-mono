@@ -7,7 +7,7 @@ import type { TodosState } from '@appcraft/types';
 
 import PropPathPicker from './PropPathPicker';
 import PropsGroupPicker from './PropsGroupPicker';
-import TemplateTodoItem from './TemplateTodoItem';
+import TemplateTodoItem from '../components/TemplateTodoItem';
 import TodoWrapperPicker from './TodoWrapperPicker';
 import WidgetPicker from './WidgetPicker';
 import { StatePathPicker } from '~appcraft/components';
@@ -51,7 +51,7 @@ export const getOverrideRender: GetOverrideRenderFn = ({
 
   //* Renders
   TEMPLATE_TODO_ITEM: (opts, category, props) => {
-    const { overrides } = opts;
+    const { overrides } = opts; //!
 
     return (
       <TemplateTodoItem

@@ -1,3 +1,5 @@
+import type { UseMutateFunction } from '@tanstack/react-query';
+
 import type { HierarchyData } from '~appcraft/services';
 import type { CommonButtonProps } from '~appcraft/components';
 
@@ -18,7 +20,7 @@ interface BaseProps<T extends keyof typeof EditorMode, D>
   mode: T;
   data: D;
   onCancel?: () => void;
-  onConfirm?: (data: HierarchyData<string>) => void;
+  onConfirm: UseMutateFunction<HierarchyData<string>, unknown, HierarchyData>;
 }
 
 export type HierarchyEditorButtonProps =

@@ -12,10 +12,8 @@ import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
 import _get from 'lodash/get';
 import { Fragment, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import type { MainWidget, WidgetState } from '@appcraft/types';
+import type { WidgetState } from '@appcraft/types';
 
-import { findConfig } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './StateViewer.types';
 
@@ -25,21 +23,15 @@ const ICONS: Types.StateIcon = {
   todos: <AssignmentOutlinedIcon />,
 };
 
-export default function StateViewer({ id }: Types.StateViewerProps) {
+export default function StateViewer({ widget }: Types.StateViewerProps) {
   const [ct] = useFixedT('appcraft');
   const [collapsed, setCollapsed] = useState(new Set<string>());
-
-  const { data: widget } = useQuery({
-    queryKey: [id],
-    queryFn: findConfig<MainWidget>,
-    refetchOnWindowFocus: false,
-  });
 
   return (
     <List>
       {Object.entries(ICONS).map(([category, icon]) => {
         const list = Object.entries<WidgetState>(
-          _get(widget, ['content', 'state', category]) || {}
+          _get(widget, ['state', category]) || {}
         ).filter(([, { type }]) => type === 'public');
 
         return (

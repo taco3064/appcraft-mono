@@ -2,13 +2,16 @@ import DashboardTwoToneIcon from '@mui/icons-material/DashboardTwoTone';
 import Head from 'next/head';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { CraftsmanStyle } from '@appcraft/craftsman';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { CommonButton } from '~appcraft/components';
-import { HierarchyList, PagePreview } from '~appcraft/containers';
+import { CommonButton, PagePreview } from '~appcraft/components';
+import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
+import { findConfig } from '~appcraft/services';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
+import type { PageData } from '~appcraft/hooks';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
 
@@ -20,6 +23,13 @@ export default function Pages() {
   const [action, handleActionNodePick] = useNodePickHandle(
     HIERARCHY_LIST_ACTIONS
   );
+
+  const { data: page } = useQuery({
+    enabled: Boolean(preview.id),
+    queryKey: [preview.id],
+    queryFn: findConfig<PageData>,
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <>
@@ -62,7 +72,7 @@ export default function Pages() {
         open={Boolean(preview)}
         onClose={() => setPreview(undefined)}
       >
-        {preview && <PagePreview id={preview.id} />}
+        {preview && <PagePreview options={page?.content} />}
       </CraftsmanStyle.FlexDialog>
     </>
   );

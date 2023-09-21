@@ -1,35 +1,26 @@
 import Typography from '@mui/material/Typography';
 import { CraftedRenderer } from '@appcraft/exhibitor';
-import { useQuery } from '@tanstack/react-query';
 import { useTheme } from '@mui/material/styles';
 
 import { GRID_LAYOUT, useCraftsmanFetch, useFixedT } from '~appcraft/hooks';
-import { findConfig } from '~appcraft/services';
-import type { PageData } from '~appcraft/hooks';
 import type { PagePreviewProps } from './PagePreview.types';
 
-export default function PagePreview({ id }: PagePreviewProps) {
+export default function PagePreview({ options }: PagePreviewProps) {
   const [pt] = useFixedT('pages');
   const theme = useTheme();
-  const handleFetch = useCraftsmanFetch();
+  const fetchHandles = useCraftsmanFetch();
 
-  const { data } = useQuery({
-    queryKey: [id],
-    queryFn: findConfig<PageData>,
-    refetchOnWindowFocus: false,
-  });
-
-  return !data?.content ? (
+  return !options ? (
     <Typography variant="h4" color="text.secondary">
       {pt('msg-no-layouts')}
     </Typography>
   ) : (
     <CraftedRenderer
       elevation={1}
-      options={data.content.layouts}
-      onFetchData={handleFetch.data}
-      onFetchWrapper={handleFetch.wrapper}
-      onReady={data.content.readyTodos}
+      options={options.layouts}
+      onFetchData={fetchHandles.data}
+      onFetchWrapper={fetchHandles.wrapper}
+      onReady={options.readyTodos}
       GridLayoutProps={{
         autoSize: true,
         cols: GRID_LAYOUT.COLS,

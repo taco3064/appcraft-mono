@@ -13,6 +13,7 @@ export default function LayoutPropsEditor({
   layouts,
   value,
   getWidgetOptions,
+  renderPicker,
   onChange,
   onClose,
 }: LayoutPropsEditorProps) {
@@ -25,7 +26,7 @@ export default function LayoutPropsEditor({
   const { template } = value;
   const [at] = Hook.useFixedT('app');
   const [links, onLinkSet] = Hook.useLayoutLinks(value, onChange);
-  const handleFetch = Hook.useCraftsmanFetch();
+  const fetchHandles = Hook.useCraftsmanFetch();
   const override = useCraftsmanOverride({ layouts, widget });
 
   const handleWidgetAdd = (paths: (string | number)[], id: string) =>
@@ -44,11 +45,11 @@ export default function LayoutPropsEditor({
       todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
       version={__WEBPACK_DEFINE__.VERSION}
       widget={widget}
-      onFetchData={handleFetch.data}
-      onFetchWrapper={handleFetch.wrapper}
+      onFetchData={fetchHandles.data}
+      onFetchWrapper={fetchHandles.wrapper}
       renderNewWidgetDialog={({ paths, open, onClose }) => (
         <NodeTemplateDialog
-          {...{ open, onClose }}
+          {...{ open, renderPicker, onClose }}
           onConfirm={(e) => handleWidgetAdd(paths, e)}
         />
       )}

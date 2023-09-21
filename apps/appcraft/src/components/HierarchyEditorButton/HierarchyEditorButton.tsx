@@ -5,11 +5,8 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import TextField from '@mui/material/TextField';
 import { CraftsmanStyle } from '@appcraft/craftsman';
 import { FormEvent, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { useSnackbar } from 'notistack';
 
-import { CommonButton } from '~appcraft/components';
-import { addHierarchy, updateHierarchy } from '~appcraft/services';
+import CommonButton from '../CommonButton';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './HierarchyEditorButton.types';
 
@@ -21,34 +18,26 @@ export default function HierarchyEditorButton({
   onCancel,
   onConfirm,
 }: Types.HierarchyEditorButtonProps) {
-  const { enqueueSnackbar } = useSnackbar();
   const [at] = useFixedT('app');
   const [open, setOpen] = useState(false);
-
-  const mutation = useMutation({
-    mutationFn: mode === 'add' ? addHierarchy : updateHierarchy,
-    onSuccess: (modified) => {
-      onConfirm?.(modified);
-      setOpen(false);
-      enqueueSnackbar(at(`msg-succeed-${mode}`), { variant: 'success' });
-    },
-  });
 
   const handleClose = () => {
     setOpen(false);
     onCancel?.();
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     const formdata = new FormData(e.target as HTMLFormElement);
 
     e.preventDefault();
 
-    mutation.mutate({
-      ...data,
+    await onConfirm({
+      ...(data as Parameters<typeof onConfirm>[0]),
       name: formdata.get('name').toString(),
       description: formdata.get('description').toString(),
-    } as Parameters<typeof mutation.mutate>[0]);
+    });
+
+    setOpen(false);
   };
 
   return (

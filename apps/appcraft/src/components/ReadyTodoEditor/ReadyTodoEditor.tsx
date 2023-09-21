@@ -5,8 +5,8 @@ import { useState } from 'react';
 
 import { CommonButton } from '~appcraft/components';
 import { getTypeDefinition } from '~appcraft/services';
-import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks';
 import { useCraftsmanOverride } from '~appcraft/contexts';
+import { useCraftsmanFetch, useFixedT } from '~appcraft/hooks';
 import type * as Types from './ReadyTodoEditor.types';
 import type { PageData } from '~appcraft/hooks';
 
@@ -17,7 +17,7 @@ export default function ReadyTodoEditor({
 }: Types.ReadyTodoEditorProps) {
   const [at, pt] = useFixedT('app', 'pages');
   const [open, setOpen] = useState(false);
-  const handleFetch = useCraftsmanFetch();
+  const fetchHandles = useCraftsmanFetch();
   const override = useCraftsmanOverride({ layouts });
 
   const [todos, setTodos] = useState<PageData['readyTodos']>(() =>
@@ -72,9 +72,9 @@ export default function ReadyTodoEditor({
           typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
           values={todos}
           onChange={setTodos}
-          onFetchData={handleFetch.data}
+          onFetchData={fetchHandles.data}
           onFetchDefinition={getTypeDefinition}
-          onFetchWrapper={handleFetch.wrapper}
+          onFetchWrapper={fetchHandles.wrapper}
         />
       </CraftsmanStyle.FlexDialog>
     </>

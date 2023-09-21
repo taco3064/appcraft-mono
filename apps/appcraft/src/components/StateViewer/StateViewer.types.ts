@@ -8,5 +8,5 @@ export type StateIcon = Record<keyof WidgetStates, ReactElement<IconProps>>;
 
 //* Component Props
 export interface StateViewerProps {
-  id: string;
+  widget: MainWidget;
 }

@@ -17,7 +17,8 @@ export default function TemplateTodoItem({
   onChange,
 }: TemplateTodoItemProps) {
   const disabled = defaultDisabled || Boolean(!label?.trim());
-  const handleFetch = useCraftsmanFetch();
+  const fetchHandles = useCraftsmanFetch();
+
   const [ct] = useFixedT('appcraft');
   const [editing, setEditing] = useState(false);
   const [open, setOpen] = useState(false);
@@ -87,9 +88,9 @@ export default function TemplateTodoItem({
           values={todos}
           onChange={setTodos}
           onEditToggle={setEditing}
-          onFetchData={handleFetch.data}
+          onFetchData={fetchHandles.data}
           onFetchDefinition={getTypeDefinition}
-          onFetchWrapper={handleFetch.wrapper}
+          onFetchWrapper={fetchHandles.wrapper}
         />
       </CraftsmanStyle.FlexDialog>
     </>

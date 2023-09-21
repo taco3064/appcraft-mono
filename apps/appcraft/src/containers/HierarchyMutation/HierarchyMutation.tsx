@@ -7,9 +7,8 @@ import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 
-import HierarchyEditorButton from '../HierarchyEditorButton';
-import { CommonButton, RemoveButton } from '~appcraft/components';
-import { removeHierarchy } from '~appcraft/services';
+import * as Comp from '~appcraft/components';
+import { removeHierarchy, updateHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type { HierarchyMutationProps } from './HierarchyMutation.types';
 
@@ -22,7 +21,16 @@ export default function HierarchyMutation({
   const [at] = useFixedT('app');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
 
-  const mutation = useMutation({
+  const { mutate: handleUpdate } = useMutation({
+    mutationFn: updateHierarchy,
+    onSuccess: () => {
+      setAnchorEl(null);
+      onSuccess?.();
+      enqueueSnackbar(at('msg-succeed-update'), { variant: 'success' });
+    },
+  });
+
+  const { mutate: handleRemove } = useMutation({
     mutationFn: removeHierarchy,
     onSuccess: () => {
       setAnchorEl(null);
@@ -53,7 +61,7 @@ export default function HierarchyMutation({
         }}
       >
         {onMoveToSuperiorGroup && (
-          <CommonButton
+          <Comp.CommonButton
             btnVariant="menu"
             icon={<ArrowOutwardIcon />}
             text={at('btn-move-to-superior-group')}
@@ -64,23 +72,20 @@ export default function HierarchyMutation({
           />
         )}
 
-        <HierarchyEditorButton
+        <Comp.HierarchyEditorButton
           btnVariant="menu"
           mode="update"
           data={data}
           onCancel={() => setAnchorEl(null)}
-          onConfirm={() => {
-            setAnchorEl(null);
-            onSuccess?.();
-          }}
+          onConfirm={handleUpdate}
         />
 
         <Divider />
 
-        <RemoveButton
+        <Comp.RemoveButton
           btnVariant="menu"
           onCancel={() => setAnchorEl(null)}
-          onConfirm={() => mutation.mutate(data._id)}
+          onConfirm={() => handleRemove(data._id)}
         />
       </Menu>
     </>

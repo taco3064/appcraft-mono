@@ -3,12 +3,12 @@ import { CraftsmanStyle } from '@appcraft/craftsman';
 import { useState } from 'react';
 import type { FormEventHandler } from 'react';
 
-import WidgetPicker from '../WidgetPicker';
 import { useFixedT } from '~appcraft/hooks';
 import type { NodeTemplateDialogProps } from './NodeTemplateDialog.types';
 
 export default function NodeTemplateDialog({
   open,
+  renderPicker,
   onClose,
   onConfirm,
 }: NodeTemplateDialogProps) {
@@ -46,11 +46,16 @@ export default function NodeTemplateDialog({
         </>
       }
     >
-      <WidgetPicker
+      {renderPicker({
+        label: pt('lbl-widget'),
+        value: selected,
+        onChange: setSelected,
+      })}
+      {/* <WidgetPicker
         label={pt('lbl-widget')}
         value={selected}
         onChange={setSelected}
-      />
+      /> */}
     </CraftsmanStyle.FlexDialog>
   );
 }

@@ -1,4 +1,5 @@
 import type { CraftedWidgetEditorProps } from '@appcraft/craftsman';
+
 import type { PageData } from '~appcraft/hooks';
 
 //* Variables

@@ -1,6 +1,7 @@
 import type { Website } from '@appcraft/types';
 
-import type { Page, PageMutationButtonProps } from '../PageMutationButton';
+import type { Page } from '../PageMutationMenu';
+import type { PageMutationButtonProps } from '../PageMutationButton';
 import type { NodePickerFn } from '~appcraft/hooks';
 
 //* Variables

@@ -10,13 +10,13 @@ import { useState } from 'react';
 import * as Comp from '~appcraft/components';
 import { removeHierarchy, updateHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
-import type { HierarchyMutationProps } from './HierarchyMutation.types';
+import type { HierarchyMutationMenuProps } from './HierarchyMutationMenu.types';
 
-export default function HierarchyMutation({
+export default function HierarchyMutationMenu({
   data,
   onMoveToSuperiorGroup,
   onSuccess,
-}: HierarchyMutationProps) {
+}: HierarchyMutationMenuProps) {
   const { enqueueSnackbar } = useSnackbar();
   const [at] = useFixedT('app');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);

@@ -1,2 +1,2 @@
 export { default, default as PageMutationButton } from './PageMutationButton';
-export type { Page, PageMutationButtonProps } from './PageMutationButton.types';
+export type { PageMutationButtonProps } from './PageMutationButton.types';

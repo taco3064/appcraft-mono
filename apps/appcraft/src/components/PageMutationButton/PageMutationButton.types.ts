@@ -1,10 +1,7 @@
-import type { Website } from '@appcraft/types';
-
 import type { BaseOption } from '~appcraft/hooks';
 import type { CommonButtonProps } from '~appcraft/components';
 
-//* Variables
-export type Page = Website['pages'][number];
+import type { Page } from '../PageMutationMenu';
 
 //* Component Props
 export interface PageMutationButtonProps

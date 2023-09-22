@@ -9,6 +9,8 @@ export * from './LayoutPropsEditor';
 export * from './MenuDrawer';
 export * from './NodeTemplateDialog';
 export * from './PageList';
+export * from './PageMutationButton';
+export * from './PageMutationMenu';
 export * from './PagePreview';
 export * from './ReadyTodoEditor';
 export * from './RemoveButton';

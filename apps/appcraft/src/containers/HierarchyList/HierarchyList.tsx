@@ -15,7 +15,7 @@ import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Svc from '~appcraft/services';
 import Breadcrumbs from '../Breadcrumbs';
-import HierarchyMutation from '../HierarchyMutation';
+import HierarchyMutationMenu from '../HierarchyMutationMenu';
 import type * as Types from './HierarchyList.types';
 
 export default function HierarchyList({
@@ -50,7 +50,7 @@ export default function HierarchyList({
     },
   });
 
-  const { mutate: handleUpdate } = useMutation({
+  const { mutate: handleDnd } = useMutation({
     mutationFn: Svc.updateHierarchy,
     onSuccess: (modified) => {
       enqueueSnackbar(at('msg-succeed-dnd', modified), { variant: 'success' });
@@ -147,7 +147,7 @@ export default function HierarchyList({
     isGroupRequired = false,
   }) => {
     if (item && (!isGroupRequired || group)) {
-      handleUpdate({
+      handleDnd({
         ...item,
         superior: group || null,
       });
@@ -217,7 +217,7 @@ export default function HierarchyList({
                     ({ type }) => type === 'item'
                   )}
                   mutation={
-                    <HierarchyMutation
+                    <HierarchyMutationMenu
                       data={data}
                       onSuccess={() => refetch()}
                       {...(superior && {

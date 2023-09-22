@@ -15,7 +15,8 @@ import HierarchyItem from '../HierarchyItem';
 import PageMutationButton from '../PageMutationButton';
 import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks';
 import type * as Types from './PageList.types';
-import type { Page } from '../PageMutationButton';
+import type { Page } from '../PageMutationMenu';
+import { Typography } from '@mui/material';
 
 export default function PageList({
   pageOptions,
@@ -79,6 +80,10 @@ export default function PageList({
 
   return (
     <>
+      <Typography variant="h6" justifyContent="center" color="primary">
+        {wt('ttl-mode-page')}
+      </Typography>
+
       <Toolbar disableGutters variant="dense">
         <IconButton
           disabled={!hierarchies.length}
@@ -115,7 +120,7 @@ export default function PageList({
       <Grow key={refresh} in>
         <ImageList
           gap={24}
-          cols={width === 'xs' ? 1 : /^(sm|lg)$/.test(width) ? 2 : 3}
+          cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}
           style={{ overflow: 'hidden auto' }}
         >
           <Dnd.DndContext

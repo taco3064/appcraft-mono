@@ -71,8 +71,8 @@ export const IconSwitch = (<V extends string>() =>
           transform: 'translateX(22px)',
         },
         track: {
-          opacity: 1,
-          background: theme.palette.divider,
+          opacity: '1 !important',
+          background: `${theme.palette.divider} !important`,
           borderRadius: 20 / 2,
         },
         thumb: {
@@ -80,8 +80,8 @@ export const IconSwitch = (<V extends string>() =>
           height: theme.spacing(4),
 
           background: `linear-gradient(to bottom right, ${
-            color?.main || theme.palette.grey['500']
-          }, ${color?.dark || theme.palette.grey['800']})`,
+            (!disabled && color?.main) || theme.palette.grey['500']
+          }, ${(!disabled && color?.dark) || theme.palette.grey['800']})`,
 
           transition: theme.transitions.create('background', {
             easing: theme.transitions.easing.sharp,

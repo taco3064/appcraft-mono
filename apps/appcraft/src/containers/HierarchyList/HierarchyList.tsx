@@ -13,10 +13,9 @@ import { useMemo, useState } from 'react';
 
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
+import * as Svc from '~appcraft/services';
 import Breadcrumbs from '../Breadcrumbs';
-import HierarchyEditorButton from '../HierarchyEditorButton';
 import HierarchyMutation from '../HierarchyMutation';
-import { searchHierarchy, updateHierarchy } from '~appcraft/services';
 import type * as Types from './HierarchyList.types';
 
 export default function HierarchyList({
@@ -39,12 +38,20 @@ export default function HierarchyList({
 
   const { data: hierarchies, refetch } = useQuery({
     refetchOnWindowFocus: false,
-    queryFn: searchHierarchy,
+    queryFn: Svc.searchHierarchy,
     queryKey: [category, keyword ? { keyword } : { superior }],
   });
 
-  const mutation = useMutation({
-    mutationFn: updateHierarchy,
+  const { mutate: handleAdd } = useMutation({
+    mutationFn: Svc.addHierarchy,
+    onSuccess: () => {
+      enqueueSnackbar(at('msg-succeed-add'), { variant: 'success' });
+      refetch();
+    },
+  });
+
+  const { mutate: handleUpdate } = useMutation({
+    mutationFn: Svc.updateHierarchy,
     onSuccess: (modified) => {
       enqueueSnackbar(at('msg-succeed-dnd', modified), { variant: 'success' });
       refetch();
@@ -76,25 +83,25 @@ export default function HierarchyList({
     () =>
       onActionNodePick({
         addGroup: !disableGroup && (
-          <HierarchyEditorButton
+          <Comp.HierarchyMutationButton
             mode="add"
             data={{
               category,
               type: 'group',
               ...(typeof superior === 'string' && { superior }),
             }}
-            onConfirm={() => refetch()}
+            onConfirm={handleAdd}
           />
         ),
         addItem: (
-          <HierarchyEditorButton
+          <Comp.HierarchyMutationButton
             mode="add"
             data={{
               category,
               type: 'item',
               ...(typeof superior === 'string' && { superior }),
             }}
-            onConfirm={() => refetch()}
+            onConfirm={handleAdd}
           />
         ),
         search: (
@@ -140,7 +147,7 @@ export default function HierarchyList({
     isGroupRequired = false,
   }) => {
     if (item && (!isGroupRequired || group)) {
-      mutation.mutate({
+      handleUpdate({
         ...item,
         superior: group || null,
       });

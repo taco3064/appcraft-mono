@@ -1,5 +1,4 @@
 import * as Dnd from '@dnd-kit/core';
-import AddIcon from '@mui/icons-material/Add';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
@@ -12,12 +11,14 @@ import { CraftsmanStyle } from '@appcraft/craftsman';
 import { nanoid } from 'nanoid';
 import { useMemo, useState } from 'react';
 
-import CommonButton from '../CommonButton';
 import HierarchyItem from '../HierarchyItem';
+import PageMutationButton from '../PageMutationButton';
 import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks';
 import type * as Types from './PageList.types';
+import type { Page } from '../PageMutationButton';
 
 export default function PageList({
+  pageOptions,
   values,
   onChange,
   onActionNodePick = (e) => e,
@@ -36,7 +37,7 @@ export default function PageList({
     [hierarchies]
   );
 
-  const items = useMemo<Types.Page[]>(
+  const items = useMemo<Page[]>(
     () => (!paths.length ? values : _get(values, paths)) || [],
     [values, paths]
   );
@@ -61,19 +62,14 @@ export default function PageList({
     () =>
       onActionNodePick({
         add: (
-          <CommonButton
-            btnVariant="icon"
-            icon={<AddIcon />}
-            text={wt('btn-add-page')}
-            onClick={() => {
-              items.push({
-                id: nanoid(4),
-                subTitle: '',
-                pathname: '',
-                isNavItem: false,
-              });
+          <PageMutationButton
+            mode="add"
+            data={{ isNavItem: false }}
+            options={pageOptions}
+            onConfirm={(page) => {
+              const list = [...items, page];
 
-              onChange([..._set(values, paths, [...items])]);
+              onChange([...(!paths.length ? list : _set(values, paths, list))]);
             }}
           />
         ),

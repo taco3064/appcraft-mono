@@ -1,12 +1,14 @@
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
 import Breadcrumbs from '../Breadcrumbs';
 import { CommonButton, PageList } from '~appcraft/components';
 import { ResponsiveDrawer } from '~appcraft/styles';
+import { searchHierarchy } from '~appcraft/services';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
 
 export default function WebsiteEditor({
@@ -24,6 +26,12 @@ export default function WebsiteEditor({
   const width = Hook.useWidth();
   const isCollapsable = /^(xs|sm|md)$/.test(width);
   const isSettingOpen = !isCollapsable || open;
+
+  const { data: pages } = useQuery({
+    refetchOnWindowFocus: false,
+    queryFn: searchHierarchy,
+    queryKey: ['pages', { type: 'item' }],
+  });
 
   const actionNode = Hook.useNodePicker(
     () =>
@@ -83,6 +91,13 @@ export default function WebsiteEditor({
             values={website.pages}
             onChange={(pages) => handleWebsite.change({ ...website, pages })}
             onActionNodePick={onActionAddPick}
+            pageOptions={pages.map(
+              ({ _id: value, name: primary, description: secondary }) => ({
+                value,
+                primary,
+                secondary,
+              })
+            )}
           />
         }
         drawer={<div>Drawer</div>}

@@ -4,7 +4,8 @@ import Button from '@mui/material/Button';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import TextField from '@mui/material/TextField';
 import { CraftsmanStyle } from '@appcraft/craftsman';
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 
 import CommonButton from '../CommonButton';
 import { useFixedT } from '~appcraft/hooks';

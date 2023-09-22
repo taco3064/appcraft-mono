@@ -11,7 +11,7 @@ import { CraftsmanStyle } from '@appcraft/craftsman';
 import { nanoid } from 'nanoid';
 import { useMemo, useState } from 'react';
 
-import HierarchyItem from '../HierarchyItem';
+import ArborCard from '../ArborCard';
 import PageMutationButton from '../PageMutationButton';
 import { useFixedT, useNodePicker, useWidth } from '~appcraft/hooks';
 import type * as Types from './PageList.types';
@@ -128,7 +128,7 @@ export default function PageList({
             onDragEnd={({ active, over }) => console.log(active, over)}
           >
             {items.map(({ id, subTitle, pathname, isNavItem }, i) => (
-              <HierarchyItem
+              <ArborCard
                 key={id}
                 icon={WebTwoToneIcon}
                 data={{

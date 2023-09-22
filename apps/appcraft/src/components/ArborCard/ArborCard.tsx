@@ -8,16 +8,16 @@ import Typography from '@mui/material/Typography';
 import { useDraggable, useDroppable } from '@dnd-kit/core';
 
 import { useFixedT } from '~appcraft/hooks';
-import type * as Types from './HierarchyItem.types';
+import type * as Types from './ArborCard.types';
 
-export default function HierarchyItem({
+export default function ArborCard({
   mutation,
   data,
   disableGroupChange = false,
   icon: MuiIcon,
   onActionRender,
   onClick,
-}: Types.HierarchyItemProps) {
+}: Types.ArborCardProps) {
   const [at] = useFixedT('app');
   const { type, name, description } = data;
   const action = (type === 'item' && onActionRender?.(data)) || null;

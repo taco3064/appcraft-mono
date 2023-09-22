@@ -15,6 +15,7 @@ import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Svc from '~appcraft/services';
 import Breadcrumbs from '../Breadcrumbs';
+import HierarchyMutationButton from '../HierarchyMutationButton';
 import HierarchyMutationMenu from '../HierarchyMutationMenu';
 import type * as Types from './HierarchyList.types';
 
@@ -40,14 +41,6 @@ export default function HierarchyList({
     refetchOnWindowFocus: false,
     queryFn: Svc.searchHierarchy,
     queryKey: [category, keyword ? { keyword } : { superior }],
-  });
-
-  const { mutate: handleAdd } = useMutation({
-    mutationFn: Svc.addHierarchy,
-    onSuccess: () => {
-      enqueueSnackbar(at('msg-succeed-add'), { variant: 'success' });
-      refetch();
-    },
   });
 
   const { mutate: handleDnd } = useMutation({
@@ -83,25 +76,25 @@ export default function HierarchyList({
     () =>
       onActionNodePick({
         addGroup: !disableGroup && (
-          <Comp.HierarchyMutationButton
+          <HierarchyMutationButton
             mode="add"
+            onConfirm={() => refetch()}
             data={{
               category,
               type: 'group',
               ...(typeof superior === 'string' && { superior }),
             }}
-            onConfirm={handleAdd}
           />
         ),
         addItem: (
-          <Comp.HierarchyMutationButton
+          <HierarchyMutationButton
             mode="add"
+            onConfirm={() => refetch()}
             data={{
               category,
               type: 'item',
               ...(typeof superior === 'string' && { superior }),
             }}
-            onConfirm={handleAdd}
           />
         ),
         search: (
@@ -121,7 +114,7 @@ export default function HierarchyList({
   );
 
   //* Event Handlers
-  const handleItemClick: Comp.HierarchyItemProps['onClick'] = (data) =>
+  const handleItemClick: Comp.ArborCardProps['onClick'] = (data) =>
     push(
       data.type === 'group'
         ? {
@@ -207,7 +200,7 @@ export default function HierarchyList({
               }
             >
               {hierarchies.map((data) => (
-                <Comp.HierarchyItem
+                <Comp.ArborCard
                   key={data._id}
                   data={data}
                   icon={icon}

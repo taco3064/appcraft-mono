@@ -1,6 +1,7 @@
 export * from './Breadcrumbs';
 export * from './ConfigDetail';
 export * from './HierarchyList';
+export * from './HierarchyMutationButton';
 export * from './HierarchyMutationMenu';
 export * from './PageEditor';
 export * from './PropPathPicker';

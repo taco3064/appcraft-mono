@@ -11,7 +11,7 @@ export type DndHook = {
 };
 
 //* Component Props
-export interface HierarchyItemProps {
+export interface ArborCardProps {
   mutation?: ReactNode;
   data: HierarchyData<string>;
   disableGroupChange?: boolean;

@@ -8,6 +8,7 @@ import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 
 import * as Comp from '~appcraft/components';
+import HierarchyMutationButton from '../HierarchyMutationButton';
 import { removeHierarchy, updateHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type { HierarchyMutationMenuProps } from './HierarchyMutationMenu.types';
@@ -20,15 +21,6 @@ export default function HierarchyMutationMenu({
   const { enqueueSnackbar } = useSnackbar();
   const [at] = useFixedT('app');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
-
-  const { mutate: handleUpdate } = useMutation({
-    mutationFn: updateHierarchy,
-    onSuccess: () => {
-      setAnchorEl(null);
-      onSuccess?.();
-      enqueueSnackbar(at('msg-succeed-update'), { variant: 'success' });
-    },
-  });
 
   const { mutate: handleRemove } = useMutation({
     mutationFn: removeHierarchy,
@@ -72,12 +64,15 @@ export default function HierarchyMutationMenu({
           />
         )}
 
-        <Comp.HierarchyMutationButton
+        <HierarchyMutationButton
           btnVariant="menu"
           mode="update"
           data={data}
           onCancel={() => setAnchorEl(null)}
-          onConfirm={handleUpdate}
+          onConfirm={() => {
+            setAnchorEl(null);
+            onSuccess?.();
+          }}
         />
 
         <Divider />

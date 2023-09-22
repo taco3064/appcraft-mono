@@ -85,7 +85,7 @@ export default function Widgets() {
         fullWidth
         maxWidth={detail?.type === 'state' ? 'xs' : 'sm'}
         title={{ primary: wt(`ttl-${detail?.type}`), secondary: detail?.name }}
-        open={Boolean(widget?.content)}
+        open={Boolean(detail)}
         onClose={() => setDetail(undefined)}
       >
         {widget?.content && (

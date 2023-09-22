@@ -7,7 +7,7 @@ import type { Breadcrumb, NodePickerFn } from '~appcraft/hooks';
 export interface WebsiteEditorProps {
   data: ConfigData<Website, string>;
 
-  onActionBasePick?: NodePickerFn<'expand' | 'reset' | 'save'>;
+  onActionBasePick?: NodePickerFn<'switch' | 'expand' | 'reset' | 'save'>;
   onActionAddPick?: NodePickerFn<'add'>;
   onSave?: () => void;
 

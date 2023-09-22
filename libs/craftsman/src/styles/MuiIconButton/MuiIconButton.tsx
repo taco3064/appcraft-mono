@@ -1,12 +1,12 @@
 import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 
-import { AppcraftHint } from '../MuiTooltip';
 import type * as Types from './MuiIconButton.types';
 
 export function IconTipButton({ title, ...props }: Types.IconTipButtonProps) {
   return (
-    <AppcraftHint title={title}>
+    <Tooltip title={title}>
       <IconButton {...props} />
-    </AppcraftHint>
+    </Tooltip>
   );
 }

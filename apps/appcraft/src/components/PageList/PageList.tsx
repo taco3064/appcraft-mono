@@ -59,9 +59,9 @@ export default function PageList({
 
   //* Action Node
   const actionNode = useNodePicker(
-    () =>
+    (unmount) =>
       onActionNodePick({
-        add: (
+        add: unmount ? null : (
           <PageMutationButton
             mode="add"
             data={{ isNavItem: false }}

@@ -8,7 +8,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import Menu from '@mui/material/Menu';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Skeleton from '@mui/material/Skeleton';
-import { CraftsmanStyle } from '@appcraft/craftsman';
+import Tooltip from '@mui/material/Tooltip';
 import { Suspense, useState } from 'react';
 import type { Userinfo } from '@appcraft/types';
 
@@ -27,9 +27,9 @@ export default function UserinfoMenuToggle({
   const LazyAvatar = useLazyUserProfile<Userinfo>(
     tokens.id,
     ({ fetchData }) => (
-      <CraftsmanStyle.AppcraftHint title={fetchData?.username}>
+      <Tooltip title={fetchData?.username}>
         <Avatar alt={fetchData?.username} src={fetchData?.picture} />
-      </CraftsmanStyle.AppcraftHint>
+      </Tooltip>
     )
   );
 

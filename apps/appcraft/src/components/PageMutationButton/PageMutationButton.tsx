@@ -40,6 +40,7 @@ export default function PageMutationButton({
 
     onConfirm({
       ...(data as Parameters<typeof onConfirm>[0]),
+      id: formdata.get('id').toString(),
       subTitle: formdata.get('subTitle').toString(),
       pathname: `/${formdata.get('pathname').toString()}`,
     });

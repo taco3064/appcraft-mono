@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import type { ReactNode } from 'react';
 
@@ -46,14 +46,23 @@ export const useNodePickHandle = <K extends string>(
 };
 
 export const useNodePicker = <K extends string, D extends React.DependencyList>(
-  pickerFn: () => Partial<Record<K, ReactNode>>,
+  pickerFn: (unmount?: boolean) => Partial<Record<K, ReactNode>>,
   deps: D
 ) => {
+  const ref = React.useRef(pickerFn);
+
   const { data: action } = useQuery({
     suspense: false,
     queryKey: deps,
     queryFn: () => pickerFn(),
   });
+
+  React.useEffect(
+    () => () => {
+      ref.current?.(true);
+    },
+    []
+  );
 
   return (
     <>

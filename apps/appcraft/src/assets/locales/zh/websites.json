@@ -8,6 +8,8 @@
   "lbl-sub-title": "頁面標題",
   "msg-pathname-helper": "請輸入以英文字母或數字開頭和結束的文字。 中間可以包含英文字母、數字、下劃線 (_) 和連字號 (-)。 請確保文字的開頭和結尾不是下劃線或連字符。",
   "ttl-detail": "網站配置",
+  "ttl-mode-app": "網站基本版面配置",
+  "ttl-mode-page": "網頁及內容配置",
   "ttl-page-breadcrumbs": "頁面路徑",
   "txt-page-breadcrumb-top": "頂層"
 }

@@ -1,9 +1,10 @@
-import Button, { ButtonProps } from '@mui/material/Button';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import MenuItem, { MenuItemProps } from '@mui/material/MenuItem';
-import { CraftsmanStyle } from '@appcraft/craftsman';
+import MenuItem from '@mui/material/MenuItem';
+import Tooltip from '@mui/material/Tooltip';
+import type * as Mui from '@mui/material';
 
 import type * as Types from './CommonButton.types';
 
@@ -18,7 +19,7 @@ export default function CommonButton({
     case 'text':
       return (
         <Button
-          {...(props as ButtonProps)}
+          {...(props as Mui.ButtonProps)}
           {...{ [`${iconPosition}Icon`]: icon }}
         >
           {text}
@@ -27,15 +28,15 @@ export default function CommonButton({
 
     case 'icon': {
       return (
-        <CraftsmanStyle.AppcraftHint title={text}>
-          <IconButton {...(props as IconButtonProps)}>{icon}</IconButton>
-        </CraftsmanStyle.AppcraftHint>
+        <Tooltip title={text}>
+          <IconButton {...(props as Mui.IconButtonProps)}>{icon}</IconButton>
+        </Tooltip>
       );
     }
 
     case 'menu': {
       return (
-        <MenuItem {...(props as MenuItemProps)}>
+        <MenuItem {...(props as Mui.MenuItemProps)}>
           <ListItemIcon>{icon}</ListItemIcon>
 
           <ListItemText primary={text} />

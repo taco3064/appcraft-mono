@@ -1,5 +1,6 @@
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
+import Slide from '@mui/material/Slide';
 import Toolbar from '@mui/material/Toolbar';
 import cx from 'clsx';
 import { CraftsmanStyle } from '@appcraft/craftsman';
@@ -33,36 +34,38 @@ export const PageContainer = withStyles(
     },
     ...props
   }: Types.PageContainerProps) => (
-    <Container {...props} disableGutters classes={containerClasses}>
-      <Toolbar disableGutters variant="dense" className={toolbarClassName}>
-        <CraftsmanStyle.AutoBreakTypography
-          {...{ primary, secondary }}
-          classes={{ root: titleClassName }}
-          primaryTypographyProps={{
-            variant: 'h5',
-            color: 'secondary',
-            whiteSpace: 'nowrap',
-          }}
-          secondaryTypographyProps={{
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        />
+    <Slide in direction="up">
+      <Container {...props} disableGutters classes={containerClasses}>
+        <Toolbar disableGutters variant="dense" className={toolbarClassName}>
+          <CraftsmanStyle.AutoBreakTypography
+            {...{ primary, secondary }}
+            classes={{ root: titleClassName }}
+            primaryTypographyProps={{
+              variant: 'h5',
+              color: 'secondary',
+              whiteSpace: 'nowrap',
+            }}
+            secondaryTypographyProps={{
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          />
 
-        {action}
-      </Toolbar>
+          {action}
+        </Toolbar>
 
-      <Paper
-        elevation={0}
-        component={Container}
-        maxWidth={false}
-        {...ContentProps}
-        className={cx(contentClassName, ContentProps?.className)}
-      >
-        {children}
-      </Paper>
-    </Container>
+        <Paper
+          elevation={0}
+          component={Container}
+          maxWidth={false}
+          {...ContentProps}
+          className={cx(contentClassName, ContentProps?.className)}
+        >
+          {children}
+        </Paper>
+      </Container>
+    </Slide>
   ),
   (theme, { ContentProps }) => ({
     content: {

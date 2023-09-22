@@ -3,6 +3,7 @@ import type { SvgIconProps } from '@mui/material/SvgIcon';
 import type { SwitchProps } from '@mui/material/Switch';
 
 export type IconOptions = {
+  tooltip?: string;
   icon: ComponentType<SvgIconProps>;
   color?: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
 };

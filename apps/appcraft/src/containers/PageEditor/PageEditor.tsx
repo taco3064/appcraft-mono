@@ -13,8 +13,6 @@ import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Style from '~appcraft/styles';
 import Breadcrumbs from '../Breadcrumbs';
-import LayoutPropsEditor from '../LayoutPropsEditor';
-import ReadyTodoEditor from '../ReadyTodoEditor';
 import WidgetPicker from '../WidgetPicker';
 import type * as Types from './PageEditor.types';
 
@@ -43,7 +41,7 @@ export default function PageEditor({
       layouts[active] ? [layouts[active]] : [],
       handleFetch.wrapper,
       ({ fetchData, ...props }) => (
-        <LayoutPropsEditor {...props} getWidgetOptions={fetchData} />
+        <Comp.LayoutPropsEditor {...props} getWidgetOptions={fetchData} />
       )
     );
 
@@ -60,7 +58,7 @@ export default function PageEditor({
           />
         ),
         ready: (
-          <ReadyTodoEditor
+          <Comp.ReadyTodoEditor
             layouts={layouts}
             value={readyTodos}
             onConfirm={(value) => handlePage.change('readyTodos', value)}
@@ -134,6 +132,7 @@ export default function PageEditor({
               <LazyLayoutPropsEditor
                 layouts={layouts}
                 value={layouts[active]}
+                renderPicker={(options) => <WidgetPicker {...options} />}
                 onClose={() => handlePage.active(undefined)}
                 onChange={(value) => {
                   layouts.splice(active, 1, value);

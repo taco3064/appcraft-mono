@@ -1,13 +1,19 @@
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
+import Slide from '@mui/material/Slide';
+import Tooltip from '@mui/material/Tooltip';
+import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
+import WebIcon from '@mui/icons-material/Web';
+import { CraftsmanStyle } from '@appcraft/craftsman';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
 import Breadcrumbs from '../Breadcrumbs';
-import PageList from '../PageList';
-import { CommonButton } from '~appcraft/components';
-import { ResponsiveDrawer } from '~appcraft/styles';
+import { CommonButton, PageList } from '~appcraft/components';
+import { SizedDrawer } from '~appcraft/styles';
+import { searchHierarchy } from '~appcraft/services';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
 
 export default function WebsiteEditor({
@@ -15,26 +21,41 @@ export default function WebsiteEditor({
   data,
   superiors,
   onActionAddPick,
-  onActionBasePick,
+  onActionBasePick = (e) => e,
   onSave,
 }: WebsiteEditorProps) {
   const [at, wt] = Hook.useFixedT('app', 'websites');
   const [open, setOpen] = useState(false);
+  const [edited, setEdited] = useState<'app' | 'page'>('app');
   const [website, handleWebsite] = Hook.useWebsiteValues({ data, onSave });
 
-  const width = Hook.useWidth();
-  const isCollapsable = /^(xs|sm|md)$/.test(width);
-  const isSettingOpen = !isCollapsable || open;
+  const { data: pages } = useQuery({
+    refetchOnWindowFocus: false,
+    queryFn: searchHierarchy,
+    queryKey: ['pages', { type: 'item' }],
+  });
 
   const actionNode = Hook.useNodePicker(
     () =>
       onActionBasePick({
+        switch: (
+          <Tooltip title={wt(`ttl-mode-${edited}`)}>
+            <CraftsmanStyle.IconSwitch
+              value={edited}
+              onChange={(value: typeof edited) => setEdited(value)}
+              options={{
+                app: { icon: ViewQuiltIcon, color: 'success' },
+                page: { icon: WebIcon, color: 'info' },
+              }}
+            />
+          </Tooltip>
+        ),
         expand:
-          !isCollapsable || isSettingOpen ? null : (
+          edited !== 'app' ? null : (
             <CommonButton
               btnVariant="icon"
               icon={<SettingsIcon />}
-              text={wt(`btn-expand-${isSettingOpen ? 'off' : 'on'}`)}
+              text={wt(`btn-expand-${open ? 'off' : 'on'}`)}
               onClick={() => setOpen(!open)}
             />
           ),
@@ -55,7 +76,7 @@ export default function WebsiteEditor({
           />
         ),
       }),
-    [website, open, isCollapsable, isSettingOpen]
+    [website, open, edited]
   );
 
   return (
@@ -72,22 +93,39 @@ export default function WebsiteEditor({
         />
       )}
 
-      <ResponsiveDrawer
-        {...ResponsiveDrawerProps}
-        ContentProps={{ style: { alignItems: 'center' } }}
-        DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
-        disablePersistent={/^(xs|sm|md)$/.test(width)}
-        open={isSettingOpen}
-        onClose={() => setOpen(false)}
-        content={
-          <PageList
-            values={website.pages}
-            onChange={(pages) => handleWebsite.change({ ...website, pages })}
-            onActionNodePick={onActionAddPick}
-          />
-        }
-        drawer={<div>Drawer</div>}
-      />
+      <Slide direction="right" in={edited === 'page'}>
+        <div>
+          {edited === 'page' && (
+            <PageList
+              values={website.pages}
+              onChange={(pages) => handleWebsite.change({ ...website, pages })}
+              onActionNodePick={onActionAddPick}
+              pageOptions={pages.map(
+                ({ _id: value, name: primary, description: secondary }) => ({
+                  value,
+                  primary,
+                  secondary,
+                })
+              )}
+            />
+          )}
+        </div>
+      </Slide>
+
+      <Slide direction="left" in={edited === 'app'}>
+        <div>
+          {edited === 'app' && <>Website Base Layout Settings</>}
+
+          <SizedDrawer
+            anchor="right"
+            maxWidth="xs"
+            open={open}
+            onClose={() => setOpen(false)}
+          >
+            Drawer
+          </SizedDrawer>
+        </div>
+      </Slide>
     </>
   );
 }

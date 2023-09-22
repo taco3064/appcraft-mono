@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import _get from 'lodash/get';
+import Tooltip from '@mui/material/Tooltip';
 import { useMemo, useState } from 'react';
 import { useDndContext } from '@dnd-kit/core';
 import { useSortable } from '@dnd-kit/sortable';
@@ -106,7 +106,7 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
 
         <Style.TypeItemAction>
           {open && (
-            <Style.AppcraftHint title={ct(`btn-${display}`)}>
+            <Tooltip title={ct(`btn-${display}`)}>
               <Style.IconSwitch
                 disabled={isSwitchDisabled}
                 value={display}
@@ -116,7 +116,7 @@ export default function WidgetElement<I extends Appcraft.EntityWidgets>({
                   events: { icon: AssignmentOutlinedIcon, color: 'success' },
                 }}
               />
-            </Style.AppcraftHint>
+            </Tooltip>
           )}
 
           <Style.IconTipButton

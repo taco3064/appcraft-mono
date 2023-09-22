@@ -1,8 +1,11 @@
+import type { Breakpoint } from '@mui/material/styles';
+
 export interface Website {
   theme: string;
-  nav: {
-    position: 'top' | 'left';
-  };
+  maxWidth: Breakpoint;
+  navAnchor: 'top' | 'left';
+  backgroundImg?: string;
+  logo?: string;
   pages: {
     id: string; //* Page Config ID
     subTitle: string; //* 副標題，與 Website Title(Hierarchy Name) 顯示在網頁標題列

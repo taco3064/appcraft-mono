@@ -1,3 +1,4 @@
+import Divider from '@mui/material/Divider';
 import Head from 'next/head';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -9,7 +10,7 @@ import { WebsiteEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 
 const EDITOR_ADD_ACTIONS = ['add'];
-const EDITOR_BASE_ACTIONS = ['expand', 'reset', 'save'];
+const EDITOR_BASE_ACTIONS = ['switch', 'expand', 'reset', 'save'];
 
 export default function Detail() {
   const [wt] = Hook.useFixedT('websites');
@@ -40,8 +41,12 @@ export default function Detail() {
       secondary={superiors[id]}
       action={
         <>
+          {actionBase?.switch}
           {actionBase?.expand}
           {actionAdd?.add}
+
+          <Divider flexItem orientation="vertical" />
+
           {actionBase?.reset}
           {actionBase?.save}
         </>

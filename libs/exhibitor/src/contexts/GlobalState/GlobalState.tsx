@@ -1,6 +1,5 @@
 import * as React from 'react';
 import _get from 'lodash/get';
-import _merge from 'lodash/merge';
 import _set from 'lodash/set';
 import type * as Appcraft from '@appcraft/types';
 

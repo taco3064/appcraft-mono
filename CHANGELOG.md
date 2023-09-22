@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.124](https://github.com/taco3064/appcraft-mono/compare/v0.0.123...v0.0.124) (2023-09-22)
+
+
+### Features
+
+* **apps/appcraft:** add new component: PageMutationButton ([e32d6fd](https://github.com/taco3064/appcraft-mono/commit/e32d6fd35c9a82175256cf4bb33f3dd12519572a))
+
+
+### Bug Fixes
+
+* **@appcraft/types:** udpate types ([1a822ae](https://github.com/taco3064/appcraft-mono/commit/1a822aeeb6376a01c050803f2fcf23d632861f2e))
+* **apps/appcraft:** move some containers to components ([186f508](https://github.com/taco3064/appcraft-mono/commit/186f5080ac46c3ea5a456988ce858ee59375eead))
+* **hierarchy-mutation-button:** rename component ([1bb5652](https://github.com/taco3064/appcraft-mono/commit/1bb5652e00ee7f5e8186f01134b5d5288b64b10b))
+* **website-editor:** design the editor layout ([ccabc0f](https://github.com/taco3064/appcraft-mono/commit/ccabc0f4531ed472ccdf905364614ea72d682e7a))
+
 ### [0.0.123](https://github.com/taco3064/appcraft-mono/compare/v0.0.122...v0.0.123) (2023-09-20)
 
 

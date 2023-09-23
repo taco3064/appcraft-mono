@@ -41,13 +41,15 @@ export const useNavValues: Types.NavValuesHook = (values, onChange) => {
       },
 
       //* For Mutation
-      add: (nav) => {
-        const list = [...items, nav];
+      mutate: ({ index, nav }) => {
+        if (typeof index !== 'number' && nav) {
+          items.push(nav);
+        } else if (typeof index === 'number' && !nav) {
+          items.splice(index, 1);
+        } else if (typeof index === 'number' && nav) {
+          items.splice(index, 1, nav);
+        }
 
-        onChange([...(!paths.length ? list : _set(values, paths, list))]);
-      },
-      update: (nav, index) => {
-        items.splice(index, 1, nav);
         onChange([...(!paths.length ? items : _set(values, paths, items))]);
       },
     },

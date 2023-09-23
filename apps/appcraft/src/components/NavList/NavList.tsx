@@ -56,7 +56,7 @@ export default function NavList({
             mode="add"
             data={{ isNavItem: false }}
             options={pageOptions}
-            onConfirm={navHandles.add}
+            onConfirm={(e) => navHandles.mutate({ nav: e })}
           />
         ),
       }),
@@ -144,7 +144,9 @@ export default function NavList({
                   mutation={
                     <NavMutationMenu
                       data={page}
-                      onChange={(e) => navHandles.update(e, i)}
+                      pageOptions={pageOptions}
+                      onChange={(e) => navHandles.mutate({ nav: e, index: i })}
+                      onRemove={() => navHandles.mutate({ index: i })}
                     />
                   }
                 />

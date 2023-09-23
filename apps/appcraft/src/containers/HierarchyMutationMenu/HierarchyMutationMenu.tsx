@@ -7,9 +7,9 @@ import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 
-import * as Comp from '~appcraft/components';
 import HierarchyMutationButton from '../HierarchyMutationButton';
-import { removeHierarchy, updateHierarchy } from '~appcraft/services';
+import { CommonButton, RemoveButton } from '~appcraft/components';
+import { removeHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type { HierarchyMutationMenuProps } from './HierarchyMutationMenu.types';
 
@@ -53,7 +53,7 @@ export default function HierarchyMutationMenu({
         }}
       >
         {onMoveToSuperiorGroup && (
-          <Comp.CommonButton
+          <CommonButton
             btnVariant="menu"
             icon={<ArrowOutwardIcon />}
             text={at('btn-move-to-superior-group')}
@@ -77,7 +77,7 @@ export default function HierarchyMutationMenu({
 
         <Divider />
 
-        <Comp.RemoveButton
+        <RemoveButton
           btnVariant="menu"
           onCancel={() => setAnchorEl(null)}
           onConfirm={() => handleRemove(data._id)}

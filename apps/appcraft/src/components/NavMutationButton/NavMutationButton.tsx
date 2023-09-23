@@ -114,7 +114,7 @@ export default function NavMutationButton({
           name="pathname"
           label={wt('lbl-pathname')}
           helperText={wt('msg-pathname-helper')}
-          defaultValue={data.pathname}
+          defaultValue={data.pathname?.replace(/^\//, '')}
           InputProps={{
             startAdornment: <InputAdornment position="start">/</InputAdornment>,
             inputProps: { pattern: PATTERN },

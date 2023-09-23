@@ -24,7 +24,6 @@ export type NavValuesHook = (
     top: () => void;
 
     //* For Mutation
-    add: (nav: Navigation) => void;
-    update: (nav: Navigation, index: number) => void;
+    mutate: (e: { index?: number; nav?: Navigation }) => void;
   }
 ];

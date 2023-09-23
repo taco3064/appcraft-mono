@@ -11,11 +11,11 @@ import type { FormEvent } from 'react';
 
 import CommonButton from '../CommonButton';
 import { useFixedT } from '~appcraft/hooks';
-import type * as Types from './PageMutationButton.types';
+import type * as Types from './NavMutationButton.types';
 
 const PATTERN = '^[a-zA-Z0-9][a-zA-Z0-9_\\-]*[a-zA-Z0-9]$';
 
-export default function PageMutationButton({
+export default function NavMutationButton({
   CommonButtonProps,
   btnVariant = 'icon',
   data,
@@ -23,7 +23,7 @@ export default function PageMutationButton({
   options,
   onCancel,
   onConfirm,
-}: Types.PageMutationButtonProps) {
+}: Types.NavMutationButtonProps) {
   const [at, wt] = useFixedT('app', 'websites');
   const [open, setOpen] = useState(false);
 

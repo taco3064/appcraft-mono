@@ -5,6 +5,7 @@ export * from './useHeight';
 export * from './useHierarchyFilter';
 export * from './useLayoutLinks';
 export * from './useLazyUserProfile';
+export * from './useNavValues';
 export * from './useNodePicker';
 export * from './usePageValues';
 export * from './usePathOptions';

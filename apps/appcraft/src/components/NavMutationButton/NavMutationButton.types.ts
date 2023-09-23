@@ -1,10 +1,8 @@
-import type { BaseOption } from '~appcraft/hooks';
+import type { BaseOption, Navigation } from '~appcraft/hooks';
 import type { CommonButtonProps } from '~appcraft/components';
 
-import type { Page } from '../PageMutationMenu';
-
 //* Component Props
-export interface PageMutationButtonProps
+export interface NavMutationButtonProps
   extends Partial<Pick<CommonButtonProps, 'btnVariant'>> {
   CommonButtonProps?: Omit<
     CommonButtonProps,
@@ -12,8 +10,8 @@ export interface PageMutationButtonProps
   >;
 
   mode: 'add' | 'update';
-  data?: Partial<Page>;
+  data?: Partial<Navigation>;
   options: BaseOption[];
   onCancel?: () => void;
-  onConfirm: (data: Page) => void;
+  onConfirm: (data: Navigation) => void;
 }

@@ -9,7 +9,7 @@
   "msg-pathname-helper": "Please enter text that starts and ends with letters or numbers. In between, you can use letters, numbers, underscores (_), and hyphens (-). Make sure the text doesn't start or end with an underscore or hyphen.",
   "ttl-detail": "Website",
   "ttl-mode-app": "Website Base Layout Settings",
-  "ttl-mode-page": "Website and Content Configuration",
+  "ttl-mode-page": "Website Navigation",
   "ttl-page-breadcrumbs": "Page Breadcrumbs",
   "txt-page-breadcrumb-top": "Top"
 }

@@ -11,24 +11,26 @@ import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './ArborCard.types';
 
 export default function ArborCard({
-  mutation,
-  data,
   disableGroupChange = false,
   icon: MuiIcon,
+  id,
+  mutation,
+  type,
+  name,
+  description,
   onActionRender,
   onClick,
 }: Types.ArborCardProps) {
   const [at] = useFixedT('app');
-  const { type, name, description } = data;
-  const action = (type === 'item' && onActionRender?.(data)) || null;
+  const action = (type === 'item' && onActionRender?.()) || null;
 
   const dnd: Types.DndHook = {
     group: useDroppable({
-      id: data._id,
+      id,
       disabled: type === 'item',
     }),
     item: useDraggable({
-      id: data._id,
+      id,
       disabled: type === 'group' || disableGroupChange,
     }),
   };
@@ -59,7 +61,7 @@ export default function ArborCard({
         <ListItemButton
           disableGutters
           color="info"
-          onClick={() => onClick(data)}
+          onClick={onClick}
           sx={(theme) => ({
             borderRadius: theme.spacing(2),
             justifyContent: 'center',

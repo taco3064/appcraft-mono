@@ -18,5 +18,8 @@ export interface HierarchyListProps {
   icon: typeof SvgIcon;
 
   onActionNodePick?: NodePickerFn<'addGroup' | 'addItem' | 'search'>;
-  onItemActionRender?: ArborCardProps['onActionRender'];
+
+  onItemActionRender?: (
+    data: HierarchyData<string>
+  ) => ReturnType<ArborCardProps['onActionRender']>;
 }

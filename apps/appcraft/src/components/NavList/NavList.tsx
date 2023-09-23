@@ -133,14 +133,10 @@ export default function NavList({
                 <ArborCard
                   key={id}
                   icon={WebTwoToneIcon}
-                  onClick={() => navHandles.active({ id, subTitle, index: i })}
-                  data={{
-                    _id: id,
-                    category: 'route',
-                    type: 'item',
-                    name: subTitle,
-                    description: pathname,
-                  }}
+                  id={id}
+                  type="item"
+                  name={subTitle}
+                  description={pathname}
                   mutation={
                     <NavMutationMenu
                       data={page}
@@ -149,6 +145,8 @@ export default function NavList({
                       onRemove={() => navHandles.mutate({ index: i })}
                     />
                   }
+                  onClick={() => navHandles.active({ id, subTitle, index: i })}
+                  onActionRender={() => <>TEST</>}
                 />
               );
             })}

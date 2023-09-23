@@ -47,7 +47,18 @@ export const useNavValues: Types.NavValuesHook = (values, onChange) => {
         } else if (typeof index === 'number' && !nav) {
           items.splice(index, 1);
         } else if (typeof index === 'number' && nav) {
-          items.splice(index, 1, nav);
+          const { id } = items[index];
+
+          items.splice(
+            index,
+            1,
+            id === nav.id
+              ? nav
+              : {
+                  ...nav,
+                  links: undefined,
+                }
+          );
         }
 
         onChange([...(!paths.length ? items : _set(values, paths, items))]);

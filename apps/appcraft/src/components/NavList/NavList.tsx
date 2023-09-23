@@ -1,9 +1,13 @@
 import * as Dnd from '@dnd-kit/core';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Checkbox from '@mui/material/Checkbox';
 import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
 import ImageList from '@mui/material/ImageList';
+import NearMeDisabledOutlinedIcon from '@mui/icons-material/NearMeDisabledOutlined';
+import NearMeIcon from '@mui/icons-material/NearMe';
 import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import WebTwoToneIcon from '@mui/icons-material/WebTwoTone';
 import { CraftsmanStyle } from '@appcraft/craftsman';
@@ -11,6 +15,7 @@ import { nanoid } from 'nanoid';
 import { useMemo } from 'react';
 
 import * as Hook from '~appcraft/hooks';
+import AnchorLinksButton from '../AnchorLinksButton';
 import ArborCard from '../ArborCard';
 import NavMutationButton from '../NavMutationButton';
 import NavMutationMenu from '../NavMutationMenu';
@@ -23,7 +28,7 @@ export default function NavList({
   onActionNodePick = (e) => e,
 }: Types.NavListProps) {
   const width = Hook.useWidth();
-  const [at, wt] = Hook.useFixedT('app', 'websites');
+  const [wt] = Hook.useFixedT('websites');
 
   const [{ hierarchies, items, paths }, navHandles] = Hook.useNavValues(
     values,
@@ -127,11 +132,11 @@ export default function NavList({
             onDragEnd={({ active, over }) => console.log(active, over)}
           >
             {items.map((page, i) => {
-              const { id, subTitle, pathname, isNavItem } = page;
+              const { id, subTitle, pathname, links, isNavItem } = page;
 
               return (
                 <ArborCard
-                  key={id}
+                  key={`${id}-${i}`}
                   icon={WebTwoToneIcon}
                   id={id}
                   type="item"
@@ -146,7 +151,38 @@ export default function NavList({
                     />
                   }
                   onClick={() => navHandles.active({ id, subTitle, index: i })}
-                  onActionRender={() => <>TEST</>}
+                  onActionRender={() => (
+                    <>
+                      {id && (
+                        <AnchorLinksButton
+                          value={links}
+                          onConfirm={(e) =>
+                            navHandles.mutate({
+                              index: i,
+                              nav: { ...page, links: e },
+                            })
+                          }
+                        />
+                      )}
+
+                      <Tooltip
+                        title={wt(`msg-nav-item-${isNavItem ? 'on' : 'off'}`)}
+                      >
+                        <Checkbox
+                          color="primary"
+                          icon={<NearMeDisabledOutlinedIcon color="action" />}
+                          checkedIcon={<NearMeIcon />}
+                          checked={isNavItem}
+                          onChange={(e) =>
+                            navHandles.mutate({
+                              index: i,
+                              nav: { ...page, isNavItem: e.target.checked },
+                            })
+                          }
+                        />
+                      </Tooltip>
+                    </>
+                  )}
                 />
               );
             })}

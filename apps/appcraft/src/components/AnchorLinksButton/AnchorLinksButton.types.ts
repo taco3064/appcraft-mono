@@ -1,17 +1,18 @@
-import type { BaseOption, Navigation } from '~appcraft/hooks';
 import type { CommonButtonProps } from '../CommonButton';
+import type { Navigation } from '~appcraft/hooks';
+
+//* Variables
+export type Links = Navigation['links'];
 
 //* Component Props
-export interface NavMutationButtonProps
+export interface AnchorLinksButtonProps
   extends Partial<Pick<CommonButtonProps, 'btnVariant'>> {
   CommonButtonProps?: Omit<
     CommonButtonProps,
     'btnVariant' | 'icon' | 'text' | 'onClick'
   >;
 
-  mode: 'add' | 'update';
-  data?: Partial<Navigation>;
-  options: BaseOption[];
+  value?: Links;
   onCancel?: () => void;
-  onConfirm: (data: Navigation) => void;
+  onConfirm: (value: Links) => void;
 }

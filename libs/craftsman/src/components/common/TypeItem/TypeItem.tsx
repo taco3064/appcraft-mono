@@ -119,7 +119,11 @@ export default function TypeItem({
                   options={{ ...matched, propName: options.propName }}
                   action={matchedAction}
                   description={
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      paddingLeft={2}
+                    >
                       {description.replace(/import\s*\(.*?\)\s*;?\./g, '')}
                     </Typography>
                   }

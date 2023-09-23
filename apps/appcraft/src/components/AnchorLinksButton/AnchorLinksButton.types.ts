@@ -12,6 +12,7 @@ export interface AnchorLinksButtonProps
     'btnVariant' | 'icon' | 'text' | 'onClick'
   >;
 
+  pageid: string;
   value?: Links;
   onCancel?: () => void;
   onConfirm: (value: Links) => void;

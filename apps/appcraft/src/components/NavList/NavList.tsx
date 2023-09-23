@@ -155,6 +155,7 @@ export default function NavList({
                     <>
                       {id && (
                         <AnchorLinksButton
+                          pageid={id}
                           value={links}
                           onConfirm={(e) =>
                             navHandles.mutate({

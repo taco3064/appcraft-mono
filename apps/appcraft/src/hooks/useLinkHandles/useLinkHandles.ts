@@ -6,18 +6,16 @@ export const useLinkHandles: LinkHandlesHook = (layouts) => {
     () =>
       layouts.reduce<LinkOptions[]>((result, { id, links }) => {
         result.push(
-          ...(links?.map((todoPath) => {
-            const todoName = todoPath
-              .substring(todoPath.search(/(^todos|\.todos)\./g))
-              .replace(/(^todos|\.todos)\./, '');
-
-            return {
+          ...Object.entries(links || {}).map(
+            ([todoPath, { alias, todoName, widgetPaths }]) => ({
               layoutid: id,
+              alias,
               todoName,
               todoPath,
+              nodePaths: widgetPaths,
               outputs: [],
-            };
-          }) || [])
+            })
+          )
         );
 
         return result;

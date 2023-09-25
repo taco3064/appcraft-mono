@@ -3,8 +3,10 @@ import type { LayoutWidget } from '@appcraft/types';
 //* Variables
 export type LinkOptions = {
   layoutid: string;
+  alias?: string;
   todoName: string;
   todoPath: string;
+  nodePaths: (string | number)[];
   outputs: string[];
 };
 

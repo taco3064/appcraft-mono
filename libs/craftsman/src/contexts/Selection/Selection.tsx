@@ -11,14 +11,14 @@ import type * as Types from './Selection.types';
 
 //* Custom Hooks
 const SelectionContext = React.createContext<Types.SelectionContextValue>({
-  basePath: '',
+  basePaths: [],
   disabled: false,
 });
 
-export const useBasePath = () => {
-  const { basePath } = React.useContext(SelectionContext);
+export const useBasePaths = () => {
+  const { basePaths } = React.useContext(SelectionContext);
 
-  return basePath;
+  return basePaths;
 };
 
 export const useSelectionAction: Types.SelectionActionHook = () => {
@@ -28,13 +28,13 @@ export const useSelectionAction: Types.SelectionActionHook = () => {
 };
 
 export function useSecondaryAction<M>(category: StateCategory) {
-  const { basePath, values, ref } = React.useContext(SelectionContext);
+  const { basePaths, values, ref } = React.useContext(SelectionContext);
   const renderer: Types.SecondaryActionRenderer | undefined =
     ref?.current?.secondaryActions?.[category];
 
   return (
     (renderer &&
-      ((path: string) => renderer({ basePath, widget: values, path }))) ||
+      ((path: string) => renderer({ basePaths, widget: values, path }))) ||
     undefined
   );
 }
@@ -47,11 +47,11 @@ export const useSelection: Types.SelectionHook = (
 ) => {
   const category = getStateCategory(generator);
 
-  const { basePath, disabled, values, ref } =
+  const { basePaths, disabled, values, ref } =
     React.useContext(SelectionContext);
 
   const path = ExhibitorUtil.getPropPath(
-    Array.isArray(propPath) ? propPath : [basePath, category, propPath]
+    Array.isArray(propPath) ? propPath : [...basePaths, category, propPath]
   );
 
   const checked = Boolean(_get(values, ['state', category, path]));
@@ -93,7 +93,7 @@ export const useSelection: Types.SelectionHook = (
 //* Provider Component
 export default function SelectionProvider({
   action,
-  basePath,
+  basePaths,
   children,
   disabled = false,
   secondaryActions,
@@ -107,8 +107,8 @@ export default function SelectionProvider({
   });
 
   const value = React.useMemo(
-    () => ({ basePath, disabled, values, ref }),
-    [basePath, disabled, values]
+    () => ({ basePaths, disabled, values, ref }),
+    [basePaths, disabled, values]
   );
 
   React.useImperativeHandle(

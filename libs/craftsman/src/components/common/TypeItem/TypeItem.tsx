@@ -27,7 +27,7 @@ export default function TypeItem({
   onSubitemView,
 }: Types.TypeItemProps) {
   const ct = Ctx.useLocalesContext();
-  const basePath = Ctx.useBasePath();
+  const basePaths = Ctx.useBasePaths();
   const render = Ctx.useSecondaryAction<string>('props');
   const [naming, setNaming] = useState(!options.propName);
   const { category, label, propPath } = Hook.useTypeItem(options);
@@ -61,7 +61,9 @@ export default function TypeItem({
         )}
 
         {!naming &&
-          render?.(ExhibitorUtil.getPropPath([basePath, 'props', propPath]))}
+          render?.(
+            ExhibitorUtil.getPropPath([...basePaths, 'props', propPath])
+          )}
       </>
     );
 

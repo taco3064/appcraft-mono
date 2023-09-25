@@ -11,7 +11,7 @@ export type WidgetMutationHook = (
 ) => [
   {
     editedWidget?: Appcraft.EntityWidgets;
-    widgetPath: string;
+    widgetPaths: PropPaths;
     todoPath?: string;
   },
   {

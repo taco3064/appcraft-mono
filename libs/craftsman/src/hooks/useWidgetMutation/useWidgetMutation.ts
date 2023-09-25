@@ -19,7 +19,7 @@ export const useWidgetMutation: WidgetMutationHook = (
   return [
     {
       todoPath,
-      widgetPath: ExhibitorUtil.getPropPath(editedPaths || []),
+      widgetPaths: editedPaths || [],
 
       editedWidget: !editedPaths
         ? null

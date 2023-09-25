@@ -1,15 +1,15 @@
 import Button from '@mui/material/Button';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
+import LinearProgress from '@mui/material/LinearProgress';
 import { CraftsmanStyle } from '@appcraft/craftsman';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 
+import * as Hook from '~appcraft/hooks';
 import CommonButton from '../CommonButton';
-import { useFixedT, useLinkHandles } from '~appcraft/hooks';
-import type { AnchorLinksButtonProps, Links } from './AnchorLinksButton.types';
+import AnchorLinksList from '../AnchorLinksList';
+import type * as Types from './AnchorLinksButton.types';
 
+//* Components
 export default function AnchorLinksButton({
   CommonButtonProps,
   btnVariant = 'icon',
@@ -17,11 +17,21 @@ export default function AnchorLinksButton({
   value,
   onCancel,
   onConfirm,
-}: AnchorLinksButtonProps) {
-  const [at, wt] = useFixedT('app', 'websites');
+}: Types.AnchorLinksButtonProps) {
+  const [at, wt] = Hook.useFixedT('app', 'websites');
   const [open, setOpen] = useState(false);
-  const [links, setLinks] = useState<Links>(value);
-  const [{ options }] = useLinkHandles(open, pageid);
+  const [links, setLinks] = useState<Types.Links>(value);
+  const handleFetch = Hook.useCraftsmanFetch();
+
+  const [LazyAnchorLinksList, layouts] =
+    Hook.useLazyLayoutsNav<Types.LazyAnchorLinksListProps>(
+      open,
+      pageid,
+      handleFetch.wrapper,
+      ({ fetchData, ...props }) => (
+        <AnchorLinksList {...props} getWidgetOptions={fetchData} />
+      )
+    );
 
   const handleClose = () => {
     setOpen(false);
@@ -34,7 +44,6 @@ export default function AnchorLinksButton({
       <CommonButton
         {...(CommonButtonProps as object)}
         btnVariant={btnVariant}
-        disabled={!options.length}
         text={wt('btn-links')}
         icon={<InsertLinkIcon />}
         onClick={() => setOpen(true)}
@@ -75,13 +84,11 @@ export default function AnchorLinksButton({
          //? 1. 必須想辦法在產生 options 時就先行取得 Output，以便後續選擇
          //? 2. 目標連結頁面接收到 URL Search Params 後，如何將其轉換成 props ?
         */}
-        <List>
-          {options.map(({ todoName, todoPath }) => (
-            <ListItemButton key={todoPath}>
-              <ListItemText primary={todoName} secondary={todoPath} />
-            </ListItemButton>
-          ))}
-        </List>
+        {open && (
+          <Suspense fallback={<LinearProgress />}>
+            <LazyAnchorLinksList layouts={layouts} />
+          </Suspense>
+        )}
       </CraftsmanStyle.FlexDialog>
     </>
   );

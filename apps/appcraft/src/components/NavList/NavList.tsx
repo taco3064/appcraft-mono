@@ -52,7 +52,7 @@ export default function NavList({
     })
   );
 
-  //* Action Node
+  //* Component Nodes
   const actionNode = Hook.useNodePicker(
     (unmount) =>
       onActionNodePick({

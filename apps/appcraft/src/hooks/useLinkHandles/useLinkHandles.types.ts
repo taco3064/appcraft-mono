@@ -1,3 +1,5 @@
+import type { LayoutWidget } from '@appcraft/types';
+
 //* Variables
 export type LinkOptions = {
   layoutid: string;
@@ -7,10 +9,7 @@ export type LinkOptions = {
 };
 
 //* Custom Hooks
-export type LinkHandlesHook = (
-  enabled: boolean,
-  pageid: string
-) => [
+export type LinkHandlesHook = (layouts: LayoutWidget[]) => [
   {
     options: LinkOptions[];
   }

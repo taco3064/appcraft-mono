@@ -4,6 +4,7 @@ export * from './useCraftsmanFetch';
 export * from './useHeight';
 export * from './useHierarchyFilter';
 export * from './useLayoutLinks';
+export * from './useLazyLayoutsNav';
 export * from './useLazyUserProfile';
 export * from './useLinkHandles';
 export * from './useNavValues';

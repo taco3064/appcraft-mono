@@ -1,3 +1,4 @@
+import type { AnchorLinksListProps } from '../AnchorLinksList';
 import type { CommonButtonProps } from '../CommonButton';
 import type { Navigation } from '~appcraft/hooks';
 
@@ -5,6 +6,11 @@ import type { Navigation } from '~appcraft/hooks';
 export type Links = Navigation['links'];
 
 //* Component Props
+export type LazyAnchorLinksListProps = Omit<
+  AnchorLinksListProps,
+  'getWidgetOptions'
+>;
+
 export interface AnchorLinksButtonProps
   extends Partial<Pick<CommonButtonProps, 'btnVariant'>> {
   CommonButtonProps?: Omit<
@@ -14,6 +20,7 @@ export interface AnchorLinksButtonProps
 
   pageid: string;
   value?: Links;
+
   onCancel?: () => void;
   onConfirm: (value: Links) => void;
 }

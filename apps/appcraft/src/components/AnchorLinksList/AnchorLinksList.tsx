@@ -9,9 +9,12 @@ export default function AnchorLinksList({
   layouts,
   getWidgetOptions,
 }: AnchorLinksListProps) {
-  const [{ options }] = useLinkHandles(layouts);
+  const [{ events, outputs }, handleLink] = useLinkHandles(
+    layouts,
+    getWidgetOptions
+  );
 
-  console.log('AnchorLinksList', layouts, options);
+  console.log('AnchorLinksList', outputs);
 
   return (
     /**
@@ -20,15 +23,22 @@ export default function AnchorLinksList({
      * * 2. 選擇要變成 URL Search Params 的 Output
      *
      * ? 待解決的問題：
-     * ? 1. 必須想辦法在產生 options 時就先行取得 Output，以便後續選擇
+     * * 1. 必須想辦法在產生 options 時就先行取得 Output，以便後續選擇 (解決)
      * ? 2. 目標連結頁面接收到 URL Search Params 後，如何將其轉換成 props ?
      * */
     <List>
-      {options.map(({ alias, todoName, todoPath }) => (
-        <ListItemButton key={todoPath}>
-          <ListItemText primary={alias || todoName} secondary={todoPath} />
-        </ListItemButton>
-      ))}
+      {events.map((event) => {
+        const { alias, todoName, todoPath } = event;
+
+        return (
+          <ListItemButton
+            key={todoPath}
+            onClick={() => handleLink.click(event)}
+          >
+            <ListItemText primary={alias || todoName} secondary={todoPath} />
+          </ListItemButton>
+        );
+      })}
     </List>
   );
 }

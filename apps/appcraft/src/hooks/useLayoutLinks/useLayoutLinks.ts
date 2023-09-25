@@ -38,9 +38,11 @@ export const useLayoutLinks: LayoutLinksHook = (
         state &&
           map.set(path, {
             widgetPaths,
-            todoName,
             stateKey: state[0],
-            alias: state[1].alias,
+            alias: state?.[1].alias,
+            todoName: state?.[0]
+              .substring(state[0].search(/(^todos|\.todos)\./g))
+              .replace(/(^todos|\.todos)\./, ''),
           });
       }
 

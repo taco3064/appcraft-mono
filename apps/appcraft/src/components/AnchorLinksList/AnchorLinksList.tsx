@@ -11,7 +11,7 @@ export default function AnchorLinksList({
 }: AnchorLinksListProps) {
   const [{ options }] = useLinkHandles(layouts);
 
-  console.log('AnchorLinksList', layouts);
+  console.log('AnchorLinksList', layouts, options);
 
   return (
     <List>

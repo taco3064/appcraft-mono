@@ -25,7 +25,5 @@ export const useLinkHandles: LinkHandlesHook = (layouts) => {
     [layouts]
   );
 
-  console.log(options);
-
   return [{ options }];
 };

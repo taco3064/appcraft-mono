@@ -5,6 +5,7 @@ import type { LayoutWidget } from '@appcraft/types';
 export type ActiveEvent = {
   layoutid: string;
   nodePaths: (string | number)[];
+  alias?: string;
   todoName: string;
   outputs: OutputData[];
 };
@@ -26,8 +27,13 @@ export type LinkHandlesHook = (
   {
     events: LinkEvent[];
     outputs?: OutputData[];
+    subtitle?: {
+      primary: string;
+      secondary: string;
+    };
   },
   {
+    back: () => void;
     click: (target: LinkEvent) => void;
   }
 ];

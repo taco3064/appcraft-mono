@@ -25,24 +25,26 @@ export const useLayoutLinks: LayoutLinksHook = (
         const todoStates: Record<string, TodosState> =
           _get(target, ['state', 'todos']) || {};
 
-        const todoName = path
+        const todoPropName = path
           .substring(path.search(/(^todos|\.todos)\./g))
           .replace(/(^todos|\.todos)\./, '');
 
         const state = Object.entries(todoStates).find(
           ([todoPath, { alias }]) =>
-            alias === todoName ||
-            todoPath === ExhibitorUtil.getPropPath(['todos', todoName])
+            alias === todoPropName ||
+            todoPath === ExhibitorUtil.getPropPath(['todos', todoPropName])
         );
+
+        const todoName = state?.[0]
+          .substring(state[0].search(/(^todos|\.todos)\./g))
+          .replace(/(^todos|\.todos)\./, '');
 
         state &&
           map.set(path, {
             widgetPaths,
             stateKey: state[0],
-            alias: state?.[1].alias,
-            todoName: state?.[0]
-              .substring(state[0].search(/(^todos|\.todos)\./g))
-              .replace(/(^todos|\.todos)\./, ''),
+            alias: state?.[1].alias || todoName,
+            todoName,
           });
       }
 

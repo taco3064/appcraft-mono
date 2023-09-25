@@ -50,6 +50,7 @@ export default function AnchorLinksButton({
       />
 
       <CraftsmanStyle.FlexDialog
+        disableContentJustifyCenter
         fullWidth
         direction="column"
         maxWidth="xs"

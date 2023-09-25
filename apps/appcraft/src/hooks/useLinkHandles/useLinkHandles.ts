@@ -36,27 +36,44 @@ export const useLinkHandles: Types.LinkHandlesHook = (
   );
 
   return [
-    { events, outputs: active?.outputs },
     {
+      events,
+      outputs: active?.outputs,
+      subtitle: !active
+        ? undefined
+        : {
+            primary: active.alias || active.todoName,
+            secondary: ExhibitorUtil.getPropPath([
+              ...active.nodePaths,
+              active.alias,
+            ]),
+          },
+    },
+    {
+      back: () => setActive(undefined),
+
       click: ({ layoutid, alias, nodePaths, todoName }) =>
         startTransition(() => {
-          const layout = layouts.find(({ id }) => id === layoutid);
-          const template = _get(layout, ['template', ...nodePaths]);
-          const main = getWidgetOptions('template', layout.template.id);
-          const widget = getWidgetOptions('template', template?.id);
-          const nodeKey = ExhibitorUtil.getPropPath(nodePaths);
-          const { [alias]: injection } = template?.todos || {};
+          const layout = layouts.find(({ id }) => id === layoutid); //* 取得點擊目標所屬的 layout
+          const template = _get(layout, ['template', ...nodePaths]); //* 依路徑取得對應的 template 設定
+          const main = getWidgetOptions('template', layout.template.id); //* 主要的 main widget
+          const widget = getWidgetOptions('template', template?.id); //* template 對應的 node widget
+          const nodeKey = ExhibitorUtil.getPropPath(nodePaths); //* 轉換 node paths 為 path string
+          const { [alias]: injection } = template?.todos || {}; //* 擷取 template 內的 todos
 
+          //* 取得 node 實際的 prop name
           const nodePropName = nodeKey
             .substring(nodeKey.search(/(^nodes|\.nodes)\./g))
             .replace(/(^nodes|\.nodes)\./, '');
 
+          //* 按 node prop name 取得對應的 state
           const nodeState = Object.entries(main?.state?.nodes || {}).find(
             ([todoPath, { alias }]) =>
               alias === nodePropName ||
               todoPath === ExhibitorUtil.getPropPath(['nodes', nodePropName])
           );
 
+          //* 透過 ExhibitorUtil.getWidgetTodos 轉換出目標事件的 todos
           const { [todoName]: todos = {} } = ExhibitorUtil.getWidgetTodos({
             states: widget?.state?.todos,
             defaults: widget?.todos,
@@ -64,6 +81,7 @@ export const useLinkHandles: Types.LinkHandlesHook = (
             template: _get(nodeState, [1, 'template', 'todos']),
           });
 
+          //* 執行事件，並取得 outputs 進行暫存
           ExhibitorUtil.getEventHandlers(todos, {
             eventName: todoName,
             onFetchData: handleFetch.data,
@@ -83,6 +101,7 @@ export const useLinkHandles: Types.LinkHandlesHook = (
             .then((outputs) =>
               setActive({
                 layoutid,
+                alias,
                 todoName,
                 nodePaths,
                 outputs,

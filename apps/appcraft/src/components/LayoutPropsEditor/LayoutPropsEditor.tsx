@@ -42,7 +42,7 @@ export default function LayoutPropsEditor({
       {...override}
       GeneratedTodoOverrideProps={{ layout: value }}
       disableSelection
-      disableTodoCategories={['state']}
+      disableTodoCategories={['state', 'search']}
       todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
       version={__WEBPACK_DEFINE__.VERSION}
       widget={widget}

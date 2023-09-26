@@ -32,14 +32,16 @@ const EXCLUDE: RegExp[] = [
   /^iterateTodo$/,
 ];
 
+//* @WidgetTodo
 const NODE_TYPES: Rf.NodeTypes = {
-  variable: Comp.TodoFlowNode,
-  fetch: Comp.TodoFlowNode,
   branch: Comp.TodoFlowNode,
+  fetch: Comp.TodoFlowNode,
   iterate: Comp.TodoFlowNode,
-  wrap: Comp.TodoFlowNode,
-  state: Comp.TodoFlowNode,
   props: Comp.TodoFlowNode,
+  search: Comp.TodoFlowNode,
+  state: Comp.TodoFlowNode,
+  variable: Comp.TodoFlowNode,
+  wrap: Comp.TodoFlowNode,
 };
 
 //* Components

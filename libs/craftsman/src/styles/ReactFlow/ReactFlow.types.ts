@@ -24,10 +24,12 @@ export interface TodoNodeLabelProps
   };
 }
 
+//* @WidgetTodo
 export enum CategoryColor {
   variable = 'palette.info.main',
   wrap = 'palette.info.dark',
   fetch = 'palette.secondary.main',
+  search = 'palette.secondary.dark',
   branch = 'palette.success.main',
   iterate = 'palette.success.dark',
   state = 'palette.warning.main',

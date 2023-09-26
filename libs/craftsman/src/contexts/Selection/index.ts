@@ -1,7 +1,7 @@
 export {
   default,
   default as SelectionProvider,
-  useBasePath,
+  useBasePaths,
   useSecondaryAction,
   useSelection,
   useSelectionAction,

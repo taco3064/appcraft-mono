@@ -4,10 +4,12 @@ import Button from '@mui/material/Button';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import TextField from '@mui/material/TextField';
 import { CraftsmanStyle } from '@appcraft/craftsman';
-import { useState } from 'react';
-import type { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useSnackbar } from 'notistack';
 
-import CommonButton from '../CommonButton';
+import { CommonButton } from '~appcraft/components';
+import { addHierarchy, updateHierarchy } from '~appcraft/services';
 import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './HierarchyMutationButton.types';
 
@@ -19,26 +21,34 @@ export default function HierarchyMutationButton({
   onCancel,
   onConfirm,
 }: Types.HierarchyMutationButtonProps) {
+  const { enqueueSnackbar } = useSnackbar();
   const [at] = useFixedT('app');
   const [open, setOpen] = useState(false);
+
+  const mutation = useMutation({
+    mutationFn: mode === 'add' ? addHierarchy : updateHierarchy,
+    onSuccess: (modified) => {
+      onConfirm?.(modified);
+      setOpen(false);
+      enqueueSnackbar(at(`msg-succeed-${mode}`), { variant: 'success' });
+    },
+  });
 
   const handleClose = () => {
     setOpen(false);
     onCancel?.();
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     const formdata = new FormData(e.target as HTMLFormElement);
 
     e.preventDefault();
 
-    await onConfirm({
-      ...(data as Parameters<typeof onConfirm>[0]),
+    mutation.mutate({
+      ...data,
       name: formdata.get('name').toString(),
       description: formdata.get('description').toString(),
-    });
-
-    setOpen(false);
+    } as Parameters<typeof mutation.mutate>[0]);
   };
 
   return (

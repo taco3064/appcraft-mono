@@ -84,6 +84,7 @@ export const getFlowEdges: Types.GetFlowEdges = (todos, each) =>
     return result;
   }, []);
 
+//* @WidgetTodo
 export const getEditingTodo: Types.GetEditingTodo = (
   typeFile,
   { mixedTypes, ...todo }
@@ -175,11 +176,24 @@ export const getEditingTodo: Types.GetEditingTodo = (
         },
       };
 
+    case 'search':
+      return {
+        todo,
+        config: {
+          category: 'config',
+          mixedTypes: mixed,
+          typeFile,
+          typeName: 'SearchParamsTodo',
+          props: splitProps(todo),
+        },
+      };
+
     default:
       return null;
   }
 };
 
+//* @WidgetTodo
 export const getInitialTodo: Types.GetInitialTodo = (typeFile, category) => {
   const id = nanoid(4);
 
@@ -241,6 +255,13 @@ export const getInitialTodo: Types.GetInitialTodo = (typeFile, category) => {
         ...data,
         category,
         props: [],
+      });
+
+    case 'search':
+      return getEditingTodo(typeFile, {
+        ...data,
+        category,
+        paramKeys: [],
       });
 
     default:

@@ -1,7 +1,7 @@
 import SvgIcon from '@mui/material/SvgIcon';
 
+import type { ArborCardProps } from '~appcraft/components';
 import type { HierarchyData } from '~appcraft/services';
-import type { HierarchyItemProps } from '~appcraft/components';
 import type { NodePickerFn } from '~appcraft/hooks';
 
 //* Variables
@@ -18,5 +18,8 @@ export interface HierarchyListProps {
   icon: typeof SvgIcon;
 
   onActionNodePick?: NodePickerFn<'addGroup' | 'addItem' | 'search'>;
-  onItemActionRender?: HierarchyItemProps['onActionRender'];
+
+  onItemActionRender?: (
+    data: HierarchyData<string>
+  ) => ReturnType<ArborCardProps['onActionRender']>;
 }

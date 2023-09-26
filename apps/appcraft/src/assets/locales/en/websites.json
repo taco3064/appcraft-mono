@@ -1,15 +1,22 @@
 {
   "btn-expand-off": "Close Settings",
   "btn-expand-on": "Open Settings",
+  "btn-links": "Link Handlers",
+  "btn-move-to-superior": "Move To Superior",
   "btn-page-add": "Add Page",
   "btn-page-update": "Edit",
   "lbl-page": "Content",
+  "lbl-param-key": "Parameter Name",
+  "lbl-param-value": "Output Source Value",
   "lbl-pathname": "Link Path",
   "lbl-sub-title": "Title",
+  "msg-nav-item-off": "Add to Navigation Menu",
+  "msg-nav-item-on": "Remove from Navigation Menu",
+  "msg-non-linkable": "Please create more pages and try again.",
   "msg-pathname-helper": "Please enter text that starts and ends with letters or numbers. In between, you can use letters, numbers, underscores (_), and hyphens (-). Make sure the text doesn't start or end with an underscore or hyphen.",
   "ttl-detail": "Website",
   "ttl-mode-app": "Website Base Layout Settings",
-  "ttl-mode-page": "Website and Content Configuration",
+  "ttl-mode-page": "Website Navigation",
   "ttl-page-breadcrumbs": "Page Breadcrumbs",
   "txt-page-breadcrumb-top": "Top"
 }

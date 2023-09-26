@@ -65,7 +65,7 @@ export default function Breadcrumbs({
         {(hasBreadcrumbs || TopProps?.alwaysShow) && TopProps && (
           <Breadcrumb
             brcVariant="link"
-            disabled={!options.length}
+            disabled={!children?.length}
             onClick={TopProps.onClick}
           >
             {TopProps.text}

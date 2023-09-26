@@ -27,13 +27,14 @@ export type Variables = DefineVariable | ExtractVariable;
 
 //* Todo Events
 type Todos =
-  | 'variable'
-  | 'fetch'
   | 'branch'
+  | 'fetch'
   | 'iterate'
-  | 'wrap'
+  | 'props'
+  | 'search'
   | 'state'
-  | 'props';
+  | 'variable'
+  | 'wrap';
 
 type BaseTodo<C extends Todos, P> = {
   category: C;
@@ -49,6 +50,13 @@ export type VariableTodo = BaseTodo<
   'variable',
   {
     variables: Record<string, Variables>;
+  }
+>;
+
+export type SearchParamsTodo = BaseTodo<
+  'search',
+  {
+    paramKeys: string[];
   }
 >;
 
@@ -121,6 +129,7 @@ export type WidgetTodo = (
   | ConditionBranchTodo
   | IterateTodo
   | WrapTodo
+  | SearchParamsTodo
   | SetStateTodo
   | SetPropsTodo
 ) & {

@@ -3,44 +3,23 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useMutation } from '@tanstack/react-query';
-import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 
-import * as Comp from '~appcraft/components';
-import { removeHierarchy, updateHierarchy } from '~appcraft/services';
+import CommonButton from '../CommonButton';
+import NavMutationButton from '../NavMutationButton';
+import RemoveButton from '../RemoveButton';
 import { useFixedT } from '~appcraft/hooks';
-import type { HierarchyMutationProps } from './HierarchyMutation.types';
+import type * as Types from './NavMutationMenu.types';
 
-export default function HierarchyMutation({
+export default function NavMutationMenu({
   data,
-  onMoveToSuperiorGroup,
-  onSuccess,
-}: HierarchyMutationProps) {
-  const { enqueueSnackbar } = useSnackbar();
-  const [at] = useFixedT('app');
+  pageOptions,
+  onChange,
+  onMoveToSuperior,
+  onRemove,
+}: Types.NavMutationMenuProps) {
+  const [at, wt] = useFixedT('app', 'websites');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
-
-  const { mutate: handleUpdate } = useMutation({
-    mutationFn: updateHierarchy,
-    onSuccess: () => {
-      setAnchorEl(null);
-      onSuccess?.();
-      enqueueSnackbar(at('msg-succeed-update'), { variant: 'success' });
-    },
-  });
-
-  const { mutate: handleRemove } = useMutation({
-    mutationFn: removeHierarchy,
-    onSuccess: () => {
-      setAnchorEl(null);
-      onSuccess?.();
-
-      enqueueSnackbar(at('msg-succeed-remove'), {
-        variant: 'success',
-      });
-    },
-  });
 
   return (
     <>
@@ -60,32 +39,36 @@ export default function HierarchyMutation({
           }),
         }}
       >
-        {onMoveToSuperiorGroup && (
-          <Comp.CommonButton
+        {onMoveToSuperior && (
+          <CommonButton
             btnVariant="menu"
             icon={<ArrowOutwardIcon />}
-            text={at('btn-move-to-superior-group')}
+            text={wt('btn-move-to-superior')}
             onClick={() => {
               setAnchorEl(null);
-              onMoveToSuperiorGroup();
+              onMoveToSuperior();
             }}
           />
         )}
 
-        <Comp.HierarchyMutationButton
+        <NavMutationButton
           btnVariant="menu"
           mode="update"
           data={data}
+          options={pageOptions}
           onCancel={() => setAnchorEl(null)}
-          onConfirm={handleUpdate}
+          onConfirm={(data) => {
+            onChange(data);
+            setAnchorEl(null);
+          }}
         />
 
         <Divider />
 
-        <Comp.RemoveButton
+        <RemoveButton
           btnVariant="menu"
           onCancel={() => setAnchorEl(null)}
-          onConfirm={() => handleRemove(data._id)}
+          onConfirm={onRemove}
         />
       </Menu>
     </>

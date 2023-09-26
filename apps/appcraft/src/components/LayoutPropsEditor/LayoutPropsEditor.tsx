@@ -3,6 +3,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
 import _set from 'lodash/set';
 import { CraftedWidgetEditor, CraftsmanStyle } from '@appcraft/craftsman';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 
 import * as Hook from '~appcraft/hooks';
 import NodeTemplateDialog from '../NodeTemplateDialog';
@@ -41,7 +42,7 @@ export default function LayoutPropsEditor({
       {...override}
       GeneratedTodoOverrideProps={{ layout: value }}
       disableSelection
-      disableTodoCategories={['state']}
+      disableTodoCategories={['state', 'search']}
       todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
       version={__WEBPACK_DEFINE__.VERSION}
       widget={widget}
@@ -54,10 +55,10 @@ export default function LayoutPropsEditor({
         />
       )}
       secondaryActions={{
-        todos: ({ path }) => (
+        todos: ({ basePaths, path, widget }) => (
           <CraftsmanStyle.IconSwitch
             value={links.has(path) ? 'link' : 'unlink'}
-            onChange={() => onLinkSet(path)}
+            onChange={() => onLinkSet(path, { widgetPaths: basePaths, widget })}
             options={{
               unlink: { icon: LinkOffIcon },
               link: { icon: LinkIcon, color: 'info' },

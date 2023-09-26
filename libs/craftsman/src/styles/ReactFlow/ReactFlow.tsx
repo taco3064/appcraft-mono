@@ -4,6 +4,7 @@ import CloudQueueIcon from '@mui/icons-material/CloudQueue';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import IconButton from '@mui/material/IconButton';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
+import LinkIcon from '@mui/icons-material/Link';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -63,6 +64,7 @@ export const TodoHandle = withStyles(
   { name: 'TodoHandle' }
 );
 
+//* @WidgetTodo
 export function TodoIcon({ variant }: Types.TodoIconProps) {
   switch (variant) {
     case 'variable':
@@ -85,6 +87,9 @@ export function TodoIcon({ variant }: Types.TodoIconProps) {
 
     case 'props':
       return <CompositeIcon primary={SettingsIcon} secondary={SaveAltIcon} />;
+
+    case 'search':
+      return <LinkIcon />;
 
     default:
       return null;

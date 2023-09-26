@@ -15,8 +15,10 @@ import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Svc from '~appcraft/services';
 import Breadcrumbs from '../Breadcrumbs';
-import HierarchyMutation from '../HierarchyMutation';
+import HierarchyMutationButton from '../HierarchyMutationButton';
+import HierarchyMutationMenu from '../HierarchyMutationMenu';
 import type * as Types from './HierarchyList.types';
+import type { HierarchyData } from '~appcraft/services';
 
 export default function HierarchyList({
   category,
@@ -42,15 +44,7 @@ export default function HierarchyList({
     queryKey: [category, keyword ? { keyword } : { superior }],
   });
 
-  const { mutate: handleAdd } = useMutation({
-    mutationFn: Svc.addHierarchy,
-    onSuccess: () => {
-      enqueueSnackbar(at('msg-succeed-add'), { variant: 'success' });
-      refetch();
-    },
-  });
-
-  const { mutate: handleUpdate } = useMutation({
+  const { mutate: handleDnd } = useMutation({
     mutationFn: Svc.updateHierarchy,
     onSuccess: (modified) => {
       enqueueSnackbar(at('msg-succeed-dnd', modified), { variant: 'success' });
@@ -83,25 +77,25 @@ export default function HierarchyList({
     () =>
       onActionNodePick({
         addGroup: !disableGroup && (
-          <Comp.HierarchyMutationButton
+          <HierarchyMutationButton
             mode="add"
+            onConfirm={() => refetch()}
             data={{
               category,
               type: 'group',
               ...(typeof superior === 'string' && { superior }),
             }}
-            onConfirm={handleAdd}
           />
         ),
         addItem: (
-          <Comp.HierarchyMutationButton
+          <HierarchyMutationButton
             mode="add"
+            onConfirm={() => refetch()}
             data={{
               category,
               type: 'item',
               ...(typeof superior === 'string' && { superior }),
             }}
-            onConfirm={handleAdd}
           />
         ),
         search: (
@@ -121,7 +115,7 @@ export default function HierarchyList({
   );
 
   //* Event Handlers
-  const handleItemClick: Comp.HierarchyItemProps['onClick'] = (data) =>
+  const handleItemClick = (data: HierarchyData<string>) =>
     push(
       data.type === 'group'
         ? {
@@ -147,7 +141,7 @@ export default function HierarchyList({
     isGroupRequired = false,
   }) => {
     if (item && (!isGroupRequired || group)) {
-      handleUpdate({
+      handleDnd({
         ...item,
         superior: group || null,
       });
@@ -199,6 +193,7 @@ export default function HierarchyList({
               onDragEnd={({ active, over }) =>
                 active &&
                 over &&
+                active.id !== over.id &&
                 handleGroupChange({
                   item: hierarchies.find(({ _id }) => _id === active.id),
                   group: over.id as string,
@@ -206,31 +201,34 @@ export default function HierarchyList({
                 })
               }
             >
-              {hierarchies.map((data) => (
-                <Comp.HierarchyItem
-                  key={data._id}
-                  data={data}
-                  icon={icon}
-                  onActionRender={onItemActionRender}
-                  onClick={handleItemClick}
-                  disableGroupChange={hierarchies.every(
-                    ({ type }) => type === 'item'
-                  )}
-                  mutation={
-                    <HierarchyMutation
-                      data={data}
-                      onSuccess={() => refetch()}
-                      {...(superior && {
-                        onMoveToSuperiorGroup: () =>
-                          handleGroupChange({
-                            item: data,
-                            group: superiorList[superiorList.length - 2],
-                          }),
-                      })}
-                    />
-                  }
-                />
-              ))}
+              {hierarchies.map((data) => {
+                const { _id: id, type, name, description } = data;
+
+                return (
+                  <Comp.ArborCard
+                    {...{ id, icon, type, name, description }}
+                    key={id}
+                    onActionRender={() => onItemActionRender?.(data)}
+                    onClick={() => handleItemClick(data)}
+                    disableGroupChange={hierarchies.every(
+                      ({ type }) => type === 'item'
+                    )}
+                    mutation={
+                      <HierarchyMutationMenu
+                        data={data}
+                        onSuccess={() => refetch()}
+                        {...(superior && {
+                          onMoveToSuperiorGroup: () =>
+                            handleGroupChange({
+                              item: data,
+                              group: superiorList[superiorList.length - 2],
+                            }),
+                        })}
+                      />
+                    }
+                  />
+                );
+              })}
             </Dnd.DndContext>
           </ImageList>
         </Grow>

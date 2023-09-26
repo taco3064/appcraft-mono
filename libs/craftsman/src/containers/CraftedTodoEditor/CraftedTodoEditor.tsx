@@ -32,14 +32,16 @@ const EXCLUDE: RegExp[] = [
   /^iterateTodo$/,
 ];
 
+//* @WidgetTodo
 const NODE_TYPES: Rf.NodeTypes = {
-  variable: Comp.TodoFlowNode,
-  fetch: Comp.TodoFlowNode,
   branch: Comp.TodoFlowNode,
+  fetch: Comp.TodoFlowNode,
   iterate: Comp.TodoFlowNode,
-  wrap: Comp.TodoFlowNode,
-  state: Comp.TodoFlowNode,
   props: Comp.TodoFlowNode,
+  search: Comp.TodoFlowNode,
+  state: Comp.TodoFlowNode,
+  variable: Comp.TodoFlowNode,
+  wrap: Comp.TodoFlowNode,
 };
 
 //* Components
@@ -88,25 +90,7 @@ export default function CraftedTodoEditor({
     { onChange, onEditToggle }
   );
 
-  const LazyTodoOutputSelect = useLazyWidgetNav<TodoOutputSelectProps>(
-    renderedWidget,
-    onFetchWrapper,
-    ({ TodoProps, defaultTodos: defaults, fetchData, ...props }) => {
-      const defaultTodos = _get(
-        (widget && fetchData?.('type', widget)) || widget,
-        ['todos', TodoProps.eventName]
-      );
-
-      return (
-        <Comp.TodoOutputSelect
-          {...props}
-          TodoProps={TodoProps}
-          defaultTodos={GeneratedOverrideProps ? defaultTodos : defaults}
-        />
-      );
-    }
-  );
-
+  //* Event Handlers
   const handleNormalBack = () => {
     if (editing) {
       const { mixedTypes } = editing.config || {};
@@ -142,6 +126,26 @@ export default function CraftedTodoEditor({
       },
     });
   };
+
+  //* Component Nodes
+  const LazyTodoOutputSelect = useLazyWidgetNav<TodoOutputSelectProps>(
+    renderedWidget,
+    onFetchWrapper,
+    ({ TodoProps, defaultTodos: defaults, fetchData, ...props }) => {
+      const defaultTodos = _get(
+        (widget && fetchData?.('type', widget)) || widget,
+        ['todos', TodoProps.eventName]
+      );
+
+      return (
+        <Comp.TodoOutputSelect
+          {...props}
+          TodoProps={TodoProps}
+          defaultTodos={GeneratedOverrideProps ? defaultTodos : defaults}
+        />
+      );
+    }
+  );
 
   const renderOverrideItem = Hook.useTodoOverride(
     values || {},

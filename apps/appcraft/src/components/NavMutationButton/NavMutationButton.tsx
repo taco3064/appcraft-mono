@@ -40,7 +40,7 @@ export default function NavMutationButton({
 
     onConfirm({
       ...(data as Parameters<typeof onConfirm>[0]),
-      id: formdata.get('id').toString(),
+      pageid: formdata.get('pageid').toString(),
       subTitle: formdata.get('subTitle').toString(),
       pathname: `/${formdata.get('pathname').toString()}`,
     });
@@ -88,9 +88,9 @@ export default function NavMutationButton({
         <TextField
           required
           select
-          name="id"
+          name="pageid"
           label={wt('lbl-page')}
-          defaultValue={data.id}
+          defaultValue={data.pageid}
         >
           {options.map(({ value, primary, secondary }) => (
             <MenuItem key={value} value={value}>

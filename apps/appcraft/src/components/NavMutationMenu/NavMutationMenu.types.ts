@@ -6,5 +6,6 @@ export interface NavMutationMenuProps {
   pageOptions: NavMutationButtonProps['options'];
   data: Navigation;
   onChange: (data: Navigation) => void;
+  onMoveToSuperior?: () => void;
   onRemove: () => void;
 }

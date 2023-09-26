@@ -193,6 +193,7 @@ export default function HierarchyList({
               onDragEnd={({ active, over }) =>
                 active &&
                 over &&
+                active.id !== over.id &&
                 handleGroupChange({
                   item: hierarchies.find(({ _id }) => _id === active.id),
                   group: over.id as string,

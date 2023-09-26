@@ -10,6 +10,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import WebTwoToneIcon from '@mui/icons-material/WebTwoTone';
+import _set from 'lodash/set';
 import { CraftsmanStyle } from '@appcraft/craftsman';
 import { nanoid } from 'nanoid';
 import { useMemo } from 'react';
@@ -61,7 +62,9 @@ export default function NavList({
             mode="add"
             data={{ isNavItem: false }}
             options={pageOptions}
-            onConfirm={(e) => navHandles.mutate({ nav: e })}
+            onConfirm={(e) =>
+              navHandles.mutate({ nav: { ...e, id: nanoid(6) } })
+            }
           />
         ),
       }),
@@ -127,18 +130,16 @@ export default function NavList({
           cols={width === 'xs' ? 1 : width === 'sm' ? 2 : 3}
           style={{ overflow: 'hidden auto' }}
         >
-          <Dnd.DndContext
-            sensors={sensors}
-            onDragEnd={({ active, over }) => console.log(active, over)}
-          >
+          <Dnd.DndContext sensors={sensors} onDragEnd={navHandles.dnd}>
             {items.map((page, i) => {
-              const { id, subTitle, pathname, isNavItem } = page;
+              const { id, pageid, subTitle, pathname, isNavItem } = page;
 
               return (
                 <ArborCard
-                  key={`${id}-${i}`}
+                  key={id}
+                  enableItemDroppable
                   icon={WebTwoToneIcon}
-                  id={id}
+                  id={i}
                   type="item"
                   name={subTitle}
                   description={pathname}
@@ -148,24 +149,25 @@ export default function NavList({
                       pageOptions={pageOptions}
                       onChange={(e) => navHandles.mutate({ nav: e, index: i })}
                       onRemove={() => navHandles.mutate({ index: i })}
+                      {...(paths.length && {
+                        onMoveToSuperior: () => navHandles.superior(page),
+                      })}
                     />
                   }
                   onClick={() => navHandles.active({ id, subTitle, index: i })}
                   onActionRender={() => (
                     <>
-                      {id && (
-                        <AnchorLinksButton
-                          pageid={id}
-                          pages={items}
-                          value={page}
-                          onConfirm={(e) =>
-                            navHandles.mutate({
-                              index: i,
-                              nav: { ...page, links: e },
-                            })
-                          }
-                        />
-                      )}
+                      <AnchorLinksButton
+                        pageid={pageid}
+                        pages={items}
+                        value={page}
+                        onConfirm={(e) =>
+                          navHandles.mutate({
+                            index: i,
+                            nav: { ...page, links: e },
+                          })
+                        }
+                      />
 
                       <Tooltip
                         title={wt(`msg-nav-item-${isNavItem ? 'on' : 'off'}`)}

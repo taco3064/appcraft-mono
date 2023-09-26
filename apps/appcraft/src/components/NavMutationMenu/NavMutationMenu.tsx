@@ -1,9 +1,11 @@
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 
+import CommonButton from '../CommonButton';
 import NavMutationButton from '../NavMutationButton';
 import RemoveButton from '../RemoveButton';
 import { useFixedT } from '~appcraft/hooks';
@@ -13,9 +15,10 @@ export default function NavMutationMenu({
   data,
   pageOptions,
   onChange,
+  onMoveToSuperior,
   onRemove,
 }: Types.NavMutationMenuProps) {
-  const [at] = useFixedT('app');
+  const [at, wt] = useFixedT('app', 'websites');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
 
   return (
@@ -36,6 +39,18 @@ export default function NavMutationMenu({
           }),
         }}
       >
+        {onMoveToSuperior && (
+          <CommonButton
+            btnVariant="menu"
+            icon={<ArrowOutwardIcon />}
+            text={wt('btn-move-to-superior')}
+            onClick={() => {
+              setAnchorEl(null);
+              onMoveToSuperior();
+            }}
+          />
+        )}
+
         <NavMutationButton
           btnVariant="menu"
           mode="update"

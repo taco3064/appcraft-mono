@@ -7,7 +7,8 @@ export interface Website {
   backgroundImg?: string;
   logo?: string;
   pages: {
-    id: string; //* Page Config ID
+    id: string;
+    pageid: string;
     subTitle: string; //* 副標題，與 Website Title(Hierarchy Name) 顯示在網頁標題列
     pathname: string; //* 網址路徑
     isNavItem: boolean; //* 是否為導覽列項目

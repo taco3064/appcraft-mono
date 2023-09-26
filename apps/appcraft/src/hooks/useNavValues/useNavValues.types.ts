@@ -1,3 +1,4 @@
+import type { DragEndEvent } from '@dnd-kit/core';
 import type { Website } from '@appcraft/types';
 
 //* Variables
@@ -26,6 +27,8 @@ export type NavValuesHook = (
     top: () => void;
 
     //* For Mutation
+    dnd: (e: DragEndEvent) => void;
     mutate: (e: { index?: number; nav?: Navigation }) => void;
+    superior: (e: Navigation) => void;
   }
 ];

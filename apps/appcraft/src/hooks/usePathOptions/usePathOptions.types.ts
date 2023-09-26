@@ -1,8 +1,8 @@
 import type { MainWidget } from '@appcraft/types';
 
 //* Variables
-export type BaseOption = {
-  value: string;
+export type BaseOption<V = string> = {
+  value: V;
   primary: string;
   secondary: string;
 };

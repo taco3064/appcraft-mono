@@ -15,7 +15,7 @@ import { CraftsmanStyle } from '@appcraft/craftsman';
 import { ExhibitorUtil } from '@appcraft/exhibitor';
 
 import CommonButton from '../CommonButton';
-import { useFixedT, useLinkHandles } from '~appcraft/hooks';
+import { useFixedT, useLinkHandles, useParameterKeys } from '~appcraft/hooks';
 import type { AnchorLinksListProps } from './AnchorLinksList.types';
 
 export default function AnchorLinksList({
@@ -35,7 +35,8 @@ export default function AnchorLinksList({
     onChange
   );
 
-  const options = pages.filter(({ value }) => value !== navid);
+  const options = pages.filter(({ value }) => value.nav !== navid);
+  const keys = useParameterKeys(options, active);
 
   return (
     /**
@@ -76,6 +77,10 @@ export default function AnchorLinksList({
         )
       }
     >
+      {/* // * === 事件選擇 ===
+          // * 1. 條列出支援跳轉連結的事件
+          // * 2. 點擊後，將會進入連結設定
+       */}
       <Collapse in={Boolean(!outputs?.length)}>
         {events.map((event, i) => {
           const { alias, todoName, nodePaths } = event;
@@ -106,6 +111,12 @@ export default function AnchorLinksList({
         })}
       </Collapse>
 
+      {/* // * === 連結設定 ===
+          // * 1. 根據當前已建置之網頁，轉換出可跳轉的頁面選項（但不包含本身）
+          // * 2. 選擇目標跳轉頁面後，可增加 URL Search Params 設定
+          // * 3. URL Search Params 設定包含：參數名稱、值的來源（Output）
+          // * 4. Output 是根據事件執行結果產生的
+       */}
       <Collapse in={Boolean(outputs?.length)}>
         <ListItem divider>
           <ListItemText
@@ -127,6 +138,7 @@ export default function AnchorLinksList({
                         size="small"
                         text={wt('btn-add-params')}
                         icon={<AddIcon />}
+                        disabled={!keys.length}
                         onClick={handleLink.add}
                       />
                     </InputAdornment>
@@ -134,7 +146,7 @@ export default function AnchorLinksList({
                 }}
               >
                 {options.map(({ value, primary, secondary }) => (
-                  <MenuItem key={value} value={value}>
+                  <MenuItem key={value.nav} value={value.nav}>
                     <ListItemText primary={primary} secondary={secondary} />
                   </MenuItem>
                 ))}
@@ -152,6 +164,7 @@ export default function AnchorLinksList({
                 <>
                   <TextField
                     required
+                    select
                     size="small"
                     variant="outlined"
                     margin="normal"
@@ -160,7 +173,13 @@ export default function AnchorLinksList({
                     onChange={(e) =>
                       handleLink.params('key', i, e.target.value)
                     }
-                  />
+                  >
+                    {keys.map(({ value, primary }) => (
+                      <MenuItem key={value} value={value}>
+                        {primary}
+                      </MenuItem>
+                    ))}
+                  </TextField>
 
                   <TextField
                     required

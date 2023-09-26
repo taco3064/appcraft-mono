@@ -24,7 +24,7 @@ export default function AnchorLinksButton({
   const [open, setOpen] = useState(false);
   const [links, setLinks] = useState<Links>(value.links || []);
   const handleFetch = Hook.useCraftsmanFetch();
-  const linkable = pages.some(({ value }) => value !== id.nav);
+  const linkable = pages.some(({ value }) => value.nav !== id.nav);
 
   const [LazyAnchorLinksList, layouts] =
     Hook.useLazyLayoutsNav<Types.LazyAnchorLinksListProps>(

@@ -13,6 +13,12 @@ export type ActiveEvent = {
   outputs: OutputData[];
 };
 
+export type ActiveLink = {
+  title: string;
+  subtitle: string;
+  link?: Links[number];
+};
+
 export type LinkEvent = {
   layoutid: string;
   alias?: string;
@@ -30,13 +36,9 @@ export type LinkHandlesHook = (
   onChange: (value: Links) => void
 ) => [
   {
+    active?: ActiveLink;
     events: LinkEvent[];
     outputs?: OutputData[];
-    active?: {
-      title: string;
-      subtitle: string;
-      link?: Links[number];
-    };
   },
   {
     add: () => void;

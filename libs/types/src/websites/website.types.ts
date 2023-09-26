@@ -14,8 +14,13 @@ export interface Website {
     routes?: Website['pages']; //* 子頁面
     links?: {
       layout: string; //* Layout ID
-      todoPath: string; //* 觸發事項路徑
+      nodePaths: (string | number)[];
+      todoName: string;
       to: string; //* 跳轉路徑
+      searchParams?: {
+        key: string;
+        value: string;
+      }[];
     }[];
   }[];
 }

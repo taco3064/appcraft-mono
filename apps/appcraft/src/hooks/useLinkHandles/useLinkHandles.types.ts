@@ -1,5 +1,8 @@
+import type { ChangeEvent } from 'react';
 import type { GetWidgetOptionsFn, OutputData } from '@appcraft/exhibitor';
 import type { LayoutWidget } from '@appcraft/types';
+
+import type { Links, Navigation } from '../useNavValues';
 
 //* Variables
 export type ActiveEvent = {
@@ -22,18 +25,26 @@ export type LinkEvent = {
 //* Custom Hooks
 export type LinkHandlesHook = (
   layouts: LayoutWidget[],
-  getWidgetOptions: GetWidgetOptionsFn
+  value: Navigation,
+  getWidgetOptions: GetWidgetOptionsFn,
+  onChange: (value: Links) => void
 ) => [
   {
     events: LinkEvent[];
     outputs?: OutputData[];
-    subtitle?: {
-      primary: string;
-      secondary: string;
+    active?: {
+      title: string;
+      subtitle: string;
+      link?: Links[number];
     };
   },
   {
+    add: () => void;
     back: () => void;
     click: (target: LinkEvent) => void;
+    params: (type: 'key' | 'value', index: number, value: string) => void;
+    remove: (type: 'params' | 'link', index: number) => void;
+    resetable: (event: LinkEvent) => boolean;
+    to: (e: ChangeEvent<HTMLInputElement>) => void;
   }
 ];

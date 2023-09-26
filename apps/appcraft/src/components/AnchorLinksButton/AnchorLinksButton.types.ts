@@ -1,9 +1,6 @@
 import type { AnchorLinksListProps } from '../AnchorLinksList';
 import type { CommonButtonProps } from '../CommonButton';
-import type { Navigation } from '~appcraft/hooks';
-
-//* Variables
-export type Links = Navigation['links'];
+import type { Links, Navigation } from '~appcraft/hooks';
 
 //* Component Props
 export type LazyAnchorLinksListProps = Omit<
@@ -19,7 +16,8 @@ export interface AnchorLinksButtonProps
   >;
 
   pageid: string;
-  value?: Links;
+  pages: Navigation[];
+  value: Navigation;
 
   onCancel?: () => void;
   onConfirm: (value: Links) => void;

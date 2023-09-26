@@ -5,14 +5,18 @@ import type { FetchWrapperHandler, OutputData } from '@appcraft/exhibitor';
 
 import { useCraftsmanFetch } from '../useCraftsmanFetch';
 import type * as Types from './useLinkHandles.types';
+import type { Links } from '../useNavValues';
 
 export const useLinkHandles: Types.LinkHandlesHook = (
   layouts,
-  getWidgetOptions
+  value,
+  getWidgetOptions,
+  onChange
 ) => {
   const [, startTransition] = useTransition();
   const [active, setActive] = useState<Types.ActiveEvent>();
   const handleFetch = useCraftsmanFetch();
+  const { links = [] } = value;
 
   const events = useMemo(
     () =>
@@ -35,15 +39,28 @@ export const useLinkHandles: Types.LinkHandlesHook = (
     [layouts]
   );
 
+  const index = useMemo(() => {
+    const result = links.findIndex(
+      ({ layout, nodePaths, todoName }) =>
+        active &&
+        active.layoutid === layout &&
+        active.todoName === todoName &&
+        JSON.stringify(active.nodePaths) === JSON.stringify(nodePaths)
+    );
+
+    return typeof result === 'number' ? result : -1;
+  }, [links, active]);
+
   return [
     {
       events,
       outputs: active?.outputs,
-      subtitle: !active
+      active: !active
         ? undefined
         : {
-            primary: active.alias || active.todoName,
-            secondary: ExhibitorUtil.getPropPath([
+            link: links[index],
+            title: active.alias || active.todoName,
+            subtitle: ExhibitorUtil.getPropPath([
               ...active.nodePaths,
               active.alias,
             ]),
@@ -51,6 +68,79 @@ export const useLinkHandles: Types.LinkHandlesHook = (
     },
     {
       back: () => setActive(undefined),
+
+      add: () => {
+        const { searchParams = [], ...link } = links[index] || {};
+
+        links?.splice(index, 1, {
+          ...link,
+          searchParams: [...searchParams, { key: '', value: '' }],
+        } as Links[number]);
+
+        onChange([...links]);
+      },
+
+      params: (type, index, value) => {
+        const { searchParams = [], ...link } = links[index];
+        const params = searchParams[index];
+
+        params[type] = value;
+        links?.splice(index, 1, { ...link, searchParams } as Links[number]);
+
+        onChange([...links]);
+      },
+
+      remove: (type, index) => {
+        if (type === 'link') {
+          const event = events[index];
+
+          const i = links.findIndex(
+            ({ layout, nodePaths, todoName }) =>
+              event.layoutid === layout &&
+              event.todoName === todoName &&
+              JSON.stringify(event.nodePaths) === JSON.stringify(nodePaths)
+          );
+
+          links.splice(i, 1);
+        } else if (type === 'params') {
+          const { searchParams = [], ...link } = links[index];
+
+          searchParams.splice(index, 1);
+          links?.splice(index, 1, { ...link, searchParams } as Links[number]);
+        }
+
+        onChange([...links]);
+      },
+
+      resetable: (e) =>
+        links.some(
+          ({ layout, nodePaths, todoName }) =>
+            e.layoutid === layout &&
+            e.todoName === todoName &&
+            JSON.stringify(e.nodePaths) === JSON.stringify(nodePaths)
+        ),
+
+      to: (e) => {
+        if (active) {
+          if (index >= 0) {
+            links.splice(index, 1, {
+              layout: active.layoutid,
+              nodePaths: active.nodePaths,
+              todoName: active.todoName,
+              to: e.target.value,
+            });
+          } else {
+            links.push({
+              layout: active.layoutid,
+              nodePaths: active.nodePaths,
+              todoName: active.todoName,
+              to: e.target.value,
+            });
+          }
+
+          onChange([...links]);
+        }
+      },
 
       click: ({ layoutid, alias, nodePaths, todoName }) =>
         startTransition(() => {

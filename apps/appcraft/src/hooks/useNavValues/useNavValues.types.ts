@@ -7,6 +7,8 @@ export type NavHierarchy = Pick<Navigation, 'id' | 'subTitle'> & {
   index: number;
 };
 
+export type Links = Navigation['links'];
+
 //* Custom Hooks
 export type NavValuesHook = (
   values: Navigation[] | undefined,

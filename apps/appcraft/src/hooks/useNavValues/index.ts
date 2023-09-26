@@ -1,2 +1,2 @@
 export * from './useNavValues';
-export type { Navigation, NavHierarchy } from './useNavValues.types';
+export type { Links, Navigation, NavHierarchy } from './useNavValues.types';

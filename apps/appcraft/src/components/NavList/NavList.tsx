@@ -132,7 +132,7 @@ export default function NavList({
             onDragEnd={({ active, over }) => console.log(active, over)}
           >
             {items.map((page, i) => {
-              const { id, subTitle, pathname, links, isNavItem } = page;
+              const { id, subTitle, pathname, isNavItem } = page;
 
               return (
                 <ArborCard
@@ -156,7 +156,8 @@ export default function NavList({
                       {id && (
                         <AnchorLinksButton
                           pageid={id}
-                          value={links}
+                          pages={items}
+                          value={page}
                           onConfirm={(e) =>
                             navHandles.mutate({
                               index: i,

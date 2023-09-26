@@ -15,7 +15,7 @@ export interface AnchorLinksButtonProps
     'btnVariant' | 'icon' | 'text' | 'onClick'
   >;
 
-  pageid: string;
+  id: { nav: string; page: string };
   pages: BaseOption[];
   value: Navigation;
 

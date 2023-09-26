@@ -9,7 +9,7 @@ export type SearchParams = Navigation['links'][number]['searchParams'];
 //* Component Props
 export interface AnchorLinksListProps {
   layouts: LayoutWidget[];
-  pageid: string;
+  navid: string;
   pages: BaseOption[];
   value: Links;
   getWidgetOptions: GetWidgetOptionsFn;

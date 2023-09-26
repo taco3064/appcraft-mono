@@ -164,7 +164,7 @@ export default function NavList({
                   onActionRender={() => (
                     <>
                       <AnchorLinksButton
-                        pageid={pageid}
+                        id={{ nav: id, page: pageid }}
                         pages={pages}
                         value={page}
                         onConfirm={(e) =>

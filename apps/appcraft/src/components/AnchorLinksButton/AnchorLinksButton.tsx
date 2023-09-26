@@ -14,7 +14,7 @@ import type { Links } from '~appcraft/hooks';
 export default function AnchorLinksButton({
   CommonButtonProps,
   btnVariant = 'icon',
-  pageid,
+  id,
   pages,
   value,
   onCancel,
@@ -24,12 +24,12 @@ export default function AnchorLinksButton({
   const [open, setOpen] = useState(false);
   const [links, setLinks] = useState<Links>(value.links || []);
   const handleFetch = Hook.useCraftsmanFetch();
-  const linkable = pages.some(({ value }) => value !== pageid);
+  const linkable = pages.some(({ value }) => value !== id.nav);
 
   const [LazyAnchorLinksList, layouts] =
     Hook.useLazyLayoutsNav<Types.LazyAnchorLinksListProps>(
       open,
-      pageid,
+      id.page,
       handleFetch.wrapper,
       ({ fetchData, ...props }) => (
         <AnchorLinksList {...props} getWidgetOptions={fetchData} />
@@ -82,7 +82,8 @@ export default function AnchorLinksButton({
         {open && (
           <Suspense fallback={<LinearProgress />}>
             <LazyAnchorLinksList
-              {...{ layouts, pageid, pages }}
+              {...{ layouts, pages }}
+              navid={id.nav}
               value={links}
               onChange={setLinks}
             />

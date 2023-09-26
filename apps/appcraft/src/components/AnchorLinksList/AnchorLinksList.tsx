@@ -20,7 +20,7 @@ import type { AnchorLinksListProps } from './AnchorLinksList.types';
 
 export default function AnchorLinksList({
   layouts,
-  pageid,
+  navid,
   pages,
   value,
   getWidgetOptions,
@@ -35,7 +35,7 @@ export default function AnchorLinksList({
     onChange
   );
 
-  const options = pages.filter(({ value }) => value !== pageid);
+  const options = pages.filter(({ value }) => value !== navid);
 
   return (
     /**

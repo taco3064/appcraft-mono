@@ -25,8 +25,8 @@ export default function Pages() {
   );
 
   const { data: page } = useQuery({
-    enabled: Boolean(preview.id),
-    queryKey: [preview.id],
+    enabled: Boolean(preview?.id),
+    queryKey: [preview?.id],
     queryFn: findConfig<PageData>,
     refetchOnWindowFocus: false,
   });

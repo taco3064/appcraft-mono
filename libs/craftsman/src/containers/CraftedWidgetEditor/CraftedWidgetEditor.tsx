@@ -17,6 +17,7 @@ import { CraftedTypeEditor } from '../CraftedTypeEditor';
 import { SelectionProvider, useLocalesContext } from '../../contexts';
 import { getForceArray, getNodesAndEventsKey } from '../../utils';
 import type * as Types from './CraftedWidgetEditor.types';
+import { ExhibitorUtil } from '@appcraft/exhibitor';
 
 const getActiveType: Types.GetActiveType = ({
   editedWidgetCategory,
@@ -75,7 +76,7 @@ export default function CraftedWidgetEditor({
   const [{ breadcrumbs, childrenCount, paths, type }, onRedirect] =
     Hook.useStructure(widget);
 
-  const [{ editedWidget, widgetPath, todoPath }, handleMutation] =
+  const [{ editedWidget, widgetPaths, todoPath }, handleMutation] =
     Hook.useWidgetMutation(widget, onWidgetChange);
 
   const LazyWidgetElements =
@@ -199,7 +200,7 @@ export default function CraftedWidgetEditor({
             ...GeneratedTodoOverrideProps,
             states: widget?.state,
             widget: editedWidget,
-            widgetPath,
+            widgetPath: ExhibitorUtil.getPropPath(widgetPaths),
             todoPath,
           }}
           HeaderProps={{
@@ -212,7 +213,7 @@ export default function CraftedWidgetEditor({
 
       <SelectionProvider
         action={stateToggle}
-        basePath={widgetPath}
+        basePaths={paths}
         disabled={disableSelection}
         secondaryActions={secondaryActions}
         values={widget}

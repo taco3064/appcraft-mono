@@ -81,7 +81,7 @@ export default function TemplateTodoItem({
       >
         <CraftedTodoEditor
           {...CraftedTodoEditorProps}
-          disableCategories={['props']}
+          disableCategories={['props', 'search']}
           fullHeight
           variant="normal"
           typeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}

@@ -11,7 +11,7 @@ import { useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
 import Breadcrumbs from '../Breadcrumbs';
-import { CommonButton, PageList } from '~appcraft/components';
+import { CommonButton, NavList } from '~appcraft/components';
 import { SizedDrawer } from '~appcraft/styles';
 import { searchHierarchy } from '~appcraft/services';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
@@ -44,7 +44,7 @@ export default function WebsiteEditor({
               value={edited}
               onChange={(value: typeof edited) => setEdited(value)}
               options={{
-                app: { icon: ViewQuiltIcon, color: 'success' },
+                app: { icon: ViewQuiltIcon, color: 'warning' },
                 page: { icon: WebIcon, color: 'info' },
               }}
             />
@@ -96,7 +96,7 @@ export default function WebsiteEditor({
       <Slide direction="right" in={edited === 'page'}>
         <div>
           {edited === 'page' && (
-            <PageList
+            <NavList
               values={website.pages}
               onChange={(pages) => handleWebsite.change({ ...website, pages })}
               onActionNodePick={onActionAddPick}

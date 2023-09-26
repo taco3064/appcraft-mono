@@ -6,12 +6,12 @@ export const useHeight: HeightHook = () => {
 
   useEffect(() => {
     if (global.window) {
-      const resizeHandle = () =>
+      const handleResize = () =>
         setHeight(`${global.window?.innerHeight || 0}px`);
 
-      global.window.addEventListener('resize', resizeHandle);
+      global.window.addEventListener('resize', handleResize);
 
-      return () => global.window.removeEventListener('resize', resizeHandle);
+      return () => global.window.removeEventListener('resize', handleResize);
     }
   }, []);
 

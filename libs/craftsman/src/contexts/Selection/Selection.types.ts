@@ -7,7 +7,7 @@ import type { PropPaths, StateGenerator } from '../../utils';
 type ChangeHandler = (widget: MainWidget) => void;
 
 export type SecondaryActionRenderer = (options: {
-  basePath: string;
+  basePaths: PropPaths;
   widget?: MainWidget;
   path: string;
 }) => ReactNode;
@@ -16,7 +16,7 @@ export type SelectHandler = (checked: boolean, options?: PropTypesDef) => void;
 
 //* Custom Hooks
 export interface SelectionContextValue {
-  basePath: string;
+  basePaths: PropPaths;
   disabled: boolean;
   values?: MainWidget;
   ref?: MutableRefObject<
@@ -40,7 +40,7 @@ export type SelectionHook = (
 //* Provider Component Props
 export interface SelectionProviderProps {
   action: ReactElement;
-  basePath: string;
+  basePaths: PropPaths;
   children: ReactNode;
   disabled?: boolean;
   secondaryActions?: Partial<Record<StateCategory, SecondaryActionRenderer>>;

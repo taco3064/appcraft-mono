@@ -70,6 +70,7 @@ export function getVariableOutput<
   );
 }
 
+//* @WidgetTodo
 const execute: Types.Execute = async (
   todos,
   todo,
@@ -126,6 +127,29 @@ const execute: Types.Execute = async (
             { event, outputs }
           )
         );
+
+        break;
+      }
+
+      case 'search': {
+        const params = new URLSearchParams(window.location.search);
+        const { paramKeys } = todo;
+
+        todo = next;
+        outputs.push({
+          todo: id,
+          alias,
+          output: paramKeys.reduce((result, key) => {
+            const value = params.get(key);
+
+            return {
+              ...result,
+              ...(value && {
+                [key]: JSON.parse(value),
+              }),
+            };
+          }, {}),
+        });
 
         break;
       }

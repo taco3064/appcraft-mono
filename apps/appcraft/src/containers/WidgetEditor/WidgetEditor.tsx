@@ -98,7 +98,7 @@ export default function WidgetEditor({
             stateTypeFile={__WEBPACK_DEFINE__.STATE_TYPE_FILE}
             todoTypeFile={__WEBPACK_DEFINE__.TODO_TYPE_FILE}
             version={__WEBPACK_DEFINE__.VERSION}
-            disableTodoCategories={['props']}
+            disableTodoCategories={['props', 'search']}
             widget={widget}
             onWidgetChange={handleWidget.change}
             onFetchData={handleFetch.data}

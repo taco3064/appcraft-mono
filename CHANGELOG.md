@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.125](https://github.com/taco3064/appcraft-mono/compare/v0.0.124...v0.0.125) (2023-09-26)
+
+
+### Bug Fixes
+
+* **@appcraft/types:** add new todo type: SearchParamsTodo ([bb327a4](https://github.com/taco3064/appcraft-mono/commit/bb327a4480667103cef24525ea9dfb2356d71998))
+* **@appcraft/types:** update LayoutWidget types ([22fdb8d](https://github.com/taco3064/appcraft-mono/commit/22fdb8d3ee6116614bdfb282903d77d68d53f340))
+* **apps/appcraft:** add new component: AnchorLinksButton ([b9a8166](https://github.com/taco3064/appcraft-mono/commit/b9a816640043e40894b4c648446c11bc1081375c))
+* **apps/appcraft:** add new component: NavMutationMenu ([58c6ec2](https://github.com/taco3064/appcraft-mono/commit/58c6ec2ce5583405d94913c0c7802805752cd1ee))
+* **apps/appcraft:** add new component: PageMutationMenu ([ec75f4e](https://github.com/taco3064/appcraft-mono/commit/ec75f4ef5e5a59c68083f13acb13e145e8a97c70))
+* **apps/appcraft:** add new custom hook: useLinkHandles ([e191bb1](https://github.com/taco3064/appcraft-mono/commit/e191bb1e64c1f02c938a4f1c73c447a6fe4d32db))
+* **apps/appcraft:** add new custom hook: useNavOptions ([c6205c2](https://github.com/taco3064/appcraft-mono/commit/c6205c2af82ae8b307ecebb34ddde152d672c31f))
+* **apps/appcraft:** add new custom hook: useNavValues ([d1c2566](https://github.com/taco3064/appcraft-mono/commit/d1c256690badf2070fdaa4a802f614847f6aca5c))
+* **apps/appcraft:** add outputs cache in useLinkHandles ([16b0c45](https://github.com/taco3064/appcraft-mono/commit/16b0c4535da84ee090b7de2dad126f5c07bf036e))
+* **apps/appcraft:** complete the matation of links in AnchorLinksList ([b57ab8a](https://github.com/taco3064/appcraft-mono/commit/b57ab8ab2fc2e05199ac3337dc61074742e531de))
+* **apps/appcraft:** make sure the pattern of anchor links dialog ([339b80d](https://github.com/taco3064/appcraft-mono/commit/339b80dc410a4775c92b160d55dfc50e6dcd1d70))
+* **apps/appcraft:** rename hierarchy-item as arbor-card ([f9e67aa](https://github.com/taco3064/appcraft-mono/commit/f9e67aa669a5f5490fb25e190afc59badbeb43e6))
+* **apps/appcraft:** support to change the page hierarchy ([869086e](https://github.com/taco3064/appcraft-mono/commit/869086e766a0e3d4e4d62bbd2e6d8ba828aafaee))
+* **arbor-card:** update arbor-card props ([c31f567](https://github.com/taco3064/appcraft-mono/commit/c31f5679f6547157f0b5065902c6be5c70ab7bda))
+
 ### [0.0.124](https://github.com/taco3064/appcraft-mono/compare/v0.0.123...v0.0.124) (2023-09-22)
 
 

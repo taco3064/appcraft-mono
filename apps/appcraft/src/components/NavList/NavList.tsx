@@ -22,6 +22,9 @@ import NavMutationButton from '../NavMutationButton';
 import NavMutationMenu from '../NavMutationMenu';
 import type * as Types from './NavList.types';
 
+//* Methods
+
+//* Components
 export default function NavList({
   pageOptions,
   values,
@@ -37,6 +40,7 @@ export default function NavList({
   );
 
   const refresh = useMemo(() => nanoid(hierarchies.length + 1), [hierarchies]);
+  const pages = Hook.useNavOptions(values);
 
   //* Dnd
   const sensors = Dnd.useSensors(
@@ -154,12 +158,14 @@ export default function NavList({
                       })}
                     />
                   }
-                  onClick={() => navHandles.active({ id, subTitle, index: i })}
+                  onClick={() =>
+                    navHandles.active({ id, subTitle, pathname, index: i })
+                  }
                   onActionRender={() => (
                     <>
                       <AnchorLinksButton
                         pageid={pageid}
-                        pages={items}
+                        pages={pages}
                         value={page}
                         onConfirm={(e) =>
                           navHandles.mutate({

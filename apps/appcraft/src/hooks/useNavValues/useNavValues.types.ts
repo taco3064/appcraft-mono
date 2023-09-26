@@ -4,7 +4,7 @@ import type { Website } from '@appcraft/types';
 //* Variables
 export type Navigation = Website['pages'][number];
 
-export type NavHierarchy = Pick<Navigation, 'id' | 'subTitle'> & {
+export type NavHierarchy = Pick<Navigation, 'id' | 'pathname' | 'subTitle'> & {
   index: number;
 };
 

@@ -7,6 +7,7 @@ export * from './useLayoutLinks';
 export * from './useLazyLayoutsNav';
 export * from './useLazyUserProfile';
 export * from './useLinkHandles';
+export * from './useNavOptions';
 export * from './useNavValues';
 export * from './useNodePicker';
 export * from './usePageValues';

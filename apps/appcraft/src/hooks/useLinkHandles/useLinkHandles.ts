@@ -9,14 +9,13 @@ import type { Links } from '../useNavValues';
 
 export const useLinkHandles: Types.LinkHandlesHook = (
   layouts,
-  value,
+  links,
   getWidgetOptions,
   onChange
 ) => {
   const [, startTransition] = useTransition();
   const [active, setActive] = useState<Types.ActiveEvent>();
   const handleFetch = useCraftsmanFetch();
-  const { links = [] } = value;
 
   const events = useMemo(
     () =>

@@ -2,7 +2,7 @@ import type { ChangeEvent } from 'react';
 import type { GetWidgetOptionsFn, OutputData } from '@appcraft/exhibitor';
 import type { LayoutWidget } from '@appcraft/types';
 
-import type { Links, Navigation } from '../useNavValues';
+import type { Links } from '../useNavValues';
 
 //* Variables
 export type ActiveEvent = {
@@ -25,7 +25,7 @@ export type LinkEvent = {
 //* Custom Hooks
 export type LinkHandlesHook = (
   layouts: LayoutWidget[],
-  value: Navigation,
+  links: Links,
   getWidgetOptions: GetWidgetOptionsFn,
   onChange: (value: Links) => void
 ) => [

@@ -20,6 +20,7 @@ import type { AnchorLinksListProps } from './AnchorLinksList.types';
 
 export default function AnchorLinksList({
   layouts,
+  pageid,
   pages,
   value,
   getWidgetOptions,
@@ -34,7 +35,7 @@ export default function AnchorLinksList({
     onChange
   );
 
-  const targets = pages.filter(({ pathname }) => pathname !== value.pathname);
+  const options = pages.filter(({ value }) => value !== pageid);
 
   return (
     /**
@@ -132,9 +133,9 @@ export default function AnchorLinksList({
                   ),
                 }}
               >
-                {targets.map(({ pathname, subTitle }) => (
-                  <MenuItem key={pathname} value={pathname}>
-                    <ListItemText primary={subTitle} secondary={pathname} />
+                {options.map(({ value, primary, secondary }) => (
+                  <MenuItem key={value} value={value}>
+                    <ListItemText primary={primary} secondary={secondary} />
                   </MenuItem>
                 ))}
               </TextField>

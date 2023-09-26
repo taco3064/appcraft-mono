@@ -22,9 +22,9 @@ export default function AnchorLinksButton({
 }: Types.AnchorLinksButtonProps) {
   const [at, wt] = Hook.useFixedT('app', 'websites');
   const [open, setOpen] = useState(false);
-  const [links, setLinks] = useState<Links>(value.links);
+  const [links, setLinks] = useState<Links>(value.links || []);
   const handleFetch = Hook.useCraftsmanFetch();
-  const linkable = pages.some(({ pathname }) => pathname !== value.pathname);
+  const linkable = pages.some(({ value }) => value !== pageid);
 
   const [LazyAnchorLinksList, layouts] =
     Hook.useLazyLayoutsNav<Types.LazyAnchorLinksListProps>(
@@ -82,8 +82,8 @@ export default function AnchorLinksButton({
         {open && (
           <Suspense fallback={<LinearProgress />}>
             <LazyAnchorLinksList
-              {...{ layouts, pages }}
-              value={{ ...value, links }}
+              {...{ layouts, pageid, pages }}
+              value={links}
               onChange={setLinks}
             />
           </Suspense>

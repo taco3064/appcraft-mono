@@ -143,7 +143,7 @@ export default function NavList({
                   key={id}
                   enableItemDroppable
                   icon={WebTwoToneIcon}
-                  id={i}
+                  id={id}
                   type="item"
                   name={subTitle}
                   description={pathname}

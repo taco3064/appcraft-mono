@@ -8,9 +8,7 @@ import NearMeDisabledOutlinedIcon from '@mui/icons-material/NearMeDisabledOutlin
 import NearMeIcon from '@mui/icons-material/NearMe';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
 import WebTwoToneIcon from '@mui/icons-material/WebTwoTone';
-import _set from 'lodash/set';
 import { CraftsmanStyle } from '@appcraft/craftsman';
 import { nanoid } from 'nanoid';
 import { useMemo } from 'react';
@@ -22,11 +20,10 @@ import NavMutationButton from '../NavMutationButton';
 import NavMutationMenu from '../NavMutationMenu';
 import type * as Types from './NavList.types';
 
-//* Methods
-
 //* Components
 export default function NavList({
   pageOptions,
+  title,
   values,
   onChange,
   onActionNodePick = (e) => e,
@@ -81,6 +78,7 @@ export default function NavList({
         disableGutters
         variant="dense"
         sx={(theme) => ({
+          userSelect: 'none',
           [theme.breakpoints.only('xs')]: {
             display: 'flex',
             flexDirection: 'column-reverse',
@@ -118,14 +116,7 @@ export default function NavList({
           {actionNode}
         </Toolbar>
 
-        <Typography
-          variant={width === 'xs' ? 'subtitle1' : 'h6'}
-          fontWeight={600}
-          color="secondary"
-          whiteSpace="nowrap"
-        >
-          {wt('ttl-mode-page')}
-        </Typography>
+        {title}
       </Toolbar>
 
       <Grow key={refresh} in>

@@ -3,6 +3,7 @@ import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Slide from '@mui/material/Slide';
 import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
 import WebIcon from '@mui/icons-material/Web';
 import { CraftsmanStyle } from '@appcraft/craftsman';
@@ -11,7 +12,7 @@ import { useState } from 'react';
 
 import * as Hook from '~appcraft/hooks';
 import Breadcrumbs from '../Breadcrumbs';
-import { CommonButton, NavList } from '~appcraft/components';
+import { CommonButton, NavList, ScreenSimulator } from '~appcraft/components';
 import { SizedDrawer } from '~appcraft/styles';
 import { searchHierarchy } from '~appcraft/services';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
@@ -28,6 +29,7 @@ export default function WebsiteEditor({
   const [open, setOpen] = useState(false);
   const [edited, setEdited] = useState<'app' | 'page'>('app');
   const [website, handleWebsite] = Hook.useWebsiteValues({ data, onSave });
+  const width = Hook.useWidth();
 
   const { data: pages } = useQuery({
     refetchOnWindowFocus: false,
@@ -83,7 +85,9 @@ export default function WebsiteEditor({
     <>
       {superiors && (
         <Breadcrumbs
-          ToolbarProps={{ disableGutters: true }}
+          ToolbarProps={{
+            disableGutters: true,
+          }}
           action={actionNode}
           onCustomize={([index]) => [
             index,
@@ -107,6 +111,16 @@ export default function WebsiteEditor({
                   secondary,
                 })
               )}
+              title={
+                <Typography
+                  variant={width === 'xs' ? 'subtitle1' : 'h6'}
+                  fontWeight={600}
+                  color="primary"
+                  whiteSpace="nowrap"
+                >
+                  {wt('ttl-mode-page')}
+                </Typography>
+              }
             />
           )}
         </div>
@@ -114,7 +128,23 @@ export default function WebsiteEditor({
 
       <Slide direction="left" in={edited === 'app'}>
         <div>
-          {edited === 'app' && <>Website Base Layout Settings</>}
+          {edited === 'app' && (
+            <ScreenSimulator
+              title={
+                <Typography
+                  variant={width === 'xs' ? 'subtitle1' : 'h6'}
+                  fontWeight={600}
+                  color="primary"
+                  whiteSpace="nowrap"
+                >
+                  {wt('ttl-mode-app')}
+                </Typography>
+              }
+            >
+              TEST
+              <div>TESD</div>
+            </ScreenSimulator>
+          )}
 
           <SizedDrawer
             anchor="right"

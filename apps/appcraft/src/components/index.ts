@@ -15,6 +15,7 @@ export * from './NodeTemplateDialog';
 export * from './PagePreview';
 export * from './ReadyTodoEditor';
 export * from './RemoveButton';
+export * from './ScreenSimulator';
 export * from './SigninButton';
 export * from './StatePathPicker';
 export * from './StateViewer';

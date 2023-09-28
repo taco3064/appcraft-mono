@@ -62,11 +62,6 @@ export default function Detail() {
         onActionAddPick={handleActionAddPick}
         onActionBasePick={handleActionBasePick}
         onSave={refetch}
-        ResponsiveDrawerProps={{
-          disableGutters: true,
-          maxWidth: false,
-          height: (theme) => `calc(${height} - ${theme.spacing(29)})`,
-        }}
       />
     </PageContainer>
   );

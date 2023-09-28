@@ -18,7 +18,6 @@ import { searchHierarchy } from '~appcraft/services';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
 
 export default function WebsiteEditor({
-  ResponsiveDrawerProps,
   data,
   superiors,
   onActionAddPick,

@@ -5,16 +5,23 @@ import { withStyles } from 'tss-react/mui';
 import type * as Types from './MuiChip.types';
 
 export const WebsiteTitle = withStyles(
-  ({ TypographyProps, children, color, ...props }: Types.WebsiteTitleProps) => (
+  ({
+    TypographyProps,
+    children,
+    color,
+    variant,
+    ...props
+  }: Types.WebsiteTitleProps) => (
     <Chip
       {...props}
       color={color}
+      variant={variant}
       label={
         <Typography
           fontWeight={600}
           whiteSpace="nowrap"
+          color="inherit"
           {...TypographyProps}
-          color={color}
         >
           {children}
         </Typography>
@@ -23,7 +30,8 @@ export const WebsiteTitle = withStyles(
   ),
   (theme) => ({
     root: {
-      padding: theme.spacing(2),
+      padding: theme.spacing(2.5, 1.5),
+      borderRadius: `${theme.spacing(2.5)} / 50%`,
     },
   }),
   { name: 'WebsiteTitle' }

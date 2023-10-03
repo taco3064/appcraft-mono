@@ -1,4 +1,5 @@
 export * from './MuiAlert';
+export * from './MuiChip';
 export * from './MuiContainer';
 export * from './MuiDrawer';
 export * from './MuiLink';

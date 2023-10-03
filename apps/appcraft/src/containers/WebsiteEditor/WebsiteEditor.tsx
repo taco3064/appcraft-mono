@@ -15,7 +15,7 @@ import type { Breakpoint } from '@mui/material/styles';
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import Breadcrumbs from '../Breadcrumbs';
-import { ScreenSimulator, SizedDrawer } from '~appcraft/styles';
+import { ScreenSimulator, SizedDrawer, WebsiteTitle } from '~appcraft/styles';
 import { searchHierarchy } from '~appcraft/services';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
 
@@ -116,14 +116,15 @@ export default function WebsiteEditor({
                 })
               )}
               title={
-                <Typography
-                  variant={width === 'xs' ? 'subtitle1' : 'h6'}
-                  fontWeight={600}
+                <WebsiteTitle
+                  variant="outlined"
                   color="primary"
-                  whiteSpace="nowrap"
+                  TypographyProps={{
+                    variant: width === 'xs' ? 'subtitle1' : 'h6',
+                  }}
                 >
                   {wt('ttl-mode-page')}
-                </Typography>
+                </WebsiteTitle>
               }
             />
           )}
@@ -146,14 +147,15 @@ export default function WebsiteEditor({
                   },
                 })}
               >
-                <Typography
-                  variant={width === 'xs' ? 'subtitle1' : 'h6'}
-                  fontWeight={600}
+                <WebsiteTitle
+                  variant="outlined"
                   color="primary"
-                  whiteSpace="nowrap"
+                  TypographyProps={{
+                    variant: width === 'xs' ? 'subtitle1' : 'h6',
+                  }}
                 >
                   {wt('ttl-mode-app')}
-                </Typography>
+                </WebsiteTitle>
 
                 <Comp.BreakpointStepper
                   value={breakpoint}

@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.126](https://github.com/taco3064/appcraft-mono/compare/v0.0.125...v0.0.126) (2023-10-03)
+
+
+### Bug Fixes
+
+* **apps/appcraft:** add new component: ScreenSimulator ([9b8d0a1](https://github.com/taco3064/appcraft-mono/commit/9b8d0a1ce902a9e0abc6bc7d90b9e6d9be6a54a6))
+* **apps/appcraft:** fixed the dnd bugs ([e5b03ae](https://github.com/taco3064/appcraft-mono/commit/e5b03aeaa06e5d11faabe95a78986876fc05520c))
+* **apps/appcraft:** fixed the invalid props ([f1dd119](https://github.com/taco3064/appcraft-mono/commit/f1dd119680d2d603040fd4d8e575af57088d9741))
+* **apps/appcraft:** support to generate the url search parameter keys ([9771176](https://github.com/taco3064/appcraft-mono/commit/97711765cc5844731f8a69c816503016197085e4))
+* **styles/screen-simulator:** screen zooming functionality completed ([4f42840](https://github.com/taco3064/appcraft-mono/commit/4f4284054072a38e19092624d3d52db93ed18040))
+* **website-layout-editor:** add editor field ([8e3488f](https://github.com/taco3064/appcraft-mono/commit/8e3488f92d062869ae16e9c58a061b4bdfd8c68d))
+
 ### [0.0.125](https://github.com/taco3064/appcraft-mono/compare/v0.0.124...v0.0.125) (2023-09-26)
 
 

@@ -47,7 +47,7 @@ export default function ArborCard({
 
           transform: !dnd.item.transform
             ? undefined
-            : `translate3d(${dnd.item.transform.x}px, ${dnd.item.transform.y}px, 0)`,
+            : `translate3d(${dnd.item.transform.x}px, ${dnd.item.transform.y}px, 0) scale(0.9)`,
 
           ...(dnd.group.isOver &&
             !dnd.item.isDragging && {
@@ -55,6 +55,7 @@ export default function ArborCard({
               filter: `brightness(1.2)`,
               padding: 0,
             }),
+
           ...(dnd.item.isDragging && {
             zIndex: theme.zIndex.tooltip,
           }),

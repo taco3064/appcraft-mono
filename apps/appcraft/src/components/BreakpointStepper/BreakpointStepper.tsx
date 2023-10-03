@@ -22,7 +22,7 @@ export default function BreakpointStepper({
   const activeStep = breakpoints.indexOf(value);
 
   return (
-    <Toolbar variant="dense">
+    <Toolbar variant="dense" style={{ width: '100%' }}>
       <MobileStepper
         position="static"
         variant="dots"

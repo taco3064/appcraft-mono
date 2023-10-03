@@ -16,7 +16,6 @@ export default function Detail() {
   const [wt] = Hook.useFixedT('websites');
   const { pathname, query } = useRouter();
 
-  const height = Hook.useHeight();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
@@ -62,11 +61,6 @@ export default function Detail() {
         onActionAddPick={handleActionAddPick}
         onActionBasePick={handleActionBasePick}
         onSave={refetch}
-        ResponsiveDrawerProps={{
-          disableGutters: true,
-          maxWidth: false,
-          height: (theme) => `calc(${height} - ${theme.spacing(29)})`,
-        }}
       />
     </PageContainer>
   );

@@ -5,23 +5,26 @@ import type { GetNavOptionsFn, NavOptionsHook } from './useNavOptions.types';
 const getNavOptions: GetNavOptionsFn = (hierarchies, items) => {
   const base = hierarchies.map(({ pathname }) => pathname).join('');
 
-  return items.reduce((result, { id, subTitle, pathname, routes }, index) => {
-    result.push(
-      {
-        value: id,
-        primary: subTitle,
-        secondary: `${base}${pathname}`,
-      },
-      ...(!Array.isArray(routes)
-        ? []
-        : getNavOptions(
-            [...hierarchies, { id, index, subTitle, pathname }],
-            routes
-          ))
-    );
+  return items.reduce(
+    (result, { id, pageid, subTitle, pathname, routes }, index) => {
+      result.push(
+        {
+          value: { nav: id, page: pageid },
+          primary: subTitle,
+          secondary: `${base}${pathname}`,
+        },
+        ...(!Array.isArray(routes)
+          ? []
+          : getNavOptions(
+              [...hierarchies, { id, index, subTitle, pathname }],
+              routes
+            ))
+      );
 
-    return result;
-  }, []);
+      return result;
+    },
+    []
+  );
 };
 
 //* Custom Hooks

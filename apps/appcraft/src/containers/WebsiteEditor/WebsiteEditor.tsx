@@ -4,7 +4,6 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import Slide from '@mui/material/Slide';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
 import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
 import WebIcon from '@mui/icons-material/Web';
 import { CraftsmanStyle } from '@appcraft/craftsman';
@@ -39,6 +38,12 @@ export default function WebsiteEditor({
     refetchOnWindowFocus: false,
     queryFn: searchHierarchy,
     queryKey: ['pages', { type: 'item' }],
+  });
+
+  const { data: palettes } = useQuery({
+    refetchOnWindowFocus: false,
+    queryFn: searchHierarchy,
+    queryKey: ['themes'],
   });
 
   const actionNode = Hook.useNodePicker(
@@ -179,7 +184,9 @@ export default function WebsiteEditor({
             onClose={() => setOpen(false)}
           >
             <Comp.WebsiteLayoutEditor
+              palettes={palettes}
               value={website}
+              onBack={() => setOpen(false)}
               onChange={handleWebsite.change}
             />
           </SizedDrawer>

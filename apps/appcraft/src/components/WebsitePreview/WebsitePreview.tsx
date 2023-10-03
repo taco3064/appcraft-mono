@@ -6,7 +6,7 @@ import { useThemeStyle } from '~appcraft/hooks';
 import type { WebsitePreviewProps } from './WebsitePreview.types';
 
 export default function WebsitePreview({ options }: WebsitePreviewProps) {
-  const theme = useThemeStyle('64e61d41fb6bd49c621b90a9'); // (options.theme);
+  const theme = useThemeStyle(options.theme);
 
   return (
     <ThemeProvider theme={theme}>

@@ -2,22 +2,23 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Slide from '@mui/material/Slide';
+import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
 import WebIcon from '@mui/icons-material/Web';
 import { CraftsmanStyle } from '@appcraft/craftsman';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import type { Breakpoint } from '@mui/material/styles';
 
+import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import Breadcrumbs from '../Breadcrumbs';
-import { CommonButton, NavList } from '~appcraft/components';
-import { SizedDrawer } from '~appcraft/styles';
+import { ScreenSimulator, SizedDrawer, WebsiteTitle } from '~appcraft/styles';
 import { searchHierarchy } from '~appcraft/services';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
 
 export default function WebsiteEditor({
-  ResponsiveDrawerProps,
   data,
   superiors,
   onActionAddPick,
@@ -25,14 +26,24 @@ export default function WebsiteEditor({
   onSave,
 }: WebsiteEditorProps) {
   const [at, wt] = Hook.useFixedT('app', 'websites');
+  const [breakpoint, setBreakpoint] = useState<Breakpoint>('xs');
   const [open, setOpen] = useState(false);
   const [edited, setEdited] = useState<'app' | 'page'>('app');
   const [website, handleWebsite] = Hook.useWebsiteValues({ data, onSave });
+
+  const width = Hook.useWidth();
+  const height = Hook.useHeight();
 
   const { data: pages } = useQuery({
     refetchOnWindowFocus: false,
     queryFn: searchHierarchy,
     queryKey: ['pages', { type: 'item' }],
+  });
+
+  const { data: palettes } = useQuery({
+    refetchOnWindowFocus: false,
+    queryFn: searchHierarchy,
+    queryKey: ['themes'],
   });
 
   const actionNode = Hook.useNodePicker(
@@ -52,7 +63,7 @@ export default function WebsiteEditor({
         ),
         expand:
           edited !== 'app' ? null : (
-            <CommonButton
+            <Comp.CommonButton
               btnVariant="icon"
               icon={<SettingsIcon />}
               text={wt(`btn-expand-${open ? 'off' : 'on'}`)}
@@ -60,7 +71,7 @@ export default function WebsiteEditor({
             />
           ),
         reset: (
-          <CommonButton
+          <Comp.CommonButton
             btnVariant="icon"
             icon={<RestartAltIcon />}
             text={at('btn-reset')}
@@ -68,7 +79,7 @@ export default function WebsiteEditor({
           />
         ),
         save: (
-          <CommonButton
+          <Comp.CommonButton
             btnVariant="icon"
             icon={<SaveAltIcon />}
             text={at('btn-save')}
@@ -83,7 +94,9 @@ export default function WebsiteEditor({
     <>
       {superiors && (
         <Breadcrumbs
-          ToolbarProps={{ disableGutters: true }}
+          ToolbarProps={{
+            disableGutters: true,
+          }}
           action={actionNode}
           onCustomize={([index]) => [
             index,
@@ -96,7 +109,7 @@ export default function WebsiteEditor({
       <Slide direction="right" in={edited === 'page'}>
         <div>
           {edited === 'page' && (
-            <NavList
+            <Comp.NavList
               values={website.pages}
               onChange={(pages) => handleWebsite.change({ ...website, pages })}
               onActionNodePick={onActionAddPick}
@@ -107,6 +120,17 @@ export default function WebsiteEditor({
                   secondary,
                 })
               )}
+              title={
+                <WebsiteTitle
+                  variant="outlined"
+                  color="primary"
+                  TypographyProps={{
+                    variant: width === 'xs' ? 'subtitle1' : 'h6',
+                  }}
+                >
+                  {wt('ttl-mode-page')}
+                </WebsiteTitle>
+              }
             />
           )}
         </div>
@@ -114,7 +138,44 @@ export default function WebsiteEditor({
 
       <Slide direction="left" in={edited === 'app'}>
         <div>
-          {edited === 'app' && <>Website Base Layout Settings</>}
+          {edited === 'app' && (
+            <>
+              <Toolbar
+                disableGutters
+                variant="dense"
+                style={{}}
+                sx={(theme) => ({
+                  userSelect: 'none',
+                  [theme.breakpoints.only('xs')]: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                  },
+                })}
+              >
+                <WebsiteTitle
+                  variant="outlined"
+                  color="primary"
+                  TypographyProps={{
+                    variant: width === 'xs' ? 'subtitle1' : 'h6',
+                  }}
+                >
+                  {wt('ttl-mode-app')}
+                </WebsiteTitle>
+
+                <Comp.BreakpointStepper
+                  value={breakpoint}
+                  onChange={setBreakpoint}
+                />
+              </Toolbar>
+
+              <ScreenSimulator
+                maxWidth={breakpoint}
+                minHeight={(theme) => `calc(${height} - ${theme.spacing(42)})`}
+              >
+                <Comp.WebsitePreview options={website} />
+              </ScreenSimulator>
+            </>
+          )}
 
           <SizedDrawer
             anchor="right"
@@ -122,7 +183,12 @@ export default function WebsiteEditor({
             open={open}
             onClose={() => setOpen(false)}
           >
-            Drawer
+            <Comp.WebsiteLayoutEditor
+              palettes={palettes}
+              value={website}
+              onBack={() => setOpen(false)}
+              onChange={handleWebsite.change}
+            />
           </SizedDrawer>
         </div>
       </Slide>

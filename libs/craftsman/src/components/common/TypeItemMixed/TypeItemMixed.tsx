@@ -113,7 +113,7 @@ export default function TypeItemMixed({
             const s1 = `${t1}:${p1}`;
             const s2 = `${t2}:${p2}`;
 
-            return s1 < s2 ? -1 : s1 > s2 ? 1 : 0;
+            return s1.localeCompare(s2);
           })
           .map(({ type, text }) => ({
             primary: type,

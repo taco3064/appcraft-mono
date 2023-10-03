@@ -42,7 +42,7 @@ export const sortPropPaths = <E = string>(
     const c1 = p1.match(/\./g)?.length || 0;
     const c2 = p2.match(/\./g)?.length || 0;
 
-    return c1 - c2 || (p1 > p2 ? 1 : p1 < p2 ? -1 : 0);
+    return c1 - c2 || p1.localeCompare(p2);
   });
 
 export const splitProps: Types.SplitProps = (

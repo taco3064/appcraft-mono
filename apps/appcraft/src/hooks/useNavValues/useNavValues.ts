@@ -16,7 +16,10 @@ export const useNavValues: Types.NavValuesHook = (values, onChange) => {
   );
 
   const items = useMemo<Types.Navigation[]>(
-    () => (!paths.length ? values : _get(values, paths)) || [],
+    () =>
+      ((!paths.length ? values : _get(values, paths)) || []).sort(
+        ({ pathname: p1 }, { pathname: p2 }) => p1.localeCompare(p2)
+      ),
     [values, paths]
   );
 
@@ -43,10 +46,13 @@ export const useNavValues: Types.NavValuesHook = (values, onChange) => {
       //* For Mutation
       dnd: ({ active, over }) => {
         if (active && over && active.id !== over.id) {
-          const drag = items[active.id as number];
-          const drop = items[over.id as number];
+          const dragIndex = items.findIndex(({ id }) => id === active.id);
+          const dropIndex = items.findIndex(({ id }) => id === over.id);
 
-          items.splice(active.id as number, 1);
+          const drag = items[dragIndex];
+          const drop = items[dropIndex];
+
+          items.splice(dragIndex, 1);
           drop.routes = [...(drop.routes || []), drag];
 
           onChange([...(!paths.length ? items : _set(values, paths, items))]);

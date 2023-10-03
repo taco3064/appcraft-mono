@@ -11,7 +11,7 @@ export const usePropertiesSorting: PropertiesSortingHook = (basicType) =>
           const s1 = `${getPropOrderSeq(t1)}:${t1}:${p1}`;
           const s2 = `${getPropOrderSeq(t2)}:${t2}:${p2}`;
 
-          return s1 < s2 ? -1 : s1 > s2 ? 1 : 0;
+          return s1.localeCompare(s2);
         }
       ),
     [basicType?.options]

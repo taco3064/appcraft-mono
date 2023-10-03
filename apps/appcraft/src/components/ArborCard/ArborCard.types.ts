@@ -13,7 +13,7 @@ export type DndHook = {
 //* Component Props
 export interface ArborCardProps
   extends Pick<HierarchyData, 'type' | 'name' | 'description'> {
-  id: string | number;
+  id: string;
   mutation?: ReactNode;
   disableGroupChange?: boolean;
   enableItemDroppable?: boolean;

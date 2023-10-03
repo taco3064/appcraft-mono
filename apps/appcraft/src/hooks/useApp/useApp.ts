@@ -76,7 +76,7 @@ export const useSettingModified: Types.SettingModifiedHook = () => {
   ];
 };
 
-export const useThemeStyle: Types.ThemeStyleHook = () => {
+export const useThemeStyle: Types.ThemeStyleHook = (themeid) => {
   const [id, timestamp] = useAppStore(({ theme, timestamp }) => [
     theme,
     timestamp,
@@ -86,9 +86,11 @@ export const useThemeStyle: Types.ThemeStyleHook = () => {
     refetchOnWindowFocus: false,
     suspense: false,
     enabled: true,
-    queryKey: [id, timestamp],
+    queryKey: [themeid || id, timestamp],
     queryFn: async ({ queryKey: [id] }: FindConfigContext) => {
       const isDefaultOption = id in PALETTES;
+
+      console.log(id);
 
       if (!isDefaultOption) {
         try {

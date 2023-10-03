@@ -1,11 +1,14 @@
 import type { BaseOption } from '../usePathOptions';
 import type { NavHierarchy, Navigation } from '../useNavValues';
 
+//* Variables
+export type NavOption = BaseOption<{ nav: string; page: string }>;
+
 //* Methods
 export type GetNavOptionsFn = (
   hierarchies: NavHierarchy[],
   items: Navigation[]
-) => BaseOption[];
+) => NavOption[];
 
 //* Custom Hooks
-export type NavOptionsHook = (pages: Navigation[]) => BaseOption[];
+export type NavOptionsHook = (pages: Navigation[]) => NavOption[];

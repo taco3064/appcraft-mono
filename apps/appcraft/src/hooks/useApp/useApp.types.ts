@@ -32,4 +32,4 @@ export type SettingModifiedHook = () => [
   }
 ];
 
-export type ThemeStyleHook = () => ThemeOptions;
+export type ThemeStyleHook = (themeid?: string) => ThemeOptions;

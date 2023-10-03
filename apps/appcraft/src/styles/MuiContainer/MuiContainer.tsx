@@ -4,10 +4,29 @@ import Slide from '@mui/material/Slide';
 import Toolbar from '@mui/material/Toolbar';
 import cx from 'clsx';
 import { CraftsmanStyle } from '@appcraft/craftsman';
+import { useEffect, useRef } from 'react';
 import { withStyles } from 'tss-react/mui';
 
 import type * as Types from './MuiContainer.types';
 
+//* Variables
+const SCREEN_SIZE: Types.BreakpointConfig = {
+  xs: 190,
+  sm: 140,
+  md: 68,
+  lg: 56,
+  xl: 52,
+};
+
+const CONTAINER_WIDTH: Types.BreakpointConfig = {
+  xs: 444,
+  sm: 600,
+  md: 900,
+  lg: 1200,
+  xl: 1536,
+};
+
+//* Style Components
 export const MainContainer = withStyles(
   Container,
   (theme) => ({
@@ -91,4 +110,120 @@ export const PageContainer = withStyles(
     },
   }),
   { name: 'PageContainer' }
+);
+
+export const ScreenSimulator = withStyles(
+  ({ children, classes, maxWidth }: Types.ScreenSimulatorProps) => {
+    const screenRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      const { current: el } = screenRef;
+
+      if (el) {
+        const handleResize = () => {
+          const borderEl = el.querySelector<HTMLDivElement>(
+            ':scope > [data-role="border"]'
+          );
+
+          const viewportEl = borderEl.querySelector<HTMLDivElement>(
+            ':scope > [data-role="viewport"]'
+          );
+
+          const scaleEl = viewportEl.querySelector<HTMLDivElement>(
+            ':scope > [data-role="scale"]'
+          );
+
+          const { [maxWidth]: w } = CONTAINER_WIDTH;
+          const { width: baseWidth } = viewportEl.getBoundingClientRect();
+          const scale = baseWidth / w;
+
+          //* 框線樣式
+          viewportEl.style.borderRadius = `${8 * scale}px`;
+          borderEl.style.borderRadius = `${12 * scale}px`;
+          borderEl.style.padding = `${12 * scale}px`;
+          borderEl.style.paddingBottom = `${48 * scale}px`;
+
+          const { width, height, x, y } = viewportEl.getBoundingClientRect();
+
+          scaleEl.style.width = `${width * (1 / scale)}px`;
+          scaleEl.style.height = `${height * (1 / scale)}px`;
+          scaleEl.style.transform = `scale(${scale})`;
+          scaleEl.style.top = '0px';
+          scaleEl.style.left = '0px';
+
+          const scaleRect = scaleEl.getBoundingClientRect();
+
+          scaleEl.style.top = `${y - scaleRect.y}px`;
+          scaleEl.style.left = `${x - scaleRect.x}px`;
+        };
+
+        handleResize();
+        global.window?.addEventListener('resize', handleResize);
+
+        return () => {
+          global.window?.removeEventListener('resize', handleResize);
+        };
+      }
+    }, [maxWidth]);
+
+    return (
+      <Container ref={screenRef} className={classes.root} maxWidth={false}>
+        <Container
+          data-role="border"
+          className={classes.border}
+          maxWidth={maxWidth}
+        >
+          <Paper data-role="viewport" className={classes.viewport}>
+            <Container
+              disableGutters
+              data-role="scale"
+              maxWidth={false}
+              className={classes.scale}
+            >
+              {children}
+            </Container>
+          </Paper>
+        </Container>
+      </Container>
+    );
+  },
+  (theme, { maxWidth, minHeight }) => ({
+    root: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: minHeight?.(theme),
+      margin: theme.spacing(2, 0),
+    },
+    border: {
+      display: 'flex',
+      justifyContent: 'center',
+      boxShadow: theme.shadows[10],
+      borderRadius: theme.spacing(1.5),
+      marginY: theme.spacing(2),
+      background: `linear-gradient(135deg, #252525, #000)`,
+    },
+    viewport: {
+      position: 'relative' as never,
+      display: 'grid',
+      width: '100%',
+      height: '100%',
+      borderRadius: theme.spacing(1),
+      paddingTop: `${SCREEN_SIZE[maxWidth]}%`,
+      overflow: 'hidden',
+    },
+    scale: {
+      position: 'absolute' as never,
+      display: 'flex',
+      flexDirection: 'column' as never,
+      alignItems: 'center',
+      borderRadius: theme.spacing(1, 1, 0.5, 0.5),
+      top: 0,
+      left: 0,
+      zIndex: 0,
+      overflow: 'hidden auto !important',
+    },
+  }),
+  { name: 'ScreenSimulator' }
 );

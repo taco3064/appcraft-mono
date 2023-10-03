@@ -2,6 +2,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Slide from '@mui/material/Slide';
+import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
@@ -9,11 +10,12 @@ import WebIcon from '@mui/icons-material/Web';
 import { CraftsmanStyle } from '@appcraft/craftsman';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import type { Breakpoint } from '@mui/material/styles';
 
+import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import Breadcrumbs from '../Breadcrumbs';
-import { CommonButton, NavList, ScreenSimulator } from '~appcraft/components';
-import { SizedDrawer } from '~appcraft/styles';
+import { ScreenSimulator, SizedDrawer } from '~appcraft/styles';
 import { searchHierarchy } from '~appcraft/services';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
 
@@ -25,10 +27,13 @@ export default function WebsiteEditor({
   onSave,
 }: WebsiteEditorProps) {
   const [at, wt] = Hook.useFixedT('app', 'websites');
+  const [breakpoint, setBreakpoint] = useState<Breakpoint>('xs');
   const [open, setOpen] = useState(false);
   const [edited, setEdited] = useState<'app' | 'page'>('app');
   const [website, handleWebsite] = Hook.useWebsiteValues({ data, onSave });
+
   const width = Hook.useWidth();
+  const height = Hook.useHeight();
 
   const { data: pages } = useQuery({
     refetchOnWindowFocus: false,
@@ -53,7 +58,7 @@ export default function WebsiteEditor({
         ),
         expand:
           edited !== 'app' ? null : (
-            <CommonButton
+            <Comp.CommonButton
               btnVariant="icon"
               icon={<SettingsIcon />}
               text={wt(`btn-expand-${open ? 'off' : 'on'}`)}
@@ -61,7 +66,7 @@ export default function WebsiteEditor({
             />
           ),
         reset: (
-          <CommonButton
+          <Comp.CommonButton
             btnVariant="icon"
             icon={<RestartAltIcon />}
             text={at('btn-reset')}
@@ -69,7 +74,7 @@ export default function WebsiteEditor({
           />
         ),
         save: (
-          <CommonButton
+          <Comp.CommonButton
             btnVariant="icon"
             icon={<SaveAltIcon />}
             text={at('btn-save')}
@@ -99,7 +104,7 @@ export default function WebsiteEditor({
       <Slide direction="right" in={edited === 'page'}>
         <div>
           {edited === 'page' && (
-            <NavList
+            <Comp.NavList
               values={website.pages}
               onChange={(pages) => handleWebsite.change({ ...website, pages })}
               onActionNodePick={onActionAddPick}
@@ -128,8 +133,19 @@ export default function WebsiteEditor({
       <Slide direction="left" in={edited === 'app'}>
         <div>
           {edited === 'app' && (
-            <ScreenSimulator
-              title={
+            <>
+              <Toolbar
+                disableGutters
+                variant="dense"
+                style={{}}
+                sx={(theme) => ({
+                  userSelect: 'none',
+                  [theme.breakpoints.only('xs')]: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                  },
+                })}
+              >
                 <Typography
                   variant={width === 'xs' ? 'subtitle1' : 'h6'}
                   fontWeight={600}
@@ -138,11 +154,20 @@ export default function WebsiteEditor({
                 >
                   {wt('ttl-mode-app')}
                 </Typography>
-              }
-            >
-              TEST
-              <div>TESD</div>
-            </ScreenSimulator>
+
+                <Comp.BreakpointStepper
+                  value={breakpoint}
+                  onChange={setBreakpoint}
+                />
+              </Toolbar>
+
+              <ScreenSimulator
+                maxWidth={breakpoint}
+                minHeight={(theme) => `calc(${height} - ${theme.spacing(42)})`}
+              >
+                <Comp.WebsitePreview options={website} />
+              </ScreenSimulator>
+            </>
           )}
 
           <SizedDrawer
@@ -151,7 +176,10 @@ export default function WebsiteEditor({
             open={open}
             onClose={() => setOpen(false)}
           >
-            Drawer
+            <Comp.WebsiteLayoutEditor
+              value={website}
+              onChange={handleWebsite.change}
+            />
           </SizedDrawer>
         </div>
       </Slide>

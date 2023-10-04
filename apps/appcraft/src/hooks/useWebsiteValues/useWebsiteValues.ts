@@ -16,7 +16,8 @@ export const useWebsiteValues: WebsiteValuesHook = ({ data, onSave }) => {
     JSON.parse(
       JSON.stringify({
         theme,
-        nav: { position: 'top' },
+        maxWidth: 'xl',
+        navAnchor: 'top',
         pages: [],
         ...data.content,
       })

@@ -214,7 +214,6 @@ export const ScreenSimulator = withStyles(
       justifyContent: 'center',
       boxShadow: theme.shadows[10],
       borderRadius: theme.spacing(1.5),
-      marginY: theme.spacing(2),
       background: `linear-gradient(135deg, #0B0033, #040014)`,
     },
     viewport: {

@@ -1,5 +1,5 @@
+import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
-import * as Mui from '@mui/material';
 
 import { FullscreenContainer } from '~appcraft/styles';
 import { useThemeStyle } from '~appcraft/hooks';
@@ -13,26 +13,12 @@ export default function WebsitePreview({ options }: WebsitePreviewProps) {
       <FullscreenContainer
         disableGutters
         maxWidth={false}
-        style={{
-          background: theme.palette.background.default,
-          color: theme.palette.text.primary,
-        }}
+        style={{ background: theme.palette.background.default }}
       >
-        <Mui.Typography variant="h5" color="primary">
-          WebsitePreview
-        </Mui.Typography>
-
-        <Mui.Typography variant="h6" color="secondary">
-          WebsitePreview
-        </Mui.Typography>
-
-        <Mui.Button color="primary" variant="contained">
-          Button
-        </Mui.Button>
-
-        <Mui.Button color="secondary" variant="contained">
-          Button
-        </Mui.Button>
+        <Container
+          disableGutters
+          maxWidth={options.maxWidth || 'xl'}
+        ></Container>
       </FullscreenContainer>
     </ThemeProvider>
   );

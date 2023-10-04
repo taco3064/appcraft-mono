@@ -101,6 +101,28 @@ export default function WebsiteLayoutEditor({
             }
           />
         </ListItem>
+
+        <ListItem>
+          <ListItemText
+            disableTypography
+            primary={
+              <TextField
+                fullWidth
+                select
+                variant="outlined"
+                size="small"
+                label={wt('lbl-nav-anchor')}
+                value={value.navAnchor}
+                onChange={(e) =>
+                  onChange({ ..._set(value, 'navAnchor', e.target.value) })
+                }
+              >
+                <MenuItem value="top">{wt('opt-nav-top')}</MenuItem>
+                <MenuItem value="left">{wt('opt-nav-left')}</MenuItem>
+              </TextField>
+            }
+          />
+        </ListItem>
       </List>
     </>
   );

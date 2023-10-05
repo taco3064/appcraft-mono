@@ -29,6 +29,10 @@ export const DEFAULT_THEME: ThemeOptions = {
           height: global.window?.innerHeight || '100vh',
           overflow: 'hidden auto !important',
 
+          '& foreignObject': {
+            outline: 'none !important',
+          },
+
           '& button:disabled': {
             color: theme.palette.text.disabled,
             pointerEvents: 'none !important',

@@ -47,7 +47,7 @@ export const ScaledPopover = withStyles(
       </Popover>
     );
   },
-  (theme) => ({
+  () => ({
     content: {
       width: 'max-content',
       height: 'max-content',

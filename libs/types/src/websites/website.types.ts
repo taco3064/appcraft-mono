@@ -1,11 +1,12 @@
 import type { Breakpoint } from '@mui/material/styles';
 
 export interface Website {
-  theme: string;
+  backgroundImg?: string;
+  homeid: string;
+  logo?: string;
   maxWidth: Breakpoint;
   navAnchor: 'top' | 'left';
-  backgroundImg?: string;
-  logo?: string;
+  theme: string;
   pages: {
     id: string;
     pageid: string;

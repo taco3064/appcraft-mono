@@ -4,11 +4,10 @@ import Slide from '@mui/material/Slide';
 import Toolbar from '@mui/material/Toolbar';
 import cx from 'clsx';
 import { CraftsmanStyle } from '@appcraft/craftsman';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { withStyles } from 'tss-react/mui';
 
 import type * as Types from './MuiContainer.types';
-import { set } from 'lodash';
 
 //* Variables
 const SCREEN_SIZE: Types.BreakpointConfig = {
@@ -131,46 +130,52 @@ export const ScreenSimulator = withStyles(
     const [scale, setScale] = useState<number>();
     const screenRef = useRef<HTMLDivElement>();
 
+    const resizeObserver = useMemo(
+      () =>
+        new ResizeObserver((entries) => {
+          for (const entry of entries) {
+            const device =
+              entry.target.querySelector<HTMLDivElement>(':scope > div');
+
+            const viewport =
+              device.querySelector<HTMLDivElement>(':scope > div');
+
+            const container = viewport.querySelector<SVGElement>(
+              ':scope > svg > foreignObject'
+            );
+
+            const { [maxWidth]: w } = CONTAINER_WIDTH;
+            const { width: base } = viewport.getBoundingClientRect();
+            const scale = base / w;
+
+            //* 框線樣式
+            viewport.style.borderRadius = `${8 * scale}px`;
+            device.style.borderRadius = `${12 * scale}px`;
+            device.style.padding = `${12 * scale}px`;
+            device.style.paddingBottom = `${48 * scale}px`;
+
+            //* 縮放樣式
+            const { width, height } = viewport.getBoundingClientRect();
+
+            container.style.width = `${width * (1 / scale)}px`;
+            container.style.height = `${height * (1 / scale)}px`;
+            container.style.transform = `scale(${scale})`;
+
+            setScale(scale);
+          }
+        }),
+      [maxWidth]
+    );
+
     useEffect(() => {
       const { current: el } = screenRef;
 
       if (el) {
-        const handleResize = () => {
-          const device = el.querySelector<HTMLDivElement>(':scope > div');
-          const viewport = device.querySelector<HTMLDivElement>(':scope > div');
+        resizeObserver.observe(el);
 
-          const container = viewport.querySelector<SVGElement>(
-            ':scope > svg > foreignObject'
-          );
-
-          const { [maxWidth]: w } = CONTAINER_WIDTH;
-          const { width: base } = viewport.getBoundingClientRect();
-          const scale = base / w;
-
-          //* 框線樣式
-          viewport.style.borderRadius = `${8 * scale}px`;
-          device.style.borderRadius = `${12 * scale}px`;
-          device.style.padding = `${12 * scale}px`;
-          device.style.paddingBottom = `${48 * scale}px`;
-
-          //* 縮放樣式
-          const { width, height } = viewport.getBoundingClientRect();
-
-          container.style.width = `${width * (1 / scale)}px`;
-          container.style.height = `${height * (1 / scale)}px`;
-          container.style.transform = `scale(${scale})`;
-
-          setScale(scale);
-        };
-
-        handleResize();
-        global.window?.addEventListener('resize', handleResize);
-
-        return () => {
-          global.window?.removeEventListener('resize', handleResize);
-        };
+        return () => resizeObserver.unobserve(el);
       }
-    }, [maxWidth]);
+    }, [resizeObserver]);
 
     return (
       <Container ref={screenRef} className={classes.root} maxWidth={false}>

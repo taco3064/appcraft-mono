@@ -15,10 +15,11 @@ export const useWebsiteValues: WebsiteValuesHook = ({ data, onSave }) => {
   const [values, setValues] = useState<Website>(() =>
     JSON.parse(
       JSON.stringify({
-        theme,
+        homeid: '',
         maxWidth: 'xl',
         navAnchor: 'top',
         pages: [],
+        theme,
         ...data.content,
       })
     )

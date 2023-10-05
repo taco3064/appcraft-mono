@@ -117,7 +117,6 @@ export default function WebsiteNavMenu({
       anchor={options.navAnchor}
       open={open}
       onClick={(e) => e.stopPropagation()}
-      onClose={() => setExpanded(undefined)}
       PaperProps={{
         sx: (theme) => ({
           userSelect: 'none',
@@ -128,37 +127,39 @@ export default function WebsiteNavMenu({
         }),
       }}
     >
-      <Tabs
-        selectionFollowsFocus
-        orientation={isAnchorTop ? 'horizontal' : 'vertical'}
-        {...(isAnchorTop && {
-          allowScrollButtonsMobile: true,
-          scrollButtons: 'auto',
-          variant: 'scrollable',
-        })}
-        sx={{
-          ...(isAnchorTop && {
-            '& div[role=tablist]': {
-              '& > button:first-child': {
-                marginLeft: 'auto',
+      {open && (
+        <Tabs
+          selectionFollowsFocus
+          orientation={isAnchorTop ? 'horizontal' : 'vertical'}
+          {...(isAnchorTop && {
+            allowScrollButtonsMobile: true,
+            scrollButtons: 'auto',
+            variant: 'scrollable',
+          })}
+          sx={{
+            ...(isAnchorTop && {
+              '& div[role=tablist]': {
+                '& > button:first-child': {
+                  marginLeft: 'auto',
+                },
+                '& > button:last-child': {
+                  marginRight: 'auto',
+                },
               },
-              '& > button:last-child': {
-                marginRight: 'auto',
-              },
-            },
-          }),
-        }}
-      >
-        {items.map((page) => (
-          <NavTab
-            key={page.id}
-            options={page}
-            {...(isAnchorTop && {
-              onSubMenuPopover: setExpanded,
-            })}
-          />
-        ))}
-      </Tabs>
+            }),
+          }}
+        >
+          {items.map((page) => (
+            <NavTab
+              key={page.id}
+              options={page}
+              {...(isAnchorTop && {
+                onSubMenuPopover: setExpanded,
+              })}
+            />
+          ))}
+        </Tabs>
+      )}
 
       {isAnchorTop && (
         <ScaledPopover

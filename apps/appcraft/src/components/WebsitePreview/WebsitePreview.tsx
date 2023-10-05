@@ -38,7 +38,12 @@ export default function WebsitePreview({
           />
 
           <FullscreenContainer maxWidth={false} sx={{ position: 'relative' }}>
-            <WebsiteNavMenu open={open} options={options} scale={scale} />
+            <WebsiteNavMenu
+              key={options.navAnchor}
+              open={open}
+              options={options}
+              scale={scale}
+            />
           </FullscreenContainer>
         </Container>
       </FullscreenContainer>

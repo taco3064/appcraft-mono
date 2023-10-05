@@ -27,7 +27,7 @@ export const DEFAULT_THEME: ThemeOptions = {
           margin: 0,
           padding: 0,
           height: global.window?.innerHeight || '100vh',
-          overflow: 'hidden auto',
+          overflow: 'hidden auto !important',
 
           '& button:disabled': {
             color: theme.palette.text.disabled,

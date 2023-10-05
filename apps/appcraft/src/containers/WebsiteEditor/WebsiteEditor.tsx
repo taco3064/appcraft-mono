@@ -13,8 +13,8 @@ import type { Breakpoint } from '@mui/material/styles';
 
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
+import * as Style from '~appcraft/styles';
 import Breadcrumbs from '../Breadcrumbs';
-import { ScreenSimulator, SizedDrawer, WebsiteTitle } from '~appcraft/styles';
 import { searchHierarchy } from '~appcraft/services';
 import type { WebsiteEditorProps } from './WebsiteEditor.types';
 
@@ -121,7 +121,7 @@ export default function WebsiteEditor({
                 })
               )}
               title={
-                <WebsiteTitle
+                <Style.WebsiteTitle
                   variant="outlined"
                   color="primary"
                   TypographyProps={{
@@ -129,7 +129,7 @@ export default function WebsiteEditor({
                   }}
                 >
                   {wt('ttl-mode-page')}
-                </WebsiteTitle>
+                </Style.WebsiteTitle>
               }
             />
           )}
@@ -152,7 +152,7 @@ export default function WebsiteEditor({
                   },
                 })}
               >
-                <WebsiteTitle
+                <Style.WebsiteTitle
                   variant="outlined"
                   color="primary"
                   TypographyProps={{
@@ -160,7 +160,7 @@ export default function WebsiteEditor({
                   }}
                 >
                   {wt('ttl-mode-app')}
-                </WebsiteTitle>
+                </Style.WebsiteTitle>
 
                 <Comp.BreakpointStepper
                   value={breakpoint}
@@ -168,16 +168,21 @@ export default function WebsiteEditor({
                 />
               </Toolbar>
 
-              <ScreenSimulator
+              <Style.ScreenSimulator
                 maxWidth={breakpoint}
                 minHeight={(theme) => `calc(${height} - ${theme.spacing(42)})`}
-              >
-                <Comp.WebsitePreview options={website} />
-              </ScreenSimulator>
+                render={(scale) => (
+                  <Comp.WebsitePreview
+                    options={website}
+                    scale={scale}
+                    title={superiors.names[data._id]}
+                  />
+                )}
+              />
             </>
           )}
 
-          <SizedDrawer
+          <Style.SizedDrawer
             anchor="right"
             maxWidth="xs"
             open={open}
@@ -189,7 +194,7 @@ export default function WebsiteEditor({
               onBack={() => setOpen(false)}
               onChange={handleWebsite.change}
             />
-          </SizedDrawer>
+          </Style.SizedDrawer>
         </div>
       </Slide>
     </>

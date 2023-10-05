@@ -22,13 +22,14 @@ export interface PageContainerProps
 
 export interface ScreenSimulatorProps {
   maxWidth: Breakpoint;
-  children: ReactNode;
   minHeight?: (theme: Theme) => string | number;
+  render: (scale: number, containerEl: SVGSVGElement) => ReactNode;
 
   classes?: {
     root?: string;
     border?: string;
     viewport?: string;
+    container?: string;
     scale?: string;
   };
 }

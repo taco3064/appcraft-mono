@@ -31,7 +31,7 @@ export default function WebsiteLayoutEditor({
           BackButtonProps: {
             icon: <ArrowBackIcon />,
             text: at('btn-back'),
-            onClick: () => onBack,
+            onClick: () => onBack(),
           },
         })}
       >

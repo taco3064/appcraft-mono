@@ -62,6 +62,7 @@ export default function WebsitePreview({
             />
 
             <PagePreview
+              key={options.homeid}
               options={homepage}
               breakpoint={
                 breakpoints[

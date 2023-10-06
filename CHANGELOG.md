@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.127](https://github.com/taco3064/appcraft-mono/compare/v0.0.126...v0.0.127) (2023-10-06)
+
+
+### Bug Fixes
+
+* **apps/appcraft:** add nav anchor select in website editor ([0b67e6c](https://github.com/taco3064/appcraft-mono/commit/0b67e6c339b1220caa6d25dddbb929deb75bcd90))
+* **apps/appcraft:** fixed the menu render bugs ([fea030a](https://github.com/taco3064/appcraft-mono/commit/fea030add27b2622872a8da9a7c05e7345cadeab))
+* **apps/appcraft:** refactor the ScreenSimulator ([e98e1c0](https://github.com/taco3064/appcraft-mono/commit/e98e1c026759f6baa8f70518d0b750fc5664c172))
+* **apps/appcraft:** support to display the home page in website preview ([e1089cd](https://github.com/taco3064/appcraft-mono/commit/e1089cd5fb12a7f84a84d7dc020fd9eefed4cb99))
+* **arbor-card:** rename the name prop as "title" ([cfc906f](https://github.com/taco3064/appcraft-mono/commit/cfc906ff8bde2e5c4b563b2c7b1af49299bfa901))
+* **website-nav-item:** support to display nav icon ([46e5fcf](https://github.com/taco3064/appcraft-mono/commit/46e5fcf444fb550f60b2c554d7ee2e8039deaa81))
+* **website-preview:** page-preview must be remount when the home page changed ([7b59688](https://github.com/taco3064/appcraft-mono/commit/7b59688dae52f0375796478b63733b53e90f2bcb))
+
 ### [0.0.126](https://github.com/taco3064/appcraft-mono/compare/v0.0.125...v0.0.126) (2023-10-03)
 
 

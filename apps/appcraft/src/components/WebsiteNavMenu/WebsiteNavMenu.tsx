@@ -1,9 +1,12 @@
+import Avatar from '@mui/material/Avatar';
 import Collapse from '@mui/material/Collapse';
 import Drawer from '@mui/material/Drawer';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import Icon from '@mui/material/Icon';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
+import { CraftsmanStyle } from '@appcraft/craftsman';
 import { useState } from 'react';
 import type { MouseEvent } from 'react';
 
@@ -31,9 +34,9 @@ function NavTab({
   onSubMenuPopover,
 }: Types.NavTabProps) {
   const [expanded, setExpanded] = useState(false);
-  const { id, subTitle, isNavItem, pathname } = options;
+  const { id, icon, subTitle, isNavItem, pathname } = options;
   const items = getMenuItems(options.routes || [], superior);
-  const Icon = expanded ? ExpandLess : ExpandMore;
+  const ToggleIcon = expanded ? ExpandLess : ExpandMore;
 
   //* Event Handlers
   const handleSubMenuToggle = (e: MouseEvent<SVGSVGElement>) => {
@@ -59,10 +62,43 @@ function NavTab({
       <Tab
         iconPosition="end"
         id={id}
-        label={subTitle}
+        label={
+          <CraftsmanStyle.GapTypography
+            variant="subtitle1"
+            color="primary"
+            fontWeight={600}
+          >
+            <span
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: 36,
+              }}
+            >
+              {icon ? (
+                <Icon color="info">{icon}</Icon>
+              ) : (
+                <Avatar
+                  variant="square"
+                  sx={(theme) => ({
+                    background: 'transparent',
+                    color: theme.palette.info.main,
+                    width: 32,
+                    height: 32,
+                  })}
+                >
+                  {subTitle.trim().charAt(0).toUpperCase()}
+                </Avatar>
+              )}
+            </span>
+
+            {subTitle}
+          </CraftsmanStyle.GapTypography>
+        }
         icon={
           items.length ? (
-            <Icon color="action" onClick={handleSubMenuToggle} />
+            <ToggleIcon color="action" onClick={handleSubMenuToggle} />
           ) : (
             <>&nbsp;</>
           )

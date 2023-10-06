@@ -2,9 +2,12 @@ const fs = require('fs');
 const path = require('path');
 const { DefinePlugin } = require('webpack');
 const { withNx } = require('@nrwl/next/plugins/with-nx');
+const MuiIcons = require('@mui/icons-material');
 
 const webpackBase = require('../../tools/generators/webpack.base');
 const isProduction = process.env.NODE_ENV === 'production';
+
+console.log(Object.keys(MuiIcons));
 
 /**
  * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
@@ -55,6 +58,21 @@ const nextConfig = {
         ...base.plugins,
         new DefinePlugin({
           '__WEBPACK_DEFINE__.LANGUAGES': JSON.stringify(languages),
+
+          '__WEBPACK_DEFINE__.MUI_ICONS': JSON.stringify(
+            Object.keys(MuiIcons).reduce((result, name) => {
+              if (name.endsWith('Outlined')) {
+                result.push(
+                  name
+                    .replace(/([A-Z])/g, '_$1')
+                    .toLowerCase()
+                    .replace(/^_/, '')
+                );
+              }
+
+              return result;
+            }, [])
+          ),
           '__WEBPACK_DEFINE__.STATE_TYPE_FILE': JSON.stringify(
             process.env.SERVICE_PROXY === 'http://127.0.0.1:80'
               ? './libs/types/src/widgets/state.types.ts'

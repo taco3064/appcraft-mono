@@ -2,6 +2,7 @@ import * as Dnd from '@dnd-kit/core';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Checkbox from '@mui/material/Checkbox';
 import Grow from '@mui/material/Grow';
+import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
 import ImageList from '@mui/material/ImageList';
 import NearMeDisabledOutlinedIcon from '@mui/icons-material/NearMeDisabledOutlined';
@@ -127,7 +128,7 @@ export default function NavList({
         >
           <Dnd.DndContext sensors={sensors} onDragEnd={navHandles.dnd}>
             {items.map((page, i) => {
-              const { id, pageid, subTitle, pathname, isNavItem } = page;
+              const { id, icon, pageid, subTitle, pathname, isNavItem } = page;
 
               return (
                 <ArborCard
@@ -136,8 +137,13 @@ export default function NavList({
                   description={pathname}
                   icon={WebTwoToneIcon}
                   id={id}
-                  title={subTitle}
                   type="item"
+                  title={
+                    <CraftsmanStyle.GapTypography variant="subtitle1">
+                      {icon && <Icon>{icon}</Icon>}
+                      {subTitle}
+                    </CraftsmanStyle.GapTypography>
+                  }
                   mutation={
                     <NavMutationMenu
                       data={page}

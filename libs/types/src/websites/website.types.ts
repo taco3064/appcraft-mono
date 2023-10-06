@@ -9,6 +9,7 @@ export interface Website {
   theme: string;
   pages: {
     id: string;
+    icon?: string;
     pageid: string;
     subTitle: string; //* 副標題，與 Website Title(Hierarchy Name) 顯示在網頁標題列
     pathname: string; //* 網址路徑

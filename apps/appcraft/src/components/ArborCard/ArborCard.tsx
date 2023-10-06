@@ -11,14 +11,14 @@ import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './ArborCard.types';
 
 export default function ArborCard({
+  description,
   disableGroupChange = false,
   enableItemDroppable = false,
   icon: MuiIcon,
   id,
   mutation,
+  title,
   type,
-  name,
-  description,
   onActionRender,
   onClick,
 }: Types.ArborCardProps) {
@@ -84,7 +84,7 @@ export default function ArborCard({
 
         <ImageListItemBar
           position="top"
-          title={name || at('msg-no-title')}
+          title={title || at('msg-no-title')}
           actionPosition="right"
           actionIcon={mutation}
         />

@@ -13,18 +13,39 @@ import type { Breakpoint } from '@mui/material/styles';
 
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
+import * as Style from '~appcraft/styles';
 import Breadcrumbs from '../Breadcrumbs';
-import { ScreenSimulator, SizedDrawer, WebsiteTitle } from '~appcraft/styles';
-import { searchHierarchy } from '~appcraft/services';
-import type { WebsiteEditorProps } from './WebsiteEditor.types';
+import { findConfig, searchHierarchy } from '~appcraft/services';
+import type * as Types from './WebsiteEditor.types';
+import type { PageData } from '~appcraft/hooks';
 
+//* Methods
+const getHomePage: Types.GetHomePageFn = (id, routes, superior = '') =>
+  routes.reduce((result, { routes: subRoutes, pathname, ...route }) => {
+    if (!result) {
+      const path = `${superior}${pathname}`;
+
+      if (route.id === id) {
+        return {
+          ...route,
+          pathname: path,
+        };
+      } else if (Array.isArray(subRoutes)) {
+        return getHomePage(id, subRoutes, path);
+      }
+    }
+
+    return result;
+  }, null);
+
+//* Components
 export default function WebsiteEditor({
   data,
   superiors,
   onActionAddPick,
   onActionBasePick = (e) => e,
   onSave,
-}: WebsiteEditorProps) {
+}: Types.WebsiteEditorProps) {
   const [at, wt] = Hook.useFixedT('app', 'websites');
   const [breakpoint, setBreakpoint] = useState<Breakpoint>('xs');
   const [open, setOpen] = useState(false);
@@ -33,7 +54,9 @@ export default function WebsiteEditor({
 
   const width = Hook.useWidth();
   const height = Hook.useHeight();
+  const homepage = getHomePage(website.homeid, website.pages);
 
+  //* Fetch Data
   const { data: pages } = useQuery({
     refetchOnWindowFocus: false,
     queryFn: searchHierarchy,
@@ -46,6 +69,14 @@ export default function WebsiteEditor({
     queryKey: ['themes'],
   });
 
+  const { data: homeConfig } = useQuery({
+    enabled: Boolean(homepage?.pageid),
+    queryKey: [homepage?.pageid],
+    queryFn: findConfig<PageData>,
+    refetchOnWindowFocus: false,
+  });
+
+  //* Action Nodes
   const actionNode = Hook.useNodePicker(
     () =>
       onActionBasePick({
@@ -121,7 +152,7 @@ export default function WebsiteEditor({
                 })
               )}
               title={
-                <WebsiteTitle
+                <Style.WebsiteTitle
                   variant="outlined"
                   color="primary"
                   TypographyProps={{
@@ -129,7 +160,7 @@ export default function WebsiteEditor({
                   }}
                 >
                   {wt('ttl-mode-page')}
-                </WebsiteTitle>
+                </Style.WebsiteTitle>
               }
             />
           )}
@@ -152,7 +183,7 @@ export default function WebsiteEditor({
                   },
                 })}
               >
-                <WebsiteTitle
+                <Style.WebsiteTitle
                   variant="outlined"
                   color="primary"
                   TypographyProps={{
@@ -160,7 +191,7 @@ export default function WebsiteEditor({
                   }}
                 >
                   {wt('ttl-mode-app')}
-                </WebsiteTitle>
+                </Style.WebsiteTitle>
 
                 <Comp.BreakpointStepper
                   value={breakpoint}
@@ -168,16 +199,23 @@ export default function WebsiteEditor({
                 />
               </Toolbar>
 
-              <ScreenSimulator
+              <Style.ScreenSimulator
                 maxWidth={breakpoint}
                 minHeight={(theme) => `calc(${height} - ${theme.spacing(42)})`}
-              >
-                <Comp.WebsitePreview options={website} />
-              </ScreenSimulator>
+                render={(scale) => (
+                  <Comp.WebsitePreview
+                    breakpoint={breakpoint}
+                    homepage={homeConfig?.content}
+                    options={website}
+                    scale={scale}
+                    title={superiors.names[data._id]}
+                  />
+                )}
+              />
             </>
           )}
 
-          <SizedDrawer
+          <Style.SizedDrawer
             anchor="right"
             maxWidth="xs"
             open={open}
@@ -189,7 +227,7 @@ export default function WebsiteEditor({
               onBack={() => setOpen(false)}
               onChange={handleWebsite.change}
             />
-          </SizedDrawer>
+          </Style.SizedDrawer>
         </div>
       </Slide>
     </>

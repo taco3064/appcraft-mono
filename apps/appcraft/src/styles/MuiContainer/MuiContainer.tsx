@@ -4,7 +4,7 @@ import Slide from '@mui/material/Slide';
 import Toolbar from '@mui/material/Toolbar';
 import cx from 'clsx';
 import { CraftsmanStyle } from '@appcraft/craftsman';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { withStyles } from 'tss-react/mui';
 
 import type * as Types from './MuiContainer.types';
@@ -126,75 +126,72 @@ export const PageContainer = withStyles(
 );
 
 export const ScreenSimulator = withStyles(
-  ({ children, classes, maxWidth }: Types.ScreenSimulatorProps) => {
-    const screenRef = useRef<HTMLDivElement>(null);
+  ({ classes, maxWidth, render }: Types.ScreenSimulatorProps) => {
+    const [scale, setScale] = useState<number>();
+    const screenRef = useRef<HTMLDivElement>();
+
+    const resizeObserver = useMemo(
+      () =>
+        new ResizeObserver((entries) => {
+          for (const entry of entries) {
+            const device =
+              entry.target.querySelector<HTMLDivElement>(':scope > div');
+
+            const viewport =
+              device.querySelector<HTMLDivElement>(':scope > div');
+
+            const container = viewport.querySelector<SVGElement>(
+              ':scope > svg > foreignObject'
+            );
+
+            const { [maxWidth]: w } = CONTAINER_WIDTH;
+            const { width: base } = viewport.getBoundingClientRect();
+            const scale = base / w;
+
+            //* 框線樣式
+            viewport.style.borderRadius = `${8 * scale}px`;
+            device.style.borderRadius = `${12 * scale}px`;
+            device.style.padding = `${12 * scale}px`;
+            device.style.paddingBottom = `${48 * scale}px`;
+
+            //* 縮放樣式
+            const { width, height } = viewport.getBoundingClientRect();
+
+            container.style.width = `${width * (1 / scale)}px`;
+            container.style.height = `${height * (1 / scale)}px`;
+            container.style.transform = `scale(${scale})`;
+
+            setScale(scale);
+          }
+        }),
+      [maxWidth]
+    );
 
     useEffect(() => {
       const { current: el } = screenRef;
 
       if (el) {
-        const handleResize = () => {
-          const borderEl = el.querySelector<HTMLDivElement>(
-            ':scope > [data-role="border"]'
-          );
+        resizeObserver.observe(el);
 
-          const viewportEl = borderEl.querySelector<HTMLDivElement>(
-            ':scope > [data-role="viewport"]'
-          );
-
-          const scaleEl = viewportEl.querySelector<HTMLDivElement>(
-            ':scope > [data-role="scale"]'
-          );
-
-          const { [maxWidth]: w } = CONTAINER_WIDTH;
-          const { width: baseWidth } = viewportEl.getBoundingClientRect();
-          const scale = baseWidth / w;
-
-          //* 框線樣式
-          viewportEl.style.borderRadius = `${8 * scale}px`;
-          borderEl.style.borderRadius = `${12 * scale}px`;
-          borderEl.style.padding = `${12 * scale}px`;
-          borderEl.style.paddingBottom = `${48 * scale}px`;
-
-          const { width, height, x, y } = viewportEl.getBoundingClientRect();
-
-          scaleEl.style.width = `${width * (1 / scale)}px`;
-          scaleEl.style.height = `${height * (1 / scale)}px`;
-          scaleEl.style.transform = `scale(${scale})`;
-          scaleEl.style.top = '0px';
-          scaleEl.style.left = '0px';
-
-          const scaleRect = scaleEl.getBoundingClientRect();
-
-          scaleEl.style.top = `${y - scaleRect.y}px`;
-          scaleEl.style.left = `${x - scaleRect.x}px`;
-        };
-
-        handleResize();
-        global.window?.addEventListener('resize', handleResize);
-
-        return () => {
-          global.window?.removeEventListener('resize', handleResize);
-        };
+        return () => resizeObserver.unobserve(el);
       }
-    }, [maxWidth]);
+    }, [resizeObserver]);
 
     return (
       <Container ref={screenRef} className={classes.root} maxWidth={false}>
-        <Container
-          data-role="border"
-          className={classes.border}
-          maxWidth={maxWidth}
-        >
-          <Paper data-role="viewport" className={classes.viewport}>
-            <Container
-              disableGutters
-              data-role="scale"
-              maxWidth={false}
-              className={classes.scale}
-            >
-              {children}
-            </Container>
+        <Container className={classes.border} maxWidth={maxWidth}>
+          <Paper className={classes.viewport}>
+            <svg>
+              <foreignObject x="0" y="0" className={classes.container}>
+                {scale &&
+                  render(
+                    scale,
+                    screenRef.current?.querySelector<SVGSVGElement>(
+                      ':scope > div > div > svg > foreignObject'
+                    )
+                  )}
+              </foreignObject>
+            </svg>
           </Paper>
         </Container>
       </Container>
@@ -214,7 +211,6 @@ export const ScreenSimulator = withStyles(
       justifyContent: 'center',
       boxShadow: theme.shadows[10],
       borderRadius: theme.spacing(1.5),
-      marginY: theme.spacing(2),
       background: `linear-gradient(135deg, #0B0033, #040014)`,
     },
     viewport: {
@@ -225,17 +221,21 @@ export const ScreenSimulator = withStyles(
       borderRadius: theme.spacing(1),
       paddingTop: `${SCREEN_SIZE[maxWidth]}%`,
       overflow: 'hidden',
+
+      '& > svg': {
+        position: 'absolute' as never,
+        borderRadius: 'inherit',
+        transform: 'translate(-50%, -50%)',
+        top: '50%',
+        left: '50%',
+        zIndex: 0,
+        width: '100%',
+        height: '100%',
+      },
     },
-    scale: {
-      position: 'absolute' as never,
-      display: 'flex',
-      flexDirection: 'column' as never,
-      alignItems: 'center',
-      borderRadius: theme.spacing(1, 1, 0.5, 0.5),
-      top: 0,
-      left: 0,
-      zIndex: 0,
+    container: {
       overflow: 'hidden auto !important',
+      transition: theme.transitions.create(['width', 'height', 'transform']),
     },
   }),
   { name: 'ScreenSimulator' }

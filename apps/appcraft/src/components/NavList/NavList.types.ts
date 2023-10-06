@@ -1,12 +1,11 @@
 import type { ReactNode } from 'react';
 import type { Website } from '@appcraft/types';
 
-import type { NavMutationButtonProps } from '../NavMutationButton';
-import type { NodePickerFn } from '~appcraft/hooks';
+import type { BaseOption, NodePickerFn } from '~appcraft/hooks';
 
 //* Component Props
 export interface NavListProps {
-  pageOptions: NavMutationButtonProps['options'];
+  pageOptions: BaseOption[];
   title?: ReactNode;
   values?: Website['pages'];
 

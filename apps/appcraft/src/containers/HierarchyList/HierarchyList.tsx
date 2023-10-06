@@ -206,8 +206,9 @@ export default function HierarchyList({
 
                 return (
                   <Comp.ArborCard
-                    {...{ id, icon, type, name, description }}
+                    {...{ id, icon, type, description }}
                     key={id}
+                    title={name}
                     onActionRender={() => onItemActionRender?.(data)}
                     onClick={() => handleItemClick(data)}
                     disableGroupChange={hierarchies.every(

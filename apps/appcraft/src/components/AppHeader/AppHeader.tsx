@@ -9,13 +9,13 @@ import type * as Types from './AppHeader.types';
 
 export default function AppHeader({
   action,
-  authorized,
+  title,
   onMenuToggle,
 }: Types.AppHeaderProps) {
   return (
     <AppBar position="sticky" color="inherit" elevation={0}>
       <Toolbar variant="regular">
-        {authorized && onMenuToggle && (
+        {onMenuToggle && (
           <IconButton onClick={onMenuToggle}>
             <MenuIcon />
           </IconButton>
@@ -24,7 +24,7 @@ export default function AppHeader({
         <Link
           underline="hover"
           variant="h5"
-          href="/"
+          href={title.href}
           fontFamily='"comic sans MS"'
           marginRight="auto"
           icon={
@@ -36,7 +36,7 @@ export default function AppHeader({
             />
           }
         >
-          Appcraft
+          {title.text}
         </Link>
 
         {action}

@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import { GRID_LAYOUT, useCraftsmanFetch, useFixedT } from '~appcraft/hooks';
 import type { PagePreviewProps } from './PagePreview.types';
 
-export default function PagePreview({ options }: PagePreviewProps) {
+export default function PagePreview({ breakpoint, options }: PagePreviewProps) {
   const [pt] = useFixedT('pages');
   const theme = useTheme();
   const fetchHandles = useCraftsmanFetch();
@@ -16,6 +16,7 @@ export default function PagePreview({ options }: PagePreviewProps) {
     </Typography>
   ) : (
     <CraftedRenderer
+      breakpoint={breakpoint}
       elevation={1}
       options={options.layouts}
       onFetchData={fetchHandles.data}

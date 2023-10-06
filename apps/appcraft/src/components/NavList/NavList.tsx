@@ -133,11 +133,11 @@ export default function NavList({
                 <ArborCard
                   key={id}
                   enableItemDroppable
+                  description={pathname}
                   icon={WebTwoToneIcon}
                   id={id}
+                  title={subTitle}
                   type="item"
-                  name={subTitle}
-                  description={pathname}
                   mutation={
                     <NavMutationMenu
                       data={page}

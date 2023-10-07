@@ -88,7 +88,7 @@ export default function App({ Component, pageProps }: AppProps) {
                           className="app"
                           component="main"
                         >
-                          {authorized ? (
+                          {authorized && Component !== WebsitesPreview ? (
                             <Component {...pageProps} />
                           ) : (
                             <IndexPage />

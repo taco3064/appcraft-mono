@@ -1,5 +1,8 @@
 import Head from 'next/head';
+import IconButton from '@mui/material/IconButton';
 import LanguageTwoToneIcon from '@mui/icons-material/LanguageTwoTone';
+import NextLink from 'next/link';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useRouter } from 'next/router';
 
 import { HierarchyList } from '~appcraft/containers';
@@ -37,6 +40,14 @@ export default function Websites() {
         category={pathname.replace(/^\//, '')}
         icon={LanguageTwoToneIcon}
         onActionNodePick={handleActionNodePick}
+        onItemActionRender={({ _id }) => (
+          <IconButton
+            href={`/websites/preview?id=${_id}`}
+            LinkComponent={NextLink}
+          >
+            <VisibilityOutlinedIcon />
+          </IconButton>
+        )}
       />
     </PageContainer>
   );

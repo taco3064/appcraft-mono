@@ -7,8 +7,6 @@ const MuiIcons = require('@mui/icons-material');
 const webpackBase = require('../../tools/generators/webpack.base');
 const isProduction = process.env.NODE_ENV === 'production';
 
-console.log(Object.keys(MuiIcons));
-
 /**
  * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
  **/

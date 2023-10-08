@@ -4,7 +4,7 @@ import Head from 'next/head';
 import LinearProgress from '@mui/material/LinearProgress';
 import NextLink from 'next/link';
 import NoSsr from '@mui/material/NoSsr';
-import { BrowserRouter } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 import { Suspense, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -14,13 +14,14 @@ import * as Style from '~appcraft/styles';
 import { AppHeader, WebsiteNavMenu } from '~appcraft/components';
 import { ThemeProvider } from '~appcraft/contexts';
 import { findConfig, getHierarchyNames } from '~appcraft/services';
-import { useFixedT, useHeight } from '~appcraft/hooks';
+import { useFixedT, useBrowserRouter, useHeight } from '~appcraft/hooks';
 
-export default function Preview() {
+export default function WebsiteApp() {
   const { pathname, query } = useRouter();
   const [wt] = useFixedT('websites');
   const [open, setOpen] = useState(false);
 
+  //* Fetch Data
   const { data: titles } = useQuery({
     enabled: Boolean(query.id),
     queryKey: ['websites', [query.id as string]],
@@ -38,6 +39,13 @@ export default function Preview() {
   const title = titles?.[query.id as string];
   const website = data?.content;
   const height = useHeight();
+
+  //* Browser Router
+  const routers = useBrowserRouter(
+    pathname.replace(/\/\[\.\.\.pathname\]$/, ''),
+    website,
+    (route) => <div>{route?.subTitle}</div>
+  );
 
   return (
     <>
@@ -72,7 +80,7 @@ export default function Preview() {
                 {wt('msg-invalid-preview')}
               </Style.MaxWidthAlert>
             ) : (
-              <BrowserRouter basename={pathname}>
+              <>
                 <AppHeader
                   title={{ text: title, href: '/' }}
                   onMenuToggle={(e) => {
@@ -87,24 +95,27 @@ export default function Preview() {
                   options={website}
                 />
 
-                <Suspense fallback={<LinearProgress />}>
-                  <Style.MainContainer
-                    maxWidth={false}
-                    className="app"
-                    component="main"
-                    onClick={() => setOpen(false)}
-                    sx={(theme) => ({
-                      position: 'relative',
-                      overflow: 'hidden auto',
-                      height: `calc(${height} - ${theme.spacing(
-                        open && website.navAnchor === 'top' ? 16 : 9
-                      )})`,
-                    })}
-                  >
-                    TEST
-                  </Style.MainContainer>
-                </Suspense>
-              </BrowserRouter>
+                <Style.MainContainer
+                  maxWidth={false}
+                  className="app"
+                  component="main"
+                  onClick={() => setOpen(false)}
+                  sx={(theme) => ({
+                    position: 'relative',
+                    overflow: 'hidden auto',
+                    height: `calc(${height} - ${theme.spacing(
+                      open && website.navAnchor === 'top' ? 16 : 9
+                    )})`,
+                  })}
+                >
+                  {routers && (
+                    <RouterProvider
+                      fallbackElement={<LinearProgress />}
+                      router={routers}
+                    />
+                  )}
+                </Style.MainContainer>
+              </>
             )}
           </Style.MuiSnackbarProvider>
         </ThemeProvider>

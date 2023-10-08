@@ -8,7 +8,7 @@ import { Suspense, useMemo, useState } from 'react';
 
 import * as Comp from '~appcraft/components';
 import IndexPage from './index';
-import WebsitesPreview from './websites/preview';
+import WebsiteApp from './app/[...pathname]';
 import { MainContainer, MuiSnackbarProvider } from '~appcraft/styles';
 import { ThemeProvider } from '~appcraft/contexts';
 import { useAuth, useFixedT } from '~appcraft/hooks';
@@ -37,8 +37,8 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={client}>
       <Suspense fallback={<LinearProgress />}>
-        {Component === WebsitesPreview && authorized ? (
-          <WebsitesPreview />
+        {Component === WebsiteApp && authorized ? (
+          <WebsiteApp />
         ) : (
           <>
             <Head>
@@ -88,7 +88,7 @@ export default function App({ Component, pageProps }: AppProps) {
                           className="app"
                           component="main"
                         >
-                          {authorized && Component !== WebsitesPreview ? (
+                          {authorized && Component !== WebsiteApp ? (
                             <Component {...pageProps} />
                           ) : (
                             <IndexPage />

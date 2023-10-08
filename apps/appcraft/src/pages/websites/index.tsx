@@ -41,10 +41,7 @@ export default function Websites() {
         icon={LanguageTwoToneIcon}
         onActionNodePick={handleActionNodePick}
         onItemActionRender={({ _id }) => (
-          <IconButton
-            href={`/websites/preview?id=${_id}`}
-            LinkComponent={NextLink}
-          >
+          <IconButton href={`/app?id=${_id}`} LinkComponent={NextLink}>
             <VisibilityOutlinedIcon />
           </IconButton>
         )}

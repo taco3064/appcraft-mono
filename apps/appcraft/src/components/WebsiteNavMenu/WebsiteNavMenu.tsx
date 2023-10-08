@@ -100,7 +100,7 @@ function NavTab({
           items.length ? (
             <ToggleIcon color="action" onClick={handleSubMenuToggle} />
           ) : (
-            <>&nbsp;</>
+            <span style={{ width: 24 }} />
           )
         }
         sx={{

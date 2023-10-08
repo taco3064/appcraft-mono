@@ -4,6 +4,7 @@ import Head from 'next/head';
 import LinearProgress from '@mui/material/LinearProgress';
 import NextLink from 'next/link';
 import NoSsr from '@mui/material/NoSsr';
+import { BrowserRouter } from 'react-router-dom';
 import { Suspense, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
@@ -16,7 +17,7 @@ import { findConfig, getHierarchyNames } from '~appcraft/services';
 import { useFixedT, useHeight } from '~appcraft/hooks';
 
 export default function Preview() {
-  const { query } = useRouter();
+  const { pathname, query } = useRouter();
   const [wt] = useFixedT('websites');
   const [open, setOpen] = useState(false);
 
@@ -71,7 +72,7 @@ export default function Preview() {
                 {wt('msg-invalid-preview')}
               </Style.MaxWidthAlert>
             ) : (
-              <>
+              <BrowserRouter basename={pathname}>
                 <AppHeader
                   title={{ text: title, href: '/' }}
                   onMenuToggle={(e) => {
@@ -103,7 +104,7 @@ export default function Preview() {
                     TEST
                   </Style.MainContainer>
                 </Suspense>
-              </>
+              </BrowserRouter>
             )}
           </Style.MuiSnackbarProvider>
         </ThemeProvider>

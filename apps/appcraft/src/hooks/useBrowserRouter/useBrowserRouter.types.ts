@@ -6,6 +6,11 @@ import type { Website } from '@appcraft/types';
 import type { Navigation } from '../useNavValues';
 
 //* Methods
+export type ConvertToPathMapFn = (
+  routes: Website['pages'],
+  result?: Map<string, Navigation>
+) => Map<string, Navigation>;
+
 export type ConvertToRoutersFn = (
   routes: Website['pages'],
   render: (route: Navigation) => ReactNode,

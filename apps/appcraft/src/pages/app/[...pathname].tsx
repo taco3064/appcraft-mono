@@ -10,15 +10,16 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import type { Website } from '@appcraft/types';
 
+import * as Hook from '~appcraft/hooks';
 import * as Style from '~appcraft/styles';
 import { AppHeader, WebsiteNavMenu } from '~appcraft/components';
 import { ThemeProvider } from '~appcraft/contexts';
+import { WebsiteRoute } from '~appcraft/containers';
 import { findConfig, getHierarchyNames } from '~appcraft/services';
-import { useFixedT, useBrowserRouter, useHeight } from '~appcraft/hooks';
 
 export default function WebsiteApp() {
   const { pathname, query } = useRouter();
-  const [wt] = useFixedT('websites');
+  const [wt] = Hook.useFixedT('websites');
   const [open, setOpen] = useState(false);
 
   //* Fetch Data
@@ -36,15 +37,22 @@ export default function WebsiteApp() {
     refetchOnWindowFocus: false,
   });
 
+  const basename = pathname.replace(/\/\[\.\.\.pathname\]$/, '');
   const title = titles?.[query.id as string];
   const website = data?.content;
-  const height = useHeight();
+  const height = Hook.useHeight();
 
   //* Browser Router
-  const routers = useBrowserRouter(
-    pathname.replace(/\/\[\.\.\.pathname\]$/, ''),
-    website,
-    (route) => <div>{route?.subTitle}</div>
+  const routers = Hook.useBrowserRouter(basename, website, (route) =>
+    !route ? null : (
+      <WebsiteRoute
+        basename={basename}
+        maxWidth={website?.maxWidth || 'xl'}
+        options={route}
+        routes={Hook.convertToPathMap(website?.pages || [])}
+        title={title}
+      />
+    )
   );
 
   return (
@@ -101,8 +109,6 @@ export default function WebsiteApp() {
                   component="main"
                   onClick={() => setOpen(false)}
                   sx={(theme) => ({
-                    position: 'relative',
-                    overflow: 'hidden auto',
                     height: `calc(${height} - ${theme.spacing(
                       open && website.navAnchor === 'top' ? 16 : 9
                     )})`,

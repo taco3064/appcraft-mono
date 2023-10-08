@@ -16,7 +16,9 @@ import type * as Types from './Breadcrumbs.types';
 export default function Breadcrumbs({
   ToolbarProps,
   action,
+  onBack,
   onCustomize = (e) => e,
+  onPush,
 }: Types.BreadcrumbsProps) {
   const width = useWidth();
   const { back, pathname, push } = useRouter();
@@ -50,7 +52,7 @@ export default function Breadcrumbs({
           color="primary"
           icon={<ArrowBackIcon />}
           text={at('btn-back')}
-          onClick={() => back()}
+          onClick={() => (onBack || back)()}
         />
 
         <MuiBreadcrumbs
@@ -123,7 +125,12 @@ export default function Breadcrumbs({
                 sx={{ borderRadius: (theme) => theme.spacing(1) }}
                 onClick={() => {
                   setOpen(false);
-                  push(url);
+
+                  if (onPush && typeof url === 'string') {
+                    onPush(url);
+                  } else {
+                    push(url);
+                  }
                 }}
               >
                 {text}

@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 
 import type * as Types from './useBrowserRouter.types';
 
@@ -21,6 +21,23 @@ const convertToRouters: Types.ConvertToRoutersFn = (
       }),
     };
   });
+
+export const convertToPathMap: Types.ConvertToPathMapFn = (
+  routes,
+  result = new Map()
+) => {
+  routes.forEach((route) => {
+    const { pathname, routes: subRoutes } = route;
+
+    result.set(pathname, route);
+
+    if (Array.isArray(subRoutes)) {
+      convertToPathMap(subRoutes, result);
+    }
+  });
+
+  return result;
+};
 
 export const getHomePage: Types.GetHomePageFn = (id, routes, superior = '') =>
   routes.reduce((result, { routes: subRoutes, pathname, ...route }) => {
@@ -45,21 +62,17 @@ export const useBrowserRouter: Types.BrowserRouterHook = (
   basename,
   website,
   render
-) => {
-  const renderRef = useRef(render);
-
-  return useMemo(() => {
-    const { current: renderFn } = renderRef;
+) =>
+  useMemo(() => {
     const home = getHomePage(website?.homeid || '', website?.pages || []);
 
     return !website || !home
       ? null
       : createBrowserRouter(
           [
-            { path: '/', element: renderFn(home) },
-            ...convertToRouters(website?.pages || [], renderFn),
+            { path: '/', element: render(home) },
+            ...convertToRouters(website?.pages || [], render),
           ],
           { basename }
         );
-  }, [basename, website]);
-};
+  }, [basename, website, render]);

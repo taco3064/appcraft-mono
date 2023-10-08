@@ -23,6 +23,10 @@ const nextConfig = {
       source: '/api/:path*',
       destination: `${process.env.SERVICE_PROXY}/:path*`,
     },
+    {
+      source: '/app/:pathname*',
+      destination: '/app',
+    },
   ],
   webpack: ({ module, plugins, resolve, ...config }, context) => {
     const base = webpackBase(context.buildId, __dirname);

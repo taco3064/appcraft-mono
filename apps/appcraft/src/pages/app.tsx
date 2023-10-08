@@ -30,7 +30,7 @@ export default function WebsiteApp() {
     refetchOnWindowFocus: false,
   });
 
-  const { data } = useQuery({
+  const { data, error } = useQuery({
     enabled: Boolean(query.id),
     queryKey: [query.id as string],
     queryFn: findConfig<Website>,
@@ -64,30 +64,7 @@ export default function WebsiteApp() {
       <NoSsr>
         <ThemeProvider themeid={website?.theme}>
           <Style.MuiSnackbarProvider>
-            {!website ? (
-              <Style.MaxWidthAlert
-                maxWidth="sm"
-                variant="outlined"
-                severity="error"
-                msgVariant="h6"
-                icon={<ErrorOutlineIcon fontSize="large" />}
-                sx={{ marginTop: 6 }}
-                action={
-                  <Button
-                    {...{ replace: true as never }}
-                    fullWidth
-                    variant="text"
-                    size="large"
-                    href={`/websites/detail?id=${query.id as string}`}
-                    LinkComponent={NextLink}
-                  >
-                    {wt('btn-to-setting')}
-                  </Button>
-                }
-              >
-                {wt('msg-invalid-preview')}
-              </Style.MaxWidthAlert>
-            ) : (
+            {website ? (
               <>
                 <AppHeader
                   title={{ text: title, href: '/' }}
@@ -122,6 +99,31 @@ export default function WebsiteApp() {
                   )}
                 </Style.MainContainer>
               </>
+            ) : (
+              error && (
+                <Style.MaxWidthAlert
+                  maxWidth="sm"
+                  variant="outlined"
+                  severity="error"
+                  msgVariant="h6"
+                  icon={<ErrorOutlineIcon fontSize="large" />}
+                  sx={{ marginTop: 6 }}
+                  action={
+                    <Button
+                      {...{ replace: true as never }}
+                      fullWidth
+                      variant="text"
+                      size="large"
+                      href={`/websites/detail?id=${query.id as string}`}
+                      LinkComponent={NextLink}
+                    >
+                      {wt('btn-to-setting')}
+                    </Button>
+                  }
+                >
+                  {wt('msg-invalid-preview')}
+                </Style.MaxWidthAlert>
+              )
             )}
           </Style.MuiSnackbarProvider>
         </ThemeProvider>

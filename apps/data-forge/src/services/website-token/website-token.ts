@@ -31,7 +31,7 @@ export const create: Types.CreateService = async (userid, websiteid) => {
   return insertedId;
 };
 
-export const remove: Types.RemoveService = async (userid, dataid) => {
+export const remove: Types.RemoveService = async (userid, websiteid) => {
   const collection = await getCollection<WebsiteToken>({
     db: 'data-forge',
     collection: 'website-token',
@@ -39,6 +39,6 @@ export const remove: Types.RemoveService = async (userid, dataid) => {
 
   await collection.deleteOne({
     userid: { $eq: userid },
-    _id: { $eq: new ObjectId(dataid) },
+    websiteid: { $eq: websiteid },
   });
 };

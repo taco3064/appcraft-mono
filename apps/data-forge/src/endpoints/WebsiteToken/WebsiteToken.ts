@@ -31,7 +31,7 @@ export default class WebsiteToken {
   }
 
   @Endpoint({
-    url: 'remove/:dataid',
+    url: 'remove/:websiteid',
     method: 'delete',
     description: '刪除 Website App Token',
   })
@@ -41,7 +41,7 @@ export default class WebsiteToken {
       __WEBPACK_DEFINE__.JWT_SECRET
     ) as Userinfo;
 
-    await token.remove(id, req.params.dataid);
+    await token.remove(id, req.params.websiteid);
     res.end();
   }
 }

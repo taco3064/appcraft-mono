@@ -8,4 +8,7 @@ export type CreateService = (
   websiteid: string
 ) => Promise<ObjectId>;
 
-export type RemoveService = (userid: string, dataid: string) => Promise<void>;
+export type RemoveService = (
+  userid: string,
+  websiteid: string
+) => Promise<void>;

@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
+import { removeWebsiteToken } from '~appcraft/services';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addItem'];
 
@@ -40,6 +41,7 @@ export default function Websites() {
         category={pathname.replace(/^\//, '')}
         icon={LanguageTwoToneIcon}
         onActionNodePick={handleActionNodePick}
+        onMutationSuccess={({ _id }) => removeWebsiteToken(_id)}
         onItemActionRender={({ _id }) => (
           <IconButton href={`/app?id=${_id}`} LinkComponent={NextLink}>
             <VisibilityOutlinedIcon />

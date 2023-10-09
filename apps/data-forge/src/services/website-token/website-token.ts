@@ -22,6 +22,15 @@ export const create: Types.CreateService = async (userid, websiteid) => {
     collection: 'website-token',
   });
 
+  const exists = await collection.findOne({
+    userid: { $eq: userid },
+    websiteid: { $eq: websiteid },
+  });
+
+  if (exists) {
+    return exists._id;
+  }
+
   const { insertedId } = await collection.insertOne({
     _id: new ObjectId(nanoid(6)),
     userid,

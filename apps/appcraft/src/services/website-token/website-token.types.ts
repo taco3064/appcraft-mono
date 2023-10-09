@@ -1,8 +1,11 @@
+import type { QueryFunction } from '@tanstack/react-query';
 import type { WebsiteToken } from '@appcraft/types';
 
-export type FindWebsiteService = (
+export type FindWebsiteByTokenService = (
   token: string
-) => Promise<Omit<WebsiteToken, '_id'>>;
+) => Promise<WebsiteToken>;
+
+export type FindWebsiteService = QueryFunction<WebsiteToken, readonly [string]>;
 
 export type CreateWebsiteTokenService = (websiteid: string) => Promise<string>;
 

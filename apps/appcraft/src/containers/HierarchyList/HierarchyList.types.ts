@@ -18,6 +18,7 @@ export interface HierarchyListProps {
   icon: typeof SvgIcon;
 
   onActionNodePick?: NodePickerFn<'addGroup' | 'addItem' | 'search'>;
+  onMutationSuccess?: (item: HierarchyData<string>) => void;
 
   onItemActionRender?: (
     data: HierarchyData<string>

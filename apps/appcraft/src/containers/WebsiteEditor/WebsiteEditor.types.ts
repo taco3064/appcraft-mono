@@ -7,7 +7,7 @@ export interface WebsiteEditorProps {
 
   onActionBasePick?: NodePickerFn<'switch' | 'expand' | 'reset' | 'save'>;
   onActionAddPick?: NodePickerFn<'add'>;
-  onSave?: () => void;
+  onSave?: (token: string) => void;
 
   superiors?: {
     names: Record<string, string>;

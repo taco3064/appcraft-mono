@@ -7,8 +7,6 @@ const MuiIcons = require('@mui/icons-material');
 const webpackBase = require('../../tools/generators/webpack.base');
 const isProduction = process.env.NODE_ENV === 'production';
 
-console.log(Object.keys(MuiIcons));
-
 /**
  * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
  **/
@@ -24,6 +22,10 @@ const nextConfig = {
     {
       source: '/api/:path*',
       destination: `${process.env.SERVICE_PROXY}/:path*`,
+    },
+    {
+      source: '/app/:pathname*',
+      destination: '/app',
     },
   ],
   webpack: ({ module, plugins, resolve, ...config }, context) => {

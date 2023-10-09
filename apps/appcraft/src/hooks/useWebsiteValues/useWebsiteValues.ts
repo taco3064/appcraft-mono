@@ -3,7 +3,7 @@ import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import type { Website } from '@appcraft/types';
 
-import { upsertConfig } from '~appcraft/services';
+import { createWebsiteToken, upsertConfig } from '~appcraft/services';
 import { useFixedT, useSettingModified } from '../useApp';
 import type { WebsiteValuesHook } from './useWebsiteValues.types';
 
@@ -25,11 +25,13 @@ export const useWebsiteValues: WebsiteValuesHook = ({ data, onSave }) => {
     )
   );
 
-  const mutation = useMutation({
+  const { mutate: saveConfig } = useMutation({
     mutationFn: upsertConfig<Website>,
-    onSuccess: () => {
+    onSuccess: async () => {
+      const token = await createWebsiteToken(data._id);
+
       enqueueSnackbar(at('msg-succeed-update'), { variant: 'success' });
-      onSave?.();
+      onSave?.(token);
     },
   });
 
@@ -38,7 +40,7 @@ export const useWebsiteValues: WebsiteValuesHook = ({ data, onSave }) => {
 
     {
       change: setValues,
-      save: () => mutation.mutate({ ...data, content: values }),
+      save: () => saveConfig({ ...data, content: values }),
 
       reset: () =>
         setValues(

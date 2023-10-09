@@ -26,6 +26,7 @@ export default function HierarchyList({
   icon,
   onActionNodePick = (e) => e,
   onItemActionRender,
+  onMutationSuccess,
 }: Types.HierarchyListProps) {
   const { breadcrumbs, keyword, superiors } = Hook.useHierarchyFilter(category);
   const { pathname, push } = useRouter();
@@ -217,7 +218,10 @@ export default function HierarchyList({
                     mutation={
                       <HierarchyMutationMenu
                         data={data}
-                        onSuccess={() => refetch()}
+                        onSuccess={() => {
+                          refetch();
+                          onMutationSuccess?.(data);
+                        }}
                         {...(superior && {
                           onMoveToSuperiorGroup: () =>
                             handleGroupChange({

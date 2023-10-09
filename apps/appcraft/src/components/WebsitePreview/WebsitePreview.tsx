@@ -49,18 +49,18 @@ export default function WebsitePreview({
             }}
           />
 
+          <WebsiteNavMenu
+            key={options.navAnchor}
+            open={open}
+            options={options}
+            scale={scale}
+          />
+
           <FullscreenContainer
             disableGutters
             maxWidth={false}
             sx={{ position: 'relative', overflow: 'hidden auto' }}
           >
-            <WebsiteNavMenu
-              key={options.navAnchor}
-              open={open}
-              options={options}
-              scale={scale}
-            />
-
             <PagePreview
               key={options.homeid}
               options={homepage}

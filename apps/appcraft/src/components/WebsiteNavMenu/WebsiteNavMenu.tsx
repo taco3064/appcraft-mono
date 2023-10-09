@@ -100,7 +100,7 @@ function NavTab({
           items.length ? (
             <ToggleIcon color="action" onClick={handleSubMenuToggle} />
           ) : (
-            <>&nbsp;</>
+            <span style={{ width: 24 }} />
           )
         }
         sx={{
@@ -153,12 +153,13 @@ export default function WebsiteNavMenu({
       anchor={options.navAnchor}
       open={open}
       onClick={(e) => e.stopPropagation()}
+      sx={{ position: '' }}
       PaperProps={{
         sx: (theme) => ({
           userSelect: 'none',
 
           ...(isAnchorTop
-            ? { position: 'absolute' }
+            ? { position: 'static' }
             : { maxWidth: theme.breakpoints.values.sm * 0.8 }),
         }),
       }}

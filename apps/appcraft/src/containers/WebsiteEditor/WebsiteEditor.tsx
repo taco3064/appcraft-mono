@@ -19,25 +19,6 @@ import { findConfig, searchHierarchy } from '~appcraft/services';
 import type * as Types from './WebsiteEditor.types';
 import type { PageData } from '~appcraft/hooks';
 
-//* Methods
-const getHomePage: Types.GetHomePageFn = (id, routes, superior = '') =>
-  routes.reduce((result, { routes: subRoutes, pathname, ...route }) => {
-    if (!result) {
-      const path = `${superior}${pathname}`;
-
-      if (route.id === id) {
-        return {
-          ...route,
-          pathname: path,
-        };
-      } else if (Array.isArray(subRoutes)) {
-        return getHomePage(id, subRoutes, path);
-      }
-    }
-
-    return result;
-  }, null);
-
 //* Components
 export default function WebsiteEditor({
   data,
@@ -54,7 +35,7 @@ export default function WebsiteEditor({
 
   const width = Hook.useWidth();
   const height = Hook.useHeight();
-  const homepage = getHomePage(website.homeid, website.pages);
+  const homepage = Hook.getHomePage(website.homeid, website.pages);
 
   //* Fetch Data
   const { data: pages } = useQuery({

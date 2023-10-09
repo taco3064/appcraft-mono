@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.130](https://github.com/taco3064/appcraft-mono/compare/v0.0.129...v0.0.130) (2023-10-09)
+
+
+### Bug Fixes
+
+* fixed bugs ([aff5d99](https://github.com/taco3064/appcraft-mono/commit/aff5d99bbd49f882e5d319dc08f94779007ebf8f))
+
 ### [0.0.129](https://github.com/taco3064/appcraft-mono/compare/v0.0.128...v0.0.129) (2023-10-09)
 
 

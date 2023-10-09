@@ -1,5 +1,4 @@
 import { ObjectId } from 'mongodb';
-import { nanoid } from 'nanoid';
 import type { WebsiteToken } from '@appcraft/types';
 
 import { getCollection } from '../common';
@@ -32,7 +31,7 @@ export const create: Types.CreateService = async (userid, websiteid) => {
   }
 
   const { insertedId } = await collection.insertOne({
-    _id: new ObjectId(nanoid(6)),
+    _id: new ObjectId(),
     userid,
     websiteid,
   });

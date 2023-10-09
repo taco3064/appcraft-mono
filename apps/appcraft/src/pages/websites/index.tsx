@@ -5,7 +5,7 @@ import NextLink from 'next/link';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useRouter } from 'next/router';
 
-import { HierarchyList } from '~appcraft/containers';
+import { HierarchyList, WebsiteLink } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
 import { removeWebsiteToken } from '~appcraft/services';
@@ -42,11 +42,7 @@ export default function Websites() {
         icon={LanguageTwoToneIcon}
         onActionNodePick={handleActionNodePick}
         onMutationSuccess={({ _id }) => removeWebsiteToken(_id)}
-        onItemActionRender={({ _id }) => (
-          <IconButton href={`/app?id=${_id}`} LinkComponent={NextLink}>
-            <VisibilityOutlinedIcon />
-          </IconButton>
-        )}
+        onItemActionRender={({ _id }) => <WebsiteLink id={_id} />}
       />
     </PageContainer>
   );

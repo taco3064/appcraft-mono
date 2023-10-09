@@ -1,4 +1,5 @@
 export * from './useApp';
+export * from './useBrowserRouter';
 export * from './useConfigValues';
 export * from './useCraftsmanFetch';
 export * from './useHeight';

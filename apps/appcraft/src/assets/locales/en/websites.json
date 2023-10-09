@@ -5,6 +5,7 @@
   "btn-move-to-superior": "Move To Superior",
   "btn-page-add": "Add Page",
   "btn-page-update": "Edit",
+  "btn-to-setting": "Go to Settings",
   "lbl-home-page": "Home Page",
   "lbl-max-width": "Max Width",
   "lbl-nav-anchor": "Nav Menu Anchor",
@@ -14,6 +15,7 @@
   "lbl-param-value": "Output Source Value",
   "lbl-pathname": "Link Path",
   "lbl-sub-title": "Title",
+  "msg-invalid-preview": "We're sorry, the preview cannot be generated properly due to an error in your configuration file. Please double-check your configuration and try generating the preview again.",
   "msg-nav-item-off": "Add to Navigation Menu",
   "msg-nav-item-on": "Remove from Navigation Menu",
   "msg-non-linkable": "Please create more pages and try again.",
@@ -24,5 +26,6 @@
   "ttl-mode-app": "Layout Settings",
   "ttl-mode-page": "Page Navigation",
   "ttl-page-breadcrumbs": "Page Breadcrumbs",
+  "ttl-preview": "Preview",
   "txt-page-breadcrumb-top": "Top"
 }

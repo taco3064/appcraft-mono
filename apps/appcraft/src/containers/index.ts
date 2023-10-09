@@ -9,6 +9,7 @@ export * from './PropsGroupPicker';
 export * from './TodoEditor';
 export * from './TodoWrapperPicker';
 export * from './WebsiteEditor';
+export * from './WebsiteRoute';
 export * from './WidgetEditor';
 export * from './WidgetPicker';
 

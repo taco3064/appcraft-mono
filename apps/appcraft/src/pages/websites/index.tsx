@@ -1,10 +1,14 @@
 import Head from 'next/head';
+import IconButton from '@mui/material/IconButton';
 import LanguageTwoToneIcon from '@mui/icons-material/LanguageTwoTone';
+import NextLink from 'next/link';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useRouter } from 'next/router';
 
 import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
+import { removeWebsiteToken } from '~appcraft/services';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addItem'];
 
@@ -37,6 +41,12 @@ export default function Websites() {
         category={pathname.replace(/^\//, '')}
         icon={LanguageTwoToneIcon}
         onActionNodePick={handleActionNodePick}
+        onMutationSuccess={({ _id }) => removeWebsiteToken(_id)}
+        onItemActionRender={({ _id }) => (
+          <IconButton href={`/app?id=${_id}`} LinkComponent={NextLink}>
+            <VisibilityOutlinedIcon />
+          </IconButton>
+        )}
       />
     </PageContainer>
   );

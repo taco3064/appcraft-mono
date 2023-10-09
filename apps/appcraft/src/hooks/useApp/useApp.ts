@@ -90,8 +90,6 @@ export const useThemeStyle: Types.ThemeStyleHook = (themeid) => {
     queryFn: async ({ queryKey: [id] }: FindConfigContext) => {
       const isDefaultOption = id in PALETTES;
 
-      console.log(id);
-
       if (!isDefaultOption) {
         try {
           const { content } = await getConfigById<ConfigOptions>(id);

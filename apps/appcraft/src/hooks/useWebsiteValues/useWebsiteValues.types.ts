@@ -6,7 +6,7 @@ export type WebsiteChangeHandler = (website: Website) => void;
 //* Custom Hooks
 export type WebsiteValuesHook = (options: {
   data: ConfigData<Website, string>;
-  onSave?: () => void;
+  onSave?: (token: string) => void;
 }) => [
   Website | undefined,
   {

@@ -20,12 +20,14 @@ export default function Detail() {
   const id = query.id as string;
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
 
+  //* Event Handlers
   const [actionAdd, handleActionAddPick] =
     Hook.useNodePickHandle(EDITOR_ADD_ACTIONS);
 
   const [actionBase, handleActionBasePick] =
     Hook.useNodePickHandle(EDITOR_BASE_ACTIONS);
 
+  //* Fetch Data
   const { data: website, refetch } = useQuery({
     queryKey: [id],
     queryFn: findConfig<Website>,
@@ -60,7 +62,7 @@ export default function Detail() {
         superiors={{ names: superiors, breadcrumbs }}
         onActionAddPick={handleActionAddPick}
         onActionBasePick={handleActionBasePick}
-        onSave={refetch}
+        onSave={() => refetch()}
       />
     </PageContainer>
   );

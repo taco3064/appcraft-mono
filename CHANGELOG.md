@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.129](https://github.com/taco3064/appcraft-mono/compare/v0.0.128...v0.0.129) (2023-10-09)
+
+
+### Features
+
+* **apps/appcraft:** add new component to dynamic generate the website url ([c6c2641](https://github.com/taco3064/appcraft-mono/commit/c6c264101d371865fffb4384ef1d11bbbf84b634))
+
 ### [0.0.128](https://github.com/taco3064/appcraft-mono/compare/v0.0.127...v0.0.128) (2023-10-09)
 
 

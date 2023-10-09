@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.128](https://github.com/taco3064/appcraft-mono/compare/v0.0.127...v0.0.128) (2023-10-09)
+
+
+### Features
+
+* **/app:** add createBrowserRouter to generate the website pages ([3a2e53d](https://github.com/taco3064/appcraft-mono/commit/3a2e53da342f355aa625a6208e363887e6873fa3))
+* **apps/appcraft:** add new service to fetch the website token data ([11d85c0](https://github.com/taco3064/appcraft-mono/commit/11d85c0b1cd554e64aaecdb50d80d55241572901))
+* **apps/appcraft:** support to create/remove website token when mutate the config ([ffceecd](https://github.com/taco3064/appcraft-mono/commit/ffceecd744acf08825650988c4ba6637d3c1050d))
+* **data-forge:** add new service/endpoint to generate website app token ([3329181](https://github.com/taco3064/appcraft-mono/commit/33291818fd240151f69ee662198dc0fe3e7f530b))
+
+
+### Bug Fixes
+
+* **_app.tsx:** fixed the invalid check of render the page components ([67a35e1](https://github.com/taco3064/appcraft-mono/commit/67a35e148ee4f2e797569025993fafea28efcbe7))
+* **/app:** add breadcrumbs to the website app pages ([715cb6b](https://github.com/taco3064/appcraft-mono/commit/715cb6bf6de1f716df1dac42a4b3705a7ed90e27))
+* **/app:** refactor the source code ([8b2840b](https://github.com/taco3064/appcraft-mono/commit/8b2840bef08cb53bc394f3d3b18d1a06b695e925))
+* **websites/preview:** add the new page component: /websites/preview ([1f3fb4b](https://github.com/taco3064/appcraft-mono/commit/1f3fb4be26dd3bc2d2309ef6ecc4bde57e0691c3))
+
 ### [0.0.127](https://github.com/taco3064/appcraft-mono/compare/v0.0.126...v0.0.127) (2023-10-06)
 
 

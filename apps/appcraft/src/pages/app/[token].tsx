@@ -22,6 +22,8 @@ export default function WebsiteApp() {
   const [wt] = Hook.useFixedT('websites');
   const [open, setOpen] = useState(false);
 
+  console.log(query);
+
   //* Fetch Data
   const { data: titles } = useQuery({
     enabled: Boolean(query.id),

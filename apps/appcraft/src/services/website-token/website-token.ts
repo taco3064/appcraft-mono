@@ -3,19 +3,25 @@ import type { WebsiteToken } from '@appcraft/types';
 
 import type * as Types from './website-token.types';
 
-export const findWebsiteByToken: Types.FindWebsiteByTokenService = async (
-  token
+export const findWebsiteById: Types.FindWebsiteByIdService = async (
+  websiteid
 ) => {
   const { data } = await axios.get<WebsiteToken>(
-    `/api/data-forge/website-token/find/${token}`
+    `/api/data-forge/website-token/find/${websiteid}`
   );
 
   return data;
 };
 
-export const findWebsite: Types.FindWebsiteService = async ({
+export const findWebsiteByToken: Types.FindWebsiteByTokenService = async ({
   queryKey: [token],
-}) => findWebsiteByToken(token);
+}) => {
+  const { data } = await axios.get<WebsiteToken>(
+    `/api/data-forge/website-token/findByToken/${token}`
+  );
+
+  return data;
+};
 
 export const createWebsiteToken: Types.CreateWebsiteTokenService = async (
   websiteid

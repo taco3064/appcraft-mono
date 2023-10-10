@@ -1,19 +1,18 @@
 import Head from 'next/head';
 import IconButton from '@mui/material/IconButton';
 import LanguageTwoToneIcon from '@mui/icons-material/LanguageTwoTone';
-import NextLink from 'next/link';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useRouter } from 'next/router';
 
-import { HierarchyList, WebsiteLink } from '~appcraft/containers';
+import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
-import { removeWebsiteToken } from '~appcraft/services';
+import { findWebsiteById, removeWebsiteToken } from '~appcraft/services';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addItem'];
 
 export default function Websites() {
-  const { pathname } = useRouter();
+  const { pathname, push } = useRouter();
   const [nt] = useFixedT('nav');
 
   const [action, handleActionNodePick] = useNodePickHandle(
@@ -41,10 +40,20 @@ export default function Websites() {
         category={pathname.replace(/^\//, '')}
         icon={LanguageTwoToneIcon}
         onActionNodePick={handleActionNodePick}
-        onItemActionRender={({ _id }) => <WebsiteLink id={_id} />}
         onMutationSuccess={(type, { _id }) =>
           type === 'remove' && removeWebsiteToken(_id)
         }
+        onItemActionRender={({ _id: websiteid }) => (
+          <IconButton
+            onClick={async () => {
+              const { _id } = await findWebsiteById(websiteid);
+
+              push(`/app/${_id}`);
+            }}
+          >
+            <VisibilityOutlinedIcon />
+          </IconButton>
+        )}
       />
     </PageContainer>
   );

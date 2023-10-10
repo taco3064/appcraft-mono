@@ -8,12 +8,26 @@ import * as token from '~data-forge/services/website-token';
 @Module({ base: 'website-token' })
 export default class WebsiteToken {
   @Endpoint({
-    url: 'find/:id',
+    url: 'findByToken/:token',
+    method: 'get',
+    description: '查詢 Website App Token',
+  })
+  async findByToken(req: Request, res: Response) {
+    res.json(await token.findByToken(req.params.token));
+  }
+
+  @Endpoint({
+    url: 'find/:websiteid',
     method: 'get',
     description: '查詢 Website App Token',
   })
   async find(req: Request, res: Response) {
-    res.json(await token.find(req.params.id));
+    const { id } = jwt.verify(
+      req.cookies.jwt,
+      __WEBPACK_DEFINE__.JWT_SECRET
+    ) as Userinfo;
+
+    res.json(await token.find(id, req.params.websiteid));
   }
 
   @Endpoint({
@@ -22,12 +36,12 @@ export default class WebsiteToken {
     description: '建立新的 Website App Token',
   })
   async create(req: Request, res: Response) {
-    const { id } = jwt.verify(
-      req.cookies.jwt,
-      __WEBPACK_DEFINE__.JWT_SECRET
-    ) as Userinfo;
-
-    res.json(await token.create(id, req.params.websiteid));
+    res.json(
+      await token.create(
+        jwt.verify(req.cookies.jwt, __WEBPACK_DEFINE__.JWT_SECRET) as Userinfo,
+        req.params.websiteid
+      )
+    );
   }
 
   @Endpoint({

@@ -8,7 +8,7 @@ import { Suspense, useMemo, useState } from 'react';
 
 import * as Comp from '~appcraft/components';
 import IndexPage from './index';
-import WebsiteApp from './app';
+import WebsiteApp from './app/[token]';
 import { MainContainer, MuiSnackbarProvider } from '~appcraft/styles';
 import { ThemeProvider } from '~appcraft/contexts';
 import { useAuth, useFixedT } from '~appcraft/hooks';

@@ -8,5 +8,6 @@ export type { Breadcrumb };
 export interface BreadcrumbsProps {
   ToolbarProps?: ToolbarProps;
   action?: ReactNode;
+  disableBackButton?: boolean;
   onCustomize?: (breadcrumbs: Breadcrumb[]) => Breadcrumb[];
 }

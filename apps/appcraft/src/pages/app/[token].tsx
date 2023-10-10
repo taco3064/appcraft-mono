@@ -15,32 +15,40 @@ import * as Style from '~appcraft/styles';
 import { AppHeader, WebsiteNavMenu } from '~appcraft/components';
 import { ThemeProvider } from '~appcraft/contexts';
 import { WebsiteRoute } from '~appcraft/containers';
-import { findConfig, getHierarchyNames } from '~appcraft/services';
+import {
+  findConfig,
+  findWebsiteByToken,
+  getHierarchyNames,
+} from '~appcraft/services';
 
 export default function WebsiteApp() {
   const { pathname, query } = useRouter();
   const [wt] = Hook.useFixedT('websites');
   const [open, setOpen] = useState(false);
 
-  console.log(query);
-
   //* Fetch Data
+  const { data: token } = useQuery({
+    queryKey: [query.token as string],
+    queryFn: findWebsiteByToken,
+    refetchOnWindowFocus: false,
+  });
+
   const { data: titles } = useQuery({
-    enabled: Boolean(query.id),
-    queryKey: ['websites', [query.id as string]],
+    enabled: Boolean(token?.websiteid),
+    queryKey: ['websites', [token?.websiteid]],
     queryFn: getHierarchyNames,
     refetchOnWindowFocus: false,
   });
 
   const { data, error } = useQuery({
-    enabled: Boolean(query.id),
-    queryKey: [query.id as string],
+    enabled: Boolean(token?.websiteid),
+    queryKey: [token?.websiteid],
     queryFn: findConfig<Website>,
     refetchOnWindowFocus: false,
   });
 
-  const basename = pathname.replace(/\/\[\.\.\.pathname\]$/, '');
-  const title = titles?.[query.id as string];
+  const basename = `/app/${token?._id}`;
+  const title = titles?.[token?.websiteid];
   const website = data?.content;
   const height = Hook.useHeight();
 
@@ -116,7 +124,7 @@ export default function WebsiteApp() {
                       fullWidth
                       variant="text"
                       size="large"
-                      href={`/websites/detail?id=${query.id as string}`}
+                      href={`/websites/detail?id=${token?.websiteid}`}
                       LinkComponent={NextLink}
                     >
                       {wt('btn-to-setting')}

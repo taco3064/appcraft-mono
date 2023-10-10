@@ -5,9 +5,10 @@ import { CraftsmanStyle } from '@appcraft/craftsman';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import type { ReactElement } from 'react';
 
+import { AdminLayout, HierarchyList } from '~appcraft/containers';
 import { CommonButton, PagePreview } from '~appcraft/components';
-import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
@@ -77,3 +78,5 @@ export default function Pages() {
     </>
   );
 }
+
+Pages.getLayout = (page: ReactElement) => <AdminLayout>{page}</AdminLayout>;

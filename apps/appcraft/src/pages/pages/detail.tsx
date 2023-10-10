@@ -7,6 +7,7 @@ import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import type { OutputCollectEvent } from '@appcraft/exhibitor';
+import type { ReactElement } from 'react';
 import type { WidgetTodo } from '@appcraft/types';
 
 import * as Ctr from '~appcraft/containers';
@@ -157,3 +158,7 @@ export default function Detail() {
     </CraftsmanOverrideProvider>
   );
 }
+
+Detail.getLayout = (page: ReactElement) => (
+  <Ctr.AdminLayout>{page}</Ctr.AdminLayout>
+);

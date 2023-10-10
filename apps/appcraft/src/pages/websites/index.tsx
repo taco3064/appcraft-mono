@@ -3,8 +3,9 @@ import IconButton from '@mui/material/IconButton';
 import LanguageTwoToneIcon from '@mui/icons-material/LanguageTwoTone';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useRouter } from 'next/router';
+import type { ReactElement } from 'react';
 
-import { HierarchyList } from '~appcraft/containers';
+import { AdminLayout, HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
 import { findWebsiteById, removeWebsiteToken } from '~appcraft/services';
@@ -58,3 +59,5 @@ export default function Websites() {
     </PageContainer>
   );
 }
+
+Websites.getLayout = (page: ReactElement) => <AdminLayout>{page}</AdminLayout>;

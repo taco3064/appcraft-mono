@@ -2,11 +2,12 @@ import Divider from '@mui/material/Divider';
 import Head from 'next/head';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import type { ReactElement } from 'react';
 import type { Website } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
+import { AdminLayout, WebsiteEditor } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
-import { WebsiteEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 
 const EDITOR_ADD_ACTIONS = ['add'];
@@ -67,3 +68,5 @@ export default function Detail() {
     </PageContainer>
   );
 }
+
+Detail.getLayout = (page: ReactElement) => <AdminLayout>{page}</AdminLayout>;

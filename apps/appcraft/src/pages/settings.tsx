@@ -5,7 +5,9 @@ import TextField from '@mui/material/TextField';
 import { PALETTES } from '@appcraft/themes';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import type { ReactElement } from 'react';
 
+import { AdminLayout } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { searchHierarchy } from '~appcraft/services';
 import { useFixedT, useSettingModified } from '~appcraft/hooks';
@@ -79,3 +81,5 @@ export default function Settings() {
     </PageContainer>
   );
 }
+
+Settings.getLayout = (page: ReactElement) => <AdminLayout>{page}</AdminLayout>;

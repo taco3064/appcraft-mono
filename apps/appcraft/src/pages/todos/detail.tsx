@@ -2,11 +2,12 @@ import Head from 'next/head';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type * as Appcraft from '@appcraft/types';
+import type { ReactElement } from 'react';
 
+import * as Ctr from '~appcraft/containers';
 import * as Hook from '~appcraft/hooks';
 import { CraftsmanOverrideProvider } from '~appcraft/contexts';
 import { PageContainer } from '~appcraft/styles';
-import { TodoEditor, getOverrideRender } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 
 const TODO_EDITOR_ACTIONS = ['run', 'reset', 'save'];
@@ -32,7 +33,7 @@ export default function Detail() {
 
   return (
     <CraftsmanOverrideProvider
-      options={getOverrideRender({
+      options={Ctr.getOverrideRender({
         onFetchData: handleFetch.data,
         onFetchWrapper: handleFetch.wrapper,
       })}
@@ -55,7 +56,7 @@ export default function Detail() {
           <title>Appcraft | {tt('ttl-detail')}</title>
         </Head>
 
-        <TodoEditor
+        <Ctr.TodoEditor
           data={todos}
           superiors={{ names: superiors, breadcrumbs }}
           onActionNodePick={handleActionNodePick}
@@ -70,3 +71,7 @@ export default function Detail() {
     </CraftsmanOverrideProvider>
   );
 }
+
+Detail.getLayout = (page: ReactElement) => (
+  <Ctr.AdminLayout>{page}</Ctr.AdminLayout>
+);

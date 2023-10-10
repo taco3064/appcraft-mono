@@ -1,6 +1,8 @@
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import type { ReactElement } from 'react';
 
+import { AdminLayout } from '~appcraft/containers';
 import { useFixedT } from '~appcraft/hooks';
 
 export default function Index() {
@@ -18,3 +20,5 @@ export default function Index() {
     </Container>
   );
 }
+
+Index.getLayout = (page: ReactElement) => <AdminLayout>{page}</AdminLayout>;

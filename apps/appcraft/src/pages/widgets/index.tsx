@@ -7,9 +7,10 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type { MainWidget } from '@appcraft/types';
+import type { ReactElement } from 'react';
 
 import { CommonButton, StateViewer, WidgetPreview } from '~appcraft/components';
-import { HierarchyList } from '~appcraft/containers';
+import { AdminLayout, HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
@@ -103,3 +104,5 @@ export default function Widgets() {
     </>
   );
 }
+
+Widgets.getLayout = (page: ReactElement) => <AdminLayout>{page}</AdminLayout>;

@@ -8,8 +8,10 @@ import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useRouter } from 'next/router';
 import { useState, useTransition } from 'react';
 import type { OutputCollectEvent } from '@appcraft/exhibitor';
+import type { ReactElement } from 'react';
 import type { WidgetTodo } from '@appcraft/types';
 
+import { AdminLayout } from '~appcraft/containers';
 import { CommonButton, TodoOutputStepper } from '~appcraft/components';
 import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
@@ -107,3 +109,5 @@ export default function Todos() {
     </>
   );
 }
+
+Todos.getLayout = (page: ReactElement) => <AdminLayout>{page}</AdminLayout>;

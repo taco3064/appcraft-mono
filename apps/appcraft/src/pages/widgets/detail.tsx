@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import type { OutputCollectEvent } from '@appcraft/exhibitor';
 import type { MainWidget, WidgetTodo } from '@appcraft/types';
+import type { ReactElement } from 'react';
 
 import * as Ctr from '~appcraft/containers';
 import * as Hook from '~appcraft/hooks';
@@ -156,3 +157,7 @@ export default function Detail() {
     </CraftsmanOverrideProvider>
   );
 }
+
+Detail.getLayout = (page: ReactElement) => (
+  <Ctr.AdminLayout>{page}</Ctr.AdminLayout>
+);

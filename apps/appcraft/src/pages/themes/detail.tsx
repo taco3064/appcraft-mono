@@ -6,10 +6,11 @@ import TextField from '@mui/material/TextField';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type { ConfigOptions } from '@appcraft/types';
+import type { ReactElement } from 'react';
 
 import * as Hook from '~appcraft/hooks';
+import { AdminLayout, ConfigDetail } from '~appcraft/containers';
 import { CommonButton } from '~appcraft/components';
-import { ConfigDetail } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
 import type { RenderOverrideConfigItemHandler } from '~appcraft/containers';
@@ -106,3 +107,5 @@ export default function Detail() {
     </PageContainer>
   );
 }
+
+Detail.getLayout = (page: ReactElement) => <AdminLayout>{page}</AdminLayout>;

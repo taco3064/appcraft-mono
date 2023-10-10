@@ -22,12 +22,12 @@ export default class WebsiteToken {
     description: '建立新的 Website App Token',
   })
   async create(req: Request, res: Response) {
-    const { id } = jwt.verify(
-      req.cookies.jwt,
-      __WEBPACK_DEFINE__.JWT_SECRET
-    ) as Userinfo;
-
-    res.json(await token.create(id, req.params.websiteid));
+    res.json(
+      await token.create(
+        jwt.verify(req.cookies.jwt, __WEBPACK_DEFINE__.JWT_SECRET) as Userinfo,
+        req.params.websiteid
+      )
+    );
   }
 
   @Endpoint({

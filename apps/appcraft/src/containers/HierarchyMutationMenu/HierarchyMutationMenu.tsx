@@ -26,7 +26,7 @@ export default function HierarchyMutationMenu({
     mutationFn: removeHierarchy,
     onSuccess: () => {
       setAnchorEl(null);
-      onSuccess?.();
+      onSuccess?.('remove');
 
       enqueueSnackbar(at('msg-succeed-remove'), {
         variant: 'success',
@@ -71,7 +71,7 @@ export default function HierarchyMutationMenu({
           onCancel={() => setAnchorEl(null)}
           onConfirm={() => {
             setAnchorEl(null);
-            onSuccess?.();
+            onSuccess?.('update');
           }}
         />
 

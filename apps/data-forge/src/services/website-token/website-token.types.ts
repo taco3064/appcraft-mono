@@ -1,12 +1,11 @@
-import { ObjectId } from 'mongodb';
-import type { WebsiteToken } from '@appcraft/types';
+import type { Userinfo, WebsiteToken } from '@appcraft/types';
 
 export type FindService = (token: string) => Promise<WebsiteToken>;
 
 export type CreateService = (
-  userid: string,
+  user: Userinfo,
   websiteid: string
-) => Promise<ObjectId>;
+) => Promise<string>;
 
 export type RemoveService = (
   userid: string,

@@ -41,8 +41,10 @@ export default function Websites() {
         category={pathname.replace(/^\//, '')}
         icon={LanguageTwoToneIcon}
         onActionNodePick={handleActionNodePick}
-        onMutationSuccess={({ _id }) => removeWebsiteToken(_id)}
         onItemActionRender={({ _id }) => <WebsiteLink id={_id} />}
+        onMutationSuccess={(type, { _id }) =>
+          type === 'remove' && removeWebsiteToken(_id)
+        }
       />
     </PageContainer>
   );

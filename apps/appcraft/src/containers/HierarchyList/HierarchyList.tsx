@@ -218,9 +218,9 @@ export default function HierarchyList({
                     mutation={
                       <HierarchyMutationMenu
                         data={data}
-                        onSuccess={() => {
+                        onSuccess={(type) => {
                           refetch();
-                          onMutationSuccess?.(data);
+                          onMutationSuccess?.(type, data);
                         }}
                         {...(superior && {
                           onMoveToSuperiorGroup: () =>

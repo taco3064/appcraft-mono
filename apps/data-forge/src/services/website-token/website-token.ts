@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongodb';
 import type { WebsiteToken } from '@appcraft/types';
 
 import { getCollection } from '../common';
@@ -11,11 +10,14 @@ export const find: Types.FindService = async (token) => {
   });
 
   return collection.findOne({
-    _id: { $eq: new ObjectId(token) },
+    _id: { $eq: token },
   });
 };
 
-export const create: Types.CreateService = async (userid, websiteid) => {
+export const create: Types.CreateService = async (
+  { id: userid, email },
+  websiteid
+) => {
   const collection = await getCollection<WebsiteToken>({
     db: 'data-forge',
     collection: 'website-token',
@@ -30,8 +32,12 @@ export const create: Types.CreateService = async (userid, websiteid) => {
     return exists._id;
   }
 
+  const count = await collection.countDocuments({
+    userid: { $eq: userid },
+  });
+
   const { insertedId } = await collection.insertOne({
-    _id: new ObjectId(),
+    _id: `${email.replace(/@.*/, '')}-${count + 1}`,
     userid,
     websiteid,
   });

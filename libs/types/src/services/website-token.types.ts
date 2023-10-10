@@ -1,7 +1,5 @@
-import { ObjectId } from 'mongodb';
-
 export interface WebsiteToken {
-  _id: ObjectId;
+  _id: string;
   userid: string;
   websiteid: string;
 }

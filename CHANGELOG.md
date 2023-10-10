@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.132](https://github.com/taco3064/appcraft-mono/compare/v0.0.131...v0.0.132) (2023-10-10)
+
+
+### Bug Fixes
+
+* **data-forge:** fixed bugs ([c241008](https://github.com/taco3064/appcraft-mono/commit/c241008be27687fd54af28e51c6a8ff89d1e9992))
+* **data-forge:** use data count and username as the _id of website-token ([3e2bf1c](https://github.com/taco3064/appcraft-mono/commit/3e2bf1cfd2a1c34340971751defc413db7438a2f))
+
 ### [0.0.131](https://github.com/taco3064/appcraft-mono/compare/v0.0.130...v0.0.131) (2023-10-10)
 
 ### [0.0.130](https://github.com/taco3064/appcraft-mono/compare/v0.0.129...v0.0.130) (2023-10-09)

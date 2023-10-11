@@ -5,14 +5,14 @@ import TextField from '@mui/material/TextField';
 import { PALETTES } from '@appcraft/themes';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import type { ReactElement } from 'react';
 
 import { AdminLayout } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { searchHierarchy } from '~appcraft/services';
 import { useFixedT, useSettingModified } from '~appcraft/hooks';
+import { withPerPageLayout } from '~appcraft/hocs';
 
-export default function Settings() {
+export default withPerPageLayout(AdminLayout, function Settings() {
   const { back } = useRouter();
   const [at, nt, tt] = useFixedT('app', 'nav', 'themes');
   const [{ lng, theme }, handleSetting] = useSettingModified();
@@ -80,6 +80,4 @@ export default function Settings() {
       </Button>
     </PageContainer>
   );
-}
-
-Settings.getLayout = (page: ReactElement) => <AdminLayout>{page}</AdminLayout>;
+});

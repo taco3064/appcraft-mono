@@ -8,7 +8,6 @@ import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { useRouter } from 'next/router';
 import { useState, useTransition } from 'react';
 import type { OutputCollectEvent } from '@appcraft/exhibitor';
-import type { ReactElement } from 'react';
 import type { WidgetTodo } from '@appcraft/types';
 
 import { AdminLayout } from '~appcraft/containers';
@@ -17,11 +16,12 @@ import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { getConfigById } from '~appcraft/services';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
+import { withPerPageLayout } from '~appcraft/hocs';
 import type { HierarchyData } from '~appcraft/services';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
 
-export default function Todos() {
+export default withPerPageLayout(AdminLayout, function Todos() {
   const { pathname } = useRouter();
   const [nt, tt] = useFixedT('nav', 'todos');
   const [steperProps, setStepperProps] = useState<OutputCollectEvent>();
@@ -108,6 +108,4 @@ export default function Todos() {
       </CraftsmanStyle.FlexDialog>
     </>
   );
-}
-
-Todos.getLayout = (page: ReactElement) => <AdminLayout>{page}</AdminLayout>;
+});

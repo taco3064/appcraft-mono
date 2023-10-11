@@ -7,7 +7,6 @@ import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import type { OutputCollectEvent } from '@appcraft/exhibitor';
-import type { ReactElement } from 'react';
 import type { WidgetTodo } from '@appcraft/types';
 
 import * as Ctr from '~appcraft/containers';
@@ -16,13 +15,14 @@ import { CommonButton, TodoOutputStepper } from '~appcraft/components';
 import { CraftsmanOverrideProvider } from '~appcraft/contexts';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
+import { withPerPageLayout } from '~appcraft/hocs';
 import type { HierarchyData } from '~appcraft/services';
 import type { PageData } from '~appcraft/hooks';
 
 const PAGE_ACTIONS = ['add', 'ready', 'reset', 'save'];
 const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];
 
-export default function Detail() {
+export default withPerPageLayout(Ctr.AdminLayout, function Detail() {
   const [at, pt, tt] = Hook.useFixedT('app', 'pages', 'todos');
   const { enqueueSnackbar } = useSnackbar();
   const { pathname, query } = useRouter();
@@ -157,8 +157,4 @@ export default function Detail() {
       </CraftsmanStyle.FlexDialog>
     </CraftsmanOverrideProvider>
   );
-}
-
-Detail.getLayout = (page: ReactElement) => (
-  <Ctr.AdminLayout>{page}</Ctr.AdminLayout>
-);
+});

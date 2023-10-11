@@ -1,24 +1,19 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import type { AppProps as NextAppProps } from 'next/app';
-import type { NextPage } from 'next';
-import type { ReactElement, ReactNode } from 'react';
 
 import IndexPage from './index';
 import { useAuth } from '~appcraft/hooks';
 import 'reactflow/dist/style.css';
-
-//* Types
-type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
-  getLayout?: (page: ReactElement) => ReactNode;
-};
-
-interface AppProps extends NextAppProps {
-  Component: NextPageWithLayout;
-}
+import type { NextPageWithLayout } from '~appcraft/hocs';
 
 //* App Component
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+  Component,
+  pageProps,
+}: NextAppProps & {
+  Component: NextPageWithLayout;
+}) {
   const getLayout = Component.getLayout ?? ((page) => page);
   const [{ authorized }] = useAuth();
 

@@ -2,17 +2,17 @@ import Head from 'next/head';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import type * as Appcraft from '@appcraft/types';
-import type { ReactElement } from 'react';
 
 import * as Ctr from '~appcraft/containers';
 import * as Hook from '~appcraft/hooks';
 import { CraftsmanOverrideProvider } from '~appcraft/contexts';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
+import { withPerPageLayout } from '~appcraft/hocs';
 
 const TODO_EDITOR_ACTIONS = ['run', 'reset', 'save'];
 
-export default function Detail() {
+export default withPerPageLayout(Ctr.AdminLayout, function Detail() {
   const [tt] = Hook.useFixedT('todos');
   const { pathname, query } = useRouter();
 
@@ -70,8 +70,4 @@ export default function Detail() {
       </PageContainer>
     </CraftsmanOverrideProvider>
   );
-}
-
-Detail.getLayout = (page: ReactElement) => (
-  <Ctr.AdminLayout>{page}</Ctr.AdminLayout>
-);
+});

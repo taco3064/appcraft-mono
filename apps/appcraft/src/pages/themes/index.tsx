@@ -2,16 +2,16 @@ import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined';
 import Head from 'next/head';
 import PaletteTwoToneIcon from '@mui/icons-material/PaletteTwoTone';
 import { useRouter } from 'next/router';
-import type { ReactElement } from 'react';
 
 import * as Hook from '~appcraft/hooks';
 import { AdminLayout, HierarchyList } from '~appcraft/containers';
 import { CommonButton } from '~appcraft/components';
 import { PageContainer } from '~appcraft/styles';
+import { withPerPageLayout } from '~appcraft/hocs';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addItem'];
 
-export default function Themes() {
+export default withPerPageLayout(AdminLayout, function Themes() {
   const { pathname } = useRouter();
   const [, handleSetting] = Hook.useSettingModified();
   const [at, nt] = Hook.useFixedT('app', 'nav');
@@ -53,6 +53,4 @@ export default function Themes() {
       />
     </PageContainer>
   );
-}
-
-Themes.getLayout = (page: ReactElement) => <AdminLayout>{page}</AdminLayout>;
+});

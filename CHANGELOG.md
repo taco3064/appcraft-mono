@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.133](https://github.com/taco3064/appcraft-mono/compare/v0.0.132...v0.0.133) (2023-10-11)
+
+
+### Bug Fixes
+
+* **apps/appcraft:** add withPerPageLayout HOC ([84d4a20](https://github.com/taco3064/appcraft-mono/commit/84d4a20b7769abad2603aad229679a3b13998b1c))
+* **apps/appcraft:** fixed bugs ([62bdde2](https://github.com/taco3064/appcraft-mono/commit/62bdde25ca1e18bfd5c52520687b65ce85e5a6a2))
+* **apps/appcraft:** fixed the router issue ([fcbf2ef](https://github.com/taco3064/appcraft-mono/commit/fcbf2effa1707058b3202c941682494185bf148d))
+* **apps/appcraft:** update the pages to use getLayout ([49a8935](https://github.com/taco3064/appcraft-mono/commit/49a8935eab0e68ba0c221e56e1a565d473bc6d46))
+
 ### [0.0.132](https://github.com/taco3064/appcraft-mono/compare/v0.0.131...v0.0.132) (2023-10-10)
 
 

@@ -15,12 +15,13 @@ import { CommonButton, TodoOutputStepper } from '~appcraft/components';
 import { CraftsmanOverrideProvider } from '~appcraft/contexts';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
+import { withPerPageLayout } from '~appcraft/hocs';
 import type { HierarchyData } from '~appcraft/services';
 
 const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];
 const WIDGET_ACTIONS = ['expand', 'reset', 'save'];
 
-export default function Detail() {
+export default withPerPageLayout(Ctr.AdminLayout, function Detail() {
   const [at, wt, tt] = Hook.useFixedT('app', 'widgets', 'todos');
   const { enqueueSnackbar } = useSnackbar();
   const { pathname, query } = useRouter();
@@ -155,4 +156,4 @@ export default function Detail() {
       </CraftsmanStyle.FlexDialog>
     </CraftsmanOverrideProvider>
   );
-}
+});

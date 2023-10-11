@@ -4,14 +4,15 @@ import LanguageTwoToneIcon from '@mui/icons-material/LanguageTwoTone';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useRouter } from 'next/router';
 
-import { HierarchyList } from '~appcraft/containers';
+import { AdminLayout, HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
 import { findWebsiteById, removeWebsiteToken } from '~appcraft/services';
+import { withPerPageLayout } from '~appcraft/hocs';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addItem'];
 
-export default function Websites() {
+export default withPerPageLayout(AdminLayout, function Websites() {
   const { pathname, push } = useRouter();
   const [nt] = useFixedT('nav');
 
@@ -48,7 +49,7 @@ export default function Websites() {
             onClick={async () => {
               const { _id } = await findWebsiteById(websiteid);
 
-              push(`/app/${_id}`);
+              push(`/app/${_id}`, { query: { websiteid } });
             }}
           >
             <VisibilityOutlinedIcon />
@@ -57,4 +58,4 @@ export default function Websites() {
       />
     </PageContainer>
   );
-}
+});

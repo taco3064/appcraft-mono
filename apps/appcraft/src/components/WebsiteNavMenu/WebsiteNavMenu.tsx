@@ -166,7 +166,7 @@ export default function WebsiteNavMenu({
     }
   }, [open]);
 
-  return (
+  return !items.length ? null : (
     <Drawer
       variant="persistent"
       anchor={options.navAnchor}

@@ -1,6 +1,6 @@
-import type { Userinfo, WebsiteToken } from '@appcraft/types';
+import type { Userinfo, WebsiteConfig, WebsiteToken } from '@appcraft/types';
 
-export type FindByTokenService = (token: string) => Promise<WebsiteToken>;
+export type GetConfigByTokenService = (token: string) => Promise<WebsiteConfig>;
 
 export type FindService = (
   userid: string,

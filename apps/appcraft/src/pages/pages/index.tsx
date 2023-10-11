@@ -6,16 +6,17 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
+import { AdminLayout, HierarchyList } from '~appcraft/containers';
 import { CommonButton, PagePreview } from '~appcraft/components';
-import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
+import { withPerPageLayout } from '~appcraft/hocs';
 import type { PageData } from '~appcraft/hooks';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
 
-export default function Pages() {
+export default withPerPageLayout(AdminLayout, function Pages() {
   const { pathname } = useRouter();
   const [at, nt, pt] = useFixedT('app', 'nav', 'pages');
   const [preview, setPreview] = useState<{ id: string; name: string }>();
@@ -76,4 +77,4 @@ export default function Pages() {
       </CraftsmanStyle.FlexDialog>
     </>
   );
-}
+});

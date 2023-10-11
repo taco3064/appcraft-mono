@@ -4,13 +4,14 @@ import PaletteTwoToneIcon from '@mui/icons-material/PaletteTwoTone';
 import { useRouter } from 'next/router';
 
 import * as Hook from '~appcraft/hooks';
+import { AdminLayout, HierarchyList } from '~appcraft/containers';
 import { CommonButton } from '~appcraft/components';
-import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
+import { withPerPageLayout } from '~appcraft/hocs';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addItem'];
 
-export default function Themes() {
+export default withPerPageLayout(AdminLayout, function Themes() {
   const { pathname } = useRouter();
   const [, handleSetting] = Hook.useSettingModified();
   const [at, nt] = Hook.useFixedT('app', 'nav');
@@ -52,4 +53,4 @@ export default function Themes() {
       />
     </PageContainer>
   );
-}
+});

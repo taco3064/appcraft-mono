@@ -1,5 +1,7 @@
-import type { WebsiteToken } from '@appcraft/types';
+import type { Website, WebsiteToken } from '@appcraft/types';
 
+import * as config from '../config';
+import * as hierarchy from '../hierarchy';
 import { getCollection } from '../common';
 import type * as Types from './website-token.types';
 
@@ -15,15 +17,31 @@ export const find: Types.FindService = async (userid, websiteid) => {
   });
 };
 
-export const findByToken: Types.FindByTokenService = async (token) => {
+export const getConfigByToken: Types.GetConfigByTokenService = async (
+  token
+) => {
   const collection = await getCollection<WebsiteToken>({
     db: 'data-forge',
     collection: 'website-token',
   });
 
-  return collection.findOne({
+  const { userid, websiteid } = await collection.findOne({
     _id: { $eq: token },
   });
+
+  const [{ name: title }] = await hierarchy.search(userid, {
+    category: 'websites',
+    targets: [websiteid],
+  });
+
+  const { content: website } = await config.find<Website>(websiteid);
+
+  return {
+    token,
+    userid,
+    title,
+    website,
+  };
 };
 
 export const create: Types.CreateService = async (

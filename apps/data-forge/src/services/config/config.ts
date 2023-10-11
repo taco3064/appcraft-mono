@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 import { getCollection } from '../common';
 import type * as Types from './config.types';
 
-export const find = async <C extends Types.OptionValues>(id: string) => {
+export const find = async <C extends object>(id: string) => {
   const collection = await getCollection<Types.ConfigData<C, ObjectId>>({
     db: 'data-forge',
     collection: 'config',
@@ -14,7 +14,7 @@ export const find = async <C extends Types.OptionValues>(id: string) => {
   });
 };
 
-export const upsert = async <C extends Types.OptionValues>({
+export const upsert = async <C>({
   _id: id,
   content,
 }: Types.ConfigData<C, string>) => {
@@ -38,7 +38,7 @@ export const upsert = async <C extends Types.OptionValues>({
   } as Types.ConfigData<C, ObjectId>;
 };
 
-export const remove = async <C extends Types.OptionValues>(id: string) => {
+export const remove = async <C>(id: string) => {
   const collection = await getCollection<Types.ConfigData<C, ObjectId>>({
     db: 'data-forge',
     collection: 'config',

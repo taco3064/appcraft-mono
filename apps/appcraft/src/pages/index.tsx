@@ -1,9 +1,11 @@
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
+import { AdminLayout } from '~appcraft/containers';
 import { useFixedT } from '~appcraft/hooks';
+import { withPerPageLayout } from '~appcraft/hocs';
 
-export default function Index() {
+export default withPerPageLayout(AdminLayout, function Index() {
   const [at] = useFixedT('app');
 
   return (
@@ -17,4 +19,4 @@ export default function Index() {
       </Typography>
     </Container>
   );
-}
+});

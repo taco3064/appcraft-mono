@@ -5,14 +5,15 @@ import { useRouter } from 'next/router';
 import type { Website } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
+import { AdminLayout, WebsiteEditor } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
-import { WebsiteEditor } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
+import { withPerPageLayout } from '~appcraft/hocs';
 
 const EDITOR_ADD_ACTIONS = ['add'];
 const EDITOR_BASE_ACTIONS = ['switch', 'expand', 'reset', 'save'];
 
-export default function Detail() {
+export default withPerPageLayout(AdminLayout, function Detail() {
   const [wt] = Hook.useFixedT('websites');
   const { pathname, query } = useRouter();
 
@@ -66,4 +67,4 @@ export default function Detail() {
       />
     </PageContainer>
   );
-}
+});

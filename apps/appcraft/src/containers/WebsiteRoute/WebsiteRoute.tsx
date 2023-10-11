@@ -13,7 +13,7 @@ export default function WebsiteRoute({
   title,
 }: WebsiteRouteProps) {
   const { pathname } = useLocation();
-  const paths = pathname.replace(/^\//, '').split('/');
+  const paths = pathname === '/' ? [] : pathname.replace(/^\//, '').split('/');
 
   return (
     <PageContainer
@@ -29,6 +29,7 @@ export default function WebsiteRoute({
 
       <Breadcrumbs
         ToolbarProps={{ disableGutters: true }}
+        disableBackButton={!paths.length}
         onCustomize={() =>
           paths.map((path, i) => {
             const isLast = i === paths.length - 1;

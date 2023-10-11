@@ -8,15 +8,16 @@ import { useRouter } from 'next/router';
 import type { ConfigOptions } from '@appcraft/types';
 
 import * as Hook from '~appcraft/hooks';
+import { AdminLayout, ConfigDetail } from '~appcraft/containers';
 import { CommonButton } from '~appcraft/components';
-import { ConfigDetail } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
+import { withPerPageLayout } from '~appcraft/hocs';
 import type { RenderOverrideConfigItemHandler } from '~appcraft/containers';
 
 const CONFIG_DETAIL_ACTIONS = ['reset', 'save'];
 
-export default function Detail() {
+export default withPerPageLayout(AdminLayout, function Detail() {
   const [at, tt] = Hook.useFixedT('app', 'themes');
   const [, handleSetting] = Hook.useSettingModified();
   const { pathname, query } = useRouter();
@@ -105,4 +106,4 @@ export default function Detail() {
       />
     </PageContainer>
   );
-}
+});

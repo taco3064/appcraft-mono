@@ -4,9 +4,9 @@ import Head from 'next/head';
 import NextLink from 'next/link';
 import NoSsr from '@mui/material/NoSsr';
 import Slide from '@mui/material/Slide';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import * as Style from '~appcraft/styles';
 import { AppHeader, WebsiteNavMenu } from '~appcraft/components';
@@ -28,6 +28,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
     queryFn: getWebsiteConfig,
     refetchOnWindowFocus: false,
   });
+
+  useEffect(() => {
+    setOpen(false);
+  }, [query.pathname]);
 
   return (
     <>
@@ -77,6 +81,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
                 <WebsiteNavMenu
                   key={config.website.navAnchor}
+                  basename={`/app/${config.token}`}
                   open={open}
                   options={config.website}
                 />

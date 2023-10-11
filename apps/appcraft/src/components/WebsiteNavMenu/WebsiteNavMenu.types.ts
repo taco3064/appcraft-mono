@@ -18,6 +18,7 @@ export type GetMenuItemsFn = (
 
 //* Component Props
 export interface NavTabProps {
+  basename?: string;
   options: Navigation;
   superior?: string;
 
@@ -25,6 +26,7 @@ export interface NavTabProps {
 }
 
 export interface WebsiteNavMenuProps {
+  basename?: string;
   open: boolean;
   options: Website;
   scale?: number;

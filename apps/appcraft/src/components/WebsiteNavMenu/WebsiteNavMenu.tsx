@@ -4,10 +4,11 @@ import Drawer from '@mui/material/Drawer';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Icon from '@mui/material/Icon';
+import NextLink from 'next/link';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import { CraftsmanStyle } from '@appcraft/craftsman';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { MouseEvent } from 'react';
 
 import { ScaledPopover } from '~appcraft/styles';
@@ -29,8 +30,9 @@ const getMenuItems: Types.GetMenuItemsFn = (routes, superior = '') =>
 
 //* Components
 function NavTab({
-  superior = '',
+  basename,
   options,
+  superior = '',
   onSubMenuPopover,
 }: Types.NavTabProps) {
   const [expanded, setExpanded] = useState(false);
@@ -43,6 +45,7 @@ function NavTab({
     const isExpanded = !expanded;
     const anchorEl: HTMLElement = e.currentTarget.closest(`#${id}`);
 
+    e.preventDefault();
     setExpanded(isExpanded);
 
     onSubMenuPopover?.(
@@ -62,6 +65,10 @@ function NavTab({
       <Tab
         iconPosition="end"
         id={id}
+        {...(basename && {
+          LinkComponent: NextLink,
+          href: `${basename}${superior}${pathname}`,
+        })}
         label={
           <CraftsmanStyle.GapTypography
             variant="subtitle1"
@@ -117,7 +124,12 @@ function NavTab({
       {!onSubMenuPopover && (
         <Collapse in={expanded}>
           {items.map((route) => (
-            <NavTab key={route.id} superior={pathname} options={route} />
+            <NavTab
+              key={route.id}
+              basename={basename}
+              superior={pathname}
+              options={route}
+            />
           ))}
         </Collapse>
       )}
@@ -139,6 +151,7 @@ function NavTab({
 }
 
 export default function WebsiteNavMenu({
+  basename,
   open,
   options,
   scale,
@@ -146,6 +159,12 @@ export default function WebsiteNavMenu({
   const isAnchorTop = options.navAnchor === 'top';
   const items = getMenuItems(options.pages);
   const [expanded, setExpanded] = useState<Types.ExpandedNav>();
+
+  useEffect(() => {
+    if (!open) {
+      setExpanded(undefined);
+    }
+  }, [open]);
 
   return (
     <Drawer
@@ -189,6 +208,7 @@ export default function WebsiteNavMenu({
           {items.map((page) => (
             <NavTab
               key={page.id}
+              basename={basename}
               options={page}
               {...(isAnchorTop && {
                 onSubMenuPopover: setExpanded,
@@ -203,7 +223,7 @@ export default function WebsiteNavMenu({
           PaperProps={{ elevation: 1 }}
           anchorEl={expanded?.anchorEl}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          open={Boolean(expanded?.anchorEl)}
+          open={Boolean(expanded?.anchorEl) && open}
           scale={scale}
           transformOrigin={{ vertical: 'top', horizontal: 'left' }}
           onClose={() => {
@@ -221,6 +241,7 @@ export default function WebsiteNavMenu({
             {expanded?.routes.map((route) => (
               <NavTab
                 key={route.id}
+                basename={basename}
                 options={route}
                 superior={expanded?.pathname}
               />

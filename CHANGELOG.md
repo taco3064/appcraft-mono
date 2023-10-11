@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.134](https://github.com/taco3064/appcraft-mono/compare/v0.0.133...v0.0.134) (2023-10-11)
+
+
+### Bug Fixes
+
+* **apps/appcraft:** fixed the duplicated title warning ([266c384](https://github.com/taco3064/appcraft-mono/commit/266c384c53ce4570eb449a1584b2ea96a495fbec))
+* **apps/appcraft:** fixed the index url of website app title ([887aa6d](https://github.com/taco3064/appcraft-mono/commit/887aa6dc35d4a6fb933085d9e8c7be7c7babf7e1))
+* **apps/appcraft:** fixed the issue of auto close of the nav menu ([f0f8bd8](https://github.com/taco3064/appcraft-mono/commit/f0f8bd8203081c985eb42ad04824a430aaa925fe))
+* **apps/appcraft:** fixed the router issue ([797549a](https://github.com/taco3064/appcraft-mono/commit/797549a0f3cb3ff454f5f187c829a5f33c9b7cea))
+* **apps/appcraft:** support to render the page content in website app ([c845720](https://github.com/taco3064/appcraft-mono/commit/c84572045b3f569d7b9ae6779e86fd931e1e1b73))
+* **apps/proxy:** add whitelist check ([c3dbf40](https://github.com/taco3064/appcraft-mono/commit/c3dbf40632e240c0765379849a68f7dc48b6a0a9))
+
 ### [0.0.133](https://github.com/taco3064/appcraft-mono/compare/v0.0.132...v0.0.133) (2023-10-11)
 
 

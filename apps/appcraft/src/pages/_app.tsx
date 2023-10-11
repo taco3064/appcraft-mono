@@ -1,3 +1,4 @@
+import NoSsr from '@mui/material/NoSsr';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useRouter } from 'next/router';
@@ -33,14 +34,16 @@ export default function App({
   );
 
   return (
-    <QueryClientProvider client={client}>
-      {getLayout(
-        authorized || /^(\/|\/app)/.test(pathname) ? (
-          <Component {...pageProps} />
-        ) : (
-          <IndexPage />
-        )
-      )}
-    </QueryClientProvider>
+    <NoSsr>
+      <QueryClientProvider client={client}>
+        {getLayout(
+          authorized || /^(\/|\/app)/.test(pathname) ? (
+            <Component {...pageProps} />
+          ) : (
+            <IndexPage />
+          )
+        )}
+      </QueryClientProvider>
+    </NoSsr>
   );
 }

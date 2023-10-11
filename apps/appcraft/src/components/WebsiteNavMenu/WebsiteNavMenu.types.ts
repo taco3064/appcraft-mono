@@ -26,8 +26,9 @@ export interface NavTabProps {
 }
 
 export interface WebsiteNavMenuProps {
+  anchor: Website['navAnchor'];
   basename?: string;
   open: boolean;
-  options: Website;
+  items: Navigation[];
   scale?: number;
 }

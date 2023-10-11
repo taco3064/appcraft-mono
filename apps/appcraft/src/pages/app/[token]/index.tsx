@@ -18,7 +18,7 @@ export default withPerPageLayout(AppLayout, function WebsiteIndex() {
   const { config, homepage } = useWebsiteConfig();
   const { title, website } = config;
 
-  const { data } = useQuery({
+  const { data: home } = useQuery({
     enabled: Boolean(homepage?.pageid),
     queryKey: [homepage?.pageid],
     queryFn: findConfig<PageData>,
@@ -31,13 +31,13 @@ export default withPerPageLayout(AppLayout, function WebsiteIndex() {
         <title>{title}</title>
       </Head>
 
-      {data?.content && (
+      {home?.content && (
         <CraftedRenderer
           elevation={1}
-          options={data.content.layouts}
+          options={home.content.layouts}
           onFetchData={fetchHandles.data}
           onFetchWrapper={fetchHandles.wrapper}
-          onReady={data.content.readyTodos}
+          onReady={home.content.readyTodos}
           GridLayoutProps={{
             autoSize: true,
             cols: GRID_LAYOUT.COLS,

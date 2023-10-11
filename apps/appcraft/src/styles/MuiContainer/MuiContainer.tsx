@@ -11,7 +11,7 @@ import type * as Types from './MuiContainer.types';
 
 //* Variables
 const SCREEN_SIZE: Types.BreakpointConfig = {
-  xs: 190,
+  xs: 196,
   sm: 140,
   md: 68,
   lg: 56,
@@ -19,11 +19,11 @@ const SCREEN_SIZE: Types.BreakpointConfig = {
 };
 
 const CONTAINER_WIDTH: Types.BreakpointConfig = {
-  xs: 444,
-  sm: 600,
-  md: 900,
-  lg: 1200,
-  xl: 1536,
+  xs: 468,
+  sm: 648,
+  md: 948,
+  lg: 1248,
+  xl: 1584,
 };
 
 //* Style Components

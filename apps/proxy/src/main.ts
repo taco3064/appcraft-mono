@@ -10,13 +10,20 @@ import * as endpoints from './endpoints';
 
 const port = process.env.SERVICE_PROXY.replace(/^.+:/, '');
 
+const whitelist = [
+  /^\/$/,
+  /^\/oauth2\//,
+  /^\/data-forge\/website-token\/config\//,
+  /^\/data-forge\/config\/find\//,
+];
+
 const app = express()
   .use(cookieParser())
   .use(express.json())
   .use(express.urlencoded({ extended: true }))
   .use('/assets', express.static(path.join(__dirname, 'assets')))
   .use(async (req, res, next) => {
-    if (!/^\/oauth2\//.test(req.url) && '/' !== req.url) {
+    if (!whitelist.some((reg) => reg.test(req.url))) {
       try {
         const idToken = jwt.verify(
           req.cookies.id,

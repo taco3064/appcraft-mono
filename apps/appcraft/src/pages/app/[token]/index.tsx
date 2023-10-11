@@ -4,14 +4,14 @@ import { AppLayout } from '~appcraft/containers';
 import { useWebsiteConfig } from '~appcraft/contexts';
 import { withPerPageLayout } from '~appcraft/hocs';
 
-export default withPerPageLayout(AppLayout, function App() {
-  const config = useWebsiteConfig();
+export default withPerPageLayout(AppLayout, function WebsiteIndex() {
+  const { config } = useWebsiteConfig();
 
-  console.log(useRouter());
+  console.log(config);
 
   return (
     <>
-      <div>TEST</div>
+      <div>Index</div>
     </>
   );
 });

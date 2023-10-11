@@ -3,13 +3,14 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import NoSsr from '@mui/material/NoSsr';
+import Slide from '@mui/material/Slide';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import * as Style from '~appcraft/styles';
 import { AppHeader, WebsiteNavMenu } from '~appcraft/components';
-import { ThemeProvider } from '~appcraft/contexts';
+import { ThemeProvider, WebsiteConfigProvider } from '~appcraft/contexts';
 import { getWebsiteConfig } from '~appcraft/services';
 import { useFixedT, useHeight } from '~appcraft/hooks';
 import type { AppLayoutProps } from './AppLayout.types';
@@ -22,6 +23,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const height = useHeight();
 
   const { data: config, error } = useQuery({
+    enabled: Boolean(query.token),
     queryKey: [query.token as string],
     queryFn: getWebsiteConfig,
     refetchOnWindowFocus: false,
@@ -37,32 +39,34 @@ export default function AppLayout({ children }: AppLayoutProps) {
         <ThemeProvider themeid={config?.website.theme}>
           <Style.MuiSnackbarProvider>
             {error || !config ? (
-              <Style.MaxWidthAlert
-                maxWidth="sm"
-                variant="outlined"
-                severity="error"
-                msgVariant="h6"
-                icon={<ErrorOutlineIcon fontSize="large" />}
-                sx={{ marginTop: 6 }}
-                action={
-                  query.websiteid && (
-                    <Button
-                      {...{ replace: true as never }}
-                      fullWidth
-                      variant="text"
-                      size="large"
-                      href={`/websites/detail?id=${query.websiteid}`}
-                      LinkComponent={NextLink}
-                    >
-                      {wt('btn-to-setting')}
-                    </Button>
-                  )
-                }
-              >
-                {wt('msg-invalid-preview')}
-              </Style.MaxWidthAlert>
+              <Slide in direction="down" timeout={{ enter: 1200 }}>
+                <Style.MaxWidthAlert
+                  maxWidth="sm"
+                  variant="outlined"
+                  severity="error"
+                  msgVariant="h6"
+                  icon={<ErrorOutlineIcon fontSize="large" />}
+                  sx={{ marginTop: 6 }}
+                  action={
+                    query.websiteid && (
+                      <Button
+                        {...{ replace: true as never }}
+                        fullWidth
+                        variant="text"
+                        size="large"
+                        href={`/websites/detail?id=${query.websiteid}`}
+                        LinkComponent={NextLink}
+                      >
+                        {wt('btn-to-setting')}
+                      </Button>
+                    )
+                  }
+                >
+                  {wt('msg-invalid-preview')}
+                </Style.MaxWidthAlert>
+              </Slide>
             ) : (
-              <>
+              <WebsiteConfigProvider config={config}>
                 <AppHeader
                   title={{ text: config.title, href: '/' }}
                   onMenuToggle={(e) => {
@@ -90,7 +94,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
                 >
                   {children}
                 </Style.MainContainer>
-              </>
+              </WebsiteConfigProvider>
             )}
           </Style.MuiSnackbarProvider>
         </ThemeProvider>

@@ -2,6 +2,7 @@ import Alert from '@mui/material/Alert';
 import Container from '@mui/material/Container';
 import Dialog from '@mui/material/Dialog';
 import Typography from '@mui/material/Typography';
+import { forwardRef } from 'react';
 import { withStyles } from 'tss-react/mui';
 
 import type * as Types from './MuiAlert.types';
@@ -31,27 +32,26 @@ export const ArcAlert = withStyles(
 );
 
 export const MaxWidthAlert = withStyles(
-  ({
-    action,
-    children,
-    maxWidth,
-    msgVariant,
-    ...props
-  }: Types.MaxWidthAlertProps) => (
-    <Container maxWidth={maxWidth}>
-      <Alert {...props}>
-        <Typography
-          paragraph={Boolean(action)}
-          variant={msgVariant}
-          color="inherit"
-        >
-          {children}
-        </Typography>
+  forwardRef<HTMLDivElement, Types.MaxWidthAlertProps>(function MaxWidthAlert(
+    { action, children, maxWidth, msgVariant, ...props },
+    ref
+  ) {
+    return (
+      <Container ref={ref} maxWidth={maxWidth}>
+        <Alert {...props}>
+          <Typography
+            paragraph={Boolean(action)}
+            variant={msgVariant}
+            color="inherit"
+          >
+            {children}
+          </Typography>
 
-        {action}
-      </Alert>
-    </Container>
-  ),
+          {action}
+        </Alert>
+      </Container>
+    );
+  }),
   (theme) => ({
     root: {
       borderRadius: theme.spacing(2),

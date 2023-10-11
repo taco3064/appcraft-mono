@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.135](https://github.com/taco3064/appcraft-mono/compare/v0.0.134...v0.0.135) (2023-10-11)
+
+
+### Bug Fixes
+
+* **apps/appcraft:** if there's not any menu items in website nav menu, the menu will not show ([a0f921f](https://github.com/taco3064/appcraft-mono/commit/a0f921fa89bda924403d4c3063d6896d63439d3b))
+* **apps/appcraft:** remove WebsitePreview, and changed to use AppLayout + CraftedRenderer ([d06aca3](https://github.com/taco3064/appcraft-mono/commit/d06aca34c7429852ccaadf215a8a40ab3cbc404d))
+
 ### [0.0.134](https://github.com/taco3064/appcraft-mono/compare/v0.0.133...v0.0.134) (2023-10-11)
 
 

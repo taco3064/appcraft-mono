@@ -19,7 +19,7 @@ import * as Style from '~appcraft/styles';
 import AppLayout from '../AppLayout';
 import Breadcrumbs from '../Breadcrumbs';
 import { findConfig, searchHierarchy } from '~appcraft/services';
-import { getHomePage } from '~appcraft/contexts';
+import { getRoute } from '~appcraft/contexts';
 import type * as Types from './WebsiteEditor.types';
 import type { PageData } from '~appcraft/hooks';
 
@@ -43,7 +43,7 @@ export default function WebsiteEditor({
   const height = Hook.useHeight();
   const theme = useTheme();
   const fetchHandles = Hook.useCraftsmanFetch();
-  const homepage = getHomePage(website.homeid, website.pages);
+  const homepage = getRoute(website.homeid, website.pages);
 
   //* Fetch Data
   const { data: pages } = useQuery({

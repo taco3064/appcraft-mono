@@ -1,22 +1,25 @@
 import Container from '@mui/material/Container';
 import Head from 'next/head';
+import _get from 'lodash/get';
 import { CraftedRenderer } from '@appcraft/exhibitor';
 import { useQuery } from '@tanstack/react-query';
 import { useTheme } from '@mui/material/styles';
 
+import * as Hook from '~appcraft/hooks';
 import { AppLayout } from '~appcraft/containers';
-import { GRID_LAYOUT, useCraftsmanFetch } from '~appcraft/hooks';
 import { findConfig } from '~appcraft/services';
 import { useWebsiteConfig } from '~appcraft/contexts';
 import { withPerPageLayout } from '~appcraft/hocs';
 import type { PageData } from '~appcraft/hooks';
 
-export default withPerPageLayout(AppLayout, function WebsiteIndex() {
-  const fetchHandles = useCraftsmanFetch();
-  const theme = useTheme();
+const { GRID_LAYOUT } = Hook;
 
+export default withPerPageLayout(AppLayout, function WebsiteIndex() {
   const { config, homepage } = useWebsiteConfig();
   const { title, website } = config;
+
+  const fetchHandles = Hook.useCraftsmanFetch();
+  const theme = useTheme();
 
   const { data: home } = useQuery({
     enabled: Boolean(homepage?.pageid),
@@ -24,6 +27,13 @@ export default withPerPageLayout(AppLayout, function WebsiteIndex() {
     queryFn: findConfig<PageData>,
     refetchOnWindowFocus: false,
   });
+
+  const handleRouterPush = Hook.useWebsiteRouter(
+    config.token,
+    home?.content,
+    homepage,
+    website.pages
+  );
 
   return (
     <Container maxWidth={website.maxWidth}>
@@ -37,6 +47,7 @@ export default withPerPageLayout(AppLayout, function WebsiteIndex() {
           options={home.content.layouts}
           onFetchData={fetchHandles.data}
           onFetchWrapper={fetchHandles.wrapper}
+          onOutputCollect={handleRouterPush}
           onReady={home.content.readyTodos}
           GridLayoutProps={{
             autoSize: true,

@@ -3,21 +3,23 @@ import { CraftedRenderer } from '@appcraft/exhibitor';
 import { useQuery } from '@tanstack/react-query';
 import { useTheme } from '@mui/material/styles';
 
+import * as Hook from '~appcraft/hooks';
 import { AppLayout, Breadcrumbs } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
-import { GRID_LAYOUT, useCraftsmanFetch } from '~appcraft/hooks';
 import { useWebsiteConfig } from '~appcraft/contexts';
 import { withPerPageLayout } from '~appcraft/hocs';
 import type { PageData } from '~appcraft/hooks';
+
+const { GRID_LAYOUT } = Hook;
 
 export default withPerPageLayout(AppLayout, function WebsitePage() {
   const { config, routes } = useWebsiteConfig();
   const { token, title, website } = config;
 
-  const fetchHandles = useCraftsmanFetch();
-  const theme = useTheme();
   const page = routes[routes.length - 1];
+  const fetchHandles = Hook.useCraftsmanFetch();
+  const theme = useTheme();
 
   const { data } = useQuery({
     enabled: Boolean(page?.pageid),
@@ -25,6 +27,13 @@ export default withPerPageLayout(AppLayout, function WebsitePage() {
     queryFn: findConfig<PageData>,
     refetchOnWindowFocus: false,
   });
+
+  const handleRouterPush = Hook.useWebsiteRouter(
+    token,
+    data?.content,
+    page,
+    website.pages
+  );
 
   return (
     <PageContainer
@@ -62,6 +71,7 @@ export default withPerPageLayout(AppLayout, function WebsitePage() {
           options={data.content.layouts}
           onFetchData={fetchHandles.data}
           onFetchWrapper={fetchHandles.wrapper}
+          onOutputCollect={handleRouterPush}
           onReady={data.content.readyTodos}
           GridLayoutProps={{
             autoSize: true,

@@ -7,7 +7,7 @@ import type { Navigation } from '~appcraft/hooks';
 type NavRoute = Omit<Navigation, 'routes'>;
 
 //* Methods
-export type GetHomePageFn = (
+export type GetRouteFn = (
   id: string,
   routes: Navigation[],
   superior?: string

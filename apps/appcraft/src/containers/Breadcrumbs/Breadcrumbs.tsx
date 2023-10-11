@@ -16,7 +16,6 @@ import type * as Types from './Breadcrumbs.types';
 export default function Breadcrumbs({
   ToolbarProps,
   action,
-  disableBackButton = false,
   onCustomize = (e) => e,
 }: Types.BreadcrumbsProps) {
   const width = useWidth();
@@ -46,15 +45,13 @@ export default function Breadcrumbs({
         {...ToolbarProps}
         style={{ ...ToolbarProps?.style, userSelect: 'none' }}
       >
-        {!disableBackButton && (
-          <CommonButton
-            btnVariant="icon"
-            color="primary"
-            icon={<ArrowBackIcon />}
-            text={at('btn-back')}
-            onClick={() => back()}
-          />
-        )}
+        <CommonButton
+          btnVariant="icon"
+          color="primary"
+          icon={<ArrowBackIcon />}
+          text={at('btn-back')}
+          onClick={() => back()}
+        />
 
         <MuiBreadcrumbs
           aria-label="breadcrumb"

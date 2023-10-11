@@ -16,6 +16,7 @@ import * as Hook from '~appcraft/hooks';
 import * as Style from '~appcraft/styles';
 import Breadcrumbs from '../Breadcrumbs';
 import { findConfig, searchHierarchy } from '~appcraft/services';
+import { getHomePage } from '~appcraft/contexts';
 import type * as Types from './WebsiteEditor.types';
 import type { PageData } from '~appcraft/hooks';
 
@@ -35,7 +36,7 @@ export default function WebsiteEditor({
 
   const width = Hook.useWidth();
   const height = Hook.useHeight();
-  const homepage = Hook.getHomePage(website.homeid, website.pages);
+  const homepage = getHomePage(website.homeid, website.pages);
 
   //* Fetch Data
   const { data: pages } = useQuery({

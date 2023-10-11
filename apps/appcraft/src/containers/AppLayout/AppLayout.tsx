@@ -1,15 +1,15 @@
 import Button from '@mui/material/Button';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import Head from 'next/head';
 import NextLink from 'next/link';
 import NoSsr from '@mui/material/NoSsr';
+import Slide from '@mui/material/Slide';
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 import * as Style from '~appcraft/styles';
 import { AppHeader, WebsiteNavMenu } from '~appcraft/components';
-import { ThemeProvider } from '~appcraft/contexts';
+import { ThemeProvider, WebsiteConfigProvider } from '~appcraft/contexts';
 import { getWebsiteConfig } from '~appcraft/services';
 import { useFixedT, useHeight } from '~appcraft/hooks';
 import type { AppLayoutProps } from './AppLayout.types';
@@ -22,21 +22,22 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const height = useHeight();
 
   const { data: config, error } = useQuery({
+    enabled: Boolean(query.token),
     queryKey: [query.token as string],
     queryFn: getWebsiteConfig,
     refetchOnWindowFocus: false,
   });
 
-  return (
-    <>
-      <Head>
-        <title>Appcraft | {wt('ttl-preview')}</title>
-      </Head>
+  useEffect(() => {
+    setOpen(false);
+  }, [query.pathname]);
 
-      <NoSsr>
-        <ThemeProvider themeid={config?.website.theme}>
-          <Style.MuiSnackbarProvider>
-            {error || !config ? (
+  return (
+    <NoSsr>
+      <ThemeProvider themeid={config?.website.theme}>
+        <Style.MuiSnackbarProvider>
+          {error || !config ? (
+            <Slide in direction="down" timeout={{ enter: 1200 }}>
               <Style.MaxWidthAlert
                 maxWidth="sm"
                 variant="outlined"
@@ -61,40 +62,41 @@ export default function AppLayout({ children }: AppLayoutProps) {
               >
                 {wt('msg-invalid-preview')}
               </Style.MaxWidthAlert>
-            ) : (
-              <>
-                <AppHeader
-                  title={{ text: config.title, href: '/' }}
-                  onMenuToggle={(e) => {
-                    e.stopPropagation();
-                    setOpen(!open);
-                  }}
-                />
+            </Slide>
+          ) : (
+            <WebsiteConfigProvider config={config}>
+              <AppHeader
+                title={{ text: config.title, href: `/app/${config.token}` }}
+                onMenuToggle={(e) => {
+                  e.stopPropagation();
+                  setOpen(!open);
+                }}
+              />
 
-                <WebsiteNavMenu
-                  key={config.website.navAnchor}
-                  open={open}
-                  options={config.website}
-                />
+              <WebsiteNavMenu
+                key={config.website.navAnchor}
+                basename={`/app/${config.token}`}
+                open={open}
+                options={config.website}
+              />
 
-                <Style.MainContainer
-                  maxWidth={false}
-                  className="app"
-                  component="main"
-                  onClick={() => setOpen(false)}
-                  sx={(theme) => ({
-                    height: `calc(${height} - ${theme.spacing(
-                      open && config.website.navAnchor === 'top' ? 16 : 9
-                    )})`,
-                  })}
-                >
-                  {children}
-                </Style.MainContainer>
-              </>
-            )}
-          </Style.MuiSnackbarProvider>
-        </ThemeProvider>
-      </NoSsr>
-    </>
+              <Style.MainContainer
+                maxWidth={false}
+                className="app"
+                component="main"
+                onClick={() => setOpen(false)}
+                sx={(theme) => ({
+                  height: `calc(${height} - ${theme.spacing(
+                    open && config.website.navAnchor === 'top' ? 16 : 9
+                  )})`,
+                })}
+              >
+                {children}
+              </Style.MainContainer>
+            </WebsiteConfigProvider>
+          )}
+        </Style.MuiSnackbarProvider>
+      </ThemeProvider>
+    </NoSsr>
   );
 }

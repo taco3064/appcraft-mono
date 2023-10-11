@@ -15,7 +15,7 @@ import { ScaledPopover } from '~appcraft/styles';
 import type * as Types from './WebsiteNavMenu.types';
 
 //* Methods
-const getMenuItems: Types.GetMenuItemsFn = (routes, superior = '') =>
+export const getMenuItems: Types.GetMenuItemsFn = (routes, superior = '') =>
   routes.reduce((result, route) => {
     const { isNavItem, pathname, routes: subRoutes } = route;
 
@@ -151,13 +151,13 @@ function NavTab({
 }
 
 export default function WebsiteNavMenu({
+  anchor,
   basename,
   open,
-  options,
+  items,
   scale,
 }: Types.WebsiteNavMenuProps) {
-  const isAnchorTop = options.navAnchor === 'top';
-  const items = getMenuItems(options.pages);
+  const isAnchorTop = anchor === 'top';
   const [expanded, setExpanded] = useState<Types.ExpandedNav>();
 
   useEffect(() => {
@@ -166,10 +166,10 @@ export default function WebsiteNavMenu({
     }
   }, [open]);
 
-  return !items.length ? null : (
+  return (
     <Drawer
       variant="persistent"
-      anchor={options.navAnchor}
+      anchor={anchor}
       open={open}
       onClick={(e) => e.stopPropagation()}
       sx={{ position: '' }}

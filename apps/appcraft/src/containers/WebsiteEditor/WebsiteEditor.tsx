@@ -7,18 +7,23 @@ import Tooltip from '@mui/material/Tooltip';
 import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
 import WebIcon from '@mui/icons-material/Web';
 import { CraftsmanStyle } from '@appcraft/craftsman';
+import { CraftedRenderer } from '@appcraft/exhibitor';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useTheme } from '@mui/material/styles';
 import type { Breakpoint } from '@mui/material/styles';
 
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Style from '~appcraft/styles';
+import AppLayout from '../AppLayout';
 import Breadcrumbs from '../Breadcrumbs';
 import { findConfig, searchHierarchy } from '~appcraft/services';
 import { getHomePage } from '~appcraft/contexts';
 import type * as Types from './WebsiteEditor.types';
 import type { PageData } from '~appcraft/hooks';
+
+const { GRID_LAYOUT } = Hook;
 
 //* Components
 export default function WebsiteEditor({
@@ -36,6 +41,8 @@ export default function WebsiteEditor({
 
   const width = Hook.useWidth();
   const height = Hook.useHeight();
+  const theme = useTheme();
+  const fetchHandles = Hook.useCraftsmanFetch();
   const homepage = getHomePage(website.homeid, website.pages);
 
   //* Fetch Data
@@ -51,7 +58,7 @@ export default function WebsiteEditor({
     queryKey: ['themes'],
   });
 
-  const { data: homeConfig } = useQuery({
+  const { data: home } = useQuery({
     enabled: Boolean(homepage?.pageid),
     queryKey: [homepage?.pageid],
     queryFn: findConfig<PageData>,
@@ -185,13 +192,37 @@ export default function WebsiteEditor({
                 maxWidth={breakpoint}
                 minHeight={(theme) => `calc(${height} - ${theme.spacing(42)})`}
                 render={(scale) => (
-                  <Comp.WebsitePreview
-                    breakpoint={breakpoint}
-                    homepage={homeConfig?.content}
-                    options={website}
+                  <AppLayout
+                    disableCssBaseline
                     scale={scale}
-                    title={superiors.names[data._id]}
-                  />
+                    override={{
+                      token: '',
+                      userid: '',
+                      title: superiors.names[data._id],
+                      website,
+                    }}
+                  >
+                    {home?.content && (
+                      <CraftedRenderer
+                        breakpoint={breakpoint}
+                        elevation={1}
+                        options={home.content.layouts}
+                        onFetchData={fetchHandles.data}
+                        onFetchWrapper={fetchHandles.wrapper}
+                        onReady={home.content.readyTodos}
+                        GridLayoutProps={{
+                          autoSize: true,
+                          cols: GRID_LAYOUT.COLS,
+                          mins: GRID_LAYOUT.MINS,
+                          breakpoints: Object.fromEntries(
+                            Object.entries(theme.breakpoints.values).sort(
+                              ([, w1], [, w2]) => w2 - w1
+                            )
+                          ),
+                        }}
+                      />
+                    )}
+                  </AppLayout>
                 )}
               />
             </>

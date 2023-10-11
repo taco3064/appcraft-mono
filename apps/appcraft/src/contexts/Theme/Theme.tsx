@@ -6,13 +6,14 @@ import type { ThemeProviderProps } from './Theme.types';
 
 export default function ThemeProvider({
   children,
+  disableCssBaseline = false,
   themeid,
 }: ThemeProviderProps) {
   const theme = useThemeStyle(themeid);
 
   return (
     <MuiThemeProvider theme={theme}>
-      <CssBaseline />
+      {!disableCssBaseline && <CssBaseline />}
 
       {children}
     </MuiThemeProvider>

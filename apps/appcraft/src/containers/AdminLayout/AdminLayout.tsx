@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import LinearProgress from '@mui/material/LinearProgress';
-import NoSsr from '@mui/material/NoSsr';
 import { CraftsmanLocalesProvider } from '@appcraft/craftsman';
 import { Suspense, useState } from 'react';
 
@@ -23,54 +22,52 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <title>Appcraft</title>
       </Head>
 
-      <NoSsr>
-        <ThemeProvider>
-          <MuiSnackbarProvider>
-            <CraftsmanLocalesProvider fixedT={ct}>
-              {!authorized ? (
-                <Comp.AppHeader
-                  title={{ text: 'Appcraft', href: '/' }}
-                  action={
-                    <Comp.SigninButton
-                      oauth2={{ google: '/api/oauth2/google' }}
-                      onSigninClick={onSigninPrepare}
-                    />
-                  }
-                />
-              ) : (
-                <Comp.AppHeader
-                  title={{ text: 'Appcraft', href: '/' }}
-                  onMenuToggle={() => setOpen(true)}
-                  action={
-                    <Comp.UserinfoMenuToggle
-                      menuTransform="translate(12px, 10px)"
-                      signoutURL={`/api/oauth2/signout?access=${encodeURIComponent(
-                        tokens.access
-                      )}`}
-                    />
-                  }
-                />
-              )}
+      <ThemeProvider>
+        <MuiSnackbarProvider>
+          <CraftsmanLocalesProvider fixedT={ct}>
+            {!authorized ? (
+              <Comp.AppHeader
+                title={{ text: 'Appcraft', href: '/' }}
+                action={
+                  <Comp.SigninButton
+                    oauth2={{ google: '/api/oauth2/google' }}
+                    onSigninClick={onSigninPrepare}
+                  />
+                }
+              />
+            ) : (
+              <Comp.AppHeader
+                title={{ text: 'Appcraft', href: '/' }}
+                onMenuToggle={() => setOpen(true)}
+                action={
+                  <Comp.UserinfoMenuToggle
+                    menuTransform="translate(12px, 10px)"
+                    signoutURL={`/api/oauth2/signout?access=${encodeURIComponent(
+                      tokens.access
+                    )}`}
+                  />
+                }
+              />
+            )}
 
-              {authorized && (
-                <Comp.MenuDrawer open={open} onClose={() => setOpen(false)} />
-              )}
+            {authorized && (
+              <Comp.MenuDrawer open={open} onClose={() => setOpen(false)} />
+            )}
 
-              {!isCallbackPending && (
-                <Suspense fallback={<LinearProgress />}>
-                  <MainContainer
-                    maxWidth={false}
-                    className="app"
-                    component="main"
-                  >
-                    {children}
-                  </MainContainer>
-                </Suspense>
-              )}
-            </CraftsmanLocalesProvider>
-          </MuiSnackbarProvider>
-        </ThemeProvider>
-      </NoSsr>
+            {!isCallbackPending && (
+              <Suspense fallback={<LinearProgress />}>
+                <MainContainer
+                  maxWidth={false}
+                  className="app"
+                  component="main"
+                >
+                  {children}
+                </MainContainer>
+              </Suspense>
+            )}
+          </CraftsmanLocalesProvider>
+        </MuiSnackbarProvider>
+      </ThemeProvider>
     </>
   );
 }

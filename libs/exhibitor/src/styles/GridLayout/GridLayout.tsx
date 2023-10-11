@@ -1,13 +1,16 @@
 import Container from '@mui/material/Container';
 import Fab from '@mui/material/Fab';
 import Paper from '@mui/material/Paper';
+import { forwardRef } from 'react';
 import { withStyles } from 'tss-react/mui';
 
 import type * as Types from './GridLayout.types';
 
 export const GridLayoutContainer = withStyles(
-  ({ breakpoint: _breakpoint, ...props }: Types.GridLayoutContainerProps) => (
-    <Container {...props} />
+  forwardRef<HTMLDivElement, Types.GridLayoutContainerProps>(
+    ({ breakpoint: _breakpoint, ...props }, ref) => (
+      <Container ref={ref} {...props} />
+    )
   ),
   (theme, { breakpoint }) => ({
     root: {

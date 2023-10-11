@@ -1,5 +1,5 @@
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useTheme } from '@mui/material/styles';
 
 import { GridLayoutContainer } from '../../styles';
@@ -15,15 +15,31 @@ export default function GridLayout({
   ...props
 }: GridLayoutProps) {
   const theme = useTheme();
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const resizeObserver = useMemo(
+    () =>
+      new ResizeObserver(() => {
+        if (breakpoint) {
+          window.dispatchEvent(new Event('resize'));
+        }
+      }),
+    [breakpoint]
+  );
 
   useEffect(() => {
-    if (breakpoint) {
-      window.dispatchEvent(new Event('resize'));
+    const { current: el } = containerRef;
+
+    if (el) {
+      resizeObserver.observe(el);
+
+      return () => resizeObserver.unobserve(el);
     }
-  }, [breakpoint]);
+  }, [resizeObserver]);
 
   return (
     <GridLayoutContainer
+      ref={containerRef}
       disableGutters
       breakpoint={breakpoint}
       maxWidth={breakpoint || false}

@@ -66,7 +66,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
           ) : (
             <WebsiteConfigProvider config={config}>
               <AppHeader
-                title={{ text: config.title, href: '/' }}
+                title={{ text: config.title, href: `/app/${config.token}` }}
                 onMenuToggle={(e) => {
                   e.stopPropagation();
                   setOpen(!open);

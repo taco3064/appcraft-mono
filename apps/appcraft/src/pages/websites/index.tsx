@@ -49,7 +49,7 @@ export default withPerPageLayout(AdminLayout, function Websites() {
             onClick={async () => {
               const { _id } = await findWebsiteById(websiteid);
 
-              push(`/app/${_id}`);
+              push(`/app/${_id}`, { query: { websiteid } });
             }}
           >
             <VisibilityOutlinedIcon />

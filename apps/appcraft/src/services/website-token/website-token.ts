@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { WebsiteToken } from '@appcraft/types';
+import type { WebsiteConfig, WebsiteToken } from '@appcraft/types';
 
 import type * as Types from './website-token.types';
 
@@ -13,11 +13,11 @@ export const findWebsiteById: Types.FindWebsiteByIdService = async (
   return data;
 };
 
-export const findWebsiteByToken: Types.FindWebsiteByTokenService = async ({
+export const getWebsiteConfig: Types.GetWebsiteConfigService = async ({
   queryKey: [token],
 }) => {
-  const { data } = await axios.get<WebsiteToken>(
-    `/api/data-forge/website-token/findByToken/${token}`
+  const { data } = await axios.get<WebsiteConfig>(
+    `/api/data-forge/website-token/config/${token}`
   );
 
   return data;

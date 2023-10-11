@@ -1,4 +1,5 @@
 export * from './AdminLayout';
+export * from './AppLayout';
 export * from './Breadcrumbs';
 export * from './ConfigDetail';
 export * from './HierarchyList';

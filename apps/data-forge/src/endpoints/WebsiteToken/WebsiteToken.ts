@@ -8,12 +8,12 @@ import * as token from '~data-forge/services/website-token';
 @Module({ base: 'website-token' })
 export default class WebsiteToken {
   @Endpoint({
-    url: 'findByToken/:token',
+    url: 'config/:token',
     method: 'get',
-    description: '查詢 Website App Token',
+    description: '查詢 Website Config',
   })
-  async findByToken(req: Request, res: Response) {
-    res.json(await token.findByToken(req.params.token));
+  async config(req: Request, res: Response) {
+    res.json(await token.getConfigByToken(req.params.token));
   }
 
   @Endpoint({

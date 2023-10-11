@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import { useRouter } from 'next/router';
 import type { AppProps as NextAppProps } from 'next/app';
 
 import IndexPage from './index';
@@ -15,6 +16,7 @@ export default function App({
   Component: NextPageWithLayout;
 }) {
   const getLayout = Component.getLayout ?? ((page) => page);
+  const { pathname } = useRouter();
   const [{ authorized }] = useAuth();
 
   const client = useMemo(
@@ -32,7 +34,13 @@ export default function App({
 
   return (
     <QueryClientProvider client={client}>
-      {getLayout(authorized ? <Component {...pageProps} /> : <IndexPage />)}
+      {getLayout(
+        authorized || /^(\/|\/app)/.test(pathname) ? (
+          <Component {...pageProps} />
+        ) : (
+          <IndexPage />
+        )
+      )}
     </QueryClientProvider>
   );
 }

@@ -16,7 +16,7 @@ import type { Breakpoint } from '@mui/material/styles';
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
 import * as Style from '~appcraft/styles';
-import AppLayout from '../AppLayout';
+import ExplorerLayout from '../ExplorerLayout';
 import Breadcrumbs from '../Breadcrumbs';
 import { findConfig, searchHierarchy } from '~appcraft/services';
 import { getRoute } from '~appcraft/contexts';
@@ -192,7 +192,7 @@ export default function WebsiteEditor({
                 maxWidth={breakpoint}
                 minHeight={(theme) => `calc(${height} - ${theme.spacing(42)})`}
                 render={(scale) => (
-                  <AppLayout
+                  <ExplorerLayout
                     disableCssBaseline
                     scale={scale}
                     override={{
@@ -222,7 +222,7 @@ export default function WebsiteEditor({
                         }}
                       />
                     )}
-                  </AppLayout>
+                  </ExplorerLayout>
                 )}
               />
             </>

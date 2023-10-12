@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import type { MainWidget } from '@appcraft/types';
 
 import { CommonButton, StateViewer, WidgetPreview } from '~appcraft/components';
-import { AdminLayout, HierarchyList } from '~appcraft/containers';
+import { ArtisanLayout, HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
 import { useFixedT, useNodePickHandle } from '~appcraft/hooks';
@@ -17,7 +17,7 @@ import { withPerPageLayout } from '~appcraft/hocs';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
 
-export default withPerPageLayout(AdminLayout, function Widgets() {
+export default withPerPageLayout(ArtisanLayout, function Widgets() {
   const { pathname } = useRouter();
   const [at, nt, wt] = useFixedT('app', 'nav', 'widgets');
 

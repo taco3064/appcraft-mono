@@ -13,13 +13,13 @@ import Typography from '@mui/material/Typography';
 import * as Style from '~appcraft/styles';
 import NAVS from '~appcraft/assets/json/navs.json';
 import { useFixedT } from '~appcraft/hooks';
-import type * as Types from './MenuDrawer.types';
+import type * as Types from './ArtisanNavMenu.types';
 
-export default function MenuDrawer({
+export default function ArtisanNavMenu({
   open,
   onClose,
   ...props
-}: Types.MenuDrawerProps) {
+}: Types.ArtisanNavMenuProps) {
   const [nt] = useFixedT('nav');
 
   return (

@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTheme } from '@mui/material/styles';
 
 import * as Hook from '~appcraft/hooks';
-import { AppLayout } from '~appcraft/containers';
+import { ExplorerLayout } from '~appcraft/containers';
 import { findConfig } from '~appcraft/services';
 import { useWebsiteConfig } from '~appcraft/contexts';
 import { withPerPageLayout } from '~appcraft/hocs';
@@ -14,7 +14,7 @@ import type { PageData } from '~appcraft/hooks';
 
 const { GRID_LAYOUT } = Hook;
 
-export default withPerPageLayout(AppLayout, function WebsiteIndex() {
+export default withPerPageLayout(ExplorerLayout, function WebsiteIndex() {
   const { config, homepage } = useWebsiteConfig();
   const { title, website } = config;
 

@@ -11,14 +11,14 @@ import { AppHeader, WebsiteNavMenu, getMenuItems } from '~appcraft/components';
 import { ThemeProvider, WebsiteConfigProvider } from '~appcraft/contexts';
 import { getWebsiteConfig } from '~appcraft/services';
 import { useFixedT, useHeight } from '~appcraft/hooks';
-import type { AppLayoutProps } from './AppLayout.types';
+import type { ExplorerLayoutProps } from './ExplorerLayout.types';
 
-export default function AppLayout({
+export default function ExplorerLayout({
   children,
   disableCssBaseline = false,
   override,
   scale,
-}: AppLayoutProps) {
+}: ExplorerLayoutProps) {
   const { query } = useRouter();
   const [wt] = useFixedT('websites');
   const [open, setOpen] = useState(false);

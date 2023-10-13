@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:18
 WORKDIR /app
 COPY dist/apps/ts2-props .
 COPY dist/libs/types ./libs/types

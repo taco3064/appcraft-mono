@@ -1,4 +1,4 @@
-name: GKE of data-forge
+name: GKE of appcraft
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ on:
 
 jobs:
   deploy-to-gke:
-    name: Deploy data-forge to GKE
+    name: Deploy appcraft to GKE
     runs-on: ubuntu-latest
     environment: production
     strategy:
@@ -58,16 +58,17 @@ jobs:
       - name: Build Docker Image
         run: |
           npm ci
-          npx nx build data-forge --configuration=production
+          npx nx build appcraft --configuration=production
+          npx nx export appcraft
           docker build \
-            -f ./apps/data-forge/Dockerfile . \
-            -t gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ inputs.version }}
+            -f ./apps/appcraft/Dockerfile . \
+            -t gcr.io/${{ vars.GCP_PROJECT }}/appcraft:v${{ inputs.version }}
 
       # Push the Docker Image to GCR
       - name: Push the Docker Image to GCR
         run: |
           gcloud --quiet auth configure-docker
-          docker push gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ inputs.version }}
+          docker push gcr.io/${{ vars.GCP_PROJECT }}/appcraft:v${{ inputs.version }}
 
       # Connect GKE
       - name: Connect GKE
@@ -80,5 +81,5 @@ jobs:
         run: |
           kubectl set image \
             deployment/appcraft \
-            data-forge-sha256-1=gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ inputs.version }} \
+            appcraft-sha256-4=gcr.io/${{ vars.GCP_PROJECT }}/appcraft:v${{ inputs.version }} \
             -n dev

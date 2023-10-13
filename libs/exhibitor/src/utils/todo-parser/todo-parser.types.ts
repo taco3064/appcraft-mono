@@ -1,4 +1,5 @@
 import type * as Appcraft from '@appcraft/types';
+import type { GetWidgetOptionsFn } from '../widget-parser';
 
 //* Variables
 export type OutputData = { todo: string; alias: string; output: object };
@@ -49,9 +50,12 @@ export type GetEventHandler = (
 
     onOutputCollect?: (
       e: {
+        group?: string;
         duration: number;
         outputs: OutputData[];
         todos: Record<string, Appcraft.WidgetTodo>;
+        widget?: Appcraft.NodeWidget | Appcraft.MainWidget;
+        getWidgetOptions?: GetWidgetOptionsFn;
       },
       name?: string
     ) => void;

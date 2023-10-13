@@ -12,7 +12,7 @@ import { withPerPageLayout } from '~appcraft/hocs';
 
 const TODO_EDITOR_ACTIONS = ['run', 'reset', 'save'];
 
-export default withPerPageLayout(Ctr.AdminLayout, function Detail() {
+export default withPerPageLayout(Ctr.ArtisanLayout, function Detail() {
   const [tt] = Hook.useFixedT('todos');
   const { pathname, query } = useRouter();
 

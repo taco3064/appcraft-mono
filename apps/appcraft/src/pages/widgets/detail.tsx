@@ -21,7 +21,7 @@ import type { HierarchyData } from '~appcraft/services';
 const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];
 const WIDGET_ACTIONS = ['expand', 'reset', 'save'];
 
-export default withPerPageLayout(Ctr.AdminLayout, function Detail() {
+export default withPerPageLayout(Ctr.ArtisanLayout, function Detail() {
   const [at, wt, tt] = Hook.useFixedT('app', 'widgets', 'todos');
   const { enqueueSnackbar } = useSnackbar();
   const { pathname, query } = useRouter();

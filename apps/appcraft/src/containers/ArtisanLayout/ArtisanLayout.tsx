@@ -7,9 +7,9 @@ import * as Comp from '~appcraft/components';
 import { MainContainer, MuiSnackbarProvider } from '~appcraft/styles';
 import { ThemeProvider } from '~appcraft/contexts';
 import { useAuth, useFixedT } from '~appcraft/hooks';
-import type { AdminLayoutProps } from './AdminLayout.types';
+import type { ArtisanLayoutProps } from './ArtisanLayout.types';
 
-export default function AdminLayout({ children }: AdminLayoutProps) {
+export default function ArtisanLayout({ children }: ArtisanLayoutProps) {
   const [ct] = useFixedT('appcraft');
   const [open, setOpen] = useState(false);
 
@@ -51,7 +51,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             )}
 
             {authorized && (
-              <Comp.MenuDrawer open={open} onClose={() => setOpen(false)} />
+              <Comp.ArtisanNavMenu open={open} onClose={() => setOpen(false)} />
             )}
 
             {!isCallbackPending && (

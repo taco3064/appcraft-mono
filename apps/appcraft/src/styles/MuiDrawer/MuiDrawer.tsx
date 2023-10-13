@@ -75,7 +75,7 @@ export const ExplorerMenuDrawer = withStyles(
       </Drawer>
     );
   },
-  (theme, { anchor, open }) => ({
+  (theme, { anchor, open, selectedClassName = 'selected' }) => ({
     paper: {
       display: 'flex',
       userSelect: 'none' as never,
@@ -101,11 +101,29 @@ export const ExplorerMenuDrawer = withStyles(
       '&::-webkit-scrollbar': {
         display: 'none',
       },
+      '& > *:not(.scrollable)': {
+        ...(anchor === 'top'
+          ? {
+              paddingLeft: theme.spacing(6),
+              paddingRight: theme.spacing(6),
+
+              [`&.${selectedClassName}`]: {
+                borderBottom: `2px solid ${theme.palette.primary.main}`,
+              },
+              [`&:not(.${selectedClassName})`]: {
+                paddingBottom: 2,
+              },
+            }
+          : {
+              [`&.${selectedClassName}`]: {
+                borderRight: `2px solid ${theme.palette.primary.main}`,
+              },
+              [`&:not(.${selectedClassName})`]: {
+                paddingRight: 2,
+              },
+            }),
+      },
       ...(anchor === 'top' && {
-        '&:not(.scrollable)': {
-          paddingLeft: theme.spacing(6),
-          paddingRight: theme.spacing(6),
-        },
         '& > *': {
           minWidth: 'max-content !important',
           maxWidth: 'max-content !important',

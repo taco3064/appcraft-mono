@@ -59,7 +59,8 @@ export default withPerPageLayout(ExplorerLayout, function WebsitePage() {
                   text: subTitle,
                   url: `/app/${token}${routes
                     .slice(0, i + 1)
-                    .map(({ pathname }) => pathname)}`,
+                    .map(({ pathname }) => pathname)
+                    .join('')}`,
                 };
           })
         }

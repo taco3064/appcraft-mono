@@ -32,7 +32,6 @@ export const useWebsiteRouter: WebsiteRouterHook = (
       if (target?.id !== widget.id) {
         continue;
       }
-      console.log(link.to, routes);
 
       const { pathname } = getRoute(link.to, routes || []);
 

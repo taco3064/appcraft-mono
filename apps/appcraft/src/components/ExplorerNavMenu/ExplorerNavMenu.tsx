@@ -6,6 +6,8 @@ import { ExplorerMenuDrawer, ScaledPopover } from '~appcraft/styles';
 import type { ExpandedNav } from '../ExplorerNavItem';
 import type { ExplorerNavMenuProps } from './ExplorerNavMenu.types';
 
+const selectedClassName = 'AppcraftExplorerNavMenu-selected';
+
 export default function ExplorerNavMenu({
   active,
   anchor,
@@ -24,7 +26,7 @@ export default function ExplorerNavMenu({
 
   return (
     <>
-      <ExplorerMenuDrawer {...{ anchor, open }}>
+      <ExplorerMenuDrawer {...{ anchor, open, selectedClassName }}>
         {!open
           ? null
           : items.map((page) => (
@@ -33,6 +35,7 @@ export default function ExplorerNavMenu({
                 active={active}
                 basename={basename}
                 options={page}
+                selectedClassName={selectedClassName}
                 {...(anchor === 'top' && {
                   onSubMenuPopover: setExpanded,
                 })}
@@ -60,6 +63,7 @@ export default function ExplorerNavMenu({
                 active={active}
                 basename={basename}
                 options={route}
+                selectedClassName={selectedClassName}
                 superior={expanded?.pathname}
               />
             ))}

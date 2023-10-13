@@ -15,14 +15,14 @@ import type { MouseEvent } from 'react';
 import type * as Types from './ExplorerNavItem.types';
 
 //* Methods
-export const getMenuItems: Types.GetMenuItemsFn = (routes, superior = '') =>
+export const getMenuItems: Types.GetMenuItemsFn = (routes) =>
   routes.reduce((result, route) => {
     const { isNavItem, pathname, routes: subRoutes } = route;
 
     if (isNavItem) {
-      result.push({ ...route, pathname: `${superior}${pathname}` });
+      result.push({ ...route, pathname });
     } else if (Array.isArray(subRoutes)) {
-      result.push(...getMenuItems(subRoutes, `${superior}${pathname}`));
+      result.push(...getMenuItems(subRoutes));
     }
 
     return result;
@@ -33,13 +33,15 @@ export default function ExplorerNavItem({
   active,
   basename,
   options,
+  selectedClassName,
   superior = '',
   onSubMenuPopover,
 }: Types.ExplorerNavItemProps) {
   const [expanded, setExpanded] = useState(false);
-  const { id, icon, subTitle, isNavItem, pathname } = options;
-  const items = getMenuItems(options.routes || [], superior);
-  const selected = active.startsWith(`${superior}${pathname}`);
+  const { id, icon, subTitle, isNavItem } = options;
+  const pathname = `${superior}${options.pathname}`;
+  const items = getMenuItems(options.routes || []);
+  const selected = active.startsWith(pathname);
   const ToggleIcon = expanded ? ExpandLess : ExpandMore;
 
   //* Event Handlers
@@ -82,9 +84,10 @@ export default function ExplorerNavItem({
           <ListItemButton
             id={id}
             selected={selected}
+            classes={{ selected: selectedClassName }}
             {...(basename && {
               LinkComponent: NextLink,
-              href: `${basename}${superior}${pathname}`,
+              href: `${basename}${pathname}`,
             })}
           >
             <ListItemIcon sx={(theme) => ({ minWidth: theme.spacing(5) })}>
@@ -108,12 +111,12 @@ export default function ExplorerNavItem({
             </ListItemIcon>
 
             <ListItemText
+              primary={subTitle}
               primaryTypographyProps={{
                 variant: 'subtitle1',
                 color: selected ? 'primary' : 'text.primary',
                 fontWeight: 600,
               }}
-              primary={subTitle}
             />
 
             {items.length === 0 ? null : (

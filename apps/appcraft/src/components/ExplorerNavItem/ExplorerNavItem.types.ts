@@ -9,16 +9,14 @@ export type ExpandedNav = {
 };
 
 //* Methods
-export type GetMenuItemsFn = (
-  options: Navigation[],
-  superior?: string
-) => Navigation[];
+export type GetMenuItemsFn = (options: Navigation[]) => Navigation[];
 
 //* Component Props
 export interface ExplorerNavItemProps {
   active: string;
   basename?: string;
   options: Navigation;
+  selectedClassName?: string;
   superior?: string;
 
   onSubMenuPopover?: (e?: ExpandedNav) => void;

@@ -52,7 +52,7 @@ const app = express()
   .use(
     '/data-forge',
     createProxyMiddleware({
-      target: process.env.SERVICE_DATA_FORGE,
+      target: process.env.SERVICE_DATA_FORGE || 'http://127.0.0.1:4001',
       changeOrigin: true,
       onProxyReq: fixRequestBody,
       pathRewrite: {
@@ -63,7 +63,7 @@ const app = express()
   .use(
     '/ts2-props',
     createProxyMiddleware({
-      target: process.env.SERVICE_TS2_PROPS,
+      target: process.env.SERVICE_TS2_PROPS || 'http://127.0.0.1:4002',
       changeOrigin: true,
       onProxyReq: fixRequestBody,
       pathRewrite: {

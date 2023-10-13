@@ -6,7 +6,8 @@ import type * as Types from './google-oauth2.types';
 const client = new OAuth2Client(
   __WEBPACK_DEFINE__.GOOGLE_CLIENT_ID,
   __WEBPACK_DEFINE__.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_REDIRECT_URI
+  process.env.GOOGLE_REDIRECT_URI ||
+    'http://www.appcrafts.org/api/oauth2/google/callback'
 );
 
 export const getAuthURL: Types.GetAuthURLService = async () => {

@@ -82,4 +82,4 @@ jobs:
           kubectl set image \
             deployment/appcraft \
             appcraft-sha256-4=gcr.io/${{ vars.GCP_PROJECT }}/appcraft:v${{ inputs.version }} \
-            -n dev
+            -n v1

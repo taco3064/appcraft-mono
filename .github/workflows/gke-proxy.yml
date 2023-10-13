@@ -81,4 +81,4 @@ jobs:
           kubectl set image \
             deployment/appcraft \
             proxy-sha256-3=gcr.io/${{ vars.GCP_PROJECT }}/proxy:v${{ inputs.version }} \
-            -n dev
+            -n v1

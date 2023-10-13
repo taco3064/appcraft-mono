@@ -81,4 +81,4 @@ jobs:
           kubectl set image \
             deployment/appcraft \
             data-forge-sha256-1=gcr.io/${{ vars.GCP_PROJECT }}/data-forge:v${{ inputs.version }} \
-            -n dev
+            -n v1

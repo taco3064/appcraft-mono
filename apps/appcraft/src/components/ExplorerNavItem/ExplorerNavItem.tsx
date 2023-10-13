@@ -12,6 +12,7 @@ import { CraftsmanStyle } from '@appcraft/craftsman';
 import { useState } from 'react';
 import type { MouseEvent } from 'react';
 
+import { ExplorerMenuItem } from '~appcraft/styles';
 import type * as Types from './ExplorerNavItem.types';
 
 //* Methods
@@ -30,18 +31,18 @@ export const getMenuItems: Types.GetMenuItemsFn = (routes) =>
 
 //* Components
 export default function ExplorerNavItem({
+  anchor,
   active,
   basename,
   options,
-  selectedClassName,
   superior = '',
   onSubMenuPopover,
 }: Types.ExplorerNavItemProps) {
-  const [expanded, setExpanded] = useState(false);
   const { id, icon, subTitle, isNavItem } = options;
   const pathname = `${superior}${options.pathname}`;
   const items = getMenuItems(options.routes || []);
   const selected = active.startsWith(pathname);
+  const [expanded, setExpanded] = useState(selected && anchor === 'left');
   const ToggleIcon = expanded ? ExpandLess : ExpandMore;
 
   //* Event Handlers
@@ -70,21 +71,17 @@ export default function ExplorerNavItem({
         items
           .map((route) => (
             <ExplorerNavItem
+              {...{ active, anchor, basename, onSubMenuPopover }}
               key={route.id}
-              active={active}
-              basename={basename}
               options={route}
               superior={pathname}
-              onSubMenuPopover={onSubMenuPopover}
             />
           ))
           .flat()
       ) : (
         <>
-          <ListItemButton
-            id={id}
-            selected={selected}
-            classes={{ selected: selectedClassName }}
+          <ExplorerMenuItem
+            {...{ anchor, id, selected }}
             {...(basename && {
               LinkComponent: NextLink,
               href: `${basename}${pathname}`,
@@ -126,15 +123,14 @@ export default function ExplorerNavItem({
                 </IconButton>
               </CraftsmanStyle.TypeItemAction>
             )}
-          </ListItemButton>
+          </ExplorerMenuItem>
 
           {!onSubMenuPopover && (
             <Collapse in={expanded}>
               {items.map((route) => (
                 <ExplorerNavItem
+                  {...{ active, anchor, basename }}
                   key={route.id}
-                  active={active}
-                  basename={basename}
                   superior={pathname}
                   options={route}
                 />

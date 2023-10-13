@@ -13,10 +13,10 @@ export type GetMenuItemsFn = (options: Navigation[]) => Navigation[];
 
 //* Component Props
 export interface ExplorerNavItemProps {
+  anchor?: 'left' | 'top' | false;
   active: string;
   basename?: string;
   options: Navigation;
-  selectedClassName?: string;
   superior?: string;
 
   onSubMenuPopover?: (e?: ExpandedNav) => void;

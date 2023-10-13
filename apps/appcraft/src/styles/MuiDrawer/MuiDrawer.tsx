@@ -54,6 +54,7 @@ export const ExplorerMenuDrawer = withStyles(
         >
           {anchor === 'top' && scrollable && (
             <TabScrollButton
+              role="scrollbar"
               direction="left"
               orientation="horizontal"
               className={classes.scrollLeftButton}
@@ -65,6 +66,7 @@ export const ExplorerMenuDrawer = withStyles(
 
           {anchor === 'top' && scrollable && (
             <TabScrollButton
+              role="scrollbar"
               direction="right"
               orientation="horizontal"
               className={classes.scrollRightButton}
@@ -75,7 +77,7 @@ export const ExplorerMenuDrawer = withStyles(
       </Drawer>
     );
   },
-  (theme, { anchor, open, selectedClassName = 'selected' }) => ({
+  (theme, { anchor, open }) => ({
     paper: {
       display: 'flex',
       userSelect: 'none' as never,
@@ -101,30 +103,12 @@ export const ExplorerMenuDrawer = withStyles(
       '&::-webkit-scrollbar': {
         display: 'none',
       },
-      '& > *:not(.scrollable)': {
-        ...(anchor === 'top'
-          ? {
-              paddingLeft: theme.spacing(6),
-              paddingRight: theme.spacing(6),
-
-              [`&.${selectedClassName}`]: {
-                borderBottom: `2px solid ${theme.palette.primary.main}`,
-              },
-              [`&:not(.${selectedClassName})`]: {
-                paddingBottom: 2,
-              },
-            }
-          : {
-              [`&.${selectedClassName}`]: {
-                borderRight: `2px solid ${theme.palette.primary.main}`,
-              },
-              [`&:not(.${selectedClassName})`]: {
-                paddingRight: 2,
-              },
-            }),
-      },
       ...(anchor === 'top' && {
-        '& > *': {
+        '&:not(.scrollable)': {
+          paddingLeft: theme.spacing(8),
+          paddingRight: theme.spacing(8),
+        },
+        '& > *:not([role=scrollbar])': {
           minWidth: 'max-content !important',
           maxWidth: 'max-content !important',
         },
@@ -141,8 +125,8 @@ export const ExplorerMenuDrawer = withStyles(
       background: 'inherit',
       borderRadius: '50%',
       left: theme.spacing(1),
-      minWidth: theme.spacing(5),
-      marginRight: theme.spacing(1),
+      minWidth: theme.spacing(6),
+      marginRight: theme.spacing(2),
       zIndex: theme.zIndex.fab,
     },
     scrollRightButton: {
@@ -150,8 +134,8 @@ export const ExplorerMenuDrawer = withStyles(
       background: 'inherit',
       borderRadius: '50%',
       right: theme.spacing(1),
-      minWidth: theme.spacing(5),
-      marginLeft: theme.spacing(1),
+      minWidth: theme.spacing(6),
+      marginLeft: theme.spacing(2),
       zIndex: theme.zIndex.fab,
     },
   }),

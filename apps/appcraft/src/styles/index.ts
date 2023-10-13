@@ -3,6 +3,7 @@ export * from './MuiChip';
 export * from './MuiContainer';
 export * from './MuiDrawer';
 export * from './MuiLink';
+export * from './MuiListItemButton';
 export * from './MuiPopover';
 export * from './MuiSvgIcon';
 export * from './Notistack';

@@ -6,8 +6,6 @@ import { ExplorerMenuDrawer, ScaledPopover } from '~appcraft/styles';
 import type { ExpandedNav } from '../ExplorerNavItem';
 import type { ExplorerNavMenuProps } from './ExplorerNavMenu.types';
 
-const selectedClassName = 'AppcraftExplorerNavMenu-selected';
-
 export default function ExplorerNavMenu({
   active,
   anchor,
@@ -26,16 +24,14 @@ export default function ExplorerNavMenu({
 
   return (
     <>
-      <ExplorerMenuDrawer {...{ anchor, open, selectedClassName }}>
+      <ExplorerMenuDrawer {...{ anchor, open }}>
         {!open
           ? null
           : items.map((page) => (
               <ExplorerNavItem
+                {...{ active, anchor, basename }}
                 key={page.id}
-                active={active}
-                basename={basename}
                 options={page}
-                selectedClassName={selectedClassName}
                 {...(anchor === 'top' && {
                   onSubMenuPopover: setExpanded,
                 })}
@@ -48,6 +44,7 @@ export default function ExplorerNavMenu({
           PaperProps={{ elevation: 1 }}
           anchorEl={expanded?.anchorEl}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          contentWidth={expanded?.anchorEl.clientWidth}
           open={Boolean(expanded?.anchorEl) && open}
           scale={scale}
           transformOrigin={{ vertical: 'top', horizontal: 'left' }}
@@ -56,14 +53,12 @@ export default function ExplorerNavMenu({
             setExpanded(undefined);
           }}
         >
-          <List disablePadding>
+          <List disablePadding style={{ width: '100%' }}>
             {expanded?.routes.map((route) => (
               <ExplorerNavItem
+                {...{ active, basename }}
                 key={route.id}
-                active={active}
-                basename={basename}
                 options={route}
-                selectedClassName={selectedClassName}
                 superior={expanded?.pathname}
               />
             ))}

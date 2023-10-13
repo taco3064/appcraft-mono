@@ -10,6 +10,7 @@ export const ScaledPopover = withStyles(
     PaperProps,
     children,
     classes: { content: contentClassName, ...classes },
+    contentWidth,
     scale = 1,
     ...props
   }: Types.ScaledPopoverProps) => {
@@ -40,6 +41,7 @@ export const ScaledPopover = withStyles(
           <div
             ref={(el) => el && resizeObserver.observe(el)}
             className={contentClassName}
+            style={{ minWidth: contentWidth }}
           >
             {children}
           </div>

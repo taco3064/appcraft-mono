@@ -7,7 +7,6 @@ export interface ExplorerMenuDrawerProps {
   anchor: 'left' | 'top';
   children: ReactNode;
   open: boolean;
-  selectedClassName?: string;
 
   classes?: {
     list?: string;

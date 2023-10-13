@@ -8,7 +8,7 @@ import type { DefaultImplement } from '@appcraft/server';
 import { verifyToken } from '~proxy/services/google-oauth2';
 import * as endpoints from './endpoints';
 
-const port = process.env.SERVICE_PROXY.replace(/^.+:/, '');
+const port = process.env.SERVICE_PROXY?.replace(/^.+:/, '') || 4000;
 
 const whitelist = [
   /^\/$/,

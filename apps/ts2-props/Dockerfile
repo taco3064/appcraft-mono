@@ -9,3 +9,4 @@ RUN npm install react@18.2.0 @types/react@18.2.6 @mui/material@5.13.1 -D
 RUN npm install file:/app/libs/types file:/app/libs/widgets -D
 RUN npm install reflect-metadata tslib @nestjs/platform-express
 CMD node /app/main.js
+EXPOSE 4002

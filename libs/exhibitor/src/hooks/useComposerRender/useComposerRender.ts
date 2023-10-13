@@ -18,6 +18,7 @@ function getProps<P>(
     {
       generate,
       getGlobalState,
+      getWidgetOptions,
       onFetchData,
       onFetchWrapper,
       onOutputCollect,
@@ -63,7 +64,14 @@ function getProps<P>(
               )
               .then((outputs) =>
                 onOutputCollect?.(
-                  { duration: Date.now() - start, outputs, todos },
+                  {
+                    duration: Date.now() - start,
+                    group,
+                    outputs,
+                    todos,
+                    widget,
+                    getWidgetOptions,
+                  },
                   propPath
                 )
               );
@@ -108,7 +116,7 @@ export const useComposerRender: Types.ComposerRenderHook = (render) => {
   const getHandles = Ctx.useMutableHandles();
   const setInitializePending = Ctx.useInitializePending();
   const { getGlobalState, onPropsChange, onStateChange } = Ctx.useGlobalState();
-  const { getWidget } = Ctx.useHandles();
+  const { getWidget, getWidgetOptions } = Ctx.useHandles();
 
   return function generate(target, queue) {
     const [element, widget] = getWidget(target);
@@ -135,6 +143,7 @@ export const useComposerRender: Types.ComposerRenderHook = (render) => {
                   ...mutableHandles,
                   generate,
                   getGlobalState,
+                  getWidgetOptions,
                   onPropsChange,
                   onStateChange,
                 }),

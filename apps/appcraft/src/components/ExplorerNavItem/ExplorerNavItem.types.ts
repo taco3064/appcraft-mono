@@ -1,5 +1,3 @@
-import type { Website } from '@appcraft/types';
-
 import type { Navigation } from '~appcraft/hooks';
 
 //* Variables
@@ -11,24 +9,15 @@ export type ExpandedNav = {
 };
 
 //* Methods
-export type GetMenuItemsFn = (
-  options: Navigation[],
-  superior?: string
-) => Navigation[];
+export type GetMenuItemsFn = (options: Navigation[]) => Navigation[];
 
 //* Component Props
-export interface NavTabProps {
+export interface ExplorerNavItemProps {
+  anchor?: 'left' | 'top' | false;
+  active: string;
   basename?: string;
   options: Navigation;
   superior?: string;
 
   onSubMenuPopover?: (e?: ExpandedNav) => void;
-}
-
-export interface WebsiteNavMenuProps {
-  anchor: Website['navAnchor'];
-  basename?: string;
-  open: boolean;
-  items: Navigation[];
-  scale?: number;
 }

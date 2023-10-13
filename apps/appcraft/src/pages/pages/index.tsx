@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-import { AdminLayout, HierarchyList } from '~appcraft/containers';
+import { ArtisanLayout, HierarchyList } from '~appcraft/containers';
 import { CommonButton, PagePreview } from '~appcraft/components';
 import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
@@ -16,7 +16,7 @@ import type { PageData } from '~appcraft/hooks';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
 
-export default withPerPageLayout(AdminLayout, function Pages() {
+export default withPerPageLayout(ArtisanLayout, function Pages() {
   const { pathname } = useRouter();
   const [at, nt, pt] = useFixedT('app', 'nav', 'pages');
   const [preview, setPreview] = useState<{ id: string; name: string }>();

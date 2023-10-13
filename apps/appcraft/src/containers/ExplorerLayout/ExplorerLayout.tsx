@@ -7,18 +7,18 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
 import * as Style from '~appcraft/styles';
-import { AppHeader, WebsiteNavMenu, getMenuItems } from '~appcraft/components';
+import { AppHeader, ExplorerNavMenu, getMenuItems } from '~appcraft/components';
 import { ThemeProvider, WebsiteConfigProvider } from '~appcraft/contexts';
 import { getWebsiteConfig } from '~appcraft/services';
 import { useFixedT, useHeight } from '~appcraft/hooks';
-import type { AppLayoutProps } from './AppLayout.types';
+import type { ExplorerLayoutProps } from './ExplorerLayout.types';
 
-export default function AppLayout({
+export default function ExplorerLayout({
   children,
   disableCssBaseline = false,
   override,
   scale,
-}: AppLayoutProps) {
+}: ExplorerLayoutProps) {
   const { query } = useRouter();
   const [wt] = useFixedT('websites');
   const [open, setOpen] = useState(false);
@@ -84,12 +84,16 @@ export default function AppLayout({
             />
 
             {!navItems.length ? null : (
-              <WebsiteNavMenu
+              <ExplorerNavMenu
                 key={config.website.navAnchor}
                 anchor={config.website.navAnchor}
                 items={navItems}
                 open={open}
                 scale={scale}
+                active={`/${
+                  (Array.isArray(query.pathname) && query.pathname.join('/')) ||
+                  ''
+                }`}
                 {...(config.token && {
                   basename: `/app/${config.token}`,
                 })}

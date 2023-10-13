@@ -3,6 +3,19 @@ import type { DrawerProps } from '@mui/material/Drawer';
 import type { ReactNode } from 'react';
 import type { StyledComponentProps, Theme } from '@mui/material/styles';
 
+export interface ExplorerMenuDrawerProps {
+  anchor: 'left' | 'top';
+  children: ReactNode;
+  open: boolean;
+
+  classes?: {
+    list?: string;
+    paper?: string;
+    scrollLeftButton?: string;
+    scrollRightButton?: string;
+  };
+}
+
 export interface SizedDrawerProps extends Omit<DrawerProps, 'PaperProps'> {
   maxWidth: ContainerProps['maxWidth'];
 

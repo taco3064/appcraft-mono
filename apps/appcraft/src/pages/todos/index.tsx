@@ -10,7 +10,7 @@ import { useState, useTransition } from 'react';
 import type { OutputCollectEvent } from '@appcraft/exhibitor';
 import type { WidgetTodo } from '@appcraft/types';
 
-import { AdminLayout } from '~appcraft/containers';
+import { ArtisanLayout } from '~appcraft/containers';
 import { CommonButton, TodoOutputStepper } from '~appcraft/components';
 import { HierarchyList } from '~appcraft/containers';
 import { PageContainer } from '~appcraft/styles';
@@ -21,7 +21,7 @@ import type { HierarchyData } from '~appcraft/services';
 
 const HIERARCHY_LIST_ACTIONS = ['search', 'addGroup', 'addItem'];
 
-export default withPerPageLayout(AdminLayout, function Todos() {
+export default withPerPageLayout(ArtisanLayout, function Todos() {
   const { pathname } = useRouter();
   const [nt, tt] = useFixedT('nav', 'todos');
   const [steperProps, setStepperProps] = useState<OutputCollectEvent>();

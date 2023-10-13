@@ -5,7 +5,7 @@ import type { WebsiteConfig } from '@appcraft/types';
 import type * as Types from './WebsiteConfig.types';
 
 //* Methods
-export const getHomePage: Types.GetHomePageFn = (id, routes, superior = '') =>
+export const getRoute: Types.GetRouteFn = (id, routes, superior = '') =>
   routes.reduce((result, { routes: subRoutes, pathname, ...route }) => {
     if (!result) {
       const path = `${superior}${pathname}`;
@@ -16,7 +16,7 @@ export const getHomePage: Types.GetHomePageFn = (id, routes, superior = '') =>
           pathname: path,
         };
       } else if (Array.isArray(subRoutes)) {
-        return getHomePage(id, subRoutes, path);
+        return getRoute(id, subRoutes, path);
       }
     }
 
@@ -50,7 +50,7 @@ export const useWebsiteConfig: Types.WebsiteConfigHook = () => {
 
   return {
     config,
-    homepage: getHomePage(config.website.homeid, config.website.pages || []),
+    homepage: getRoute(config.website.homeid, config.website.pages || []),
     routes: getRoutes(config.website.pages || [], [
       ...(Array.isArray(query.pathname) ? query.pathname : []),
     ]),

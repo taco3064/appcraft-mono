@@ -37,7 +37,7 @@ export default function App({
     <NoSsr>
       <QueryClientProvider client={client}>
         {getLayout(
-          authorized || /^(\/|\/app)/.test(pathname) ? (
+          authorized || /^(\/app)/.test(pathname) ? (
             <Component {...pageProps} />
           ) : (
             <IndexPage />

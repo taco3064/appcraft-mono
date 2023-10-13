@@ -22,7 +22,7 @@ import type { PageData } from '~appcraft/hooks';
 const PAGE_ACTIONS = ['add', 'ready', 'reset', 'save'];
 const TODO_ACTIONS = ['expand', 'run', 'reset', 'save'];
 
-export default withPerPageLayout(Ctr.AdminLayout, function Detail() {
+export default withPerPageLayout(Ctr.ArtisanLayout, function Detail() {
   const [at, pt, tt] = Hook.useFixedT('app', 'pages', 'todos');
   const { enqueueSnackbar } = useSnackbar();
   const { pathname, query } = useRouter();

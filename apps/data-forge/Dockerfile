@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:18
 WORKDIR /app
 COPY dist/apps/data-forge .
 EXPOSE 4001

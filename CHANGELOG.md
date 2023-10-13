@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.143](https://github.com/taco3064/appcraft-mono/compare/v0.0.142...v0.0.143) (2023-10-13)
+
+
+### Bug Fixes
+
+* **apps/proxy:** add default google oauth redirect uri ([3edd7b3](https://github.com/taco3064/appcraft-mono/commit/3edd7b37a0d5c0ea86501ad47b2f850b9f00b99c))
+
 ### [0.0.142](https://github.com/taco3064/appcraft-mono/compare/v0.0.141...v0.0.142) (2023-10-13)
 
 ### [0.0.141](https://github.com/taco3064/appcraft-mono/compare/v0.0.140...v0.0.141) (2023-10-13)

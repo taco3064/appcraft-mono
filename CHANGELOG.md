@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.136](https://github.com/taco3064/appcraft-mono/compare/v0.0.135...v0.0.136) (2023-10-13)
+
+
+### Bug Fixes
+
+* **apps/appcraft:** fixed the explorer router error ([891d68b](https://github.com/taco3064/appcraft-mono/commit/891d68bdb001ab444341f64ce1b8e7e1892dc813))
+* **apps/appcraft:** rename components to distinguish different user roles ([2999221](https://github.com/taco3064/appcraft-mono/commit/2999221c3bb2466a5a0c6c04d31da9e628e5dbf7))
+* **apps/appcraft:** support to link other pages by widget todos ([7ad527c](https://github.com/taco3064/appcraft-mono/commit/7ad527c7e0f1f37da726e9a7b02d1907f0a751d5))
+
 ### [0.0.135](https://github.com/taco3064/appcraft-mono/compare/v0.0.134...v0.0.135) (2023-10-11)
 
 

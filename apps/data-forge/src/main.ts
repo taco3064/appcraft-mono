@@ -5,6 +5,7 @@ import type { DefaultImplement } from '@appcraft/server';
 import * as endpoints from './endpoints';
 
 const port = process.env.SERVICE_DATA_FORGE?.replace(/^.+:/, '') || 4001;
+console.log('for trigger github action');
 
 const app = express()
   .use(cookieParser())

@@ -6,8 +6,6 @@ const MuiIcons = require('@mui/icons-material');
 
 const webpackBase = require('../../tools/generators/webpack.base');
 
-console.log('for trigger github action');
-
 /**
  * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
  **/

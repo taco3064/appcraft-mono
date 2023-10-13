@@ -5,7 +5,6 @@ import type { DefaultImplement } from '@appcraft/server';
 import * as endpoints from './endpoints';
 
 const port = process.env.SERVICE_TS2_PROPS?.replace(/^.+:/, '') || 4002;
-console.log('for trigger github action');
 
 const app = express()
   .use(cookieParser())

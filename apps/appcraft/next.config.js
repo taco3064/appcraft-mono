@@ -5,13 +5,11 @@ const { withNx } = require('@nrwl/next/plugins/with-nx');
 const MuiIcons = require('@mui/icons-material');
 
 const webpackBase = require('../../tools/generators/webpack.base');
-const isProduction = process.env.NODE_ENV === 'production';
 
 /**
  * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
-  basePath: isProduction ? '/demo' : '',
   pageExtensions: ['tsx'],
   nx: {
     // Set this to true if you would like to to use SVGR

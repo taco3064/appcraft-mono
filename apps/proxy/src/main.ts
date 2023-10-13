@@ -9,7 +9,6 @@ import { verifyToken } from '~proxy/services/google-oauth2';
 import * as endpoints from './endpoints';
 
 const port = process.env.SERVICE_PROXY?.replace(/^.+:/, '') || 4000;
-console.log('for trigger github action');
 
 const whitelist = [
   /^\/$/,

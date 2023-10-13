@@ -80,5 +80,5 @@ jobs:
         run: |
           kubectl set image \
             deployment/appcraft \
-            ts2-props-sha256-2=gcr.io/${{ vars.GCP_PROJECT }}/ts2-props:v${{ inputs.version }} \
+            ts2-props-sha256-1=gcr.io/${{ vars.GCP_PROJECT }}/ts2-props:v${{ inputs.version }} \
             -n v1

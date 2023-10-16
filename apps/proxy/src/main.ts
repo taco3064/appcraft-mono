@@ -8,7 +8,7 @@ import type { DefaultImplement } from '@appcraft/server';
 import { verifyToken } from '~proxy/services/google-oauth2';
 import * as endpoints from './endpoints';
 
-const port = process.env.SERVICE_PROXY?.replace(/^.+:/, '') || 4000;
+const port = __WEBPACK_DEFINE__.EXPOSES.PROXY;
 
 const whitelist = [
   /^\/$/,
@@ -25,12 +25,19 @@ const app = express()
   .use(async (req, res, next) => {
     if (!whitelist.some((reg) => reg.test(req.url))) {
       try {
+        const mode = req.hostname === 'localhost' ? 'dev' : 'prod';
+
         const idToken = jwt.verify(
           req.cookies.id,
           __WEBPACK_DEFINE__.JWT_SECRET
         ) as string;
 
-        const { expires: expiresIn, ...user } = await verifyToken(idToken, res);
+        const { expires: expiresIn, ...user } = await verifyToken(
+          mode,
+          idToken,
+          res
+        );
+
         const expires = new Date(new Date().valueOf() + expiresIn);
 
         res.cookie(
@@ -52,7 +59,7 @@ const app = express()
   .use(
     '/data-forge',
     createProxyMiddleware({
-      target: process.env.SERVICE_DATA_FORGE || 'http://127.0.0.1:4001',
+      target: `http://127.0.0.1:${__WEBPACK_DEFINE__.EXPOSES.DATA_FORGE}`,
       changeOrigin: true,
       onProxyReq: fixRequestBody,
       pathRewrite: {
@@ -63,7 +70,7 @@ const app = express()
   .use(
     '/ts2-props',
     createProxyMiddleware({
-      target: process.env.SERVICE_TS2_PROPS || 'http://127.0.0.1:4002',
+      target: `http://127.0.0.1:${__WEBPACK_DEFINE__.EXPOSES.TS2_PROPS}`,
       changeOrigin: true,
       onProxyReq: fixRequestBody,
       pathRewrite: {

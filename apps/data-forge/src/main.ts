@@ -4,7 +4,7 @@ import type { DefaultImplement } from '@appcraft/server';
 
 import * as endpoints from './endpoints';
 
-const port = process.env.SERVICE_DATA_FORGE?.replace(/^.+:/, '') || 4001;
+const port = __WEBPACK_DEFINE__.EXPOSES.DATA_FORGE;
 
 const app = express()
   .use(cookieParser())

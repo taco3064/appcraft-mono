@@ -27,16 +27,42 @@ module.exports = (environment, dirname) => {
     {}
   );
 
+  //* 擷取 EXPOSE
+  const dockerfiles = {
+    PROXY: fs.readFileSync(
+      path.resolve(process.cwd(), './apps/proxy/Dockerfile'),
+      'utf-8'
+    ),
+    DATA_FORGE: fs.readFileSync(
+      path.resolve(process.cwd(), './apps/data-forge/Dockerfile'),
+      'utf-8'
+    ),
+    TS2_PROPS: fs.readFileSync(
+      path.resolve(process.cwd(), './apps/ts2-props/Dockerfile'),
+      'utf-8'
+    ),
+  };
+
   return {
     plugins: [
       new DefinePlugin({
         '__WEBPACK_DEFINE__.ENV': JSON.stringify(environment),
         '__WEBPACK_DEFINE__.VERSION': JSON.stringify(version),
+        '__WEBPACK_DEFINE__.EXPOSES': JSON.stringify(
+          Object.entries(dockerfiles).reduce(
+            (result, [key, dockerfile]) => ({
+              ...result,
+              [key]:
+                Number.parseInt(/EXPOSE\s+(\d+)/g.exec(dockerfile)?.[1], 10) ||
+                undefined,
+            }),
+            {}
+          )
+        ),
       }),
     ],
     resolve: {
       alias: {
-        '~types': path.resolve(process.cwd(), './tools/types'),
         ...libAlias,
         ...dirAlias,
       },

@@ -27,6 +27,11 @@ module.exports = composePlugins(
               '__WEBPACK_DEFINE__.GOOGLE_CLIENT_SECRET':
                 JSON.stringify(GOOGLE_CLIENT_SECRET),
               '__WEBPACK_DEFINE__.JWT_SECRET': JSON.stringify(JWT_SECRET),
+              '__WEBPACK_DEFINE__.GOOGLE_REDIRECT_URI': JSON.stringify(
+                context.configuration === 'production'
+                  ? 'https://www.appcraftsman.app/api/oauth2/google/callback'
+                  : 'http://localhost:3000/api/oauth2/google/callback'
+              ),
             }),
           ],
           resolve: {

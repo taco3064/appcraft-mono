@@ -25,19 +25,12 @@ const app = express()
   .use(async (req, res, next) => {
     if (!whitelist.some((reg) => reg.test(req.url))) {
       try {
-        const mode = req.hostname === 'localhost' ? 'dev' : 'prod';
-
         const idToken = jwt.verify(
           req.cookies.id,
           __WEBPACK_DEFINE__.JWT_SECRET
         ) as string;
 
-        const { expires: expiresIn, ...user } = await verifyToken(
-          mode,
-          idToken,
-          res
-        );
-
+        const { expires: expiresIn, ...user } = await verifyToken(idToken, res);
         const expires = new Date(new Date().valueOf() + expiresIn);
 
         res.cookie(

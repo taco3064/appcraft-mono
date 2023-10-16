@@ -17,12 +17,6 @@ export default class Userinfo {
     ) as string;
 
     //! 目前只有使用 Google OAuth2, 若未來支援其他登入方式, 此處必須調整
-    res.json(
-      await googleOauth2.verifyToken(
-        req.hostname === 'localhost' ? 'dev' : 'prod',
-        idToken,
-        res
-      )
-    );
+    res.json(await googleOauth2.verifyToken(idToken, res));
   }
 }

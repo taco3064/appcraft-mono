@@ -189,8 +189,33 @@ export const ResponsiveDrawer = withStyles(
     onClose,
     ...props
   }: Types.ResponsiveDrawerProps) => {
+    const drawerRef = useRef<HTMLDivElement>();
+    const [spaceWidth, setSpaceWidth] = useState(0);
     const width = useWidth();
     const isTemporary = /^(xs|sm)$/.test(width) || disablePersistent;
+
+    const resizeObserver = useMemo(
+      () =>
+        new ResizeObserver((entries) => {
+          for (const entry of entries) {
+            const { clientWidth } = entry.target as HTMLElement;
+
+            setSpaceWidth(clientWidth);
+          }
+        }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [open, isTemporary]
+    );
+
+    useEffect(() => {
+      const { current: el } = drawerRef;
+
+      if (el) {
+        resizeObserver.observe(el);
+
+        return () => resizeObserver.unobserve(el);
+      }
+    }, [resizeObserver]);
 
     return (
       <Container {...props} className={classes.root}>
@@ -201,25 +226,23 @@ export const ResponsiveDrawer = withStyles(
           open={open}
           PaperProps={{
             ...DrawerProps?.PaperProps,
+            ref: drawerRef,
             className: cx(classes.paper, DrawerProps?.PaperProps?.className),
           }}
         >
           {drawer}
         </SizedDrawer>
 
-        <Container
-          {...ContentProps}
-          disableGutters
-          className={classes.content}
-          maxWidth={false}
-        >
+        <Container {...ContentProps} disableGutters className={classes.content}>
           {content}
         </Container>
 
         <Container
           disableGutters
+          data-width={spaceWidth}
           className={classes.space}
-          maxWidth={DrawerProps.maxWidth}
+          maxWidth={false}
+          sx={{ minWidth: spaceWidth }}
         />
       </Container>
     );

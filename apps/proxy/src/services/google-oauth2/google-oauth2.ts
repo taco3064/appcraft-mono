@@ -1,22 +1,17 @@
 import jwt from 'jsonwebtoken';
 
-import { OAuth2Clients } from '../common';
+import { client } from '../common';
 import type * as Types from './google-oauth2.types';
 
-export const getAuthURL: Types.GetAuthURLService = async (mode) => {
-  const client = OAuth2Clients[mode];
-
-  return client.generateAuthUrl({
+export const getAuthURL: Types.GetAuthURLService = async () =>
+  client.generateAuthUrl({
     access_type: 'offline',
     scope: ['profile', 'email'],
   });
-};
 
 export const initialCredentials: Types.InitialCredentialsService = async (
-  mode,
   code
 ) => {
-  const client = OAuth2Clients[mode];
   const { tokens } = await client.getToken(code);
 
   client.setCredentials(tokens);
@@ -24,22 +19,10 @@ export const initialCredentials: Types.InitialCredentialsService = async (
   return tokens;
 };
 
-export const revokeToken: Types.RevokeTokenService = async (
-  mode,
-  accessToken
-) => {
-  const client = OAuth2Clients[mode];
+export const revokeToken: Types.RevokeTokenService = async (accessToken) =>
+  client.revokeToken(accessToken);
 
-  return client.revokeToken(accessToken);
-};
-
-export const verifyToken: Types.VerifyTokenService = async (
-  mode,
-  idToken,
-  res
-) => {
-  const client = OAuth2Clients[mode];
-
+export const verifyToken: Types.VerifyTokenService = async (idToken, res) => {
   try {
     const ticket = await client.verifyIdToken({
       idToken,
@@ -73,6 +56,6 @@ export const verifyToken: Types.VerifyTokenService = async (
         cookieOpts
       );
 
-    return verifyToken(mode, credentials.id_token);
+    return verifyToken(credentials.id_token);
   }
 };

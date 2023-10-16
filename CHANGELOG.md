@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.147](https://github.com/taco3064/appcraft-mono/compare/v0.0.146...v0.0.147) (2023-10-16)
+
+
+### Bug Fixes
+
+* **@appcraft/widgets:** allow to set height to CardMedia ([84c5f98](https://github.com/taco3064/appcraft-mono/commit/84c5f98f86974dbe457870d9c44d8efa32955d1c))
+
 ### [0.0.146](https://github.com/taco3064/appcraft-mono/compare/v0.0.145...v0.0.146) (2023-10-16)
 
 ### [0.0.145](https://github.com/taco3064/appcraft-mono/compare/v0.0.144...v0.0.145) (2023-10-16)

@@ -19,7 +19,10 @@ const nextConfig = {
   rewrites: async () => [
     {
       source: '/api/:path*',
-      destination: `${process.env.SERVICE_PROXY}/:path*`,
+      destination:
+        process.env.mode === 'LOCAL_DEV'
+          ? 'http://127.0.0.1:4000/:path*'
+          : 'https://www.appcraftsman.app/api/:path*',
     },
   ],
   webpack: ({ module, plugins, resolve, ...config }, context) => {
@@ -70,12 +73,12 @@ const nextConfig = {
             }, [])
           ),
           '__WEBPACK_DEFINE__.STATE_TYPE_FILE': JSON.stringify(
-            process.env.SERVICE_PROXY === 'http://127.0.0.1:80'
+            process.env.mode === 'LOCAL_DEV'
               ? './libs/types/src/widgets/state.types.ts'
               : './node_modules/@appcraft/types/src/widgets/state.types.d.ts'
           ),
           '__WEBPACK_DEFINE__.TODO_TYPE_FILE': JSON.stringify(
-            process.env.SERVICE_PROXY === 'http://127.0.0.1:80'
+            process.env.mode === 'LOCAL_DEV'
               ? './libs/types/src/widgets/todo.types.ts'
               : './node_modules/@appcraft/types/src/widgets/todo.types.d.ts'
           ),

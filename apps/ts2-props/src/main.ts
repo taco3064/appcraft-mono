@@ -4,7 +4,7 @@ import type { DefaultImplement } from '@appcraft/server';
 
 import * as endpoints from './endpoints';
 
-const port = process.env.SERVICE_TS2_PROPS?.replace(/^.+:/, '') || 4002;
+const port = __WEBPACK_DEFINE__.EXPOSES.TS2_PROPS;
 
 const app = express()
   .use(cookieParser())

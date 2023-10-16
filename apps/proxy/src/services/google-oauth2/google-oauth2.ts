@@ -1,16 +1,11 @@
 import jwt from 'jsonwebtoken';
-import { OAuth2Client } from 'google-auth-library';
 
+import { OAuth2Clients } from '../common';
 import type * as Types from './google-oauth2.types';
 
-const client = new OAuth2Client(
-  __WEBPACK_DEFINE__.GOOGLE_CLIENT_ID,
-  __WEBPACK_DEFINE__.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_REDIRECT_URI ||
-    'https://www.appcraftsman.app/api/oauth2/google/callback'
-);
+export const getAuthURL: Types.GetAuthURLService = async (mode) => {
+  const client = OAuth2Clients[mode];
 
-export const getAuthURL: Types.GetAuthURLService = async () => {
   return client.generateAuthUrl({
     access_type: 'offline',
     scope: ['profile', 'email'],
@@ -18,8 +13,10 @@ export const getAuthURL: Types.GetAuthURLService = async () => {
 };
 
 export const initialCredentials: Types.InitialCredentialsService = async (
+  mode,
   code
 ) => {
+  const client = OAuth2Clients[mode];
   const { tokens } = await client.getToken(code);
 
   client.setCredentials(tokens);
@@ -27,14 +24,26 @@ export const initialCredentials: Types.InitialCredentialsService = async (
   return tokens;
 };
 
-export const revokeToken: Types.RevokeTokenService = async (accessToken) =>
-  client.revokeToken(accessToken);
+export const revokeToken: Types.RevokeTokenService = async (
+  mode,
+  accessToken
+) => {
+  const client = OAuth2Clients[mode];
 
-export const verifyToken: Types.VerifyTokenService = async (idToken, res) => {
+  return client.revokeToken(accessToken);
+};
+
+export const verifyToken: Types.VerifyTokenService = async (
+  mode,
+  idToken,
+  res
+) => {
+  const client = OAuth2Clients[mode];
+
   try {
     const ticket = await client.verifyIdToken({
       idToken,
-      audience: process.env.GOOGLE_CLIENT_ID,
+      audience: __WEBPACK_DEFINE__.GOOGLE_CLIENT_ID,
     });
 
     const payload = ticket.getPayload();
@@ -64,6 +73,6 @@ export const verifyToken: Types.VerifyTokenService = async (idToken, res) => {
         cookieOpts
       );
 
-    return verifyToken(credentials.id_token);
+    return verifyToken(mode, credentials.id_token);
   }
 };

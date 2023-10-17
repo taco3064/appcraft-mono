@@ -10,5 +10,5 @@ export interface FabProps
 }
 
 export const Fab = ({ href, ...props }: FabProps) => (
-  <Fab {...props} {...(href && { href, LinkComponent: 'a' })} />
+  <MuiFab {...props} {...(href && { href, LinkComponent: 'a' })} />
 );

@@ -18,5 +18,5 @@ export interface ListItemButtonProps
 }
 
 export const ListItemButton = ({ href, ...props }: ListItemButtonProps) => (
-  <ListItemButton {...props} {...(href && { href, LinkComponent: 'a' })} />
+  <MuiListItemButton {...props} {...(href && { href, LinkComponent: 'a' })} />
 );

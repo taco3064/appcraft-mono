@@ -83,11 +83,11 @@ export default function ExplorerLayout({
               })}
             />
 
-            {!config?.website.pages.length ? null : (
+            {!navItems.length ? null : (
               <ExplorerNavMenu
                 key={config.website.navAnchor}
                 anchor={config.website.navAnchor}
-                items={config?.website.pages}
+                items={navItems}
                 open={open}
                 scale={scale}
                 active={`/${

@@ -5,6 +5,7 @@ import path from 'path';
 import { createProxyMiddleware, fixRequestBody } from 'http-proxy-middleware';
 import type { DefaultImplement } from '@appcraft/server';
 
+import { getClientMode } from '~proxy/services/common';
 import { verifyToken } from '~proxy/services/google-oauth2';
 import * as endpoints from './endpoints';
 
@@ -25,12 +26,18 @@ const app = express()
   .use(async (req, res, next) => {
     if (!whitelist.some((reg) => reg.test(req.url))) {
       try {
+        const mode = getClientMode(req.hostname);
+
         const idToken = jwt.verify(
           req.cookies.id,
           __WEBPACK_DEFINE__.JWT_SECRET
         ) as string;
 
-        const { expires: expiresIn, ...user } = await verifyToken(idToken, res);
+        const { expires: expiresIn, ...user } = await verifyToken(
+          mode,
+          idToken,
+          res
+        );
         const expires = new Date(new Date().valueOf() + expiresIn);
 
         res.cookie(

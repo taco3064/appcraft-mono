@@ -51,6 +51,11 @@ export const GridLayoutItemContent = withStyles(
       flexDirection: 'column',
       overflow: 'hidden auto',
       height: '100%',
+
+      '& > *': {
+        border: '0 !important',
+        boxShadow: 'none !important',
+      },
     },
   }),
   { name: 'GridLayoutItemContent' }

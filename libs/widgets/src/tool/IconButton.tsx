@@ -1,9 +1,14 @@
-import IconButton from '@mui/material/IconButton';
+import MuiIconButton from '@mui/material/IconButton';
 import type { ComponentProps } from 'react';
 
-export { IconButton };
+export interface IconButtonProps
+  extends Pick<
+    ComponentProps<typeof MuiIconButton>,
+    'children' | 'color' | 'disabled' | 'size' | 'onClick'
+  > {
+  href?: string;
+}
 
-export type IconButtonProps = Pick<
-  ComponentProps<typeof IconButton>,
-  'children' | 'color' | 'disabled' | 'edge' | 'size' | 'onClick'
->;
+export const IconButton = ({ href, ...props }: IconButtonProps) => (
+  <MuiIconButton {...props} {...(href && { href, LinkComponent: 'a' })} />
+);

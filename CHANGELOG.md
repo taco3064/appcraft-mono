@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.2](https://github.com/taco3064/appcraft-mono/compare/v0.8.1...v0.8.2) (2023-10-17)
+
+
+### Bug Fixes
+
+* **@appcraft/widgets:** update the props of widgets ([9684c6b](https://github.com/taco3064/appcraft-mono/commit/9684c6ba9748ef0ffb2aa92b0fe24fd56c59e4cc))
+* **apps/appcraft:** fixed the bugs in ExplorerLayout ([c73d9c7](https://github.com/taco3064/appcraft-mono/commit/c73d9c70289bfc09eae0509ea3cd6263e8ef332b))
+* **apps/appcraft:** fixed the router pathname bugs in <ExplorerNavItem /> ([1da44dc](https://github.com/taco3064/appcraft-mono/commit/1da44dcb1f360bd5a9cf819f61a8fe0b31857963))
+
 ### [0.8.1](https://github.com/taco3064/appcraft-mono/compare/v0.0.151...v0.8.1) (2023-10-17)
 
 

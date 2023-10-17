@@ -11,12 +11,7 @@ export const ExplorerMenuItem = withStyles(
     !anchor
       ? {}
       : {
-          root: {
-            [anchor === 'top' ? 'paddingBottom' : 'paddingRight']: 2,
-          },
           selected: {
-            [anchor === 'top' ? 'paddingBottom' : 'paddingRight']: 0,
-
             [anchor === 'top'
               ? 'borderBottom'
               : 'borderRight']: `2px solid ${theme.palette.primary.main}`,

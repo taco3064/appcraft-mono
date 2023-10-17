@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.151](https://github.com/taco3064/appcraft-mono/compare/v0.0.150...v0.0.151) (2023-10-17)
+
+
+### Bug Fixes
+
+* **apps/appcraft:** udpate the ts2-props config for develope at local ([077597a](https://github.com/taco3064/appcraft-mono/commit/077597acf03858b12d4f128c26e070a0c81ed59f))
+
 ### [0.0.150](https://github.com/taco3064/appcraft-mono/compare/v0.0.149...v0.0.150) (2023-10-17)
 
 

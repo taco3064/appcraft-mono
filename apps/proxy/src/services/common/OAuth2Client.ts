@@ -14,7 +14,5 @@ export const clients = {
 };
 
 export function getClientMode(hostname: string): keyof typeof clients {
-  console.log('==== HOSTNAME:', hostname);
-
-  return hostname === 'localhost' ? 'dev' : 'prod';
+  return hostname !== 'www.appcraftsman.app' ? 'dev' : 'prod';
 }

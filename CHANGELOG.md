@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.150](https://github.com/taco3064/appcraft-mono/compare/v0.0.149...v0.0.150) (2023-10-17)
+
+
+### Bug Fixes
+
+* **apps/proxy:** fixed the check rule of get client mode ([4b74101](https://github.com/taco3064/appcraft-mono/commit/4b74101a9af31486a20695502b761503faca121b))
+
 ### [0.0.149](https://github.com/taco3064/appcraft-mono/compare/v0.0.148...v0.0.149) (2023-10-17)
 
 ### [0.0.148](https://github.com/taco3064/appcraft-mono/compare/v0.0.147...v0.0.148) (2023-10-16)

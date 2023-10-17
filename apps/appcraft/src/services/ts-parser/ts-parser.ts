@@ -15,7 +15,7 @@ export const getTypeDefinition: Types.GetTypeDefinitionService = async ({
     ? typeFile
     : typeFile
         .replace('./node_modules/@appcraft/widgets/', './libs/widgets/')
-        .replace(/\.d\.ts/, '.ts');
+        .replace(/\.d\.ts/, '.tsx');
 
   const { data: fetchData } = !(typeFile && typeName)
     ? { data: null }
@@ -62,7 +62,7 @@ export const getNodesAndEvents: Types.GetNodesAndEventsService = async (
           ? typeFile
           : typeFile
               .replace('./node_modules/@appcraft/widgets/', './libs/widgets/')
-              .replace(/\.d\.ts/, '.ts'),
+              .replace(/\.d\.ts/, '.tsx'),
       });
     }
   }
@@ -83,7 +83,7 @@ export const getNodesAndEvents: Types.GetNodesAndEventsService = async (
         ? key
         : key
             .replace('./libs/widgets/', './node_modules/@appcraft/widgets/')
-            .replace(/\.ts#/, '.d.ts#')
+            .replace(/\.tsx#/, '.d.ts#')
     )
   );
 
@@ -95,7 +95,7 @@ export const getNodesAndEvents: Types.GetNodesAndEventsService = async (
         ? key
         : key
             .replace('./libs/widgets/', './node_modules/@appcraft/widgets/')
-            .replace(/\.ts#/, '.d.ts#')
+            .replace(/\.tsx#/, '.d.ts#')
     );
   });
 

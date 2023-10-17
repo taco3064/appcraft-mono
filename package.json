@@ -1,6 +1,6 @@
 {
   "name": "appcraft-mono",
-  "version": "0.0.151",
+  "version": "0.8.0",
   "license": "MIT",
   "private": true,
   "scripts": {

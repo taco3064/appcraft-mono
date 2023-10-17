@@ -4,7 +4,6 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Icon from '@mui/material/Icon';
 import IconButton from '@mui/material/IconButton';
-import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import NextLink from 'next/link';
@@ -16,14 +15,15 @@ import { ExplorerMenuItem } from '~appcraft/styles';
 import type * as Types from './ExplorerNavItem.types';
 
 //* Methods
-export const getMenuItems: Types.GetMenuItemsFn = (routes) =>
+export const getMenuItems: Types.GetMenuItemsFn = (routes, superior = '') =>
   routes.reduce((result, route) => {
-    const { isNavItem, pathname, routes: subRoutes } = route;
+    const { isNavItem, routes: subRoutes } = route;
+    const pathname = `${superior}${route.pathname}`;
 
     if (isNavItem) {
       result.push({ ...route, pathname });
     } else if (Array.isArray(subRoutes)) {
-      result.push(...getMenuItems(subRoutes));
+      result.push(...getMenuItems(subRoutes, pathname));
     }
 
     return result;

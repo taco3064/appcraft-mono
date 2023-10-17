@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.1](https://github.com/taco3064/appcraft-mono/compare/v0.0.151...v0.8.1) (2023-10-17)
+
+
+### Bug Fixes
+
+* **@appcraft/widgets:** update the ext name as .tsx ([546c8e7](https://github.com/taco3064/appcraft-mono/commit/546c8e72c5847933227972022e941de41c339034))
+
 ### [0.0.151](https://github.com/taco3064/appcraft-mono/compare/v0.0.150...v0.0.151) (2023-10-17)
 
 

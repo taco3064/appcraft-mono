@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.3](https://github.com/taco3064/appcraft-mono/compare/v0.8.2...v0.8.3) (2023-10-17)
+
+
+### Bug Fixes
+
+* **@appcraft/widgets:** fixed the invalid render ([e768b69](https://github.com/taco3064/appcraft-mono/commit/e768b699a9bd61708b2994cbc38efaf814af5274))
+
 ### [0.8.2](https://github.com/taco3064/appcraft-mono/compare/v0.8.1...v0.8.2) (2023-10-17)
 
 

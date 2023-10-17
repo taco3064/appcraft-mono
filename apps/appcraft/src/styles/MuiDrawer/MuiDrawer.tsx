@@ -272,7 +272,7 @@ export const ResponsiveDrawer = withStyles(
     content: {
       display: 'block',
       flexGrow: 1,
-      width: 'auto !important',
+      width: '100% !important',
       borderRadius: `${theme.spacing(2)} !important`,
       overflow: 'hidden auto',
     },

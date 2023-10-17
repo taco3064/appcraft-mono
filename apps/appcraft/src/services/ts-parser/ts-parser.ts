@@ -11,10 +11,16 @@ export const getTypeDefinition: Types.GetTypeDefinitionService = async ({
   mixedTypes,
   collectionPath,
 }) => {
+  const overrideFile = !__WEBPACK_DEFINE__.LOCAL_MODE
+    ? typeFile
+    : typeFile
+        .replace('./node_modules/@appcraft/widgets/', './libs/widgets/')
+        .replace(/\.d\.ts/, '.ts');
+
   const { data: fetchData } = !(typeFile && typeName)
     ? { data: null }
     : await axios.post('/api/ts2-props/types-resolve/parse', {
-        typeFile,
+        typeFile: overrideFile,
         typeName,
         mixedTypes,
         collectionPath,
@@ -37,6 +43,7 @@ export const getNodesAndEvents: Types.GetNodesAndEventsService = async (
       typeFile,
       typeName,
     });
+
     const node = await db?.get('nodes', key);
     const event = await db?.get('events', key);
 
@@ -49,7 +56,14 @@ export const getNodesAndEvents: Types.GetNodesAndEventsService = async (
     }
 
     if (!node && !event) {
-      targets.push({ typeFile, typeName });
+      targets.push({
+        typeName,
+        typeFile: !__WEBPACK_DEFINE__.LOCAL_MODE
+          ? typeFile
+          : typeFile
+              .replace('./node_modules/@appcraft/widgets/', './libs/widgets/')
+              .replace(/\.d\.ts/, '.ts'),
+      });
     }
   }
 
@@ -62,11 +76,27 @@ export const getNodesAndEvents: Types.GetNodesAndEventsService = async (
     ))) || { data: {} };
 
   Object.entries(fetchNdoes).forEach(([key, value]) =>
-    db?.put('nodes', value, key)
+    db?.put(
+      'nodes',
+      value,
+      !__WEBPACK_DEFINE__.LOCAL_MODE
+        ? key
+        : key
+            .replace('./libs/widgets/', './node_modules/@appcraft/widgets/')
+            .replace(/\.ts#/, '.d.ts#')
+    )
   );
 
   Object.entries(fetchEvents).forEach(([key, value]) => {
-    db?.put('events', value, key);
+    db?.put(
+      'events',
+      value,
+      !__WEBPACK_DEFINE__.LOCAL_MODE
+        ? key
+        : key
+            .replace('./libs/widgets/', './node_modules/@appcraft/widgets/')
+            .replace(/\.ts#/, '.d.ts#')
+    );
   });
 
   return {

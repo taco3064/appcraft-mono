@@ -1,9 +1,7 @@
-import type { TextFieldProps } from '@mui/material/TextField';
+import TextField from '@mui/material/TextField';
+import type { ComponentProps } from 'react';
 
-export interface WidgetTypeSelectProps
-  extends Omit<
-    TextFieldProps,
-    'SelectProps' | 'children' | 'select' | 'variant'
-  > {
-  variant: TextFieldProps['variant'];
-}
+export type WidgetTypeSelectProps = Omit<
+  ComponentProps<typeof TextField>,
+  'SelectProps' | 'children' | 'select'
+>;

@@ -4,6 +4,7 @@ const { DefinePlugin } = require('webpack');
 const { withNx } = require('@nrwl/next/plugins/with-nx');
 const MuiIcons = require('@mui/icons-material');
 
+const getSecretEnvironments = require('../../tools/generators/secret-environments');
 const webpackBase = require('../../tools/generators/webpack.base');
 
 /**
@@ -16,15 +17,25 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
-  rewrites: async () => [
-    {
-      source: '/api/:path*',
-      destination:
-        process.env.mode === 'LOCAL_DEV'
-          ? 'http://127.0.0.1:4000/:path*'
-          : 'https://www.appcraftsman.app/api/:path*',
-    },
-  ],
+  rewrites: async () => {
+    if (process.env.mode === 'LOCAL_DEV') {
+      return [
+        {
+          source: '/api/:path*',
+          destination: 'http://127.0.0.1:4000/:path*',
+        },
+      ];
+    }
+
+    const { PROXY_SERVICE } = await getSecretEnvironments('PROXY_SERVICE');
+
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${PROXY_SERVICE}/:path*`,
+      },
+    ];
+  },
   webpack: ({ module, plugins, resolve, ...config }, context) => {
     const base = webpackBase(context.buildId, __dirname);
 
@@ -58,6 +69,9 @@ const nextConfig = {
         new DefinePlugin({
           '__WEBPACK_DEFINE__.LANGUAGES': JSON.stringify(languages),
 
+          '__WEBPACK_DEFINE__.LOCAL_MODE': JSON.stringify(
+            process.env.mode === 'LOCAL_DEV'
+          ),
           '__WEBPACK_DEFINE__.MUI_ICONS': JSON.stringify(
             Object.keys(MuiIcons).reduce((result, name) => {
               if (name.endsWith('Outlined')) {

@@ -1,2 +1,7 @@
 export * from './widget-parser';
-export type { GetWidgetOptionsFn } from './widget-parser.types';
+
+export type {
+  GetBreakpointFnArgs,
+  GetBreakpointFnReturnType,
+  GetWidgetOptionsFn,
+} from './widget-parser.types';

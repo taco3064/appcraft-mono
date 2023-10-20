@@ -2,15 +2,13 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { Suspense } from 'react';
 
 import * as Hook from '../../hooks';
-import { ExhibitionContent } from '../../components';
 import { GlobalStateProvider, HandlesProvider } from '../../contexts';
+import { Showcase } from '../../components';
 import type * as Types from './CraftedRenderer.types';
-import type { ExhibitionContentProps } from '../../components';
+import type { ShowcaseProps } from '../../components';
 
 export default function CraftedRenderer({
-  GridLayoutProps,
-  action,
-  breakpoint,
+  CollectionGridProps,
   elevation,
   options,
   onFetchData,
@@ -18,7 +16,7 @@ export default function CraftedRenderer({
   onOutputCollect,
   onReady,
 }: Types.CraftedRendererProps) {
-  const LazyContent = Hook.useLazyWidgetNav<ExhibitionContentProps>(
+  const LazyShowcase = Hook.useLazyWidgetNav<ShowcaseProps>(
     options,
     onFetchWrapper,
     ({ fetchData, ...props }) => (
@@ -27,7 +25,7 @@ export default function CraftedRenderer({
         getWidgetOptions={fetchData as Exclude<typeof fetchData, undefined>}
       >
         <GlobalStateProvider onReady={onReady}>
-          <ExhibitionContent {...props} />
+          <Showcase {...props} />
         </GlobalStateProvider>
       </HandlesProvider>
     )
@@ -36,14 +34,12 @@ export default function CraftedRenderer({
   return (
     <Suspense fallback={<LinearProgress />}>
       {options && (
-        <LazyContent
+        <LazyShowcase
           {...({
-            GridLayoutProps,
-            action,
-            breakpoint,
+            CollectionGridProps,
             elevation,
             options,
-          } as ExhibitionContentProps)}
+          } as ShowcaseProps)}
         />
       )}
     </Suspense>

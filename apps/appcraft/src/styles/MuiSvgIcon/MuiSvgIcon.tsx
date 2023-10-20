@@ -1,30 +1,8 @@
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SvgIcon from '@mui/material/SvgIcon';
-import { forwardRef } from 'react';
 import { withStyles } from 'tss-react/mui';
 
 import LOGO from '~appcraft/assets/imgs/logo.svg';
 import type * as Types from './MuiSvgIcon.types';
-
-export const GridLayoutResizeHandle = withStyles(
-  forwardRef<SVGSVGElement, Types.GridLayoutResizeHandleProps>(
-    function GridLayoutResizeHandle({ handleAxis, ...props }, ref) {
-      return <ArrowForwardIosIcon ref={ref} {...props} />;
-    }
-  ),
-  (theme) => ({
-    root: {
-      cursor: 'nwse-resize',
-      transform: 'rotate(45deg)',
-      color: theme.palette.action.disabled,
-
-      '&:hover': {
-        color: theme.palette.action.active,
-      },
-    },
-  }),
-  { name: 'GridLayoutResizeHandle' }
-);
 
 export const SquareLogo = withStyles(
   (props: Types.SquareLogoProps) => (

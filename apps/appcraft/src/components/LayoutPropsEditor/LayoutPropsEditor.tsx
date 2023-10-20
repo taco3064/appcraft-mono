@@ -3,7 +3,6 @@ import LinkIcon from '@mui/icons-material/Link';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
 import _set from 'lodash/set';
 import { CraftedWidgetEditor, CraftsmanStyle } from '@appcraft/craftsman';
-import { ExhibitorUtil } from '@appcraft/exhibitor';
 
 import * as Hook from '~appcraft/hooks';
 import NodeTemplateDialog from '../NodeTemplateDialog';

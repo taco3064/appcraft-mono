@@ -1,6 +1,7 @@
 export * from './containers';
 export * as ExhibitorUtil from './utils';
-export { useLazyWidgetNav } from './hooks';
+
+export { useBreakpointValue, useLazyWidgetNav, useWidth } from './hooks';
 
 export type { FetchWrapperHandler } from './contexts';
 export type { RenderedWidget } from './hooks';

@@ -4,6 +4,7 @@ import Container from '@mui/material/Container';
 import LinearProgress from '@mui/material/LinearProgress';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
+import _set from 'lodash/set';
 import { CraftedRenderer } from '@appcraft/exhibitor';
 import { Suspense, useEffect, useImperativeHandle, useRef } from 'react';
 import { useLazyWidgetNav } from '@appcraft/exhibitor';
@@ -151,7 +152,6 @@ export default function PageEditor({
             >
               <CraftedRenderer
                 key={refresh}
-                breakpoint={breakpoint}
                 elevation={1}
                 options={layouts}
                 onFetchData={handleFetch.data}
@@ -160,57 +160,94 @@ export default function PageEditor({
                 onOutputCollect={(...e) =>
                   !editingRef.current && onOutputCollect(...e)
                 }
-                action={(layout, withActionClose) => (
-                  <Comp.LayoutAction
-                    layout={layout}
-                    onCancel={withActionClose()}
-                    onEdit={withActionClose(handlePage.active)}
-                    onRemove={withActionClose(handlePage.remove)}
-                    onWidgetChange={(id) =>
-                      withActionClose(() => {
+                CollectionGridProps={{
+                  breakpoint,
+                  cols: __WEBPACK_DEFINE__.COLLECTION_COLS,
+                  rowHeight: __WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT,
+                  onResize: handlePage.resize,
+                  onResort: (items) =>
+                    handlePage.change(
+                      'layouts',
+                      items.map(({ layout, ...item }, i) => ({
+                        ...item,
+                        layout: _set(layout, [breakpoint, 'order'], i + 1),
+                      }))
+                    ),
+                  renderAction: (layout) => (
+                    <Comp.LayoutAction
+                      layout={layout}
+                      onEdit={handlePage.active}
+                      onRemove={handlePage.remove}
+                      onWidgetChange={(id) => {
                         layouts.splice(layouts.indexOf(layout), 1, {
                           ...layout,
                           template: { id },
                         });
 
                         handlePage.change('layouts', [...layouts]);
-                      })()
-                    }
-                    widgetPicker={
-                      <WidgetPicker
-                        fullWidth
-                        name="widget"
-                        label={pt('lbl-widget')}
-                        value={layout.template?.id}
-                      />
-                    }
-                  />
-                )}
-                GridLayoutProps={{
-                  autoSize: true,
-                  cols: Hook.GRID_LAYOUT.COLS,
-                  mins: Hook.GRID_LAYOUT.MINS,
-                  isDraggable: true,
-                  isResizable: true,
-                  resizeHandles: ['se'],
-                  onLayoutChange: handlePage.layout,
-                  breakpoints: Object.fromEntries(
-                    Object.entries(theme.breakpoints.values).sort(
-                      ([, w1], [, w2]) => w2 - w1
-                    )
-                  ),
-                  resizeHandle: (
-                    <Style.GridLayoutResizeHandle
-                      className="react-resizable-handle"
-                      sx={(theme) => ({
-                        position: 'absolute',
-                        bottom: 0,
-                        right: 0,
-                        zIndex: theme.zIndex.fab,
-                      })}
+                      }}
+                      widgetPicker={
+                        <WidgetPicker
+                          fullWidth
+                          name="widget"
+                          label={pt('lbl-widget')}
+                          value={layout.template?.id}
+                        />
+                      }
                     />
                   ),
                 }}
+                // action={(layout, withActionClose) => (
+                //   <Comp.LayoutAction
+                //     layout={layout}
+                //     onCancel={withActionClose()}
+                //     onEdit={withActionClose(handlePage.active)}
+                //     onRemove={withActionClose(handlePage.remove)}
+                //     onWidgetChange={(id) =>
+                //       withActionClose(() => {
+                //         layouts.splice(layouts.indexOf(layout), 1, {
+                //           ...layout,
+                //           template: { id },
+                //         });
+
+                //         handlePage.change('layouts', [...layouts]);
+                //       })()
+                //     }
+                //     widgetPicker={
+                //       <WidgetPicker
+                //         fullWidth
+                //         name="widget"
+                //         label={pt('lbl-widget')}
+                //         value={layout.template?.id}
+                //       />
+                //     }
+                //   />
+                // )}
+                // GridLayoutProps={{
+                //   autoSize: true,
+                //   cols: Hook.GRID_LAYOUT.COLS,
+                //   mins: Hook.GRID_LAYOUT.MINS,
+                //   isDraggable: true,
+                //   isResizable: true,
+                //   resizeHandles: ['se'],
+                //   onLayoutChange: handlePage.layout,
+                //   breakpoints: Object.fromEntries(
+                //     Object.entries(theme.breakpoints.values).sort(
+                //       ([, w1], [, w2]) => w2 - w1
+                //     )
+                //   ),
+                //   resizeHandle: (
+                //     <Style.GridLayoutResizeHandle
+                //       className="react-resizable-handle"
+                //       sx={(theme) => ({
+                //         position: 'absolute',
+                //         bottom: 0,
+                //         right: 0,
+                //         zIndex: theme.zIndex.fab,
+                //       })}
+                //     />
+                //   ),
+                // }}
               />
             </Container>
 

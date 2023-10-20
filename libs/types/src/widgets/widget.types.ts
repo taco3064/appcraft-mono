@@ -1,4 +1,5 @@
 import type * as State from './state.types';
+import type { Breakpoints } from '../websites';
 import type { TypesParseOptions } from './prop-types-def.types';
 
 //* Variables
@@ -58,9 +59,13 @@ export interface MainWidget extends NodeWidget {
 
 export type LayoutWidget = {
   id: string;
-  layout: {
-    [breakpoint: string]: Record<'x' | 'y' | 'w' | 'h' | 'minW', number>;
-  };
+  layout: Breakpoints<{
+    cols: number;
+    rows: number;
+    overflow: 'fit' | 'scroll';
+    hidden: false | 'display' | 'visibility';
+    order: number;
+  }>;
   links?: {
     [todoPath: string]: {
       alias?: string;

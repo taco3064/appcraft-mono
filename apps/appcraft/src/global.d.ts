@@ -5,6 +5,9 @@ declare module '@alienfast/i18next-loader?relativePathAsNamespace=true!*' {
 }
 
 declare const __WEBPACK_DEFINE__: {
+  COLLECTION_COLS: import('@appcraft/types').Breakpoints<number>;
+  COLLECTION_ROW_HEIGHT: number;
+  CONTAINER_WIDTH: import('@appcraft/types').Breakpoints<number>;
   ENV: 'development' | 'production';
   LANGUAGES: string[];
   LOCAL_MODE: boolean;

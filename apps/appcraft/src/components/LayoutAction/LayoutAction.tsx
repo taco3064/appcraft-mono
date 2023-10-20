@@ -1,5 +1,4 @@
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import ExtensionOutlinedIcon from '@mui/icons-material/ExtensionOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { CraftsmanStyle } from '@appcraft/craftsman';
@@ -45,8 +44,6 @@ export default function LayoutAction({
         icon={<SettingsOutlinedIcon />}
         onClick={() => onEdit(layout)}
       />
-
-      <Divider flexItem orientation="vertical" />
 
       <RemoveButton
         btnVariant="icon"

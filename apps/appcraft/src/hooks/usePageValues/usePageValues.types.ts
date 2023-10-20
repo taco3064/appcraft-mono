@@ -1,6 +1,6 @@
 import type { Breakpoint } from '@mui/material/styles';
 import type { ConfigData, LayoutWidget, WidgetTodo } from '@appcraft/types';
-import type { Layout, Layouts } from 'react-grid-layout';
+import type { CraftedRendererProps } from '@appcraft/exhibitor';
 
 //* Variables
 export type GridLayoutOptions = Record<
@@ -12,6 +12,9 @@ export type PageData = {
   layouts: LayoutWidget[];
   readyTodos?: Record<string, WidgetTodo>;
 };
+
+//* Methods
+type ResizeHandler = CraftedRendererProps['CollectionGridProps']['onResize'];
 
 //* Custom Hooks
 export type PageValuesHook = (options: {
@@ -28,9 +31,9 @@ export type PageValuesHook = (options: {
     add: () => void;
     breakpoint: (e: Breakpoint) => void;
     change: <K extends keyof PageData>(key: K, value: PageData[K]) => void;
-    layout: (...e: [Layout[], Layouts]) => void;
     remove: (e: LayoutWidget) => void;
     reset: () => void;
+    resize: ResizeHandler;
     save: () => void;
   }
 ];

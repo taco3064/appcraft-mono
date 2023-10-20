@@ -3,7 +3,7 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import Paper from '@mui/material/Paper';
 import Toolbar from '@mui/material/Toolbar';
 import cx from 'clsx';
-import { useDraggable } from '@dnd-kit/core';
+import { useDndContext, useDraggable } from '@dnd-kit/core';
 import { useSortable } from '@dnd-kit/sortable';
 import { withStyles } from 'tss-react/mui';
 
@@ -20,7 +20,7 @@ export const CollectionItem = withStyles(
     elevation,
     id,
     layouts,
-    style,
+    rowHeight,
     onResize,
 
     classes: {
@@ -31,6 +31,8 @@ export const CollectionItem = withStyles(
 
     ...props
   }: Types.CollectionItemProps) => {
+    const { active } = useDndContext();
+
     const { type: ResizeHandle, props: resizeHandleProps } =
       DragHandle?.resize || {};
 
@@ -38,7 +40,7 @@ export const CollectionItem = withStyles(
       DragHandle?.resort || {};
 
     const {
-      matched: { hidden, order, cols, rows },
+      matched: { hidden, cols, rows },
     } = useBreakpointValue(layouts, breakpoint);
 
     const resizable = useDraggable({
@@ -58,9 +60,9 @@ export const CollectionItem = withStyles(
           [displayClassName as string]: hidden === 'display',
           [visibilityClassName as string]: hidden === 'visibility',
         })}
-        style={{
-          ...style,
-          order,
+        sx={{
+          height: rowHeight * rows,
+          opacity: !active || active.id === id ? 1 : 0.6,
           transition,
           ...(transform && {
             transform: `translate(${transform.x}px, ${transform.y}px)`,
@@ -105,7 +107,12 @@ export const CollectionItem = withStyles(
   (theme) => ({
     root: {
       overflow: 'hidden',
-      transition: theme.transitions.create(['gridColumnEnd', 'gridRowEnd']),
+      transition: theme.transitions.create([
+        'width',
+        'height',
+        'grid-column-end',
+        'grid-row-end',
+      ]),
     },
     paper: {
       width: '100%',

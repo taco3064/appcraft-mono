@@ -148,107 +148,68 @@ export default function PageEditor({
             <Container
               disableGutters
               maxWidth={false}
-              sx={{ height: '100%', overflow: 'auto' }}
+              sx={{
+                borderRadius: 0,
+                height: '100%',
+                overflow: 'auto',
+              }}
             >
-              <CraftedRenderer
-                key={refresh}
-                elevation={1}
-                options={layouts}
-                onFetchData={handleFetch.data}
-                onFetchWrapper={handleFetch.wrapper}
-                onReady={readyTodos}
-                onOutputCollect={(...e) =>
-                  !editingRef.current && onOutputCollect(...e)
-                }
-                CollectionGridProps={{
-                  breakpoint,
-                  cols: __WEBPACK_DEFINE__.COLLECTION_COLS,
-                  rowHeight: __WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT,
-                  onResize: handlePage.resize,
-                  onResort: (items) =>
-                    handlePage.change(
-                      'layouts',
-                      items.map(({ layout, ...item }, i) => ({
-                        ...item,
-                        layout: _set(layout, [breakpoint, 'order'], i + 1),
-                      }))
-                    ),
-                  renderAction: (layout) => (
-                    <Comp.LayoutAction
-                      layout={layout}
-                      onEdit={handlePage.active}
-                      onRemove={handlePage.remove}
-                      onWidgetChange={(id) => {
-                        layouts.splice(layouts.indexOf(layout), 1, {
-                          ...layout,
-                          template: { id },
-                        });
-
-                        handlePage.change('layouts', [...layouts]);
-                      }}
-                      widgetPicker={
-                        <WidgetPicker
-                          fullWidth
-                          name="widget"
-                          label={pt('lbl-widget')}
-                          value={layout.template?.id}
-                        />
-                      }
-                    />
-                  ),
+              <Container
+                disableGutters
+                maxWidth={false}
+                sx={{
+                  width: __WEBPACK_DEFINE__.CONTAINER_WIDTH[breakpoint],
                 }}
-                // action={(layout, withActionClose) => (
-                //   <Comp.LayoutAction
-                //     layout={layout}
-                //     onCancel={withActionClose()}
-                //     onEdit={withActionClose(handlePage.active)}
-                //     onRemove={withActionClose(handlePage.remove)}
-                //     onWidgetChange={(id) =>
-                //       withActionClose(() => {
-                //         layouts.splice(layouts.indexOf(layout), 1, {
-                //           ...layout,
-                //           template: { id },
-                //         });
+              >
+                <CraftedRenderer
+                  key={refresh}
+                  elevation={1}
+                  options={layouts}
+                  onFetchData={handleFetch.data}
+                  onFetchWrapper={handleFetch.wrapper}
+                  onReady={readyTodos}
+                  onOutputCollect={(...e) =>
+                    !editingRef.current && onOutputCollect(...e)
+                  }
+                  CollectionGridProps={{
+                    breakpoint,
+                    cols: __WEBPACK_DEFINE__.COLLECTION_COLS,
+                    rowHeight: __WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT,
+                    onResize: handlePage.resize,
+                    onResort: (items) =>
+                      handlePage.change(
+                        'layouts',
+                        items.map(({ layout, ...item }, i) => ({
+                          ...item,
+                          layout: _set(layout, [breakpoint, 'order'], i + 1),
+                        }))
+                      ),
+                    renderAction: (layout) => (
+                      <Comp.LayoutAction
+                        layout={layout}
+                        onEdit={handlePage.active}
+                        onRemove={handlePage.remove}
+                        onWidgetChange={(id) => {
+                          layouts.splice(layouts.indexOf(layout), 1, {
+                            ...layout,
+                            template: { id },
+                          });
 
-                //         handlePage.change('layouts', [...layouts]);
-                //       })()
-                //     }
-                //     widgetPicker={
-                //       <WidgetPicker
-                //         fullWidth
-                //         name="widget"
-                //         label={pt('lbl-widget')}
-                //         value={layout.template?.id}
-                //       />
-                //     }
-                //   />
-                // )}
-                // GridLayoutProps={{
-                //   autoSize: true,
-                //   cols: Hook.GRID_LAYOUT.COLS,
-                //   mins: Hook.GRID_LAYOUT.MINS,
-                //   isDraggable: true,
-                //   isResizable: true,
-                //   resizeHandles: ['se'],
-                //   onLayoutChange: handlePage.layout,
-                //   breakpoints: Object.fromEntries(
-                //     Object.entries(theme.breakpoints.values).sort(
-                //       ([, w1], [, w2]) => w2 - w1
-                //     )
-                //   ),
-                //   resizeHandle: (
-                //     <Style.GridLayoutResizeHandle
-                //       className="react-resizable-handle"
-                //       sx={(theme) => ({
-                //         position: 'absolute',
-                //         bottom: 0,
-                //         right: 0,
-                //         zIndex: theme.zIndex.fab,
-                //       })}
-                //     />
-                //   ),
-                // }}
-              />
+                          handlePage.change('layouts', [...layouts]);
+                        }}
+                        widgetPicker={
+                          <WidgetPicker
+                            fullWidth
+                            name="widget"
+                            label={pt('lbl-widget')}
+                            value={layout.template?.id}
+                          />
+                        }
+                      />
+                    ),
+                  }}
+                />
+              </Container>
             </Container>
 
             <AppBar

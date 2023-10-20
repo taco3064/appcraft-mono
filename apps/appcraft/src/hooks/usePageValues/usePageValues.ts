@@ -64,13 +64,7 @@ export const usePageValues: Types.PageValuesHook = ({ data, onSave }) => {
             id: nanoid(6),
             template: { id: '' },
             layout: {
-              xs: {
-                cols: 1,
-                rows: 1,
-                overflow: 'fit',
-                hidden: false,
-                order: layouts.length + 1,
-              },
+              xs: { cols: 1, rows: 1, hidden: false },
             },
           },
         ]);

@@ -27,7 +27,7 @@ export interface CollectionContentProps {
 export interface CollectionItemProps
   extends Omit<
     ImageListItemProps,
-    'classes' | 'hidden' | 'id' | 'cols' | 'rows'
+    'classes' | 'hidden' | 'id' | 'cols' | 'rows' | 'sx'
   > {
   PaperProps?: Omit<PaperProps, 'classes' | 'className' | 'elevation'>;
   action?: React.ReactNode;
@@ -36,6 +36,7 @@ export interface CollectionItemProps
   elevation?: PaperProps['elevation'];
   id: string;
   layouts: LayoutWidget['layout'];
+  rowHeight: number;
 
   classes?: Partial<
     Record<

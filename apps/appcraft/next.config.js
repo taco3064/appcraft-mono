@@ -78,7 +78,7 @@ const nextConfig = {
             sm: 3,
             md: 4,
             lg: 6,
-            xl: 9,
+            xl: 8,
           }),
           '__WEBPACK_DEFINE__.CONTAINER_WIDTH': JSON.stringify({
             xs: 444,

@@ -62,9 +62,7 @@ export type LayoutWidget = {
   layout: Breakpoints<{
     cols: number;
     rows: number;
-    overflow: 'fit' | 'scroll';
     hidden: false | 'display' | 'visibility';
-    order: number;
   }>;
   links?: {
     [todoPath: string]: {

@@ -18,11 +18,13 @@ export default function CollectionGrid<T extends { id: string }>({
   const theme = useTheme();
   const col = useBreakpointValue(cols || { xs: 2 }, breakpoint);
 
-  const rowHeight =
-    props.rowHeight +
-    Number.parseFloat(onResize || onResort ? theme.spacing(6) : '0');
+  const toolbarHeight = Number.parseFloat(
+    onResize || onResort ? theme.spacing(6) : '0'
+  );
 
-  const [listRef, dndHandles] = useDndHandles(col.matched, rowHeight, items, {
+  const rowHeight = props.rowHeight + toolbarHeight;
+
+  const [listRef, dndHandles] = useDndHandles(items, col.matched, rowHeight, {
     onResize,
     onResort,
   });
@@ -56,14 +58,19 @@ export default function CollectionGrid<T extends { id: string }>({
           cols={col.matched}
           rowHeight={rowHeight}
           sx={(theme) => ({
+            width: '100%',
             minHeight: '100%',
             height: 'max-content',
             marginY: 0,
             alignContent: 'start',
-            overflow: 'hidden auto !important',
           })}
         >
-          {renderContent(items, col.breakpoint, rowHeight)}
+          {renderContent(items, {
+            breakpoint: col.breakpoint,
+            cols: col.matched,
+            rowHeight,
+            gap: props.gap || 8,
+          })}
         </ImageList>
       </Sortable.SortableContext>
     </Dnd.DndContext>

@@ -24,13 +24,13 @@ export default function Showcase<T extends RenderedWidget>({
     <CollectionGrid
       {..._omit(CollectionGridProps, ['renderAction'])}
       items={options}
-      renderContent={(items, breakpoint, rowHeight) =>
+      renderContent={(items, GridProps) =>
         items.map((item) => {
           const { id, layout, template } = item;
 
           return (
             <CollectionItem
-              {...{ breakpoint, elevation, id, rowHeight }}
+              {...{ GridProps, elevation, id }}
               key={id}
               action={CollectionGridProps?.renderAction?.(item)}
               layouts={layout}

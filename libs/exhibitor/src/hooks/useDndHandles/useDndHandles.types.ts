@@ -35,9 +35,9 @@ export type GetColsAndRowsFn = (
 
 //* Custom Hooks
 export type DndHandlesHookArgs<T extends { id: string }> = [
-  number,
-  number,
   T[],
+  number,
+  number,
   DndHandleProps<T>
 ];
 

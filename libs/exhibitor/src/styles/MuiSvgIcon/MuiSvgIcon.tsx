@@ -6,7 +6,7 @@ export const ResizeHandle = withStyles(
   (theme) => ({
     root: {
       cursor: 'nwse-resize',
-      transform: 'rotate(45deg) translate(12px, 12px)',
+      transform: 'rotate(45deg) translate(0px, 8px)',
       color: theme.palette.action.disabled,
       outline: 'none !important',
 

@@ -148,17 +148,14 @@ export default function PageEditor({
             <Container
               disableGutters
               maxWidth={false}
-              sx={{
-                borderRadius: 0,
-                height: '100%',
-                overflow: 'auto',
-              }}
+              sx={{ height: '100%', overflow: 'auto' }}
             >
               <Container
                 disableGutters
                 maxWidth={false}
                 sx={{
                   width: __WEBPACK_DEFINE__.CONTAINER_WIDTH[breakpoint],
+                  height: '100%',
                 }}
               >
                 <CraftedRenderer

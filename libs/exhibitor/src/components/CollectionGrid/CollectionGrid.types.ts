@@ -1,7 +1,9 @@
 import type { Breakpoint } from '@mui/material/styles';
 import type { Breakpoints } from '@appcraft/types';
+import type { ComponentProps } from 'react';
 import type { ImageListProps } from '@mui/material/ImageList';
 
+import { CollectionItem } from '../../styles';
 import type { DndHandleProps } from '../../hooks';
 
 //* Component Props
@@ -18,7 +20,6 @@ export interface CollectionGridProps<T extends { id: string }>
 
   renderContent: (
     items: T[],
-    breakpoint: Breakpoint,
-    rowHeight: number
+    options: ComponentProps<typeof CollectionItem>['GridProps']
   ) => ImageListProps['children'];
 }

@@ -8,17 +8,27 @@ const getColsAndRows: Types.GetColsAndRowsFn = (
   cols,
   rowHeight,
   { columnWidth, itemHeight, itemWidth }
-) => ({
-  cols: Math.max(1, Math.min(cols, Math.round(itemWidth / columnWidth))),
-  rows: Math.max(1, Math.round(itemHeight / rowHeight)),
-});
+) => {
+  const resultCols = Math.max(
+    1,
+    Math.min(cols, Math.round(itemWidth / columnWidth))
+  );
+
+  return {
+    cols: resultCols,
+    rows: Math.max(
+      1,
+      resultCols === cols ? 1 : Math.round(itemHeight / rowHeight)
+    ),
+  };
+};
 
 //* Custom Hooks
 export function useDndHandles<T extends { id: string }>(
   ...[
+    items,
     cols,
     rowHeight,
-    items,
     { onResize, onResort },
   ]: Types.DndHandlesHookArgs<T>
 ): Types.DndHandlesHookReturnType {
@@ -34,11 +44,13 @@ export function useDndHandles<T extends { id: string }>(
         const el = document.getElementById(id.replace(/^resize-/, ''));
 
         if (id.startsWith('resize-') && rect && el) {
+          console.log(el.offsetHeight);
+
           recordRef.current = {
             el,
             columnWidth: rect.width / cols,
-            itemHeight: el.clientHeight,
-            itemWidth: el.clientWidth,
+            itemHeight: el.offsetHeight,
+            itemWidth: el.offsetWidth,
             x: 0,
             y: 0,
           };
@@ -59,7 +71,7 @@ export function useDndHandles<T extends { id: string }>(
           const grid = getColsAndRows(cols, rowHeight, record);
 
           record.el.style.cssText = `
-            height: ${record.itemHeight}px;
+            height: ${record.itemHeight}px !important;
             grid-column-end: span ${grid.cols};
             grid-row-end: span ${grid.rows};
           `;
@@ -74,6 +86,7 @@ export function useDndHandles<T extends { id: string }>(
           ) as (typeof items)[number];
 
           onResize?.(item, getColsAndRows(cols, rowHeight, record));
+
           record.el.style.removeProperty('height');
           recordRef.current = undefined;
         } else if (active.id !== over?.id) {

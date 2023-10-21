@@ -9,39 +9,31 @@ import { withStyles } from 'tss-react/mui';
 
 import { useBreakpointValue } from '../..';
 import type * as Types from './MuiImageListItem.types';
+import { match } from 'assert';
 
 export const CollectionItem = withStyles(
   ({
     DragHandle,
+    GridProps,
     PaperProps,
     action,
-    breakpoint,
     children,
+    classes: { fitHeight: fhClassName, ...classes } = {},
     elevation,
     id,
     layouts,
-    rowHeight,
     onResize,
-
-    classes: {
-      display: displayClassName,
-      visibility: visibilityClassName,
-      ...classes
-    } = {},
-
     ...props
   }: Types.CollectionItemProps) => {
     const { active } = useDndContext();
+    const { matched } = useBreakpointValue(layouts, GridProps.breakpoint);
+    const activeId = active?.id.toString().replace('resize-', '');
 
     const { type: ResizeHandle, props: resizeHandleProps } =
       DragHandle?.resize || {};
 
     const { type: ResortHandle, props: resortHandleProps } =
       DragHandle?.resort || {};
-
-    const {
-      matched: { hidden, cols, rows },
-    } = useBreakpointValue(layouts, breakpoint);
 
     const resizable = useDraggable({
       id: `resize-${id}`,
@@ -51,25 +43,42 @@ export const CollectionItem = withStyles(
       id, //* 維持使用原 ID，可以減少 SortableContext 層的一些轉換處理
     });
 
+    console.log(activeId);
+
     return (
       <ImageListItem
         {...props}
-        {...{ id, classes, cols, rows }}
+        {...{ id, classes }}
         ref={sortable.setNodeRef}
+        cols={matched.cols}
+        rows={matched.rows}
         className={cx({
-          [displayClassName as string]: hidden === 'display',
-          [visibilityClassName as string]: hidden === 'visibility',
+          [fhClassName as string]: GridProps.cols === matched.cols,
         })}
         sx={{
-          height: rowHeight * rows,
-          opacity: !active || active.id === id ? 1 : 0.6,
+          //* 非拖曳時及拖曳物件的透明度是 1，其他的是 0.6
+          opacity: !active || activeId === id ? 1 : 0.6,
+
+          //* 根據 rowHeight 及 rows 計算高度
+          height: `${
+            GridProps.rowHeight * matched.rows +
+            GridProps.gap * (matched.rows - 1)
+          }px !important`,
+
+          //* 重新排序時的位移結果
           transition,
           ...(transform && {
             transform: `translate(${transform.x}px, ${transform.y}px)`,
           }),
         }}
       >
-        <Paper {...PaperProps} className={classes?.paper}>
+        <Paper
+          {...PaperProps}
+          className={classes?.paper}
+          sx={{
+            ...(activeId === id && { height: 'calc(100% - 8px) !important' }),
+          }}
+        >
           {children}
         </Paper>
 
@@ -104,28 +113,25 @@ export const CollectionItem = withStyles(
       </ImageListItem>
     );
   },
-  (theme) => ({
+  (theme, { GridProps }) => ({
     root: {
-      overflow: 'hidden',
-      transition: theme.transitions.create([
-        'width',
-        'height',
-        'grid-column-end',
-        'grid-row-end',
-      ]),
+      overflow: 'hidden auto',
+    },
+    fitHeight: {
+      height: 'fit-content !important',
+      overflow: 'hidden !important',
     },
     paper: {
       width: '100%',
       height: '100%',
       overflow: 'hidden auto',
-
-      '&.resizing': {
-        height: '100% !important',
-        overflow: 'hidden !important',
-      },
+      transition: theme.transitions.create(['width', 'height']),
     },
     action: {
-      position: 'static' as never,
+      position: 'sticky' as never,
+      bottom: 0,
+      marginTop: 'auto',
+      zIndex: theme.zIndex.drawer,
 
       '& > .title-wrap': {
         padding: 0,
@@ -136,59 +142,6 @@ export const CollectionItem = withStyles(
         },
       },
     },
-
-    //* Hidden
-    display: {
-      display: 'none',
-    },
-    visibility: {
-      visibility: 'hidden' as never,
-    },
   }),
   { name: 'CollectionItem' }
 );
-
-{
-  /* <DndContext
-  onDragStart={() => {
-    const ndoeRect = node.current?.getBoundingClientRect();
-
-    setSize(
-      ndoeRect && {
-        w: ndoeRect.width,
-        h: ndoeRect.height,
-      }
-    );
-  }}
-  onDragEnd={() => {
-    if (resized && size) {
-      setSize(undefined);
-      setResized(undefined);
-
-      onResize?.({
-        curr: _pick(resized, ['w', 'h']),
-        prev: _pick(size, ['w', 'h']),
-      });
-    }
-  }}
-  onDragMove={({ delta }) => {
-    const ndoeRect = node.current?.getBoundingClientRect();
-
-    if (ndoeRect) {
-      const diffx = delta.x - (resized?.x || 0);
-      const diffy = delta.y - (resized?.y || 0);
-
-      const { w, h } = resized || {
-        w: ndoeRect.width,
-        h: ndoeRect.height,
-      };
-
-      setResized({
-        ...delta,
-        w: w + diffx,
-        h: h + diffy,
-      });
-    }
-  }}
-></DndContext>; */
-}

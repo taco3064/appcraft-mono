@@ -30,20 +30,19 @@ export interface CollectionItemProps
     'classes' | 'hidden' | 'id' | 'cols' | 'rows' | 'sx'
   > {
   PaperProps?: Omit<PaperProps, 'classes' | 'className' | 'elevation'>;
+
   action?: React.ReactNode;
-  breakpoint: Breakpoint;
   children?: React.ReactNode;
   elevation?: PaperProps['elevation'];
   id: string;
   layouts: LayoutWidget['layout'];
-  rowHeight: number;
 
-  classes?: Partial<
-    Record<
-      'root' | 'paper' | 'action' | Exclude<Layout['hidden'], false>,
-      string
-    >
-  >;
+  classes?: {
+    root?: string;
+    fitHeight?: string;
+    paper?: string;
+    action?: string;
+  };
 
   DragHandle?: {
     resize?: React.ReactElement<
@@ -54,5 +53,12 @@ export interface CollectionItemProps
       IconButtonProps,
       React.ComponentType<IconButtonProps>
     >;
+  };
+
+  GridProps: {
+    breakpoint: Breakpoint;
+    cols: number;
+    rowHeight: number;
+    gap: number;
   };
 }

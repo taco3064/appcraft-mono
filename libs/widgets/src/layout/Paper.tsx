@@ -1,9 +1,18 @@
-import Paper from '@mui/material/Paper';
+import MuiPaper from '@mui/material/Paper';
+import { withStyles } from 'tss-react/mui';
 import type { ComponentProps } from 'react';
 
-export { Paper };
-
 export type PaperProps = Pick<
-  ComponentProps<typeof Paper>,
+  ComponentProps<typeof MuiPaper>,
   'children' | 'elevation' | 'square' | 'variant'
 >;
+
+export const Paper = withStyles(
+  MuiPaper,
+  (theme) => ({
+    root: {
+      boxShadow: 'none',
+    },
+  }),
+  { name: 'Paper' }
+);

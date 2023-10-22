@@ -196,3 +196,19 @@ export const getWidgetsByValue: Types.GetWidgetsByValueFn = (
         }),
       }));
 };
+
+export const getBreakpointValue = <T>(
+  ...[breakpoints, settings, assignation]: Types.GetBreakpointFnArgs<T>
+): Types.GetBreakpointFnReturnType<T> => {
+  const keys = breakpoints
+    .slice(0, breakpoints.findIndex((b) => b === assignation) + 1)
+    .reverse();
+
+  for (const breakpoint of keys) {
+    if (settings[breakpoint]) {
+      return { breakpoint, matched: settings[breakpoint] as T };
+    }
+  }
+
+  return { breakpoint: 'xs', matched: settings.xs };
+};

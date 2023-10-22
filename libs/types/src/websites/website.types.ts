@@ -1,5 +1,11 @@
 import type { Breakpoint } from '@mui/material/styles';
 
+export type Breakpoints<T> = {
+  [breakpoint in Exclude<Breakpoint, 'xs'>]?: T;
+} & {
+  [breakpoint in Extract<Breakpoint, 'xs'>]: T;
+};
+
 export interface Website {
   backgroundImg?: string;
   homeid: string;

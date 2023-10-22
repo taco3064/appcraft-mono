@@ -68,10 +68,25 @@ const nextConfig = {
         ...base.plugins,
         new DefinePlugin({
           '__WEBPACK_DEFINE__.LANGUAGES': JSON.stringify(languages),
+          '__WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT': JSON.stringify(48),
 
           '__WEBPACK_DEFINE__.LOCAL_MODE': JSON.stringify(
             process.env.mode === 'LOCAL_DEV'
           ),
+          '__WEBPACK_DEFINE__.COLLECTION_COLS': JSON.stringify({
+            xs: 2,
+            sm: 3,
+            md: 4,
+            lg: 6,
+            xl: 8,
+          }),
+          '__WEBPACK_DEFINE__.CONTAINER_WIDTH': JSON.stringify({
+            xs: 444,
+            sm: 600,
+            md: 900,
+            lg: 1200,
+            xl: 1536,
+          }),
           '__WEBPACK_DEFINE__.MUI_ICONS': JSON.stringify(
             Object.keys(MuiIcons).reduce((result, name) => {
               if (name.endsWith('Outlined')) {

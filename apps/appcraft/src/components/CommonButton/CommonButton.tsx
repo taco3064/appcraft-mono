@@ -29,7 +29,9 @@ export default function CommonButton({
     case 'icon': {
       return (
         <Tooltip title={text}>
-          <IconButton {...(props as Mui.IconButtonProps)}>{icon}</IconButton>
+          <span>
+            <IconButton {...(props as Mui.IconButtonProps)}>{icon}</IconButton>
+          </span>
         </Tooltip>
       );
     }

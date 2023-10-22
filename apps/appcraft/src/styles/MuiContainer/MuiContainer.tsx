@@ -117,9 +117,13 @@ export const PageContainer = withStyles(
       position: 'sticky' as never,
       background: theme.palette.background.default,
       borderRadius: theme.shape.borderRadius,
-      top: theme.spacing(9),
+      top: theme.spacing(8),
       zIndex: theme.zIndex.appBar,
       userSelect: 'none' as never,
+
+      [theme.breakpoints.only('xs')]: {
+        top: theme.spacing(7),
+      },
     },
   }),
   { name: 'PageContainer' }

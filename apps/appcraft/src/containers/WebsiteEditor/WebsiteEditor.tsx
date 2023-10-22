@@ -23,8 +23,6 @@ import { getRoute } from '~appcraft/contexts';
 import type * as Types from './WebsiteEditor.types';
 import type { PageData } from '~appcraft/hooks';
 
-const { GRID_LAYOUT } = Hook;
-
 //* Components
 export default function WebsiteEditor({
   data,
@@ -204,21 +202,16 @@ export default function WebsiteEditor({
                   >
                     {home?.content && (
                       <CraftedRenderer
-                        breakpoint={breakpoint}
                         elevation={1}
                         options={home.content.layouts}
                         onFetchData={fetchHandles.data}
                         onFetchWrapper={fetchHandles.wrapper}
                         onReady={home.content.readyTodos}
-                        GridLayoutProps={{
-                          autoSize: true,
-                          cols: GRID_LAYOUT.COLS,
-                          mins: GRID_LAYOUT.MINS,
-                          breakpoints: Object.fromEntries(
-                            Object.entries(theme.breakpoints.values).sort(
-                              ([, w1], [, w2]) => w2 - w1
-                            )
-                          ),
+                        CollectionGridProps={{
+                          breakpoint,
+                          maxWidthes: home.content.maxWidthes,
+                          cols: __WEBPACK_DEFINE__.COLLECTION_COLS,
+                          rowHeight: __WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT,
                         }}
                       />
                     )}

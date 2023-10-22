@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react';
 import type { ConfigData } from '@appcraft/types';
-import type * as Exhibitor from '@appcraft/exhibitor';
+import type { OutputCollectHandler } from '@appcraft/exhibitor';
 
 import { ResponsiveDrawer } from '~appcraft/styles';
 import type { Breadcrumb, PageData } from '~appcraft/hooks';
@@ -17,7 +17,7 @@ export interface PageEditorProps {
   data: ConfigData<PageData, string>;
 
   onActionNodePick?: NodePickerFn<'add' | 'ready' | 'reset' | 'save'>;
-  onOutputCollect?: Exhibitor.OutputCollectHandler;
+  onOutputCollect?: OutputCollectHandler;
   onSave?: () => void;
 
   superiors?: {

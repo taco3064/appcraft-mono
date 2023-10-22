@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import { CraftedRenderer } from '@appcraft/exhibitor';
 import { useQuery } from '@tanstack/react-query';
-import { useTheme } from '@mui/material/styles';
 
 import * as Hook from '~appcraft/hooks';
 import { ExplorerLayout, Breadcrumbs } from '~appcraft/containers';
@@ -11,15 +10,12 @@ import { useWebsiteConfig } from '~appcraft/contexts';
 import { withPerPageLayout } from '~appcraft/hocs';
 import type { PageData } from '~appcraft/hooks';
 
-const { GRID_LAYOUT } = Hook;
-
 export default withPerPageLayout(ExplorerLayout, function WebsitePage() {
   const { config, routes } = useWebsiteConfig();
   const { token, title, website } = config;
 
   const page = routes[routes.length - 1];
   const fetchHandles = Hook.useCraftsmanFetch();
-  const theme = useTheme();
 
   const { data } = useQuery({
     enabled: Boolean(page?.pageid),
@@ -74,15 +70,10 @@ export default withPerPageLayout(ExplorerLayout, function WebsitePage() {
           onFetchWrapper={fetchHandles.wrapper}
           onOutputCollect={handleRouterPush}
           onReady={data.content.readyTodos}
-          GridLayoutProps={{
-            autoSize: true,
-            cols: GRID_LAYOUT.COLS,
-            mins: GRID_LAYOUT.MINS,
-            breakpoints: Object.fromEntries(
-              Object.entries(theme.breakpoints.values).sort(
-                ([, w1], [, w2]) => w2 - w1
-              )
-            ),
+          CollectionGridProps={{
+            maxWidthes: data.content.maxWidthes,
+            cols: __WEBPACK_DEFINE__.COLLECTION_COLS,
+            rowHeight: __WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT,
           }}
         />
       )}

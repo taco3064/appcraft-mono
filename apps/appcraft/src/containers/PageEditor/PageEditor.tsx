@@ -1,13 +1,12 @@
+import * as Exhibitor from '@appcraft/exhibitor';
 import AddIcon from '@mui/icons-material/Add';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import LinearProgress from '@mui/material/LinearProgress';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { CraftedRenderer } from '@appcraft/exhibitor';
+import Toolbar from '@mui/material/Toolbar';
 import { Suspense, useEffect, useImperativeHandle, useRef } from 'react';
-import { useLazyWidgetNav } from '@appcraft/exhibitor';
-import { useTheme } from '@mui/material/styles';
 
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
@@ -24,26 +23,46 @@ export default function PageEditor({
   onOutputCollect,
   onSave,
 }: Types.PageEditorProps) {
-  const [{ active, breakpoint, layouts, readyTodos, refresh }, handlePage] =
-    Hook.usePageValues({
-      data,
-      onSave,
-    });
+  const [
+    { active, breakpoint, layouts, maxWidthes, readyTodos, refresh },
+    handlePage,
+  ] = Hook.usePageValues({
+    data,
+    onSave,
+  });
 
   const [at, pt] = Hook.useFixedT('app', 'pages');
-  const theme = useTheme();
   const editingRef = useRef<boolean>();
   const handleFetch = Hook.useCraftsmanFetch();
   const isSettingOpen = Boolean(layouts[active]);
+  const maxWidth = Exhibitor.useBreakpointValue(maxWidthes, breakpoint);
+  const width = Exhibitor.useWidth();
 
+  //* Nodes
   const LazyLayoutPropsEditor =
-    useLazyWidgetNav<Types.LazyLayoutPropsEditorProps>(
+    Exhibitor.useLazyWidgetNav<Types.LazyLayoutPropsEditorProps>(
       layouts[active] ? [layouts[active]] : [],
       handleFetch.wrapper,
       ({ fetchData, ...props }) => (
         <Comp.LayoutPropsEditor {...props} getWidgetOptions={fetchData} />
       )
     );
+
+  const maxWidthSelect = (
+    <Comp.MaxWidthSelect
+      size="small"
+      variant={width === 'xs' ? 'filled' : 'outlined'}
+      breakpoint={breakpoint}
+      sx={{ width: width === 'xs' ? '100%' : 240 }}
+      value={maxWidth.matched}
+      onChange={({ target }) =>
+        handlePage.change('maxWidthes', {
+          ...maxWidthes,
+          [breakpoint]: target.value,
+        })
+      }
+    />
+  );
 
   const actionNode = Hook.useNodePicker(
     () =>
@@ -79,12 +98,7 @@ export default function PageEditor({
             text={at('btn-save')}
             onClick={handlePage.save}
             disabled={
-              !layouts.length ||
-              layouts.some(
-                ({ layout, template }) =>
-                  !template?.id ||
-                  Object.keys(layout).length < theme.breakpoints.keys.length
-              )
+              !layouts.length || layouts.some((layout) => !layout.template?.id)
             }
           />
         ),
@@ -147,72 +161,68 @@ export default function PageEditor({
             <Container
               disableGutters
               maxWidth={false}
-              sx={{ height: '100%', overflow: 'auto' }}
+              sx={{ height: '100%', overflow: 'auto', marginBottom: 3 }}
             >
-              <CraftedRenderer
-                key={refresh}
-                breakpoint={breakpoint}
-                elevation={1}
-                options={layouts}
-                onFetchData={handleFetch.data}
-                onFetchWrapper={handleFetch.wrapper}
-                onReady={readyTodos}
-                onOutputCollect={(...e) =>
-                  !editingRef.current && onOutputCollect(...e)
-                }
-                action={(layout, withActionClose) => (
-                  <Comp.LayoutAction
-                    layout={layout}
-                    onCancel={withActionClose()}
-                    onEdit={withActionClose(handlePage.active)}
-                    onRemove={withActionClose(handlePage.remove)}
-                    onWidgetChange={(id) =>
-                      withActionClose(() => {
-                        layouts.splice(layouts.indexOf(layout), 1, {
-                          ...layout,
-                          template: { id },
-                        });
-
-                        handlePage.change('layouts', [...layouts]);
-                      })()
-                    }
-                    widgetPicker={
-                      <WidgetPicker
-                        fullWidth
-                        name="widget"
-                        label={pt('lbl-widget')}
-                        value={layout.template?.id}
-                      />
-                    }
-                  />
-                )}
-                GridLayoutProps={{
-                  autoSize: true,
-                  cols: Hook.GRID_LAYOUT.COLS,
-                  mins: Hook.GRID_LAYOUT.MINS,
-                  isDraggable: true,
-                  isResizable: true,
-                  resizeHandles: ['se'],
-                  onLayoutChange: handlePage.layout,
-                  breakpoints: Object.fromEntries(
-                    Object.entries(theme.breakpoints.values).sort(
-                      ([, w1], [, w2]) => w2 - w1
-                    )
-                  ),
-                  resizeHandle: (
-                    <Style.GridLayoutResizeHandle
-                      className="react-resizable-handle"
-                      sx={(theme) => ({
-                        position: 'absolute',
-                        bottom: 0,
-                        right: 0,
-                        zIndex: theme.zIndex.fab,
-                      })}
-                    />
-                  ),
+              <Container
+                disableGutters
+                maxWidth={false}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  height: '100%',
+                  width:
+                    width === breakpoint
+                      ? '100%'
+                      : __WEBPACK_DEFINE__.CONTAINER_WIDTH[breakpoint],
                 }}
-              />
+              >
+                <Exhibitor.CraftedRenderer
+                  key={refresh}
+                  elevation={1}
+                  options={layouts}
+                  onFetchData={handleFetch.data}
+                  onFetchWrapper={handleFetch.wrapper}
+                  onReady={readyTodos}
+                  onOutputCollect={(...e) =>
+                    !editingRef.current && onOutputCollect(...e)
+                  }
+                  CollectionGridProps={{
+                    breakpoint,
+                    maxWidthes,
+                    cols: __WEBPACK_DEFINE__.COLLECTION_COLS,
+                    rowHeight: __WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT,
+                    onResize: handlePage.resize,
+                    onResort: (items) => handlePage.change('layouts', items),
+                    renderAction: (layout) => (
+                      <Comp.LayoutAction
+                        layout={layout}
+                        onEdit={handlePage.active}
+                        onRemove={handlePage.remove}
+                        onWidgetChange={(id) => {
+                          layouts.splice(layouts.indexOf(layout), 1, {
+                            ...layout,
+                            template: { id },
+                          });
+
+                          handlePage.change('layouts', [...layouts]);
+                        }}
+                        widgetPicker={
+                          <WidgetPicker
+                            fullWidth
+                            name="widget"
+                            label={pt('lbl-widget')}
+                            value={layout.template?.id}
+                          />
+                        }
+                      />
+                    ),
+                  }}
+                />
+              </Container>
             </Container>
+
+            {width === 'xs' && maxWidthSelect}
 
             <AppBar
               position="static"
@@ -222,11 +232,15 @@ export default function PageEditor({
                 borderRadius: `${theme.spacing(2.5)} / 50%`,
               })}
             >
-              <Comp.BreakpointStepper
-                value={breakpoint}
-                onChange={handlePage.breakpoint}
-                disableNextButton={layouts.length === 0}
-              />
+              <Toolbar variant="dense">
+                {width !== 'xs' && maxWidthSelect}
+
+                <Comp.BreakpointStepper
+                  value={breakpoint}
+                  onChange={handlePage.breakpoint}
+                  disableNextButton={layouts.length === 0}
+                />
+              </Toolbar>
             </AppBar>
           </>
         }

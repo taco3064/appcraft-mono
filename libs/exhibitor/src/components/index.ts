@@ -1,3 +1,2 @@
-export * from './ExhibitionContent';
-export * from './GridAction';
-export * from './GridLayout';
+export * from './CollectionGrid';
+export * from './Showcase';

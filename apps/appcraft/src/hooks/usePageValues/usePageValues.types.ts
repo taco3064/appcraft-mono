@@ -1,6 +1,6 @@
+import type * as Appcraft from '@appcraft/types';
 import type { Breakpoint } from '@mui/material/styles';
-import type { ConfigData, LayoutWidget, WidgetTodo } from '@appcraft/types';
-import type { Layout, Layouts } from 'react-grid-layout';
+import type { CraftedRendererProps, MaxWidthes } from '@appcraft/exhibitor';
 
 //* Variables
 export type GridLayoutOptions = Record<
@@ -9,13 +9,17 @@ export type GridLayoutOptions = Record<
 >;
 
 export type PageData = {
-  layouts: LayoutWidget[];
-  readyTodos?: Record<string, WidgetTodo>;
+  layouts: Appcraft.LayoutWidget[];
+  maxWidthes?: MaxWidthes;
+  readyTodos?: Record<string, Appcraft.WidgetTodo>;
 };
+
+//* Methods
+type ResizeHandler = CraftedRendererProps['CollectionGridProps']['onResize'];
 
 //* Custom Hooks
 export type PageValuesHook = (options: {
-  data: ConfigData<PageData, string>;
+  data: Appcraft.ConfigData<PageData, string>;
   onSave?: () => void;
 }) => [
   Required<PageData> & {
@@ -24,13 +28,13 @@ export type PageValuesHook = (options: {
     refresh: string;
   },
   {
-    active: (e?: LayoutWidget) => void;
+    active: (e?: Appcraft.LayoutWidget) => void;
     add: () => void;
     breakpoint: (e: Breakpoint) => void;
     change: <K extends keyof PageData>(key: K, value: PageData[K]) => void;
-    layout: (...e: [Layout[], Layouts]) => void;
-    remove: (e: LayoutWidget) => void;
+    remove: (e: Appcraft.LayoutWidget) => void;
     reset: () => void;
+    resize: ResizeHandler;
     save: () => void;
   }
 ];

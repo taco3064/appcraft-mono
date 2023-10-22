@@ -1,7 +1,19 @@
 import type * as Appcraft from '@appcraft/types';
+import type { Breakpoint } from '@mui/material/styles';
 
 //* Variables
 type Widget = Appcraft.MainWidget | Appcraft.EntityWidgets;
+
+export type GetBreakpointFnArgs<T> = [
+  Breakpoint[],
+  Appcraft.Breakpoints<T>,
+  Breakpoint | undefined
+];
+
+export type GetBreakpointFnReturnType<T> = {
+  breakpoint: Breakpoint;
+  matched: T;
+};
 
 //* Methods
 export type ConvertInjectionWithStates = (options: {

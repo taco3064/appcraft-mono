@@ -7,8 +7,6 @@ import type { PaperProps } from '@mui/material/Paper';
 
 import { ResizeHandle } from '../MuiSvgIcon';
 
-type Layout = LayoutWidget['layout']['xs'];
-
 //* Component Props
 export interface CollectionContentProps {
   PaperProps?: Omit<PaperProps, 'classes' | 'className' | 'elevation'>;
@@ -35,7 +33,7 @@ export interface CollectionItemProps
   children?: React.ReactNode;
   elevation?: PaperProps['elevation'];
   id: string;
-  layouts: LayoutWidget['layout'];
+  layouts: LayoutWidget['layouts'];
 
   classes?: {
     root?: string;

@@ -45,6 +45,7 @@ export default withPerPageLayout(ExplorerLayout, function WebsiteIndex() {
           onOutputCollect={handleRouterPush}
           onReady={home.content.readyTodos}
           CollectionGridProps={{
+            maxWidthes: home.content.maxWidthes,
             cols: __WEBPACK_DEFINE__.COLLECTION_COLS,
             rowHeight: __WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT,
           }}

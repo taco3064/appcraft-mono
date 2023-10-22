@@ -209,6 +209,7 @@ export default function WebsiteEditor({
                         onReady={home.content.readyTodos}
                         CollectionGridProps={{
                           breakpoint,
+                          maxWidthes: home.content.maxWidthes,
                           cols: __WEBPACK_DEFINE__.COLLECTION_COLS,
                           rowHeight: __WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT,
                         }}

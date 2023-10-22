@@ -23,21 +23,21 @@ export default function Showcase<T extends RenderedWidget>({
   ) : (
     <CollectionGrid
       {..._omit(CollectionGridProps, ['renderAction'])}
+      disableResort={options.length < 2}
       items={options}
       renderContent={(items, GridProps) =>
         items.map((item) => {
-          const { id, layout, template } = item;
+          const { id, layouts, template } = item;
 
           return (
             <CollectionItem
-              {...{ GridProps, elevation, id }}
+              {...{ GridProps, elevation, id, layouts }}
               key={id}
               action={CollectionGridProps?.renderAction?.(item)}
-              layouts={layout}
               DragHandle={{
                 resize: CollectionGridProps?.onResize && <ResizeHandle />,
                 resort: CollectionGridProps?.onResort && (
-                  <IconButton>
+                  <IconButton disabled={options.length < 2}>
                     <DragIndicatorIcon />
                   </IconButton>
                 ),

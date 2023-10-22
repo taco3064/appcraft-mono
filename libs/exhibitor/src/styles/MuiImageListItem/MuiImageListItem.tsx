@@ -43,8 +43,6 @@ export const CollectionItem = withStyles(
       id, //* 維持使用原 ID，可以減少 SortableContext 層的一些轉換處理
     });
 
-    console.log(activeId);
-
     return (
       <ImageListItem
         {...props}
@@ -82,7 +80,7 @@ export const CollectionItem = withStyles(
           {children}
         </Paper>
 
-        {(DragHandle || action) && (
+        {(DragHandle?.resize || DragHandle?.resort || action) && (
           <ImageListItemBar
             classes={{ root: classes?.action, titleWrap: 'title-wrap' }}
             title={
@@ -113,7 +111,7 @@ export const CollectionItem = withStyles(
       </ImageListItem>
     );
   },
-  (theme, { GridProps }) => ({
+  (theme) => ({
     root: {
       overflow: 'hidden auto',
     },

@@ -1,14 +1,12 @@
+import * as Exhibitor from '@appcraft/exhibitor';
 import AddIcon from '@mui/icons-material/Add';
 import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import LinearProgress from '@mui/material/LinearProgress';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import _set from 'lodash/set';
-import { CraftedRenderer } from '@appcraft/exhibitor';
+import Toolbar from '@mui/material/Toolbar';
 import { Suspense, useEffect, useImperativeHandle, useRef } from 'react';
-import { useLazyWidgetNav } from '@appcraft/exhibitor';
-import { useTheme } from '@mui/material/styles';
 
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
@@ -25,26 +23,46 @@ export default function PageEditor({
   onOutputCollect,
   onSave,
 }: Types.PageEditorProps) {
-  const [{ active, breakpoint, layouts, readyTodos, refresh }, handlePage] =
-    Hook.usePageValues({
-      data,
-      onSave,
-    });
+  const [
+    { active, breakpoint, layouts, maxWidthes, readyTodos, refresh },
+    handlePage,
+  ] = Hook.usePageValues({
+    data,
+    onSave,
+  });
 
   const [at, pt] = Hook.useFixedT('app', 'pages');
-  const theme = useTheme();
   const editingRef = useRef<boolean>();
   const handleFetch = Hook.useCraftsmanFetch();
   const isSettingOpen = Boolean(layouts[active]);
+  const maxWidth = Exhibitor.useBreakpointValue(maxWidthes, breakpoint);
+  const width = Exhibitor.useWidth();
 
+  //* Nodes
   const LazyLayoutPropsEditor =
-    useLazyWidgetNav<Types.LazyLayoutPropsEditorProps>(
+    Exhibitor.useLazyWidgetNav<Types.LazyLayoutPropsEditorProps>(
       layouts[active] ? [layouts[active]] : [],
       handleFetch.wrapper,
       ({ fetchData, ...props }) => (
         <Comp.LayoutPropsEditor {...props} getWidgetOptions={fetchData} />
       )
     );
+
+  const maxWidthSelect = (
+    <Comp.MaxWidthSelect
+      size="small"
+      variant={width === 'xs' ? 'filled' : 'outlined'}
+      breakpoint={breakpoint}
+      sx={{ width: width === 'xs' ? '100%' : 240 }}
+      value={maxWidth.matched}
+      onChange={({ target }) =>
+        handlePage.change('maxWidthes', {
+          ...maxWidthes,
+          [breakpoint]: target.value,
+        })
+      }
+    />
+  );
 
   const actionNode = Hook.useNodePicker(
     () =>
@@ -80,12 +98,7 @@ export default function PageEditor({
             text={at('btn-save')}
             onClick={handlePage.save}
             disabled={
-              !layouts.length ||
-              layouts.some(
-                ({ layout, template }) =>
-                  !template?.id ||
-                  Object.keys(layout).length < theme.breakpoints.keys.length
-              )
+              !layouts.length || layouts.some((layout) => !layout.template?.id)
             }
           />
         ),
@@ -148,17 +161,23 @@ export default function PageEditor({
             <Container
               disableGutters
               maxWidth={false}
-              sx={{ height: '100%', overflow: 'auto' }}
+              sx={{ height: '100%', overflow: 'auto', marginBottom: 3 }}
             >
               <Container
                 disableGutters
                 maxWidth={false}
                 sx={{
-                  width: __WEBPACK_DEFINE__.CONTAINER_WIDTH[breakpoint],
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
                   height: '100%',
+                  width:
+                    width === breakpoint
+                      ? '100%'
+                      : __WEBPACK_DEFINE__.CONTAINER_WIDTH[breakpoint],
                 }}
               >
-                <CraftedRenderer
+                <Exhibitor.CraftedRenderer
                   key={refresh}
                   elevation={1}
                   options={layouts}
@@ -170,17 +189,11 @@ export default function PageEditor({
                   }
                   CollectionGridProps={{
                     breakpoint,
+                    maxWidthes,
                     cols: __WEBPACK_DEFINE__.COLLECTION_COLS,
                     rowHeight: __WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT,
                     onResize: handlePage.resize,
-                    onResort: (items) =>
-                      handlePage.change(
-                        'layouts',
-                        items.map(({ layout, ...item }, i) => ({
-                          ...item,
-                          layout: _set(layout, [breakpoint, 'order'], i + 1),
-                        }))
-                      ),
+                    onResort: (items) => handlePage.change('layouts', items),
                     renderAction: (layout) => (
                       <Comp.LayoutAction
                         layout={layout}
@@ -209,6 +222,8 @@ export default function PageEditor({
               </Container>
             </Container>
 
+            {width === 'xs' && maxWidthSelect}
+
             <AppBar
               position="static"
               color="default"
@@ -217,11 +232,15 @@ export default function PageEditor({
                 borderRadius: `${theme.spacing(2.5)} / 50%`,
               })}
             >
-              <Comp.BreakpointStepper
-                value={breakpoint}
-                onChange={handlePage.breakpoint}
-                disableNextButton={layouts.length === 0}
-              />
+              <Toolbar variant="dense">
+                {width !== 'xs' && maxWidthSelect}
+
+                <Comp.BreakpointStepper
+                  value={breakpoint}
+                  onChange={handlePage.breakpoint}
+                  disableNextButton={layouts.length === 0}
+                />
+              </Toolbar>
             </AppBar>
           </>
         }

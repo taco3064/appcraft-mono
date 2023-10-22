@@ -21,6 +21,7 @@ export default function PagePreview({ breakpoint, options }: PagePreviewProps) {
       onReady={options.readyTodos}
       CollectionGridProps={{
         breakpoint,
+        maxWidthes: options.maxWidthes,
         cols: __WEBPACK_DEFINE__.COLLECTION_COLS,
         rowHeight: __WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT,
       }}

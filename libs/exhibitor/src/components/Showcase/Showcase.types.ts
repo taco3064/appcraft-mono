@@ -15,7 +15,7 @@ export type ShowcaseProps<T extends RenderedWidget> = T extends MainWidget
   : {
       CollectionGridProps: Omit<
         CollectionGridProps<LayoutWidget>,
-        'items' | 'renderContent'
+        'disableResort' | 'items' | 'renderContent'
       > & {
         renderAction?: (layout: LayoutWidget) => ReactNode;
       };

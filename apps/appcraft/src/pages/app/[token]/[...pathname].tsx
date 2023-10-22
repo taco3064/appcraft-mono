@@ -71,6 +71,7 @@ export default withPerPageLayout(ExplorerLayout, function WebsitePage() {
           onOutputCollect={handleRouterPush}
           onReady={data.content.readyTodos}
           CollectionGridProps={{
+            maxWidthes: data.content.maxWidthes,
             cols: __WEBPACK_DEFINE__.COLLECTION_COLS,
             rowHeight: __WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT,
           }}

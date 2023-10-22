@@ -20,6 +20,10 @@ export const usePageValues: Types.PageValuesHook = ({ data, onSave }) => {
   const [refresh, setRefresh] = useState(nanoid(4));
   const [breakpoint, setBreakpoint] = useState<Breakpoint>('xs');
 
+  const [maxWidthes, setMaxWidthes] = useState<PageData['maxWidthes']>(
+    JSON.parse(JSON.stringify(data.content.maxWidthes || { xs: 'xs' }))
+  );
+
   const [layouts, setLayouts] = useState<PageData['layouts']>(() =>
     JSON.parse(
       JSON.stringify(
@@ -45,6 +49,7 @@ export const usePageValues: Types.PageValuesHook = ({ data, onSave }) => {
       active,
       breakpoint,
       layouts,
+      maxWidthes,
       readyTodos,
       refresh: useDeferredValue(refresh),
     },
@@ -63,8 +68,8 @@ export const usePageValues: Types.PageValuesHook = ({ data, onSave }) => {
           {
             id: nanoid(6),
             template: { id: '' },
-            layout: {
-              xs: { cols: 1, rows: 1, hidden: false },
+            layouts: {
+              xs: { cols: 1, rows: 1 },
             },
           },
         ]);
@@ -75,8 +80,18 @@ export const usePageValues: Types.PageValuesHook = ({ data, onSave }) => {
       change: (key, value) => {
         if (key === 'layouts') {
           setLayouts(value as PageData['layouts']);
-        } else {
+        } else if (key === 'readyTodos') {
           setReadyTodos(value as PageData['readyTodos']);
+        } else {
+          setMaxWidthes(value as PageData['maxWidthes']);
+
+          setLayouts(
+            layouts.map((item) => {
+              delete item.layouts[breakpoint];
+
+              return { ...item };
+            })
+          );
         }
 
         setRefresh(nanoid(4));
@@ -92,14 +107,14 @@ export const usePageValues: Types.PageValuesHook = ({ data, onSave }) => {
 
         const { matched } = ExhibitorUtil.getBreakpointValue(
           theme.breakpoints.keys,
-          target.layout,
+          target.layouts,
           breakpoint
         );
 
         layouts.splice(index, 1, {
           ...target,
-          layout: {
-            ...target.layout,
+          layouts: {
+            ...target.layouts,
             [breakpoint]: { ...matched, cols, rows },
           },
         });
@@ -115,10 +130,17 @@ export const usePageValues: Types.PageValuesHook = ({ data, onSave }) => {
             JSON.stringify(Array.isArray(data.content) ? data.content : [])
           )
         );
+
+        setMaxWidthes(
+          JSON.parse(JSON.stringify(data.content.maxWidthes || { xs: 'xs' }))
+        );
       },
 
       save: () =>
-        mutation.mutate({ ...data, content: { layouts, readyTodos } }),
+        mutation.mutate({
+          ...data,
+          content: { layouts, maxWidthes, readyTodos },
+        }),
     },
   ];
 };

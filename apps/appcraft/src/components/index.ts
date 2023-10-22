@@ -10,6 +10,7 @@ export * from './ExplorerNavItem';
 export * from './ExplorerNavMenu';
 export * from './LayoutAction';
 export * from './LayoutPropsEditor';
+export * from './MaxWidthSelect';
 export * from './NavList';
 export * from './NavMutationButton';
 export * from './NavMutationMenu';

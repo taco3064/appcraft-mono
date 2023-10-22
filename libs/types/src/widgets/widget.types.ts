@@ -59,10 +59,13 @@ export interface MainWidget extends NodeWidget {
 
 export type LayoutWidget = {
   id: string;
-  layout: Breakpoints<{
+  template: State.Template & {
+    props?: { [stateKey: string]: unknown };
+    nodes?: { [stateKey: string]: LayoutWidget['template'] };
+  };
+  layouts: Breakpoints<{
     cols: number;
     rows: number;
-    hidden: false | 'display' | 'visibility';
   }>;
   links?: {
     [todoPath: string]: {
@@ -71,9 +74,5 @@ export type LayoutWidget = {
       stateKey: string;
       todoName: string;
     };
-  };
-  template: State.Template & {
-    props?: { [stateKey: string]: unknown };
-    nodes?: { [stateKey: string]: LayoutWidget['template'] };
   };
 };

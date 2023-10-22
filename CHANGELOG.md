@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.5](https://github.com/taco3064/appcraft-mono/compare/v0.8.4...v0.8.5) (2023-10-22)
+
+
+### Bug Fixes
+
+* **@appcraft/exhibitor:** remove unused source fiels ([744e74b](https://github.com/taco3064/appcraft-mono/commit/744e74b5008f6a1fe8ca52cf5eb013858fcf2fea))
+
 ### [0.8.4](https://github.com/taco3064/appcraft-mono/compare/v0.8.3...v0.8.4) (2023-10-22)
 
 

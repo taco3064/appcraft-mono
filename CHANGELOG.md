@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.4](https://github.com/taco3064/appcraft-mono/compare/v0.8.3...v0.8.4) (2023-10-22)
+
+
+### Features
+
+* **@appcraft/exhibitor:** add max-widthes settings ([edc655e](https://github.com/taco3064/appcraft-mono/commit/edc655e4b9ba8eb1856b467b789b47e23a7a2f58))
+
+
+### Bug Fixes
+
+* **@appcraft/exhibitor:** fixed the resize/resort bugs ([adb6fc1](https://github.com/taco3064/appcraft-mono/commit/adb6fc16344a3747ffd5f786160b342f5e090b31))
+
 ### [0.8.3](https://github.com/taco3064/appcraft-mono/compare/v0.8.2...v0.8.3) (2023-10-17)
 
 

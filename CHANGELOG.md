@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.7](https://github.com/taco3064/appcraft-mono/compare/v0.8.6...v0.8.7) (2023-10-23)
+
+
+### Bug Fixes
+
+* **explorer-layout:** fixed active bugs ([9a3d5b8](https://github.com/taco3064/appcraft-mono/commit/9a3d5b849b2a9c96c35beff2a48f7f6e2d3b8d92))
+
 ### [0.8.6](https://github.com/taco3064/appcraft-mono/compare/v0.8.5...v0.8.6) (2023-10-23)
 
 

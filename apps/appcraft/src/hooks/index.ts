@@ -18,4 +18,3 @@ export * from './useWebsiteRouter';
 export * from './useWebsiteValues';
 export * from './useWidgetTransform';
 export * from './useWidgetValues';
-export * from './useWidth';

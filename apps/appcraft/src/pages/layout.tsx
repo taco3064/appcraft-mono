@@ -11,10 +11,9 @@ import Toolbar from '@mui/material/Toolbar';
 import VerticalAlignCenterIcon from '@mui/icons-material/VerticalAlignCenter';
 import { nanoid } from 'nanoid';
 import { useState } from 'react';
+import { useWidth } from '@appcraft/exhibitor';
 import type { Breakpoint } from '@mui/material/styles';
 import type { ImageListItemProps } from '@mui/material/ImageListItem';
-
-import { useWidth } from '~appcraft/hooks';
 
 //* Types
 interface LayoutItem extends Pick<ImageListItemProps, 'cols' | 'rows'> {

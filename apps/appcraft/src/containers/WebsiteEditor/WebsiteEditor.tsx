@@ -7,10 +7,9 @@ import Tooltip from '@mui/material/Tooltip';
 import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
 import WebIcon from '@mui/icons-material/Web';
 import { CraftsmanStyle } from '@appcraft/craftsman';
-import { CraftedRenderer } from '@appcraft/exhibitor';
+import { CraftedRenderer, useWidth } from '@appcraft/exhibitor';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useTheme } from '@mui/material/styles';
 import type { Breakpoint } from '@mui/material/styles';
 
 import * as Comp from '~appcraft/components';
@@ -37,9 +36,8 @@ export default function WebsiteEditor({
   const [edited, setEdited] = useState<'app' | 'page'>('app');
   const [website, handleWebsite] = Hook.useWebsiteValues({ data, onSave });
 
-  const width = Hook.useWidth();
+  const width = useWidth();
   const height = Hook.useHeight();
-  const theme = useTheme();
   const fetchHandles = Hook.useCraftsmanFetch();
   const homepage = getRoute(website.homeid, website.pages);
 

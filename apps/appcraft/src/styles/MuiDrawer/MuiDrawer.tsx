@@ -4,10 +4,10 @@ import List from '@mui/material/List';
 import TabScrollButton from '@mui/material/TabScrollButton';
 import cx from 'clsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useWidth } from '@appcraft/exhibitor';
 import { withStyles } from 'tss-react/mui';
 import type { PaperProps } from '@mui/material/Paper';
 
-import { useWidth } from '~appcraft/hooks';
 import type * as Types from './MuiDrawer.types';
 
 export const ExplorerMenuDrawer = withStyles(

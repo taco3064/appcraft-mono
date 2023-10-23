@@ -5,6 +5,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import { CraftedTodoEditor, CraftsmanStyle } from '@appcraft/craftsman';
 import { useEffect, useState } from 'react';
+import { useWidth } from '@appcraft/exhibitor';
 
 import * as Hook from '~appcraft/hooks';
 import Breadcrumbs from '../Breadcrumbs';
@@ -32,7 +33,7 @@ export default function TodoEditor({
     onOpen: () => setOpen(true),
   });
 
-  const width = Hook.useWidth();
+  const width = useWidth();
   const isCollapsable = /^(xs|sm)$/.test(width) && outputs.length > 0;
   const isLogsOpen = (!isCollapsable || open) && outputs.length > 0;
   const override = useCraftsmanOverride({});

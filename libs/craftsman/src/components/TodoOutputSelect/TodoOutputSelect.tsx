@@ -13,7 +13,7 @@ import { ExhibitorUtil } from '@appcraft/exhibitor';
 import { Suspense, useMemo } from 'react';
 import type { ComponentProps } from 'react';
 
-import { getFlowEdges, splitProps } from '../../utils';
+import { splitProps } from '../../utils';
 import { useLazyTodoOutputs } from '../../hooks';
 import { useLocalesContext } from '../../contexts';
 import type * as Types from './TodoOutputSelect.types';
@@ -56,6 +56,11 @@ const getOutputOptions: Types.GetOutputOptions = (todos, outputs) =>
                 : Object.values(target || {})
               ).map((item) => Object.keys(item))
             );
+
+            result.push({
+              value: `$el_${alias}`,
+              description: `${description || alias} (${category})`,
+            });
 
             paths.forEach((path) =>
               result.push({

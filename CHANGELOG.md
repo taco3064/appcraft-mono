@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.8](https://github.com/taco3064/appcraft-mono/compare/v0.8.7...v0.8.8) (2023-10-23)
+
+
+### Bug Fixes
+
+* **apps/ts2-props:** fixed bugs of parser ([0e501de](https://github.com/taco3064/appcraft-mono/commit/0e501de6569513e78ac71f8399f3cd6a0aada196))
+
 ### [0.8.7](https://github.com/taco3064/appcraft-mono/compare/v0.8.6...v0.8.7) (2023-10-23)
 
 

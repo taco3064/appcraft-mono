@@ -15,17 +15,18 @@ export default function ExplorerNavMenu({
   scale,
 }: ExplorerNavMenuProps) {
   const [expanded, setExpanded] = useState<ExpandedNav>();
+  const isOpen = open || anchor === 'top';
 
   useEffect(() => {
-    if (!open) {
+    if (!isOpen) {
       setExpanded(undefined);
     }
-  }, [open]);
+  }, [isOpen]);
 
   return (
     <>
-      <ExplorerMenuDrawer {...{ anchor, open }}>
-        {!open
+      <ExplorerMenuDrawer {...{ anchor, open: isOpen }}>
+        {!isOpen
           ? null
           : items.map((page) => (
               <ExplorerNavItem
@@ -45,7 +46,7 @@ export default function ExplorerNavMenu({
           anchorEl={expanded?.anchorEl}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
           contentWidth={expanded?.anchorEl.clientWidth}
-          open={Boolean(expanded?.anchorEl) && open}
+          open={Boolean(expanded?.anchorEl) && isOpen}
           scale={scale}
           transformOrigin={{ vertical: 'top', horizontal: 'left' }}
           onClose={() => {

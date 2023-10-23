@@ -6,11 +6,11 @@ import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 
+import * as Ctx from '~appcraft/contexts';
 import * as Style from '~appcraft/styles';
 import { AppHeader, ExplorerNavMenu, getMenuItems } from '~appcraft/components';
-import { ThemeProvider, WebsiteConfigProvider } from '~appcraft/contexts';
 import { getWebsiteConfig } from '~appcraft/services';
-import { useFixedT, useHeight } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/hooks';
 import type { ExplorerLayoutProps } from './ExplorerLayout.types';
 
 export default function ExplorerLayout({
@@ -31,15 +31,19 @@ export default function ExplorerLayout({
   });
 
   const config = override || data;
-  const height = useHeight();
   const navItems = getMenuItems(config?.website.pages || []);
+
+  const homepage = Ctx.getRoute(
+    config?.website.homeid as string,
+    config?.website.pages || []
+  );
 
   useEffect(() => {
     setOpen(false);
   }, [query.pathname]);
 
   return (
-    <ThemeProvider
+    <Ctx.ThemeProvider
       disableCssBaseline={disableCssBaseline}
       themeid={config?.website.theme}
     >
@@ -72,15 +76,16 @@ export default function ExplorerLayout({
             </Style.MaxWidthAlert>
           </Slide>
         ) : (
-          <WebsiteConfigProvider config={config}>
+          <Ctx.WebsiteConfigProvider config={config}>
             <AppHeader
               title={{ text: config.title, href: `/app/${config.token}` }}
-              {...(navItems.length && {
-                onMenuToggle: (e) => {
-                  e.stopPropagation();
-                  setOpen(!open);
-                },
-              })}
+              {...(navItems.length &&
+                config.website.navAnchor !== 'top' && {
+                  onMenuToggle: (e) => {
+                    e.stopPropagation();
+                    setOpen(!open);
+                  },
+                })}
             />
 
             {!navItems.length ? null : (
@@ -90,10 +95,14 @@ export default function ExplorerLayout({
                 items={navItems}
                 open={open}
                 scale={scale}
-                active={`/${
-                  (Array.isArray(query.pathname) && query.pathname.join('/')) ||
-                  ''
-                }`}
+                active={
+                  homepage?.pathname ||
+                  `/${
+                    (Array.isArray(query.pathname) &&
+                      query.pathname.join('/')) ||
+                    ''
+                  }`
+                }
                 {...(config.token && {
                   basename: `/app/${config.token}`,
                 })}
@@ -101,21 +110,16 @@ export default function ExplorerLayout({
             )}
 
             <Style.MainContainer
-              maxWidth={false}
               className="app"
               component="main"
+              maxWidth={false}
               onClick={() => setOpen(false)}
-              sx={(theme) => ({
-                height: `calc(${height} - ${theme.spacing(
-                  open && config.website.navAnchor === 'top' ? 16 : 9
-                )})`,
-              })}
             >
               {children}
             </Style.MainContainer>
-          </WebsiteConfigProvider>
+          </Ctx.WebsiteConfigProvider>
         )}
       </Style.MuiSnackbarProvider>
-    </ThemeProvider>
+    </Ctx.ThemeProvider>
   );
 }

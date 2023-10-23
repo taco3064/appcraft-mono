@@ -5,11 +5,11 @@ import Grow from '@mui/material/Grow';
 import ImageList from '@mui/material/ImageList';
 import Typography from '@mui/material/Typography';
 import { nanoid } from 'nanoid';
-import { useMutation } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useMemo, useState } from 'react';
+import { useWidth } from '@appcraft/exhibitor';
 
 import * as Comp from '~appcraft/components';
 import * as Hook from '~appcraft/hooks';
@@ -34,7 +34,7 @@ export default function HierarchyList({
 
   const superiorList = Object.keys(superiors);
   const superior = superiorList[superiorList.length - 1] || null;
-  const width = Hook.useWidth();
+  const width = useWidth();
 
   const [at] = Hook.useFixedT('app');
   const [collapsed, setCollapsed] = useState(Boolean(!keyword));

@@ -4,10 +4,10 @@ import List from '@mui/material/List';
 import TabScrollButton from '@mui/material/TabScrollButton';
 import cx from 'clsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useWidth } from '@appcraft/exhibitor';
 import { withStyles } from 'tss-react/mui';
 import type { PaperProps } from '@mui/material/Paper';
 
-import { useWidth } from '~appcraft/hooks';
 import type * as Types from './MuiDrawer.types';
 
 export const ExplorerMenuDrawer = withStyles(
@@ -157,7 +157,14 @@ export const SizedDrawer = withStyles(
       }
     />
   ),
-  (theme, { anchor }) => ({
+  (theme, { anchor, maxWidth, open }) => ({
+    root: {
+      ...(maxWidth &&
+        open && {
+          minWidth: __WEBPACK_DEFINE__.CONTAINER_WIDTH[maxWidth],
+          maxWidth: '100%',
+        }),
+    },
     paper: {
       ...(anchor === 'top' && {
         borderRadius: theme.spacing(0, 0, 3, 3),
@@ -190,76 +197,49 @@ export const ResponsiveDrawer = withStyles(
     ...props
   }: Types.ResponsiveDrawerProps) => {
     const drawerRef = useRef<HTMLDivElement>();
-    const [spaceWidth, setSpaceWidth] = useState(0);
     const width = useWidth();
     const isTemporary = /^(xs|sm)$/.test(width) || disablePersistent;
 
-    const resizeObserver = useMemo(
-      () =>
-        new ResizeObserver((entries) => {
-          for (const entry of entries) {
-            const { clientWidth } = entry.target as HTMLElement;
-
-            setSpaceWidth(clientWidth);
-          }
-        }),
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      [open, isTemporary]
-    );
-
-    useEffect(() => {
-      const { current: el } = drawerRef;
-
-      if (el) {
-        resizeObserver.observe(el);
-
-        return () => resizeObserver.unobserve(el);
-      }
-    }, [resizeObserver]);
-
     return (
       <Container {...props} className={classes.root}>
+        <Container {...ContentProps} disableGutters className={classes.content}>
+          {content}
+        </Container>
+
         <SizedDrawer
           {...DrawerProps}
           {...(isTemporary && { onClose })}
+          anchor="right"
+          maxWidth="xs"
           variant={isTemporary ? 'temporary' : 'persistent'}
           open={open}
           PaperProps={{
             ...DrawerProps?.PaperProps,
             ref: drawerRef,
-            className: cx(classes.paper, DrawerProps?.PaperProps?.className),
+            className: cx(classes.paper, DrawerProps?.PaperProps?.className, {
+              [classes.inline]: !isTemporary,
+            }),
           }}
         >
           {drawer}
         </SizedDrawer>
-
-        <Container {...ContentProps} disableGutters className={classes.content}>
-          {content}
-        </Container>
-
-        <Container
-          disableGutters
-          data-width={spaceWidth}
-          className={classes.space}
-          maxWidth={false}
-          sx={{ minWidth: spaceWidth }}
-        />
       </Container>
     );
   },
-  (theme, { DrawerProps, disablePersistent = false, height, open }) => ({
+  (theme, { height, open }) => ({
     root: {
-      position: 'relative',
       display: 'flex',
       flexWrap: 'nowrap',
-      flexDirection: DrawerProps.anchor === 'right' ? 'row' : 'row-reverse',
+      flexDirection: 'row',
       height: height?.(theme) || '100%',
       borderRadius: `${theme.spacing(2)} !important`,
       gap: theme.spacing(1.5),
-      overflowX: 'hidden',
+      overflow: 'hidden',
+    },
+    inline: {
+      position: !open ? null : ('static !important' as never),
     },
     paper: {
-      position: 'absolute' as never,
       height: '100%',
       border: `1px solid ${theme.palette.divider}`,
       borderRadius: `${theme.spacing(2)} !important`,
@@ -271,21 +251,10 @@ export const ResponsiveDrawer = withStyles(
     },
     content: {
       display: 'block',
-      flexGrow: 1,
       width: '100% !important',
+      height: '100%',
       borderRadius: `${theme.spacing(2)} !important`,
       overflow: 'hidden auto',
-    },
-    space: {
-      ...(!open && {
-        display: 'none !important',
-      }),
-      [theme.breakpoints.down('md')]: {
-        display: 'none !important',
-      },
-      ...(disablePersistent && {
-        display: 'none !important',
-      }),
     },
   }),
   { name: 'ResponsiveDrawer' }

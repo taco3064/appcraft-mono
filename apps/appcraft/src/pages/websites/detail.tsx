@@ -37,7 +37,10 @@ export default withPerPageLayout(ArtisanLayout, function Detail() {
 
   return (
     <PageContainer
-      ContentProps={{ disableGutters: true }}
+      ContentProps={{
+        disableGutters: true,
+        sx: { overflow: 'hidden !important' },
+      }}
       maxWidth="lg"
       primary={wt('ttl-detail')}
       secondary={superiors[id]}

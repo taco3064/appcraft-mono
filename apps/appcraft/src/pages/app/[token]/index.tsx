@@ -31,7 +31,10 @@ export default withPerPageLayout(ExplorerLayout, function WebsiteIndex() {
   );
 
   return (
-    <Container maxWidth={website.maxWidth}>
+    <Container
+      maxWidth={website.maxWidth}
+      style={{ height: '100%', overflow: 'hidden' }}
+    >
       <Head>
         <title>{title}</title>
       </Head>
@@ -47,6 +50,7 @@ export default withPerPageLayout(ExplorerLayout, function WebsiteIndex() {
           CollectionGridProps={{
             maxWidthes: home.content.maxWidthes,
             cols: __WEBPACK_DEFINE__.COLLECTION_COLS,
+            containerSx: { height: '100%', overflow: 'hidden auto' },
             rowHeight: __WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT,
           }}
         />

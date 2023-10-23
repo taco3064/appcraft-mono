@@ -16,7 +16,6 @@ export default withPerPageLayout(Ctr.ArtisanLayout, function Detail() {
   const [tt] = Hook.useFixedT('todos');
   const { pathname, query } = useRouter();
 
-  const height = Hook.useHeight();
   const handleFetch = Hook.useCraftsmanFetch();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
@@ -64,7 +63,6 @@ export default withPerPageLayout(Ctr.ArtisanLayout, function Detail() {
           ResponsiveDrawerProps={{
             disableGutters: true,
             maxWidth: false,
-            height: (theme) => `calc(${height} - ${theme.spacing(29)})`,
           }}
         />
       </PageContainer>

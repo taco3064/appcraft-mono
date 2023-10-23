@@ -13,6 +13,7 @@ import WebTwoToneIcon from '@mui/icons-material/WebTwoTone';
 import { CraftsmanStyle } from '@appcraft/craftsman';
 import { nanoid } from 'nanoid';
 import { useMemo } from 'react';
+import { useWidth } from '@appcraft/exhibitor';
 
 import * as Hook from '~appcraft/hooks';
 import AnchorLinksButton from '../AnchorLinksButton';
@@ -29,7 +30,7 @@ export default function NavList({
   onChange,
   onActionNodePick = (e) => e,
 }: Types.NavListProps) {
-  const width = Hook.useWidth();
+  const width = useWidth();
   const [wt] = Hook.useFixedT('websites');
 
   const [{ hierarchies, items, paths }, navHandles] = Hook.useNavValues(
@@ -79,7 +80,12 @@ export default function NavList({
         disableGutters
         variant="dense"
         sx={(theme) => ({
+          position: 'sticky',
           userSelect: 'none',
+          top: 0,
+          zIndex: theme.zIndex.appBar,
+          background: theme.palette.background.default,
+
           [theme.breakpoints.only('xs')]: {
             display: 'flex',
             flexDirection: 'column-reverse',

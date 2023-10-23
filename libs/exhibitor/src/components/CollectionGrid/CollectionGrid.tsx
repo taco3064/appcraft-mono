@@ -10,6 +10,7 @@ import type { CollectionGridProps } from './CollectionGrid.types';
 export default function CollectionGrid<T extends { id: string }>({
   breakpoint,
   cols,
+  containerSx,
   disableResort = false,
   items = [],
   maxWidthes,
@@ -54,7 +55,7 @@ export default function CollectionGrid<T extends { id: string }>({
         items={items}
         strategy={Sortable.rectSortingStrategy}
       >
-        <Container disableGutters maxWidth={maxWidth.matched}>
+        <Container disableGutters maxWidth={maxWidth.matched} sx={containerSx}>
           <ImageList
             ref={listRef}
             gap={8}

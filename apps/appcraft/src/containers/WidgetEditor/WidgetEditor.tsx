@@ -2,7 +2,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
-import { CraftedRenderer } from '@appcraft/exhibitor';
+import { CraftedRenderer, useWidth } from '@appcraft/exhibitor';
 import { CraftedWidgetEditor } from '@appcraft/craftsman';
 import { useState } from 'react';
 
@@ -26,7 +26,7 @@ export default function WidgetEditor({
   const [open, setOpen] = useState(false);
   const [widget, handleWidget] = Hook.useWidgetValues({ data, onSave });
 
-  const width = Hook.useWidth();
+  const width = useWidth();
   const override = useCraftsmanOverride({ widget });
   const handleFetch = Hook.useCraftsmanFetch();
   const isCollapsable = /^(xs|sm)$/.test(width);
@@ -81,7 +81,7 @@ export default function WidgetEditor({
       <ResponsiveDrawer
         {...ResponsiveDrawerProps}
         ContentProps={{ style: { alignItems: 'center' } }}
-        DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
+        DrawerProps={{ maxWidth: 'xs' }}
         open={isSettingOpen}
         onClose={() => setOpen(false)}
         content={

@@ -4,9 +4,10 @@ import FilterListOffIcon from '@mui/icons-material/FilterListOff';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import { useRef } from 'react';
+import { useWidth } from '@appcraft/exhibitor';
 
 import CommonButton from '../CommonButton';
-import { useFixedT, useWidth } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './CollapseKeyword.types';
 
 const SEARCH_WIDTH: Record<'xs' | 'sm', string> = {

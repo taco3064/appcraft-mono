@@ -32,6 +32,7 @@ export default function ExplorerLayout({
 
   const config = override || data;
   const navItems = getMenuItems(config?.website.pages || []);
+  const active = Array.isArray(query.pathname) && query.pathname.join('/');
 
   const homepage = Ctx.getRoute(
     config?.website.homeid as string,
@@ -95,14 +96,7 @@ export default function ExplorerLayout({
                 items={navItems}
                 open={open}
                 scale={scale}
-                active={
-                  homepage?.pathname ||
-                  `/${
-                    (Array.isArray(query.pathname) &&
-                      query.pathname.join('/')) ||
-                    ''
-                  }`
-                }
+                active={active ? `/${active || ''}` : homepage?.pathname}
                 {...(config.token && {
                   basename: `/app/${config.token}`,
                 })}

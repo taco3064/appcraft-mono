@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { CraftedRenderer } from '@appcraft/exhibitor';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 
 import * as Hook from '~appcraft/hooks';
 import { ExplorerLayout, Breadcrumbs } from '~appcraft/containers';
@@ -11,10 +12,12 @@ import { withPerPageLayout } from '~appcraft/hocs';
 import type { PageData } from '~appcraft/hooks';
 
 export default withPerPageLayout(ExplorerLayout, function WebsitePage() {
-  const { config, routes } = useWebsiteConfig();
+  const { query } = useRouter();
+  const { config, homepage, routes } = useWebsiteConfig();
   const { token, title, website } = config;
 
   const page = routes[routes.length - 1];
+  const pathname = `/${(query.pathname as string[]).join('/')}`;
   const fetchHandles = Hook.useCraftsmanFetch();
 
   const { data } = useQuery({
@@ -43,27 +46,30 @@ export default withPerPageLayout(ExplorerLayout, function WebsitePage() {
         </title>
       </Head>
 
-      <Breadcrumbs
-        ToolbarProps={{ disableGutters: true }}
-        onCustomize={() =>
-          routes.map(({ subTitle }, i) => {
-            const isLast = i === routes.length - 1;
+      {homepage.id !== page.id && (
+        <Breadcrumbs
+          ToolbarProps={{ disableGutters: true }}
+          onCustomize={() =>
+            routes.map(({ subTitle }, i) => {
+              const isLast = i === routes.length - 1;
 
-            return isLast
-              ? { text: subTitle }
-              : {
-                  text: subTitle,
-                  url: `/app/${token}${routes
-                    .slice(0, i + 1)
-                    .map(({ pathname }) => pathname)
-                    .join('')}`,
-                };
-          })
-        }
-      />
+              return isLast
+                ? { text: subTitle }
+                : {
+                    text: subTitle,
+                    url: `/app/${token}${routes
+                      .slice(0, i + 1)
+                      .map(({ pathname }) => pathname)
+                      .join('')}`,
+                  };
+            })
+          }
+        />
+      )}
 
       {data?.content && (
         <CraftedRenderer
+          key={pathname}
           elevation={1}
           options={data.content.layouts}
           onFetchData={fetchHandles.data}

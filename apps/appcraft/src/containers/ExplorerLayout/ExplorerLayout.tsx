@@ -80,13 +80,12 @@ export default function ExplorerLayout({
           <Ctx.WebsiteConfigProvider config={config}>
             <AppHeader
               title={{ text: config.title, href: `/app/${config.token}` }}
-              {...(navItems.length &&
-                config.website.navAnchor !== 'top' && {
-                  onMenuToggle: (e) => {
-                    e.stopPropagation();
-                    setOpen(!open);
-                  },
-                })}
+              {...(navItems.length && {
+                onMenuToggle: (e) => {
+                  e.stopPropagation();
+                  setOpen(!open);
+                },
+              })}
             />
 
             {!navItems.length ? null : (

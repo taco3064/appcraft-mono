@@ -9,7 +9,6 @@ import { withStyles } from 'tss-react/mui';
 
 import { useBreakpointValue } from '../..';
 import type * as Types from './MuiImageListItem.types';
-import { match } from 'assert';
 
 export const CollectionItem = withStyles(
   ({

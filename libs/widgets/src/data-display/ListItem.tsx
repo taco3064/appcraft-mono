@@ -17,11 +17,7 @@ export const ListItem = withStyles(
     props: ListItemProps & {
       classes?: ComponentProps<typeof MuiListItem>['classes'];
     }
-  ) => {
-    console.log(props.classes);
-
-    return <MuiListItem {...props} />;
-  },
+  ) => <MuiListItem {...props} />,
   (theme) => ({
     root: {
       padding: theme.spacing(1),

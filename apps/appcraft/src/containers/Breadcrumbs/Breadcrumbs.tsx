@@ -7,10 +7,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useWidth } from '@appcraft/exhibitor';
 
 import { CommonButton } from '~appcraft/components';
 import { Link } from '~appcraft/styles';
-import { useFixedT, useWidth } from '~appcraft/hooks';
+import { useFixedT } from '~appcraft/hooks';
 import type * as Types from './Breadcrumbs.types';
 
 export default function Breadcrumbs({

@@ -74,6 +74,7 @@ export default withPerPageLayout(ExplorerLayout, function WebsitePage() {
             maxWidthes: data.content.maxWidthes,
             cols: __WEBPACK_DEFINE__.COLLECTION_COLS,
             rowHeight: __WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT,
+            containerSx: { height: '100%', overflow: 'hidden auto' },
           }}
         />
       )}

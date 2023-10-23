@@ -131,7 +131,7 @@ export default function PageEditor({
         disablePersistent
         open={isSettingOpen}
         onClose={() => handlePage.active(undefined)}
-        DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
+        DrawerProps={{ maxWidth: 'xs' }}
         ContentProps={{
           style: {
             display: 'flex',
@@ -232,7 +232,7 @@ export default function PageEditor({
                 borderRadius: `${theme.spacing(2.5)} / 50%`,
               })}
             >
-              <Toolbar variant="dense">
+              <Toolbar variant="dense" disableGutters={width === 'xs'}>
                 {width !== 'xs' && maxWidthSelect}
 
                 <Comp.BreakpointStepper

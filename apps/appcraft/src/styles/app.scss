@@ -1,0 +1,10 @@
+html > body {
+  overflow: hidden !important;
+
+  & > #__next > div {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow: hidden !important;  
+  }
+}

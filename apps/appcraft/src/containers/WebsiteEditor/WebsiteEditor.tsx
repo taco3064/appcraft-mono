@@ -1,3 +1,4 @@
+import Container from '@mui/material/Container';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveAltIcon from '@mui/icons-material/SaveAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -7,10 +8,9 @@ import Tooltip from '@mui/material/Tooltip';
 import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
 import WebIcon from '@mui/icons-material/Web';
 import { CraftsmanStyle } from '@appcraft/craftsman';
-import { CraftedRenderer } from '@appcraft/exhibitor';
+import { CraftedRenderer, useWidth } from '@appcraft/exhibitor';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useTheme } from '@mui/material/styles';
 import type { Breakpoint } from '@mui/material/styles';
 
 import * as Comp from '~appcraft/components';
@@ -37,9 +37,8 @@ export default function WebsiteEditor({
   const [edited, setEdited] = useState<'app' | 'page'>('app');
   const [website, handleWebsite] = Hook.useWebsiteValues({ data, onSave });
 
-  const width = Hook.useWidth();
+  const width = useWidth();
   const height = Hook.useHeight();
-  const theme = useTheme();
   const fetchHandles = Hook.useCraftsmanFetch();
   const homepage = getRoute(website.homeid, website.pages);
 
@@ -125,7 +124,12 @@ export default function WebsiteEditor({
       )}
 
       <Slide direction="right" in={edited === 'page'}>
-        <div>
+        <div
+          style={{
+            height: edited === 'page' ? '100%' : 0,
+            overflow: 'hidden auto',
+          }}
+        >
           {edited === 'page' && (
             <Comp.NavList
               values={website.pages}
@@ -142,6 +146,7 @@ export default function WebsiteEditor({
                 <Style.WebsiteTitle
                   variant="outlined"
                   color="primary"
+                  sx={{ display: width === 'xs' ? 'none' : null }}
                   TypographyProps={{
                     variant: width === 'xs' ? 'subtitle1' : 'h6',
                   }}
@@ -155,7 +160,12 @@ export default function WebsiteEditor({
       </Slide>
 
       <Slide direction="left" in={edited === 'app'}>
-        <div>
+        <div
+          style={{
+            height: edited === 'app' ? '100%' : 0,
+            overflow: 'hidden auto',
+          }}
+        >
           {edited === 'app' && (
             <>
               <Toolbar
@@ -163,7 +173,12 @@ export default function WebsiteEditor({
                 variant="dense"
                 style={{}}
                 sx={(theme) => ({
+                  position: 'sticky',
                   userSelect: 'none',
+                  top: 0,
+                  zIndex: theme.zIndex.appBar,
+                  background: theme.palette.background.default,
+
                   [theme.breakpoints.only('xs')]: {
                     display: 'flex',
                     flexDirection: 'column',
@@ -173,6 +188,7 @@ export default function WebsiteEditor({
                 <Style.WebsiteTitle
                   variant="outlined"
                   color="primary"
+                  sx={{ display: width === 'xs' ? 'none' : null }}
                   TypographyProps={{
                     variant: width === 'xs' ? 'subtitle1' : 'h6',
                   }}
@@ -200,21 +216,30 @@ export default function WebsiteEditor({
                       website,
                     }}
                   >
-                    {home?.content && (
-                      <CraftedRenderer
-                        elevation={1}
-                        options={home.content.layouts}
-                        onFetchData={fetchHandles.data}
-                        onFetchWrapper={fetchHandles.wrapper}
-                        onReady={home.content.readyTodos}
-                        CollectionGridProps={{
-                          breakpoint,
-                          maxWidthes: home.content.maxWidthes,
-                          cols: __WEBPACK_DEFINE__.COLLECTION_COLS,
-                          rowHeight: __WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT,
-                        }}
-                      />
-                    )}
+                    <Container
+                      disableGutters
+                      sx={{
+                        overflow: 'hidden auto',
+                        maxWidth:
+                          __WEBPACK_DEFINE__.CONTAINER_WIDTH[website.maxWidth],
+                      }}
+                    >
+                      {home?.content && (
+                        <CraftedRenderer
+                          elevation={1}
+                          options={home.content.layouts}
+                          onFetchData={fetchHandles.data}
+                          onFetchWrapper={fetchHandles.wrapper}
+                          onReady={home.content.readyTodos}
+                          CollectionGridProps={{
+                            breakpoint,
+                            maxWidthes: home.content.maxWidthes,
+                            cols: __WEBPACK_DEFINE__.COLLECTION_COLS,
+                            rowHeight: __WEBPACK_DEFINE__.COLLECTION_ROW_HEIGHT,
+                          }}
+                        />
+                      )}
+                    </Container>
                   </ExplorerLayout>
                 )}
               />

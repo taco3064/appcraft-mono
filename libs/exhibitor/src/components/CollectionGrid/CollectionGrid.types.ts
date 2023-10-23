@@ -1,6 +1,7 @@
 import type { Breakpoint } from '@mui/material/styles';
 import type { Breakpoints } from '@appcraft/types';
 import type { ComponentProps } from 'react';
+import type { ContainerProps } from '@mui/material/Container';
 import type { ImageListProps } from '@mui/material/ImageList';
 
 import { CollectionItem } from '../../styles';
@@ -24,6 +25,7 @@ export interface CollectionGridProps<T extends { id: string }>
     > {
   breakpoint?: Breakpoint;
   cols?: Breakpoints<number>;
+  containerSx?: ContainerProps['sx'];
   disableResort?: boolean;
   items?: T[];
   maxWidthes: MaxWidthes;

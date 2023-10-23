@@ -99,7 +99,6 @@ export default withPerPageLayout(Ctr.ArtisanLayout, function Detail() {
           ResponsiveDrawerProps={{
             disableGutters: true,
             maxWidth: false,
-            height: (theme) => `calc(${height} - ${theme.spacing(29)})`,
           }}
         />
       </PageContainer>

@@ -5,7 +5,7 @@ const getOverrideRenderType: Types.GetOverrideRenderType = (
   kind,
   { props, propPath, typeName, typeFile }
 ) => {
-  const isTodoFile = typeFile.includes('/@appcraft/types/src/widgets/todo');
+  const isTodoFile = typeFile.includes('/types/src/widgets/todo');
 
   if (
     isTodoFile &&

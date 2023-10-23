@@ -46,15 +46,19 @@ const generators: Types.Generators = [
   },
 
   //* Function
-  (type, info, source) => {
+  (type, info, { counts, source }) => {
     const [callSignature] = type.getCallSignatures().reverse();
 
     if (callSignature) {
       if (source) {
-        const returnProptype = getProptype(callSignature.getReturnType(), {
-          propName: 'return',
-          required: true,
-        });
+        const returnProptype = getProptype(
+          callSignature.getReturnType(),
+          {
+            propName: 'return',
+            required: true,
+          },
+          { counts }
+        );
 
         return {
           ...info,
@@ -64,10 +68,14 @@ const generators: Types.Generators = [
             params: callSignature.getParameters().reduce((result, param, i) => {
               const typeAtLocation = param.getTypeAtLocation(source);
 
-              const proptype = getProptype(typeAtLocation, {
-                propName: `[${i}]`,
-                required: !param.isOptional(),
-              });
+              const proptype = getProptype(
+                typeAtLocation,
+                {
+                  propName: `[${i}]`,
+                  required: !param.isOptional(),
+                },
+                { counts }
+              );
 
               return !proptype ? result : result.concat(proptype);
             }, []),
@@ -82,7 +90,7 @@ const generators: Types.Generators = [
   },
 
   //* Union
-  (type, info, source) => {
+  (type, info, { counts, source }) => {
     if (type.getText() === 'unknown') {
       return {
         ...info,
@@ -103,7 +111,7 @@ const generators: Types.Generators = [
             if (union.isLiteral()) {
               literals.push(JSON.parse(union.getText()));
             } else {
-              const proptype = getProptype(union, info, source);
+              const proptype = getProptype(union, info, { counts, source });
 
               proptype && types.push({ ...proptype, text: union.getText() });
             }
@@ -143,24 +151,32 @@ const generators: Types.Generators = [
   },
 
   //* Array
-  (type, info, source) => {
+  (type, info, { counts, source }) => {
     const isArray = type.isArray();
     const isTuple = type.isTuple();
 
     if (isArray || isTuple) {
       if (source) {
         const options = isArray
-          ? getProptype(type.getArrayElementType(), {
-              propName: '[*]',
-              required: true,
-            })
+          ? getProptype(
+              type.getArrayElementType(),
+              {
+                propName: '[*]',
+                required: true,
+              },
+              { counts }
+            )
           : type
               .getTupleElements()
               .reduce<Appcraft.PropTypesDef[]>((result, tuple, i) => {
-                const proptype = getProptype(tuple, {
-                  propName: `[${i}]`,
-                  required: true,
-                });
+                const proptype = getProptype(
+                  tuple,
+                  {
+                    propName: `[${i}]`,
+                    required: true,
+                  },
+                  { counts }
+                );
 
                 return !proptype ? result : result.concat(proptype);
               }, []);
@@ -177,7 +193,7 @@ const generators: Types.Generators = [
   },
 
   //* Object
-  (type, info, source) => {
+  (type, info, { counts, source }) => {
     if (source) {
       const args = type.getAliasTypeArguments();
       const properties = type.getProperties?.();
@@ -189,10 +205,14 @@ const generators: Types.Generators = [
             const propName = property.getName();
             const typeAtLocation = property.getTypeAtLocation(source);
 
-            const proptype = getProptype(typeAtLocation, {
-              propName,
-              required: !property.isOptional(),
-            });
+            const proptype = getProptype(
+              typeAtLocation,
+              {
+                propName,
+                required: !property.isOptional(),
+              },
+              { counts }
+            );
 
             if (proptype) {
               result.push([propName, proptype]);
@@ -214,13 +234,17 @@ const generators: Types.Generators = [
 
       //* { [key: string]: value; }
       if (strIdxType) {
+        const text = strIdxType.getText();
+
+        counts.set(text, (counts.get(text) || 0) + 1);
+
         const options = getProptype(
           strIdxType,
           {
             propName: '*',
             required: false,
           },
-          source
+          { counts, source: counts.get(text) > 3 ? undefined : source }
         );
 
         return options && { ...info, type: 'objectOf', options };
@@ -228,15 +252,23 @@ const generators: Types.Generators = [
 
       //* Record<key, value>
       if (type.getText().startsWith('Record<') && args.length > 0) {
-        const keys = getProptype(args[0], {
-          propName: '*',
-          required: false,
-        });
+        const keys = getProptype(
+          args[0],
+          {
+            propName: '*',
+            required: false,
+          },
+          { counts }
+        );
 
-        const options = getProptype(args[1], {
-          propName: '*',
-          required: false,
-        });
+        const options = getProptype(
+          args[1],
+          {
+            propName: '*',
+            required: false,
+          },
+          { counts }
+        );
 
         if (options && keys) {
           return keys.type !== 'oneOf'
@@ -270,12 +302,12 @@ const generators: Types.Generators = [
 ];
 
 //* 取得目標 Type 對應的 PropTypes
-export const getProptype: Types.GetProptypeUtil = (type, info, source) =>
+export const getProptype: Types.GetProptypeUtil = (type, info, options) =>
   /^(React\.Ref<|RefObject<|Ref<)/.test(type.getText())
     ? false
     : generators.reduce((result, generator) => {
         if (!result) {
-          return generator(type, info, source);
+          return generator(type, info, options);
         }
 
         return result;
@@ -284,9 +316,9 @@ export const getProptype: Types.GetProptypeUtil = (type, info, source) =>
 export const findNodesAndEventsProps: Types.FindNodesAndEventsPropsUtil = (
   source,
   type,
-  { info, paths = [] }
+  { counts, info, paths = [] }
 ) => {
-  const proptype = getProptype(type, info, source);
+  const proptype = getProptype(type, info, { counts, source });
 
   if (proptype) {
     if (/^(element|node)$/.test(proptype.type)) {
@@ -312,6 +344,7 @@ export const findNodesAndEventsProps: Types.FindNodesAndEventsPropsUtil = (
 
             if ($type.getText() !== 'React.CSSProperties') {
               const result = findNodesAndEventsProps(source, $type, {
+                counts,
                 info: { propName, required: !property.isOptional() },
                 paths: [...paths, propName],
               });

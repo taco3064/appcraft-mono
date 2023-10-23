@@ -19,7 +19,9 @@ export const parse: Types.ParseService = ({
     source,
   });
 
-  return (types && getProptype(...types, source)) || null;
+  return (
+    (types && getProptype(...types, { counts: new Map(), source })) || null
+  );
 };
 
 export const getNodesAndEvents: Types.GetNodesAndEvents = (options) =>
@@ -31,6 +33,7 @@ export const getNodesAndEvents: Types.GetNodesAndEvents = (options) =>
         const key = `${opts.typeFile}#${opts.typeName}`;
 
         const { nodes, events } = findNodesAndEventsProps(...sourceType, {
+          counts: new Map(),
           info: { required: true },
         });
 

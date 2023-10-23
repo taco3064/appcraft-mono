@@ -213,7 +213,7 @@ export default function CraftedWidgetEditor({
 
       <SelectionProvider
         action={stateToggle}
-        basePaths={paths}
+        basePaths={widgetPaths}
         disabled={disableSelection}
         secondaryActions={secondaryActions}
         values={widget}

@@ -184,16 +184,6 @@ export const useGlobalState: Types.GlobalStateHook = () => {
                 const id = _get(options, ['template', 'id']);
                 const widget = getWidgetOptions('template', id);
 
-                console.log(
-                  Util.getWidgetsByValue(
-                    widget,
-                    _get(injection, ['nodes', options.alias || propPath]),
-                    value,
-                    options as Appcraft.EntityNodeStates,
-                    getWidgetOptions
-                  )
-                );
-
                 _set(
                   result,
                   [category, propPath],

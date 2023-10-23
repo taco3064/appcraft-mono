@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.6](https://github.com/taco3064/appcraft-mono/compare/v0.8.5...v0.8.6) (2023-10-23)
+
+
+### Bug Fixes
+
+* **apps/appcraft:** redirect the useWidth to @appcraft/exhibitor ([0099c80](https://github.com/taco3064/appcraft-mono/commit/0099c80140cac0d5a483fdb740580d8893aa3aae))
+
 ### [0.8.5](https://github.com/taco3064/appcraft-mono/compare/v0.8.4...v0.8.5) (2023-10-22)
 
 

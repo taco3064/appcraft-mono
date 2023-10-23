@@ -37,7 +37,6 @@ export default withPerPageLayout(Ctr.ArtisanLayout, function Detail() {
     Hook.useNodePickHandle(TODO_ACTIONS);
 
   const theme = useTheme();
-  const height = Hook.useHeight();
   const category = pathname.replace(/^\//, '').replace(/\/.+$/, '');
   const id = query.id as string;
   const { superiors, breadcrumbs } = Hook.useHierarchyFilter(category, id);
@@ -100,7 +99,6 @@ export default withPerPageLayout(Ctr.ArtisanLayout, function Detail() {
           ResponsiveDrawerProps={{
             disableGutters: true,
             maxWidth: false,
-            height: (theme) => `calc(${height} - ${theme.spacing(29)})`,
           }}
         />
       </PageContainer>

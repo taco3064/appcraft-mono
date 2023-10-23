@@ -27,7 +27,7 @@ export interface SizedDrawerProps extends Omit<DrawerProps, 'PaperProps'> {
 
 export interface ResponsiveDrawerProps
   extends Omit<ContainerProps, 'classes' | 'id' | 'children' | 'content'>,
-    StyledComponentProps<'root' | 'paper' | 'content' | 'space'> {
+    StyledComponentProps<'root' | 'paper' | 'inline' | 'content'> {
   disablePersistent?: boolean;
   drawer: ReactNode;
   content: ReactNode;
@@ -41,7 +41,6 @@ export interface ResponsiveDrawerProps
     DrawerProps,
     'anchor' | 'maxWidth' | 'variant' | 'open' | 'onClose'
   > & {
-    anchor: 'right' | 'left';
     maxWidth: ContainerProps['maxWidth'];
   };
 }

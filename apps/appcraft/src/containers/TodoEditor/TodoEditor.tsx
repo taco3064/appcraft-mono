@@ -96,7 +96,6 @@ export default function TodoEditor({
         {...ResponsiveDrawerProps}
         ContentProps={{ style: { alignItems: 'center' } }}
         DrawerProps={{
-          anchor: 'right',
           maxWidth: 'xs',
           sx: { zIndex: logZIndex },
         }}

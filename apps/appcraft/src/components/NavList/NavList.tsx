@@ -80,7 +80,12 @@ export default function NavList({
         disableGutters
         variant="dense"
         sx={(theme) => ({
+          position: 'sticky',
           userSelect: 'none',
+          top: 0,
+          zIndex: theme.zIndex.appBar,
+          background: theme.palette.background.default,
+
           [theme.breakpoints.only('xs')]: {
             display: 'flex',
             flexDirection: 'column-reverse',

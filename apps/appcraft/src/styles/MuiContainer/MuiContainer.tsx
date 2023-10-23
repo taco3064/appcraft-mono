@@ -31,8 +31,13 @@ export const MainContainer = withStyles(
   Container,
   (theme) => ({
     root: {
-      paddingTop: theme.spacing(3),
-      paddingBottom: theme.spacing(3),
+      display: 'flex',
+      flexDirection: 'column',
+      flexWrap: 'nowrap',
+      height: '100%',
+      overflow: 'hidden',
+      paddingTop: theme.spacing(2),
+      paddingBottom: theme.spacing(2),
     },
   }),
   { name: 'MainContainer' }
@@ -87,7 +92,19 @@ export const PageContainer = withStyles(
     </Slide>
   ),
   (theme, { ContentProps }) => ({
+    root: {
+      display: 'flex',
+      flexDirection: 'column',
+      flexWrap: 'nowrap',
+      height: '100%',
+      overflow: 'hidden',
+    },
     content: {
+      display: 'flex' as never,
+      flexDirection: 'column' as never,
+      flexWrap: 'nowrap' as never,
+      overflow: 'hidden auto',
+      height: '100%',
       background: ContentProps?.disableGutters ? 'transparent' : null,
       borderRadius: theme.spacing(2),
       paddingTop: theme.spacing(ContentProps?.disableGutters ? 0 : 2),
@@ -102,15 +119,11 @@ export const PageContainer = withStyles(
     },
     toolbar: {
       position: 'sticky' as never,
+      top: theme.spacing(-2),
+      padding: theme.spacing(1, 0),
       background: theme.palette.background.default,
-      borderRadius: theme.shape.borderRadius,
-      top: theme.spacing(8),
       zIndex: theme.zIndex.appBar,
       userSelect: 'none' as never,
-
-      [theme.breakpoints.only('xs')]: {
-        top: theme.spacing(7),
-      },
     },
   }),
   { name: 'PageContainer' }
@@ -225,7 +238,9 @@ export const ScreenSimulator = withStyles(
       },
     },
     container: {
-      overflow: 'hidden auto !important',
+      display: 'flex',
+      flexDirection: 'column' as never,
+      overflow: 'hidden',
       transition: theme.transitions.create(['width', 'height', 'transform']),
     },
   }),

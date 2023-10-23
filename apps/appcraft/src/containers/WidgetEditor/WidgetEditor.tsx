@@ -81,7 +81,7 @@ export default function WidgetEditor({
       <ResponsiveDrawer
         {...ResponsiveDrawerProps}
         ContentProps={{ style: { alignItems: 'center' } }}
-        DrawerProps={{ anchor: 'right', maxWidth: 'xs' }}
+        DrawerProps={{ maxWidth: 'xs' }}
         open={isSettingOpen}
         onClose={() => setOpen(false)}
         content={

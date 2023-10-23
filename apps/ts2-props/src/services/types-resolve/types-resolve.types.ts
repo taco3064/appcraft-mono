@@ -20,13 +20,17 @@ export type Generators = [
 export type GetProptypeUtil<R = Appcraft.PropTypesDef> = (
   type: TsMorph.Type,
   info: Appcraft.GeneratorInfo,
-  source?: TsMorph.SourceFile
+  options: {
+    counts: Map<string, number>;
+    source?: TsMorph.SourceFile;
+  }
 ) => R | false;
 
 export type FindNodesAndEventsPropsUtil = (
   source: TsMorph.SourceFile,
   type: TsMorph.Type,
   options: {
+    counts: Map<string, number>;
     info: Appcraft.GeneratorInfo;
     paths?: string[];
   }

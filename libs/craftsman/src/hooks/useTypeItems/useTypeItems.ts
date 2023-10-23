@@ -27,12 +27,7 @@ export const useTypeItems = <V extends OptionValues>(
     const { mixedTypes, props } = widgetValues;
 
     delete mixedTypes?.[propPath];
-
-    for (const key of Object.keys(props || {})) {
-      if (key.startsWith(propPath)) {
-        delete props?.[key];
-      }
-    }
+    delete props?.[propPath];
 
     onChange({ ...widgetValues } as V);
   };

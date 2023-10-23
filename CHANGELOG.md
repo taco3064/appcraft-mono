@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.9](https://github.com/taco3064/appcraft-mono/compare/v0.8.8...v0.8.9) (2023-10-23)
+
+
+### Bug Fixes
+
+* **@appcraft/exhibitor:** fixed the invalid prosp injected ([255e36e](https://github.com/taco3064/appcraft-mono/commit/255e36e0698ee489a4d3878c47f3b1800b013dc2))
+* **apps/appcraft:** fixed the invalid styles ([fdea077](https://github.com/taco3064/appcraft-mono/commit/fdea077d991cdfabf7efdfb6325cbcc1fd180abd))
+* **apps/appcraft:** fixed the styles of website render result ([e348d0d](https://github.com/taco3064/appcraft-mono/commit/e348d0d0a451eed8ced5dadec96ae6ba0e6465ca))
+* **apps/appcraft:** fixed widget bugs ([7b5f6c8](https://github.com/taco3064/appcraft-mono/commit/7b5f6c810d5b3bee8cb30eac06d2717ae19d313d))
+
 ### [0.8.8](https://github.com/taco3064/appcraft-mono/compare/v0.8.7...v0.8.8) (2023-10-23)
 
 

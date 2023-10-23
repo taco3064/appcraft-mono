@@ -155,16 +155,26 @@ export const getWidgetsByValue: Types.GetWidgetsByValueFn = (
   const external = convertInjectionWithStates({ injection, states: state });
 
   if (nodeType === 'element') {
+    const { nodes: overrideNodes, ...overrideProps } = getWidgetProps({
+      value,
+      states: state?.props,
+    });
+
     return {
       ...widget,
       nodes: getWidgetNodes(
-        { defaultNodes: nodes, injection, value, states: state?.nodes },
+        {
+          defaultNodes: _merge({}, nodes, overrideNodes),
+          injection,
+          value,
+          states: state?.nodes,
+        },
         getWidgetOptions
       ),
       props: {
         ...props,
         ...external.props,
-        ...getWidgetProps({ value, states: state?.props }),
+        ...overrideProps,
       },
       todos: getWidgetTodos({
         defaults: todos,
@@ -177,24 +187,36 @@ export const getWidgetsByValue: Types.GetWidgetsByValueFn = (
 
   return !Array.isArray(value)
     ? []
-    : value.map((val) => ({
-        ...widget,
-        nodes: getWidgetNodes(
-          { defaultNodes: nodes, injection, value: val, states: state?.nodes },
-          getWidgetOptions
-        ),
-        props: {
-          ...props,
-          ...external.props,
-          ...getWidgetProps({ value: val, states: state?.props }),
-        },
-        todos: getWidgetTodos({
-          defaults: todos,
-          injection: external.todos,
-          template: template?.todos,
-          states: state?.todos,
-        }),
-      }));
+    : value.map((val) => {
+        const { nodes: overrideNodes, ...overrideProps } = getWidgetProps({
+          value: val,
+          states: state?.props,
+        });
+
+        return {
+          ...widget,
+          nodes: getWidgetNodes(
+            {
+              defaultNodes: _merge({}, nodes, overrideNodes),
+              injection,
+              value: val,
+              states: state?.nodes,
+            },
+            getWidgetOptions
+          ),
+          props: {
+            ...props,
+            ...external.props,
+            ...overrideProps,
+          },
+          todos: getWidgetTodos({
+            defaults: todos,
+            injection: external.todos,
+            template: template?.todos,
+            states: state?.todos,
+          }),
+        };
+      });
 };
 
 export const getBreakpointValue = <T>(

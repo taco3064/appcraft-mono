@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import * as Hook from '~appcraft/hooks';
 import { ExplorerLayout } from '~appcraft/containers';
+import { PageContainer } from '~appcraft/styles';
 import { findConfig } from '~appcraft/services';
 import { useWebsiteConfig } from '~appcraft/contexts';
 import { withPerPageLayout } from '~appcraft/hocs';
@@ -31,9 +32,10 @@ export default withPerPageLayout(ExplorerLayout, function WebsiteIndex() {
   );
 
   return (
-    <Container
+    <PageContainer
+      ContentProps={{ disableGutters: true }}
       maxWidth={website.maxWidth}
-      style={{ height: '100%', overflow: 'hidden' }}
+      primary={homepage.subTitle}
     >
       <Head>
         <title>{title}</title>
@@ -55,6 +57,6 @@ export default withPerPageLayout(ExplorerLayout, function WebsiteIndex() {
           }}
         />
       )}
-    </Container>
+    </PageContainer>
   );
 });

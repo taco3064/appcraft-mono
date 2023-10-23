@@ -46,7 +46,7 @@ export type GetWidgetNodesFn = (
 export type GetWidgetPropsFn = (options: {
   value: unknown;
   states?: Appcraft.MainWidget['state']['props'];
-}) => Appcraft.MainWidget['props'];
+}) => Exclude<Appcraft.MainWidget['props'], undefined>;
 
 export type GetWidgetTodosFn = (options: {
   defaults?: Appcraft.MainWidget['todos'];

@@ -62,14 +62,28 @@ export const create: Types.CreateService = async (
     return exists._id;
   }
 
-  const count = await collection.countDocuments({
-    userid: { $eq: userid },
-  });
+  const [latest] = await collection
+    .aggregate([
+      { $match: { userid: { $eq: userid } } },
+      {
+        $group: {
+          _id: '$userid',
+          token: { $max: '$_id' },
+        },
+      },
+    ])
+    .limit(1)
+    .toArray();
 
   const { insertedId } = await collection.insertOne({
-    _id: `${email.replace(/@.*/, '')}-${count + 1}`,
     userid,
     websiteid,
+    _id: `${email.replace(/@.*/, '')}-${
+      (Number.parseInt(
+        latest?.token.replace(`${email.replace(/@.*/, '')}-`, ''),
+        10
+      ) || 0) + 1
+    }`,
   });
 
   return insertedId;

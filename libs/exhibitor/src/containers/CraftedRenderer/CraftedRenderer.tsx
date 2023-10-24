@@ -9,7 +9,6 @@ import type { ShowcaseProps } from '../../components';
 
 export default function CraftedRenderer({
   CollectionGridProps,
-  elevation,
   options,
   onFetchData,
   onFetchWrapper,
@@ -37,7 +36,6 @@ export default function CraftedRenderer({
         <LazyShowcase
           {...({
             CollectionGridProps,
-            elevation,
             options,
           } as ShowcaseProps)}
         />

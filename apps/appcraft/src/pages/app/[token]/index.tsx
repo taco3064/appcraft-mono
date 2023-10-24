@@ -43,7 +43,6 @@ export default withPerPageLayout(ExplorerLayout, function WebsiteIndex() {
 
       {home?.content && (
         <CraftedRenderer
-          elevation={1}
           options={home.content.layouts}
           onFetchData={fetchHandles.data}
           onFetchWrapper={fetchHandles.wrapper}

@@ -18,7 +18,6 @@ export const CollectionItem = withStyles(
     action,
     children,
     classes: { fitHeight: fhClassName, ...classes } = {},
-    elevation,
     id,
     layouts,
     onResize,
@@ -73,6 +72,7 @@ export const CollectionItem = withStyles(
           {...PaperProps}
           className={classes?.paper}
           sx={{
+            background: 'transparent',
             ...(activeId === id && { height: 'calc(100% - 8px) !important' }),
           }}
         >

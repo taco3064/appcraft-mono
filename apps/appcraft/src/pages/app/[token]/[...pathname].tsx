@@ -70,7 +70,6 @@ export default withPerPageLayout(ExplorerLayout, function WebsitePage() {
       {data?.content && (
         <CraftedRenderer
           key={pathname}
-          elevation={1}
           options={data.content.layouts}
           onFetchData={fetchHandles.data}
           onFetchWrapper={fetchHandles.wrapper}

@@ -7,21 +7,6 @@ import type { PaperProps } from '@mui/material/Paper';
 
 import { ResizeHandle } from '../MuiSvgIcon';
 
-//* Component Props
-export interface CollectionContentProps {
-  PaperProps?: Omit<PaperProps, 'classes' | 'className' | 'elevation'>;
-  action?: React.ReactNode;
-  children?: React.ReactNode;
-  elevation?: PaperProps['elevation'];
-
-  resortDragHandle?: Exclude<React.ReactElement, string>;
-
-  classes?: {
-    root?: string;
-    action?: string;
-  };
-}
-
 export interface CollectionItemProps
   extends Omit<
     ImageListItemProps,
@@ -31,7 +16,6 @@ export interface CollectionItemProps
 
   action?: React.ReactNode;
   children?: React.ReactNode;
-  elevation?: PaperProps['elevation'];
   id: string;
   layouts: LayoutWidget['layouts'];
 

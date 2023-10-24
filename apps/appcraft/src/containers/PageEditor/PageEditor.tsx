@@ -179,7 +179,6 @@ export default function PageEditor({
               >
                 <Exhibitor.CraftedRenderer
                   key={refresh}
-                  elevation={1}
                   options={layouts}
                   onFetchData={handleFetch.data}
                   onFetchWrapper={handleFetch.wrapper}

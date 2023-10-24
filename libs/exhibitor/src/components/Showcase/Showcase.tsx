@@ -11,7 +11,6 @@ import type { ShowcaseProps } from './Showcase.types';
 //* Components
 export default function Showcase<T extends RenderedWidget>({
   CollectionGridProps,
-  elevation,
   options,
 }: ShowcaseProps<T>) {
   const generate = useComposerRender((Widget, { key, props }) => (
@@ -31,7 +30,7 @@ export default function Showcase<T extends RenderedWidget>({
 
           return (
             <CollectionItem
-              {...{ GridProps, elevation, id, layouts }}
+              {...{ GridProps, id, layouts }}
               key={id}
               action={CollectionGridProps?.renderAction?.(item)}
               DragHandle={{

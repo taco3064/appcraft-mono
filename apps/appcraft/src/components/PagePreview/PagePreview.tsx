@@ -14,7 +14,6 @@ export default function PagePreview({ breakpoint, options }: PagePreviewProps) {
     </Typography>
   ) : (
     <CraftedRenderer
-      elevation={1}
       options={options.layouts}
       onFetchData={fetchHandles.data}
       onFetchWrapper={fetchHandles.wrapper}

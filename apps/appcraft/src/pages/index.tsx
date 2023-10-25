@@ -16,6 +16,7 @@ export default withPerPageLayout(ArtisanLayout, function Index() {
     >
       <AppBar
         position="sticky"
+        elevation={0}
         sx={(theme) => ({ background: theme.palette.background.default })}
       >
         <Typography paragraph variant="h4" color="secondary">

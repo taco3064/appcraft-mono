@@ -1,7 +1,7 @@
 import Container from '@mui/material/Container';
 import NoSsr from '@mui/material/NoSsr';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { use, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useRouter } from 'next/router';
 import type { AppProps as NextAppProps } from 'next/app';
 

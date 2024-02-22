@@ -146,6 +146,13 @@ export const DEFAULT_THEME: ThemeOptions = {
         },
       },
     },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          gap: theme.spacing(1),
+        }),
+      },
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {

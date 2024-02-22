@@ -3,7 +3,7 @@
   "explorer.sortOrder": "type",
   "explorer.sortOrderLexicographicOptions": "upper",
   "editor.codeActionsOnSave": {
-    "source.fixAll": true
+    "source.fixAll": "explicit"
   },
   "[javascriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

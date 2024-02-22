@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.15](https://github.com/taco3064/appcraft-mono/compare/v0.8.14...v0.8.15) (2024-02-22)
+
+
+### Bug Fixes
+
+* **widget-parser:** fixed props generator error ([e46867b](https://github.com/taco3064/appcraft-mono/commit/e46867b273cca88d992874fd0e0a5ddfb8c79da4))
+
 ### [0.8.14](https://github.com/taco3064/appcraft-mono/compare/v0.8.13...v0.8.14) (2023-10-25)
 
 ### [0.8.13](https://github.com/taco3064/appcraft-mono/compare/v0.8.12...v0.8.13) (2023-10-24)

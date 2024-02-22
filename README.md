@@ -20,3 +20,4 @@ Using Appcraft is very simple. Just sign up for an account and start building yo
 ## Start Using Appcraft Today
 
 If you are looking for a powerful and easy-to-use website builder, then Appcraft is the best choice for you. Sign up for an account today and start building your website!
+## [Let's try](https://www.appcraftsman.app/)

@@ -96,7 +96,7 @@ export const getWidgetProps: Types.GetWidgetPropsFn = ({
     );
 
     if (path) {
-      _set(result, path, propValue);
+      _set(result, path.replace(/^props\./, ''), propValue);
     }
 
     return result;

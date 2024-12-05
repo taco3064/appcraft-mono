@@ -1,0 +1,17 @@
+Failed to start or connect to the Nx Daemon process.
+
+Messages from the log:
+
+ >  NX   Cannot find module '@nrwl/nx-darwin-arm64'
+Require stack:
+- /Users/taco.chang/Documents/appcraft-mono/node_modules/nx/src/native/index.js
+- /Users/taco.chang/Documents/appcraft-mono/node_modules/nx/src/hasher/native-file-hasher.js
+- /Users/taco.chang/Documents/appcraft-mono/node_modules/nx/src/hasher/file-hasher.js
+- /Users/taco.chang/Documents/appcraft-mono/node_modules/nx/src/daemon/server/project-graph-incremental-recomputation.js
+- /Users/taco.chang/Documents/appcraft-mono/node_modules/nx/src/daemon/server/server.js
+- /Users/taco.chang/Documents/appcraft-mono/node_modules/nx/src/daemon/server/start.js
+
+
+
+
+More information: /Users/taco.chang/Documents/appcraft-mono/.nx/cache/d/daemon.log
